@@ -1,0 +1,34 @@
+/* Componentes personalizados que no están en Tailwind/DaisyUI */
+
+/* se importarían en src/routes/+layout.svelte */
+/* <script lang="ts">
+  import './layout.css';
+  import '$lib/styles/variables.css';
+  import '$lib/styles/custom.css';
+  // ...
+</script>
+*/
+
+.card-custom {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 12px;
+	padding: 1.5rem;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.badge-special {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	background: #fbbf24;
+	color: #000;
+	border-radius: 9999px;
+	font-size: 0.875rem;
+	font-weight: 600;
+}
+
+/* Utilidades específicas de tu proyecto */
+.text-gradient {
+	background: linear-gradient(to right, #667eea, #764ba2);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
