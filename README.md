@@ -4,6 +4,18 @@ Prueba de concepto de Sveltekit con Typescript, Tailwind y DaisyUI de cara a des
 
 Arrancar el server: `npm run dev -- --open`
 
+## Cosas a explicar en la documentación
+
+- Tailwind
+- DaisyUI
+- Bit UI
+- Componentes y nomenclatura `bnd-`
+- Rutas
+- Contextos? `(app)`
+- Layouts
+- Iconos
+- Assets
+
 ## Organización de Estilos CSS
 
 Este proyecto utiliza tres enfoques para los estilos CSS:

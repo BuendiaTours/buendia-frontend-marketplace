@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ActivityListItem, Column } from '$lib/types';
-	import { confirm } from '$lib/components/AlertDialog';
 	import { checkAll } from '$lib/actions/checkAll';
 	import { goto } from '$app/navigation';
 
@@ -16,42 +15,6 @@
 			totalPages: number;
 		};
 	};
-
-	async function onDelete(e: MouseEvent) {
-		e.preventDefault();
-		e.stopPropagation();
-
-		const ok = await confirm({
-			title: 'Eliminar',
-			message: '¿Seguro que quieres eliminar este elemento?',
-			confirmText: 'Eliminar',
-			cancelText: 'Cancelar',
-			danger: true
-		});
-
-		if (ok) {
-			console.log('Confirm: onDelete: ✅ Confirmado');
-
-			const target = e.target as HTMLElement;
-
-			if (!target) {
-				console.error('No target element found');
-				return;
-			}
-
-			if (target.tagName === 'A') {
-				const href = (target as HTMLAnchorElement).href;
-				window.location.href = href;
-			} else if (target.tagName === 'BUTTON') {
-				const form = target.closest('form');
-				if (form) {
-					form.submit();
-				}
-			}
-		} else {
-			console.log('Confirm: onDelete: ❌ Cancelado');
-		}
-	}
 
 	const { items, pagination } = data;
 	const { pageSize, total } = pagination;
@@ -133,11 +96,3 @@
 {:else}
 	<p>No hay actividades.</p>
 {/if}
-
-<hr class="mt-6" />
-
-<h1>Ejemplo de form submit con confirmDialog</h1>
-
-<form action="/no-existe" method="get">
-	<button type="submit" class="btn btn-outline btn-error" on:click={onDelete}>Eliminar</button>
-</form>
