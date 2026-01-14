@@ -83,7 +83,7 @@
 							>
 								<li><a href={`/activities/${item.slug}`}>View</a></li>
 								<li><a href={`/activities/${item.slug}/edit`}>Edit</a></li>
-								<li><a href={`/activities/${item.slug}/delete`} on:click={onDelete}>Delete</a></li>
+								<li><a href={`/activities/${item.slug}/delete`}>Delete</a></li>
 							</ul>
 						</div></td
 					>

@@ -7,16 +7,32 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const pageSize = Number(url.searchParams.get('pageSize') ?? '10');
 
 	const apiUrl = `${PUBLIC_API_BASE_URL}/public/activities?page=${page}&pageSize=${pageSize}`;
-	const res = await fetch(apiUrl);
 
-	if (!res.ok) {
-		throw error(res.status, `Error al cargar actividades: ${res.status}`);
+	try {
+		const res = await fetch(apiUrl);
+
+		if (!res.ok) {
+			const errorMessage =
+				res.status === 404
+					? 'No se encontró el recurso solicitado'
+					: res.status >= 500
+						? 'El servidor no está disponible. Por favor, verifica que la API esté funcionando.'
+						: `Error al cargar actividades (${res.status})`;
+
+			throw error(res.status, errorMessage);
+		}
+
+		const data = await res.json();
+
+		return {
+			items: data.items,
+			pagination: data.pagination
+		};
+	} catch (err) {
+		if (err && typeof err === 'object' && 'status' in err) {
+			throw err;
+		}
+
+		throw error(503, 'No se pudo conectar con el servidor. Verifica que la API esté funcionando.');
 	}
-
-	const data = await res.json();
-
-	return {
-		items: data.items,
-		pagination: data.pagination
-	};
 };
