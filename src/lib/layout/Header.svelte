@@ -33,18 +33,18 @@
 				tabindex="0"
 				class="dropdown-content menu z-[1] mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
 			>
-				<li><a href="/" class:active={isActive('/')}>Inicio</a></li>
-				<li><a href="/activities" class:active={isActive('/activities')}>Actividades</a></li>
-				<li><a href="/components" class:active={isActive('/components')}>Componentes</a></li>
+				<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
+				<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
+				<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
 			</ul>
 		</div>
 		<a href="/" class="btn text-xl btn-ghost">{title}</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
-			<li><a href="/" class:active={isActive('/')}>Inicio</a></li>
-			<li><a href="/activities" class:active={isActive('/activities')}>Actividades</a></li>
-			<li><a href="/components" class:active={isActive('/components')}>Componentes</a></li>
+			<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
+			<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
+			<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
 		</ul>
 	</div>
 	<div class="navbar-end">

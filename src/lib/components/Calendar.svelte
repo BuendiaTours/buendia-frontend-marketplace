@@ -1,6 +1,8 @@
+<!-- https://www.bits-ui.com/docs/components/calendar -->
 <script lang="ts">
 	import { Calendar as CalendarPrimitive } from 'bits-ui';
 	import type { DateValue } from '@internationalized/date';
+	import { NavArrowLeft, NavArrowRight } from 'svelte-iconoir';
 
 	type Props = {
 		value?: DateValue;
@@ -24,13 +26,13 @@
 			<CalendarPrimitive.PrevButton
 				class="inline-flex size-10 items-center justify-center rounded-lg bg-base-100 hover:bg-base-200 active:scale-[0.98] active:transition-all"
 			>
-				<span>←</span>
+				<span><NavArrowLeft /></span>
 			</CalendarPrimitive.PrevButton>
 			<CalendarPrimitive.Heading class="text-[15px] font-medium" />
 			<CalendarPrimitive.NextButton
 				class="inline-flex size-10 items-center justify-center rounded-lg bg-base-100 hover:bg-base-200 active:scale-[0.98] active:transition-all"
 			>
-				<span>→</span>
+				<span><NavArrowRight /></span>
 			</CalendarPrimitive.NextButton>
 		</CalendarPrimitive.Header>
 		<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">

@@ -42,6 +42,10 @@ Para componentes CSS personalizados, clases de utilidad adicionales o librerías
 
 Estos archivos se importan en `src/routes/+layout.svelte` para estar disponibles globalmente.
 
+### 4. Iconos
+
+https://github.com/metonym/svelte-iconoir
+
 # --- OLD README ---
 
 # sv

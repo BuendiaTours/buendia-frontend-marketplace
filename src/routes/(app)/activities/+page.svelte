@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { ActivityListItem, Column } from '$lib/types';
-	import { confirm } from '$lib/ui/confirm.svelte';
+	import { confirm } from '$lib/components/AlertDialog';
 	import { checkAll } from '$lib/actions/checkAll';
+	import { goto } from '$app/navigation';
 
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
@@ -11,6 +12,7 @@
 		pagination: {
 			page: number;
 			pageSize: number;
+			total: number;
 			totalPages: number;
 		};
 	};
@@ -52,7 +54,7 @@
 	}
 
 	const { items, pagination } = data;
-	const { page, pageSize, totalPages } = pagination;
+	const { pageSize, total } = pagination;
 
 	const columns: Column<ActivityListItem>[] = [
 		{ key: 'title' },
@@ -60,6 +62,10 @@
 		{ key: 'priceFrom' },
 		{ key: 'currency' }
 	];
+
+	function handlePageChange(newPage: number) {
+		goto(`/activities?page=${newPage}&pageSize=${pageSize}`);
+	}
 </script>
 
 <h1>Actividades</h1>
@@ -123,7 +129,7 @@
 		</tbody>
 	</table>
 
-	<Pagination {page} {pageSize} {totalPages} basePath="/activities" />
+	<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 {:else}
 	<p>No hay actividades.</p>
 {/if}
