@@ -2,6 +2,7 @@
 	import type { ActivityListItem, Column } from '$lib/types';
 	import { checkAll } from '$lib/actions/checkAll';
 	import { goto } from '$app/navigation';
+	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
@@ -83,7 +84,18 @@
 							>
 								<li><a href={`/activities/${item.slug}`}>View</a></li>
 								<li><a href={`/activities/${item.slug}/edit`}>Edit</a></li>
-								<li><a href={`/activities/${item.slug}/delete`}>Delete</a></li>
+								<li>
+									<a
+										href={`/activities/${item.slug}/delete`}
+										use:confirmAction={{
+											title: 'Eliminar',
+											message: '¿Seguro que quieres eliminar este elemento?',
+											confirmText: 'Eliminar',
+											cancelText: 'Cancelar',
+											danger: true
+										}}>Delete</a
+									>
+								</li>
 							</ul>
 						</div></td
 					>

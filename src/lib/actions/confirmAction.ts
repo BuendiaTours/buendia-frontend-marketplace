@@ -1,27 +1,35 @@
 // src/lib/actions/confirmAction.ts
 /**
- * Helper para mostrar un diálogo de confirmación antes de ejecutar una acción
+ * Acción de Svelte para mostrar un diálogo de confirmación antes de ejecutar una acción
  *
- * Uso:
+ * Uso como Svelte Action (recomendado):
+ * import { confirmAction } from '$lib/actions/confirmAction';
+ *
+ * <button use:confirmAction={{ title: 'Eliminar', danger: true }}>
+ *   Eliminar
+ * </button>
+ *
+ * <form action="/delete" method="post">
+ *   <button use:confirmAction={{ title: 'Eliminar', message: '¿Seguro?' }}>
+ *     Eliminar
+ *   </button>
+ * </form>
+ *
+ * Uso como función helper:
  * import { onConfirm } from '$lib/actions/confirmAction';
  *
  * async function handleDelete(e: MouseEvent) {
- *   await onConfirm(e, {
- *     title: 'Eliminar',
- *     message: '¿Seguro que quieres eliminar este elemento?',
- *     confirmText: 'Eliminar',
- *     cancelText: 'Cancelar',
- *     danger: true
- *   });
+ *   const confirmed = await onConfirm(e, { title: 'Eliminar', danger: true });
+ *   if (confirmed) {
+ *     // hacer algo adicional
+ *   }
  * }
- *
- * <button on:click={handleDelete}>Eliminar</button>
  *
  * Características:
  * - Previene el comportamiento por defecto del evento
  * - Muestra un diálogo de confirmación personalizable
  * - Maneja automáticamente el submit de formularios o navegación de enlaces
- * - Retorna true si se confirmó, false si se canceló
+ * - Funciona con botones y enlaces
  */
 
 import { confirm } from '$lib/components/AlertDialog';
@@ -67,4 +75,21 @@ export async function onConfirm(e: MouseEvent, options?: ConfirmOptions): Promis
 	}
 
 	return false;
+}
+
+export function confirmAction(node: HTMLElement, options?: ConfirmOptions) {
+	async function handleClick(e: MouseEvent) {
+		await onConfirm(e, options);
+	}
+
+	node.addEventListener('click', handleClick);
+
+	return {
+		update(newOptions?: ConfirmOptions) {
+			options = newOptions;
+		},
+		destroy() {
+			node.removeEventListener('click', handleClick);
+		}
+	};
 }
