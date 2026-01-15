@@ -157,20 +157,55 @@
 
 <hr />
 
-<h1>Ejemplo de swiper</h1>
+<h1>Ejemplos de swiper</h1>
 
 <SwiperElement
-	className="w-full"
+	className="max-w-[640px] h-[320px] bg-base-200"
 	options={{
 		slidesPerView: 1,
 		spaceBetween: 16,
 		navigation: true,
 		pagination: { clickable: true },
-		scrollbar: { draggable: true },
+		// scrollbar: { draggable: true },
 		loop: true
 	}}
 >
-	<swiper-slide>Slide 1</swiper-slide>
-	<swiper-slide>Slide 2</swiper-slide>
-	<swiper-slide>Slide 3</swiper-slide>
+	<swiper-slide class="flex min-h-48 items-center justify-center">Slide 1</swiper-slide>
+	<swiper-slide class="flex min-h-48 items-center justify-center">Slide 2</swiper-slide>
+	<swiper-slide class="flex min-h-48 items-center justify-center">Slide 3</swiper-slide>
+</SwiperElement>
+
+<SwiperElement
+	className="max-w-[640px] h-[320px] bg-base-200 rounded-lg overflow-hidden mt-6"
+	options={{
+		slidesPerView: 1,
+		spaceBetween: 16,
+		navigation: true,
+		pagination: { clickable: true },
+		loop: true
+	}}
+>
+	<swiper-slide class="h-full">
+		<img
+			src="https://picsum.photos/id/238/800/600.jpg"
+			alt="Slide 1"
+			class="h-full w-full object-cover"
+		/>
+	</swiper-slide>
+
+	<swiper-slide class="h-full">
+		<img
+			src="https://picsum.photos/id/239/800/600.jpg"
+			alt="Slide 2"
+			class="h-full w-full object-cover"
+		/>
+	</swiper-slide>
+
+	<swiper-slide class="h-full">
+		<img
+			src="https://picsum.photos/id/240/800/600.jpg"
+			alt="Slide 3"
+			class="h-full w-full object-cover"
+		/>
+	</swiper-slide>
 </SwiperElement>
