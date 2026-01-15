@@ -3,12 +3,20 @@
 	import Calendar from '$lib/components/Calendar.svelte';
 	import { openLightbox } from '$lib/components/PhotoSwipe';
 	import SwiperElement from '$lib/components/Swiper.svelte';
+
 	// Actions
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { photoswipeGallery } from '$lib/actions/photoswipeGallery';
 
 	import { getLocalTimeZone, today } from '@internationalized/date';
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
+
+	// Range calendar
+	import { RangeCalendar, type DateRange } from 'bits-ui';
+	import { NavArrowLeft, NavArrowRight } from 'svelte-iconoir';
+	import cn from 'clsx';
+
+	let rangeValue = $state<DateRange | undefined>();
 
 	const lightboxItems = [
 		{
@@ -209,3 +217,80 @@
 		/>
 	</swiper-slide>
 </SwiperElement>
+
+<hr />
+
+<h1>Ejemplo de RangeCalendar de bits-ui</h1>
+
+<RangeCalendar.Root
+	class="mt-6 rounded-box border border-base-content/10 bg-base-100 p-6 shadow-lg"
+	weekdayFormat="short"
+	fixedWeeks={true}
+	bind:value={rangeValue}
+	maxDays={99}
+	numberOfMonths={2}
+	pagedNavigation={true}
+>
+	{#snippet children({ months, weekdays })}
+		<RangeCalendar.Header class="flex items-center justify-between">
+			<RangeCalendar.PrevButton
+				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			>
+				<NavArrowLeft class="size-5" />
+			</RangeCalendar.PrevButton>
+			<RangeCalendar.Heading class="text-base font-semibold" />
+			<RangeCalendar.NextButton
+				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			>
+				<NavArrowRight class="size-5" />
+			</RangeCalendar.NextButton>
+		</RangeCalendar.Header>
+		<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+			{#each months as month (month.value.month)}
+				<RangeCalendar.Grid class="w-full border-collapse space-y-1 select-none">
+					<RangeCalendar.GridHead>
+						<RangeCalendar.GridRow class="mb-2 flex w-full justify-between">
+							{#each weekdays as day (day)}
+								<RangeCalendar.HeadCell class="w-10 text-xs font-semibold opacity-60">
+									<div>{day.slice(0, 2)}</div>
+								</RangeCalendar.HeadCell>
+							{/each}
+						</RangeCalendar.GridRow>
+					</RangeCalendar.GridHead>
+					<RangeCalendar.GridBody>
+						{#each month.weeks as weekDates, i (i)}
+							<RangeCalendar.GridRow class="flex w-full">
+								{#each weekDates as date, d (d)}
+									<RangeCalendar.Cell
+										{date}
+										month={month.value}
+										class="relative m-0 size-10 p-0! text-center text-sm focus-within:z-20"
+									>
+										<RangeCalendar.Day
+											class={cn(
+												'group rounded-btn relative inline-flex size-10 items-center justify-center border border-transparent bg-transparent p-0 text-sm font-normal transition-colors',
+												'hover:bg-base-200',
+												'data-disabled:pointer-events-none data-disabled:opacity-30',
+												'data-outside-month:pointer-events-none data-outside-month:opacity-40',
+												'data-unavailable:line-through',
+												'data-selected:bg-primary/20 data-selected:font-semibold',
+												'data-selection-start:bg-primary data-selection-start:font-bold data-selection-start:text-primary-content',
+												'data-selection-end:bg-primary data-selection-end:font-bold data-selection-end:text-primary-content',
+												'data-selected:[&:not([data-selection-start])]:[&:not([data-selection-end])]:rounded-none'
+											)}
+										>
+											<div
+												class="absolute top-1 hidden size-1.5 rounded-full bg-primary group-data-selected:bg-primary group-data-today:block"
+											></div>
+											{date.day}
+										</RangeCalendar.Day>
+									</RangeCalendar.Cell>
+								{/each}
+							</RangeCalendar.GridRow>
+						{/each}
+					</RangeCalendar.GridBody>
+				</RangeCalendar.Grid>
+			{/each}
+		</div>
+	{/snippet}
+</RangeCalendar.Root>

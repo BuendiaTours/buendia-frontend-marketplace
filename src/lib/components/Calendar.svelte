@@ -16,7 +16,9 @@
 <CalendarPrimitive.Root
 	class="mt-6 rounded-[15px] border border-base-300 bg-base-100 p-[22px] shadow-sm {className}"
 	weekdayFormat="short"
+	weekStartsOn={1}
 	fixedWeeks={true}
+	locale="es-ES"
 	type="single"
 	bind:value
 	{onValueChange}
