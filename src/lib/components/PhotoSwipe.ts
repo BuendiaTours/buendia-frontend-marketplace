@@ -1,5 +1,6 @@
 // https://photoswipe.com/getting-started/
 import { browser } from '$app/environment';
+import { photoSwipeDefaults } from '$lib/config/components';
 
 type PhotoSwipeItem =
 	| {
@@ -12,7 +13,18 @@ type PhotoSwipeItem =
 			html: string;
 	  };
 
-export async function openLightbox(items: PhotoSwipeItem[], index = 0) {
+export interface PhotoSwipeOptions {
+	bgOpacity?: number;
+	wheelToZoom?: boolean;
+	showHideAnimationType?: 'fade' | 'zoom' | 'none';
+	[key: string]: unknown;
+}
+
+export async function openLightbox(
+	items: PhotoSwipeItem[],
+	index = 0,
+	options?: PhotoSwipeOptions
+) {
 	if (!browser) return;
 
 	const { default: PhotoSwipe } = await import('photoswipe');
@@ -20,8 +32,9 @@ export async function openLightbox(items: PhotoSwipeItem[], index = 0) {
 	const pswp = new PhotoSwipe({
 		dataSource: items,
 		index,
-		bgOpacity: 0.9,
-		wheelToZoom: true
+		// Merge: defaults < options pasadas
+		...photoSwipeDefaults,
+		...options
 	});
 
 	pswp.init();

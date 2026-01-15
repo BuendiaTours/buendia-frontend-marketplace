@@ -24,10 +24,13 @@
 
 import { browser } from '$app/environment';
 import type PhotoSwipeLightbox from 'photoswipe/lightbox';
+import { photoSwipeDefaults } from '$lib/config/components';
 
 export interface PhotoswipeGalleryOptions {
 	children?: string;
 	showHideAnimationType?: 'fade' | 'zoom' | 'none';
+	bgOpacity?: number;
+	wheelToZoom?: boolean;
 	[key: string]: unknown;
 }
 
@@ -50,9 +53,10 @@ export function photoswipeGallery(node: HTMLElement, options?: PhotoswipeGallery
 
 		lightbox = new PhotoSwipeLightbox({
 			gallery: `#${node.id}`,
-			children: options?.children || 'a',
-			showHideAnimationType: options?.showHideAnimationType || 'none',
 			pswpModule: () => import('photoswipe'),
+			// Merge: defaults globales < children default < options pasadas
+			...photoSwipeDefaults,
+			children: 'a',
 			...options
 		});
 
