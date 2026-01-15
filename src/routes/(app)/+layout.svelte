@@ -18,3 +18,7 @@
 </div>
 
 <AlertDialog />
+
+<style global>
+	@import '@fancyapps/ui/dist/fancybox/fancybox.css';
+</style>

@@ -40,6 +40,7 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
+		"@fancyapps/ui": "^6.1.7",
 		"@internationalized/date": "^3.10.1",
 		"bits-ui": "^2.15.4"
 	}
