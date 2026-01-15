@@ -6,17 +6,10 @@
 
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
-	import { Combobox } from 'bits-ui';
+	import ComboBox from '$lib/components/ComboBox.svelte';
 
 	// Icons
-	import {
-		FilterAlt,
-		OrangeSlice,
-		ArrowSeparateVertical,
-		FastArrowUp,
-		FastArrowDown,
-		Check
-	} from 'svelte-iconoir';
+	import { Calendar, FilterAlt, OrangeSlice } from 'svelte-iconoir';
 
 	const fruits = [
 		{ value: 'mango', label: 'Mango' },
@@ -63,14 +56,6 @@
 		{ key: 'currency' }
 	];
 
-	let searchValue = $state('');
-
-	const filteredFruits = $derived(
-		searchValue === ''
-			? fruits
-			: fruits.filter((fruit) => fruit.label.toLowerCase().includes(searchValue.toLowerCase()))
-	);
-
 	function handlePageChange(newPage: number) {
 		goto(`/activities?page=${newPage}&pageSize=${pageSize}`);
 	}
@@ -79,10 +64,15 @@
 <h1 class="text-lg">Actividades</h1>
 
 <div class="mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2">
+	<button class="btn btn-square">
+		<Calendar />
+	</button>
+
 	<label class="label">
 		<input type="checkbox" class="toggle" />
 		<span class="text-sm">Free tours</span>
 	</label>
+
 	<select class="select">
 		<option disabled selected>Pick a font</option>
 		<option>Inter</option>
@@ -90,59 +80,7 @@
 		<option>Raleway</option>
 	</select>
 
-	<Combobox.Root
-		type="multiple"
-		name="favoriteFruit"
-		onOpenChangeComplete={(o) => {
-			if (!o) searchValue = '';
-		}}
-	>
-		<div class="relative">
-			<OrangeSlice class="absolute start-3 top-1/2 size-5 -translate-y-1/2 opacity-60" />
-			<Combobox.Input
-				oninput={(e) => (searchValue = e.currentTarget.value)}
-				class="input-bordered input w-[296px] pr-10 pl-10"
-				placeholder="Search a fruit"
-				aria-label="Search a fruit"
-			/>
-			<Combobox.Trigger class="absolute end-3 top-1/2 size-5 -translate-y-1/2 opacity-60">
-				<ArrowSeparateVertical class="size-5" />
-			</Combobox.Trigger>
-		</div>
-		<Combobox.Portal>
-			<Combobox.Content
-				class="z-50 max-h-96 w-[var(--bits-combobox-anchor-width)] rounded-box border border-base-content/10 bg-base-100 shadow-lg outline-none"
-				sideOffset={8}
-			>
-				<Combobox.ScrollUpButton class="flex w-full items-center justify-center py-2 opacity-60">
-					<FastArrowUp class="size-4" />
-				</Combobox.ScrollUpButton>
-				<Combobox.Viewport class="p-2">
-					{#each filteredFruits as fruit, i (i + fruit.value)}
-						<Combobox.Item
-							class="rounded-btn flex h-10 w-full cursor-pointer items-center px-3 text-sm capitalize transition-colors outline-none hover:bg-base-200 data-[highlighted]:bg-base-200"
-							value={fruit.value}
-							label={fruit.label}
-						>
-							{#snippet children({ selected })}
-								{fruit.label}
-								{#if selected}
-									<div class="ml-auto">
-										<Check class="size-4" />
-									</div>
-								{/if}
-							{/snippet}
-						</Combobox.Item>
-					{:else}
-						<span class="block px-3 py-2 text-sm opacity-60"> No results found, try again. </span>
-					{/each}
-				</Combobox.Viewport>
-				<Combobox.ScrollDownButton class="flex w-full items-center justify-center py-2 opacity-60">
-					<FastArrowDown class="size-4" />
-				</Combobox.ScrollDownButton>
-			</Combobox.Content>
-		</Combobox.Portal>
-	</Combobox.Root>
+	<ComboBox items={fruits} placeholder="Search a fruit" name="favoriteFruit" icon={OrangeSlice} />
 
 	<button class="btn ml-auto btn-square">
 		<FilterAlt />
