@@ -2,10 +2,18 @@
 	// CSS global del lightbox
 	import 'photoswipe/style.css';
 
+	// CSS global del swiper
+	import 'swiper/css';
+	import 'swiper/css/navigation';
+	import 'swiper/css/pagination';
+	import 'swiper/css/scrollbar';
+
 	// Components
+	import AlertDialog from '$lib/components/AlertDialog.svelte';
+
+	// Partials o elementos reutilizables
 	import Header from '$lib/layout/Header.svelte';
 	import Footer from '$lib/layout/Footer.svelte';
-	import AlertDialog from '$lib/components/AlertDialog.svelte';
 
 	let { children } = $props();
 </script>

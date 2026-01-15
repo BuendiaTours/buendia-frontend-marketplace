@@ -2,7 +2,7 @@
 	// Components
 	import Calendar from '$lib/components/Calendar.svelte';
 	import { openLightbox } from '$lib/components/PhotoSwipe';
-
+	import SwiperElement from '$lib/components/Swiper.svelte';
 	// Actions
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { photoswipeGallery } from '$lib/actions/photoswipeGallery';
@@ -127,7 +127,6 @@
 			alt="Photo 1"
 		/>
 	</a>
-
 	<a
 		href="https://picsum.photos/id/238/800/600.jpg"
 		data-pswp-width="800"
@@ -155,3 +154,23 @@
 		/>
 	</a>
 </div>
+
+<hr />
+
+<h1>Ejemplo de swiper</h1>
+
+<SwiperElement
+	className="w-full"
+	options={{
+		slidesPerView: 1,
+		spaceBetween: 16,
+		navigation: true,
+		pagination: { clickable: true },
+		scrollbar: { draggable: true },
+		loop: true
+	}}
+>
+	<swiper-slide>Slide 1</swiper-slide>
+	<swiper-slide>Slide 2</swiper-slide>
+	<swiper-slide>Slide 3</swiper-slide>
+</SwiperElement>
