@@ -7,3 +7,8 @@
 @utility checkbox {
 	@apply rounded-sm;
 }
+
+input[type='checkbox'].toggle {
+	/* Sino hereda el tick del checkbox de Bits UI (creo)*/
+	background-image: none !important;
+}

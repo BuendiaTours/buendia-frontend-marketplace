@@ -16,6 +16,13 @@ Arrancar el server: `npm run dev -- --open`
 - Iconos
 - Assets
 
+## Internacionalización
+
+La internacionalización oficial se hace con Paraglide
+
+- https://svelte.dev/docs/cli/paraglide
+- https://inlang.com/m/gerre34r/library-inlang-paraglideJs/sveltekit/
+
 ## Organización de Estilos CSS
 
 Este proyecto utiliza tres enfoques para los estilos CSS:

@@ -7,6 +7,7 @@
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
 	import ComboBox from '$lib/components/ComboBox.svelte';
+	import { Popover } from 'bits-ui';
 
 	// Icons
 	import { Calendar, FilterAlt, OrangeSlice } from 'svelte-iconoir';
@@ -64,12 +65,22 @@
 <h1 class="text-lg">Actividades</h1>
 
 <div class="mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2">
-	<button class="btn btn-square">
-		<Calendar />
-	</button>
+	<Popover.Root>
+		<Popover.Trigger class="btn btn-square">
+			<Calendar />
+		</Popover.Trigger>
+		<Popover.Content
+			side="bottom"
+			align="start"
+			alignOffset={-10}
+			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
+		>
+			<p class="text-sm">Este es el contenido del popover con el calendario</p>
+		</Popover.Content>
+	</Popover.Root>
 
 	<label class="label">
-		<input type="checkbox" class="toggle" />
+		<input type="checkbox" class="toggle bg-base-200" />
 		<span class="text-sm">Free tours</span>
 	</label>
 
