@@ -14,6 +14,11 @@
 	import Calendar from '$lib/components/Calendar.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
+	function handleCalendarChange(newValue: any) {
+		console.log('📅 Calendar - Fecha seleccionada:', newValue);
+		console.log('📅 Calendar - Fecha formateada:', newValue?.toString());
+	}
+
 	// Range calendar
 	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
 	import type { DateRange } from 'bits-ui';
@@ -21,6 +26,16 @@
 		start: today(getLocalTimeZone()),
 		end: today(getLocalTimeZone()).add({ days: 7 })
 	});
+
+	function handleRangeCalendarChange(newRange: DateRange | undefined) {
+		console.log('📆 RangeCalendar - Rango seleccionado:', newRange);
+		if (newRange?.start && newRange?.end) {
+			console.log('📆 RangeCalendar - Inicio:', newRange.start.toString());
+			console.log('📆 RangeCalendar - Fin:', newRange.end.toString());
+			const days = newRange.end.compare(newRange.start);
+			console.log('📆 RangeCalendar - Días seleccionados:', days);
+		}
+	}
 
 	const lightboxItems = [
 		{
@@ -222,6 +237,21 @@
 
 <hr />
 
-<h1>Ejemplo de RangeCalendar de bits-ui</h1>
+<h1>Ejemplo de Calendar de bits-ui</h1>
+<p class="mt-2 text-sm opacity-70">Selecciona una fecha y revisa la consola del navegador</p>
 
-<RangeCalendar bind:value={rangeValue} numberOfMonths={2} class="mt-6" />
+<Calendar bind:value onValueChange={handleCalendarChange} />
+
+<hr />
+
+<h1>Ejemplo de RangeCalendar de bits-ui</h1>
+<p class="mt-2 text-sm opacity-70">
+	Selecciona un rango de fechas y revisa la consola del navegador
+</p>
+
+<RangeCalendar
+	bind:value={rangeValue}
+	onValueChange={handleRangeCalendarChange}
+	numberOfMonths={2}
+	class="mt-6"
+/>
