@@ -1,4 +1,7 @@
 <script lang="ts">
+	// CSS global del lightbox
+	import 'photoswipe/style.css';
+
 	// Components
 	import Header from '$lib/layout/Header.svelte';
 	import Footer from '$lib/layout/Footer.svelte';
@@ -18,7 +21,3 @@
 </div>
 
 <AlertDialog />
-
-<style global>
-	@import '@fancyapps/ui/dist/fancybox/fancybox.css';
-</style>

@@ -1,8 +1,39 @@
 <script lang="ts">
+	// Components
 	import Calendar from '$lib/components/Calendar.svelte';
+	import { openLightbox } from '$lib/components/PhotoSwipe';
+
+	// Actions
 	import { confirmAction } from '$lib/actions/confirmAction';
+	import { photoswipeGallery } from '$lib/actions/photoswipeGallery';
+
 	import { getLocalTimeZone, today } from '@internationalized/date';
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
+
+	const lightboxItems = [
+		{
+			src: 'https://picsum.photos/800/600',
+			width: 1600,
+			height: 1200,
+			alt: 'Imagen de ejemplo'
+		},
+		{
+			html: `
+				<iframe
+					src="https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf.pdf"
+					style="width:100%;height:100%;border:none"
+				></iframe>
+			`
+		},
+		{
+			html: `
+				<div style="padding:24px;max-width:720px">
+					<h2>Contenido HTML</h2>
+					<p>Esto es un bloque informativo sencillo.</p>
+				</div>
+			`
+		}
+	];
 
 	let value = $state(today(getLocalTimeZone()));
 </script>
@@ -69,3 +100,58 @@
 		Eliminar
 	</button>
 </form>
+
+<hr />
+
+<h1>Ejemplo de abrir PhotoSwiper desde prog.</h1>
+<button class="btn btn-primary" onclick={() => openLightbox(lightboxItems, 0)}>
+	Abrir lightbox
+</button>
+
+<hr />
+
+<h1>Ejemplo de abrir PhotoSwiper desde imáges</h1>
+
+<div use:photoswipeGallery class="pswp-gallery flex gap-4">
+	<a
+		href="https://picsum.photos/id/237/800/600.jpg"
+		data-pswp-width="800"
+		data-pswp-height="600"
+		target="_blank"
+		rel="noreferrer"
+		class="block overflow-hidden rounded-lg"
+	>
+		<img
+			class="block h-48 w-48 object-cover"
+			src="https://picsum.photos/id/237/200/200.jpg"
+			alt="Photo 1"
+		/>
+	</a>
+
+	<a
+		href="https://picsum.photos/id/238/800/600.jpg"
+		data-pswp-width="800"
+		data-pswp-height="600"
+		target="_blank"
+		rel="noreferrer"
+	>
+		<img
+			class="block h-48 w-48 object-cover"
+			src="https://picsum.photos/id/238/200/200.jpg"
+			alt="Photo 1"
+		/>
+	</a>
+	<a
+		href="https://picsum.photos/id/239/800/600.jpg"
+		data-pswp-width="800"
+		data-pswp-height="600"
+		target="_blank"
+		rel="noreferrer"
+	>
+		<img
+			class="block h-48 w-48 object-cover"
+			src="https://picsum.photos/id/239/200/200.jpg"
+			alt="1"
+		/>
+	</a>
+</div>
