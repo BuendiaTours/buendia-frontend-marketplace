@@ -52,13 +52,13 @@ Props disponibles:
 			<RangeCalendarPrimitive.PrevButton
 				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
 			>
-				<NavArrowLeft />
+				<span><NavArrowLeft /></span>
 			</RangeCalendarPrimitive.PrevButton>
 			<RangeCalendarPrimitive.Heading class="text-base font-semibold" />
 			<RangeCalendarPrimitive.NextButton
 				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
 			>
-				<NavArrowRight />
+				<span><NavArrowRight /></span>
 			</RangeCalendarPrimitive.NextButton>
 		</RangeCalendarPrimitive.Header>
 		<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">

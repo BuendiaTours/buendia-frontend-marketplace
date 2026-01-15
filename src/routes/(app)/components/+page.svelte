@@ -1,6 +1,5 @@
 <script lang="ts">
 	// Components
-	import Calendar from '$lib/components/Calendar.svelte';
 	import { openLightbox } from '$lib/components/PhotoSwipe';
 	import SwiperElement from '$lib/components/Swiper.svelte';
 
@@ -11,11 +10,17 @@
 	import { getLocalTimeZone, today } from '@internationalized/date';
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
 
+	// Calendar
+	import Calendar from '$lib/components/Calendar.svelte';
+	let value = $state(today(getLocalTimeZone()));
+
 	// Range calendar
 	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
 	import type { DateRange } from 'bits-ui';
-
-	let rangeValue = $state<DateRange | undefined>();
+	let rangeValue = $state<DateRange | undefined>({
+		start: today(getLocalTimeZone()),
+		end: today(getLocalTimeZone()).add({ days: 7 })
+	});
 
 	const lightboxItems = [
 		{
@@ -41,8 +46,6 @@
 			`
 		}
 	];
-
-	let value = $state(today(getLocalTimeZone()));
 </script>
 
 <h1>Componentes</h1>

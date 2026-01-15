@@ -26,13 +26,13 @@
 	{#snippet children({ months, weekdays })}
 		<CalendarPrimitive.Header class="flex items-center justify-between">
 			<CalendarPrimitive.PrevButton
-				class="inline-flex size-10 items-center justify-center rounded-lg bg-base-100 hover:bg-base-200 active:scale-[0.98] active:transition-all"
+				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
 			>
 				<span><NavArrowLeft /></span>
 			</CalendarPrimitive.PrevButton>
 			<CalendarPrimitive.Heading class="text-[15px] font-medium" />
 			<CalendarPrimitive.NextButton
-				class="inline-flex size-10 items-center justify-center rounded-lg bg-base-100 hover:bg-base-200 active:scale-[0.98] active:transition-all"
+				class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
 			>
 				<span><NavArrowRight /></span>
 			</CalendarPrimitive.NextButton>
