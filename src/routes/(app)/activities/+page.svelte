@@ -14,7 +14,7 @@
 	import { Popover, type DateRange } from 'bits-ui';
 
 	// Icons
-	import { Calendar, FilterAlt, OrangeSlice } from 'svelte-iconoir';
+	import { Calendar, FilterAlt, OrangeSlice, Cancel } from 'svelte-iconoir';
 
 	const fruits = [
 		{ value: 'mango', label: 'Mango' },
@@ -85,24 +85,28 @@
 
 <h1 class="text-lg">Actividades</h1>
 
-<div class="mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2">
-	<Popover.Root>
-		<Popover.Trigger class="btn btn-square">
-			<Calendar />
-		</Popover.Trigger>
-		<Popover.Content
-			side="bottom"
-			align="start"
-			alignOffset={-10}
-			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
-		>
-			<RangeCalendar
-				bind:value={dateRangeFilter}
-				onValueChange={handleDateRangeChange}
-				numberOfMonths={2}
-			/>
-		</Popover.Content>
-	</Popover.Root>
+<div
+	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
+>
+	<div class="tooltip" data-tip="Selecciona rango de fechas">
+		<Popover.Root>
+			<Popover.Trigger class="btn btn-square">
+				<Calendar />
+			</Popover.Trigger>
+			<Popover.Content
+				side="bottom"
+				align="start"
+				alignOffset={-10}
+				class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
+			>
+				<RangeCalendar
+					bind:value={dateRangeFilter}
+					onValueChange={handleDateRangeChange}
+					numberOfMonths={2}
+				/>
+			</Popover.Content>
+		</Popover.Root>
+	</div>
 
 	<label class="label">
 		<input type="checkbox" class="toggle bg-base-200" />
@@ -118,9 +122,18 @@
 
 	<ComboBox items={fruits} placeholder="Search a fruit" name="favoriteFruit" icon={OrangeSlice} />
 
-	<button class="btn ml-auto btn-square">
-		<FilterAlt />
-	</button>
+	<div class="ml-auto flex items-center gap-2">
+		<div class="tooltip" data-tip="Filtros avanzados">
+			<button class="btn btn-square">
+				<FilterAlt />
+			</button>
+		</div>
+		<div class="tooltip" data-tip="Limpiar filtros">
+			<button class="btn btn-square btn-soft btn-error">
+				<Cancel />
+			</button>
+		</div>
+	</div>
 </div>
 
 {#if items.length}
