@@ -15,7 +15,7 @@
 	import { Popover, type DateRange } from 'bits-ui';
 
 	// Icons
-	import { Calendar, FilterAlt, OrangeSlice, Cancel } from 'svelte-iconoir';
+	import { Calendar, FilterAlt, OrangeSlice, Cancel, Check } from 'svelte-iconoir';
 
 	const fruits = [
 		{ value: 'mango', label: 'Mango' },
@@ -179,22 +179,32 @@
 							{item.id}
 						</td>
 						{#each columns as col}
-							<td>
-								{#if col.key === 'title'}
+							{#if col.key === 'title'}
+								<td>
 									<a href={`/activities/${item.slug}`}>
 										{item[col.key]}
 									</a>
-								{:else if col.key === 'rating'}
+								</td>
+							{:else if col.key === 'rating'}
+								<td>
 									<div class="flex items-center gap-2">
 										<StarRating value={item.rating} />
 										{#if item.rating !== null}
-											<span class="text-sm">{item.rating.toFixed(1)}</span>
+											<span class="text-xs">{item.rating.toFixed(1)}</span>
 										{/if}
 									</div>
-								{:else}
+								</td>
+							{:else if col.key === 'isFreeTour'}
+								<td>
+									{#if item.isFreeTour === 1}
+										<Check class="mx-auto" />
+									{/if}
+								</td>
+							{:else}
+								<td>
 									{item[col.key]}
-								{/if}
-							</td>
+								</td>
+							{/if}
 						{/each}
 						<td
 							><div class="dropdown dropdown-end dropdown-bottom">

@@ -1,4 +1,20 @@
 <script lang="ts">
+	/**
+	 * StarRating Component
+	 *
+	 * Componente de valoración con estrellas que redondea automáticamente a medias estrellas.
+	 *
+	 * @example
+	 * Uso básico:
+	 * <StarRating value={4.2} />
+	 *
+	 * @example
+	 * Con tamaño personalizado:
+	 * <StarRating value={3.7} size="md" />
+	 *
+	 * ... etc
+	 */
+
 	interface Props {
 		value: number | null;
 		size?: 'xs' | 'sm' | 'md' | 'lg';
@@ -9,8 +25,8 @@
 	let {
 		value,
 		size = 'xs',
-		filledClass = 'bg-orange-400',
-		emptyClass = 'bg-base-300'
+		filledClass = '', // bg-orange-400
+		emptyClass = '' // bg-base-300
 	}: Props = $props();
 
 	const roundedRating = $derived(() => {
@@ -55,50 +71,23 @@
 	<div class="rating rating-half {sizeClass()}">
 		{#each stars() as star, index}
 			{#if star === 'full'}
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
+				<div
 					class="mask mask-star-2 mask-half-1 {filledClass}"
-					disabled
-					checked={index * 2 + 1 === roundedRating() * 2}
-				/>
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
+					aria-current={index * 2 + 1 === roundedRating() * 2 ? 'true' : undefined}
+				></div>
+				<div
 					class="mask mask-star-2 mask-half-2 {filledClass}"
-					disabled
-					checked={index * 2 + 2 === roundedRating() * 2}
-				/>
+					aria-current={index * 2 + 2 === roundedRating() * 2 ? 'true' : undefined}
+				></div>
 			{:else if star === 'half'}
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
-					class="mask mask-star-2 mask-half-1 {filledClass}"
-					disabled
-					checked
-				/>
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
-					class="mask mask-star-2 mask-half-2 {emptyClass}"
-					disabled
-				/>
+				<div class="mask mask-star-2 mask-half-1 {filledClass}" aria-current="true"></div>
+				<div class="mask mask-star-2 mask-half-2 {emptyClass}"></div>
 			{:else}
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
-					class="mask mask-star-2 mask-half-1 {emptyClass}"
-					disabled
-				/>
-				<input
-					type="radio"
-					name="rating-{Math.random()}"
-					class="mask mask-star-2 mask-half-2 {emptyClass}"
-					disabled
-				/>
+				<div class="mask mask-star-2 mask-half-1 {emptyClass}"></div>
+				<div class="mask mask-star-2 mask-half-2 {emptyClass}"></div>
 			{/if}
 		{/each}
 	</div>
 {:else}
-	<span class="text-sm text-base-content/50">Sin valoración</span>
+	<span class="text-sm">&mdash;</span>
 {/if}
