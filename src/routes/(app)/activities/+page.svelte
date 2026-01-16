@@ -15,7 +15,7 @@
 	import { Popover, type DateRange } from 'bits-ui';
 
 	// Icons
-	import { Calendar, FilterAlt, OrangeSlice, Cancel, Check } from 'svelte-iconoir';
+	import { Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
 
 	const fruits = [
 		{ value: 'mango', label: 'Mango' },
@@ -52,8 +52,10 @@
 		};
 	} = $props();
 
-	const { items, pagination } = data;
-	const { pageSize, total } = pagination;
+	const items = $derived(data.items);
+	const pagination = $derived(data.pagination);
+	const pageSize = $derived(pagination.pageSize);
+	const total = $derived(pagination.total);
 
 	const columns: Column<ActivityListItem>[] = [
 		{ key: 'title', title: 'Título', sortable: true },
@@ -121,7 +123,7 @@
 		<option>Raleway</option>
 	</select>
 
-	<ComboBox items={fruits} placeholder="Search a fruit" name="favoriteFruit" icon={OrangeSlice} />
+	<ComboBox items={fruits} placeholder="Filter by locations" name="filterLocation" icon={Map} />
 
 	<div class="ml-auto flex items-center gap-2">
 		<div class="tooltip" data-tip="Filtros avanzados">
