@@ -11,6 +11,7 @@
 	import Pagination from '$lib/components/Pagination.svelte';
 	import ComboBox from '$lib/components/ComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
 	import { Popover, type DateRange } from 'bits-ui';
 
 	// Icons
@@ -183,6 +184,13 @@
 									<a href={`/activities/${item.slug}`}>
 										{item[col.key]}
 									</a>
+								{:else if col.key === 'rating'}
+									<div class="flex items-center gap-2">
+										<StarRating value={item.rating} />
+										{#if item.rating !== null}
+											<span class="text-sm">{item.rating.toFixed(1)}</span>
+										{/if}
+									</div>
 								{:else}
 									{item[col.key]}
 								{/if}
