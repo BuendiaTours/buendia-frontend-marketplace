@@ -1,7 +1,9 @@
 <script lang="ts">
-	import type { ActivityListItem, Column } from '$lib/types';
+	import type { ActivityListItem, Column, Location } from '$lib/types';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
+	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
@@ -17,26 +19,22 @@
 	// Icons
 	import { Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
 
-	const fruits = [
-		{ value: 'mango', label: 'Mango' },
-		{ value: 'watermelon', label: 'Watermelon' },
-		{ value: 'apple', label: 'Apple' },
-		{ value: 'pineapple', label: 'Pineapple' },
-		{ value: 'orange', label: 'Orange' },
-		{ value: 'grape', label: 'Grape' },
-		{ value: 'strawberry', label: 'Strawberry' },
-		{ value: 'banana', label: 'Banana' },
-		{ value: 'kiwi', label: 'Kiwi' },
-		{ value: 'peach', label: 'Peach' },
-		{ value: 'cherry', label: 'Cherry' },
-		{ value: 'blueberry', label: 'Blueberry' },
-		{ value: 'raspberry', label: 'Raspberry' },
-		{ value: 'blackberry', label: 'Blackberry' },
-		{ value: 'plum', label: 'Plum' },
-		{ value: 'apricot', label: 'Apricot' },
-		{ value: 'pear', label: 'Pear' },
-		{ value: 'grapefruit', label: 'Grapefruit' }
-	];
+	let locations = $state<{ value: string; label: string }[]>([]);
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`${PUBLIC_API_BASE_URL}/activities/locations`);
+			if (response.ok) {
+				const data: Location[] = await response.json();
+				locations = data.map((loc) => ({
+					value: loc.slug,
+					label: loc.name
+				}));
+			}
+		} catch (error) {
+			console.error('Error cargando locations:', error);
+		}
+	});
 
 	let {
 		data
@@ -123,7 +121,7 @@
 		<option>Raleway</option>
 	</select>
 
-	<ComboBox items={fruits} placeholder="Filter by locations" name="filterLocation" icon={Map} />
+	<ComboBox items={locations} placeholder="Filter by locations" name="filterLocation" icon={Map} />
 
 	<div class="ml-auto flex items-center gap-2">
 		<div class="tooltip" data-tip="Filtros avanzados">

@@ -47,3 +47,9 @@ export type Column<T> = {
 	title?: string;
 	sortable?: boolean;
 };
+
+export type Location = {
+	id: string;
+	name: string;
+	slug: string;
+};
