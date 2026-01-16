@@ -63,7 +63,7 @@
 	];
 
 	function handlePageChange(newPage: number) {
-		goto(`/activities?page=${newPage}&pageSize=${pageSize}`);
+		goto(`/activities?page=${newPage}&pageSize=${pageSize}`, { invalidateAll: true });
 	}
 
 	let dateRangeFilter = $state<DateRange | undefined>();
@@ -138,6 +138,13 @@
 </div>
 
 {#if items.length}
+	<div class="mt-6 text-sm text-base-content/70">
+		Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
+			1) *
+			pagination.pageSize +
+			1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+	</div>
+
 	<div class="mt-6 rounded-box border border-base-content/9 bg-base-100">
 		<table class="table table-zebra table-sm">
 			<thead>
