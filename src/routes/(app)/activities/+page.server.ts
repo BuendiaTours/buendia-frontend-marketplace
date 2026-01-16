@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 // Parámetros permitidos para pasar a la API desde la URL
-const FILTER_PARAMS = ['from', 'to', 'freeTours', 'city', 'fruit'] as const;
+import { ACTIVITIES_FILTER_PARAMS } from './filters';
 import { forwardSearchParams } from '$lib/utils/url';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	apiUrl.searchParams.set('page', String(page));
 	apiUrl.searchParams.set('pageSize', String(pageSize));
 
-	forwardSearchParams(url.searchParams, apiUrl.searchParams, FILTER_PARAMS);
+	forwardSearchParams(url.searchParams, apiUrl.searchParams, ACTIVITIES_FILTER_PARAMS);
 
 	try {
 		const res = await fetch(apiUrl);

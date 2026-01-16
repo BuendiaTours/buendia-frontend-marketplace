@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ActivityListItem, Column } from '$lib/types';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
@@ -54,10 +55,10 @@
 	const { pageSize, total } = pagination;
 
 	const columns: Column<ActivityListItem>[] = [
-		{ key: 'title' },
-		{ key: 'city' },
-		{ key: 'priceFrom' },
-		{ key: 'currency' }
+		{ key: 'title', title: 'Título', sortable: true },
+		{ key: 'city', title: 'Ciudad', sortable: true },
+		{ key: 'priceFrom', title: 'Precio desde', sortable: true },
+		{ key: 'currency', title: 'Moneda', sortable: false }
 	];
 
 	function handlePageChange(newPage: number) {
@@ -74,6 +75,11 @@
 			const days = newRange.end.compare(newRange.start);
 			console.log('📆 Filtro de fechas - Días seleccionados:', days);
 		}
+	}
+
+	function handleSort(columnKey: keyof ActivityListItem) {
+		console.log('🔄 Ordenar por:', columnKey);
+		// TODO: Implementar lógica de ordenamiento
 	}
 </script>
 
@@ -125,7 +131,19 @@
 					<th><input type="checkbox" class="checkbox checkbox-sm" use:checkAll /></th>
 					<th>Id</th>
 					{#each columns as col}
-						<th>{col.key}</th>
+						<th>
+							{#if col.sortable}
+								<button
+									type="button"
+									class="btn cursor-pointer btn-ghost"
+									onclick={() => handleSort(col.key)}
+								>
+									{col.title}
+								</button>
+							{:else}
+								<span>{col.title}</span>
+							{/if}
+						</th>
 					{/each}
 					<th>Actions</th>
 				</tr>

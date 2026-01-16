@@ -33,5 +33,6 @@ export type ActivityDetail = ActivityListItem & {
 
 export type Column<T> = {
 	key: keyof T;
-	label?: string;
+	title?: string;
+	sortable?: boolean;
 };
