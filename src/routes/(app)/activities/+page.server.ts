@@ -2,20 +2,9 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
-function forwardFilters(
-	source: URLSearchParams,
-	target: URLSearchParams,
-	allowed: readonly string[]
-) {
-	for (const key of allowed) {
-		const value = source.get(key);
-		if (value !== null && value !== '') {
-			target.set(key, value);
-		}
-	}
-}
-
+// Parámetros permitidos para pasar a la API desde la URL
 const FILTER_PARAMS = ['from', 'to', 'freeTours', 'city', 'fruit'] as const;
+import { forwardSearchParams } from '$lib/utils/url';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = Number(url.searchParams.get('page') ?? '1');
@@ -25,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	apiUrl.searchParams.set('page', String(page));
 	apiUrl.searchParams.set('pageSize', String(pageSize));
 
-	forwardFilters(url.searchParams, apiUrl.searchParams, FILTER_PARAMS);
+	forwardSearchParams(url.searchParams, apiUrl.searchParams, FILTER_PARAMS);
 
 	try {
 		const res = await fetch(apiUrl);
