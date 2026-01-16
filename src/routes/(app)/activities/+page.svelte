@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { ActivityListItem, Column } from '$lib/types';
-	import { checkAll } from '$lib/actions/checkAll';
 	import { goto } from '$app/navigation';
+
+	// Actions
+	import { checkAll } from '$lib/actions/checkAll';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Components
