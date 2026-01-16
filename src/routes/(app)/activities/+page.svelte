@@ -7,7 +7,8 @@
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
 	import ComboBox from '$lib/components/ComboBox.svelte';
-	import { Popover } from 'bits-ui';
+	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
+	import { Popover, type DateRange } from 'bits-ui';
 
 	// Icons
 	import { Calendar, FilterAlt, OrangeSlice } from 'svelte-iconoir';
@@ -60,6 +61,18 @@
 	function handlePageChange(newPage: number) {
 		goto(`/activities?page=${newPage}&pageSize=${pageSize}`);
 	}
+
+	let dateRangeFilter = $state<DateRange | undefined>();
+
+	function handleDateRangeChange(newRange: DateRange | undefined) {
+		console.log('📆 Filtro de fechas - Rango seleccionado:', newRange);
+		if (newRange?.start && newRange?.end) {
+			console.log('📆 Filtro de fechas - Inicio:', newRange.start.toString());
+			console.log('📆 Filtro de fechas - Fin:', newRange.end.toString());
+			const days = newRange.end.compare(newRange.start);
+			console.log('📆 Filtro de fechas - Días seleccionados:', days);
+		}
+	}
 </script>
 
 <h1 class="text-lg">Actividades</h1>
@@ -75,7 +88,11 @@
 			alignOffset={-10}
 			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
 		>
-			<p class="text-sm">Este es el contenido del popover con el calendario</p>
+			<RangeCalendar
+				bind:value={dateRangeFilter}
+				onValueChange={handleDateRangeChange}
+				numberOfMonths={2}
+			/>
 		</Popover.Content>
 	</Popover.Root>
 
