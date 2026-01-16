@@ -56,9 +56,9 @@
 
 	const columns: Column<ActivityListItem>[] = [
 		{ key: 'title', title: 'Título', sortable: true },
-		{ key: 'city', title: 'Ciudad', sortable: true },
-		{ key: 'priceFrom', title: 'Precio desde', sortable: true },
-		{ key: 'currency', title: 'Moneda', sortable: false }
+		{ key: 'location', title: 'Ubicación', sortable: true },
+		{ key: 'rating', title: 'Valoración', sortable: true },
+		{ key: 'isFreeTour', title: 'Free Tour', sortable: true }
 	];
 
 	function handlePageChange(newPage: number) {

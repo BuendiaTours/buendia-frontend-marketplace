@@ -5,7 +5,7 @@ import type { ActivityDetail } from '$lib/types';
 
 // Cargar los datos de la actividad para el formulario
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	const res = await fetch(`${PUBLIC_API_BASE_URL}/public/activities/${params.slug}`);
+	const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`);
 
 	if (res.status === 404) {
 		throw error(404, 'Actividad no encontrada');
@@ -41,7 +41,7 @@ export const actions: Actions = {
 		}
 
 		// Enviar actualización a la API
-		const res = await fetch(`${PUBLIC_API_BASE_URL}/public/activities/${params.slug}`, {
+		const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'

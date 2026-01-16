@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = Number(url.searchParams.get('page') ?? '1');
 	const pageSize = Number(url.searchParams.get('pageSize') ?? '10');
 
-	const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/public/activities`);
+	const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/activities`);
 	apiUrl.searchParams.set('page', String(page));
 	apiUrl.searchParams.set('pageSize', String(pageSize));
 

@@ -2,11 +2,22 @@
 
 export type ActivityListItem = {
 	id: string;
-	slug: string;
 	title: string;
-	city: string;
-	priceFrom: number;
-	currency: string;
+	thumb: string;
+	location: string;
+	duration: {
+		text: string;
+		minutes: number;
+	};
+	rating: number | null;
+	reviews: number | null;
+	price: {
+		currency: string;
+		from: number;
+	};
+	badges: string[];
+	isFreeTour: 0 | 1;
+	slug: string;
 };
 
 export type Pagination = {
