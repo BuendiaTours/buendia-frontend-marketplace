@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
@@ -499,7 +500,7 @@
 						{#each columns as col}
 							{#if col.key === 'title'}
 								<td>
-									<a href={`/activities/${item.slug}`}>
+									<a href={buildUrlWithFilters(`/activities/${item.slug}`, $page.url.searchParams)}>
 										{item[col.key]}
 									</a>
 								</td>
@@ -531,19 +532,39 @@
 									tabindex="-1"
 									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"
 								>
-									<li><a href={`/activities/${item.slug}`}>View</a></li>
-									<li><a href={`/activities/${item.slug}/edit`}>Edit</a></li>
 									<li>
 										<a
-											href={`/activities/${item.slug}/delete`}
+											href={buildUrlWithFilters(`/activities/${item.slug}`, $page.url.searchParams)}
+										>
+											View
+										</a>
+									</li>
+									<li>
+										<a
+											href={buildUrlWithFilters(
+												`/activities/${item.slug}/edit`,
+												$page.url.searchParams
+											)}
+										>
+											Edit
+										</a>
+									</li>
+									<li>
+										<a
+											href={buildUrlWithFilters(
+												`/activities/${item.slug}/delete`,
+												$page.url.searchParams
+											)}
 											use:confirmAction={{
 												title: 'Eliminar',
 												message: '¿Seguro que quieres eliminar este elemento?',
 												confirmText: 'Eliminar',
 												cancelText: 'Cancelar',
 												danger: true
-											}}>Delete</a
+											}}
 										>
+											Delete
+										</a>
 									</li>
 								</ul>
 							</div></td
