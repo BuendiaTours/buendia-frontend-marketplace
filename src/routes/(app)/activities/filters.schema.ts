@@ -1,4 +1,30 @@
 // src/routes/(app)/activities/filters.schema.ts
+//
+// GUÍA: Cómo añadir un nuevo filtro
+// ===================================
+//
+// Para añadir un nuevo filtro a la página de actividades, sigue estos pasos:
+//
+// 1. TIPO: Añade el campo al tipo ActivitiesFilters (línea ~5)
+//    Ejemplo: petFriendly?: boolean;
+//
+// 2. SCHEMA: Añade el campo al schema usando el helper apropiado (línea ~105)
+//    - Para booleanos: petFriendly: createBooleanField('petFriendly')
+//    - Para strings: copia el patrón de 'location' o 'from'/'to'
+//
+// 3. SERVIDOR (+page.server.ts): Añade el filtro a la petición API (línea ~30)
+//    if (filters.petFriendly) {
+//      apiUrl.searchParams.set('petFriendly', '1');
+//    }
+//
+// 4. CLIENTE (+page.svelte):
+//    - Para filtros avanzados (booleanos): añade a advancedFiltersConfig (línea ~230)
+//      { key: 'petFriendly', label: 'Admite mascotas' }
+//    - Para otros filtros: crea el handler y UI correspondiente
+//
+// ¡Eso es todo! El resto se genera automáticamente con loops.
+//
+// ===================================
 
 import type { FiltersSchema } from '$lib/utils/filters';
 

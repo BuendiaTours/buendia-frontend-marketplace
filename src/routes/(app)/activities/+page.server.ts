@@ -27,27 +27,21 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	}
 
 	// Incluir filtros booleanos solo si son true
-	if (filters.isFreeTour) {
-		apiUrl.searchParams.set('isFreeTour', '1');
-	}
-	if (filters.kidsFreeTour) {
-		apiUrl.searchParams.set('kidsFreeTour', '1');
-	}
-	if (filters.breakfastIncluded) {
-		apiUrl.searchParams.set('breakfastIncluded', '1');
-	}
-	if (filters.wheelchairAccessible) {
-		apiUrl.searchParams.set('wheelchairAccessible', '1');
-	}
-	if (filters.audioGuideAvailable) {
-		apiUrl.searchParams.set('audioGuideAvailable', '1');
-	}
-	if (filters.photographyAllowed) {
-		apiUrl.searchParams.set('photographyAllowed', '1');
-	}
-	if (filters.smallGroup) {
-		apiUrl.searchParams.set('smallGroup', '1');
-	}
+	const booleanFilters = [
+		'isFreeTour',
+		'kidsFreeTour',
+		'breakfastIncluded',
+		'wheelchairAccessible',
+		'audioGuideAvailable',
+		'photographyAllowed',
+		'smallGroup'
+	] as const;
+
+	booleanFilters.forEach((filterKey) => {
+		if (filters[filterKey]) {
+			apiUrl.searchParams.set(filterKey, '1');
+		}
+	});
 
 	try {
 		const res = await fetch(apiUrl);
