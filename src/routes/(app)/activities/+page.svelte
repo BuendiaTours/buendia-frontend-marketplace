@@ -540,5 +540,5 @@
 
 	<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 {:else}
-	<p>No hay actividades.</p>
+	<p class="text-md mt-6 text-base-content/70">No hay actividades disponibles.</p>
 {/if}
