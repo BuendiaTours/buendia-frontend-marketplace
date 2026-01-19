@@ -296,6 +296,10 @@
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
 	}
+
+	function handleSort(columnKey: keyof ActivityListItem) {
+		console.log('🔄 Ordenar por:', columnKey);
+	}
 </script>
 
 <h1 class="text-lg">Actividades</h1>
