@@ -1,9 +1,13 @@
 <script lang="ts">
 	import type { ActivityListItem, Column, Location } from '$lib/types';
+	import type { ActivitiesFilters } from '$lib/features/activities/filters.schema';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
+	import { patchFilters } from '$lib/utils/filters';
+	import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
+	import { CalendarDate } from '@internationalized/date';
 
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
@@ -47,13 +51,26 @@
 				total: number;
 				totalPages: number;
 			};
+			filters: ActivitiesFilters;
 		};
 	} = $props();
 
 	const items = $derived(data.items);
 	const pagination = $derived(data.pagination);
+	const filters = $derived(data.filters);
 	const pageSize = $derived(pagination.pageSize);
 	const total = $derived(pagination.total);
+
+	// Función helper para aplicar cambios de filtros
+	function applyFilterPatch(patch: Partial<ActivitiesFilters>) {
+		const currentParams = $page.url.searchParams;
+		const newParams = patchFilters(activitiesFiltersSchema, currentParams, patch);
+		goto(`?${newParams.toString()}`, {
+			replaceState: true,
+			noScroll: true,
+			keepFocus: true
+		});
+	}
 
 	const columns: Column<ActivityListItem>[] = [
 		{ key: 'title', title: 'Título', sortable: true },
@@ -63,19 +80,90 @@
 	];
 
 	function handlePageChange(newPage: number) {
-		goto(`/activities?page=${newPage}&pageSize=${pageSize}`, { invalidateAll: true });
+		applyFilterPatch({ page: newPage });
 	}
 
+	// Helper para parsear string YYYY-MM-DD a CalendarDate
+	function parseCalendarDate(dateStr: string): CalendarDate {
+		const [year, month, day] = dateStr.split('-').map(Number);
+		return new CalendarDate(year, month, day);
+	}
+
+	// Helper para formatear DateValue a YYYY-MM-DD
+	function formatDateValue(date: { year: number; month: number; day: number }): string {
+		const year = date.year;
+		const month = String(date.month).padStart(2, '0');
+		const day = String(date.day).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
+	// Estado local para el rango de fechas
 	let dateRangeFilter = $state<DateRange | undefined>();
 
-	function handleDateRangeChange(newRange: DateRange | undefined) {
-		console.log('📆 Filtro de fechas - Rango seleccionado:', newRange);
-		if (newRange?.start && newRange?.end) {
-			console.log('📆 Filtro de fechas - Inicio:', newRange.start.toString());
-			console.log('📆 Filtro de fechas - Fin:', newRange.end.toString());
-			const days = newRange.end.compare(newRange.start);
-			console.log('📆 Filtro de fechas - Días seleccionados:', days);
+	// Sincronizar dateRangeFilter con filters de la URL
+	$effect(() => {
+		if (filters.from && filters.to) {
+			dateRangeFilter = {
+				start: parseCalendarDate(filters.from),
+				end: parseCalendarDate(filters.to)
+			};
+		} else {
+			dateRangeFilter = undefined;
 		}
+	});
+
+	function handleDateRangeChange(newRange: DateRange | undefined) {
+		dateRangeFilter = newRange;
+
+		if (newRange?.start && newRange?.end) {
+			// Aplicar filtro con ambas fechas
+			applyFilterPatch({
+				from: formatDateValue(newRange.start),
+				to: formatDateValue(newRange.end)
+			});
+		} else {
+			// Limpiar filtro de fechas (undefined elimina el parámetro)
+			applyFilterPatch({
+				from: undefined,
+				to: undefined
+			});
+		}
+	}
+
+	// Estado reactivo para freeTour toggle
+	let freeTourChecked = $state(filters.freeTour ?? false);
+
+	// Sincronizar freeTourChecked con filters
+	$effect(() => {
+		freeTourChecked = filters.freeTour ?? false;
+	});
+
+	function handleFreeTourChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const checked = target.checked;
+		freeTourChecked = checked;
+
+		applyFilterPatch({
+			freeTour: checked ? true : undefined
+		});
+	}
+
+	// Estado reactivo para location
+	let selectedLocation = $state(filters.location);
+
+	// Sincronizar selectedLocation con filters
+	$effect(() => {
+		selectedLocation = filters.location;
+	});
+
+	function handleLocationChange(value: string | string[] | undefined) {
+		// Para type='single', value será string | undefined
+		const locationValue = Array.isArray(value) ? value[0] : value;
+		selectedLocation = locationValue;
+
+		applyFilterPatch({
+			location: locationValue || undefined
+		});
 	}
 
 	function handleSort(columnKey: keyof ActivityListItem) {
@@ -110,9 +198,24 @@
 	</div>
 
 	<label class="label">
-		<input type="checkbox" class="toggle bg-base-200" />
+		<input
+			type="checkbox"
+			class="toggle bg-base-200"
+			bind:checked={freeTourChecked}
+			onchange={handleFreeTourChange}
+		/>
 		<span class="text-sm">Free tours</span>
 	</label>
+
+	<ComboBox
+		items={locations}
+		placeholder="Filter by locations"
+		name="filterLocation"
+		icon={Map}
+		type="single"
+		bind:value={selectedLocation}
+		onValueChange={handleLocationChange}
+	/>
 
 	<select class="select">
 		<option disabled selected>Pick a font</option>
@@ -120,8 +223,6 @@
 		<option>Poppins</option>
 		<option>Raleway</option>
 	</select>
-
-	<ComboBox items={locations} placeholder="Filter by locations" name="filterLocation" icon={Map} />
 
 	<div class="ml-auto flex items-center gap-2">
 		<div class="tooltip" data-tip="Filtros avanzados">

@@ -65,6 +65,354 @@ Estos archivos se importan en `src/routes/+layout.svelte` para estar disponibles
 
 https://github.com/metonym/svelte-iconoir
 
+## Sistema de Filtros URL-Driven
+
+Este proyecto implementa un sistema de filtros donde **la URL es la fuente de verdad**. Los filtros, paginación y ordenación viven en los query params de la URL, lo que garantiza:
+
+- ✅ **SSR compatible** - Los filtros se parsean en el servidor
+- ✅ **Back/Forward del navegador** - Funcionan correctamente
+- ✅ **URLs compartibles** - Cada estado es una URL única
+- ✅ **Motor genérico reutilizable** - Un schema por vista, lógica compartida
+
+### Arquitectura del sistema
+
+```
+URL (?from=...&to=...&location=...)
+  ↓
++page.server.ts (parseFilters)
+  ↓
+API externa
+  ↓
++page.svelte (UI refleja URL)
+  ↓
+Usuario cambia filtro
+  ↓
+patchFilters() → goto()
+  ↓
+URL actualizada → ciclo se repite
+```
+
+### Cómo añadir filtros en una nueva vista
+
+#### Paso 1: Crear el schema de filtros
+
+Crea el archivo del schema en `src/lib/features/[nombre-vista]/filters.schema.ts`:
+
+```typescript
+// src/lib/features/destinations/filters.schema.ts
+import type { FiltersSchema } from '$lib/utils/filters';
+
+export type DestinationsFilters = {
+  page: number;
+  pageSize: number;
+  country?: string;
+  minPrice?: number;
+  maxPrice?: number;
+};
+
+export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
+  fields: {
+    page: {
+      parse: (raw) => {
+        const num = parseInt(raw || '1', 10);
+        return num > 0 ? num : 1;
+      },
+      serialize: (value, out) => {
+        out.set('page', String(value ?? 1));
+      },
+      resetPageOnChange: false
+    },
+    pageSize: {
+      parse: (raw) => {
+        const num = parseInt(raw || '10', 10);
+        return num > 0 ? num : 10;
+      },
+      serialize: (value, out) => {
+        out.set('pageSize', String(value ?? 10));
+      },
+      resetPageOnChange: false
+    },
+    country: {
+      parse: (raw) => raw || undefined,
+      serialize: (value, out) => {
+        if (value) {
+          out.set('country', value);
+        } else {
+          out.delete('country');
+        }
+      },
+      resetPageOnChange: true // Cambiar país resetea a página 1
+    },
+    minPrice: {
+      parse: (raw) => {
+        const num = parseFloat(raw || '');
+        return !isNaN(num) && num >= 0 ? num : undefined;
+      },
+      serialize: (value, out) => {
+        if (value !== undefined) {
+          out.set('minPrice', String(value));
+        } else {
+          out.delete('minPrice');
+        }
+      },
+      resetPageOnChange: true
+    },
+    maxPrice: {
+      parse: (raw) => {
+        const num = parseFloat(raw || '');
+        return !isNaN(num) && num >= 0 ? num : undefined;
+      },
+      serialize: (value, out) => {
+        if (value !== undefined) {
+          out.set('maxPrice', String(value));
+        } else {
+          out.delete('maxPrice');
+        }
+      },
+      resetPageOnChange: true
+    }
+  }
+};
+```
+
+**Conceptos clave del schema:**
+
+- **`parse`**: Convierte string de URL → tipo TypeScript
+- **`serialize`**: Convierte tipo TypeScript → string de URL
+- **`resetPageOnChange: true`**: Cuando este filtro cambia, resetea `page=1`
+- **`resetPageOnChange: false`**: Para `page` y `pageSize` (no se resetean a sí mismos)
+
+#### Paso 2: Conectar el servidor (+page.server.ts)
+
+```typescript
+// src/routes/(app)/destinations/+page.server.ts
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+import { PUBLIC_API_BASE_URL } from '$env/static/public';
+import { parseFilters } from '$lib/utils/filters';
+import { destinationsFiltersSchema } from '$lib/features/destinations/filters.schema';
+
+export const load: PageServerLoad = async ({ fetch, url }) => {
+  // 1. Parsear filtros desde URL
+  const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
+
+  // 2. Construir URL a API externa
+  const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/destinations`);
+
+  // Siempre incluir page y pageSize
+  apiUrl.searchParams.set('page', String(filters.page));
+  apiUrl.searchParams.set('pageSize', String(filters.pageSize));
+
+  // Incluir filtros opcionales solo si existen
+  if (filters.country) {
+    apiUrl.searchParams.set('country', filters.country);
+  }
+
+  if (filters.minPrice !== undefined) {
+    apiUrl.searchParams.set('minPrice', String(filters.minPrice));
+  }
+
+  if (filters.maxPrice !== undefined) {
+    apiUrl.searchParams.set('maxPrice', String(filters.maxPrice));
+  }
+
+  // 3. Fetch desde API
+  try {
+    const res = await fetch(apiUrl);
+    if (!res.ok) throw error(res.status, 'Error al cargar destinos');
+
+    const data = await res.json();
+
+    // 4. Devolver datos + filters para inicializar UI
+    return {
+      items: data.items,
+      pagination: data.pagination,
+      filters // ← Importante: devolver filters parseados
+    };
+  } catch (err) {
+    throw error(503, 'No se pudo conectar con el servidor');
+  }
+};
+```
+
+#### Paso 3: Conectar el cliente (+page.svelte)
+
+```svelte
+<script lang="ts">
+	import type { DestinationsFilters } from '$lib/features/destinations/filters.schema';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { patchFilters } from '$lib/utils/filters';
+	import { destinationsFiltersSchema } from '$lib/features/destinations/filters.schema';
+
+	// 1. Recibir data del servidor (incluyendo filters)
+	let { data } = $props();
+
+	const items = $derived(data.items);
+	const pagination = $derived(data.pagination);
+	const filters = $derived(data.filters);
+
+	// 2. Función helper para aplicar cambios de filtros
+	function applyFilterPatch(patch: Partial<DestinationsFilters>) {
+		const currentParams = $page.url.searchParams;
+		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
+		goto(`?${newParams.toString()}`, {
+			replaceState: true, // No llenar historial
+			noScroll: true, // Mantener scroll
+			keepFocus: true // Mantener foco
+		});
+	}
+
+	// 3. Estados locales sincronizados con URL
+	let selectedCountry = $state(filters.country);
+	let minPriceValue = $state(filters.minPrice);
+	let maxPriceValue = $state(filters.maxPrice);
+
+	// Sincronizar con cambios de URL (back/forward)
+	$effect(() => {
+		selectedCountry = filters.country;
+		minPriceValue = filters.minPrice;
+		maxPriceValue = filters.maxPrice;
+	});
+
+	// 4. Handlers para cada filtro
+	function handleCountryChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		const value = target.value || undefined;
+		selectedCountry = value;
+
+		applyFilterPatch({ country: value });
+	}
+
+	function handlePriceChange() {
+		applyFilterPatch({
+			minPrice: minPriceValue,
+			maxPrice: maxPriceValue
+		});
+	}
+
+	// 5. Handler de paginación (conserva filtros automáticamente)
+	function handlePageChange(newPage: number) {
+		applyFilterPatch({ page: newPage });
+	}
+</script>
+
+<!-- UI -->
+<div class="filters">
+	<select bind:value={selectedCountry} onchange={handleCountryChange}>
+		<option value="">Todos los países</option>
+		<option value="spain">España</option>
+		<option value="france">Francia</option>
+	</select>
+
+	<input
+		type="number"
+		bind:value={minPriceValue}
+		onchange={handlePriceChange}
+		placeholder="Precio mín."
+	/>
+
+	<input
+		type="number"
+		bind:value={maxPriceValue}
+		onchange={handlePriceChange}
+		placeholder="Precio máx."
+	/>
+</div>
+
+<!-- Lista de items -->
+{#each items as item}
+	<div>{item.name}</div>
+{/each}
+
+<!-- Paginación -->
+<Pagination
+	count={pagination.total}
+	perPage={pagination.pageSize}
+	onPageChange={handlePageChange}
+/>
+```
+
+#### Paso 4: Patrones comunes
+
+**Filtro de fecha (YYYY-MM-DD):**
+
+```typescript
+from: {
+  parse: (raw) => {
+    if (!raw) return undefined;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return undefined;
+    return raw;
+  },
+  serialize: (value, out) => {
+    if (value) out.set('from', value);
+    else out.delete('from');
+  },
+  resetPageOnChange: true
+}
+```
+
+**Filtro booleano (presence-based):**
+
+```typescript
+featured: {
+  parse: (raw) => raw !== null ? true : undefined,
+  serialize: (value, out) => {
+    if (value === true) out.set('featured', '1');
+    else out.delete('featured');
+  },
+  resetPageOnChange: true
+}
+```
+
+**Filtro de array (múltiples valores):**
+
+```typescript
+tags: {
+  parse: (raw) => {
+    if (!raw) return undefined;
+    return raw.split(',').filter(Boolean);
+  },
+  serialize: (value, out) => {
+    if (value && value.length > 0) {
+      out.set('tags', value.join(','));
+    } else {
+      out.delete('tags');
+    }
+  },
+  resetPageOnChange: true
+}
+```
+
+### Checklist de validación
+
+Después de implementar filtros en una nueva vista, verifica:
+
+- [ ] **URL sin filtros** (`/vista?page=1&pageSize=10`) carga normal
+- [ ] **URL con filtros** carga ya filtrado (SSR)
+- [ ] **UI refleja filtros** de la URL al cargar
+- [ ] **Cambiar filtro** actualiza la URL
+- [ ] **Cambiar filtro** resetea `page=1` (si `resetPageOnChange: true`)
+- [ ] **Cambiar página** conserva filtros en URL
+- [ ] **Back/Forward** restaura filtros y UI correctamente
+- [ ] **URLs compartibles** funcionan al copiar/pegar
+
+### Ventajas del enfoque
+
+1. **No hay estado duplicado** - La URL es la única fuente de verdad
+2. **SSR funciona** - Los filtros se parsean en el servidor
+3. **Escalable** - Añadir nuevas vistas es copiar el patrón
+4. **Type-safe** - TypeScript en todo el flujo
+5. **Testeable** - Parsers y serializers son funciones puras
+
+### Ejemplo real: Activities
+
+Ver implementación completa en:
+
+- Schema: `src/lib/features/activities/filters.schema.ts`
+- Servidor: `src/routes/(app)/activities/+page.server.ts`
+- Cliente: `src/routes/(app)/activities/+page.svelte`
+
 # --- OLD README ---
 
 # sv

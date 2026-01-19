@@ -1,20 +1,35 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
-
-// Parámetros permitidos para pasar a la API desde la URL
-import { ACTIVITIES_FILTER_PARAMS } from './filters';
-import { forwardSearchParams } from '$lib/utils/url';
+import { parseFilters } from '$lib/utils/filters';
+import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-	const page = Number(url.searchParams.get('page') ?? '1');
-	const pageSize = Number(url.searchParams.get('pageSize') ?? '10');
+	// Parsear filtros desde URL usando el schema
+	const filters = parseFilters(activitiesFiltersSchema, url.searchParams);
 
+	// Construir URL a API externa
 	const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/activities`);
-	apiUrl.searchParams.set('page', String(page));
-	apiUrl.searchParams.set('pageSize', String(pageSize));
 
-	forwardSearchParams(url.searchParams, apiUrl.searchParams, ACTIVITIES_FILTER_PARAMS);
+	// Siempre incluir page y pageSize
+	apiUrl.searchParams.set('page', String(filters.page));
+	apiUrl.searchParams.set('pageSize', String(filters.pageSize));
+
+	// Incluir from y to solo si ambos existen
+	if (filters.from && filters.to) {
+		apiUrl.searchParams.set('from', filters.from);
+		apiUrl.searchParams.set('to', filters.to);
+	}
+
+	// Incluir location si existe
+	if (filters.location) {
+		apiUrl.searchParams.set('location', filters.location);
+	}
+
+	// Incluir freeTour solo si es true (presence)
+	if (filters.freeTour) {
+		apiUrl.searchParams.set('freeTour', '1');
+	}
 
 	try {
 		const res = await fetch(apiUrl);
@@ -34,7 +49,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 		return {
 			items: data.items,
-			pagination: data.pagination
+			pagination: data.pagination,
+			filters
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

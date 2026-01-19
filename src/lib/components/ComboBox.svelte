@@ -19,14 +19,27 @@ Ejemplo de uso:
 		label: string;
 	}
 
-	interface Props {
+	type SingleProps = {
+		type: 'single';
+		value?: string;
+		onValueChange?: (value: string | undefined) => void;
+	};
+
+	type MultipleProps = {
+		type?: 'multiple';
+		value?: string[];
+		onValueChange?: (value: string[] | undefined) => void;
+	};
+
+	type BaseProps = {
 		items?: Item[];
 		placeholder?: string;
 		name?: string;
 		icon?: ComponentType;
 		width?: string;
-		type?: 'single' | 'multiple';
-	}
+	};
+
+	type Props = BaseProps & (SingleProps | MultipleProps);
 
 	let {
 		items = [],
@@ -34,7 +47,9 @@ Ejemplo de uso:
 		name,
 		icon: Icon,
 		width = '296px',
-		type = 'multiple'
+		type = 'multiple' as any,
+		value = $bindable(),
+		onValueChange
 	}: Props = $props();
 
 	let searchValue = $state('');
@@ -47,8 +62,10 @@ Ejemplo de uso:
 </script>
 
 <Combobox.Root
-	{type}
+	type={type as any}
 	{name}
+	value={value as any}
+	onValueChange={onValueChange as any}
 	onOpenChangeComplete={(o) => {
 		if (!o) searchValue = '';
 	}}
