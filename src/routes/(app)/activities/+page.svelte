@@ -1,10 +1,22 @@
 <script lang="ts">
+	// ============================================================================
+	// IMPORTS
+	// ============================================================================
+
+	// Types
 	import type { ActivityListItem, Column, Location } from '$lib/types';
 	import type { ActivitiesFilters } from './filters.schema';
+	import type { DateRange } from 'bits-ui';
+
+	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+
+	// Environment
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
+
+	// Utils
 	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
@@ -19,27 +31,14 @@
 	import ComboBox from '$lib/components/ComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
-	import { Popover, Dialog, type DateRange } from 'bits-ui';
+	import { Popover, Dialog } from 'bits-ui';
 
 	// Icons
 	import { Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
 
-	let locations = $state<{ value: string; label: string }[]>([]);
-
-	onMount(async () => {
-		try {
-			const response = await fetch(`${PUBLIC_API_BASE_URL}/activities/locations`);
-			if (response.ok) {
-				const data: Location[] = await response.json();
-				locations = data.map((loc) => ({
-					value: loc.slug,
-					label: loc.name
-				}));
-			}
-		} catch (error) {
-			console.error('Error cargando locations:', error);
-		}
-	});
+	// ============================================================================
+	// PROPS & DATA
+	// ============================================================================
 
 	let {
 		data
@@ -62,7 +61,31 @@
 	const pageSize = $derived(pagination.pageSize);
 	const total = $derived(pagination.total);
 
-	// Función helper para aplicar cambios de filtros
+	// ============================================================================
+	// LOCATIONS (cargadas desde API)
+	// ============================================================================
+
+	let locations = $state<{ value: string; label: string }[]>([]);
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`${PUBLIC_API_BASE_URL}/activities/locations`);
+			if (response.ok) {
+				const data: Location[] = await response.json();
+				locations = data.map((loc) => ({
+					value: loc.slug,
+					label: loc.name
+				}));
+			}
+		} catch (error) {
+			console.error('Error cargando locations:', error);
+		}
+	});
+
+	// ============================================================================
+	// HELPERS GENERALES
+	// ============================================================================
+
 	function applyFilterPatch(patch: Partial<ActivitiesFilters>) {
 		const currentParams = $page.url.searchParams;
 		const newParams = patchFilters(activitiesFiltersSchema, currentParams, patch);
@@ -73,35 +96,18 @@
 		});
 	}
 
-	const columns: Column<ActivityListItem>[] = [
-		{ key: 'title', title: 'Título', sortable: true },
-		{ key: 'location', title: 'Ubicación', sortable: true },
-		{ key: 'rating', title: 'Valoración', sortable: true },
-		{ key: 'isFreeTour', title: 'Free Tour', sortable: true }
-	];
+	const hasFilters = $derived(hasActiveFilters(filters));
 
-	function handlePageChange(newPage: number) {
-		applyFilterPatch({ page: newPage });
+	function handleClearFilters() {
+		clearFilters($page.url.pathname, goto);
 	}
 
-	// Helper para parsear string YYYY-MM-DD a CalendarDate
-	function parseCalendarDate(dateStr: string): CalendarDate {
-		const [year, month, day] = dateStr.split('-').map(Number);
-		return new CalendarDate(year, month, day);
-	}
+	// ============================================================================
+	// FILTRO: RANGO DE FECHAS
+	// ============================================================================
 
-	// Helper para formatear DateValue a YYYY-MM-DD
-	function formatDateValue(date: { year: number; month: number; day: number }): string {
-		const year = date.year;
-		const month = String(date.month).padStart(2, '0');
-		const day = String(date.day).padStart(2, '0');
-		return `${year}-${month}-${day}`;
-	}
-
-	// Estado local para el rango de fechas
 	let dateRangeFilter = $state<DateRange | undefined>();
 
-	// Sincronizar dateRangeFilter con filters de la URL
 	$effect(() => {
 		if (filters.from && filters.to) {
 			dateRangeFilter = {
@@ -113,17 +119,37 @@
 		}
 	});
 
+	const hasDateRange = $derived(
+		dateRangeFilter?.start !== undefined && dateRangeFilter?.end !== undefined
+	);
+
+	const dateRangeTooltip = $derived(
+		!hasDateRange || !dateRangeFilter?.start || !dateRangeFilter?.end
+			? 'Selecciona rango de fechas'
+			: `${dateRangeFilter.start.year}/${String(dateRangeFilter.start.month).padStart(2, '0')}/${String(dateRangeFilter.start.day).padStart(2, '0')} - ${dateRangeFilter.end.year}/${String(dateRangeFilter.end.month).padStart(2, '0')}/${String(dateRangeFilter.end.day).padStart(2, '0')}`
+	);
+
+	function parseCalendarDate(dateStr: string): CalendarDate {
+		const [year, month, day] = dateStr.split('-').map(Number);
+		return new CalendarDate(year, month, day);
+	}
+
+	function formatDateValue(date: { year: number; month: number; day: number }): string {
+		const year = date.year;
+		const month = String(date.month).padStart(2, '0');
+		const day = String(date.day).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
 	function handleDateRangeChange(newRange: DateRange | undefined) {
 		dateRangeFilter = newRange;
 
 		if (newRange?.start && newRange?.end) {
-			// Aplicar filtro con ambas fechas
 			applyFilterPatch({
 				from: formatDateValue(newRange.start),
 				to: formatDateValue(newRange.end)
 			});
 		} else {
-			// Limpiar filtro de fechas (null elimina el parámetro de la URL)
 			applyFilterPatch({
 				from: null as any,
 				to: null as any
@@ -131,22 +157,10 @@
 		}
 	}
 
-	const hasDateRange = $derived(
-		dateRangeFilter?.start !== undefined && dateRangeFilter?.end !== undefined
-	);
-
-	// Formatear rango de fechas para mostrar en el tooltip
-	const dateRangeTooltip = $derived(
-		!hasDateRange || !dateRangeFilter?.start || !dateRangeFilter?.end
-			? 'Selecciona rango de fechas'
-			: `${dateRangeFilter.start.year}/${String(dateRangeFilter.start.month).padStart(2, '0')}/${String(dateRangeFilter.start.day).padStart(2, '0')} - ${dateRangeFilter.end.year}/${String(dateRangeFilter.end.month).padStart(2, '0')}/${String(dateRangeFilter.end.day).padStart(2, '0')}`
-	);
-
 	function handleClearDateRange() {
 		handleDateRangeChange(undefined);
 	}
 
-	// Función para establecer presets de rangos de fechas
 	function setDateRangePreset(preset: 'today' | 'thisWeek' | 'next15Days') {
 		const today = new Date();
 		let start: Date;
@@ -159,7 +173,7 @@
 				break;
 			case 'thisWeek':
 				const dayOfWeek = today.getDay();
-				const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Lunes como inicio
+				const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 				start = new Date(today);
 				start.setDate(today.getDate() + diff);
 				end = new Date(start);
@@ -178,34 +192,36 @@
 		});
 	}
 
-	// Estado reactivo para isFreeTour toggle
+	// ============================================================================
+	// FILTRO: FREE TOUR
+	// ============================================================================
+
 	let freeTourChecked = $state(filters.isFreeTour ?? false);
 
-	// Sincronizar freeTourChecked con filters
 	$effect(() => {
 		freeTourChecked = filters.isFreeTour ?? false;
 	});
 
 	function handleFreeTourChange(event: Event) {
 		const target = event.target as HTMLInputElement;
-		const checked = target.checked;
-		freeTourChecked = checked;
+		freeTourChecked = target.checked;
 
 		applyFilterPatch({
-			isFreeTour: (checked ? true : null) as any
+			isFreeTour: (freeTourChecked ? true : null) as any
 		});
 	}
 
-	// Estado reactivo para location
+	// ============================================================================
+	// FILTRO: LOCATION
+	// ============================================================================
+
 	let selectedLocation = $state(filters.location);
 
-	// Sincronizar selectedLocation con filters
 	$effect(() => {
 		selectedLocation = filters.location;
 	});
 
 	function handleLocationChange(value: string | string[] | undefined) {
-		// Para type='single', value será string | undefined
 		const locationValue = Array.isArray(value) ? value[0] : value;
 		selectedLocation = locationValue;
 
@@ -218,23 +234,12 @@
 		handleLocationChange(undefined);
 	}
 
-	function handleSort(columnKey: keyof ActivityListItem) {
-		console.log('🔄 Ordenar por:', columnKey);
-		// TODO: Implementar lógica de ordenamiento
-	}
+	// ============================================================================
+	// FILTROS AVANZADOS
+	// ============================================================================
 
-	// Detectar si hay filtros activos (más allá de page y pageSize)
-	const hasFilters = $derived(hasActiveFilters(filters));
-
-	// Limpiar todos los filtros y volver a valores por defecto
-	function handleClearFilters() {
-		clearFilters($page.url.pathname, goto);
-	}
-
-	// Estado del diálogo de filtros avanzados
 	let advancedFiltersOpen = $state(false);
 
-	// Definición de filtros avanzados disponibles (única fuente de verdad)
 	const advancedFiltersConfig = [
 		{ key: 'kidsFreeTour', label: 'Niños gratis' },
 		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
@@ -244,12 +249,10 @@
 		{ key: 'smallGroup', label: 'Grupo pequeño (máx. 15 personas)' }
 	] as const;
 
-	// Estado de los filtros avanzados - inicializado dinámicamente
 	let advancedFilters = $state<Record<string, boolean>>(
 		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, false]))
 	);
 
-	// Sincronizar advancedFilters con los valores de la URL - dinámicamente
 	$effect(() => {
 		advancedFiltersConfig.forEach((filter) => {
 			advancedFilters[filter.key] = (filters as any)[filter.key] ?? false;
@@ -263,7 +266,6 @@
 	);
 
 	function handleAdvancedFiltersApply() {
-		// Aplicar todos los filtros avanzados a la URL - dinámicamente
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = advancedFilters[filter.key] || (null as any);
@@ -273,12 +275,26 @@
 	}
 
 	function handleClearAdvancedFilters() {
-		// Limpiar todos los filtros avanzados - dinámicamente
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = null as any;
 		});
 		applyFilterPatch(patch);
+	}
+
+	// ============================================================================
+	// TABLA Y PAGINACIÓN
+	// ============================================================================
+
+	const columns: Column<ActivityListItem>[] = [
+		{ key: 'title', title: 'Título', sortable: true },
+		{ key: 'location', title: 'Ubicación', sortable: true },
+		{ key: 'rating', title: 'Valoración', sortable: true },
+		{ key: 'isFreeTour', title: 'Free Tour', sortable: true }
+	];
+
+	function handlePageChange(newPage: number) {
+		applyFilterPatch({ page: newPage });
 	}
 </script>
 
