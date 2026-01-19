@@ -34,7 +34,16 @@
 	import { Popover, Dialog } from 'bits-ui';
 
 	// Icons
-	import { ArrowSeparateVertical, Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
+	import {
+		ArrowSeparateVertical,
+		Calendar,
+		Cancel,
+		Check,
+		FilterAlt,
+		Map,
+		NavArrowDown,
+		NavArrowUp
+	} from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -52,12 +61,14 @@
 				totalPages: number;
 			};
 			filters: ActivitiesFilters;
+			sort: { field: string; order: 'asc' | 'desc' } | null;
 		};
 	} = $props();
 
 	const items = $derived(data.items);
 	const pagination = $derived(data.pagination);
 	const filters = $derived(data.filters);
+	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination.pageSize);
 	const total = $derived(pagination.total);
 
@@ -298,7 +309,26 @@
 	}
 
 	function handleSort(columnKey: keyof ActivityListItem) {
-		console.log('🔄 Ordenar por:', columnKey);
+		const currentSort = filters.sort;
+		const currentOrder = filters.order || 'asc';
+
+		if (currentSort === columnKey) {
+			applyFilterPatch({
+				order: currentOrder === 'asc' ? 'desc' : 'asc'
+			});
+		} else {
+			applyFilterPatch({
+				sort: columnKey as 'title' | 'location' | 'rating' | 'isFreeTour',
+				order: 'asc'
+			});
+		}
+	}
+
+	function handleResetSort() {
+		applyFilterPatch({
+			sort: null as any,
+			order: null as any
+		});
 	}
 </script>
 
@@ -488,19 +518,33 @@
 							{#if col.sortable}
 								<button
 									type="button"
-									class="btn cursor-pointer btn-ghost"
+									class="btn cursor-pointer pr-2 btn-ghost btn-sm"
 									onclick={() => handleSort(col.key)}
 								>
-									{col.title}
+									<span class:text-success={sort?.field === col.key}>{col.title}</span>
 
-									<ArrowSeparateVertical class="stroke-sucess" />
+									{#if sort?.field === col.key}
+										{#if sort.order === 'desc'}
+											<NavArrowDown class="text-success" />
+										{:else}
+											<NavArrowUp class="text-success" />
+										{/if}
+									{:else}
+										<ArrowSeparateVertical class="text-base-content/30" />
+									{/if}
 								</button>
 							{:else}
 								<span>{col.title}</span>
 							{/if}
 						</th>
 					{/each}
-					<th>Actions</th>
+					<th>
+						{#if sort}
+							<button class="btn btn-soft btn-sm btn-error" onclick={handleResetSort}
+								>Reset sort</button
+							>
+						{/if}
+					</th>
 				</tr>
 			</thead>
 
@@ -550,8 +594,8 @@
 							{/if}
 						{/each}
 						<td
-							><div class="dropdown dropdown-end dropdown-bottom">
-								<div tabindex="0" role="button" class="btn m-1">Actions</div>
+							><div class="dropdown dropdown-end dropdown-bottom ml-auto">
+								<div tabindex="0" role="button" class="btn m-1 btn-sm">Actions</div>
 								<ul
 									tabindex="-1"
 									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"

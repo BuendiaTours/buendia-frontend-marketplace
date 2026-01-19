@@ -26,6 +26,14 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		apiUrl.searchParams.set('location', filters.location);
 	}
 
+	// Incluir ordenamiento si existe
+	if (filters.sort) {
+		apiUrl.searchParams.set('sort', filters.sort);
+	}
+	if (filters.order) {
+		apiUrl.searchParams.set('order', filters.order);
+	}
+
 	// Incluir filtros booleanos solo si son true
 	const booleanFilters = [
 		'isFreeTour',
@@ -62,7 +70,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		return {
 			items: data.items,
 			pagination: data.pagination,
-			filters
+			filters,
+			sort: data.sort || null
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

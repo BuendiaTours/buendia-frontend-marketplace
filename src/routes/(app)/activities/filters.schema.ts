@@ -34,6 +34,9 @@ export type ActivitiesFilters = {
 	page: number;
 	pageSize: number;
 	to?: string;
+	// Ordenamiento
+	sort?: 'title' | 'location' | 'rating' | 'isFreeTour';
+	order?: 'asc' | 'desc';
 	// Booleanos, todos se inicializan igual
 	audioGuideAvailable?: boolean;
 	breakfastIncluded?: boolean;
@@ -127,6 +130,39 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 				}
 			},
 			resetPageOnChange: true
+		},
+		sort: {
+			parse: (raw) => {
+				const validSorts: readonly string[] = ['title', 'location', 'rating', 'isFreeTour'];
+				if (raw && validSorts.includes(raw)) {
+					return raw as 'title' | 'location' | 'rating' | 'isFreeTour';
+				}
+				return undefined;
+			},
+			serialize: (value, out) => {
+				if (value) {
+					out.set('sort', value);
+				} else {
+					out.delete('sort');
+				}
+			},
+			resetPageOnChange: false
+		},
+		order: {
+			parse: (raw) => {
+				if (raw === 'asc' || raw === 'desc') {
+					return raw;
+				}
+				return undefined;
+			},
+			serialize: (value, out) => {
+				if (value) {
+					out.set('order', value);
+				} else {
+					out.delete('order');
+				}
+			},
+			resetPageOnChange: false
 		},
 		// Filtros booleanos - todos usan la misma configuración
 		isFreeTour: createBooleanField('isFreeTour'),
