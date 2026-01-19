@@ -3,19 +3,37 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 
 export type ActivitiesFilters = {
-	audioGuideAvailable?: boolean;
-	breakfastIncluded?: boolean;
 	from?: string;
-	isFreeTour?: boolean;
-	kidsFreeTour?: boolean;
 	location?: string;
 	page: number;
 	pageSize: number;
+	to?: string;
+	// Booleanos, todos se inicializan igual
+	audioGuideAvailable?: boolean;
+	breakfastIncluded?: boolean;
+	isFreeTour?: boolean;
+	kidsFreeTour?: boolean;
 	photographyAllowed?: boolean;
 	smallGroup?: boolean;
-	to?: string;
 	wheelchairAccessible?: boolean;
 };
+
+// Helper para crear campos booleanos con la misma configuración
+function createBooleanField(fieldName: string) {
+	return {
+		parse: (raw: string | null) => {
+			return raw !== null ? true : undefined;
+		},
+		serialize: (value: boolean | undefined, out: URLSearchParams) => {
+			if (value === true) {
+				out.set(fieldName, '1');
+			} else {
+				out.delete(fieldName);
+			}
+		},
+		resetPageOnChange: true
+	};
+}
 
 export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 	fields: {
@@ -71,20 +89,6 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		isFreeTour: {
-			parse: (raw) => {
-				// Presence-based: si existe el param (con cualquier valor), es true
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('isFreeTour', '1');
-				} else {
-					out.delete('isFreeTour');
-				}
-			},
-			resetPageOnChange: true
-		},
 		location: {
 			parse: (raw) => {
 				return raw || undefined;
@@ -98,83 +102,13 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		kidsFreeTour: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('kidsFreeTour', '1');
-				} else {
-					out.delete('kidsFreeTour');
-				}
-			},
-			resetPageOnChange: true
-		},
-		breakfastIncluded: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('breakfastIncluded', '1');
-				} else {
-					out.delete('breakfastIncluded');
-				}
-			},
-			resetPageOnChange: true
-		},
-		wheelchairAccessible: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('wheelchairAccessible', '1');
-				} else {
-					out.delete('wheelchairAccessible');
-				}
-			},
-			resetPageOnChange: true
-		},
-		audioGuideAvailable: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('audioGuideAvailable', '1');
-				} else {
-					out.delete('audioGuideAvailable');
-				}
-			},
-			resetPageOnChange: true
-		},
-		photographyAllowed: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('photographyAllowed', '1');
-				} else {
-					out.delete('photographyAllowed');
-				}
-			},
-			resetPageOnChange: true
-		},
-		smallGroup: {
-			parse: (raw) => {
-				return raw !== null ? true : undefined;
-			},
-			serialize: (value, out) => {
-				if (value === true) {
-					out.set('smallGroup', '1');
-				} else {
-					out.delete('smallGroup');
-				}
-			},
-			resetPageOnChange: true
-		}
+		// Filtros booleanos - todos usan la misma configuración
+		isFreeTour: createBooleanField('isFreeTour'),
+		kidsFreeTour: createBooleanField('kidsFreeTour'),
+		breakfastIncluded: createBooleanField('breakfastIncluded'),
+		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
+		audioGuideAvailable: createBooleanField('audioGuideAvailable'),
+		photographyAllowed: createBooleanField('photographyAllowed'),
+		smallGroup: createBooleanField('smallGroup')
 	}
 };
