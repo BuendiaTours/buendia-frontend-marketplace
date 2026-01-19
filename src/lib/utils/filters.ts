@@ -113,3 +113,35 @@ export function patchFilters<TFilters extends Record<string, any>>(
 
 	return out;
 }
+
+/**
+ * Limpia todos los filtros navegando a la URL base (sin query params).
+ * Los valores por defecto del schema se aplicarán automáticamente.
+ *
+ * @param pathname - La ruta actual (ej: '/activities')
+ * @param gotoFn - La función goto de SvelteKit
+ *
+ * @example
+ * ```typescript
+ * import { clearFilters } from '$lib/utils/filters';
+ * import { goto } from '$app/navigation';
+ * import { page } from '$app/stores';
+ *
+ * function handleClearFilters() {
+ *   clearFilters($page.url.pathname, goto);
+ * }
+ * ```
+ */
+export function clearFilters(
+	pathname: string,
+	gotoFn: (
+		url: string,
+		opts?: { replaceState?: boolean; noScroll?: boolean; keepFocus?: boolean }
+	) => Promise<void>
+): Promise<void> {
+	return gotoFn(pathname, {
+		replaceState: true,
+		noScroll: true,
+		keepFocus: true
+	});
+}

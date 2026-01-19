@@ -7,7 +7,7 @@ export type ActivitiesFilters = {
 	pageSize: number;
 	from?: string;
 	to?: string;
-	freeTour?: boolean;
+	isFreeTour?: boolean;
 	location?: string;
 };
 
@@ -65,7 +65,7 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		freeTour: {
+		isFreeTour: {
 			parse: (raw) => {
 				// Presence-based: si existe el param (con cualquier valor), es true
 				return raw !== null ? true : undefined;

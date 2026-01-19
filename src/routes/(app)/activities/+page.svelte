@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
-	import { patchFilters } from '$lib/utils/filters';
+	import { patchFilters, clearFilters } from '$lib/utils/filters';
 	import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
@@ -130,12 +130,12 @@
 		}
 	}
 
-	// Estado reactivo para freeTour toggle
-	let freeTourChecked = $state(filters.freeTour ?? false);
+	// Estado reactivo para isFreeTour toggle
+	let freeTourChecked = $state(filters.isFreeTour ?? false);
 
 	// Sincronizar freeTourChecked con filters
 	$effect(() => {
-		freeTourChecked = filters.freeTour ?? false;
+		freeTourChecked = filters.isFreeTour ?? false;
 	});
 
 	function handleFreeTourChange(event: Event) {
@@ -144,7 +144,7 @@
 		freeTourChecked = checked;
 
 		applyFilterPatch({
-			freeTour: checked ? true : undefined
+			isFreeTour: (checked ? true : null) as any
 		});
 	}
 
@@ -169,6 +169,11 @@
 	function handleSort(columnKey: keyof ActivityListItem) {
 		console.log('🔄 Ordenar por:', columnKey);
 		// TODO: Implementar lógica de ordenamiento
+	}
+
+	// Limpiar todos los filtros y volver a valores por defecto
+	function handleClearFilters() {
+		clearFilters($page.url.pathname, goto);
 	}
 </script>
 
@@ -231,7 +236,7 @@
 			</button>
 		</div>
 		<div class="tooltip" data-tip="Limpiar filtros">
-			<button class="btn btn-square btn-soft btn-error">
+			<button class="btn btn-square btn-soft btn-error" onclick={handleClearFilters}>
 				<Cancel />
 			</button>
 		</div>
