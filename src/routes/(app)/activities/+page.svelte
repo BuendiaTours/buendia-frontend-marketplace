@@ -171,6 +171,11 @@
 		// TODO: Implementar lógica de ordenamiento
 	}
 
+	// Detectar si hay filtros activos (más allá de page y pageSize)
+	const hasActiveFilters = $derived(
+		!!(filters.from || filters.to || filters.isFreeTour || filters.location)
+	);
+
 	// Limpiar todos los filtros y volver a valores por defecto
 	function handleClearFilters() {
 		clearFilters($page.url.pathname, goto);
@@ -235,8 +240,13 @@
 				<FilterAlt />
 			</button>
 		</div>
+
 		<div class="tooltip" data-tip="Limpiar filtros">
-			<button class="btn btn-square btn-soft btn-error" onclick={handleClearFilters}>
+			<button
+				class="btn btn-square btn-soft btn-error"
+				onclick={handleClearFilters}
+				disabled={!hasActiveFilters}
+			>
 				<Cancel />
 			</button>
 		</div>
