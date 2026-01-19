@@ -263,13 +263,22 @@
 		>
 			<div class="flex flex-col gap-2">
 				<div class="flex gap-2">
-					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('today')}>
+					<button
+						class="btn btn-outline btn-xs btn-primary"
+						onclick={() => setDateRangePreset('today')}
+					>
 						Hoy
 					</button>
-					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('thisWeek')}>
+					<button
+						class="btn btn-outline btn-xs btn-primary"
+						onclick={() => setDateRangePreset('thisWeek')}
+					>
 						Esta semana
 					</button>
-					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('next15Days')}>
+					<button
+						class="btn btn-outline btn-xs btn-primary"
+						onclick={() => setDateRangePreset('next15Days')}
+					>
 						15 días
 					</button>
 					<button
@@ -302,15 +311,17 @@
 	</label>
 
 	<div class="flex gap-2">
-		<ComboBox
-			items={locations}
-			placeholder="Filter by locations"
-			name="filterLocation"
-			icon={Map}
-			type="single"
-			bind:value={selectedLocation}
-			onValueChange={handleLocationChange}
-		/>
+		{#key selectedLocation}
+			<ComboBox
+				items={locations}
+				placeholder="Filter by locations"
+				name="filterLocation"
+				icon={Map}
+				type="single"
+				bind:value={selectedLocation}
+				onValueChange={handleLocationChange}
+			/>
+		{/key}
 		<div class="tooltip" data-tip="Limpia la localización">
 			<button
 				class="btn btn-square btn-soft btn-md btn-error"

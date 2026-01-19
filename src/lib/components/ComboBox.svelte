@@ -1,5 +1,6 @@
 <!--
-Componente ComboBox reutilizable con estilos DaisyUI
+Componente ComboBox de Bits UI reutilizable con estilos DaisyUI
+https://www.bits-ui.com/docs/components/combobox
 
 Ejemplo de uso:
 <ComboBox
@@ -7,6 +8,20 @@ Ejemplo de uso:
   placeholder="Search a fruit"
   icon={OrangeSlice}
 />
+
+IMPORTANTE: Para resetear correctamente el input visual cuando se limpia el valor externamente,
+envuelve el componente en un bloque {#key} usando el valor como key:
+
+{#key selectedValue}
+  <ComboBox
+    items={items}
+    type="single"
+    bind:value={selectedValue}
+  />
+{/key}
+
+Esto fuerza la recreación del componente cuando el valor cambia, permitiendo que el
+defaultValue se aplique correctamente y el input muestre el texto correcto.
 -->
 
 <script lang="ts">
@@ -59,6 +74,15 @@ Ejemplo de uso:
 			? items
 			: items.filter((item) => item.label.toLowerCase().includes(searchValue.toLowerCase()))
 	);
+
+	// Calcular el valor inicial del input basado en el value seleccionado
+	const inputDefaultValue = $derived.by(() => {
+		if (type === 'single' && value) {
+			const selectedItem = items.find((item) => item.value === value);
+			return selectedItem?.label || '';
+		}
+		return '';
+	});
 </script>
 
 <Combobox.Root
@@ -76,8 +100,9 @@ Ejemplo de uso:
 			<Icon class="absolute start-3 top-1/2 size-5 -translate-y-1/2 opacity-60" />
 		{/if}
 		<Combobox.Input
+			defaultValue={inputDefaultValue}
 			oninput={(e) => (searchValue = e.currentTarget.value)}
-			class="input w-[{width}] bg-transparent pr-10 {Icon ? 'pl-10' : 'pl-4'}"
+			class={`input w-[${width}] bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'} ${(type === 'single' ? !!value : Array.isArray(value) && value.length > 0) ? 'border-success' : ''}`}
 			{placeholder}
 			aria-label={placeholder}
 		/>
