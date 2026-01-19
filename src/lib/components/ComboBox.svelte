@@ -64,9 +64,10 @@ Ejemplo de uso:
 <Combobox.Root
 	type={type as any}
 	{name}
+	{items}
 	value={value as any}
 	onValueChange={onValueChange as any}
-	onOpenChangeComplete={(o) => {
+	onOpenChange={(o) => {
 		if (!o) searchValue = '';
 	}}
 >

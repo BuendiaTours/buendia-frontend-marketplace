@@ -122,10 +122,10 @@
 				to: formatDateValue(newRange.end)
 			});
 		} else {
-			// Limpiar filtro de fechas (undefined elimina el parámetro)
+			// Limpiar filtro de fechas (null elimina el parámetro de la URL)
 			applyFilterPatch({
-				from: undefined,
-				to: undefined
+				from: null as any,
+				to: null as any
 			});
 		}
 	}
@@ -202,8 +202,12 @@
 		selectedLocation = locationValue;
 
 		applyFilterPatch({
-			location: locationValue || undefined
+			location: locationValue ? locationValue : (null as any)
 		});
+	}
+
+	function handleClearLocation() {
+		handleLocationChange(undefined);
 	}
 
 	function handleSort(columnKey: keyof ActivityListItem) {
@@ -248,7 +252,7 @@
 	<Popover.Root>
 		<div class="tooltip" data-tip="Selecciona rango de fechas">
 			<Popover.Trigger class="btn btn-square">
-				<Calendar class={hasDateRange ? 'text-success' : ''} />
+				<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
 			</Popover.Trigger>
 		</div>
 		<Popover.Content
@@ -294,18 +298,29 @@
 			bind:checked={freeTourChecked}
 			onchange={handleFreeTourChange}
 		/>
-		<span class="text-sm select-none">Free tours</span>
+		<span class="text-sm select-none" class:text-success={freeTourChecked}>Free tours</span>
 	</label>
 
-	<ComboBox
-		items={locations}
-		placeholder="Filter by locations"
-		name="filterLocation"
-		icon={Map}
-		type="single"
-		bind:value={selectedLocation}
-		onValueChange={handleLocationChange}
-	/>
+	<div class="flex gap-2">
+		<ComboBox
+			items={locations}
+			placeholder="Filter by locations"
+			name="filterLocation"
+			icon={Map}
+			type="single"
+			bind:value={selectedLocation}
+			onValueChange={handleLocationChange}
+		/>
+		<div class="tooltip" data-tip="Limpia la localización">
+			<button
+				class="btn btn-square btn-soft btn-md btn-error"
+				onclick={handleClearLocation}
+				disabled={!selectedLocation}
+			>
+				<Cancel />
+			</button>
+		</div>
+	</div>
 
 	<select class="select">
 		<option disabled selected>Pick a font</option>
@@ -318,12 +333,12 @@
 		<Dialog.Root bind:open={advancedFiltersOpen}>
 			<div class="tooltip" data-tip="Filtros avanzados">
 				<Dialog.Trigger class="btn btn-square">
-					<FilterAlt class={hasAdvancedFilters ? 'text-success' : ''} />
+					<FilterAlt class={hasAdvancedFilters ? 'text-success' : 'text-base-content/60'} />
 				</Dialog.Trigger>
 			</div>
 
 			<Dialog.Portal>
-				<Dialog.Overlay class="fixed inset-0 z-50 bg-black/50" />
+				<Dialog.Overlay class="fixed inset-0 z-50 bg-black/60" />
 				<Dialog.Content
 					class="fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-content/10 bg-base-100 p-6 shadow-xl"
 				>
@@ -404,7 +419,7 @@
 			</Dialog.Portal>
 		</Dialog.Root>
 
-		<div class="tooltip" data-tip="Limpiar filtros">
+		<div class="tooltip" data-tip="Limpiar todos los filtros">
 			<button
 				class="btn btn-square btn-soft btn-error"
 				onclick={handleClearFilters}
