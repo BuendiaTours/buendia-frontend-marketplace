@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 import { parseFilters } from '$lib/utils/filters';
-import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
+import { activitiesFiltersSchema } from './filters.schema';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema

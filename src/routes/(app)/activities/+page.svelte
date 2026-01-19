@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { ActivityListItem, Column, Location } from '$lib/types';
-	import type { ActivitiesFilters } from '$lib/features/activities/filters.schema';
+	import type { ActivitiesFilters } from './filters.schema';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
-	import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
+	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
 	// Actions
@@ -226,8 +226,18 @@
 	// Estado del diálogo de filtros avanzados
 	let advancedFiltersOpen = $state(false);
 
+	// Definición de filtros avanzados disponibles
+	const advancedFiltersConfig = [
+		{ key: 'kidsFreeTour', label: 'Niños gratis' },
+		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
+		{ key: 'wheelchairAccessible', label: 'Accesible para sillas de ruedas' },
+		{ key: 'audioGuideAvailable', label: 'Audioguía disponible' },
+		{ key: 'photographyAllowed', label: 'Fotografía permitida' },
+		{ key: 'smallGroup', label: 'Grupo pequeño (máx. 15 personas)' }
+	] as const;
+
 	// Estado de los filtros avanzados (categorías adicionales)
-	let advancedFilters = $state({
+	let advancedFilters = $state<Record<string, boolean>>({
 		kidsFreeTour: false,
 		breakfastIncluded: false,
 		wheelchairAccessible: false,
@@ -235,12 +245,42 @@
 		photographyAllowed: false,
 		smallGroup: false
 	});
+
+	// Sincronizar advancedFilters con los valores de la URL
+	$effect(() => {
+		advancedFilters.kidsFreeTour = filters.kidsFreeTour ?? false;
+		advancedFilters.breakfastIncluded = filters.breakfastIncluded ?? false;
+		advancedFilters.wheelchairAccessible = filters.wheelchairAccessible ?? false;
+		advancedFilters.audioGuideAvailable = filters.audioGuideAvailable ?? false;
+		advancedFilters.photographyAllowed = filters.photographyAllowed ?? false;
+		advancedFilters.smallGroup = filters.smallGroup ?? false;
+	});
+
 	const hasAdvancedFilters = $derived(Object.values(advancedFilters).some((value) => value));
 
 	function handleAdvancedFiltersApply() {
-		console.log('🔍 Filtros avanzados aplicados:', advancedFilters);
-		// TODO: Integrar con el sistema de filtros URL cuando el backend soporte estos campos
+		// Aplicar todos los filtros avanzados a la URL
+		applyFilterPatch({
+			kidsFreeTour: advancedFilters.kidsFreeTour || (null as any),
+			breakfastIncluded: advancedFilters.breakfastIncluded || (null as any),
+			wheelchairAccessible: advancedFilters.wheelchairAccessible || (null as any),
+			audioGuideAvailable: advancedFilters.audioGuideAvailable || (null as any),
+			photographyAllowed: advancedFilters.photographyAllowed || (null as any),
+			smallGroup: advancedFilters.smallGroup || (null as any)
+		});
 		advancedFiltersOpen = false;
+	}
+
+	function handleClearAdvancedFilters() {
+		// Limpiar todos los filtros avanzados
+		applyFilterPatch({
+			kidsFreeTour: null as any,
+			breakfastIncluded: null as any,
+			wheelchairAccessible: null as any,
+			audioGuideAvailable: null as any,
+			photographyAllowed: null as any,
+			smallGroup: null as any
+		});
 	}
 </script>
 
@@ -365,63 +405,26 @@
 					</Dialog.Description>
 
 					<div class="space-y-4">
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.kidsFreeTour}
-							/>
-							<span class="label-text">Niños gratis</span>
-						</label>
-
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.breakfastIncluded}
-							/>
-							<span class="label-text">Desayuno incluido</span>
-						</label>
-
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.wheelchairAccessible}
-							/>
-							<span class="label-text">Accesible para sillas de ruedas</span>
-						</label>
-
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.audioGuideAvailable}
-							/>
-							<span class="label-text">Audioguía disponible</span>
-						</label>
-
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.photographyAllowed}
-							/>
-							<span class="label-text">Fotografía permitida</span>
-						</label>
-
-						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-sm"
-								bind:checked={advancedFilters.smallGroup}
-							/>
-							<span class="label-text">Grupo pequeño (máx. 15 personas)</span>
-						</label>
+						{#each advancedFiltersConfig as filter}
+							<label class="flex cursor-pointer items-center gap-3">
+								<input
+									type="checkbox"
+									class="checkbox checkbox-sm"
+									bind:checked={advancedFilters[filter.key]}
+								/>
+								<span class="label-text">{filter.label}</span>
+							</label>
+						{/each}
 					</div>
 
 					<div class="mt-6 flex gap-2">
-						<button class="btn btn-soft btn-error">Limpiar filtros</button>
+						<button
+							class="btn btn-soft btn-error"
+							onclick={handleClearAdvancedFilters}
+							disabled={!hasAdvancedFilters}
+						>
+							Limpiar filtros
+						</button>
 						<Dialog.Close class="btn ml-auto btn-ghost">Cancelar</Dialog.Close>
 						<button class="btn btn-outline btn-primary" onclick={handleAdvancedFiltersApply}>
 							Aplicar filtros
