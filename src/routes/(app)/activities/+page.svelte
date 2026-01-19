@@ -34,7 +34,7 @@
 	import { Popover, Dialog } from 'bits-ui';
 
 	// Icons
-	import { Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
+	import { ArrowSeparateVertical, Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -492,6 +492,8 @@
 									onclick={() => handleSort(col.key)}
 								>
 									{col.title}
+
+									<ArrowSeparateVertical class="stroke-sucess" />
 								</button>
 							{:else}
 								<span>{col.title}</span>
@@ -515,7 +517,9 @@
 							/>
 						</td>
 						<td>
-							{item.id}
+							<div class="tooltip" data-tip={item.id}>
+								<span class="block max-w-[48px] truncate">{item.id}</span>
+							</div>
 						</td>
 						{#each columns as col}
 							{#if col.key === 'title'}
