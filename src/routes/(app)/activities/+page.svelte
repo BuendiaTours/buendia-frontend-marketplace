@@ -262,13 +262,6 @@
 			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
 		>
 			<div class="flex flex-col gap-2">
-				<div>
-					<RangeCalendar
-						bind:value={dateRangeFilter}
-						onValueChange={handleDateRangeChange}
-						numberOfMonths={2}
-					/>
-				</div>
 				<div class="flex gap-2">
 					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('today')}>
 						Hoy
@@ -286,6 +279,13 @@
 					>
 						Limpiar selección
 					</button>
+				</div>
+				<div>
+					<RangeCalendar
+						bind:value={dateRangeFilter}
+						onValueChange={handleDateRangeChange}
+						numberOfMonths={2}
+					/>
 				</div>
 			</div>
 		</Popover.Content>
@@ -409,9 +409,10 @@
 						</label>
 					</div>
 
-					<div class="mt-6 flex justify-end gap-3">
-						<Dialog.Close class="btn btn-ghost">Cancelar</Dialog.Close>
-						<button class="btn btn-primary" onclick={handleAdvancedFiltersApply}>
+					<div class="mt-6 flex gap-2">
+						<button class="btn btn-soft btn-error">Limpiar filtros</button>
+						<Dialog.Close class="btn ml-auto btn-ghost">Cancelar</Dialog.Close>
+						<button class="btn btn-outline btn-primary" onclick={handleAdvancedFiltersApply}>
 							Aplicar filtros
 						</button>
 					</div>
