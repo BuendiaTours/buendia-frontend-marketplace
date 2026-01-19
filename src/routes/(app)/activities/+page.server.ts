@@ -26,9 +26,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		apiUrl.searchParams.set('location', filters.location);
 	}
 
-	// Incluir freeTour solo si es true (presence)
+	// Incluir isFreeTour solo si es true (presence)
 	if (filters.freeTour) {
-		apiUrl.searchParams.set('freeTour', '1');
+		apiUrl.searchParams.set('isFreeTour', '1');
 	}
 
 	try {

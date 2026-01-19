@@ -72,9 +72,9 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			serialize: (value, out) => {
 				if (value === true) {
-					out.set('freeTour', '1');
+					out.set('isFreeTour', '1');
 				} else {
-					out.delete('freeTour');
+					out.delete('isFreeTour');
 				}
 			},
 			resetPageOnChange: true
