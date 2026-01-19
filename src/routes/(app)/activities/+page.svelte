@@ -226,7 +226,7 @@
 	// Estado del diálogo de filtros avanzados
 	let advancedFiltersOpen = $state(false);
 
-	// Definición de filtros avanzados disponibles
+	// Definición de filtros avanzados disponibles (única fuente de verdad)
 	const advancedFiltersConfig = [
 		{ key: 'kidsFreeTour', label: 'Niños gratis' },
 		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
@@ -236,51 +236,37 @@
 		{ key: 'smallGroup', label: 'Grupo pequeño (máx. 15 personas)' }
 	] as const;
 
-	// Estado de los filtros avanzados (categorías adicionales)
-	let advancedFilters = $state<Record<string, boolean>>({
-		kidsFreeTour: false,
-		breakfastIncluded: false,
-		wheelchairAccessible: false,
-		audioGuideAvailable: false,
-		photographyAllowed: false,
-		smallGroup: false
-	});
+	// Estado de los filtros avanzados - inicializado dinámicamente
+	let advancedFilters = $state<Record<string, boolean>>(
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, false]))
+	);
 
-	// Sincronizar advancedFilters con los valores de la URL
+	// Sincronizar advancedFilters con los valores de la URL - dinámicamente
 	$effect(() => {
-		advancedFilters.kidsFreeTour = filters.kidsFreeTour ?? false;
-		advancedFilters.breakfastIncluded = filters.breakfastIncluded ?? false;
-		advancedFilters.wheelchairAccessible = filters.wheelchairAccessible ?? false;
-		advancedFilters.audioGuideAvailable = filters.audioGuideAvailable ?? false;
-		advancedFilters.photographyAllowed = filters.photographyAllowed ?? false;
-		advancedFilters.smallGroup = filters.smallGroup ?? false;
+		advancedFiltersConfig.forEach((filter) => {
+			advancedFilters[filter.key] = (filters as any)[filter.key] ?? false;
+		});
 	});
 
 	const hasAdvancedFilters = $derived(Object.values(advancedFilters).some((value) => value));
 
 	function handleAdvancedFiltersApply() {
-		// Aplicar todos los filtros avanzados a la URL
-		applyFilterPatch({
-			kidsFreeTour: advancedFilters.kidsFreeTour || (null as any),
-			breakfastIncluded: advancedFilters.breakfastIncluded || (null as any),
-			wheelchairAccessible: advancedFilters.wheelchairAccessible || (null as any),
-			audioGuideAvailable: advancedFilters.audioGuideAvailable || (null as any),
-			photographyAllowed: advancedFilters.photographyAllowed || (null as any),
-			smallGroup: advancedFilters.smallGroup || (null as any)
+		// Aplicar todos los filtros avanzados a la URL - dinámicamente
+		const patch: Record<string, any> = {};
+		advancedFiltersConfig.forEach((filter) => {
+			patch[filter.key] = advancedFilters[filter.key] || (null as any);
 		});
+		applyFilterPatch(patch);
 		advancedFiltersOpen = false;
 	}
 
 	function handleClearAdvancedFilters() {
-		// Limpiar todos los filtros avanzados
-		applyFilterPatch({
-			kidsFreeTour: null as any,
-			breakfastIncluded: null as any,
-			wheelchairAccessible: null as any,
-			audioGuideAvailable: null as any,
-			photographyAllowed: null as any,
-			smallGroup: null as any
+		// Limpiar todos los filtros avanzados - dinámicamente
+		const patch: Record<string, any> = {};
+		advancedFiltersConfig.forEach((filter) => {
+			patch[filter.key] = null as any;
 		});
+		applyFilterPatch(patch);
 	}
 </script>
 

@@ -26,9 +26,27 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		apiUrl.searchParams.set('location', filters.location);
 	}
 
-	// Incluir isFreeTour solo si es true (presence)
+	// Incluir filtros booleanos solo si son true
 	if (filters.isFreeTour) {
 		apiUrl.searchParams.set('isFreeTour', '1');
+	}
+	if (filters.kidsFreeTour) {
+		apiUrl.searchParams.set('kidsFreeTour', '1');
+	}
+	if (filters.breakfastIncluded) {
+		apiUrl.searchParams.set('breakfastIncluded', '1');
+	}
+	if (filters.wheelchairAccessible) {
+		apiUrl.searchParams.set('wheelchairAccessible', '1');
+	}
+	if (filters.audioGuideAvailable) {
+		apiUrl.searchParams.set('audioGuideAvailable', '1');
+	}
+	if (filters.photographyAllowed) {
+		apiUrl.searchParams.set('photographyAllowed', '1');
+	}
+	if (filters.smallGroup) {
+		apiUrl.searchParams.set('smallGroup', '1');
 	}
 
 	try {
