@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
-	import { patchFilters, clearFilters } from '$lib/utils/filters';
+	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { activitiesFiltersSchema } from '$lib/features/activities/filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
@@ -172,9 +172,7 @@
 	}
 
 	// Detectar si hay filtros activos (más allá de page y pageSize)
-	const hasActiveFilters = $derived(
-		!!(filters.from || filters.to || filters.isFreeTour || filters.location)
-	);
+	const hasFilters = $derived(hasActiveFilters(filters));
 
 	// Limpiar todos los filtros y volver a valores por defecto
 	function handleClearFilters() {
@@ -245,7 +243,7 @@
 			<button
 				class="btn btn-square btn-soft btn-error"
 				onclick={handleClearFilters}
-				disabled={!hasActiveFilters}
+				disabled={!hasFilters}
 			>
 				<Cancel />
 			</button>

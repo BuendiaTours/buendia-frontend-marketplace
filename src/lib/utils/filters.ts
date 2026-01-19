@@ -115,6 +115,55 @@ export function patchFilters<TFilters extends Record<string, any>>(
 }
 
 /**
+ * Detecta si hay filtros activos (excluyendo page y pageSize).
+ * Útil para habilitar/deshabilitar el botón de "Limpiar filtros".
+ *
+ * @param filters - El objeto de filtros parseados
+ * @param excludeKeys - Claves a excluir de la verificación (por defecto: ['page', 'pageSize'])
+ * @returns true si hay algún filtro activo
+ *
+ * @example
+ * ```typescript
+ * import { hasActiveFilters } from '$lib/utils/filters';
+ *
+ * const hasFilters = $derived(hasActiveFilters(filters));
+ *
+ * <button disabled={!hasFilters} onclick={handleClearFilters}>
+ *   Limpiar filtros
+ * </button>
+ * ```
+ */
+export function hasActiveFilters<TFilters extends Record<string, any>>(
+	filters: TFilters,
+	excludeKeys: (keyof TFilters)[] = ['page', 'pageSize']
+): boolean {
+	for (const key in filters) {
+		// Saltar claves excluidas (page, pageSize)
+		if (excludeKeys.includes(key as keyof TFilters)) {
+			continue;
+		}
+
+		const value = filters[key];
+
+		// Si el valor existe y no es undefined/null, hay un filtro activo
+		if (value !== undefined && value !== null) {
+			// Para arrays, verificar que no estén vacíos
+			if (Array.isArray(value) && value.length === 0) {
+				continue;
+			}
+			// Para strings, verificar que no estén vacíos
+			if (typeof value === 'string' && value.trim() === '') {
+				continue;
+			}
+			// Hay un filtro activo
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Limpia todos los filtros navegando a la URL base (sin query params).
  * Los valores por defecto del schema se aplicarán automáticamente.
  *
