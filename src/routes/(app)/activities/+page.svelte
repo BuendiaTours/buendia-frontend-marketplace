@@ -18,7 +18,7 @@
 	import ComboBox from '$lib/components/ComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
-	import { Popover, type DateRange } from 'bits-ui';
+	import { Popover, Dialog, type DateRange } from 'bits-ui';
 
 	// Icons
 	import { Calendar, FilterAlt, Map, Cancel, Check } from 'svelte-iconoir';
@@ -130,6 +130,46 @@
 		}
 	}
 
+	const hasDateRange = $derived(
+		dateRangeFilter?.start !== undefined && dateRangeFilter?.end !== undefined
+	);
+
+	function handleClearDateRange() {
+		handleDateRangeChange(undefined);
+	}
+
+	// Función para establecer presets de rangos de fechas
+	function setDateRangePreset(preset: 'today' | 'thisWeek' | 'next15Days') {
+		const today = new Date();
+		let start: Date;
+		let end: Date;
+
+		switch (preset) {
+			case 'today':
+				start = today;
+				end = today;
+				break;
+			case 'thisWeek':
+				const dayOfWeek = today.getDay();
+				const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Lunes como inicio
+				start = new Date(today);
+				start.setDate(today.getDate() + diff);
+				end = new Date(start);
+				end.setDate(start.getDate() + 6);
+				break;
+			case 'next15Days':
+				start = today;
+				end = new Date(today);
+				end.setDate(today.getDate() + 14);
+				break;
+		}
+
+		handleDateRangeChange({
+			start: new CalendarDate(start.getFullYear(), start.getMonth() + 1, start.getDate()),
+			end: new CalendarDate(end.getFullYear(), end.getMonth() + 1, end.getDate())
+		});
+	}
+
 	// Estado reactivo para isFreeTour toggle
 	let freeTourChecked = $state(filters.isFreeTour ?? false);
 
@@ -178,6 +218,26 @@
 	function handleClearFilters() {
 		clearFilters($page.url.pathname, goto);
 	}
+
+	// Estado del diálogo de filtros avanzados
+	let advancedFiltersOpen = $state(false);
+
+	// Estado de los filtros avanzados (categorías adicionales)
+	let advancedFilters = $state({
+		kidsFreeTour: false,
+		breakfastIncluded: false,
+		wheelchairAccessible: false,
+		audioGuideAvailable: false,
+		photographyAllowed: false,
+		smallGroup: false
+	});
+	const hasAdvancedFilters = $derived(Object.values(advancedFilters).some((value) => value));
+
+	function handleAdvancedFiltersApply() {
+		console.log('🔍 Filtros avanzados aplicados:', advancedFilters);
+		// TODO: Integrar con el sistema de filtros URL cuando el backend soporte estos campos
+		advancedFiltersOpen = false;
+	}
 </script>
 
 <h1 class="text-lg">Actividades</h1>
@@ -185,34 +245,56 @@
 <div
 	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
 >
-	<div class="tooltip" data-tip="Selecciona rango de fechas">
-		<Popover.Root>
+	<Popover.Root>
+		<div class="tooltip" data-tip="Selecciona rango de fechas">
 			<Popover.Trigger class="btn btn-square">
-				<Calendar />
+				<Calendar class={hasDateRange ? 'text-success' : ''} />
 			</Popover.Trigger>
-			<Popover.Content
-				side="bottom"
-				align="start"
-				alignOffset={-10}
-				class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
-			>
-				<RangeCalendar
-					bind:value={dateRangeFilter}
-					onValueChange={handleDateRangeChange}
-					numberOfMonths={2}
-				/>
-			</Popover.Content>
-		</Popover.Root>
-	</div>
+		</div>
+		<Popover.Content
+			side="bottom"
+			align="start"
+			alignOffset={-10}
+			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
+		>
+			<div class="flex flex-col gap-2">
+				<div>
+					<RangeCalendar
+						bind:value={dateRangeFilter}
+						onValueChange={handleDateRangeChange}
+						numberOfMonths={2}
+					/>
+				</div>
+				<div class="flex gap-2">
+					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('today')}>
+						Hoy
+					</button>
+					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('thisWeek')}>
+						Esta semana
+					</button>
+					<button class="btn btn-soft btn-xs" onclick={() => setDateRangePreset('next15Days')}>
+						15 días
+					</button>
+					<button
+						disabled={!hasDateRange}
+						class="btn ml-auto btn-soft btn-xs btn-error"
+						onclick={handleClearDateRange}
+					>
+						Limpiar selección
+					</button>
+				</div>
+			</div>
+		</Popover.Content>
+	</Popover.Root>
 
 	<label class="label">
 		<input
 			type="checkbox"
-			class="toggle bg-base-200"
+			class="toggle bg-base-200 toggle-success"
 			bind:checked={freeTourChecked}
 			onchange={handleFreeTourChange}
 		/>
-		<span class="text-sm">Free tours</span>
+		<span class="text-sm select-none">Free tours</span>
 	</label>
 
 	<ComboBox
@@ -233,11 +315,94 @@
 	</select>
 
 	<div class="ml-auto flex items-center gap-2">
-		<div class="tooltip" data-tip="Filtros avanzados">
-			<button class="btn btn-square">
-				<FilterAlt />
-			</button>
-		</div>
+		<Dialog.Root bind:open={advancedFiltersOpen}>
+			<div class="tooltip" data-tip="Filtros avanzados">
+				<Dialog.Trigger class="btn btn-square">
+					<FilterAlt class={hasAdvancedFilters ? 'text-success' : ''} />
+				</Dialog.Trigger>
+			</div>
+
+			<Dialog.Portal>
+				<Dialog.Overlay class="fixed inset-0 z-50 bg-black/50" />
+				<Dialog.Content
+					class="fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-content/10 bg-base-100 p-6 shadow-xl"
+				>
+					<div class="mb-4 flex items-start justify-between">
+						<Dialog.Title class="text-xl font-semibold">Filtros avanzados</Dialog.Title>
+						<Dialog.Close class="btn -mt-4 -mr-4 btn-square btn-ghost btn-sm">
+							<Cancel />
+						</Dialog.Close>
+					</div>
+
+					<Dialog.Description class="mb-6 text-sm text-base-content/70">
+						Selecciona las características adicionales que deseas filtrar
+					</Dialog.Description>
+
+					<div class="space-y-4">
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.kidsFreeTour}
+							/>
+							<span class="label-text">Niños gratis</span>
+						</label>
+
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.breakfastIncluded}
+							/>
+							<span class="label-text">Desayuno incluido</span>
+						</label>
+
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.wheelchairAccessible}
+							/>
+							<span class="label-text">Accesible para sillas de ruedas</span>
+						</label>
+
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.audioGuideAvailable}
+							/>
+							<span class="label-text">Audioguía disponible</span>
+						</label>
+
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.photographyAllowed}
+							/>
+							<span class="label-text">Fotografía permitida</span>
+						</label>
+
+						<label class="flex cursor-pointer items-center gap-3">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-sm"
+								bind:checked={advancedFilters.smallGroup}
+							/>
+							<span class="label-text">Grupo pequeño (máx. 15 personas)</span>
+						</label>
+					</div>
+
+					<div class="mt-6 flex justify-end gap-3">
+						<Dialog.Close class="btn btn-ghost">Cancelar</Dialog.Close>
+						<button class="btn btn-primary" onclick={handleAdvancedFiltersApply}>
+							Aplicar filtros
+						</button>
+					</div>
+				</Dialog.Content>
+			</Dialog.Portal>
+		</Dialog.Root>
 
 		<div class="tooltip" data-tip="Limpiar filtros">
 			<button
