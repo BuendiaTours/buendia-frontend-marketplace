@@ -134,6 +134,13 @@
 		dateRangeFilter?.start !== undefined && dateRangeFilter?.end !== undefined
 	);
 
+	// Formatear rango de fechas para mostrar en el tooltip
+	const dateRangeTooltip = $derived(
+		!hasDateRange || !dateRangeFilter?.start || !dateRangeFilter?.end
+			? 'Selecciona rango de fechas'
+			: `${dateRangeFilter.start.year}/${String(dateRangeFilter.start.month).padStart(2, '0')}/${String(dateRangeFilter.start.day).padStart(2, '0')} - ${dateRangeFilter.end.year}/${String(dateRangeFilter.end.month).padStart(2, '0')}/${String(dateRangeFilter.end.day).padStart(2, '0')}`
+	);
+
 	function handleClearDateRange() {
 		handleDateRangeChange(undefined);
 	}
@@ -250,6 +257,10 @@
 
 	const hasAdvancedFilters = $derived(Object.values(advancedFilters).some((value) => value));
 
+	const activeAdvancedFiltersCount = $derived(
+		Object.values(advancedFilters).filter((value) => value).length
+	);
+
 	function handleAdvancedFiltersApply() {
 		// Aplicar todos los filtros avanzados a la URL - dinámicamente
 		const patch: Record<string, any> = {};
@@ -276,7 +287,7 @@
 	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
 >
 	<Popover.Root>
-		<div class="tooltip" data-tip="Selecciona rango de fechas">
+		<div class="tooltip" data-tip={dateRangeTooltip}>
 			<Popover.Trigger class="btn btn-square">
 				<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
 			</Popover.Trigger>
@@ -368,7 +379,12 @@
 
 	<div class="ml-auto flex items-center gap-2">
 		<Dialog.Root bind:open={advancedFiltersOpen}>
-			<div class="tooltip" data-tip="Filtros avanzados">
+			<div
+				class="tooltip"
+				data-tip={hasAdvancedFilters
+					? `Filtros avanzados (${activeAdvancedFiltersCount})`
+					: 'Filtros avanzados'}
+			>
 				<Dialog.Trigger class="btn btn-square">
 					<FilterAlt class={hasAdvancedFilters ? 'text-success' : 'text-base-content/60'} />
 				</Dialog.Trigger>
