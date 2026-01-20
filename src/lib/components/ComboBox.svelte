@@ -97,7 +97,9 @@ defaultValue se aplique correctamente y el input muestre el texto correcto.
 >
 	<div class="relative">
 		{#if Icon}
-			<Icon class="absolute start-3 top-1/2 size-5 -translate-y-1/2 opacity-60" />
+			<Icon
+				class={`absolute start-3 top-1/2 size-5 -translate-y-1/2 ${(type === 'single' ? !!value : Array.isArray(value) && value.length > 0) ? 'text-success opacity-100' : 'opacity-60'}`}
+			/>
 		{/if}
 		<Combobox.Input
 			defaultValue={inputDefaultValue}
