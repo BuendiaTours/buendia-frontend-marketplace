@@ -49,6 +49,38 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+		<div class="md:col-span-9">
+			<label class="label text-sm" for="title">Id</label>
+			<input
+				type="text"
+				id="id"
+				name="id"
+				class="input w-full"
+				class:input-error={$errors.id}
+				bind:value={$form.id}
+				readonly
+			/>
+			{#if $errors.id}
+				<span class="label-text-alt text-error">{$errors.id}</span>
+			{/if}
+		</div>
+
+		<div class="md:col-span-3">
+			<label class="label text-sm" for="title">CodeRef.</label>
+			<input
+				type="text"
+				id="codeRef"
+				name="codeRef"
+				class="input w-full"
+				class:input-error={$errors.codeRef}
+				bind:value={$form.codeRef}
+				readonly
+			/>
+			{#if $errors.codeRef}
+				<span class="label-text-alt text-error">{$errors.codeRef}</span>
+			{/if}
+		</div>
+
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="title">Título</label>
 			<input

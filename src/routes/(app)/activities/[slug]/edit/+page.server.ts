@@ -24,6 +24,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 	const form = await superValidate(
 		{
+			id: apiData.id || '',
+			codeRef: apiData.codeRef || '',
 			title: apiData.main?.title || '',
 			slug: apiData.slug || '',
 			descriptionShort: apiData.descriptionShort || '',
@@ -53,6 +55,8 @@ export const actions: Actions = {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
+				id: form.data.id,
+				codeRef: form.data.codeRef,
 				title: form.data.title,
 				slug: form.data.slug,
 				descriptionShort: form.data.descriptionShort,
