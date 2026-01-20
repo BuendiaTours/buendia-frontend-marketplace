@@ -3,6 +3,8 @@
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
+	import { buildUrlWithFilters } from '$lib/utils/url';
+	import { confirmAction } from '$lib/actions/confirmAction';
 
 	export let data: PageData;
 	const { activity } = data;
@@ -10,7 +12,30 @@
 	const { form, errors, enhance, message } = superForm(data.form);
 </script>
 
-<p><a href={`/activities?${$page.url.searchParams.toString()}`}>← Volver al listado</a></p>
+<div class="mb-4 flex items-center justify-between">
+	<a href={`/activities?${$page.url.searchParams.toString()}`} class="link">
+		← Volver al listado
+	</a>
+
+	<form
+		method="POST"
+		action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, $page.url.searchParams)}
+	>
+		<button
+			type="submit"
+			class="btn btn-soft btn-error"
+			use:confirmAction={{
+				title: 'Eliminar actividad',
+				message: '¿Seguro que quieres eliminar esta actividad?',
+				confirmText: 'Eliminar',
+				cancelText: 'Cancelar',
+				danger: true
+			}}
+		>
+			Delete
+		</button>
+	</form>
+</div>
 
 <h1>Editar Actividad</h1>
 

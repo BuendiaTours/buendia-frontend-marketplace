@@ -1,9 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
+import { setFlashMessage } from '$lib/server/flashMessages';
 
 export const actions: Actions = {
-	default: async ({ params, fetch, url }) => {
+	default: async ({ params, fetch, url, cookies }) => {
 		const { slug } = params;
 
 		// Llamar a la API para eliminar
@@ -13,9 +14,18 @@ export const actions: Actions = {
 
 		if (!res.ok) {
 			return fail(res.status, {
-				error: `Error al eliminar la actividad (${res.status})`
+				alert: {
+					type: 'error',
+					message: `Error al eliminar la actividad (${res.status})`
+				}
 			});
 		}
+
+		// Establecer mensaje de éxito
+		setFlashMessage(cookies, {
+			type: 'success',
+			message: 'Actividad eliminada correctamente'
+		});
 
 		// Preservar los filtros de la URL al redirigir
 		const searchParams = url.searchParams.toString();

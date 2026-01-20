@@ -10,6 +10,7 @@
 
 	// Components
 	import AlertDialog from '$lib/components/AlertDialog.svelte';
+	import LayoutAlertBox from '$lib/components/LayoutAlertBox.svelte';
 
 	// Partials o elementos reutilizables
 	import Header from '$lib/layout/Header.svelte';
@@ -22,6 +23,7 @@
 	<Header title="Activities App" />
 
 	<main class="container mx-auto flex-1 p-4">
+		<LayoutAlertBox />
 		{@render children()}
 	</main>
 
