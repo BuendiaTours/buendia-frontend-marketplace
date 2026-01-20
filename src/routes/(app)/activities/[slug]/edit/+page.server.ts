@@ -25,10 +25,13 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	const form = await superValidate(
 		{
 			title: apiData.main?.title || '',
+			slug: apiData.slug || '',
+			descriptionShort: apiData.descriptionShort || '',
+			descriptionFull: apiData.descriptionFull || '',
 			location: apiData.location?.city || '',
 			priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
 			currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
-			isFreeTour: false // No hay campo isFreeTour en la API actual
+			isFreeTour: false
 		},
 		zod(activityFormSchema)
 	);
@@ -51,6 +54,9 @@ export const actions: Actions = {
 			},
 			body: JSON.stringify({
 				title: form.data.title,
+				slug: form.data.slug,
+				descriptionShort: form.data.descriptionShort,
+				descriptionFull: form.data.descriptionFull,
 				city: form.data.location,
 				priceFrom: form.data.priceFrom,
 				currency: form.data.currency,

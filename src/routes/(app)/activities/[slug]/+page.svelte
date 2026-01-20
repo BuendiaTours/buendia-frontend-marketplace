@@ -42,21 +42,6 @@
 	</div>
 </div>
 
-<!-- <h1>{activity.title}</h1>
-<p>{activity.city} — {activity.priceFrom} {activity.currency}</p>
-
-<h2>Descripción</h2>
-<p>{activity.description}</p>
-
-{#if activity.highlights?.length}
-	<h3>Highlights</h3>
-	<ul>
-		{#each activity.highlights as h}
-			<li>{h}</li>
-		{/each}
-	</ul>
-{/if} -->
-
 <pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
 		activity,
 		null,
