@@ -4,6 +4,30 @@ Prueba de concepto de Sveltekit con Typescript, Tailwind y DaisyUI de cara a des
 
 Arrancar el server: `npm run dev -- --open`
 
+## Tech stack
+
+- **Framework**: SvelteKit (v5, runes)
+- **Language**: TypeScript
+- **Styling**:
+  - Tailwind CSS v4
+  - DaisyUI (backoffice)
+  - @tailwindcss/forms
+  - @tailwindcss/typography
+- **State management**:
+  - Svelte runes ($state, $props)
+- **API**:
+  - REST API (external)
+- **Forms & Validation**:
+  - SvelteKit Superforms
+  - Zod (schema validation)
+- **UI Components**:
+  - Bits UI (headless components)
+  - Svelte Iconoir (icons)
+- **Other libraries**:
+  - PhotoSwipe (image gallery)
+  - Swiper (carousels)
+  - @internationalized/date (date handling)
+
 ## Cosas a explicar en la documentación
 
 - Tailwind

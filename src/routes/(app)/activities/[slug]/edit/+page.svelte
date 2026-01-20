@@ -5,6 +5,7 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
+	import { Refresh } from 'svelte-iconoir';
 
 	export let data: PageData;
 	const { activity } = data;
@@ -39,56 +40,6 @@
 
 <h1>Editar Actividad</h1>
 
-<!-- <form class="max-w-4xl space-y-6">
-	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<div class="md:col-span-6">
-			<label class="mb-1 block text-sm font-medium"> Nombre </label>
-			<input type="text" class="w-full rounded border px-3 py-2" placeholder="Juan" />
-		</div>
-
-		<div class="md:col-span-6">
-			<label class="mb-1 block text-sm font-medium"> Apellidos </label>
-			<input type="text" class="w-full rounded border px-3 py-2" placeholder="Pérez García" />
-		</div>
-
-		<div class="md:col-span-12">
-			<label class="mb-1 block text-sm font-medium"> Email </label>
-			<input type="email" class="w-full rounded border px-3 py-2" placeholder="email@ejemplo.com" />
-		</div>
-
-		<div class="md:col-span-3">
-			<label class="mb-1 block text-sm font-medium"> Código postal </label>
-			<input type="text" class="w-full rounded border px-3 py-2" placeholder="28001" />
-		</div>
-
-		<div class="md:col-span-5">
-			<label class="mb-1 block text-sm font-medium"> Ciudad </label>
-			<input type="text" class="w-full rounded border px-3 py-2" placeholder="Madrid" />
-		</div>
-
-		<div class="md:col-span-4">
-			<label class="mb-1 block text-sm font-medium"> Provincia </label>
-			<select class="w-full rounded border px-3 py-2">
-				<option>Madrid</option>
-				<option>Barcelona</option>
-				<option>Valencia</option>
-			</select>
-		</div>
-
-		<div class="md:col-span-12">
-			<label class="mb-1 block text-sm font-medium"> Observaciones </label>
-			<textarea class="w-full rounded border px-3 py-2" rows="3" placeholder="Notas adicionales..."
-			></textarea>
-		</div>
-	</div>
-
-	<div class="flex justify-end gap-3">
-		<button type="button" class="rounded border px-4 py-2"> Cancelar </button>
-		<button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white"> Guardar </button>
-	</div>
-</form>
--->
-
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
 		<div class="md:col-span-12">
@@ -108,14 +59,18 @@
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="title">Slug</label>
-			<input
-				type="text"
-				id="slug"
-				name="slug"
-				class="input w-full"
-				class:input-error={$errors.title}
-				bind:value={$form.title}
-			/>
+			<div class="flex gap-2">
+				<input
+					type="text"
+					id="slug"
+					name="slug"
+					class="input w-full"
+					class:input-error={$errors.title}
+					bind:value={$form.title}
+				/>
+
+				<button type="button" class="btn btn-square btn-soft"><Refresh /></button>
+			</div>
 			{#if $errors.title}
 				<span class="text-sm text-error">{$errors.title}</span>
 			{/if}
