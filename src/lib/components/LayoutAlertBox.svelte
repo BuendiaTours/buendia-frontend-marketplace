@@ -37,11 +37,27 @@
 
 	const config = $derived(alert ? alertConfig[alert.type] : null);
 	const IconComponent = $derived(config?.Icon);
+
+	let dismissed = $state(false);
+
+	function dismiss() {
+		dismissed = true;
+	}
+
+	// Reset dismissed cuando cambia el mensaje
+	$effect(() => {
+		if (alert) {
+			dismissed = false;
+		}
+	});
 </script>
 
-{#if alert && config && IconComponent}
+{#if alert && config && IconComponent && !dismissed}
 	<div role="alert" class="alert {config.class} mb-4">
 		<IconComponent class="size-6 shrink-0" />
-		<span>{alert.message}</span>
+		<span class="flex-1">{alert.message}</span>
+		<button type="button" class="btn -mt-3 -mr-3 btn-square btn-outline btn-xs" onclick={dismiss}>
+			<Cancel class="size-4" />
+		</button>
 	</div>
 {/if}
