@@ -232,6 +232,10 @@
 		selectedLocation = filters.location;
 	});
 
+	// Key para forzar recreación del ComboBox cuando se cargan las locations
+	// Esto asegura que el inputDefaultValue se calcule correctamente
+	const locationComboKey = $derived(`${selectedLocation}-${locations.length}`);
+
 	function handleLocationChange(value: string | string[] | undefined) {
 		const locationValue = Array.isArray(value) ? value[0] : value;
 		selectedLocation = locationValue;
@@ -399,7 +403,7 @@
 	</label>
 
 	<div class="flex gap-2">
-		{#key selectedLocation}
+		{#key locationComboKey}
 			<ComboBox
 				items={locations}
 				placeholder="Filter by locations"
