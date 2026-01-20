@@ -631,21 +631,22 @@
 										</a>
 									</li>
 									<li>
-										<a
-											href={buildUrlWithFilters(
-												`/activities/${item.slug}/delete`,
-												$page.url.searchParams
-											)}
-											use:confirmAction={{
-												title: 'Eliminar',
-												message: '¿Seguro que quieres eliminar este elemento?',
-												confirmText: 'Eliminar',
-												cancelText: 'Cancelar',
-												danger: true
-											}}
-										>
-											Delete
-										</a>
+										<form method="POST" action="?/delete">
+											<input type="hidden" name="slug" value={item.slug} />
+											<button
+												type="submit"
+												class="w-full text-left"
+												use:confirmAction={{
+													title: 'Eliminar',
+													message: '¿Seguro que quieres eliminar este elemento?',
+													confirmText: 'Eliminar',
+													cancelText: 'Cancelar',
+													danger: true
+												}}
+											>
+												Delete
+											</button>
+										</form>
 									</li>
 								</ul>
 							</div></td
