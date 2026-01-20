@@ -2,8 +2,10 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 import type { ActivityDetail } from '$lib/types';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { activityFormSchema } from '../../activity-form.schema';
 
-// Cargar los datos de la actividad para el formulario
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`);
 
@@ -15,48 +17,47 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	}
 
 	const activity: ActivityDetail = await res.json();
-	return { activity };
+
+	const form = await superValidate(
+		{
+			title: activity.title,
+			location: activity.location,
+			priceFrom: activity.price.from,
+			currency: activity.price.currency,
+			isFreeTour: Boolean(activity.isFreeTour)
+		},
+		zod(activityFormSchema)
+	);
+
+	return { activity, form };
 };
 
-// Manejar el envío del formulario
 export const actions: Actions = {
 	default: async ({ request, params, fetch }) => {
-		const formData = await request.formData();
+		const form = await superValidate(request, zod(activityFormSchema));
 
-		// Extraer datos del formulario
-		const data = {
-			title: formData.get('title'),
-			city: formData.get('city'),
-			priceFrom: Number(formData.get('priceFrom')),
-			currency: formData.get('currency'),
-			description: formData.get('description')
-		};
-
-		// Validación básica
-		if (!data.title || !data.city || !data.priceFrom || !data.currency) {
-			return fail(400, {
-				error: 'Todos los campos son obligatorios',
-				values: data
-			});
+		if (!form.valid) {
+			return fail(400, { form });
 		}
 
-		// Enviar actualización a la API
 		const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(data)
+			body: JSON.stringify({
+				title: form.data.title,
+				city: form.data.location,
+				priceFrom: form.data.priceFrom,
+				currency: form.data.currency,
+				isFreeTour: form.data.isFreeTour ? 1 : 0
+			})
 		});
 
 		if (!res.ok) {
-			return fail(res.status, {
-				error: `Error al actualizar: ${res.status}`,
-				values: data
-			});
+			return fail(res.status, { form });
 		}
 
-		// Redirigir a la página de detalle después de guardar
 		throw redirect(303, `/activities/${params.slug}`);
 	}
 };
