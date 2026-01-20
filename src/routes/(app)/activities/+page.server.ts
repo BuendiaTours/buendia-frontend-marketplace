@@ -1,5 +1,5 @@
-import { error, fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 import { parseFilters } from '$lib/utils/filters';
 import { activitiesFiltersSchema } from './filters.schema';
@@ -79,31 +79,5 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		}
 
 		throw error(503, 'No se pudo conectar con el servidor. Verifica que la API esté funcionando.');
-	}
-};
-
-export const actions: Actions = {
-	delete: async ({ request, fetch }) => {
-		// Obtener datos del formulario
-		const formData = await request.formData();
-		const slug = formData.get('slug');
-
-		if (!slug || typeof slug !== 'string') {
-			return fail(400, { error: 'Slug no válido' });
-		}
-
-		// Llamar a la API para eliminar
-		const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${slug}`, {
-			method: 'DELETE'
-		});
-
-		if (!res.ok) {
-			return fail(res.status, {
-				error: `Error al eliminar la actividad (${res.status})`
-			});
-		}
-
-		// Redirigir al listado (sin filtros para simplificar)
-		throw redirect(303, '/activities');
 	}
 };

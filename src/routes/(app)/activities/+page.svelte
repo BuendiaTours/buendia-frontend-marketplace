@@ -631,8 +631,13 @@
 										</a>
 									</li>
 									<li>
-										<form method="POST" action="?/delete">
-											<input type="hidden" name="slug" value={item.slug} />
+										<form
+											method="POST"
+											action={buildUrlWithFilters(
+												`/activities/${item.slug}/delete`,
+												$page.url.searchParams
+											)}
+										>
 											<button
 												type="submit"
 												class="w-full text-left"
