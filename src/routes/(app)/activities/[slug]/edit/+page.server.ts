@@ -18,13 +18,17 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 	const activity: ActivityDetail = await res.json();
 
+	// Mapear desde la estructura real de la API
+	const apiData = activity as any;
+	const firstOption = apiData.options?.[0];
+
 	const form = await superValidate(
 		{
-			title: activity.title,
-			location: activity.location,
-			priceFrom: activity.price.from,
-			currency: activity.price.currency,
-			isFreeTour: Boolean(activity.isFreeTour)
+			title: apiData.main?.title || '',
+			location: apiData.location?.city || '',
+			priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
+			currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
+			isFreeTour: false // No hay campo isFreeTour en la API actual
 		},
 		zod(activityFormSchema)
 	);

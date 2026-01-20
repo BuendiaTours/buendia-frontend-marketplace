@@ -46,6 +46,6 @@
 		"photoswipe": "^5.4.4",
 		"sveltekit-superforms": "^2.29.1",
 		"swiper": "^12.0.3",
-		"zod": "^4.3.5"
+		"zod": "^3.25.76"
 	}
 }

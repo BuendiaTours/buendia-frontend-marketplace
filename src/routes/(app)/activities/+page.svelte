@@ -42,7 +42,8 @@
 		FilterAlt,
 		Map,
 		NavArrowDown,
-		NavArrowUp
+		NavArrowUp,
+		Plus
 	} from 'svelte-iconoir';
 
 	// ============================================================================
@@ -503,14 +504,22 @@
 	</div>
 </div>
 
-{#if items.length}
-	<div class="mt-6 text-sm text-base-content/70">
-		Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
-			1) *
-			pagination.pageSize +
-			1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
-	</div>
+<div class="mt-6 flex items-center justify-between">
+	{#if items.length}
+		<div class="pagenav-info text-sm text-base-content/70">
+			Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
+				1) *
+				pagination.pageSize +
+				1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+		</div>
+	{/if}
+	<button class="btn btn-outline btn-primary">
+		<Plus />
+		<span>Nueva actividad</span>
+	</button>
+</div>
 
+{#if items.length}
 	<div class="mt-6 rounded-box border border-base-content/9 bg-base-100">
 		<table class="table table-zebra table-sm">
 			<thead>
