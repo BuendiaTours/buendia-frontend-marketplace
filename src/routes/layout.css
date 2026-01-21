@@ -89,86 +89,97 @@ textarea[readonly]:focus {
 }
 
 /* ByteMD - Tema Dark adaptado a DaisyUI */
-.bytemd {
-	height: calc(100vh - 200px);
-	border-radius: var(--radius-lg);
-	border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-	background-color: var(--color-base-100) !important;
-	color: var(--color-base-content) !important;
-}
+html[data-theme='dark'] {
+	.bytemd {
+		height: 400px; /* calc(100vh - 200px); */
+		border-radius: var(--radius-sm);
+		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+		background-color: var(--color-base-100) !important;
+		color: var(--color-base-content) !important;
+	}
 
-.bytemd-toolbar {
-	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-	border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-	background-color: var(--color-base-200) !important;
-}
+	.bytemd-toolbar {
+		border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+		background-color: var(--color-base-200) !important;
+	}
 
-.CodeMirror {
-	background-color: var(--color-base-100) !important;
-	color: var(--color-base-content) !important;
-	font-family: 'Iosevka', ui-monospace, monospace;
-}
+	.CodeMirror {
+		background-color: var(--color-base-100) !important;
+		color: var(--color-base-content) !important;
+		font-family: 'Iosevka', ui-monospace, monospace;
+	}
 
-.CodeMirror-gutters {
-	background-color: var(--color-base-200) !important;
-	border-right-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-}
+	.CodeMirror-gutters {
+		background-color: var(--color-base-200) !important;
+		border-right-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+	}
 
-.CodeMirror-linenumber {
-	color: color-mix(in oklch, var(--color-base-content) 50%, transparent) !important;
-}
+	.CodeMirror-linenumber {
+		color: color-mix(in oklch, var(--color-base-content) 50%, transparent) !important;
+	}
 
-.bytemd-split {
-	border-left-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-}
+	.bytemd-split {
+		border-left-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+	}
 
-.bytemd-status {
-	border-top-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-	background-color: var(--color-base-200) !important;
-	color: color-mix(in oklch, var(--color-base-content) 70%, transparent) !important;
-}
+	.bytemd-status {
+		border-top-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+		background-color: var(--color-base-200) !important;
+		color: color-mix(in oklch, var(--color-base-content) 70%, transparent) !important;
+	}
 
-.bytemd-toolbar-icon {
-	transition: all 100ms;
-	color: var(--color-base-content) !important;
-}
+	.bytemd-toolbar-icon {
+		transition: all 100ms;
+		color: var(--color-base-content) !important;
+	}
 
-.bytemd-toolbar-icon:hover {
-	background-color: var(--color-base-300) !important;
-}
+	.bytemd-toolbar-icon:hover {
+		background-color: var(--color-base-300) !important;
+	}
 
-.bytemd-toolbar-icon.bytemd-toolbar-icon-active {
-	background-color: var(--color-primary) !important;
-	color: var(--color-primary-content) !important;
-}
+	.bytemd-toolbar-icon.bytemd-toolbar-icon-active {
+		background-color: var(--color-primary) !important;
+		color: var(--color-primary-content) !important;
+	}
 
-/* Preview de Markdown */
-.bytemd-preview {
-	background-color: var(--color-base-100) !important;
-	color: var(--color-base-content) !important;
-	padding: 1rem;
-}
+	/* Preview de Markdown */
+	.bytemd-preview {
+		background-color: var(--color-base-100) !important;
+		color: var(--color-base-content) !important;
+		padding: 1rem;
+	}
 
-.bytemd-preview a {
-	color: var(--color-primary) !important;
-}
+	.bytemd-preview a {
+		color: var(--color-primary) !important;
+	}
 
-.bytemd-preview code {
-	background-color: var(--color-base-200);
-	color: var(--color-base-content);
-	font-family: 'Iosevka', ui-monospace, monospace;
-	padding: 0.2em 0.4em;
-	border-radius: var(--radius);
-}
+	.bytemd-preview code {
+		background-color: var(--color-base-200);
+		color: var(--color-base-content);
+		font-family: 'Iosevka', ui-monospace, monospace;
+		padding: 0.2em 0.4em;
+		border-radius: var(--radius);
+	}
 
-.bytemd-preview pre {
-	background-color: var(--color-base-200);
-	border: 1px solid color-mix(in oklch, var(--color-base-content) 20%, transparent);
-	border-radius: var(--radius-lg);
-	padding: 1rem;
-}
+	.bytemd-preview pre {
+		background-color: var(--color-base-200);
+		border: 1px solid color-mix(in oklch, var(--color-base-content) 20%, transparent);
+		border-radius: var(--radius-sm);
+		padding: 1rem;
+	}
 
-.bytemd-preview pre code {
-	background-color: transparent;
-	padding: 0;
+	.bytemd-preview pre code {
+		background-color: transparent;
+		padding: 0;
+	}
+
+	/* Ocultar botones específicos del toolbar (code y toc) */
+	/* Code está típicamente en posición 4, toc en posición 11 */
+	.bytemd-toolbar-right .bytemd-toolbar-icon[bytemd-tippy-path='0'],
+	.bytemd-toolbar-right .bytemd-toolbar-icon[bytemd-tippy-path='5'],
+	.bytemd-toolbar-left .bytemd-toolbar-icon[bytemd-tippy-path='6'],
+	.bytemd-toolbar-left .bytemd-toolbar-icon[bytemd-tippy-path='7'] {
+		display: none !important;
+	}
 }

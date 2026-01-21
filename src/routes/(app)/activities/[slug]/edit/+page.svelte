@@ -12,6 +12,7 @@
 
 	import { Editor as MarkdownEditor } from 'bytemd';
 	import gfm from '@bytemd/plugin-gfm';
+	import es from 'bytemd/locales/es.json';
 	import 'bytemd/dist/index.css';
 
 	const plugins = [gfm()];
@@ -117,8 +118,9 @@
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="descriptionFull">Descripcción larga</label>
 			<MarkdownEditor
+				locale={es}
 				value={$form.descriptionFull}
-				{plugins}
+				mode="split"
 				on:change={(e) => {
 					$form.descriptionFull = e.detail.value;
 				}}
