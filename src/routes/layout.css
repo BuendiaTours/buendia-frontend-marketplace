@@ -87,3 +87,28 @@ textarea[readonly]:focus {
 	outline: none;
 	box-shadow: none;
 }
+
+/* ByteMD - Tema Dark adaptado a DaisyUI */
+.bytemd {
+	@apply rounded-lg !border-zinc-600 !bg-zinc-700 !text-white;
+}
+
+.bytemd-toolbar {
+	@apply rounded-t-lg !border-zinc-600 !bg-zinc-600;
+}
+
+.CodeMirror {
+	@apply !bg-zinc-700 !text-white;
+}
+
+.bytemd-split {
+	@apply !border-l-zinc-600;
+}
+
+.bytemd-status {
+	@apply !border-t-zinc-600;
+}
+
+.bytemd-toolbar-icon {
+	@apply transition-all duration-100 hover:!bg-zinc-500;
+}

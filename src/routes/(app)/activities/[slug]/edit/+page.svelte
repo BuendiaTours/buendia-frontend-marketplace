@@ -10,6 +10,12 @@
 	import FormInputField from '$lib/components/form/FormInputField.svelte';
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
 
+	import { Editor as MarkdownEditor } from 'bytemd';
+	import gfm from '@bytemd/plugin-gfm';
+	import 'bytemd/dist/index.css';
+
+	const plugins = [gfm()];
+
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
 
@@ -110,16 +116,14 @@
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="descriptionFull">Descripcción larga</label>
-			<textarea
-				id="descriptionFull"
-				name="descriptionFull"
-				class="textarea min-h-48 w-full font-mono"
-				class:input-error={$errors.descriptionFull}
-				bind:value={$form.descriptionFull}
-			></textarea>
-			{#if $errors.descriptionFull}
-				<span class="text-sm text-error">{$errors.descriptionFull}</span>
-			{/if}
+			<MarkdownEditor
+				value={$form.descriptionFull}
+				{plugins}
+				on:change={(e) => {
+					$form.descriptionFull = e.detail.value;
+				}}
+			/>
+			<FormErrorMsg error={$errors.descriptionFull} />
 		</div>
 
 		<div class="md:col-span-6">
