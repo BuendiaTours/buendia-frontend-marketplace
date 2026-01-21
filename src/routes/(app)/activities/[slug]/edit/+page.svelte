@@ -8,7 +8,7 @@
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 	const { activity } = data;
 
 	const { form, errors, enhance, message } = superForm(data.form);

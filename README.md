@@ -28,6 +28,119 @@ Arrancar el server: `npm run dev -- --open`
   - Swiper (carousels)
   - @internationalized/date (date handling)
 
+## Cómo añadir campos a un formulario
+
+Este proyecto usa **SvelteKit Superforms + Zod** para manejo de formularios con validación. Para añadir un nuevo campo a un formulario existente (ej: activities), debes modificar **3 archivos**:
+
+### 1. Schema de validación (`activity-form.schema.ts`)
+
+Define el campo y sus reglas de validación con Zod:
+
+```typescript
+// src/routes/(app)/activities/activity-form.schema.ts
+export const activityFormSchema = z.object({
+  title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
+  slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(200),
+  // ⬇️ Añadir nuevo campo aquí
+  newField: z.string().min(1, 'Campo requerido'),
+  // ...resto de campos
+});
+```
+
+**Tipos de validación comunes:**
+
+- `z.string()` - Texto
+- `z.number()` - Número
+- `z.boolean()` - Booleano
+- `z.enum(['EUR', 'USD'])` - Opciones limitadas
+- `.optional()` - Campo opcional
+- `.min()`, `.max()` - Longitud/valor mínimo/máximo
+
+### 2. Server load y actions (`+page.server.ts`)
+
+Mapea el campo desde/hacia la API:
+
+```typescript
+// src/routes/(app)/activities/[slug]/edit/+page.server.ts
+
+// En la función load (mapeo API → formulario)
+const form = await superValidate(
+  {
+    title: apiData.main?.title || '',
+    slug: apiData.slug || '',
+    newField: apiData.newField || '', // ⬅️ Añadir aquí
+    // ...resto de campos
+  },
+  zod(activityFormSchema)
+);
+
+// En las actions (mapeo formulario → API)
+body: JSON.stringify({
+  title: form.data.title,
+  slug: form.data.slug,
+  newField: form.data.newField, // ⬅️ Añadir aquí
+  // ...resto de campos
+})
+```
+
+### 3. Vista del formulario (`+page.svelte`)
+
+Renderiza el campo en el HTML:
+
+```svelte
+<!-- src/routes/(app)/activities/[slug]/edit/+page.svelte -->
+
+<div class="md:col-span-12">
+	<label class="label text-sm" for="newField">Nuevo Campo</label>
+	<input
+		type="text"
+		id="newField"
+		name="newField"
+		class="input w-full"
+		class:input-error={$errors.newField}
+		bind:value={$form.newField}
+	/>
+	{#if $errors.newField}
+		<span class="text-sm text-error">{$errors.newField}</span>
+	{/if}
+</div>
+```
+
+**Tipos de campos HTML:**
+
+- `<input type="text">` - Texto simple
+- `<textarea>` - Texto largo (sin atributo `type`)
+- `<input type="number">` - Números
+- `<input type="checkbox" bind:checked={$form.field}>` - Checkbox
+- `<select>` - Dropdown
+- `<input readonly>` - Solo lectura (con patrón cebrado)
+
+### Flujo completo
+
+```
+1. Usuario edita campo en UI
+   ↓
+2. Svelte actualiza $form.newField (bind:value)
+   ↓
+3. Usuario envía formulario
+   ↓
+4. Superforms valida con Zod schema
+   ↓
+5. Si válido: +page.server.ts envía a API
+   ↓
+6. API responde → redirección o error
+```
+
+### Notas importantes
+
+- ✅ El **schema de Zod** es la fuente de verdad para tipos TypeScript
+- ✅ **Superforms** maneja automáticamente: validación, errores, estado del form
+- ✅ Los campos `readonly` tienen estilo especial (franjas cebradas)
+- ✅ Usa `bind:value` para inputs/textarea/select
+- ✅ Usa `bind:checked` para checkboxes
+- ⚠️ Los `<textarea>` NO tienen atributo `type`
+- ⚠️ Cierra `<textarea>` con `></textarea>`, no con `/>`
+
 ## Cosas a explicar en la documentación
 
 - Tailwind
