@@ -182,4 +182,8 @@ html[data-theme='dark'] {
 	.bytemd-toolbar-left .bytemd-toolbar-icon[bytemd-tippy-path='7'] {
 		display: none !important;
 	}
+
+	.bytemd.bytemd-split.bytemd-fullscreen {
+		z-index: 99;
+	}
 }

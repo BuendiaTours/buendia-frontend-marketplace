@@ -7,15 +7,9 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
-	import FormInputField from '$lib/components/form/FormInputField.svelte';
+	import FormTextInput from '$lib/components/form/FormTextInput.svelte';
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
-
-	import { Editor as MarkdownEditor } from 'bytemd';
-	import gfm from '@bytemd/plugin-gfm';
-	import es from 'bytemd/locales/es.json';
-	import 'bytemd/dist/index.css';
-
-	const plugins = [gfm()];
+	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -58,7 +52,7 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormInputField
+		<FormTextInput
 			id="id"
 			label="Id"
 			badge="read only"
@@ -68,7 +62,7 @@
 			wrapperClass="md:col-span-9"
 		/>
 
-		<FormInputField
+		<FormTextInput
 			id="codeRef"
 			label="codeRef"
 			badge="read only"
@@ -78,7 +72,7 @@
 			wrapperClass="md:col-span-3"
 		/>
 
-		<FormInputField
+		<FormTextInput
 			id="title"
 			label="Title"
 			badge="disabled"
@@ -108,25 +102,19 @@
 			<FormErrorMsg error={$errors.slug} />
 		</div>
 
-		<FormInputField
+		<FormTextInput
 			id="descriptionShort"
 			label="Descripcción corta"
 			bind:value={$form.descriptionShort}
 			error={$errors.descriptionShort}
 		/>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="descriptionFull">Descripcción larga</label>
-			<MarkdownEditor
-				locale={es}
-				value={$form.descriptionFull}
-				mode="split"
-				on:change={(e) => {
-					$form.descriptionFull = e.detail.value;
-				}}
-			/>
-			<FormErrorMsg error={$errors.descriptionFull} />
-		</div>
+		<FormTextareaMarkdown
+			id="descriptionFull"
+			label="Descripcción larga"
+			bind:value={$form.descriptionFull}
+			error={$errors.descriptionFull}
+		/>
 
 		<div class="md:col-span-6">
 			<label class="label text-sm" for="location">Ubicación </label>
@@ -143,7 +131,7 @@
 			{/if}
 		</div>
 
-		<FormInputField
+		<FormTextInput
 			id="priceFrom"
 			label="Precio desde"
 			type="number"

@@ -7,7 +7,7 @@
 	 * @example
 	 * ```svelte
 	 * // Input de texto básico
-	 * <FormInputField
+	 * <FormTextInput
 	 *   id="title"
 	 *   label="Título"
 	 *   bind:value={$form.title}
@@ -15,7 +15,7 @@
 	 * />
 	 *
 	 * // Input readonly con badge
-	 * <FormInputField
+	 * <FormTextInput
 	 *   id="id"
 	 *   label="ID"
 	 *   badge="read only"
@@ -25,7 +25,7 @@
 	 * />
 	 *
 	 * // Input numérico con atributos adicionales
-	 * <FormInputField
+	 * <FormTextInput
 	 *   id="price"
 	 *   label="Precio"
 	 *   type="number"
