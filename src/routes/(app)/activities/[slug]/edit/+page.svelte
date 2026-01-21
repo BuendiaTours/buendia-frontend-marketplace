@@ -9,6 +9,7 @@
 	import { Refresh } from 'svelte-iconoir';
 	import FormTextInput from '$lib/components/form/FormTextInput.svelte';
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
+	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -65,20 +66,20 @@
 		<FormTextInput
 			id="codeRef"
 			label="codeRef"
-			badge="read only"
+			badge="disabled"
 			bind:value={$form.codeRef}
 			error={$errors.codeRef}
-			readonly
+			disabled
 			wrapperClass="md:col-span-3"
 		/>
 
 		<FormTextInput
 			id="title"
 			label="Title"
-			badge="disabled"
+			badge="read only"
 			bind:value={$form.title}
 			error={$errors.title}
-			disabled
+			readonly
 		/>
 
 		<div class="md:col-span-12">
@@ -102,18 +103,19 @@
 			<FormErrorMsg error={$errors.slug} />
 		</div>
 
-		<FormTextInput
-			id="descriptionShort"
-			label="Descripcción corta"
-			bind:value={$form.descriptionShort}
-			error={$errors.descriptionShort}
-		/>
-
 		<FormTextareaMarkdown
 			id="descriptionFull"
 			label="Descripcción larga"
 			bind:value={$form.descriptionFull}
 			error={$errors.descriptionFull}
+		/>
+
+		<FormTextarea
+			id="infoImportant"
+			label="Información importante"
+			bind:value={$form.infoImportant}
+			error={$errors.infoImportant}
+			rows="3"
 		/>
 
 		<div class="md:col-span-6">
