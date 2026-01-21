@@ -7,6 +7,8 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
+	import FormInputField from '$lib/components/form/FormInputField.svelte';
+	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -49,62 +51,34 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<div class="md:col-span-9">
-			<label class="label flex justify-between text-sm" for="id">
-				<span>Id</span>
-				<span>read only</span>
-			</label>
-			<input
-				type="text"
-				id="id"
-				name="id"
-				class="input w-full"
-				class:input-error={$errors.id}
-				bind:value={$form.id}
-				readonly
-			/>
-			{#if $errors.id}
-				<span class="label-text-alt text-error">{$errors.id}</span>
-			{/if}
-		</div>
+		<FormInputField
+			id="id"
+			label="Id"
+			badge="read only"
+			bind:value={$form.id}
+			error={$errors.id}
+			readonly
+			wrapperClass="md:col-span-9"
+		/>
 
-		<div class="md:col-span-3">
-			<label class="label flex justify-between text-sm" for="codeRef">
-				<span>codeRef</span>
-				<span>read only</span>
-			</label>
-			<input
-				type="text"
-				id="codeRef"
-				name="codeRef"
-				class="input w-full"
-				class:input-error={$errors.codeRef}
-				bind:value={$form.codeRef}
-				readonly
-			/>
-			{#if $errors.codeRef}
-				<span class="label-text-alt text-error">{$errors.codeRef}</span>
-			{/if}
-		</div>
+		<FormInputField
+			id="codeRef"
+			label="codeRef"
+			badge="read only"
+			bind:value={$form.codeRef}
+			error={$errors.codeRef}
+			readonly
+			wrapperClass="md:col-span-3"
+		/>
 
-		<div class="md:col-span-12">
-			<label class="label flex justify-between text-sm" for="title">
-				<span>Title</span>
-				<span>disabled</span>
-			</label>
-			<input
-				type="text"
-				id="title"
-				name="title"
-				class="input w-full"
-				class:input-error={$errors.title}
-				bind:value={$form.title}
-				disabled
-			/>
-			{#if $errors.title}
-				<span class="label-text-alt text-error">{$errors.title}</span>
-			{/if}
-		</div>
+		<FormInputField
+			id="title"
+			label="Title"
+			badge="disabled"
+			bind:value={$form.title}
+			error={$errors.title}
+			disabled
+		/>
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="slug">Slug</label>
@@ -124,25 +98,15 @@
 					</button>
 				</div>
 			</div>
-			{#if $errors.slug}
-				<span class="text-sm text-error">{$errors.slug}</span>
-			{/if}
+			<FormErrorMsg error={$errors.slug} />
 		</div>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="descriptionShort">Descripcción corta</label>
-			<input
-				type="text"
-				id="descriptionShort"
-				name="descriptionShort"
-				class="input w-full"
-				class:input-error={$errors.descriptionShort}
-				bind:value={$form.descriptionShort}
-			/>
-			{#if $errors.descriptionShort}
-				<span class="label-text-alt text-error">{$errors.descriptionShort}</span>
-			{/if}
-		</div>
+		<FormInputField
+			id="descriptionShort"
+			label="Descripcción corta"
+			bind:value={$form.descriptionShort}
+			error={$errors.descriptionShort}
+		/>
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="descriptionFull">Descripcción larga</label>
@@ -173,22 +137,16 @@
 			{/if}
 		</div>
 
-		<div class="md:col-span-3">
-			<label class="label text-sm" for="priceFrom">Precio desde</label>
-			<input
-				type="number"
-				id="priceFrom"
-				name="priceFrom"
-				class="input w-full"
-				class:input-error={$errors.priceFrom}
-				bind:value={$form.priceFrom}
-				min="0"
-				step="0.01"
-			/>
-			{#if $errors.priceFrom}
-				<span class="text-sm text-error">{$errors.priceFrom}</span>
-			{/if}
-		</div>
+		<FormInputField
+			id="priceFrom"
+			label="Precio desde"
+			type="number"
+			bind:value={$form.priceFrom}
+			error={$errors.priceFrom}
+			min="0"
+			step="0.01"
+			wrapperClass="md:col-span-3"
+		/>
 
 		<div class="md:col-span-3">
 			<label class="label text-sm" for="currency">Moneda</label>
