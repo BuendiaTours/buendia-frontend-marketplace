@@ -90,25 +90,85 @@ textarea[readonly]:focus {
 
 /* ByteMD - Tema Dark adaptado a DaisyUI */
 .bytemd {
-	@apply rounded-lg !border-zinc-600 !bg-zinc-700 !text-white;
+	height: calc(100vh - 200px);
+	border-radius: var(--radius-lg);
+	border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+	background-color: var(--color-base-100) !important;
+	color: var(--color-base-content) !important;
 }
 
 .bytemd-toolbar {
-	@apply rounded-t-lg !border-zinc-600 !bg-zinc-600;
+	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+	border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+	background-color: var(--color-base-200) !important;
 }
 
 .CodeMirror {
-	@apply !bg-zinc-700 !text-white;
+	background-color: var(--color-base-100) !important;
+	color: var(--color-base-content) !important;
+	font-family: 'Iosevka', ui-monospace, monospace;
+}
+
+.CodeMirror-gutters {
+	background-color: var(--color-base-200) !important;
+	border-right-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+}
+
+.CodeMirror-linenumber {
+	color: color-mix(in oklch, var(--color-base-content) 50%, transparent) !important;
 }
 
 .bytemd-split {
-	@apply !border-l-zinc-600;
+	border-left-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
 }
 
 .bytemd-status {
-	@apply !border-t-zinc-600;
+	border-top-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+	background-color: var(--color-base-200) !important;
+	color: color-mix(in oklch, var(--color-base-content) 70%, transparent) !important;
 }
 
 .bytemd-toolbar-icon {
-	@apply transition-all duration-100 hover:!bg-zinc-500;
+	transition: all 100ms;
+	color: var(--color-base-content) !important;
+}
+
+.bytemd-toolbar-icon:hover {
+	background-color: var(--color-base-300) !important;
+}
+
+.bytemd-toolbar-icon.bytemd-toolbar-icon-active {
+	background-color: var(--color-primary) !important;
+	color: var(--color-primary-content) !important;
+}
+
+/* Preview de Markdown */
+.bytemd-preview {
+	background-color: var(--color-base-100) !important;
+	color: var(--color-base-content) !important;
+	padding: 1rem;
+}
+
+.bytemd-preview a {
+	color: var(--color-primary) !important;
+}
+
+.bytemd-preview code {
+	background-color: var(--color-base-200);
+	color: var(--color-base-content);
+	font-family: 'Iosevka', ui-monospace, monospace;
+	padding: 0.2em 0.4em;
+	border-radius: var(--radius);
+}
+
+.bytemd-preview pre {
+	background-color: var(--color-base-200);
+	border: 1px solid color-mix(in oklch, var(--color-base-content) 20%, transparent);
+	border-radius: var(--radius-lg);
+	padding: 1rem;
+}
+
+.bytemd-preview pre code {
+	background-color: transparent;
+	padding: 0;
 }
