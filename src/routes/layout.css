@@ -4,6 +4,7 @@
 
 @plugin 'daisyui';
 
+/* https://github.com/iosevka-webfonts/iosevka/ */
 /* Iosevka Font */
 @font-face {
 	font-family: 'Iosevka';
