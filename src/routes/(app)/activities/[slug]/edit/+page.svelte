@@ -50,7 +50,10 @@
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
 		<div class="md:col-span-9">
-			<label class="label text-sm" for="title">Id</label>
+			<label class="label flex justify-between text-sm" for="id">
+				<span>Id</span>
+				<span>read only</span>
+			</label>
 			<input
 				type="text"
 				id="id"
@@ -66,7 +69,10 @@
 		</div>
 
 		<div class="md:col-span-3">
-			<label class="label text-sm" for="title">CodeRef.</label>
+			<label class="label flex justify-between text-sm" for="codeRef">
+				<span>codeRef</span>
+				<span>read only</span>
+			</label>
 			<input
 				type="text"
 				id="codeRef"
@@ -82,7 +88,10 @@
 		</div>
 
 		<div class="md:col-span-12">
-			<label class="label text-sm" for="title">Título</label>
+			<label class="label flex justify-between text-sm" for="title">
+				<span>Title</span>
+				<span>disabled</span>
+			</label>
 			<input
 				type="text"
 				id="title"
@@ -90,6 +99,7 @@
 				class="input w-full"
 				class:input-error={$errors.title}
 				bind:value={$form.title}
+				disabled
 			/>
 			{#if $errors.title}
 				<span class="label-text-alt text-error">{$errors.title}</span>

@@ -27,3 +27,22 @@ select {
 input:where([type='checkbox']) {
 	background-color: transparent;
 }
+
+input[readonly],
+textarea[readonly] {
+	background-image: repeating-linear-gradient(
+		45deg,
+		var(--color-base-200),
+		var(--color-base-200) 10px,
+		var(--color-base-300) 10px,
+		var(--color-base-300) 20px
+	);
+	cursor: not-allowed;
+	opacity: 0.9;
+}
+
+input[readonly]:focus,
+textarea[readonly]:focus {
+	outline: none;
+	box-shadow: none;
+}
