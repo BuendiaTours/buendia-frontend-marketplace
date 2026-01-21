@@ -118,7 +118,7 @@
 				bind:value={$form.descriptionFull}
 			></textarea>
 			{#if $errors.descriptionFull}
-				<span class="label-text-alt text-error">{$errors.descriptionFull}</span>
+				<span class="text-sm text-error">{$errors.descriptionFull}</span>
 			{/if}
 		</div>
 
