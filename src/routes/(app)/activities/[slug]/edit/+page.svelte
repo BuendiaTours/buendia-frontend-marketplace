@@ -113,7 +113,7 @@
 			<textarea
 				id="descriptionFull"
 				name="descriptionFull"
-				class="textarea min-h-48 w-full"
+				class="textarea min-h-48 w-full font-mono"
 				class:input-error={$errors.descriptionFull}
 				bind:value={$form.descriptionFull}
 			></textarea>
