@@ -1,9 +1,9 @@
 <!-- 
-Componente Calendar reutilizable con Melt-UI y estilos DaisyUI
+Componente MeltCalendar con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/calendar
 
 Ejemplo de uso:
-<CalendarMelt bind:value={dateValue} />
+<MeltCalendar bind:value={dateValue} />
 
 Props disponibles:
 - value: DateValue | undefined (bindable)

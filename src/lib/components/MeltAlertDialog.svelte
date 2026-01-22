@@ -3,12 +3,12 @@ AlertDialog global con Melt-UI
 https://melt-ui.com/docs/builders/dialog
 
 Este componente debe incluirse en el layout principal.
-Usa la función confirm() desde AlertDialogMelt.ts para mostrar diálogos de confirmación.
+Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de confirmación.
 -->
 
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
-	import { setConfirmFunction } from './AlertDialogMelt';
+	import { setConfirmFunction } from './MeltAlertDialog';
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { Cancel } from 'svelte-iconoir';

@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { Accordion } from 'bits-ui';
 </script>
 
 <h1 class="text-xl">Welcome to SvelteKit</h1>

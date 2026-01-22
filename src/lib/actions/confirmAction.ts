@@ -32,7 +32,7 @@
  * - Funciona con botones y enlaces
  */
 
-import { confirm } from '$lib/components/AlertDialogMelt';
+import { confirm } from '$lib/components/MeltAlertDialog';
 
 export interface ConfirmOptions {
 	title?: string;

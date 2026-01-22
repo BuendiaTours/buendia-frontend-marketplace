@@ -21,7 +21,7 @@ Arrancar el server: `npm run dev -- --open`
   - SvelteKit Superforms
   - Zod (schema validation)
 - **UI Components**:
-  - Bits UI (headless components)
+  - Melt UI (headless components)
   - Svelte Iconoir (icons)
 - **Other libraries**:
   - PhotoSwipe (image gallery)

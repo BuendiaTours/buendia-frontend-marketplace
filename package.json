@@ -45,7 +45,6 @@
 		"@bytemd/plugin-gfm": "^1.21.0",
 		"@internationalized/date": "^3.10.1",
 		"@melt-ui/svelte": "^0.86.6",
-		"bits-ui": "^2.15.4",
 		"bytemd": "^1.21.0",
 		"photoswipe": "^5.4.4",
 		"sveltekit-superforms": "2.18.1",

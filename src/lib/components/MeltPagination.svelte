@@ -3,7 +3,7 @@ Componente Pagination con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/pagination
 
 Ejemplo de uso:
-<PaginationMelt count={100} perPage={10} onPageChange={handlePageChange} />
+<MeltPagination count={100} perPage={10} onPageChange={handlePageChange} />
 
 Props disponibles:
 - count: number (total de items)

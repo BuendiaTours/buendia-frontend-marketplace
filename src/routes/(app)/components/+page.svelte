@@ -11,16 +11,16 @@
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
 
 	// Calendar - Probando versión Melt-UI
-	import CalendarMelt from '$lib/components/CalendarMelt.svelte';
+	import MeltCalendar from '$lib/components/MeltCalendar.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
 	function handleCalendarChange(newValue: any) {
-		console.log('📅 Calendar - Fecha seleccionada:', newValue);
-		console.log('📅 Calendar - Fecha formateada:', newValue?.toString());
+		console.log('Calendar value changed:', newValue);
+		value = newValue;
 	}
 
 	// Range calendar - Probando versión Melt-UI
-	import RangeCalendarMelt from '$lib/components/RangeCalendarMelt.svelte';
+	import MeltRangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
 	let rangeValue = $state<DateRange | undefined>({
@@ -71,7 +71,7 @@
 		más sencillos de estilar
 	</p>
 	<p>
-		Los componentes de <a href="https://www.bits-ui.com/docs/introduction">Bits UI</a> son más complejos
+		Los componentes de <a href="https://melt-ui.com/docs/builders/combobox">Melt UI</a> son más complejos
 		siempre pensar si es necesario integrarlos, normalmente requiere más estilado y usan JS
 	</p>
 </div>
@@ -236,7 +236,7 @@
 <h1>Ejemplo de Calendar de melt-ui</h1>
 <p class="mt-2 text-sm opacity-70">Selecciona una fecha y revisa la consola del navegador</p>
 
-<CalendarMelt bind:value onValueChange={handleCalendarChange} />
+<MeltCalendar bind:value onValueChange={handleCalendarChange} />
 
 <hr />
 
@@ -245,7 +245,7 @@
 	Selecciona un rango de fechas y revisa la consola del navegador
 </p>
 
-<RangeCalendarMelt
+<MeltRangeCalendar
 	bind:value={rangeValue}
 	onValueChange={handleRangeCalendarChange}
 	numberOfMonths={2}

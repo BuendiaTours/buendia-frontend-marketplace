@@ -1,9 +1,9 @@
 <!-- 
-Componente RangeCalendar reutilizable con Melt-UI y estilos DaisyUI
+Componente MeltRangeCalendar reutilizable con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/range-calendar
 
 Ejemplo de uso:
-<RangeCalendarMelt bind:value={rangeValue} />
+<MeltRangeCalendar bind:value={rangeValue} />
 
 Props disponibles:
 - value: DateRange | undefined (bindable)

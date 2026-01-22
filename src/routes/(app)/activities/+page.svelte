@@ -28,9 +28,9 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Components
-	import Pagination from '$lib/components/PaginationMelt.svelte';
+	import Pagination from '$lib/components/MeltPagination.svelte';
 	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
-	import RangeCalendar from '$lib/components/RangeCalendarMelt.svelte';
+	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
 	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';

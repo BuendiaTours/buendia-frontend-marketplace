@@ -9,7 +9,7 @@
 	import 'swiper/css/scrollbar';
 
 	// Components
-	import AlertDialog from '$lib/components/AlertDialogMelt.svelte';
+	import AlertDialog from '$lib/components/MeltAlertDialog.svelte';
 	import LayoutAlertBox from '$lib/components/LayoutAlertBox.svelte';
 
 	// Partials o elementos reutilizables

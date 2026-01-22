@@ -43,7 +43,7 @@ This project is a SvelteKit application for a REST API frontend.
 
 ## UI Components & Libraries
 
-- **Bits UI**: Headless components (Calendar, ComboBox, etc.)
+- **Melt UI**: Headless components (Calendar, ComboBox, etc.)
 - **Svelte Iconoir**: Icon library
 - **PhotoSwipe**: Image galleries
 - **Swiper**: Carousels and sliders
