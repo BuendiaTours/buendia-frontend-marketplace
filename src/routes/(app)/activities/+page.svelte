@@ -23,6 +23,9 @@
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
+	// i18n
+	import { t } from '$lib/i18n';
+
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
 	import { confirmAction } from '$lib/actions/confirmAction';
@@ -564,7 +567,7 @@
 	{/if}
 	<button class="btn btn-outline btn-primary">
 		<Plus />
-		<span>Nueva actividad</span>
+		<span>{$t.activities.newActivity}</span>
 	</button>
 </div>
 
