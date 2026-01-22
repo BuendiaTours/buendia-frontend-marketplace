@@ -24,7 +24,7 @@
 	import { CalendarDate } from '@internationalized/date';
 
 	// i18n
-	import { t } from '$lib/i18n';
+	import * as m from '$paraglide/messages';
 
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
@@ -567,7 +567,7 @@
 	{/if}
 	<button class="btn btn-outline btn-primary">
 		<Plus />
-		<span>{$t.activities.newActivity}</span>
+		<span>{m.activities_newActivity()}</span>
 	</button>
 </div>
 

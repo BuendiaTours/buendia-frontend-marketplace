@@ -49,6 +49,14 @@ This project is a SvelteKit application for a REST API frontend.
 - **Swiper**: Carousels and sliders
 - **@internationalized/date**: Date handling
 
+## Internationalization (i18n)
+
+- **Paraglide JS**: Type-safe i18n with compiled translations
+- Translations in `/messages/{locale}.json`
+- Import: `import * as m from '$paraglide/messages'`
+- Usage: `{m.activities_newActivity()}`
+- See `/docs/i18n-paraglide.md` for full documentation
+
 ## UI Conventions
 
 - **Tables**: Basic HTML `<table>` + Tailwind (no heavy table libraries)
