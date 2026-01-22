@@ -62,6 +62,8 @@
 			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</label>
+	<!-- Hidden input para enviar el valor en el formulario -->
+	<input type="hidden" name={id} {id} bind:value />
 	<MarkdownEditor locale={es} {value} {mode} on:change={handleChange} />
 	<FormErrorMsg {error} />
 </div>
