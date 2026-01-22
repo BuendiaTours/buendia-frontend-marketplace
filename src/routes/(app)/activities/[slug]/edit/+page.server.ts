@@ -33,7 +33,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			location: apiData.location?.city || '',
 			priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
 			currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
-			isFreeTour: false
+			isFreeTour: false,
+			tags: apiData.tags || []
 		},
 		zod(activityFormSchema)
 	);
@@ -64,7 +65,8 @@ export const actions: Actions = {
 				city: form.data.location,
 				priceFrom: form.data.priceFrom,
 				currency: form.data.currency,
-				isFreeTour: form.data.isFreeTour ? 1 : 0
+				isFreeTour: form.data.isFreeTour ? 1 : 0,
+				tags: form.data.tags
 			})
 		});
 

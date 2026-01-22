@@ -14,7 +14,15 @@ export const activityFormSchema = z.object({
 	location: z.string().min(2, 'La ubicación debe tener al menos 2 caracteres'),
 	priceFrom: z.number().min(0, 'El precio debe ser mayor o igual a 0'),
 	currency: z.enum(['EUR', 'USD', 'GBP']),
-	isFreeTour: z.boolean()
+	isFreeTour: z.boolean(),
+	tags: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
+		.default([])
 });
 
 export type ActivityFormSchema = z.infer<typeof activityFormSchema>;

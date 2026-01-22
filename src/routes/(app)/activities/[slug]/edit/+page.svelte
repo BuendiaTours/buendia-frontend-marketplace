@@ -11,16 +11,23 @@
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
+	import Tag from '$lib/components/Tag.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
 
-	const { form, errors, enhance, message } = superForm(data.form);
+	const { form, errors, enhance, message } = superForm(data.form, {
+		dataType: 'json'
+	});
 
 	function generateSlug() {
 		if ($form.title) {
 			$form.slug = slugify($form.title);
 		}
+	}
+
+	function removeTag(index: number) {
+		$form.tags = $form.tags.filter((_, i) => i !== index);
 	}
 </script>
 
@@ -81,6 +88,31 @@
 			error={$errors.title}
 			readonly
 		/>
+
+		<div class="md:col-span-12">
+			<span class="label text-sm">Tags</span>
+			<div class="flex flex-wrap gap-2">
+				{#if $form.tags.length === 0}
+					<span class="text-sm text-base-content/50">No hay tags asignados</span>
+				{:else}
+					{#each $form.tags as tag, i}
+						<Tag
+							name="tags[{i}][id]"
+							value={tag.id}
+							class="badge-primary"
+							removable
+							onremove={() => removeTag(i)}
+						>
+							{tag.name}
+							<input type="hidden" name="tags[{i}][name]" value={tag.name} />
+						</Tag>
+					{/each}
+				{/if}
+			</div>
+			{#if $errors.tags?._errors}
+				<p class="mt-1 text-sm text-error">{$errors.tags._errors[0]}</p>
+			{/if}
+		</div>
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="slug">Slug</label>

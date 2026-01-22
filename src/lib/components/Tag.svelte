@@ -1,0 +1,71 @@
+<!--
+@component
+Tag - Componente simple de tag/badge basado en DaisyUI
+
+## Ejemplos de uso:
+
+```svelte
+<Tag>Svelte</Tag>
+<Tag class="badge-primary">TypeScript</Tag>
+<Tag class="badge-success badge-lg">Large Success</Tag>
+<Tag class="badge-info badge-outline">Info Outline</Tag>
+<Tag name="tags[]" value="1" class="badge-secondary" removable onremove={() => console.log('removed')}>Form Tag</Tag>
+<Tag class="badge-primary" removable onremove={() => console.log('removed')}>Removable</Tag>
+```
+
+## Props:
+- `name` (string): Nombre del input hidden
+- `value` (string): Valor del input hidden
+- `class` (string): Clases de DaisyUI (badge-primary, badge-lg, badge-outline, etc.)
+- `removable` (boolean): Mostrar botón X para eliminar
+- `onremove` (() => void): Callback cuando se elimina
+
+Ver clases disponibles: https://daisyui.com/components/badge/
+-->
+
+<script lang="ts">
+	import { Cancel } from 'svelte-iconoir';
+
+	let {
+		name = '',
+		value = '',
+		class: className = '',
+		removable = false,
+		onremove = () => {},
+		children
+	}: {
+		name?: string;
+		value?: string;
+		class?: string;
+		removable?: boolean;
+		onremove?: () => void;
+		children?: import('svelte').Snippet;
+	} = $props();
+
+	function handleRemove(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		onremove();
+	}
+</script>
+
+<div class="badge {className} gap-1 rounded-md">
+	{#if children}
+		{@render children()}
+	{/if}
+
+	{#if name && value}
+		<input type="hidden" {name} {value} />
+	{/if}
+
+	{#if removable}
+		<button
+			type="button"
+			onclick={handleRemove}
+			class="btn -mr-2 btn-square h-4 min-h-4 w-4 p-0 btn-ghost btn-xs"
+			aria-label="Remove tag"
+		>
+			<Cancel class="h-3 w-3" />
+		</button>
+	{/if}
+</div>
