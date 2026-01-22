@@ -28,12 +28,11 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Components
-	import Pagination from '$lib/components/Pagination.svelte';
+	import Pagination from '$lib/components/PaginationMelt.svelte';
 	import ComboBox from '$lib/components/ComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendarMelt.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
-	import { Popover } from 'bits-ui';
-	import { createDialog, melt } from '@melt-ui/svelte';
+	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
 	// Icons
@@ -315,6 +314,23 @@
 		forceVisible: true
 	});
 
+	// Popover de Melt-UI para filtro de fechas
+	const {
+		elements: {
+			trigger: dateRangeTrigger,
+			content: dateRangeContent,
+			arrow: dateRangeArrow,
+			close: dateRangeClose
+		},
+		states: { open: dateRangePopoverOpen }
+	} = createPopover({
+		forceVisible: true,
+		positioning: {
+			placement: 'bottom-start',
+			gutter: 4
+		}
+	});
+
 	// ============================================================================
 	// TABLA Y PAGINACIÓN
 	// ============================================================================
@@ -359,17 +375,17 @@
 <div
 	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
 >
-	<Popover.Root>
-		<div class="tooltip" data-tip={dateRangeTooltip}>
-			<Popover.Trigger class="btn btn-square">
-				<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
-			</Popover.Trigger>
-		</div>
-		<Popover.Content
-			side="bottom"
-			align="start"
-			alignOffset={-10}
-			class="z-50 mt-1 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
+	<div class="tooltip" data-tip={dateRangeTooltip}>
+		<button use:melt={$dateRangeTrigger} class="btn btn-square">
+			<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
+		</button>
+	</div>
+
+	{#if $dateRangePopoverOpen}
+		<div
+			use:melt={$dateRangeContent}
+			transition:fade={{ duration: 100 }}
+			class="z-50 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
 		>
 			<div class="flex flex-col gap-2">
 				<div class="flex gap-2">
@@ -409,8 +425,8 @@
 					{/key}
 				</div>
 			</div>
-		</Popover.Content>
-	</Popover.Root>
+		</div>
+	{/if}
 
 	<label class="label">
 		<input
