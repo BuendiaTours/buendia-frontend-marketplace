@@ -32,7 +32,9 @@
 	import ComboBox from '$lib/components/ComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendarMelt.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
-	import { Popover, Dialog } from 'bits-ui';
+	import { Popover } from 'bits-ui';
+	import { createDialog, melt } from '@melt-ui/svelte';
+	import { fade, scale } from 'svelte/transition';
 
 	// Icons
 	import {
@@ -255,8 +257,6 @@
 	// FILTROS AVANZADOS
 	// ============================================================================
 
-	let advancedFiltersOpen = $state(false);
-
 	const advancedFiltersConfig = [
 		{ key: 'kidsFreeTour', label: 'Niños gratis' },
 		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
@@ -288,7 +288,7 @@
 			patch[filter.key] = advancedFilters[filter.key] || (null as any);
 		});
 		applyFilterPatch(patch);
-		advancedFiltersOpen = false;
+		advancedFiltersOpenState.set(false);
 	}
 
 	function handleClearAdvancedFilters() {
@@ -298,6 +298,22 @@
 		});
 		applyFilterPatch(patch);
 	}
+
+	// Dialog de Melt-UI para filtros avanzados
+	const {
+		elements: {
+			trigger: advancedFiltersTrigger,
+			overlay: advancedFiltersOverlay,
+			content: advancedFiltersContent,
+			title: advancedFiltersTitle,
+			description: advancedFiltersDescription,
+			close: advancedFiltersClose,
+			portalled: advancedFiltersPortalled
+		},
+		states: { open: advancedFiltersOpenState }
+	} = createDialog({
+		forceVisible: true
+	});
 
 	// ============================================================================
 	// TABLA Y PAGINACIÓN
@@ -437,33 +453,44 @@
 	</select>
 
 	<div class="ml-auto flex items-center gap-2">
-		<Dialog.Root bind:open={advancedFiltersOpen}>
-			<div
-				class="tooltip"
-				data-tip={hasAdvancedFilters
-					? `Filtros avanzados (${activeAdvancedFiltersCount})`
-					: 'Filtros avanzados'}
-			>
-				<Dialog.Trigger class="btn btn-square">
-					<FilterAlt class={hasAdvancedFilters ? 'text-success' : 'text-base-content/60'} />
-				</Dialog.Trigger>
-			</div>
+		<div
+			class="tooltip"
+			data-tip={hasAdvancedFilters
+				? `Filtros avanzados (${activeAdvancedFiltersCount})`
+				: 'Filtros avanzados'}
+		>
+			<button use:melt={$advancedFiltersTrigger} class="btn btn-square">
+				<FilterAlt class={hasAdvancedFilters ? 'text-success' : 'text-base-content/60'} />
+			</button>
+		</div>
 
-			<Dialog.Portal>
-				<Dialog.Overlay class="fixed inset-0 z-50 bg-black/60" />
-				<Dialog.Content
+		{#if $advancedFiltersOpenState}
+			<div use:melt={$advancedFiltersPortalled}>
+				<div
+					use:melt={$advancedFiltersOverlay}
+					class="fixed inset-0 z-50 bg-black/60"
+					transition:fade={{ duration: 150 }}
+				></div>
+				<div
+					use:melt={$advancedFiltersContent}
 					class="fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-content/10 bg-base-100 p-6 shadow-xl"
+					transition:scale={{ duration: 150, start: 0.95 }}
 				>
 					<div class="mb-4 flex items-start justify-between">
-						<Dialog.Title class="text-xl font-semibold">Filtros avanzados</Dialog.Title>
-						<Dialog.Close class="btn -mt-4 -mr-4 btn-square btn-ghost btn-sm">
+						<h2 use:melt={$advancedFiltersTitle} class="text-xl font-semibold">
+							Filtros avanzados
+						</h2>
+						<button
+							use:melt={$advancedFiltersClose}
+							class="btn -mt-4 -mr-4 btn-square btn-ghost btn-sm"
+						>
 							<Cancel />
-						</Dialog.Close>
+						</button>
 					</div>
 
-					<Dialog.Description class="mb-6 text-sm text-base-content/70">
+					<p use:melt={$advancedFiltersDescription} class="mb-6 text-sm text-base-content/70">
 						Selecciona las características adicionales que deseas filtrar
-					</Dialog.Description>
+					</p>
 
 					<div class="space-y-4">
 						{#each advancedFiltersConfig as filter}
@@ -486,14 +513,16 @@
 						>
 							Limpiar filtros
 						</button>
-						<Dialog.Close class="btn ml-auto btn-ghost">Cancelar</Dialog.Close>
+						<button use:melt={$advancedFiltersClose} class="btn ml-auto btn-ghost">
+							Cancelar
+						</button>
 						<button class="btn btn-outline btn-primary" onclick={handleAdvancedFiltersApply}>
 							Aplicar filtros
 						</button>
 					</div>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
+				</div>
+			</div>
+		{/if}
 
 		<div class="tooltip" data-tip="Limpiar todos los filtros">
 			<button
