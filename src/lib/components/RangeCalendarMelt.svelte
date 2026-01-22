@@ -41,25 +41,13 @@ Props disponibles:
 		...(value && { defaultValue: value }),
 		locale: 'es-ES',
 		numberOfMonths,
-		weekStartsOn: 1,
+		weekStartsOn: 0,
 		fixedWeeks: true,
 		onValueChange: ({ next }) => {
 			value = next;
 			onValueChange?.(next);
 			return next;
 		}
-	});
-
-	// Fix: Reordenar weekdays correctamente cuando weekStartsOn es 1
-	// Melt-UI tiene un bug que desordena los días con locale es-ES + weekStartsOn: 1
-	const fixedWeekdays = $derived.by(() => {
-		const days = $weekdays;
-		// Si los días están desordenados (empieza con M en lugar de L), rotar
-		if (days.length === 7 && days[0].startsWith('M')) {
-			// Mover el último elemento (L) al principio
-			return [...days.slice(-1), ...days.slice(0, -1)];
-		}
-		return days;
 	});
 
 	// Sincronizar value externo con el calendario
@@ -98,7 +86,7 @@ Props disponibles:
 			<table use:melt={$grid} class="w-full border-collapse space-y-1 select-none">
 				<thead>
 					<tr class="mb-2 flex w-full justify-between">
-						{#each fixedWeekdays as day}
+						{#each $weekdays as day}
 							<th class="w-10 text-xs font-semibold opacity-60">
 								<div>{day.slice(0, 2)}</div>
 							</th>
