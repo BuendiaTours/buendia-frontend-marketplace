@@ -32,7 +32,7 @@
  * - Funciona con botones y enlaces
  */
 
-import { confirm } from '$lib/components/AlertDialog';
+import { confirm } from '$lib/components/AlertDialogMelt';
 
 export interface ConfirmOptions {
 	title?: string;
@@ -68,7 +68,14 @@ export async function onConfirm(e: MouseEvent, options?: ConfirmOptions): Promis
 		} else if (target.tagName === 'BUTTON') {
 			const form = target.closest('form');
 			if (form) {
-				form.submit();
+				// Usar requestSubmit() en lugar de submit() para disparar el evento submit
+				// y permitir validaciones HTML5
+				if (form.requestSubmit) {
+					form.requestSubmit();
+				} else {
+					// Fallback para navegadores antiguos
+					form.submit();
+				}
 			}
 		}
 		return true;

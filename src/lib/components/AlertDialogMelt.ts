@@ -1,4 +1,4 @@
-// Helper para usar el AlertDialog desde cualquier parte de la aplicación
+// Helper para usar el AlertDialogMelt desde cualquier parte de la aplicación
 
 type ConfirmOptions = {
 	title?: string;
@@ -8,7 +8,7 @@ type ConfirmOptions = {
 	danger?: boolean;
 };
 
-// Esta función será inyectada por el componente AlertDialog
+// Esta función será inyectada por el componente AlertDialogMelt
 let confirmFn: ((opts: ConfirmOptions) => Promise<boolean>) | null = null;
 
 export function setConfirmFunction(fn: (opts: ConfirmOptions) => Promise<boolean>) {
@@ -17,7 +17,7 @@ export function setConfirmFunction(fn: (opts: ConfirmOptions) => Promise<boolean
 
 export function confirm(opts: ConfirmOptions): Promise<boolean> {
 	if (!confirmFn) {
-		throw new Error('AlertDialog no está montado. Asegúrate de incluirlo en tu layout.');
+		throw new Error('AlertDialogMelt no está montado. Asegúrate de incluirlo en tu layout.');
 	}
 	return confirmFn(opts);
 }
