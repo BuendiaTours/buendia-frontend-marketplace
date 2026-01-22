@@ -10,8 +10,8 @@
 	import { getLocalTimeZone, today } from '@internationalized/date';
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
 
-	// Calendar
-	import Calendar from '$lib/components/Calendar.svelte';
+	// Calendar - Probando versión Melt-UI
+	import CalendarMelt from '$lib/components/CalendarMelt.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
 	function handleCalendarChange(newValue: any) {
@@ -19,9 +19,10 @@
 		console.log('📅 Calendar - Fecha formateada:', newValue?.toString());
 	}
 
-	// Range calendar
-	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
-	import type { DateRange } from 'bits-ui';
+	// Range calendar - Probando versión Melt-UI
+	import RangeCalendarMelt from '$lib/components/RangeCalendarMelt.svelte';
+	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
+	type DateRange = CreateRangeCalendarProps['defaultValue'];
 	let rangeValue = $state<DateRange | undefined>({
 		start: today(getLocalTimeZone()),
 		end: today(getLocalTimeZone()).add({ days: 7 })
@@ -96,12 +97,7 @@
 
 <hr />
 
-<p>Ejemplo de calendar de Bit UI</p>
-<Calendar bind:value />
-
-<hr />
-
-<p>Ejemplo de importción de iconos de iconoir</p>
+<p>Ejemplo de importación de iconos de iconoir</p>
 <Activity />
 <BubbleStar />
 <Camera />
@@ -237,19 +233,19 @@
 
 <hr />
 
-<h1>Ejemplo de Calendar de bits-ui</h1>
+<h1>Ejemplo de Calendar de melt-ui</h1>
 <p class="mt-2 text-sm opacity-70">Selecciona una fecha y revisa la consola del navegador</p>
 
-<Calendar bind:value onValueChange={handleCalendarChange} />
+<CalendarMelt bind:value onValueChange={handleCalendarChange} />
 
 <hr />
 
-<h1>Ejemplo de RangeCalendar de bits-ui</h1>
+<h1>Ejemplo de RangeCalendar de melt-ui</h1>
 <p class="mt-2 text-sm opacity-70">
 	Selecciona un rango de fechas y revisa la consola del navegador
 </p>
 
-<RangeCalendar
+<RangeCalendarMelt
 	bind:value={rangeValue}
 	onValueChange={handleRangeCalendarChange}
 	numberOfMonths={2}

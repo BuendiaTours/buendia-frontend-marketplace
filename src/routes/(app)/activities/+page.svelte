@@ -6,7 +6,8 @@
 	// Types
 	import type { ActivityListItem, Column, Location } from '$lib/types';
 	import type { ActivitiesFilters } from './filters.schema';
-	import type { DateRange } from 'bits-ui';
+	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
+	type DateRange = CreateRangeCalendarProps['defaultValue'];
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
@@ -29,7 +30,7 @@
 	// Components
 	import Pagination from '$lib/components/Pagination.svelte';
 	import ComboBox from '$lib/components/ComboBox.svelte';
-	import RangeCalendar from '$lib/components/RangeCalendar.svelte';
+	import RangeCalendar from '$lib/components/RangeCalendarMelt.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
 	import { Popover, Dialog } from 'bits-ui';
 
@@ -383,11 +384,13 @@
 					</button>
 				</div>
 				<div>
-					<RangeCalendar
-						bind:value={dateRangeFilter}
-						onValueChange={handleDateRangeChange}
-						numberOfMonths={2}
-					/>
+					{#key dateRangeFilter}
+						<RangeCalendar
+							bind:value={dateRangeFilter}
+							onValueChange={handleDateRangeChange}
+							numberOfMonths={2}
+						/>
+					{/key}
 				</div>
 			</div>
 		</Popover.Content>
