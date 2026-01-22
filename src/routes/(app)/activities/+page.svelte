@@ -29,7 +29,7 @@
 
 	// Components
 	import Pagination from '$lib/components/PaginationMelt.svelte';
-	import ComboBox from '$lib/components/ComboBox.svelte';
+	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 	import RangeCalendar from '$lib/components/RangeCalendarMelt.svelte';
 	import StarRating from '$lib/components/StarRating.svelte';
 	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
@@ -387,6 +387,7 @@
 			transition:fade={{ duration: 100 }}
 			class="z-50 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
 		>
+			<div use:melt={$dateRangeArrow} class="arrow"></div>
 			<div class="flex flex-col gap-2">
 				<div class="flex gap-2">
 					<button
@@ -440,7 +441,7 @@
 
 	<div class="flex gap-2">
 		{#key locationComboKey}
-			<ComboBox
+			<MeltComboBox
 				items={locations}
 				placeholder="Filter by locations"
 				name="filterLocation"
@@ -714,3 +715,16 @@
 {:else}
 	<p class="text-md mt-6 text-base-content/70">No hay actividades disponibles.</p>
 {/if}
+
+<style>
+	.arrow {
+		position: absolute;
+		background-color: hsl(var(--b1));
+		width: 10px;
+		height: 10px;
+		transform: rotate(45deg);
+		border-top: 1px solid hsl(var(--bc) / 0.1);
+		border-left: 1px solid hsl(var(--bc) / 0.1);
+		z-index: -1;
+	}
+</style>
