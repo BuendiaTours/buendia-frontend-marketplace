@@ -136,7 +136,7 @@ Crea `/messages/en.json` con las mismas claves:
 }
 ```
 
-### 3. Cambiar el idioma (cuando implementes selector)
+### 3. Cambiar el idioma (cuando se implemente un selector)
 
 ```typescript
 import { setLanguageTag } from '$paraglide/runtime';
@@ -147,20 +147,6 @@ setLanguageTag('en');
 // Cambiar a español
 setLanguageTag('es');
 ```
-
-## Ventajas sobre sistema simple
-
-| Característica    | Sistema Simple            | Paraglide          |
-| ----------------- | ------------------------- | ------------------ |
-| Type-safety       | ✅ Parcial                | ✅ Completo        |
-| Rendimiento       | ⚠️ Runtime                | ✅ Compilado       |
-| Tree-shaking      | ❌ No                     | ✅ Sí              |
-| Autocompletado    | ✅ Sí                     | ✅ Sí              |
-| Herramientas      | ❌ No                     | ✅ Inlang Editor   |
-| Rutas localizadas | ❌ No                     | ✅ Sí (opcional)   |
-| Bundle size       | ⚠️ Todas las traducciones | ✅ Solo las usadas |
-
-## Herramientas de desarrollo
 
 ### Sherlock VSCode Extension
 

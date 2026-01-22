@@ -19,6 +19,9 @@
 		value = newValue;
 	}
 
+	// Tag
+	import Tag from '$lib/components/Tag.svelte';
+
 	// Range calendar - Probando versión Melt-UI
 	import MeltRangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
@@ -75,6 +78,27 @@
 		siempre pensar si es necesario integrarlos, normalmente requiere más estilado y usan JS
 	</p>
 </div>
+
+<hr />
+
+<h1>Ejemplo de tags</h1>
+
+<Tag>Svelte</Tag>
+<Tag class="badge-primary">TypeScript</Tag>
+<Tag class="badge-dash badge-lg badge-success">Large Success</Tag>
+<Tag class="badge-outline badge-info">Info Outline</Tag>
+<Tag
+	name="tags[]"
+	value="1"
+	class="badge-outline badge-secondary"
+	removable
+	onremove={() => console.log('removed')}>Form Tag</Tag
+>
+<Tag class="badge-primary" removable onremove={() => console.log('removed')}>Removable</Tag>
+
+<hr />
+
+<h1>Ejemplo accordion sencillo de DaisyUI</h1>
 
 <details class="collapse border border-base-300 bg-base-100" name="my-accordion-det-1" open>
 	<summary class="collapse-title font-semibold">How do I create an account?</summary>
