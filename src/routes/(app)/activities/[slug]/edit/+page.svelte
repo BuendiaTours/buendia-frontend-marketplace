@@ -11,8 +11,7 @@
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
-	import Tag from '$lib/components/Tag.svelte';
-	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
+	import FormTagManager from '$lib/components/form/FormTagManager.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags } = data;
@@ -25,33 +24,6 @@
 		if ($form.title) {
 			$form.slug = slugify($form.title);
 		}
-	}
-
-	function removeTag(index: number) {
-		$form.tags = $form.tags.filter((_, i) => i !== index);
-	}
-
-	const tagsForCombobox = $derived(
-		availableTags?.map((tag: any) => ({
-			value: tag.id,
-			label: tag.name
-		})) || []
-	);
-
-	let selectedTagId = $state<string | undefined>(undefined);
-
-	function handleTagSelect(tagId: string | undefined) {
-		if (!tagId) return;
-
-		const tagExists = $form.tags.some((t) => t.id === tagId);
-		if (tagExists) return;
-
-		const selectedTag = availableTags?.find((t: any) => t.id === tagId);
-		if (selectedTag) {
-			$form.tags = [...$form.tags, { id: selectedTag.id, name: selectedTag.name }];
-		}
-
-		selectedTagId = undefined;
 	}
 </script>
 
@@ -113,41 +85,13 @@
 			readonly
 		/>
 
-		<div class="md:col-span-12">
-			<label class="label justify-between text-sm" for="tags">
-				<span>Tags</span>
-			</label>
-
-			<MeltComboBox
-				items={tagsForCombobox}
-				type="single"
-				placeholder="Añade un tag"
-				bind:value={selectedTagId}
-				onValueChange={handleTagSelect}
-			/>
-
-			<div class="mt-4 flex flex-wrap gap-2">
-				{#if $form.tags.length === 0}
-					<span class="text-sm text-base-content/50">No hay tags asignados</span>
-				{:else}
-					{#each $form.tags as tag, i}
-						<Tag
-							name="tags[{i}][id]"
-							value={tag.id}
-							class="badge-primary"
-							removable
-							onremove={() => removeTag(i)}
-						>
-							{tag.name}
-							<input type="hidden" name="tags[{i}][name]" value={tag.name} />
-						</Tag>
-					{/each}
-				{/if}
-			</div>
-			{#if $errors.tags?._errors}
-				<p class="mt-1 text-sm text-error">{$errors.tags._errors[0]}</p>
-			{/if}
-		</div>
+		<FormTagManager
+			id="tags"
+			label="Tags"
+			bind:tags={$form.tags}
+			{availableTags}
+			error={$errors.tags?._errors}
+		/>
 
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="slug"><span>Slug</span></label>

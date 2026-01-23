@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		});
 
 		return {
-			items: response.data || [],
+			items: response.items || [],
 			pagination: response.pagination,
 			filters,
 			sort: null

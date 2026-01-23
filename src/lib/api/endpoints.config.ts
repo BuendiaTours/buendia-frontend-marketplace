@@ -1,6 +1,6 @@
 export const BASE_PATHS = {
 	activities: '/activities',
-	destinations: '/destinations',
+	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
 	users: '/users',
@@ -16,10 +16,10 @@ export const ACTIVITIES_ENDPOINTS = {
 	patch: (slug: string) => `${BASE_PATHS.activities}/${slug}`
 } as const;
 
-export const DESTINATIONS_ENDPOINTS = {
-	list: () => BASE_PATHS.destinations,
-	detail: (id: string) => `${BASE_PATHS.destinations}/${id}`,
-	search: () => `${BASE_PATHS.destinations}/search`
+export const LOCATIONS_ENDPOINTS = {
+	list: () => BASE_PATHS.locations,
+	detail: (id: string) => `${BASE_PATHS.locations}/${id}`,
+	search: () => `${BASE_PATHS.locations}/search`
 } as const;
 
 export const CATEGORIES_ENDPOINTS = {
@@ -41,7 +41,7 @@ export const AUTH_ENDPOINTS = {
 
 export const API_ENDPOINTS = {
 	activities: ACTIVITIES_ENDPOINTS,
-	destinations: DESTINATIONS_ENDPOINTS,
+	locations: LOCATIONS_ENDPOINTS,
 	categories: CATEGORIES_ENDPOINTS,
 	tags: TAGS_ENDPOINTS,
 	auth: AUTH_ENDPOINTS
