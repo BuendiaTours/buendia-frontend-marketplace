@@ -34,7 +34,6 @@
 	import Pagination from '$lib/components/MeltPagination.svelte';
 	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
-	import StarRating from '$lib/components/StarRating.svelte';
 	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
@@ -88,7 +87,8 @@
 		try {
 			const response = await fetch(`${PUBLIC_API_BASE_URL}/activities/locations`);
 			if (response.ok) {
-				const data: Location[] = await response.json();
+				const json = await response.json();
+				const data: Location[] = json.data || json;
 				locations = data.map((loc) => ({
 					value: loc.slug,
 					label: loc.name
@@ -339,10 +339,10 @@
 	// ============================================================================
 
 	const columns: Column<ActivityListItem>[] = [
+		{ key: 'codeRef', title: 'Código', sortable: true },
 		{ key: 'title', title: 'Título', sortable: true },
-		{ key: 'location', title: 'Ubicación', sortable: true },
-		{ key: 'rating', title: 'Valoración', sortable: true },
-		{ key: 'isFreeTour', title: 'Free Tour', sortable: true }
+		{ key: 'status', title: 'Estado', sortable: true },
+		{ key: 'kind', title: 'Tipo', sortable: true }
 	];
 
 	function handlePageChange(newPage: number) {
@@ -637,20 +637,25 @@
 										{item[col.key]}
 									</a>
 								</td>
-							{:else if col.key === 'rating'}
+							{:else if col.key === 'status'}
 								<td>
-									<div class="flex items-center gap-2">
-										<StarRating value={item.rating} />
-										{#if item.rating !== null}
-											<span class="text-xs">{item.rating.toFixed(1)}</span>
-										{/if}
-									</div>
+									<span
+										class="badge badge-sm"
+										class:badge-success={item.status === 'PUBLISHED'}
+										class:badge-warning={item.status === 'DRAFT'}
+									>
+										{item.status}
+									</span>
 								</td>
-							{:else if col.key === 'isFreeTour'}
+							{:else if col.key === 'kind'}
 								<td>
-									{#if item.isFreeTour === 1}
-										<Check class="mx-auto" />
-									{/if}
+									<span class="badge badge-ghost badge-sm">
+										{item.kind === 'PAID_TOUR'
+											? 'Tour Pago'
+											: item.kind === 'FREE_TOUR'
+												? 'Free Tour'
+												: item.kind}
+									</span>
 								</td>
 							{:else}
 								<td>

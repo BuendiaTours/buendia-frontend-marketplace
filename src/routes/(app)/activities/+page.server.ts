@@ -65,13 +65,13 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			throw error(res.status, errorMessage);
 		}
 
-		const data = await res.json();
+		const response = await res.json();
 
 		return {
-			items: data.items,
-			pagination: data.pagination,
+			items: response.data || [],
+			pagination: response.pagination,
 			filters,
-			sort: data.sort || null
+			sort: response.sort || null
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

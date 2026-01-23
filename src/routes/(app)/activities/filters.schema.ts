@@ -35,7 +35,7 @@ export type ActivitiesFilters = {
 	pageSize: number;
 	to?: string;
 	// Ordenamiento
-	sort?: 'title' | 'location' | 'rating' | 'isFreeTour';
+	sort?: 'codeRef' | 'title' | 'status' | 'kind';
 	order?: 'asc' | 'desc';
 	// Booleanos, todos se inicializan igual
 	audioGuideAvailable?: boolean;
@@ -133,9 +133,9 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 		},
 		sort: {
 			parse: (raw) => {
-				const validSorts: readonly string[] = ['title', 'location', 'rating', 'isFreeTour'];
+				const validSorts: readonly string[] = ['codeRef', 'title', 'status', 'kind'];
 				if (raw && validSorts.includes(raw)) {
-					return raw as 'title' | 'location' | 'rating' | 'isFreeTour';
+					return raw as 'codeRef' | 'title' | 'status' | 'kind';
 				}
 				return undefined;
 			},

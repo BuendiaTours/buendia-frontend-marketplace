@@ -3,21 +3,36 @@
 export type ActivityListItem = {
 	id: string;
 	title: string;
-	thumb: string;
-	location: string;
-	duration: {
-		text: string;
-		minutes: number;
-	};
-	rating: number | null;
-	reviews: number | null;
-	price: {
-		currency: string;
-		from: number;
-	};
-	badges: string[];
-	isFreeTour: 0 | 1;
 	slug: string;
+	codeRef: string;
+	descriptionShort: string;
+	descriptionFull: string;
+	infoImportant: string | null;
+	kind: string;
+	status: string;
+	phoneContact: string | null;
+	guideKind: string;
+	transportKind: string;
+	transportLocation: string;
+	voucherInfo: string | null;
+	attractions: Array<{ id: string; name: string }>;
+	categories: Array<{ id: string; name: string }>;
+	destinations: Array<{ id: string; name: string }>;
+	distributives: Array<{ id: string; name: string }>;
+	tags: Array<{ id: string; name: string }>;
+	included: string[];
+	excluded: string[];
+	itemsToBring: string[];
+	restrictions: string[];
+	notSuitableFor: string[];
+	willDoing: string[];
+	meals: string[];
+	stages: string[];
+	multimedias: string[];
+	petsAllowed: {
+		allowed: string;
+		description: string | null;
+	};
 };
 
 export type Pagination = {

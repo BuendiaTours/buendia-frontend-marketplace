@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		throw error(res.status, `Error API: ${res.status}`);
 	}
 
-	const activity: ActivityDetail = await res.json();
+	const response = await res.json();
+	const activity: ActivityDetail = response.data || response;
 	return { activity };
 };
