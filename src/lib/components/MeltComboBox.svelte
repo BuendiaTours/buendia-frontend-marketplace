@@ -16,7 +16,7 @@ Soporta modo single y multiple.
 
 <script lang="ts">
 	import { createCombobox, melt } from '@melt-ui/svelte';
-	import { ArrowSeparateVertical, FastArrowUp, FastArrowDown, Check } from 'svelte-iconoir';
+	import { ArrowSeparateVertical, Check } from 'svelte-iconoir';
 	import type { ComponentType } from 'svelte';
 	import { fly } from 'svelte/transition';
 
@@ -42,7 +42,7 @@ Soporta modo single y multiple.
 		placeholder?: string;
 		name?: string;
 		icon?: ComponentType;
-		width?: string;
+		class?: string;
 	};
 
 	type Props = BaseProps & (SingleProps | MultipleProps);
@@ -52,7 +52,7 @@ Soporta modo single y multiple.
 		placeholder = 'Search...',
 		name,
 		icon: Icon,
-		width = '296px',
+		class: className = 'w-full',
 		type = 'multiple' as any,
 		value = $bindable(),
 		onValueChange
@@ -115,7 +115,7 @@ Soporta modo single y multiple.
 	const hasValue = $derived(type === 'single' ? !!value : Array.isArray(value) && value.length > 0);
 </script>
 
-<div class="relative" style="width: {width}">
+<div class="relative {className}">
 	{#if Icon}
 		<Icon
 			class={`absolute start-3 top-1/2 size-5 -translate-y-1/2 ${hasValue ? 'text-success opacity-100' : 'opacity-60'}`}
@@ -136,8 +136,7 @@ Soporta modo single y multiple.
 {#if $open}
 	<ul
 		use:melt={$menu}
-		class="z-50 flex max-h-[300px] flex-col overflow-hidden rounded-box border border-base-content/10 bg-base-100 shadow-lg"
-		style="width: {width}"
+		class="z-50 flex max-h-[300px] flex-col overflow-hidden rounded-box border border-base-content/10 bg-base-100 shadow-lg {className}"
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->

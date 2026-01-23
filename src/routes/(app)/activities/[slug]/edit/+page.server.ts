@@ -7,7 +7,11 @@ import { activityFormSchema } from '../../activity-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const activity = await api.activities.getBySlug(fetch, params.slug);
+		const [activity, tagsResponse] = await Promise.all([
+			api.activities.getBySlug(fetch, params.slug),
+			fetch('http://localhost:3333/tags').then((res) => res.json())
+		]);
+
 		const apiData = activity as any;
 		const firstOption = apiData.options?.[0];
 
@@ -28,7 +32,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			zod(activityFormSchema)
 		);
 
-		return { activity, form };
+		return { activity, form, availableTags: tagsResponse };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {

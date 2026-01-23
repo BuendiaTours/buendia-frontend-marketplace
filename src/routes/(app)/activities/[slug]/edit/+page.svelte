@@ -6,15 +6,16 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
-	import { Refresh } from 'svelte-iconoir';
+	import { Plus, Refresh } from 'svelte-iconoir';
 	import FormTextInput from '$lib/components/form/FormTextInput.svelte';
 	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 	import Tag from '$lib/components/Tag.svelte';
+	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity } = data;
+	const { activity, availableTags } = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -28,6 +29,29 @@
 
 	function removeTag(index: number) {
 		$form.tags = $form.tags.filter((_, i) => i !== index);
+	}
+
+	const tagsForCombobox = $derived(
+		availableTags?.map((tag: any) => ({
+			value: tag.id,
+			label: tag.name
+		})) || []
+	);
+
+	let selectedTagId = $state<string | undefined>(undefined);
+
+	function handleTagSelect(tagId: string | undefined) {
+		if (!tagId) return;
+
+		const tagExists = $form.tags.some((t) => t.id === tagId);
+		if (tagExists) return;
+
+		const selectedTag = availableTags?.find((t: any) => t.id === tagId);
+		if (selectedTag) {
+			$form.tags = [...$form.tags, { id: selectedTag.id, name: selectedTag.name }];
+		}
+
+		selectedTagId = undefined;
 	}
 </script>
 
@@ -90,8 +114,19 @@
 		/>
 
 		<div class="md:col-span-12">
-			<span class="label text-sm">Tags</span>
-			<div class="flex flex-wrap gap-2">
+			<label class="label justify-between text-sm" for="tags">
+				<span>Tags</span>
+			</label>
+
+			<MeltComboBox
+				items={tagsForCombobox}
+				type="single"
+				placeholder="Añade un tag"
+				bind:value={selectedTagId}
+				onValueChange={handleTagSelect}
+			/>
+
+			<div class="mt-4 flex flex-wrap gap-2">
 				{#if $form.tags.length === 0}
 					<span class="text-sm text-base-content/50">No hay tags asignados</span>
 				{:else}
@@ -115,7 +150,7 @@
 		</div>
 
 		<div class="md:col-span-12">
-			<label class="label text-sm" for="slug">Slug</label>
+			<label class="label text-sm" for="slug"><span>Slug</span></label>
 			<div class="flex gap-2">
 				<input
 					type="text"
