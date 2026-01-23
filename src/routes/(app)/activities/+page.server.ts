@@ -21,9 +21,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		apiUrl.searchParams.set('to', filters.to);
 	}
 
-	// Incluir location si existe
-	if (filters.location) {
-		apiUrl.searchParams.set('location', filters.location);
+	// Incluir destination si existe
+	if (filters.destination) {
+		apiUrl.searchParams.set('destination', filters.destination);
 	}
 
 	// Incluir ordenamiento si existe

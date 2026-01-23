@@ -229,7 +229,7 @@
 	}
 
 	// ============================================================================
-	// FILTRO: LOCATION
+	// FILTRO: DESTINATION
 	// ============================================================================
 
 	let selectedDestination = $state(filters.destination);
@@ -340,6 +340,7 @@
 
 	const columns: Column<ActivityListItem>[] = [
 		{ key: 'codeRef', title: 'Código', sortable: true },
+		{ key: 'destinations', title: 'Destinos', sortable: false },
 		{ key: 'title', title: 'Título', sortable: true },
 		{ key: 'status', title: 'Estado', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
@@ -637,25 +638,9 @@
 										{item[col.key]}
 									</a>
 								</td>
-							{:else if col.key === 'status'}
+							{:else if col.key === 'destinations'}
 								<td>
-									<span
-										class="badge badge-sm"
-										class:badge-success={item.status === 'PUBLISHED'}
-										class:badge-warning={item.status === 'DRAFT'}
-									>
-										{item.status}
-									</span>
-								</td>
-							{:else if col.key === 'kind'}
-								<td>
-									<span class="badge badge-ghost badge-sm">
-										{item.kind === 'PAID_TOUR'
-											? 'Tour Pago'
-											: item.kind === 'FREE_TOUR'
-												? 'Free Tour'
-												: item.kind}
-									</span>
+									{item[col.key].map((d: any) => d.name).join(', ')}
 								</td>
 							{:else}
 								<td>

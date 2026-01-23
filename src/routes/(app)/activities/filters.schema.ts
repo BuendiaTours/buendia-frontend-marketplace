@@ -118,15 +118,15 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		location: {
+		destination: {
 			parse: (raw) => {
 				return raw || undefined;
 			},
 			serialize: (value, out) => {
 				if (value) {
-					out.set('location', value);
+					out.set('destination', value);
 				} else {
-					out.delete('location');
+					out.delete('destination');
 				}
 			},
 			resetPageOnChange: true
