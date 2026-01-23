@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: filters.pageSize,
 			from: filters.from,
 			to: filters.to,
-			location: filters.destination,
+			destination: filters.destination,
 			isFreeTour: filters.isFreeTour,
 			freeForKids: filters.kidsFreeTour,
 			breakfast: filters.breakfastIncluded,

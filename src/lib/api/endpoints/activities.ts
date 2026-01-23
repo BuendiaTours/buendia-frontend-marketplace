@@ -7,7 +7,7 @@ export type ActivitiesGetAllParams = {
 	pageSize?: number;
 	from?: string;
 	to?: string;
-	location?: string;
+	destination?: string;
 	isFreeTour?: boolean;
 	freeForKids?: boolean;
 	breakfast?: boolean;
