@@ -17,6 +17,7 @@ Arrancar el server: `npm run dev -- --open`
   - Svelte runes ($state, $props)
 - **API**:
   - REST API (external)
+  - API Client centralizado con retry, timeout y error handling
 - **Forms & Validation**:
   - SvelteKit Superforms
   - Zod (schema validation)
@@ -27,6 +28,184 @@ Arrancar el server: `npm run dev -- --open`
   - PhotoSwipe (image gallery)
   - Swiper (carousels)
   - @internationalized/date (date handling)
+
+## Sistema de API Client
+
+Este proyecto utiliza un **cliente de API centralizado** en `src/lib/api/` para todas las llamadas a la API externa.
+
+### Características
+
+- ✅ **Retry automático** con exponential backoff (3 intentos por defecto)
+- ✅ **Timeout configurable** (30 segundos por defecto)
+- ✅ **Error handling tipado** con clases de error específicas
+- ✅ **Logging en desarrollo** para debugging
+- ✅ **Endpoints type-safe** con TypeScript
+- ✅ **Configuración centralizada** de rutas y comportamiento
+
+### Estructura
+
+```
+src/lib/api/
+├── config.ts              # Configuración general (timeouts, retries, headers)
+├── endpoints.config.ts    # Definición de todas las rutas de API
+├── types.ts               # Tipos para errores, requests y responses
+├── errors.ts              # Clases de error personalizadas
+├── client.ts              # Cliente HTTP con retry y timeout
+├── endpoints/
+│   ├── activities.ts      # Endpoints de activities
+│   ├── locations.ts       # Endpoints de locations
+│   ├── categories.ts      # Endpoints de categories
+│   └── tags.ts            # Endpoints de tags
+└── index.ts               # Export centralizado
+```
+
+### Uso básico
+
+```typescript
+// En cualquier +page.server.ts
+import { api, ApiError } from '$lib/api/index';
+
+export const load = async ({ fetch }) => {
+	try {
+		// Llamada type-safe a la API
+		const activities = await api.activities.getAll(fetch, {
+			page: 1,
+			pageSize: 10
+		});
+
+		return { activities };
+	} catch (err) {
+		if (err instanceof ApiError) {
+			// Error handling tipado
+			console.error(err.type, err.message, err.status);
+		}
+		throw error(500, 'Error al cargar actividades');
+	}
+};
+```
+
+### Configurar rutas de API
+
+Todas las rutas están centralizadas en `src/lib/api/endpoints.config.ts`:
+
+```typescript
+export const BASE_PATHS = {
+	activities: '/activities',
+	locations: '/locations'
+	// ... agregar más aquí
+};
+
+export const ACTIVITIES_ENDPOINTS = {
+	list: () => BASE_PATHS.activities,
+	detail: (slug: string) => `${BASE_PATHS.activities}/${slug}`
+	// ... más endpoints
+};
+```
+
+Para cambiar una ruta base, solo modifica `BASE_PATHS`. Para agregar un endpoint nuevo:
+
+```typescript
+export const ACTIVITIES_ENDPOINTS = {
+	// ... endpoints existentes
+
+	/** POST /activities/:slug/publish */
+	publish: (slug: string) => `${BASE_PATHS.activities}/${slug}/publish`
+};
+```
+
+### Configuración avanzada
+
+Ajusta timeouts, retries y headers en `src/lib/api/config.ts`:
+
+```typescript
+export const apiConfig = {
+	baseURL: PUBLIC_API_BASE_URL,
+	timeout: 30000, // 30 segundos
+	retry: {
+		attempts: 3, // 3 reintentos
+		delay: 1000, // 1 segundo inicial
+		backoff: 2, // Exponencial
+		retryOn: [408, 429, 500, 502, 503, 504]
+	},
+	headers: {
+		'Content-Type': 'application/json',
+		'X-App-Version': '1.0.0'
+	},
+	debug: import.meta.env.DEV // Logs en desarrollo
+};
+```
+
+### Tipos de errores
+
+El cliente distingue diferentes tipos de errores:
+
+```typescript
+type ApiErrorType =
+  | 'network'          // Error de red
+  | 'timeout'          // Timeout
+  | 'not_found'        // 404
+  | 'unauthorized'     // 401
+  | 'forbidden'        // 403
+  | 'validation'       // 422
+  | 'server_error'     // 500+
+  | 'unknown';
+
+// Ejemplo de uso
+catch (err) {
+  if (err instanceof ApiError) {
+    switch (err.type) {
+      case 'not_found':
+        // Manejar 404
+        break;
+      case 'server_error':
+        // Manejar error del servidor
+        break;
+    }
+  }
+}
+```
+
+### Agregar nuevos endpoints
+
+1. **Definir la ruta** en `endpoints.config.ts`
+2. **Crear el módulo** en `endpoints/tu-recurso.ts`
+3. **Exportar** desde `index.ts`
+
+Ejemplo completo:
+
+```typescript
+// 1. endpoints.config.ts
+export const BASE_PATHS = {
+	// ...
+	bookings: '/bookings'
+};
+
+export const BOOKINGS_ENDPOINTS = {
+	list: () => BASE_PATHS.bookings,
+	detail: (id: string) => `${BASE_PATHS.bookings}/${id}`
+};
+
+// 2. endpoints/bookings.ts
+import { apiClient } from '../client';
+import { API_ENDPOINTS } from '../endpoints.config';
+
+export const bookingsEndpoints = {
+	async getAll(fetchFn: typeof fetch) {
+		const response = await apiClient.request(fetchFn, API_ENDPOINTS.bookings.list(), {
+			method: 'GET'
+		});
+		return response.data;
+	}
+};
+
+// 3. index.ts
+import { bookingsEndpoints } from './endpoints/bookings';
+
+export const api = {
+	// ...
+	bookings: bookingsEndpoints
+};
+```
 
 ## Cómo añadir campos a un formulario
 
@@ -39,11 +218,11 @@ Define el campo y sus reglas de validación con Zod:
 ```typescript
 // src/routes/(app)/activities/activity-form.schema.ts
 export const activityFormSchema = z.object({
-  title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
-  slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(200),
-  // ⬇️ Añadir nuevo campo aquí
-  newField: z.string().min(1, 'Campo requerido'),
-  // ...resto de campos
+	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
+	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(200),
+	// ⬇️ Añadir nuevo campo aquí
+	newField: z.string().min(1, 'Campo requerido')
+	// ...resto de campos
 });
 ```
 
@@ -65,22 +244,22 @@ Mapea el campo desde/hacia la API:
 
 // En la función load (mapeo API → formulario)
 const form = await superValidate(
-  {
-    title: apiData.main?.title || '',
-    slug: apiData.slug || '',
-    newField: apiData.newField || '', // ⬅️ Añadir aquí
-    // ...resto de campos
-  },
-  zod(activityFormSchema)
+	{
+		title: apiData.main?.title || '',
+		slug: apiData.slug || '',
+		newField: apiData.newField || '' // ⬅️ Añadir aquí
+		// ...resto de campos
+	},
+	zod(activityFormSchema)
 );
 
 // En las actions (mapeo formulario → API)
 body: JSON.stringify({
-  title: form.data.title,
-  slug: form.data.slug,
-  newField: form.data.newField, // ⬅️ Añadir aquí
-  // ...resto de campos
-})
+	title: form.data.title,
+	slug: form.data.slug,
+	newField: form.data.newField // ⬅️ Añadir aquí
+	// ...resto de campos
+});
 ```
 
 ### 3. Vista del formulario (`+page.svelte`)
@@ -240,75 +419,75 @@ Crea el archivo del schema en `src/lib/features/[nombre-vista]/filters.schema.ts
 import type { FiltersSchema } from '$lib/utils/filters';
 
 export type DestinationsFilters = {
-  page: number;
-  pageSize: number;
-  country?: string;
-  minPrice?: number;
-  maxPrice?: number;
+	page: number;
+	pageSize: number;
+	country?: string;
+	minPrice?: number;
+	maxPrice?: number;
 };
 
 export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
-  fields: {
-    page: {
-      parse: (raw) => {
-        const num = parseInt(raw || '1', 10);
-        return num > 0 ? num : 1;
-      },
-      serialize: (value, out) => {
-        out.set('page', String(value ?? 1));
-      },
-      resetPageOnChange: false
-    },
-    pageSize: {
-      parse: (raw) => {
-        const num = parseInt(raw || '10', 10);
-        return num > 0 ? num : 10;
-      },
-      serialize: (value, out) => {
-        out.set('pageSize', String(value ?? 10));
-      },
-      resetPageOnChange: false
-    },
-    country: {
-      parse: (raw) => raw || undefined,
-      serialize: (value, out) => {
-        if (value) {
-          out.set('country', value);
-        } else {
-          out.delete('country');
-        }
-      },
-      resetPageOnChange: true // Cambiar país resetea a página 1
-    },
-    minPrice: {
-      parse: (raw) => {
-        const num = parseFloat(raw || '');
-        return !isNaN(num) && num >= 0 ? num : undefined;
-      },
-      serialize: (value, out) => {
-        if (value !== undefined) {
-          out.set('minPrice', String(value));
-        } else {
-          out.delete('minPrice');
-        }
-      },
-      resetPageOnChange: true
-    },
-    maxPrice: {
-      parse: (raw) => {
-        const num = parseFloat(raw || '');
-        return !isNaN(num) && num >= 0 ? num : undefined;
-      },
-      serialize: (value, out) => {
-        if (value !== undefined) {
-          out.set('maxPrice', String(value));
-        } else {
-          out.delete('maxPrice');
-        }
-      },
-      resetPageOnChange: true
-    }
-  }
+	fields: {
+		page: {
+			parse: (raw) => {
+				const num = parseInt(raw || '1', 10);
+				return num > 0 ? num : 1;
+			},
+			serialize: (value, out) => {
+				out.set('page', String(value ?? 1));
+			},
+			resetPageOnChange: false
+		},
+		pageSize: {
+			parse: (raw) => {
+				const num = parseInt(raw || '10', 10);
+				return num > 0 ? num : 10;
+			},
+			serialize: (value, out) => {
+				out.set('pageSize', String(value ?? 10));
+			},
+			resetPageOnChange: false
+		},
+		country: {
+			parse: (raw) => raw || undefined,
+			serialize: (value, out) => {
+				if (value) {
+					out.set('country', value);
+				} else {
+					out.delete('country');
+				}
+			},
+			resetPageOnChange: true // Cambiar país resetea a página 1
+		},
+		minPrice: {
+			parse: (raw) => {
+				const num = parseFloat(raw || '');
+				return !isNaN(num) && num >= 0 ? num : undefined;
+			},
+			serialize: (value, out) => {
+				if (value !== undefined) {
+					out.set('minPrice', String(value));
+				} else {
+					out.delete('minPrice');
+				}
+			},
+			resetPageOnChange: true
+		},
+		maxPrice: {
+			parse: (raw) => {
+				const num = parseFloat(raw || '');
+				return !isNaN(num) && num >= 0 ? num : undefined;
+			},
+			serialize: (value, out) => {
+				if (value !== undefined) {
+					out.set('maxPrice', String(value));
+				} else {
+					out.delete('maxPrice');
+				}
+			},
+			resetPageOnChange: true
+		}
+	}
 };
 ```
 
@@ -330,45 +509,45 @@ import { parseFilters } from '$lib/utils/filters';
 import { destinationsFiltersSchema } from '$lib/features/destinations/filters.schema';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-  // 1. Parsear filtros desde URL
-  const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
+	// 1. Parsear filtros desde URL
+	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
 
-  // 2. Construir URL a API externa
-  const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/destinations`);
+	// 2. Construir URL a API externa
+	const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/destinations`);
 
-  // Siempre incluir page y pageSize
-  apiUrl.searchParams.set('page', String(filters.page));
-  apiUrl.searchParams.set('pageSize', String(filters.pageSize));
+	// Siempre incluir page y pageSize
+	apiUrl.searchParams.set('page', String(filters.page));
+	apiUrl.searchParams.set('pageSize', String(filters.pageSize));
 
-  // Incluir filtros opcionales solo si existen
-  if (filters.country) {
-    apiUrl.searchParams.set('country', filters.country);
-  }
+	// Incluir filtros opcionales solo si existen
+	if (filters.country) {
+		apiUrl.searchParams.set('country', filters.country);
+	}
 
-  if (filters.minPrice !== undefined) {
-    apiUrl.searchParams.set('minPrice', String(filters.minPrice));
-  }
+	if (filters.minPrice !== undefined) {
+		apiUrl.searchParams.set('minPrice', String(filters.minPrice));
+	}
 
-  if (filters.maxPrice !== undefined) {
-    apiUrl.searchParams.set('maxPrice', String(filters.maxPrice));
-  }
+	if (filters.maxPrice !== undefined) {
+		apiUrl.searchParams.set('maxPrice', String(filters.maxPrice));
+	}
 
-  // 3. Fetch desde API
-  try {
-    const res = await fetch(apiUrl);
-    if (!res.ok) throw error(res.status, 'Error al cargar destinos');
+	// 3. Fetch desde API
+	try {
+		const res = await fetch(apiUrl);
+		if (!res.ok) throw error(res.status, 'Error al cargar destinos');
 
-    const data = await res.json();
+		const data = await res.json();
 
-    // 4. Devolver datos + filters para inicializar UI
-    return {
-      items: data.items,
-      pagination: data.pagination,
-      filters // ← Importante: devolver filters parseados
-    };
-  } catch (err) {
-    throw error(503, 'No se pudo conectar con el servidor');
-  }
+		// 4. Devolver datos + filters para inicializar UI
+		return {
+			items: data.items,
+			pagination: data.pagination,
+			filters // ← Importante: devolver filters parseados
+		};
+	} catch (err) {
+		throw error(503, 'No se pudo conectar con el servidor');
+	}
 };
 ```
 

@@ -43,7 +43,7 @@ export type Pagination = {
 };
 
 export type ActivityListResponse = {
-	items: ActivityListItem[];
+	data: ActivityListItem[];
 	pagination: Pagination;
 };
 
@@ -63,7 +63,7 @@ export type Column<T> = {
 	sortable?: boolean;
 };
 
-export type Location = {
+export type Destination = {
 	id: string;
 	name: string;
 	slug: string;

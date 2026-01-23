@@ -29,9 +29,23 @@ This project is a SvelteKit application for a REST API frontend.
 
 - **Use `+page.server.ts`** for data fetching and server-side logic
 - **REST API backend** (external)
+- **API Client**: Use `import { api, ApiError } from '$lib/api/index'` for all API calls
+- **Never use `fetch()` directly** - always use the centralized API client
 - **Pagination, filters and sorting** are server-driven via URL params
 - **Route groups**: `(app)` for authenticated pages, `(auth)` for login/register
 - **Dynamic routes**: Use `[slug]` for dynamic parameters
+
+## API Client
+
+- **Centralized in** `src/lib/api/`
+- **Always import from** `$lib/api/index`
+- **Usage**: `await api.activities.getAll(fetch, { page: 1 })`
+- **Error handling**: Wrap in try-catch and check for `ApiError` instance
+- **Configuration**:
+  - Routes: `src/lib/api/endpoints.config.ts`
+  - Behavior: `src/lib/api/config.ts`
+- **Features**: Retry logic, timeout, error handling tipado, logging
+- **Never use** `PUBLIC_API_BASE_URL` directly - let the client handle it
 
 ## Forms & Validation
 

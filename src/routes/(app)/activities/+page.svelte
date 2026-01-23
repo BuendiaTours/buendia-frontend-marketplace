@@ -4,7 +4,7 @@
 	// ============================================================================
 
 	// Types
-	import type { ActivityListItem, Column, Location } from '$lib/types';
+	import type { ActivityListItem, Column, Destination } from '$lib/types';
 	import type { ActivitiesFilters } from './filters.schema';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
 	type DateRange = CreateRangeCalendarProps['defaultValue'];

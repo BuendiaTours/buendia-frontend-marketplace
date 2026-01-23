@@ -1,46 +1,44 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
-import type { ActivityDetail } from '$lib/types';
+import { api, ApiError } from '$lib/api/index';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { activityFormSchema } from '../../activity-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`);
+	try {
+		const activity = await api.activities.getBySlug(fetch, params.slug);
+		const apiData = activity as any;
+		const firstOption = apiData.options?.[0];
 
-	if (res.status === 404) {
-		throw error(404, 'Actividad no encontrada');
+		const form = await superValidate(
+			{
+				id: apiData.id || '',
+				codeRef: apiData.codeRef || '',
+				title: apiData.main?.title || '',
+				slug: apiData.slug || '',
+				descriptionShort: apiData.descriptionShort || '',
+				descriptionFull: apiData.descriptionFull || '',
+				location: apiData.location?.city || '',
+				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
+				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
+				isFreeTour: false,
+				tags: apiData.tags || []
+			},
+			zod(activityFormSchema)
+		);
+
+		return { activity, form };
+	} catch (err) {
+		if (err instanceof ApiError) {
+			if (err.type === 'not_found') {
+				throw error(404, 'Actividad no encontrada');
+			}
+			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
+		}
+
+		throw error(503, 'No se pudo conectar con el servidor');
 	}
-	if (!res.ok) {
-		throw error(res.status, `Error API: ${res.status}`);
-	}
-
-	const response = await res.json();
-	const activity: ActivityDetail = response.data || response;
-
-	// Mapear desde la estructura real de la API
-	const apiData = activity as any;
-	const firstOption = apiData.options?.[0];
-
-	const form = await superValidate(
-		{
-			id: apiData.id || '',
-			codeRef: apiData.codeRef || '',
-			title: apiData.main?.title || '',
-			slug: apiData.slug || '',
-			descriptionShort: apiData.descriptionShort || '',
-			descriptionFull: apiData.descriptionFull || '',
-			location: apiData.location?.city || '',
-			priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
-			currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
-			isFreeTour: false,
-			tags: apiData.tags || []
-		},
-		zod(activityFormSchema)
-	);
-
-	return { activity, form };
 };
 
 export const actions: Actions = {
@@ -51,30 +49,28 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
+		try {
+			await api.activities.update(fetch, params.slug, {
 				id: form.data.id,
 				codeRef: form.data.codeRef,
 				title: form.data.title,
 				slug: form.data.slug,
 				descriptionShort: form.data.descriptionShort,
 				descriptionFull: form.data.descriptionFull,
-				city: form.data.location,
-				priceFrom: form.data.priceFrom,
-				currency: form.data.currency,
-				isFreeTour: form.data.isFreeTour ? 1 : 0,
 				tags: form.data.tags
-			})
-		});
+			} as any);
 
-		if (!res.ok) {
-			return fail(res.status, { form });
+			throw redirect(303, `/activities/${params.slug}`);
+		} catch (err) {
+			if (err instanceof ApiError) {
+				return fail(err.status || 500, { form });
+			}
+
+			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
+				throw err;
+			}
+
+			return fail(503, { form });
 		}
-
-		throw redirect(303, `/activities/${params.slug}`);
 	}
 };

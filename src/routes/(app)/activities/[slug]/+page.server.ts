@@ -1,19 +1,19 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
-import type { ActivityDetail } from '$lib/types';
+import { api, ApiError } from '$lib/api/index';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	const res = await fetch(`${PUBLIC_API_BASE_URL}/activities/${params.slug}`);
+	try {
+		const activity = await api.activities.getBySlug(fetch, params.slug);
+		return { activity };
+	} catch (err) {
+		if (err instanceof ApiError) {
+			if (err.type === 'not_found') {
+				throw error(404, 'Actividad no encontrada');
+			}
+			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
+		}
 
-	if (res.status === 404) {
-		throw error(404, 'Actividad no encontrada');
+		throw error(503, 'No se pudo conectar con el servidor');
 	}
-	if (!res.ok) {
-		throw error(res.status, `Error API: ${res.status}`);
-	}
-
-	const response = await res.json();
-	const activity: ActivityDetail = response.data || response;
-	return { activity };
 };
