@@ -78,24 +78,24 @@
 	const total = $derived(pagination.total);
 
 	// ============================================================================
-	// LOCATIONS (cargadas desde API)
+	// DESTINATIONS (cargadas desde API)
 	// ============================================================================
 
-	let locations = $state<{ value: string; label: string }[]>([]);
+	let destinations = $state<{ value: string; label: string }[]>([]);
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`${PUBLIC_API_BASE_URL}/activities/locations`);
+			const response = await fetch(`${PUBLIC_API_BASE_URL}/destinations`);
 			if (response.ok) {
 				const json = await response.json();
-				const data: Location[] = json.data || json;
-				locations = data.map((loc) => ({
+				const data: Destination[] = json.data || json;
+				destinations = data.map((loc) => ({
 					value: loc.slug,
 					label: loc.name
 				}));
 			}
 		} catch (error) {
-			console.error('Error cargando locations:', error);
+			console.error('Error cargando destinations:', error);
 		}
 	});
 
@@ -232,22 +232,22 @@
 	// FILTRO: LOCATION
 	// ============================================================================
 
-	let selectedLocation = $state(filters.location);
+	let selectedDestination = $state(filters.destination);
 
 	$effect(() => {
-		selectedLocation = filters.location;
+		selectedDestination = filters.destination;
 	});
 
 	// Key para forzar recreación del ComboBox cuando se cargan las locations
 	// Esto asegura que el inputDefaultValue se calcule correctamente
-	const locationComboKey = $derived(`${selectedLocation}-${locations.length}`);
+	const locationComboKey = $derived(`${selectedDestination}-${destinations.length}`);
 
 	function handleLocationChange(value: string | string[] | undefined) {
 		const locationValue = Array.isArray(value) ? value[0] : value;
-		selectedLocation = locationValue;
+		selectedDestination = locationValue;
 
 		applyFilterPatch({
-			location: locationValue ? locationValue : (null as any)
+			destination: locationValue ? locationValue : (null as any)
 		});
 	}
 
@@ -445,20 +445,20 @@
 	<div class="flex gap-2">
 		{#key locationComboKey}
 			<MeltComboBox
-				items={locations}
-				placeholder="Filter by locations"
-				name="filterLocation"
+				items={destinations}
+				placeholder="Filter by destinations"
+				name="filterDestination"
 				icon={Map}
 				type="single"
-				bind:value={selectedLocation}
+				bind:value={selectedDestination}
 				onValueChange={handleLocationChange}
 			/>
 		{/key}
-		<div class="tooltip" data-tip="Limpia la localización">
+		<div class="tooltip" data-tip="Limpia la destination">
 			<button
 				class="btn btn-square btn-soft btn-md btn-error"
 				onclick={handleClearLocation}
-				disabled={!selectedLocation}
+				disabled={!selectedDestination}
 			>
 				<Cancel />
 			</button>

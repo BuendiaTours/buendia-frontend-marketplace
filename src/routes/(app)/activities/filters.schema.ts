@@ -30,7 +30,7 @@ import type { FiltersSchema } from '$lib/utils/filters';
 
 export type ActivitiesFilters = {
 	from?: string;
-	location?: string;
+	destination?: string;
 	page: number;
 	pageSize: number;
 	to?: string;
