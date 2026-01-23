@@ -103,6 +103,15 @@ Soporta modo single y multiple.
 		}
 	});
 
+	// Sincronizar inputValue con el label del item seleccionado en modo single
+	$effect(() => {
+		if (type === 'single' && $selected) {
+			inputValue.set($selected.label || '');
+		} else if (type === 'single' && !$selected) {
+			inputValue.set('');
+		}
+	});
+
 	const hasValue = $derived(type === 'single' ? !!value : Array.isArray(value) && value.length > 0);
 </script>
 
@@ -114,7 +123,7 @@ Soporta modo single y multiple.
 	{/if}
 	<input
 		use:melt={$input}
-		class={`input w-full bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? 'border-success' : ''}`}
+		class={`input w-full bg-transparent pr-10 text-success ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? 'border-success' : ''}`}
 		{placeholder}
 		aria-label={placeholder}
 		{name}
