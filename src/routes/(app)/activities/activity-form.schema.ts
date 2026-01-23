@@ -23,6 +23,14 @@ export const activityFormSchema = z.object({
 				name: z.string()
 			})
 		)
+		.default([]),
+	categories: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
 		.default([])
 });
 

@@ -23,10 +23,10 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		});
 
 		return {
-			items: response.items || [],
+			items: response.data || [],
 			pagination: response.pagination,
 			filters,
-			sort: null
+			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

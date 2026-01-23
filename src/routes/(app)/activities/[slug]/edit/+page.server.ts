@@ -7,9 +7,10 @@ import { activityFormSchema } from '../../activity-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const [activity, tagsResponse] = await Promise.all([
+		const [activity, tagsResponse, categoriesResponse] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
-			fetch('http://localhost:3333/tags').then((res) => res.json())
+			fetch('http://localhost:3333/tags').then((res) => res.json()),
+			api.categories.getAll(fetch)
 		]);
 
 		const apiData = activity as any;
@@ -27,12 +28,13 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
 				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
 				isFreeTour: false,
-				tags: apiData.tags || []
+				tags: apiData.tags || [],
+				categories: apiData.categories || []
 			},
 			zod(activityFormSchema)
 		);
 
-		return { activity, form, availableTags: tagsResponse };
+		return { activity, form, availableTags: tagsResponse, availableCategories: categoriesResponse };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {
@@ -61,7 +63,8 @@ export const actions: Actions = {
 				slug: form.data.slug,
 				descriptionShort: form.data.descriptionShort,
 				descriptionFull: form.data.descriptionFull,
-				tags: form.data.tags
+				tags: form.data.tags,
+				categories: form.data.categories
 			} as any);
 
 			throw redirect(303, `/activities/${params.slug}`);

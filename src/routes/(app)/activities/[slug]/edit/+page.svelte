@@ -12,9 +12,10 @@
 	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 	import FormTagManager from '$lib/components/form/FormTagManager.svelte';
+	import FormCategoryCheckboxes from '$lib/components/form/FormCategoryCheckboxes.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity, availableTags } = data;
+	const { activity, availableTags, availableCategories } = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -83,6 +84,14 @@
 			bind:value={$form.title}
 			error={$errors.title}
 			readonly
+		/>
+
+		<FormCategoryCheckboxes
+			id="categories"
+			label="Categorías"
+			bind:categories={$form.categories}
+			{availableCategories}
+			error={$errors.categories?._errors}
 		/>
 
 		<FormTagManager
