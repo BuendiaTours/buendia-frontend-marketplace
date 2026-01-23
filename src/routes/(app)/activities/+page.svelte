@@ -360,7 +360,7 @@
 			});
 		} else {
 			applyFilterPatch({
-				sort: columnKey as 'title' | 'location' | 'rating' | 'isFreeTour',
+				sort: columnKey as 'codeRef' | 'title' | 'status' | 'kind',
 				order: 'asc'
 			});
 		}
