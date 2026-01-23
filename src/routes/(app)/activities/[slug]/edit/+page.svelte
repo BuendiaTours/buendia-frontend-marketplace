@@ -12,7 +12,7 @@
 	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 	import FormTagManager from '$lib/components/form/FormTagManager.svelte';
-	import FormCategoryCheckboxes from '$lib/components/form/FormCategoryCheckboxes.svelte';
+	import FormCheckboxGroup from '$lib/components/form/FormCheckboxGroup.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories } = data;
@@ -86,11 +86,14 @@
 			readonly
 		/>
 
-		<FormCategoryCheckboxes
+		<FormCheckboxGroup
+			main_label="Categorías"
 			id="categories"
-			label="Categorías"
-			bind:categories={$form.categories}
-			{availableCategories}
+			name="categories[]"
+			key_title="name"
+			key_value="id"
+			bind:items={$form.categories}
+			availableItems={availableCategories}
 			error={$errors.categories?._errors}
 		/>
 

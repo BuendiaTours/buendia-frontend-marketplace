@@ -297,6 +297,7 @@
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = null as any;
+			advancedFilters[filter.key] = false;
 		});
 		applyFilterPatch(patch);
 	}
@@ -534,10 +535,10 @@
 						>
 							Limpiar filtros
 						</button>
-						<button use:melt={$advancedFiltersClose} class="btn ml-auto btn-ghost">
-							Cancelar
-						</button>
-						<button class="btn btn-outline btn-primary" onclick={handleAdvancedFiltersApply}>
+						<button
+							class="btn ml-auto btn-outline btn-primary"
+							onclick={handleAdvancedFiltersApply}
+						>
 							Aplicar filtros
 						</button>
 					</div>
