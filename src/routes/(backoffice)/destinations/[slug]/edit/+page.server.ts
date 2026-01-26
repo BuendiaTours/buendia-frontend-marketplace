@@ -7,6 +7,7 @@ import { destinationFormSchema } from '../../destination-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
+		// Obtener todos los destinations y buscar por slug
 		const destinations = await api.destinations.getAll(fetch);
 		const destination = destinations.find((d) => d.slug === params.slug);
 
@@ -40,7 +41,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, fetch, params }) => {
+	default: async ({ request, params }) => {
 		const form = await superValidate(request, zod(destinationFormSchema));
 
 		if (!form.valid) {
@@ -48,23 +49,24 @@ export const actions: Actions = {
 		}
 
 		try {
-			// Por ahora solo retornamos éxito, la actualización real se implementará cuando la API lo soporte
+			// TODO: Implementar cuando la API tenga el endpoint de actualización
+			// await api.destinations.update(fetch, params.slug, form.data);
+
 			console.log('Datos a actualizar:', form.data);
 
-			// Simular éxito
-			return { form, success: true };
+			// Por ahora redirigimos sin actualizar
+			throw redirect(303, `/destinations/${params.slug}`);
 		} catch (err) {
 			if (err instanceof ApiError) {
-				return fail(err.status || 500, {
-					form,
-					error: `Error al actualizar: ${err.message}`
-				});
+				return fail(err.status || 500, { form });
 			}
 
-			return fail(500, {
-				form,
-				error: 'Error al actualizar el destino'
-			});
+			// Si el error es un redirect (303), lo re-lanzamos
+			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
+				throw err;
+			}
+
+			return fail(503, { form });
 		}
 	}
 };
