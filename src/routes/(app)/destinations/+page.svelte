@@ -286,13 +286,6 @@
 <!-- Pagination -->
 {#if total > 0}
 	<div class="mt-4">
-		<Pagination
-			currentPage={pagination.page}
-			totalPages={pagination.totalPages}
-			{pageSize}
-			{total}
-			onPageChange={handlePageChange}
-			onPageSizeChange={handlePageSizeChange}
-		/>
+		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 	</div>
 {/if}
