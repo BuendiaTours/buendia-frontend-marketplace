@@ -27,6 +27,16 @@ export const destinationsEndpoints = {
 		return response.data.data;
 	},
 
+	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<Destination> {
+		const path = API_ENDPOINTS.destinations.detail(slug);
+
+		const response = await apiClient.request<{ data: Destination }>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data.data;
+	},
+
 	async search(fetchFn: typeof fetch, params?: DestinationsSearchParams): Promise<Destination[]> {
 		const path = buildEndpointUrl(API_ENDPOINTS.destinations.search(), params);
 

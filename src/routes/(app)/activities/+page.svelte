@@ -601,7 +601,7 @@
 												class="w-full text-left"
 												use:confirmAction={{
 													title: 'Eliminar',
-													message: '¿Seguro que quieres eliminar este elemento?',
+													message: '¿Estás seguro de que quieres eliminar este elemento?',
 													confirmText: 'Eliminar',
 													cancelText: 'Cancelar',
 													danger: true
