@@ -14,7 +14,7 @@ export const activityFormSchema = z.object({
 	isFreeTour: z.boolean(),
 	location: z.string().min(2, 'La ubicación debe tener al menos 2 caracteres'),
 	priceFrom: z.number().min(0, 'El precio debe ser mayor o igual a 0'),
-	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(20),
+	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
 	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
 	tags: z
 		.array(

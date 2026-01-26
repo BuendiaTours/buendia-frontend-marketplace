@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
-	import { ArrowUp, ArrowDown, NavArrowUp, NavArrowDown } from 'svelte-iconoir';
+	import { Upload, NavArrowDown, NavArrowUp, Download } from 'svelte-iconoir';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
@@ -130,7 +130,7 @@
 		/>
 
 		{#if items.length > 0}
-			<div class="mt-4 overflow-x-auto">
+			<div class="mt-2">
 				<table class="table table-sm">
 					<thead>
 						<tr>
@@ -146,44 +146,48 @@
 									<input type="checkbox" class="checkbox checkbox-sm" />
 								</td>
 								<td>{item.name}</td>
-								<td>
-									<div class="flex justify-center gap-1">
-										<button
-											type="button"
-											class="btn btn-square btn-ghost btn-xs"
-											onclick={() => moveItemToTop(index)}
-											disabled={index === 0}
-											title="Mover al inicio"
-										>
-											<NavArrowUp size={16} />
-										</button>
-										<button
-											type="button"
-											class="btn btn-square btn-ghost btn-xs"
-											onclick={() => moveItemUp(index)}
-											disabled={index === 0}
-											title="Mover arriba"
-										>
-											<ArrowUp size={16} />
-										</button>
-										<button
-											type="button"
-											class="btn btn-square btn-ghost btn-xs"
-											onclick={() => moveItemDown(index)}
-											disabled={index === items.length - 1}
-											title="Mover abajo"
-										>
-											<ArrowDown size={16} />
-										</button>
-										<button
-											type="button"
-											class="btn btn-square btn-ghost btn-xs"
-											onclick={() => moveItemToBottom(index)}
-											disabled={index === items.length - 1}
-											title="Mover al final"
-										>
-											<NavArrowDown size={16} />
-										</button>
+								<td class="pr-0 text-right">
+									<div class="inline-flex gap-1">
+										<div class="tooltip" data-tip="Mover al inicio">
+											<button
+												type="button"
+												class="btn btn-square btn-ghost btn-xs"
+												onclick={() => moveItemToTop(index)}
+												disabled={index === 0}
+											>
+												<Upload size={16} />
+											</button>
+										</div>
+										<div class="tooltip" data-tip="Mover al inicio">
+											<button
+												type="button"
+												class="btn btn-square btn-ghost btn-xs"
+												onclick={() => moveItemUp(index)}
+												disabled={index === 0}
+											>
+												<NavArrowUp size={16} />
+											</button>
+										</div>
+										<div class="tooltip" data-tip="Mover abajo">
+											<button
+												type="button"
+												class="btn btn-square btn-ghost btn-xs"
+												onclick={() => moveItemDown(index)}
+												disabled={index === items.length - 1}
+											>
+												<NavArrowDown size={16} />
+											</button>
+										</div>
+										<div class="tooltip" data-tip="Mover al final">
+											<button
+												type="button"
+												class="btn btn-square btn-ghost btn-xs"
+												onclick={() => moveItemToBottom(index)}
+												disabled={index === items.length - 1}
+											>
+												<Download size={16} />
+											</button>
+										</div>
 									</div>
 								</td>
 							</tr>

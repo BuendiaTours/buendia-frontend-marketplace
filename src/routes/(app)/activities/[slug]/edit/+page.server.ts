@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
 				slug: apiData.slug || '',
 				tags: apiData.tags || [],
-				title: apiData.main?.title || ''
+				title: apiData.title || ''
 			},
 			zod(activityFormSchema)
 		);
