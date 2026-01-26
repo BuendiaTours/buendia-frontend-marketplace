@@ -67,6 +67,9 @@ export type Destination = {
 	id: string;
 	name: string;
 	slug: string;
+	kind: 'CITY' | 'REGION' | 'COUNTRY';
+	descriptionShort: string;
+	photoUrlHero: string;
 };
 
 export type Attraction = {

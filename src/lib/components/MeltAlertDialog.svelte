@@ -102,7 +102,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 			use:melt={$overlay}
 			class="fixed inset-0 z-50 bg-black/50"
 			transition:fade={{ duration: 150 }}
-		/>
+		></div>
 		<div
 			use:melt={$content}
 			class="fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-300 bg-base-100 p-6 shadow-xl sm:max-w-lg"
