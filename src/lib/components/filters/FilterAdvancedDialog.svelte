@@ -65,7 +65,7 @@
 		class="btn btn-square btn-soft"
 		class:border-success={hasActiveFilters}
 	>
-		<FilterAlt class={hasActiveFilters ? 'text-success' : ''} />
+		<FilterAlt class={hasActiveFilters ? 'text-success' : 'text-base-content/70'} />
 	</button>
 </div>
 

@@ -357,7 +357,11 @@
 	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
 >
 	<div class="tooltip" data-tip={dateRangeTooltip}>
-		<button use:melt={$dateRangeTrigger} class="btn btn-square">
+		<button
+			use:melt={$dateRangeTrigger}
+			class="btn btn-square btn-soft"
+			class:border-success={hasDateRange}
+		>
 			<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
 		</button>
 	</div>
