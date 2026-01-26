@@ -12,8 +12,8 @@ export type ActivitiesGetAllParams = {
 	freeForKids?: boolean;
 	breakfast?: boolean;
 	wheelchairAccessible?: boolean;
-	sortBy?: string;
-	sortOrder?: 'asc' | 'desc';
+	sort?: string;
+	order?: 'asc' | 'desc';
 };
 
 export const activitiesEndpoints = {

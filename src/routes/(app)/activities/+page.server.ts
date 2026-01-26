@@ -18,8 +18,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			freeForKids: filters.kidsFreeTour,
 			breakfast: filters.breakfastIncluded,
 			wheelchairAccessible: filters.wheelchairAccessible,
-			sortBy: filters.sort,
-			sortOrder: filters.order
+			sort: filters.sort,
+			order: filters.order
 		});
 
 		return {

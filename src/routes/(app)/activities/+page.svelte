@@ -18,7 +18,7 @@
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
-	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
@@ -340,10 +340,7 @@
 	}
 
 	function handleResetSort() {
-		applyFilterPatch({
-			sort: null as any,
-			order: null as any
-		});
+		resetSort($page.url.pathname, $page.url.searchParams, goto);
 	}
 </script>
 

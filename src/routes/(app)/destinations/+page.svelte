@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 
 	// Utils
-	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { destinationsFiltersSchema } from './filters.schema';
 
@@ -94,8 +94,9 @@
 	// ============================================================================
 
 	function applyFilterPatch(patch: Record<string, any>) {
-		const newFilters = patchFilters(destinationsFiltersSchema, filters, patch);
-		goto(`?${newFilters.toString()}`, { keepFocus: true, noScroll: true });
+		const currentParams = $page.url.searchParams;
+		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
+		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
 	function handleClearFilters() {
@@ -162,11 +163,15 @@
 		applyFilterPatch({ pageSize: newPageSize, page: 1 });
 	}
 
+	function handleResetSort() {
+		resetSort($page.url.pathname, $page.url.searchParams, goto);
+	}
+
 	// ============================================================================
 	// COMPUTED
 	// ============================================================================
 
-	const hasFilters = $derived(hasActiveFilters($page.url.searchParams));
+	const hasFilters = $derived(hasActiveFilters(filters));
 </script>
 
 <svelte:head>
@@ -238,11 +243,7 @@
 		<thead>
 			<tr>
 				<th class="w-12">
-					<input
-						type="checkbox"
-						class="checkbox checkbox-sm"
-						use:checkAll={'input[name="selected"]'}
-					/>
+					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
 				</th>
 				{#each columns as col}
 					<th>

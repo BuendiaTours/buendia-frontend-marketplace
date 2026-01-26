@@ -202,8 +202,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: 20,
 			location: 'barcelona',
 			isFreeTour: true,
-			sortBy: 'title',
-			sortOrder: 'asc'
+			sort: 'title',
+			order: 'asc'
 		});
 
 		return { activities: response.items };

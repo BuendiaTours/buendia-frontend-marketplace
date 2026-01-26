@@ -135,7 +135,7 @@ export function patchFilters<TFilters extends Record<string, any>>(
  */
 export function hasActiveFilters<TFilters extends Record<string, any>>(
 	filters: TFilters,
-	excludeKeys: (keyof TFilters)[] = ['page', 'pageSize']
+	excludeKeys: (keyof TFilters)[] = ['page', 'pageSize', 'sort', 'order']
 ): boolean {
 	for (const key in filters) {
 		// Saltar claves excluidas (page, pageSize)
@@ -238,6 +238,49 @@ export function clearAllFilters(
 
 	// Resetear a página 1
 	newParams.set('page', '1');
+
+	// Construir nueva URL
+	const newUrl = newParams.toString() ? `${pathname}?${newParams.toString()}` : pathname;
+
+	return gotoFn(newUrl, {
+		replaceState: true,
+		noScroll: true,
+		keepFocus: true
+	});
+}
+
+/**
+ * Elimina los parámetros de ordenación (sort y order) de la URL,
+ * preservando todos los demás parámetros.
+ *
+ * @param pathname - La ruta actual (ej: '/activities')
+ * @param currentParams - Los parámetros actuales de la URL
+ * @param gotoFn - La función goto de SvelteKit
+ *
+ * @example
+ * ```typescript
+ * import { resetSort } from '$lib/utils/filters';
+ * import { goto } from '$app/navigation';
+ * import { page } from '$app/stores';
+ *
+ * function handleResetSort() {
+ *   resetSort($page.url.pathname, $page.url.searchParams, goto);
+ * }
+ * ```
+ */
+export function resetSort(
+	pathname: string,
+	currentParams: URLSearchParams,
+	gotoFn: (
+		url: string,
+		opts?: { replaceState?: boolean; noScroll?: boolean; keepFocus?: boolean }
+	) => Promise<void>
+): Promise<void> {
+	const newParams = new URLSearchParams(currentParams.toString());
+
+	// Eliminar parámetros de ordenación
+	newParams.delete('sort');
+	newParams.delete('order');
 
 	// Construir nueva URL
 	const newUrl = newParams.toString() ? `${pathname}?${newParams.toString()}` : pathname;
