@@ -311,10 +311,10 @@
 	// ============================================================================
 
 	const columns: Column<ActivityListItem>[] = [
-		{ key: 'id', title: 'Código', sortable: false },
-		{ key: 'codeRef', title: 'Código', sortable: true },
-		{ key: 'destinations', title: 'Destinos', sortable: false },
+		{ key: 'id', title: 'Id', sortable: false },
+		{ key: 'codeRef', title: 'Código', sortable: false },
 		{ key: 'title', title: 'Título', sortable: true },
+		{ key: 'destinations', title: 'Destinos', sortable: false },
 		{ key: 'status', title: 'Estado', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
 	];
@@ -497,7 +497,6 @@
 			<thead>
 				<tr>
 					<th><input type="checkbox" class="checkbox checkbox-sm" use:checkAll /></th>
-					<th>Id</th>
 					{#each columns as col}
 						<th>
 							{#if col.sortable}
