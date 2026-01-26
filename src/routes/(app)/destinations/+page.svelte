@@ -207,12 +207,10 @@
 	<title>Destinos - Backoffice</title>
 </svelte:head>
 
-<div class="mb-4 flex items-center justify-between">
-	<h1 class="text-2xl font-bold">Destinos</h1>
-</div>
+<h1 class="text-lg">Destinos</h1>
 
 <!-- Filters Bar -->
-<div class="mb-4 flex flex-wrap gap-2">
+<div class="mb-6 flex flex-wrap gap-2">
 	<!-- Search Box -->
 	<div class="join flex-1">
 		<input

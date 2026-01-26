@@ -375,8 +375,13 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Actividades - Backoffice</title>
+</svelte:head>
+
 <h1 class="text-lg">Actividades</h1>
 
+<!-- Filters Bar -->
 <div
 	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
 >
