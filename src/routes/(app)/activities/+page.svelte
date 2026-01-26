@@ -18,7 +18,7 @@
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
-	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
@@ -116,7 +116,7 @@
 	const hasFilters = $derived(hasActiveFilters(filters));
 
 	function handleClearFilters() {
-		clearFilters($page.url.pathname, goto);
+		clearAllFilters($page.url.pathname, $page.url.searchParams, goto);
 	}
 
 	// ============================================================================

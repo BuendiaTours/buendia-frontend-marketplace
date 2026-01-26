@@ -196,6 +196,60 @@ export function clearFilters(
 }
 
 /**
+ * Limpia todos los filtros excepto paginación y ordenación.
+ * Preserva los parámetros 'sort' y 'order', elimina todos los demás filtros,
+ * y resetea 'page' a 1.
+ *
+ * @param pathname - La ruta actual (ej: '/activities')
+ * @param currentParams - Los parámetros actuales de la URL
+ * @param gotoFn - La función goto de SvelteKit
+ *
+ * @example
+ * ```typescript
+ * import { clearAllFilters } from '$lib/utils/filters';
+ * import { goto } from '$app/navigation';
+ * import { page } from '$app/stores';
+ *
+ * function handleClearAllFilters() {
+ *   clearAllFilters($page.url.pathname, $page.url.searchParams, goto);
+ * }
+ * ```
+ */
+export function clearAllFilters(
+	pathname: string,
+	currentParams: URLSearchParams,
+	gotoFn: (
+		url: string,
+		opts?: { replaceState?: boolean; noScroll?: boolean; keepFocus?: boolean }
+	) => Promise<void>
+): Promise<void> {
+	const newParams = new URLSearchParams();
+
+	// Preservar ordenación si existe
+	const sort = currentParams.get('sort');
+	const order = currentParams.get('order');
+
+	if (sort) {
+		newParams.set('sort', sort);
+	}
+	if (order) {
+		newParams.set('order', order);
+	}
+
+	// Resetear a página 1
+	newParams.set('page', '1');
+
+	// Construir nueva URL
+	const newUrl = newParams.toString() ? `${pathname}?${newParams.toString()}` : pathname;
+
+	return gotoFn(newUrl, {
+		replaceState: true,
+		noScroll: true,
+		keepFocus: true
+	});
+}
+
+/**
  * Helper para crear campos booleanos en schemas de filtros.
  * Los campos booleanos se representan en la URL como "1" cuando están activos,
  * y se eliminan cuando están inactivos.

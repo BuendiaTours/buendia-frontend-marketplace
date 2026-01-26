@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 
 	// Utils
-	import { patchFilters, clearFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { destinationsFiltersSchema } from './filters.schema';
 
@@ -99,8 +99,7 @@
 	}
 
 	function handleClearFilters() {
-		const clearedParams = clearFilters($page.url.searchParams);
-		goto(`?${clearedParams.toString()}`, { keepFocus: true, noScroll: true });
+		clearAllFilters($page.url.pathname, $page.url.searchParams, goto);
 		searchQuery = '';
 	}
 
