@@ -109,7 +109,7 @@
 		</div>
 
 		<FormOrderedList
-			id="attractions"
+			id="attractions[]"
 			label="Attractions"
 			bind:items={$form.attractions}
 			availableItems={availableAttractions}

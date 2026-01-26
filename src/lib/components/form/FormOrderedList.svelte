@@ -2,6 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
 	import { Upload, NavArrowDown, NavArrowUp, Download } from 'svelte-iconoir';
+	import { confirmAction } from '$lib/actions/confirmAction';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
@@ -63,6 +64,7 @@
 	}: Props = $props();
 
 	let selectedItemId = $state<string>('');
+	let selectedItemIds = $state<Set<string>>(new Set());
 
 	const itemsForCombobox = $derived(
 		availableItems.map((item) => ({
@@ -70,6 +72,8 @@
 			label: item.name
 		}))
 	);
+
+	const hasSelectedItems = $derived(selectedItemIds.size > 0);
 
 	function handleItemSelect(value: string | undefined) {
 		if (!value) return;
@@ -109,6 +113,27 @@
 		const item = items[index];
 		items = [...items.filter((_, i) => i !== index), item];
 	}
+
+	function toggleItemSelection(itemId: string) {
+		const newSelection = new Set(selectedItemIds);
+		if (newSelection.has(itemId)) {
+			newSelection.delete(itemId);
+		} else {
+			newSelection.add(itemId);
+		}
+		selectedItemIds = newSelection;
+	}
+
+	const deleteConfirmMessage = $derived(
+		selectedItemIds.size === 1
+			? '¿Estás seguro de que quieres eliminar el elemento seleccionado?'
+			: `¿Estás seguro de que quieres eliminar los ${selectedItemIds.size} elementos seleccionados?`
+	);
+
+	function handleDeleteSelected() {
+		items = items.filter((item) => !selectedItemIds.has(item.id));
+		selectedItemIds = new Set();
+	}
 </script>
 
 <div class={wrapperClass}>
@@ -134,16 +159,21 @@
 				<table class="table table-sm">
 					<thead>
 						<tr>
-							<th class="w-12"></th>
+							<th class="w-0"></th>
 							<th>Nombre</th>
-							<th class="w-40 text-center">Ordenar</th>
+							<th class="w-0 text-center">Ordenar</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each items as item, index}
 							<tr>
-								<td>
-									<input type="checkbox" class="checkbox checkbox-sm" />
+								<td class="px-0">
+									<input
+										type="checkbox"
+										class="checkbox checkbox-sm"
+										checked={selectedItemIds.has(item.id)}
+										onchange={() => toggleItemSelection(item.id)}
+									/>
 								</td>
 								<td>{item.name}</td>
 								<td class="pr-0 text-right">
@@ -194,6 +224,23 @@
 						{/each}
 					</tbody>
 				</table>
+				<div class="mt-2 flex justify-end">
+					<button
+						type="button"
+						class="btn btn-soft btn-xs btn-error"
+						disabled={!hasSelectedItems}
+						use:confirmAction={{
+							title: 'Eliminar elementos',
+							message: deleteConfirmMessage,
+							confirmText: 'Eliminar',
+							cancelText: 'Cancelar',
+							danger: true
+						}}
+						onclick={handleDeleteSelected}
+					>
+						Eliminar seleccionados {hasSelectedItems ? `(${selectedItemIds.size})` : ''}
+					</button>
+				</div>
 			</div>
 		{:else}
 			<div class="mt-4">
