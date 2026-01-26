@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
-	import { Upload, NavArrowDown, NavArrowUp, Download } from 'svelte-iconoir';
+	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel } from 'svelte-iconoir';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	/**
@@ -124,16 +124,14 @@
 		selectedItemIds = newSelection;
 	}
 
-	const deleteConfirmMessage = $derived(
-		selectedItemIds.size === 1
-			? '¿Estás seguro de que quieres eliminar el elemento seleccionado?'
-			: `¿Estás seguro de que quieres eliminar los ${selectedItemIds.size} elementos seleccionados?`
-	);
-
-	function handleDeleteSelected() {
-		items = items.filter((item) => !selectedItemIds.has(item.id));
-		selectedItemIds = new Set();
+	function removeItem(itemId: string) {
+		items = items.filter((item) => item.id !== itemId);
 	}
+
+	// function handleDeleteSelected() {
+	// 	items = items.filter((item) => !selectedItemIds.has(item.id));
+	// 	selectedItemIds = new Set();
+	// }
 </script>
 
 <div class={wrapperClass}>
@@ -168,14 +166,26 @@
 						{#each items as item, index}
 							<tr>
 								<td class="px-0">
-									<input
+									<!-- <input
 										type="checkbox"
 										class="checkbox checkbox-sm"
 										checked={selectedItemIds.has(item.id)}
 										onchange={() => toggleItemSelection(item.id)}
-									/>
+									/> -->
+									<div class="tooltip" data-tip="Eliminar este elemento">
+										<button
+											type="button"
+											class="btn btn-square btn-soft btn-xs btn-error"
+											onclick={() => removeItem(item.id)}
+										>
+											<Cancel size={16} />
+										</button>
+									</div>
 								</td>
-								<td>{item.name}</td>
+								<td>
+									{item.name}
+									<input type="hidden" name={`${id}[]`} value={item.id} />
+								</td>
 								<td class="pr-0 text-right">
 									<div class="inline-flex gap-1">
 										<div class="tooltip" data-tip="Mover al inicio">
@@ -224,7 +234,7 @@
 						{/each}
 					</tbody>
 				</table>
-				<div class="mt-2 flex justify-end">
+				<!-- <div class="mt-2 flex justify-end">
 					<button
 						type="button"
 						class="btn btn-soft btn-xs btn-error"
@@ -240,7 +250,7 @@
 					>
 						Eliminar seleccionados {hasSelectedItems ? `(${selectedItemIds.size})` : ''}
 					</button>
-				</div>
+				</div> -->
 			</div>
 		{:else}
 			<div class="mt-4">
