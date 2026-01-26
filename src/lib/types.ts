@@ -68,3 +68,8 @@ export type Destination = {
 	name: string;
 	slug: string;
 };
+
+export type Attraction = {
+	id: string;
+	name: string;
+};

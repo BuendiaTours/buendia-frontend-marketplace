@@ -18,18 +18,19 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 		const form = await superValidate(
 			{
-				id: apiData.id || '',
+				attractions: apiData.attractions || [],
+				categories: apiData.categories || [],
 				codeRef: apiData.codeRef || '',
-				title: apiData.main?.title || '',
-				slug: apiData.slug || '',
-				descriptionShort: apiData.descriptionShort || '',
+				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
 				descriptionFull: apiData.descriptionFull || '',
+				descriptionShort: apiData.descriptionShort || '',
+				id: apiData.id || '',
+				isFreeTour: false,
 				location: apiData.location?.city || '',
 				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
-				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
-				isFreeTour: false,
+				slug: apiData.slug || '',
 				tags: apiData.tags || [],
-				categories: apiData.categories || []
+				title: apiData.main?.title || ''
 			},
 			zod(activityFormSchema)
 		);

@@ -86,6 +86,12 @@
 			readonly
 		/>
 
+		{#if $form.attractions.length === 0}
+			{#each $form.attractions as attraction}
+				<span class="text-sm text-base-content/50">{attraction.name}</span>
+			{/each}
+		{/if}
+
 		<FormCheckboxGroup
 			main_label="Categorías"
 			id="categories"
