@@ -13,9 +13,10 @@
 	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
 	import FormTagManager from '$lib/components/form/FormTagManager.svelte';
 	import FormCheckboxGroup from '$lib/components/form/FormCheckboxGroup.svelte';
+	import FormOrderedList from '$lib/components/form/FormOrderedList.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity, availableTags, availableCategories } = data;
+	const { activity, availableTags, availableCategories, availableAttractions } = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -86,31 +87,6 @@
 			readonly
 		/>
 
-		{#if $form.attractions.length === 0}
-			{#each $form.attractions as attraction}
-				<span class="text-sm text-base-content/50">{attraction.name}</span>
-			{/each}
-		{/if}
-
-		<FormCheckboxGroup
-			main_label="Categorías"
-			id="categories"
-			name="categories[]"
-			key_title="name"
-			key_value="id"
-			bind:items={$form.categories}
-			availableItems={availableCategories}
-			error={$errors.categories?._errors}
-		/>
-
-		<FormTagManager
-			id="tags"
-			label="Tags"
-			bind:tags={$form.tags}
-			{availableTags}
-			error={$errors.tags?._errors}
-		/>
-
 		<div class="md:col-span-12">
 			<label class="label text-sm" for="slug"><span>Slug</span></label>
 			<div class="flex gap-2">
@@ -131,6 +107,35 @@
 			</div>
 			<FormErrorMsg error={$errors.slug} />
 		</div>
+
+		<FormOrderedList
+			id="attractions"
+			label="Attractions"
+			bind:items={$form.attractions}
+			availableItems={availableAttractions}
+			error={$errors.attractions?._errors}
+			placeholder="Selecciona una attraction..."
+			emptyMessage="No hay attractions asociadas"
+		/>
+
+		<FormCheckboxGroup
+			main_label="Categorías"
+			id="categories"
+			name="categories[]"
+			key_title="name"
+			key_value="id"
+			bind:items={$form.categories}
+			availableItems={availableCategories}
+			error={$errors.categories?._errors}
+		/>
+
+		<FormTagManager
+			id="tags"
+			label="Tags"
+			bind:tags={$form.tags}
+			{availableTags}
+			error={$errors.tags?._errors}
+		/>
 
 		<FormTextareaMarkdown
 			id="descriptionFull"

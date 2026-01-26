@@ -3,6 +3,7 @@ export const BASE_PATHS = {
 	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
+	attractions: '/attractions',
 	users: '/users',
 	auth: '/auth'
 } as const;
@@ -32,6 +33,11 @@ export const TAGS_ENDPOINTS = {
 	detail: (id: string) => `${BASE_PATHS.tags}/${id}`
 } as const;
 
+export const ATTRACTIONS_ENDPOINTS = {
+	list: () => BASE_PATHS.attractions,
+	detail: (id: string) => `${BASE_PATHS.attractions}/${id}`
+} as const;
+
 export const AUTH_ENDPOINTS = {
 	login: () => `${BASE_PATHS.auth}/login`,
 	logout: () => `${BASE_PATHS.auth}/logout`,
@@ -44,6 +50,7 @@ export const API_ENDPOINTS = {
 	locations: LOCATIONS_ENDPOINTS,
 	categories: CATEGORIES_ENDPOINTS,
 	tags: TAGS_ENDPOINTS,
+	attractions: ATTRACTIONS_ENDPOINTS,
 	auth: AUTH_ENDPOINTS
 } as const;
 
