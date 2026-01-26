@@ -8,14 +8,16 @@ import {
 } from '$lib/utils/filters';
 
 export type DestinationsFilters = {
+	// Paginación
 	page: number;
 	pageSize: number;
-	q?: string;
 	// Ordenamiento
 	sort?: 'id' | 'name' | 'slug' | 'kind';
 	order?: 'asc' | 'desc';
-	// Filtros avanzados
+	// Búsqueda
+	q?: string;
 	kind?: 'CITY' | 'REGION' | 'COUNTRY';
+	// Filtros avanzados
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
@@ -25,6 +27,8 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 	fields: {
 		page: createPageField(),
 		pageSize: createPageSizeField(),
+		sort: createSortField(['id', 'name', 'slug', 'kind'] as const),
+		order: createOrderField(),
 		q: {
 			parse: (raw) => {
 				return raw || undefined;
@@ -38,8 +42,6 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		sort: createSortField(['id', 'name', 'slug', 'kind'] as const),
-		order: createOrderField(),
 		kind: {
 			parse: (raw) => {
 				if (raw === 'CITY' || raw === 'REGION' || raw === 'COUNTRY') {
@@ -56,6 +58,8 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 			},
 			resetPageOnChange: true
 		},
+
+		// Filtros booleanos - todos usan la misma configuración
 		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
 		breakfastIncluded: createBooleanField('breakfastIncluded'),
 		kidsFreeTour: createBooleanField('kidsFreeTour')

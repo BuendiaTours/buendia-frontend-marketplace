@@ -34,14 +34,17 @@ import {
 } from '$lib/utils/filters';
 
 export type ActivitiesFilters = {
-	from?: string;
-	destination?: string;
+	// Paginación
 	page: number;
 	pageSize: number;
-	to?: string;
 	// Ordenamiento
 	sort?: 'codeRef' | 'title' | 'status' | 'kind';
 	order?: 'asc' | 'desc';
+	// Fechas
+	from?: string;
+	to?: string;
+	// Búsqueda
+	destination?: string;
 	// Booleanos, todos se inicializan igual
 	audioGuideAvailable?: boolean;
 	breakfastIncluded?: boolean;
@@ -56,6 +59,8 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 	fields: {
 		page: createPageField(),
 		pageSize: createPageSizeField(),
+		sort: createSortField(['codeRef', 'title', 'status', 'kind'] as const),
+		order: createOrderField(),
 		from: {
 			parse: (raw) => {
 				if (!raw) return undefined;
@@ -101,8 +106,7 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		sort: createSortField(['codeRef', 'title', 'status', 'kind'] as const),
-		order: createOrderField(),
+
 		// Filtros booleanos - todos usan la misma configuración
 		isFreeTour: createBooleanField('isFreeTour'),
 		kidsFreeTour: createBooleanField('kidsFreeTour'),
