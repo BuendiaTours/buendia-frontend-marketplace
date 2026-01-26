@@ -201,12 +201,15 @@
 	/>
 
 	<!-- Clear Filters -->
-	{#if hasFilters}
-		<button class="btn btn-ghost" onclick={handleClearFilters}>
+	<div class="tooltip" data-tip="Limpiar todos los filtros">
+		<button
+			class="btn btn-square btn-soft btn-error"
+			onclick={handleClearFilters}
+			disabled={!hasFilters}
+		>
 			<Cancel />
-			Limpiar filtros
 		</button>
-	{/if}
+	</div>
 </div>
 
 <!-- Results Info -->
