@@ -2,11 +2,11 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { destinationsFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
+import { parseFilters } from '$lib/utils/filters';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-	// Convertir URLSearchParams a objeto plano
-	const paramsObject = Object.fromEntries(url.searchParams.entries());
-	const filters = destinationsFiltersSchema.parse(paramsObject);
+	// Parsear filtros desde URL usando el schema
+	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
 
 	try {
 		// Por ahora usamos getAll sin filtros, en el futuro se implementará con paginación

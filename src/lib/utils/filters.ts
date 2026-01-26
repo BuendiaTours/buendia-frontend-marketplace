@@ -194,3 +194,176 @@ export function clearFilters(
 		keepFocus: true
 	});
 }
+
+/**
+ * Helper para crear campos booleanos en schemas de filtros.
+ * Los campos booleanos se representan en la URL como "1" cuando están activos,
+ * y se eliminan cuando están inactivos.
+ *
+ * @param fieldName - Nombre del campo en la URL
+ * @returns FieldDef<boolean | undefined> configurado para campos booleanos
+ *
+ * @example
+ * ```typescript
+ * import { createBooleanField } from '$lib/utils/filters';
+ *
+ * const schema = {
+ *   fields: {
+ *     isFreeTour: createBooleanField('isFreeTour'),
+ *     petFriendly: createBooleanField('petFriendly')
+ *   }
+ * };
+ * ```
+ */
+export function createBooleanField(fieldName: string): FieldDef<boolean | undefined> {
+	return {
+		parse: (raw: string | null) => {
+			return raw !== null ? true : undefined;
+		},
+		serialize: (value: boolean | undefined, out: URLSearchParams) => {
+			if (value === true) {
+				out.set(fieldName, '1');
+			} else {
+				out.delete(fieldName);
+			}
+		},
+		resetPageOnChange: true
+	};
+}
+
+/**
+ * Helper para crear el campo 'page' en schemas de filtros.
+ * Parsea el número de página desde la URL, con valor por defecto 1.
+ *
+ * @param defaultValue - Valor por defecto (default: 1)
+ * @returns FieldDef<number> configurado para el campo page
+ *
+ * @example
+ * ```typescript
+ * import { createPageField } from '$lib/utils/filters';
+ *
+ * const schema = {
+ *   fields: {
+ *     page: createPageField()
+ *   }
+ * };
+ * ```
+ */
+export function createPageField(defaultValue = 1): FieldDef<number> {
+	return {
+		parse: (raw) => {
+			const num = parseInt(raw || String(defaultValue), 10);
+			return num > 0 ? num : defaultValue;
+		},
+		serialize: (value, out) => {
+			out.set('page', String(value ?? defaultValue));
+		},
+		resetPageOnChange: false
+	};
+}
+
+/**
+ * Helper para crear el campo 'pageSize' en schemas de filtros.
+ * Parsea el tamaño de página desde la URL, con valor por defecto 10.
+ *
+ * @param defaultValue - Valor por defecto (default: 10)
+ * @returns FieldDef<number> configurado para el campo pageSize
+ *
+ * @example
+ * ```typescript
+ * import { createPageSizeField } from '$lib/utils/filters';
+ *
+ * const schema = {
+ *   fields: {
+ *     pageSize: createPageSizeField(20) // default 20 items per page
+ *   }
+ * };
+ * ```
+ */
+export function createPageSizeField(defaultValue = 10): FieldDef<number> {
+	return {
+		parse: (raw) => {
+			const num = parseInt(raw || String(defaultValue), 10);
+			return num > 0 ? num : defaultValue;
+		},
+		serialize: (value, out) => {
+			out.set('pageSize', String(value ?? defaultValue));
+		},
+		resetPageOnChange: false
+	};
+}
+
+/**
+ * Helper para crear el campo 'sort' en schemas de filtros.
+ * Valida que el campo de ordenación sea uno de los valores permitidos.
+ *
+ * @param validSorts - Array de campos válidos para ordenar
+ * @returns FieldDef<T | undefined> configurado para el campo sort
+ *
+ * @example
+ * ```typescript
+ * import { createSortField } from '$lib/utils/filters';
+ *
+ * const schema = {
+ *   fields: {
+ *     sort: createSortField(['name', 'createdAt', 'status'] as const)
+ *   }
+ * };
+ * ```
+ */
+export function createSortField<T extends string>(
+	validSorts: readonly T[]
+): FieldDef<T | undefined> {
+	return {
+		parse: (raw) => {
+			if (raw && validSorts.includes(raw as T)) {
+				return raw as T;
+			}
+			return undefined;
+		},
+		serialize: (value, out) => {
+			if (value) {
+				out.set('sort', value);
+			} else {
+				out.delete('sort');
+			}
+		},
+		resetPageOnChange: false
+	};
+}
+
+/**
+ * Helper para crear el campo 'order' en schemas de filtros.
+ * Valida que el orden sea 'asc' o 'desc'.
+ *
+ * @returns FieldDef<'asc' | 'desc' | undefined> configurado para el campo order
+ *
+ * @example
+ * ```typescript
+ * import { createOrderField } from '$lib/utils/filters';
+ *
+ * const schema = {
+ *   fields: {
+ *     order: createOrderField()
+ *   }
+ * };
+ * ```
+ */
+export function createOrderField(): FieldDef<'asc' | 'desc' | undefined> {
+	return {
+		parse: (raw) => {
+			if (raw === 'asc' || raw === 'desc') {
+				return raw;
+			}
+			return undefined;
+		},
+		serialize: (value, out) => {
+			if (value) {
+				out.set('order', value);
+			} else {
+				out.delete('order');
+			}
+		},
+		resetPageOnChange: false
+	};
+}

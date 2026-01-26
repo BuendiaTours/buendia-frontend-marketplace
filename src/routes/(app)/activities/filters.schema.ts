@@ -1,5 +1,3 @@
-// src/routes/(app)/activities/filters.schema.ts
-//
 // GUÍA: Cómo añadir un nuevo filtro
 // ===================================
 //
@@ -27,6 +25,13 @@
 // ===================================
 
 import type { FiltersSchema } from '$lib/utils/filters';
+import {
+	createBooleanField,
+	createPageField,
+	createPageSizeField,
+	createOrderField,
+	createSortField
+} from '$lib/utils/filters';
 
 export type ActivitiesFilters = {
 	from?: string;
@@ -47,45 +52,10 @@ export type ActivitiesFilters = {
 	wheelchairAccessible?: boolean;
 };
 
-// Helper para crear campos booleanos con la misma configuración
-function createBooleanField(fieldName: string) {
-	return {
-		parse: (raw: string | null) => {
-			return raw !== null ? true : undefined;
-		},
-		serialize: (value: boolean | undefined, out: URLSearchParams) => {
-			if (value === true) {
-				out.set(fieldName, '1');
-			} else {
-				out.delete(fieldName);
-			}
-		},
-		resetPageOnChange: true
-	};
-}
-
 export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 	fields: {
-		page: {
-			parse: (raw) => {
-				const num = parseInt(raw || '1', 10);
-				return num > 0 ? num : 1;
-			},
-			serialize: (value, out) => {
-				out.set('page', String(value ?? 1));
-			},
-			resetPageOnChange: false
-		},
-		pageSize: {
-			parse: (raw) => {
-				const num = parseInt(raw || '10', 10);
-				return num > 0 ? num : 10;
-			},
-			serialize: (value, out) => {
-				out.set('pageSize', String(value ?? 10));
-			},
-			resetPageOnChange: false
-		},
+		page: createPageField(),
+		pageSize: createPageSizeField(),
 		from: {
 			parse: (raw) => {
 				if (!raw) return undefined;
@@ -131,39 +101,8 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		sort: {
-			parse: (raw) => {
-				const validSorts: readonly string[] = ['codeRef', 'title', 'status', 'kind'];
-				if (raw && validSorts.includes(raw)) {
-					return raw as 'codeRef' | 'title' | 'status' | 'kind';
-				}
-				return undefined;
-			},
-			serialize: (value, out) => {
-				if (value) {
-					out.set('sort', value);
-				} else {
-					out.delete('sort');
-				}
-			},
-			resetPageOnChange: false
-		},
-		order: {
-			parse: (raw) => {
-				if (raw === 'asc' || raw === 'desc') {
-					return raw;
-				}
-				return undefined;
-			},
-			serialize: (value, out) => {
-				if (value) {
-					out.set('order', value);
-				} else {
-					out.delete('order');
-				}
-			},
-			resetPageOnChange: false
-		},
+		sort: createSortField(['codeRef', 'title', 'status', 'kind'] as const),
+		order: createOrderField(),
 		// Filtros booleanos - todos usan la misma configuración
 		isFreeTour: createBooleanField('isFreeTour'),
 		kidsFreeTour: createBooleanField('kidsFreeTour'),
