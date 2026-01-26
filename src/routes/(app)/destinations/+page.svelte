@@ -79,7 +79,11 @@
 	// SEARCH STATE
 	// ============================================================================
 
-	let searchQuery = $state(filters.q || '');
+	let searchQuery = $state('');
+
+	$effect(() => {
+		searchQuery = filters.q || '';
+	});
 
 	// ============================================================================
 	// ADVANCED FILTERS STATE

@@ -29,10 +29,7 @@
 					/>
 				</svg>
 			</div>
-			<ul
-				tabindex="0"
-				class="dropdown-content menu z-[1] mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow"
-			>
+			<ul class="dropdown-content menu z-[1] mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow">
 				<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
 				<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
 				<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>

@@ -30,10 +30,10 @@ Props disponibles:
 		states: { pages, range },
 		options
 	} = createPagination({
-		count,
-		perPage,
+		count: 0,
+		perPage: 10,
 		defaultPage: 1,
-		siblingCount,
+		siblingCount: 1,
 		onPageChange: ({ next }) => {
 			onPageChange?.(next);
 			return next;

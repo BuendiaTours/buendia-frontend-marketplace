@@ -20,7 +20,7 @@
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<Header title="Activities App" />
+	<Header title="Backoffice App" />
 
 	<main class="container mx-auto flex-1 p-4">
 		<LayoutAlertBox />

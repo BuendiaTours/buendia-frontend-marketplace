@@ -18,9 +18,7 @@
 	let { filters, currentFilters, onApply, onClear }: Props = $props();
 
 	// Estado local de los filtros
-	let localFilters = $state<Record<string, boolean>>(
-		Object.fromEntries(filters.map((f) => [f.key, false]))
-	);
+	let localFilters = $state<Record<string, boolean>>({});
 
 	// Sincronizar con los filtros actuales cuando cambien
 	$effect(() => {

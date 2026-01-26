@@ -213,7 +213,7 @@
 	// FILTRO: FREE TOUR
 	// ============================================================================
 
-	let freeTourChecked = $state(filters.isFreeTour ?? false);
+	let freeTourChecked = $state(false);
 
 	$effect(() => {
 		freeTourChecked = filters.isFreeTour ?? false;
@@ -232,7 +232,7 @@
 	// FILTRO: DESTINATION
 	// ============================================================================
 
-	let selectedDestination = $state(filters.destination);
+	let selectedDestination = $state<string | undefined>(undefined);
 
 	$effect(() => {
 		selectedDestination = filters.destination;
