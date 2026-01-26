@@ -34,7 +34,8 @@
 	import Pagination from '$lib/components/MeltPagination.svelte';
 	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
-	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
+	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
+	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
 	// Icons
@@ -43,7 +44,6 @@
 		Calendar,
 		Cancel,
 		Check,
-		FilterAlt,
 		Map,
 		NavArrowDown,
 		NavArrowUp,
@@ -268,55 +268,26 @@
 		{ key: 'smallGroup', label: 'Grupo pequeño (máx. 15 personas)' }
 	] as const;
 
-	let advancedFilters = $state<Record<string, boolean>>(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, false]))
+	// Crear objeto con los valores actuales de los filtros avanzados
+	const currentAdvancedFilters = $derived(
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
 	);
 
-	$effect(() => {
-		advancedFiltersConfig.forEach((filter) => {
-			advancedFilters[filter.key] = (filters as any)[filter.key] ?? false;
-		});
-	});
-
-	const hasAdvancedFilters = $derived(Object.values(advancedFilters).some((value) => value));
-
-	const activeAdvancedFiltersCount = $derived(
-		Object.values(advancedFilters).filter((value) => value).length
-	);
-
-	function handleAdvancedFiltersApply() {
+	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = advancedFilters[filter.key] || (null as any);
+			patch[filter.key] = appliedFilters[filter.key] || (null as any);
 		});
 		applyFilterPatch(patch);
-		advancedFiltersOpenState.set(false);
 	}
 
 	function handleClearAdvancedFilters() {
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = null as any;
-			advancedFilters[filter.key] = false;
 		});
 		applyFilterPatch(patch);
 	}
-
-	// Dialog de Melt-UI para filtros avanzados
-	const {
-		elements: {
-			trigger: advancedFiltersTrigger,
-			overlay: advancedFiltersOverlay,
-			content: advancedFiltersContent,
-			title: advancedFiltersTitle,
-			description: advancedFiltersDescription,
-			close: advancedFiltersClose,
-			portalled: advancedFiltersPortalled
-		},
-		states: { open: advancedFiltersOpenState }
-	} = createDialog({
-		forceVisible: true
-	});
 
 	// Popover de Melt-UI para filtro de fechas
 	const {
@@ -480,76 +451,12 @@
 	</select>
 
 	<div class="ml-auto flex items-center gap-2">
-		<div
-			class="tooltip"
-			data-tip={hasAdvancedFilters
-				? `Filtros avanzados (${activeAdvancedFiltersCount})`
-				: 'Filtros avanzados'}
-		>
-			<button use:melt={$advancedFiltersTrigger} class="btn btn-square">
-				<FilterAlt class={hasAdvancedFilters ? 'text-success' : 'text-base-content/60'} />
-			</button>
-		</div>
-
-		{#if $advancedFiltersOpenState}
-			<div use:melt={$advancedFiltersPortalled}>
-				<div
-					use:melt={$advancedFiltersOverlay}
-					class="fixed inset-0 z-50 bg-black/60"
-					transition:fade={{ duration: 150 }}
-				></div>
-				<div
-					use:melt={$advancedFiltersContent}
-					class="fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-content/10 bg-base-100 p-6 shadow-xl"
-					transition:scale={{ duration: 150, start: 0.95 }}
-				>
-					<div class="mb-4 flex items-start justify-between">
-						<h2 use:melt={$advancedFiltersTitle} class="text-xl font-semibold">
-							Filtros avanzados
-						</h2>
-						<button
-							use:melt={$advancedFiltersClose}
-							class="btn -mt-4 -mr-4 btn-square btn-ghost btn-sm"
-						>
-							<Cancel />
-						</button>
-					</div>
-
-					<p use:melt={$advancedFiltersDescription} class="mb-6 text-sm text-base-content/70">
-						Selecciona las características adicionales que deseas filtrar
-					</p>
-
-					<div class="space-y-4">
-						{#each advancedFiltersConfig as filter}
-							<label class="flex cursor-pointer items-center gap-3">
-								<input
-									type="checkbox"
-									class="checkbox checkbox-sm"
-									bind:checked={advancedFilters[filter.key]}
-								/>
-								<span class="label-text">{filter.label}</span>
-							</label>
-						{/each}
-					</div>
-
-					<div class="mt-6 flex gap-2">
-						<button
-							class="btn btn-soft btn-error"
-							onclick={handleClearAdvancedFilters}
-							disabled={!hasAdvancedFilters}
-						>
-							Limpiar filtros
-						</button>
-						<button
-							class="btn ml-auto btn-outline btn-primary"
-							onclick={handleAdvancedFiltersApply}
-						>
-							Aplicar filtros
-						</button>
-					</div>
-				</div>
-			</div>
-		{/if}
+		<FilterAdvancedDialog
+			filters={advancedFiltersConfig}
+			currentFilters={currentAdvancedFilters}
+			onApply={handleAdvancedFiltersApply}
+			onClear={handleClearAdvancedFilters}
+		/>
 
 		<div class="tooltip" data-tip="Limpiar todos los filtros">
 			<button

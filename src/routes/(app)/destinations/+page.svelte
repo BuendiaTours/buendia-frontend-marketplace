@@ -24,15 +24,13 @@
 
 	// Components
 	import Pagination from '$lib/components/MeltPagination.svelte';
-	import { createDialog, melt } from '@melt-ui/svelte';
-	import { fade, scale } from 'svelte/transition';
+	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
 
 	// Icons
 	import {
 		ArrowSeparateVertical,
 		Cancel,
 		Check,
-		FilterAlt,
 		NavArrowDown,
 		NavArrowUp,
 		Plus,
@@ -87,28 +85,16 @@
 	// ADVANCED FILTERS STATE
 	// ============================================================================
 
-	let advancedFilters = $state<Record<string, boolean>>({
-		wheelchairAccessible: filters.wheelchairAccessible || false,
-		breakfastIncluded: filters.breakfastIncluded || false,
-		kidsFreeTour: filters.kidsFreeTour || false
-	});
-
 	const advancedFiltersConfig = [
 		{ key: 'wheelchairAccessible', label: 'Accesible silla de ruedas' },
 		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
 		{ key: 'kidsFreeTour', label: 'Gratis para niños' }
-	];
+	] as const;
 
-	// ============================================================================
-	// DIALOG & POPOVER
-	// ============================================================================
-
-	const {
-		elements: { trigger: advancedFiltersTrigger, overlay, content, title, close, portalled },
-		states: { open }
-	} = createDialog({
-		forceVisible: true
-	});
+	// Crear objeto con los valores actuales de los filtros avanzados
+	const currentAdvancedFilters = $derived(
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
+	);
 
 	// ============================================================================
 	// FILTER FUNCTIONS
@@ -123,29 +109,22 @@
 		const clearedParams = clearFilters($page.url.searchParams);
 		goto(`?${clearedParams.toString()}`, { keepFocus: true, noScroll: true });
 		searchQuery = '';
-		advancedFilters = {
-			wheelchairAccessible: false,
-			breakfastIncluded: false,
-			kidsFreeTour: false
-		};
+	}
+
+	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
+		const patch: Record<string, any> = {};
+		advancedFiltersConfig.forEach((filter) => {
+			patch[filter.key] = appliedFilters[filter.key] || (null as any);
+		});
+		applyFilterPatch(patch);
 	}
 
 	function handleClearAdvancedFilters() {
 		const patch: Record<string, any> = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = null as any;
-			advancedFilters[filter.key] = false;
 		});
 		applyFilterPatch(patch);
-	}
-
-	function handleApplyAdvancedFilters() {
-		const patch: Record<string, any> = {};
-		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = advancedFilters[filter.key] || null;
-		});
-		applyFilterPatch(patch);
-		open.set(false);
 	}
 
 	function handleSearch() {
@@ -213,14 +192,13 @@
 		</button>
 	</div>
 
-	<!-- Advanced Filters Button -->
-	<button class="btn btn-outline" use:melt={$advancedFiltersTrigger}>
-		<FilterAlt />
-		Filtros avanzados
-		{#if hasFilters}
-			<span class="badge badge-sm badge-primary">●</span>
-		{/if}
-	</button>
+	<!-- Advanced Filters -->
+	<FilterAdvancedDialog
+		filters={advancedFiltersConfig}
+		currentFilters={currentAdvancedFilters}
+		onApply={handleAdvancedFiltersApply}
+		onClear={handleClearAdvancedFilters}
+	/>
 
 	<!-- Clear Filters -->
 	{#if hasFilters}
@@ -313,41 +291,5 @@
 			onPageChange={handlePageChange}
 			onPageSizeChange={handlePageSizeChange}
 		/>
-	</div>
-{/if}
-
-<!-- Advanced Filters Dialog -->
-{#if $open}
-	<div use:melt={$portalled}>
-		<div
-			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-black/50"
-			transition:fade={{ duration: 150 }}
-		/>
-		<div
-			class="fixed top-1/2 left-1/2 z-50 max-h-[85vh] w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg bg-base-100 p-6 shadow-lg"
-			use:melt={$content}
-			transition:scale={{ duration: 150, start: 0.95 }}
-		>
-			<h2 use:melt={$title} class="mb-4 text-lg font-bold">Filtros avanzados</h2>
-
-			<div class="space-y-4">
-				{#each advancedFiltersConfig as filter}
-					<label class="label cursor-pointer justify-start gap-4">
-						<input type="checkbox" class="checkbox" bind:checked={advancedFilters[filter.key]} />
-						<span class="label-text">{filter.label}</span>
-					</label>
-				{/each}
-			</div>
-
-			<div class="mt-6 flex justify-end gap-2">
-				<button class="btn btn-ghost" onclick={handleClearAdvancedFilters}>Limpiar</button>
-				<button class="btn btn-primary" onclick={handleApplyAdvancedFilters}>Aplicar</button>
-			</div>
-
-			<button use:melt={$close} class="btn absolute top-4 right-4 btn-circle btn-ghost btn-sm">
-				<Cancel />
-			</button>
-		</div>
 	</div>
 {/if}
