@@ -120,13 +120,23 @@
 			wrapperClass="md:col-span-12"
 		/>
 
+		<div class="md:col-span-4">
+			<div class="rounded-lg border border-base-content/10 p-4">
+				{#if $form.photoUrlHero}
+					<a href={$form.photoUrlHero} target="_blank">
+						<img src={$form.photoUrlHero} alt="" />
+					</a>
+				{/if}
+			</div>
+		</div>
+
 		<FormTextInput
 			id="photoUrlHero"
 			label="URL de imagen principal"
 			type="url"
 			bind:value={$form.photoUrlHero}
 			error={$errors.photoUrlHero}
-			wrapperClass="md:col-span-12"
+			wrapperClass="md:col-span-8"
 			placeholder="https://example.com/image.jpg"
 		/>
 	</div>

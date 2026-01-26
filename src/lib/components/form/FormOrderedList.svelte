@@ -158,7 +158,7 @@
 					<thead>
 						<tr>
 							<th class="w-0"></th>
-							<th>Nombre</th>
+							<th>Elemento</th>
 							<th class="w-0 text-center">Ordenar</th>
 						</tr>
 					</thead>
@@ -183,7 +183,7 @@
 									</div>
 								</td>
 								<td>
-									{item.name}
+									<span class="text-sm">{item.name}</span>
 									<input type="hidden" name={`${id}[]`} value={item.id} />
 								</td>
 								<td class="pr-0 text-right">

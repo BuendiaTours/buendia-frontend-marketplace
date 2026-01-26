@@ -96,7 +96,7 @@
 						checked={isItemSelected(item[key_value])}
 						onchange={(e) => toggleItem(item, e.currentTarget.checked)}
 					/>
-					<span class="label-text">{item[key_title]}</span>
+					<span class="label-text text-sm">{item[key_title]}</span>
 				</label>
 			{/each}
 		</div>
