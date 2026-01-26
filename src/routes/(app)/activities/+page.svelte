@@ -311,6 +311,7 @@
 	// ============================================================================
 
 	const columns: Column<ActivityListItem>[] = [
+		{ key: 'id', title: 'Código', sortable: false },
 		{ key: 'codeRef', title: 'Código', sortable: true },
 		{ key: 'destinations', title: 'Destinos', sortable: false },
 		{ key: 'title', title: 'Título', sortable: true },
@@ -522,7 +523,7 @@
 							{/if}
 						</th>
 					{/each}
-					<th>
+					<th class="w-0">
 						{#if sort}
 							<button class="btn btn-soft btn-sm btn-error" onclick={handleResetSort}
 								>Reset sort</button
@@ -544,13 +545,14 @@
 								class="checkbox checkbox-sm"
 							/>
 						</td>
-						<td>
-							<div class="tooltip" data-tip={item.id}>
-								<span class="block max-w-[48px] truncate">{item.id}</span>
-							</div>
-						</td>
 						{#each columns as col}
-							{#if col.key === 'title'}
+							{#if col.key === 'id'}
+								<td>
+									<div class="tooltip" data-tip={item.id}>
+										<span class="block max-w-[48px] truncate">{item.id}</span>
+									</div>
+								</td>
+							{:else if col.key === 'title'}
 								<td>
 									<a href={buildUrlWithFilters(`/activities/${item.slug}`, $page.url.searchParams)}>
 										{item[col.key]}

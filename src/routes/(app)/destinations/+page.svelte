@@ -65,17 +65,6 @@
 	const total = $derived(pagination.total);
 
 	// ============================================================================
-	// TABLE CONFIGURATION
-	// ============================================================================
-
-	const columns: Column<Destination>[] = [
-		{ key: 'id', title: 'Id', sortable: true },
-		{ key: 'name', title: 'Nombre', sortable: true },
-		{ key: 'slug', title: 'Slug', sortable: true },
-		{ key: 'kind', title: 'Tipo', sortable: true }
-	];
-
-	// ============================================================================
 	// SEARCH STATE
 	// ============================================================================
 
@@ -156,8 +145,15 @@
 	}
 
 	// ============================================================================
-	// PAGINATION
+	// TABLA Y PAGINACIÓN
 	// ============================================================================
+
+	const columns: Column<Destination>[] = [
+		{ key: 'id', title: 'Id', sortable: false },
+		{ key: 'name', title: 'Nombre', sortable: true },
+		// { key: 'slug', title: 'Slug', sortable: true },
+		{ key: 'kind', title: 'Tipo', sortable: true }
+	];
 
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
@@ -249,12 +245,38 @@
 						use:checkAll={'input[name="selected"]'}
 					/>
 				</th>
-				{#each columns as column}
+				{#each columns as col}
 					<th>
-						{column.title || String(column.key)}
+						{#if col.sortable}
+							<button
+								type="button"
+								class="btn cursor-pointer pr-2 btn-ghost btn-sm"
+								onclick={() => handleSort(col.key)}
+							>
+								<span class:text-success={sort?.field === col.key}>{col.title}</span>
+
+								{#if sort?.field === col.key}
+									{#if sort.order === 'desc'}
+										<NavArrowDown class="text-success" />
+									{:else}
+										<NavArrowUp class="text-success" />
+									{/if}
+								{:else}
+									<ArrowSeparateVertical class="text-base-content/30" />
+								{/if}
+							</button>
+						{:else}
+							<span>{col.title}</span>
+						{/if}
 					</th>
 				{/each}
-				<th class="w-0"></th>
+				<th class="w-0">
+					{#if sort}
+						<button class="btn btn-soft btn-sm btn-error" onclick={handleResetSort}
+							>Reset sort</button
+						>
+					{/if}
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -270,18 +292,48 @@
 				{#each items as item}
 					<tr>
 						<td>
-							<input type="checkbox" name="selected" value={item.id} class="checkbox checkbox-sm" />
+							<input
+								type="checkbox"
+								name="destinations_selected[]"
+								value={item.id}
+								class="checkbox checkbox-sm"
+							/>
 						</td>
-						<td>
-							<a href="/destinations/{item.slug}" class="link">{item.name}</a>
-						</td>
-						<td>{item.slug}</td>
-						<td>
-							<span>
-								{item.kind === 'CITY' ? 'Ciudad' : item.kind === 'REGION' ? 'Región' : 'País'}
-							</span>
-						</td>
-						<td class="max-w-md truncate">{item.descriptionShort}</td>
+						{#each columns as col}
+							{#if col.key === 'id'}
+								<td>
+									<div class="tooltip" data-tip={item.id}>
+										<span class="block max-w-[48px] truncate">{item.id}</span>
+									</div>
+								</td>
+							{:else if col.key === 'name'}
+								<td>
+									<p>
+										<a
+											href={buildUrlWithFilters(
+												`/destinations/${item.slug}`,
+												$page.url.searchParams
+											)}
+										>
+											{item[col.key]}
+										</a>
+									</p>
+									<p class="text-xs text-base-content/50">
+										{item['descriptionShort']}
+									</p>
+								</td>
+							{:else if col.key === 'kind'}
+								<td>
+									<span>
+										{item.kind === 'CITY' ? 'Ciudad' : item.kind === 'REGION' ? 'Región' : 'País'}
+									</span>
+								</td>
+							{:else}
+								<td>
+									{item[col.key]}
+								</td>
+							{/if}
+						{/each}
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
 								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
