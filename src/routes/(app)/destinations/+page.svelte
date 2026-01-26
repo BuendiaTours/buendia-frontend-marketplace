@@ -209,10 +209,6 @@
 
 <div class="mb-4 flex items-center justify-between">
 	<h1 class="text-2xl font-bold">Destinos</h1>
-	<a href="/destinations/new" class="btn btn-primary">
-		<Plus />
-		Nuevo destino
-	</a>
 </div>
 
 <!-- Filters Bar -->
@@ -256,11 +252,20 @@
 </div>
 
 <!-- Results Info -->
-<div class="mb-4 text-sm text-base-content/70">
-	Mostrando {items.length > 0 ? (pagination.page - 1) * pageSize + 1 : 0} - {Math.min(
-		pagination.page * pageSize,
-		total
-	)} de {total} resultados
+<div class="mt-6 flex items-center justify-between">
+	{#if items.length}
+		<div class="pagenav-info text-sm text-base-content/70">
+			Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
+				1) *
+				pagination.pageSize +
+				1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+		</div>
+	{/if}
+
+	<a href="/destinations/new" class="btn btn-outline btn-primary">
+		<Plus />
+		Nuevo destino
+	</a>
 </div>
 
 <!-- Table -->

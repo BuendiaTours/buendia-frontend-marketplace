@@ -558,6 +558,7 @@
 	</div>
 </div>
 
+<!-- Results Info -->
 <div class="mt-6 flex items-center justify-between">
 	{#if items.length}
 		<div class="pagenav-info text-sm text-base-content/70">
