@@ -181,38 +181,42 @@
 <h1 class="text-lg">Destinos</h1>
 
 <!-- Filters Bar -->
-<div class="mb-6 flex flex-wrap gap-2">
+<div
+	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
+>
 	<!-- Search Box -->
-	<div class="join flex-1">
+	<div class="flex w-full items-center gap-2">
 		<input
 			type="text"
 			placeholder="Buscar destinos..."
-			class="input-bordered input join-item w-full"
+			class="input-bordered input w-full"
 			bind:value={searchQuery}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
-		<button class="btn join-item btn-primary" onclick={handleSearch}>
+		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
 			<Search />
 		</button>
 	</div>
 
-	<!-- Advanced Filters -->
-	<FilterAdvancedDialog
-		filters={advancedFiltersConfig}
-		currentFilters={currentAdvancedFilters}
-		onApply={handleAdvancedFiltersApply}
-		onClear={handleClearAdvancedFilters}
-	/>
+	<div class="ml-auto flex items-center gap-2">
+		<!-- Advanced Filters -->
+		<FilterAdvancedDialog
+			filters={advancedFiltersConfig}
+			currentFilters={currentAdvancedFilters}
+			onApply={handleAdvancedFiltersApply}
+			onClear={handleClearAdvancedFilters}
+		/>
 
-	<!-- Clear Filters -->
-	<div class="tooltip" data-tip="Limpiar todos los filtros">
-		<button
-			class="btn btn-square btn-soft btn-error"
-			onclick={handleClearFilters}
-			disabled={!hasFilters}
-		>
-			<Cancel />
-		</button>
+		<!-- Clear Filters -->
+		<div class="tooltip" data-tip="Limpiar todos los filtros">
+			<button
+				class="btn btn-square btn-soft btn-error"
+				onclick={handleClearFilters}
+				disabled={!hasFilters}
+			>
+				<Cancel />
+			</button>
+		</div>
 	</div>
 </div>
 
@@ -234,12 +238,16 @@
 </div>
 
 <!-- Table -->
-<div class="overflow-x-auto">
-	<table class="table">
+<div class="mt-6 rounded-box border border-base-content/9 bg-base-100">
+	<table class="table table-zebra table-sm">
 		<thead>
 			<tr>
 				<th class="w-12">
-					<input type="checkbox" class="checkbox" use:checkAll={'input[name="selected"]'} />
+					<input
+						type="checkbox"
+						class="checkbox checkbox-sm"
+						use:checkAll={'input[name="selected"]'}
+					/>
 				</th>
 				{#each columns as column}
 					<th>
@@ -262,7 +270,7 @@
 				{#each items as item}
 					<tr class="hover">
 						<td>
-							<input type="checkbox" name="selected" value={item.id} class="checkbox" />
+							<input type="checkbox" name="selected" value={item.id} class="checkbox checkbox-sm" />
 						</td>
 						<td>
 							<a href="/destinations/{item.slug}" class="link">{item.name}</a>
