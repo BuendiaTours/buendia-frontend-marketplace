@@ -24,7 +24,7 @@
 
 	// Components
 	import Pagination from '$lib/components/MeltPagination.svelte';
-	import { createDialog, createPopover, melt } from '@melt-ui/svelte';
+	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
 	// Icons
@@ -110,16 +110,6 @@
 		forceVisible: true
 	});
 
-	const {
-		elements: { trigger: sortTrigger, content: sortContent, arrow },
-		states: { open: sortOpen }
-	} = createPopover({
-		forceVisible: true,
-		positioning: {
-			placement: 'bottom-end'
-		}
-	});
-
 	// ============================================================================
 	// FILTER FUNCTIONS
 	// ============================================================================
@@ -175,8 +165,6 @@
 			order: newOrder,
 			page: 1
 		});
-
-		sortOpen.set(false);
 	}
 
 	function getSortIcon(field: string) {
@@ -232,12 +220,6 @@
 		{#if hasFilters}
 			<span class="badge badge-sm badge-primary">●</span>
 		{/if}
-	</button>
-
-	<!-- Sort Button -->
-	<button class="btn btn-outline" use:melt={$sortTrigger}>
-		<svelte:component this={sort ? getSortIcon(sort.field) : ArrowSeparateVertical} />
-		Ordenar
 	</button>
 
 	<!-- Clear Filters -->
@@ -366,24 +348,6 @@
 			<button use:melt={$close} class="btn absolute top-4 right-4 btn-circle btn-ghost btn-sm">
 				<Cancel />
 			</button>
-		</div>
-	</div>
-{/if}
-
-<!-- Sort Popover -->
-{#if $sortOpen}
-	<div use:melt={$sortContent} transition:fade={{ duration: 100 }} class="z-50">
-		<div use:melt={$arrow} />
-		<div class="menu rounded-box bg-base-100 p-2 shadow-lg">
-			{#each columns.filter((c) => c.sortable) as column}
-				<button
-					class="btn justify-start btn-ghost btn-sm"
-					onclick={() => handleSort(String(column.key))}
-				>
-					<svelte:component this={getSortIcon(String(column.key))} />
-					{column.title || String(column.key)}
-				</button>
-			{/each}
 		</div>
 	</div>
 {/if}
