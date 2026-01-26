@@ -566,9 +566,9 @@
 								</td>
 							{/if}
 						{/each}
-						<td
-							><div class="dropdown dropdown-end dropdown-bottom ml-auto">
-								<div tabindex="0" role="button" class="btn m-1 btn-sm">Actions</div>
+						<td class="w-0 text-right">
+							<div class="dropdown dropdown-end dropdown-bottom">
+								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
 								<ul
 									tabindex="-1"
 									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"

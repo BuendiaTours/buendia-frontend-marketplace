@@ -254,7 +254,7 @@
 						{column.title || String(column.key)}
 					</th>
 				{/each}
-				<th class="w-32">Acciones</th>
+				<th class="w-0"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -268,7 +268,7 @@
 				</tr>
 			{:else}
 				{#each items as item}
-					<tr class="hover">
+					<tr>
 						<td>
 							<input type="checkbox" name="selected" value={item.id} class="checkbox checkbox-sm" />
 						</td>
@@ -277,17 +277,39 @@
 						</td>
 						<td>{item.slug}</td>
 						<td>
-							<span class="badge badge-sm">
+							<span>
 								{item.kind === 'CITY' ? 'Ciudad' : item.kind === 'REGION' ? 'Región' : 'País'}
 							</span>
 						</td>
 						<td class="max-w-md truncate">{item.descriptionShort}</td>
-						<td>
-							<div class="flex gap-2">
-								<a href="/destinations/{item.slug}" class="btn btn-ghost btn-sm">Ver</a>
-								<a href="/destinations/{item.slug}/edit" class="btn btn-ghost btn-sm">Editar</a>
-							</div>
-						</td>
+						<td class="w-0 text-right">
+							<div class="dropdown dropdown-end dropdown-bottom">
+								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
+								<ul
+									tabindex="-1"
+									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"
+								>
+									<li>
+										<a
+											href={buildUrlWithFilters(
+												`/destinations/${item.slug}`,
+												$page.url.searchParams
+											)}
+										>
+											Ver
+										</a>
+									</li>
+									<li>
+										<a
+											href={buildUrlWithFilters(
+												`/destinations/${item.slug}/edit`,
+												$page.url.searchParams
+											)}>Editar</a
+										>
+									</li>
+								</ul>
+							</div></td
+						>
 					</tr>
 				{/each}
 			{/if}

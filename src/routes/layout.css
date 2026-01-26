@@ -187,3 +187,7 @@ html[data-theme='dark'] {
 		z-index: 99;
 	}
 }
+
+.dropdown-content {
+	@apply border border-base-content/9;
+}
