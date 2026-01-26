@@ -45,5 +45,13 @@ export const destinationsEndpoints = {
 		});
 
 		return response.data.data;
+	},
+
+	async delete(fetchFn: typeof fetch, slug: string): Promise<void> {
+		const path = API_ENDPOINTS.destinations.delete(slug);
+
+		await apiClient.request<void>(fetchFn, path, {
+			method: 'DELETE'
+		});
 	}
 };
