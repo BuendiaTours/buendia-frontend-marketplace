@@ -2,7 +2,6 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
 	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel } from 'svelte-iconoir';
-	import { confirmAction } from '$lib/actions/confirmAction';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
@@ -67,10 +66,12 @@
 	let selectedItemIds = $state<Set<string>>(new Set());
 
 	const itemsForCombobox = $derived(
-		availableItems.map((item) => ({
-			value: item.id,
-			label: item.name
-		}))
+		availableItems
+			.filter((item) => !items.some((selectedItem) => selectedItem.id === item.id))
+			.map((item) => ({
+				value: item.id,
+				label: item.name
+			}))
 	);
 
 	const hasSelectedItems = $derived(selectedItemIds.size > 0);
