@@ -10,6 +10,7 @@
 	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
 	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -95,24 +96,18 @@
 			<FormErrorMsg error={$errors.slug} />
 		</div>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="status">Estado</label>
-			<select
-				id="status"
-				name="status"
-				class="select w-full"
-				class:select-error={$errors.status}
-				bind:value={$form.status}
-			>
-				<option value="CITY">Ciudad</option>
-				<option value="REGION">Región</option>
-				<option value="COUNTRY">País</option>
-			</select>
-			<FormErrorMsg error={$errors.status} />
-		</div>
+		<FormSelect
+			id="status"
+			label="Estado"
+			bind:value={$form.status}
+			error={$errors.status}
+			apiEndpoint="http://localhost:3333/attraction-status"
+			placeholder="Selecciona un estado"
+			wrapperClass="md:col-span-12"
+		/>
 
 		<FormTextarea
-			id="descriptionShort"
+			id="description"
 			label="Descripción corta"
 			bind:value={$form.description}
 			error={$errors.description}
