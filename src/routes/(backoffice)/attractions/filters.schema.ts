@@ -1,16 +1,10 @@
 import type { FiltersSchema } from '$lib/utils/filters';
-import {
-	createBooleanField,
-	createPageField,
-	createPageSizeField,
-	createOrderField,
-	createSortField
-} from '$lib/utils/filters';
+import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
 
 export type AttractionsFilters = {
-	// Paginación
-	page: number;
-	pageSize: number;
+	// Paginación (opcional - solo si la API la provee)
+	page?: number;
+	pageSize?: number;
 	// Ordenamiento
 	sort?: 'id' | 'name' | 'slug' | 'status';
 	order?: 'asc' | 'desc';
@@ -25,8 +19,36 @@ export type AttractionsFilters = {
 
 export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 	fields: {
-		page: createPageField(),
-		pageSize: createPageSizeField(),
+		page: {
+			parse: (raw) => {
+				if (!raw) return undefined;
+				const num = parseInt(raw, 10);
+				return num > 0 ? num : undefined;
+			},
+			serialize: (value, out) => {
+				if (value !== undefined) {
+					out.set('page', String(value));
+				} else {
+					out.delete('page');
+				}
+			},
+			resetPageOnChange: false
+		},
+		pageSize: {
+			parse: (raw) => {
+				if (!raw) return undefined;
+				const num = parseInt(raw, 10);
+				return num > 0 ? num : undefined;
+			},
+			serialize: (value, out) => {
+				if (value !== undefined) {
+					out.set('pageSize', String(value));
+				} else {
+					out.delete('pageSize');
+				}
+			},
+			resetPageOnChange: false
+		},
 		sort: createSortField(['id', 'name', 'slug', 'status'] as const),
 		order: createOrderField(),
 		q: {

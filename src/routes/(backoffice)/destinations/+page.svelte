@@ -108,9 +108,9 @@
 	function applyFilterPatch(patch: Record<string, any>) {
 		const currentParams = $page.url.searchParams;
 
-		// Si hay cambios en filtros y ya existe paginación, resetear a página 1
-		// (excepto si el patch ya incluye explícitamente el parámetro page)
-		if (currentParams.has('page') && !('page' in patch)) {
+		// Si la API devuelve paginación (pagination !== null), resetear a página 1
+		// al cambiar filtros (excepto si el patch ya incluye explícitamente el parámetro page)
+		if (pagination !== null && !('page' in patch)) {
 			patch.page = 1;
 		}
 
