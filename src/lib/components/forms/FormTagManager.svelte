@@ -53,10 +53,12 @@
 	}: Props = $props();
 
 	const tagsForCombobox = $derived(
-		availableTags?.map((tag) => ({
-			value: tag.id,
-			label: tag.name
-		})) || []
+		availableTags
+			?.filter((tag) => !tags.some((selectedTag) => selectedTag.id === tag.id))
+			.map((tag) => ({
+				value: tag.id,
+				label: tag.name
+			})) || []
 	);
 
 	let selectedTagId = $state<string | undefined>(undefined);
