@@ -4,8 +4,8 @@
 	// ============================================================================
 
 	// Types
-	import type { Destination, Column } from '$lib/types';
-	import type { DestinationsFilters } from './filters.schema';
+	import type { Attraction, Column } from '$lib/types';
+	import type { AttractionsFilters } from './filters.schema';
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
@@ -14,7 +14,7 @@
 	// Utils
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { destinationsFiltersSchema } from './filters.schema';
+	import { attractionsFiltersSchema } from './filters.schema';
 
 	// i18n
 	import * as m from '$paraglide/messages';
@@ -45,14 +45,14 @@
 		data
 	}: {
 		data: {
-			items: Destination[];
+			items: Attraction[];
 			pagination: {
 				page: number;
 				pageSize: number;
 				total: number;
 				totalPages: number;
 			};
-			filters: DestinationsFilters;
+			filters: AttractionsFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
 		};
 	} = $props();
@@ -95,7 +95,7 @@
 
 	function applyFilterPatch(patch: Record<string, any>) {
 		const currentParams = $page.url.searchParams;
-		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
+		const newParams = patchFilters(attractionsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
@@ -148,11 +148,11 @@
 	// TABLA Y PAGINACIÓN
 	// ============================================================================
 
-	const columns: Column<Destination>[] = [
+	const columns: Column<Attraction>[] = [
 		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'name', title: 'Nombre', sortable: true },
 		// { key: 'slug', title: 'Slug', sortable: true },
-		{ key: 'kind', title: 'Tipo', sortable: true }
+		{ key: 'status', title: 'Estado', sortable: false }
 	];
 
 	function handlePageChange(newPage: number) {
@@ -175,10 +175,10 @@
 </script>
 
 <svelte:head>
-	<title>Destinos - Backoffice</title>
+	<title>Atracciones - Backoffice</title>
 </svelte:head>
 
-<h1 class="text-lg">Destinos</h1>
+<h1 class="text-lg">Atracciones</h1>
 
 <!-- Filters Bar -->
 <div
@@ -188,7 +188,7 @@
 	<div class="flex w-full items-center gap-2">
 		<input
 			type="text"
-			placeholder="Buscar destinos..."
+			placeholder="Buscar atracciones..."
 			class="input-bordered input w-full"
 			bind:value={searchQuery}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
@@ -231,9 +231,9 @@
 		</div>
 	{/if}
 
-	<a href="/destinations/new" class="btn btn-outline btn-primary">
+	<a href="/attractions/new" class="btn btn-outline btn-primary">
 		<Plus />
-		Nuevo destino
+		Nueva atracción
 	</a>
 </div>
 
@@ -294,7 +294,7 @@
 						<td>
 							<input
 								type="checkbox"
-								name="destinations_selected[]"
+								name="attractions_selected[]"
 								value={item.id}
 								class="checkbox checkbox-sm"
 							/>
@@ -311,7 +311,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}`,
+												`/attractions/${item.slug}`,
 												$page.url.searchParams
 											)}
 										>
@@ -319,13 +319,17 @@
 										</a>
 									</p>
 									<p class="text-xs text-base-content/50">
-										{item['descriptionShort']}
+										{item['description']}
 									</p>
 								</td>
-							{:else if col.key === 'kind'}
+							{:else if col.key === 'status'}
 								<td>
 									<span>
-										{item.kind === 'CITY' ? 'Ciudad' : item.kind === 'REGION' ? 'Región' : 'País'}
+										{item.status === 'ACTIVE'
+											? 'Activo'
+											: item.status === 'DRAFT'
+												? 'Borrador'
+												: 'Inactivo'}
 									</span>
 								</td>
 							{:else}
@@ -344,7 +348,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}`,
+												`/attractions/${item.slug}`,
 												$page.url.searchParams
 											)}
 										>
@@ -354,7 +358,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}/edit`,
+												`/attractions/${item.slug}/edit`,
 												$page.url.searchParams
 											)}>Editar</a
 										>

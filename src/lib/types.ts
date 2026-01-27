@@ -75,4 +75,8 @@ export type Destination = {
 export type Attraction = {
 	id: string;
 	name: string;
+	slug: string;
+	status?: 'ACTIVE' | 'DRAFT' | 'INACTIVE';
+	description?: string;
+	photoUrl?: string;
 };

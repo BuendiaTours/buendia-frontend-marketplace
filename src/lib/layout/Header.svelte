@@ -33,6 +33,7 @@
 				<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
 				<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
 				<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>
+				<li><a href="/attractions" class:menu-active={isActive('/attractions')}>Atracciones</a></li>
 				<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
 			</ul>
 		</div>
@@ -43,6 +44,7 @@
 			<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
 			<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
 			<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>
+			<li><a href="/attractions" class:menu-active={isActive('/attractions')}>Atracciones</a></li>
 			<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
 		</ul>
 	</div>

@@ -1,25 +1,25 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { destinationsFiltersSchema } from './filters.schema';
+import { attractionsFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
 import { parseFilters } from '$lib/utils/filters';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema
-	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
+	const filters = parseFilters(attractionsFiltersSchema, url.searchParams);
 
 	try {
 		// Por ahora usamos getAll sin filtros, en el futuro se implementará con paginación
-		const destinations = await api.destinations.getAll(fetch);
+		const attractions = await api.attractions.getAll(fetch);
 
-		// Validar que destinations sea un array válido
-		const validDestinations = Array.isArray(destinations) ? destinations : [];
-		const total = validDestinations.length;
+		// Validar que attractions sea un array válido
+		const validAttractions = Array.isArray(attractions) ? attractions : [];
+		const total = validAttractions.length;
 
 		// Simulamos paginación local hasta que la API lo soporte
 		const startIndex = (filters.page - 1) * filters.pageSize;
 		const endIndex = startIndex + filters.pageSize;
-		const paginatedItems = validDestinations.slice(startIndex, endIndex);
+		const paginatedItems = validAttractions.slice(startIndex, endIndex);
 
 		return {
 			items: paginatedItems,

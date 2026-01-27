@@ -36,7 +36,9 @@ export const TAGS_ENDPOINTS = {
 
 export const ATTRACTIONS_ENDPOINTS = {
 	list: () => BASE_PATHS.attractions,
-	detail: (id: string) => `${BASE_PATHS.attractions}/${id}`
+	detail: (id: string) => `${BASE_PATHS.attractions}/${id}`,
+	search: () => `${BASE_PATHS.attractions}/search`,
+	delete: (slug: string) => `${BASE_PATHS.attractions}/${slug}`
 } as const;
 
 export const DESTINATIONS_ENDPOINTS = {
