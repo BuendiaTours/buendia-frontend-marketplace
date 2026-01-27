@@ -1,19 +1,18 @@
 <script lang="ts">
-	import type { ActivityDetail } from '$lib/types';
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
-	import { slugify } from '$lib/utils/strings';
-	import { Plus, Refresh } from 'svelte-iconoir';
+
+	// Form
 	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
-	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
 	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormSlugInput from '$lib/components/forms/FormSlugInput.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories, availableAttractions } = data;
@@ -21,12 +20,6 @@
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
 	});
-
-	function generateSlug() {
-		if ($form.title) {
-			$form.slug = slugify($form.title);
-		}
-	}
 </script>
 
 <div class="mb-4 flex items-center justify-between">
@@ -87,26 +80,15 @@
 			readonly
 		/>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="slug"><span>Slug</span></label>
-			<div class="flex gap-2">
-				<input
-					type="text"
-					id="slug"
-					name="slug"
-					class="input w-full"
-					class:input-error={$errors.slug}
-					bind:value={$form.slug}
-				/>
-
-				<div class="tooltip" data-tip="Genera slug a partir del título">
-					<button type="button" class="btn btn-square btn-soft" onclick={generateSlug}>
-						<Refresh />
-					</button>
-				</div>
-			</div>
-			<FormErrorMsg error={$errors.slug} />
-		</div>
+		<FormSlugInput
+			id="slug"
+			label="Slug"
+			bind:value={$form.slug}
+			sourceValue={$form.title}
+			error={$errors.slug}
+			generateTooltip="Genera slug a partir del título"
+			wrapperClass="md:col-span-12"
+		/>
 
 		<FormOrderedList
 			id="attractions"
