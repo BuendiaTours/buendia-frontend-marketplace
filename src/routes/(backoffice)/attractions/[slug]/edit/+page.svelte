@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Destination } from '$lib/types';
+	import type { Attraction } from '$lib/types';
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
@@ -25,14 +25,14 @@
 </script>
 
 <div class="mb-4 flex items-center justify-between">
-	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="link">
+	<a href={`/attractions?${$page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
 	<form
 		method="POST"
 		action={buildUrlWithFilters(
-			`/destinations/${data.destination.slug}/delete`,
+			`/attractions/${data.attraction.slug}/delete`,
 			$page.url.searchParams
 		)}
 	>
@@ -52,7 +52,7 @@
 	</form>
 </div>
 
-<h1>Editar Destino</h1>
+<h1>Editar Atracción</h1>
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
@@ -96,60 +96,60 @@
 		</div>
 
 		<div class="md:col-span-12">
-			<label class="label text-sm" for="kind">Tipo</label>
+			<label class="label text-sm" for="status">Estado</label>
 			<select
-				id="kind"
-				name="kind"
+				id="status"
+				name="status"
 				class="select w-full"
-				class:select-error={$errors.kind}
-				bind:value={$form.kind}
+				class:select-error={$errors.status}
+				bind:value={$form.status}
 			>
 				<option value="CITY">Ciudad</option>
 				<option value="REGION">Región</option>
 				<option value="COUNTRY">País</option>
 			</select>
-			<FormErrorMsg error={$errors.kind} />
+			<FormErrorMsg error={$errors.status} />
 		</div>
 
 		<FormTextarea
 			id="descriptionShort"
 			label="Descripción corta"
-			bind:value={$form.descriptionShort}
-			error={$errors.descriptionShort}
+			bind:value={$form.description}
+			error={$errors.description}
 			rows={3}
 			wrapperClass="md:col-span-12"
 		/>
 
 		<div class="md:col-span-4">
 			<div class="rounded-lg border border-base-content/10 p-4">
-				{#if $form.photoUrlHero}
-					<a href={$form.photoUrlHero} target="_blank">
-						<img src={$form.photoUrlHero} alt="" />
+				{#if $form.photoUrl}
+					<a href={$form.photoUrl} target="_blank">
+						<img src={$form.photoUrl} alt="" />
 					</a>
 				{/if}
 			</div>
 		</div>
 
 		<FormTextInput
-			id="photoUrlHero"
+			id="photoUrl"
 			label="URL de imagen principal"
 			type="url"
-			bind:value={$form.photoUrlHero}
-			error={$errors.photoUrlHero}
+			bind:value={$form.photoUrl}
+			error={$errors.photoUrl}
 			wrapperClass="md:col-span-8"
 			placeholder="https://example.com/image.jpg"
 		/>
 	</div>
 
 	<div class="flex justify-between">
-		<a href={`/destinations/${data.destination.slug}`} class="btn btn-soft btn-error">Cancelar</a>
+		<a href={`/attractions/${data.attraction.slug}`} class="btn btn-soft btn-error">Cancelar</a>
 		<button type="submit" class="btn btn-outline btn-primary">Guardar cambios</button>
 	</div>
 </form>
 
 <h2 class="mt-8">JSON de la API</h2>
 <pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
-		data.destination,
+		data.attraction,
 		null,
 		2
 	)}</pre>
