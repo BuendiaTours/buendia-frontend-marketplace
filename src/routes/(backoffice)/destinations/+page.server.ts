@@ -9,26 +9,30 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
 
 	try {
-		// Por ahora usamos getAll sin filtros, en el futuro se implementará con paginación
-		const destinations = await api.destinations.getAll(fetch);
+		const response = await api.destinations.getAll(fetch, {
+			page: filters.page,
+			pageSize: filters.pageSize,
+			q: filters.q,
+			kind: filters.kind,
+			wheelchairAccessible: filters.wheelchairAccessible,
+			breakfastIncluded: filters.breakfastIncluded,
+			kidsFreeTour: filters.kidsFreeTour,
+			sort: filters.sort,
+			order: filters.order
+		});
 
-		// Validar que destinations sea un array válido
-		const validDestinations = Array.isArray(destinations) ? destinations : [];
-		const total = validDestinations.length;
-
-		// Simulamos paginación local hasta que la API lo soporte
-		const startIndex = (filters.page - 1) * filters.pageSize;
-		const endIndex = startIndex + filters.pageSize;
-		const paginatedItems = validDestinations.slice(startIndex, endIndex);
+		// Si la API no devuelve pagination, calculamos localmente
+		const items = response.data || [];
+		const pagination = response.pagination || {
+			page: filters.page,
+			pageSize: filters.pageSize,
+			total: items.length,
+			totalPages: items.length > 0 ? Math.ceil(items.length / filters.pageSize) : 1
+		};
 
 		return {
-			items: paginatedItems,
-			pagination: {
-				page: filters.page,
-				pageSize: filters.pageSize,
-				total,
-				totalPages: total > 0 ? Math.ceil(total / filters.pageSize) : 1
-			},
+			items,
+			pagination,
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
 		};

@@ -1,20 +1,39 @@
 import { apiClient } from '../client';
 import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
-import type { Destination } from '$lib/types';
+import type { Destination, Pagination } from '$lib/types';
+
+export type DestinationsGetAllParams = {
+	page?: number;
+	pageSize?: number;
+	q?: string;
+	kind?: 'CITY' | 'REGION' | 'COUNTRY';
+	wheelchairAccessible?: boolean;
+	breakfastIncluded?: boolean;
+	kidsFreeTour?: boolean;
+	sort?: string;
+	order?: 'asc' | 'desc';
+};
 
 export type DestinationsSearchParams = {
 	q?: string;
 };
 
 export const destinationsEndpoints = {
-	async getAll(fetchFn: typeof fetch): Promise<Destination[]> {
-		const path = API_ENDPOINTS.destinations.list();
+	async getAll(
+		fetchFn: typeof fetch,
+		params?: DestinationsGetAllParams
+	): Promise<{ data: Destination[]; pagination: Pagination }> {
+		const path = buildEndpointUrl(API_ENDPOINTS.destinations.list(), params);
 
-		const response = await apiClient.request<{ data: Destination[] }>(fetchFn, path, {
-			method: 'GET'
-		});
+		const response = await apiClient.request<{ data: Destination[]; pagination: Pagination }>(
+			fetchFn,
+			path,
+			{
+				method: 'GET'
+			}
+		);
 
-		return response.data.data;
+		return response.data;
 	},
 
 	async getById(fetchFn: typeof fetch, id: string): Promise<Destination> {
