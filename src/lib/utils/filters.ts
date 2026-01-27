@@ -228,6 +228,7 @@ export function clearAllFilters(
 	// Preservar ordenación si existe
 	const sort = currentParams.get('sort');
 	const order = currentParams.get('order');
+	const page = currentParams.get('page');
 
 	if (sort) {
 		newParams.set('sort', sort);
@@ -235,9 +236,9 @@ export function clearAllFilters(
 	if (order) {
 		newParams.set('order', order);
 	}
-
-	// Resetear a página 1
-	newParams.set('page', '1');
+	if (page) {
+		newParams.set('page', '1');
+	}
 
 	// Construir nueva URL
 	const newUrl = newParams.toString() ? `${pathname}?${newParams.toString()}` : pathname;
