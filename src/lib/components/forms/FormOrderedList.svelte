@@ -253,7 +253,7 @@
 				</div> -->
 			</div>
 		{:else}
-			<div class="mt-4">
+			<div class="mt-3">
 				<span class="text-sm text-base-content/30">{emptyMessage}</span>
 			</div>
 		{/if}

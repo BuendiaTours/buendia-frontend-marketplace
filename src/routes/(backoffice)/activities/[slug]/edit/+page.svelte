@@ -96,8 +96,8 @@
 			bind:items={$form.attractions}
 			availableItems={availableAttractions}
 			error={$errors.attractions?._errors}
-			placeholder="Selecciona una attraction..."
-			emptyMessage="No hay attractions asociadas"
+			placeholder="Selecciona una atracción..."
+			emptyMessage="No hay atracciones asociadas"
 		/>
 
 		<FormCheckboxGroup
