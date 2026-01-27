@@ -11,8 +11,11 @@
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
 
 	let { data }: { data: PageData } = $props();
+
+	const availableDestinations = data.availableDestinations;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -66,7 +69,7 @@
 			label="Estado"
 			bind:value={$form.status}
 			error={$errors.status}
-			apiEndpoint="http://localhost:3333/attraction-status"
+			options={data.availableStatuses}
 			placeholder="Selecciona un estado"
 			wrapperClass="md:col-span-4"
 		/>
@@ -145,6 +148,16 @@
 			placeholder="https://example.com/image.jpg"
 		/>
 	</div>
+
+	<FormOrderedList
+		id="destintions"
+		label="Destinos"
+		bind:items={$form.destinations}
+		availableItems={availableDestinations}
+		error={$errors.destinations?._errors}
+		placeholder="Selecciona un destino..."
+		emptyMessage="No hay destinos asociados"
+	/>
 
 	<div class="flex justify-between">
 		<a href={`/attractions/${data.attraction.slug}`} class="btn btn-soft btn-error">Cancelar</a>

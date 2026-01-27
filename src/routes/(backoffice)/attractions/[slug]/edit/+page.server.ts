@@ -7,7 +7,11 @@ import { attractionFormSchema } from '../../attraction-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const attraction = await api.attractions.getBySlug(fetch, params.slug);
+		const [attraction, destinationsResponse, statusResponse] = await Promise.all([
+			api.attractions.getBySlug(fetch, params.slug),
+			api.destinations.getAll(fetch),
+			api.attractions.getStatuses(fetch)
+		]);
 
 		const form = await superValidate(
 			{
@@ -23,7 +27,12 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			zod(attractionFormSchema)
 		);
 
-		return { attraction, form };
+		return {
+			attraction,
+			form,
+			availableDestinations: destinationsResponse.data || [],
+			availableStatuses: statusResponse || []
+		};
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {

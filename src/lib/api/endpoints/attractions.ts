@@ -72,5 +72,15 @@ export const attractionsEndpoints = {
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'DELETE'
 		});
+	},
+
+	async getStatuses(fetchFn: typeof fetch): Promise<Array<{ id: string; name: string }>> {
+		const path = API_ENDPOINTS.attractions.statuses();
+
+		const response = await apiClient.request<Array<{ id: string; name: string }>>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
 	}
 };

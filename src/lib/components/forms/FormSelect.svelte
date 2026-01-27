@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 	import FormErrorMsg from './FormErrorMsg.svelte';
 
 	/**
