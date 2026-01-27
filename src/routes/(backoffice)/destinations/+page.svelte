@@ -10,6 +10,10 @@
 	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+
+	// Environment
+	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
@@ -74,6 +78,59 @@
 	$effect(() => {
 		searchQuery = filters.q || '';
 	});
+
+	// ============================================================================
+	// KIND (cargados desde API)
+	// ============================================================================
+
+	type DestinationKind = {
+		id: string;
+		name: string;
+	};
+
+	let statuses = $state<DestinationKind[]>([]);
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`${PUBLIC_API_BASE_URL}/destination-kind`);
+			if (response.ok) {
+				const data: DestinationKind[] = await response.json();
+				statuses = data;
+			}
+		} catch (error) {
+			console.error('Error cargando datos:', error);
+		}
+	});
+
+	// ============================================================================
+	// FILTRO: KIND
+	// ============================================================================
+
+	let selectedKind = $state<string | undefined>(undefined);
+
+	// Sincronizar con el filtro de la URL al cargar
+	$effect(() => {
+		selectedKind = filters.kind || undefined;
+	});
+
+	function handleKindChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		const kindValue = target.value;
+		selectedKind = kindValue || undefined;
+
+		applyFilterPatch({
+			kind: kindValue ? kindValue : (null as any),
+			page: 1
+		});
+	}
+
+	function handleClearKind() {
+		selectedKind = undefined;
+		applyFilterPatch({
+			kind: null as any,
+			page: 1
+		});
+	}
 
 	// ============================================================================
 	// ADVANCED FILTERS STATE
@@ -147,7 +204,6 @@
 	const columns: Column<Destination>[] = [
 		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'name', title: 'Nombre', sortable: true },
-		// { key: 'slug', title: 'Slug', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
 	];
 
@@ -192,6 +248,31 @@
 		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
 			<Search />
 		</button>
+	</div>
+
+	<div class="flex gap-2">
+		<select
+			class="select w-44"
+			value={selectedKind || ''}
+			onchange={handleKindChange}
+			class:border-success={selectedKind !== undefined}
+			class:text-success={selectedKind !== undefined}
+		>
+			<option value="" disabled>Selecciona tipo</option>
+			{#each statuses as status}
+				<option value={status.id}>{status.name}</option>
+			{/each}
+		</select>
+
+		<div class="tooltip" data-tip="Limpia el estado">
+			<button
+				class="btn btn-square btn-soft btn-md btn-error"
+				onclick={handleClearKind}
+				disabled={!selectedKind}
+			>
+				<Cancel />
+			</button>
+		</div>
 	</div>
 
 	<div class="ml-auto flex items-center gap-2">

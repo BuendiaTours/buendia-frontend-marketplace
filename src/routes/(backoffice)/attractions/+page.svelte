@@ -149,7 +149,7 @@
 				statuses = data;
 			}
 		} catch (error) {
-			console.error('Error cargando status:', error);
+			console.error('Error cargando datos:', error);
 		}
 	});
 
