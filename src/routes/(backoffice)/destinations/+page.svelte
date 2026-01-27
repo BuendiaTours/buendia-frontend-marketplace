@@ -82,8 +82,7 @@
 
 	function handleKindFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
-			[filterKey]: value === null ? (null as any) : value,
-			page: 1
+			[filterKey]: value === null ? (null as any) : value
 		});
 	}
 
@@ -108,6 +107,13 @@
 
 	function applyFilterPatch(patch: Record<string, any>) {
 		const currentParams = $page.url.searchParams;
+
+		// Si hay cambios en filtros y ya existe paginación, resetear a página 1
+		// (excepto si el patch ya incluye explícitamente el parámetro page)
+		if (currentParams.has('page') && !('page' in patch)) {
+			patch.page = 1;
+		}
+
 		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
@@ -134,7 +140,7 @@
 	}
 
 	function handleSearch() {
-		applyFilterPatch({ q: searchQuery || null, page: 1 });
+		applyFilterPatch({ q: searchQuery || null });
 	}
 
 	// ============================================================================
@@ -147,8 +153,7 @@
 
 		applyFilterPatch({
 			sort: newOrder ? field : null,
-			order: newOrder,
-			page: 1
+			order: newOrder
 		});
 	}
 
@@ -167,7 +172,7 @@
 	}
 
 	function handlePageSizeChange(newPageSize: number) {
-		applyFilterPatch({ pageSize: newPageSize, page: 1 });
+		applyFilterPatch({ pageSize: newPageSize });
 	}
 
 	function handleResetSort() {
