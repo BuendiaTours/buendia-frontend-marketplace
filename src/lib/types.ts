@@ -78,5 +78,7 @@ export type Attraction = {
 	slug: string;
 	status?: 'ACTIVE' | 'DRAFT' | 'INACTIVE';
 	description?: string;
+	descriptionLong?: string;
 	photoUrl?: string;
+	photoUrlHero?: string;
 };

@@ -6,7 +6,7 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Form components
-	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
@@ -51,7 +51,7 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormTextInput
+		<FormInputText
 			id="id"
 			label="Id"
 			badge="read only"
@@ -71,7 +71,7 @@
 			wrapperClass="md:col-span-4"
 		/>
 
-		<FormTextInput
+		<FormInputText
 			id="name"
 			label="Nombre"
 			bind:value={$form.name}
@@ -115,9 +115,29 @@
 			</div>
 		</div>
 
-		<FormTextInput
+		<FormInputText
+			id="photoUrlHero"
+			label="URL de imagen principal (Hero)"
+			type="url"
+			bind:value={$form.photoUrlHero}
+			error={$errors.photoUrlHero}
+			wrapperClass="md:col-span-8"
+			placeholder="https://example.com/image.jpg"
+		/>
+
+		<div class="md:col-span-4">
+			<div class="rounded-lg border border-base-content/10 p-4">
+				{#if $form.photoUrlHero}
+					<a href={$form.photoUrlHero} target="_blank">
+						<img src={$form.photoUrlHero} alt="" />
+					</a>
+				{/if}
+			</div>
+		</div>
+
+		<FormInputText
 			id="photoUrl"
-			label="URL de imagen principal"
+			label="URL de imagen secundaria"
 			type="url"
 			bind:value={$form.photoUrl}
 			error={$errors.photoUrl}

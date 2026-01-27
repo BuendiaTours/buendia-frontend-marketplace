@@ -16,7 +16,8 @@ export const attractionFormSchema = z.object({
 		.string()
 		.min(10, 'La descripción larga debe tener al menos 10 caracteres')
 		.max(512),
-	photoUrl: z.string().url('Debe ser una URL válida')
+	photoUrl: z.string().url('Debe ser una URL válida'),
+	photoUrlHero: z.string().url('Debe ser una URL válida')
 });
 
 export type AttractionFormSchema = z.infer<typeof attractionFormSchema>;
