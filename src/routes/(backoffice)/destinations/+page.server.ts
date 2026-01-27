@@ -12,13 +12,13 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		const response = await api.destinations.getAll(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
+			sort: filters.sort,
+			order: filters.order,
 			q: filters.q,
 			kind: filters.kind,
 			wheelchairAccessible: filters.wheelchairAccessible,
 			breakfastIncluded: filters.breakfastIncluded,
-			kidsFreeTour: filters.kidsFreeTour,
-			sort: filters.sort,
-			order: filters.order
+			kidsFreeTour: filters.kidsFreeTour
 		});
 
 		// Si la API no devuelve pagination, calculamos localmente

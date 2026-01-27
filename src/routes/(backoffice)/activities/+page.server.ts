@@ -11,15 +11,15 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		const response = await api.activities.getAll(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
+			sort: filters.sort,
+			order: filters.order,
 			from: filters.from,
 			to: filters.to,
 			destination: filters.destination,
 			isFreeTour: filters.isFreeTour,
 			freeForKids: filters.kidsFreeTour,
 			breakfast: filters.breakfastIncluded,
-			wheelchairAccessible: filters.wheelchairAccessible,
-			sort: filters.sort,
-			order: filters.order
+			wheelchairAccessible: filters.wheelchairAccessible
 		});
 
 		return {
