@@ -7,13 +7,13 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Plus, Refresh } from 'svelte-iconoir';
-	import FormTextInput from '$lib/components/form/FormTextInput.svelte';
-	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
-	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
-	import FormTextareaMarkdown from '$lib/components/form/FormTextareaMarkdown.svelte';
-	import FormTagManager from '$lib/components/form/FormTagManager.svelte';
-	import FormCheckboxGroup from '$lib/components/form/FormCheckboxGroup.svelte';
-	import FormOrderedList from '$lib/components/form/FormOrderedList.svelte';
+	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
+	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
+	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories, availableAttractions } = data;
@@ -149,7 +149,7 @@
 			label="Información importante"
 			bind:value={$form.infoImportant}
 			error={$errors.infoImportant}
-			rows="3"
+			rows={3}
 		/>
 
 		<div class="md:col-span-6">

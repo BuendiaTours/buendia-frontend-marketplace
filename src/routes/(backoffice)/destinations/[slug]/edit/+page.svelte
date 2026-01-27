@@ -7,9 +7,9 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
-	import FormTextInput from '$lib/components/form/FormTextInput.svelte';
-	import FormErrorMsg from '$lib/components/form/FormErrorMsg.svelte';
-	import FormTextarea from '$lib/components/form/FormTextarea.svelte';
+	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
+	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
+	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 
 	let { data }: { data: PageData } = $props();
 
