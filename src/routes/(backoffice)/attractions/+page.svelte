@@ -10,10 +10,6 @@
 	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-
-	// Environment
-	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
@@ -29,6 +25,7 @@
 	// Components
 	import Pagination from '$lib/components/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
+	import FilterSelectRemote from '$lib/components/filters/FilterSelectRemote.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 
 	// Icons
@@ -130,55 +127,12 @@
 	}
 
 	// ============================================================================
-	// STATUS (cargados desde API)
-	// ============================================================================
-
-	type AttractionStatus = {
-		id: string;
-		name: string;
-		desc: string;
-	};
-
-	let statuses = $state<AttractionStatus[]>([]);
-
-	onMount(async () => {
-		try {
-			const response = await fetch(`${PUBLIC_API_BASE_URL}/attraction-status`);
-			if (response.ok) {
-				const data: AttractionStatus[] = await response.json();
-				statuses = data;
-			}
-		} catch (error) {
-			console.error('Error cargando datos:', error);
-		}
-	});
-
-	// ============================================================================
 	// FILTRO: STATUS
 	// ============================================================================
 
-	let selectedStatus = $state<string | undefined>(undefined);
-
-	// Sincronizar con el filtro de la URL al cargar
-	$effect(() => {
-		selectedStatus = filters.status || undefined;
-	});
-
-	function handleStatusChange(event: Event) {
-		const target = event.target as HTMLSelectElement;
-		const statusValue = target.value;
-		selectedStatus = statusValue || undefined;
-
+	function handleStatusFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
-			status: statusValue ? statusValue : (null as any),
-			page: 1
-		});
-	}
-
-	function handleClearStatus() {
-		selectedStatus = undefined;
-		applyFilterPatch({
-			status: null as any,
+			[filterKey]: value === null ? (null as any) : value,
 			page: 1
 		});
 	}
@@ -247,30 +201,14 @@
 		</button>
 	</div>
 
-	<div class="flex gap-2">
-		<select
-			class="select w-44"
-			value={selectedStatus || ''}
-			onchange={handleStatusChange}
-			class:border-success={selectedStatus !== undefined}
-			class:text-success={selectedStatus !== undefined}
-		>
-			<option value="" disabled>Selecciona estado</option>
-			{#each statuses as status}
-				<option value={status.id}>{status.name}</option>
-			{/each}
-		</select>
-
-		<div class="tooltip" data-tip="Limpia el estado">
-			<button
-				class="btn btn-square btn-soft btn-md btn-error"
-				onclick={handleClearStatus}
-				disabled={!selectedStatus}
-			>
-				<Cancel />
-			</button>
-		</div>
-	</div>
+	<FilterSelectRemote
+		apiEndpoint="http://localhost:3333/attraction-status"
+		filterKey="status"
+		currentValue={filters.status}
+		placeholder="Selecciona estado"
+		clearTooltip="Limpia el estado"
+		onFilterChange={handleStatusFilterChange}
+	/>
 
 	<div class="ml-auto flex items-center gap-2">
 		<!-- Advanced Filters -->
