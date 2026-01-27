@@ -12,6 +12,7 @@
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -157,6 +158,14 @@
 		error={$errors.destinations?._errors}
 		placeholder="Selecciona un destino..."
 		emptyMessage="No hay destinos asociados"
+	/>
+
+	<FormGeoJson
+		id="location"
+		label="Ubicación"
+		bind:value={$form.location}
+		error={$errors.location}
+		mapHeight="400px"
 	/>
 
 	<div class="flex justify-between">

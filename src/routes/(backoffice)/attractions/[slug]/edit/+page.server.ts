@@ -22,7 +22,9 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				description: attraction.description,
 				descriptionLong: attraction.descriptionLong,
 				photoUrl: attraction.photoUrl,
-				photoUrlHero: attraction.photoUrlHero
+				photoUrlHero: attraction.photoUrlHero,
+				destinations: attraction.destinations || [],
+				location: attraction.location || null
 			},
 			zod(attractionFormSchema)
 		);

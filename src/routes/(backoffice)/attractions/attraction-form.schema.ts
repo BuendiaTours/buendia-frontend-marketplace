@@ -25,7 +25,14 @@ export const attractionFormSchema = z.object({
 				name: z.string()
 			})
 		)
-		.default([])
+		.default([]),
+	location: z
+		.object({
+			type: z.literal('Point'),
+			coordinates: z.tuple([z.number(), z.number()])
+		})
+		.nullable()
+		.default(null)
 });
 
 export type AttractionFormSchema = z.infer<typeof attractionFormSchema>;
