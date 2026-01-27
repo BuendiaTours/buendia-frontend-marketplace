@@ -64,7 +64,7 @@
 				pageSize: number;
 				total: number;
 				totalPages: number;
-			};
+			} | null;
 			filters: ActivitiesFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
 		};
@@ -74,8 +74,8 @@
 	const pagination = $derived(data.pagination);
 	const filters = $derived(data.filters);
 	const sort = $derived(data.sort);
-	const pageSize = $derived(pagination.pageSize);
-	const total = $derived(pagination.total);
+	const pageSize = $derived(pagination?.pageSize ?? 10);
+	const total = $derived(pagination?.total ?? 0);
 
 	// ============================================================================
 	// DESTINATIONS (cargadas desde API)
@@ -476,10 +476,14 @@
 <div class="mt-6 flex items-center justify-between">
 	{#if items.length}
 		<div class="pagenav-info text-sm text-base-content/70">
-			Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
-				1) *
-				pagination.pageSize +
-				1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+			{#if pagination}
+				Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
+					1) *
+					pagination.pageSize +
+					1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+			{:else}
+				Mostrando {items.length} elementos
+			{/if}
 		</div>
 	{/if}
 	<button class="btn btn-outline btn-primary">
@@ -619,10 +623,15 @@
 			</tbody>
 		</table>
 	</div>
-
-	<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 {:else}
 	<p class="text-md mt-6 text-base-content/70">No hay actividades disponibles.</p>
+{/if}
+
+<!-- Pagination -->
+{#if data.pagination}
+	<div class="mt-4">
+		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
+	</div>
 {/if}
 
 <style>

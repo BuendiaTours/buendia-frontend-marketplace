@@ -51,7 +51,7 @@
 				pageSize: number;
 				total: number;
 				totalPages: number;
-			};
+			} | null;
 			filters: DestinationsFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
 		};
@@ -61,8 +61,8 @@
 	const pagination = $derived(data.pagination);
 	const filters = $derived(data.filters);
 	const sort = $derived(data.sort);
-	const pageSize = $derived(pagination.pageSize);
-	const total = $derived(pagination.total);
+	const pageSize = $derived(pagination?.pageSize ?? 10);
+	const total = $derived(pagination?.total ?? 0);
 
 	// ============================================================================
 	// SEARCH STATE
@@ -137,11 +137,6 @@
 			order: newOrder,
 			page: 1
 		});
-	}
-
-	function getSortIcon(field: string) {
-		if (sort?.field !== field) return ArrowSeparateVertical;
-		return sort.order === 'asc' ? NavArrowUp : NavArrowDown;
 	}
 
 	// ============================================================================
@@ -224,10 +219,14 @@
 <div class="mt-6 flex items-center justify-between">
 	{#if items.length}
 		<div class="pagenav-info text-sm text-base-content/70">
-			Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
-				1) *
-				pagination.pageSize +
-				1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+			{#if pagination}
+				Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
+					1) *
+					pagination.pageSize +
+					1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
+			{:else}
+				Mostrando {items.length} elementos
+			{/if}
 		</div>
 	{/if}
 
@@ -370,7 +369,7 @@
 </div>
 
 <!-- Pagination -->
-{#if total > 0}
+{#if data.pagination}
 	<div class="mt-4">
 		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 	</div>

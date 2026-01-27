@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 		return {
 			items: response.data || [],
-			pagination: response.pagination,
+			pagination: response.pagination || null,
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
 		};

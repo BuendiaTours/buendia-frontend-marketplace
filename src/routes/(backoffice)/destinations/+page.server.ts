@@ -21,18 +21,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			kidsFreeTour: filters.kidsFreeTour
 		});
 
-		// Si la API no devuelve pagination, calculamos localmente
-		const items = response.data || [];
-		const pagination = response.pagination || {
-			page: filters.page,
-			pageSize: filters.pageSize,
-			total: items.length,
-			totalPages: items.length > 0 ? Math.ceil(items.length / filters.pageSize) : 1
-		};
-
 		return {
-			items,
-			pagination,
+			items: response.data || [],
+			pagination: response.pagination || null,
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
 		};
