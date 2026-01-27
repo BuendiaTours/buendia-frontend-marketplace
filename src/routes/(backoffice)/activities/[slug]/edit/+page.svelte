@@ -6,13 +6,13 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Form
-	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
 	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
-	import FormSlugInput from '$lib/components/forms/FormSlugInput.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories, availableAttractions } = data;
@@ -51,7 +51,7 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormTextInput
+		<FormInputText
 			id="id"
 			label="Id"
 			badge="read only"
@@ -61,7 +61,7 @@
 			wrapperClass="md:col-span-9"
 		/>
 
-		<FormTextInput
+		<FormInputText
 			id="codeRef"
 			label="codeRef"
 			badge="disabled"
@@ -71,7 +71,7 @@
 			wrapperClass="md:col-span-3"
 		/>
 
-		<FormTextInput
+		<FormInputText
 			id="title"
 			label="Title"
 			badge="read only"
@@ -80,7 +80,7 @@
 			readonly
 		/>
 
-		<FormSlugInput
+		<FormInputSlug
 			id="slug"
 			label="Slug"
 			bind:value={$form.slug}
@@ -149,7 +149,7 @@
 			{/if}
 		</div>
 
-		<FormTextInput
+		<FormInputText
 			id="priceFrom"
 			label="Precio desde"
 			type="number"

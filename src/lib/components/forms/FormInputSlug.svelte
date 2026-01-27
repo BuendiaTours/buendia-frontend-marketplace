@@ -9,7 +9,7 @@
 	 * @example
 	 * ```svelte
 	 * // Slug básico generado desde el título
-	 * <FormSlugInput
+	 * <FormInputSlug
 	 *   id="slug"
 	 *   label="Slug"
 	 *   bind:value={$form.slug}
@@ -18,7 +18,7 @@
 	 * />
 	 *
 	 * // Con badge y tooltip personalizado
-	 * <FormSlugInput
+	 * <FormInputSlug
 	 *   id="slug"
 	 *   label="Slug"
 	 *   badge="auto-generado"

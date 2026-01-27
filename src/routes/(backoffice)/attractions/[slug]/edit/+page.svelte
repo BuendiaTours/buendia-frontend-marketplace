@@ -10,7 +10,7 @@
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormSlugInput from '$lib/components/forms/FormSlugInput.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -79,7 +79,7 @@
 			wrapperClass="md:col-span-12"
 		/>
 
-		<FormSlugInput
+		<FormInputSlug
 			id="slug"
 			label="Slug"
 			bind:value={$form.slug}

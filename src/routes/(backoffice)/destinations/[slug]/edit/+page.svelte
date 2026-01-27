@@ -7,7 +7,7 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
-	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 
@@ -56,7 +56,7 @@
 
 <form method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormTextInput
+		<FormInputText
 			id="id"
 			label="Id"
 			badge="read only"
@@ -66,7 +66,7 @@
 			wrapperClass="md:col-span-12"
 		/>
 
-		<FormTextInput
+		<FormInputText
 			id="name"
 			label="Nombre"
 			bind:value={$form.name}
@@ -130,7 +130,7 @@
 			</div>
 		</div>
 
-		<FormTextInput
+		<FormInputText
 			id="photoUrlHero"
 			label="URL de imagen principal"
 			type="url"
