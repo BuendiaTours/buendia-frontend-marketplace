@@ -5,7 +5,8 @@ import { api, ApiError } from '$lib/api/index';
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
 		// La API no soporta búsqueda directa por slug, obtenemos todos y filtramos
-		const destinations = await api.destinations.getAll(fetch);
+		const response = await api.destinations.getAll(fetch);
+		const destinations = response.data || [];
 		const destination = destinations.find((d) => d.slug === params.slug);
 
 		if (!destination) {

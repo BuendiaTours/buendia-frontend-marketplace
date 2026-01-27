@@ -8,7 +8,8 @@ import { destinationFormSchema } from '../../destination-form.schema';
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
 		// Obtener todos los destinations y buscar por slug
-		const destinations = await api.destinations.getAll(fetch);
+		const response = await api.destinations.getAll(fetch);
+		const destinations = response.data || [];
 		const destination = destinations.find((d) => d.slug === params.slug);
 
 		if (!destination) {

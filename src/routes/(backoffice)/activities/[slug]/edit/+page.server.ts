@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			form,
 			availableTags: tagsResponse,
 			availableCategories: categoriesResponse,
-			availableAttractions: attractionsResponse
+			availableAttractions: attractionsResponse.data || []
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {
