@@ -10,6 +10,10 @@
 	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+
+	// Environment
+	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
@@ -126,6 +130,60 @@
 	}
 
 	// ============================================================================
+	// STATUS (cargados desde API)
+	// ============================================================================
+
+	type AttractionStatus = {
+		id: string;
+		name: string;
+		desc: string;
+	};
+
+	let statuses = $state<AttractionStatus[]>([]);
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`${PUBLIC_API_BASE_URL}/attraction-status`);
+			if (response.ok) {
+				const data: AttractionStatus[] = await response.json();
+				statuses = data;
+			}
+		} catch (error) {
+			console.error('Error cargando status:', error);
+		}
+	});
+
+	// ============================================================================
+	// FILTRO: STATUS
+	// ============================================================================
+
+	let selectedStatus = $state<string | undefined>(undefined);
+
+	// Sincronizar con el filtro de la URL al cargar
+	$effect(() => {
+		selectedStatus = filters.status || undefined;
+	});
+
+	function handleStatusChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		const statusValue = target.value;
+		selectedStatus = statusValue || undefined;
+
+		applyFilterPatch({
+			status: statusValue ? statusValue : (null as any),
+			page: 1
+		});
+	}
+
+	function handleClearStatus() {
+		selectedStatus = undefined;
+		applyFilterPatch({
+			status: null as any,
+			page: 1
+		});
+	}
+
+	// ============================================================================
 	// SORTING
 	// ============================================================================
 
@@ -147,16 +205,11 @@
 	const columns: Column<Attraction>[] = [
 		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'name', title: 'Nombre', sortable: true },
-		// { key: 'slug', title: 'Slug', sortable: true },
 		{ key: 'status', title: 'Estado', sortable: false }
 	];
 
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
-	}
-
-	function handlePageSizeChange(newPageSize: number) {
-		applyFilterPatch({ pageSize: newPageSize, page: 1 });
 	}
 
 	function handleResetSort() {
@@ -192,6 +245,31 @@
 		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
 			<Search />
 		</button>
+	</div>
+
+	<div class="flex gap-2">
+		<select
+			class="select w-44"
+			value={selectedStatus || ''}
+			onchange={handleStatusChange}
+			class:border-success={selectedStatus !== undefined}
+			class:text-success={selectedStatus !== undefined}
+		>
+			<option value="" disabled>Selecciona estado</option>
+			{#each statuses as status}
+				<option value={status.id}>{status.name}</option>
+			{/each}
+		</select>
+
+		<div class="tooltip" data-tip="Limpia el estado">
+			<button
+				class="btn btn-square btn-soft btn-md btn-error"
+				onclick={handleClearStatus}
+				disabled={!selectedStatus}
+			>
+				<Cancel />
+			</button>
+		</div>
 	</div>
 
 	<div class="ml-auto flex items-center gap-2">

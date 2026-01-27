@@ -435,7 +435,7 @@
 				onValueChange={handleLocationChange}
 			/>
 		{/key}
-		<div class="tooltip" data-tip="Limpia la destination">
+		<div class="tooltip" data-tip="Limpia el destino">
 			<button
 				class="btn btn-square btn-soft btn-md btn-error"
 				onclick={handleClearLocation}
