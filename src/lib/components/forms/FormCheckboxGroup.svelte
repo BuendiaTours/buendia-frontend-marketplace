@@ -76,17 +76,17 @@
 </script>
 
 <div class={wrapperClass}>
-	<div class="label inline-flex items-center justify-between text-sm">
+	<div class="label flex items-center justify-between text-sm">
 		<span>{main_label}</span>
 		{#if badge}
-			<span>{badge}</span>
+			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</div>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
 		<div class={containerClass}>
 			{#each availableItems as item, index}
-				<label class="label cursor-pointer justify-start gap-3" for="checkbox-{id}-{index}">
+				<label class="label cursor-pointer justify-start gap-3" for={id}>
 					<input
 						type="checkbox"
 						id="checkbox-{id}-{index}"

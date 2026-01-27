@@ -135,10 +135,10 @@
 </script>
 
 <div class={wrapperClass}>
-	<div class="label inline-flex items-center justify-between text-sm">
+	<div class="label flex items-center justify-between text-sm">
 		<span>{label}</span>
 		{#if badge}
-			<span>{badge}</span>
+			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</div>
 

@@ -7,10 +7,13 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { slugify } from '$lib/utils/strings';
 	import { Refresh } from 'svelte-iconoir';
+
+	// Form components
 	import FormTextInput from '$lib/components/forms/FormTextInput.svelte';
 	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -113,6 +116,13 @@
 			error={$errors.description}
 			rows={3}
 			wrapperClass="md:col-span-12"
+		/>
+
+		<FormTextareaMarkdown
+			id="descriptionLong"
+			label="Descripcción larga"
+			bind:value={$form.descriptionLong}
+			error={$errors.descriptionLong}
 		/>
 
 		<div class="md:col-span-4">

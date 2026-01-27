@@ -46,6 +46,7 @@
 		options?: Option[];
 		apiEndpoint?: string;
 		placeholder?: string;
+		badge?: string;
 		disabled?: boolean;
 		wrapperClass?: string;
 		[key: string]: any;
@@ -59,6 +60,7 @@
 		options = [],
 		apiEndpoint,
 		placeholder = 'Selecciona una opción',
+		badge,
 		disabled = false,
 		wrapperClass = 'md:col-span-12',
 		...restProps
@@ -95,8 +97,11 @@
 </script>
 
 <div class={wrapperClass}>
-	<label class="label inline-flex items-center justify-between text-sm" for={id}>
+	<label class="label flex items-center justify-between text-sm" for={id}>
 		<span>{label}</span>
+		{#if badge}
+			<span class="text-xs opacity-70">{badge}</span>
+		{/if}
 	</label>
 	<select
 		{id}
