@@ -25,6 +25,7 @@
 	// Components
 	import Pagination from '$lib/components/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
+	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 
 	// Icons
 	import {
@@ -217,18 +218,7 @@
 
 <!-- Results Info -->
 <div class="mt-6 flex items-center justify-between">
-	{#if items.length}
-		<div class="pagenav-info text-sm text-base-content/70">
-			{#if pagination}
-				Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
-					1) *
-					pagination.pageSize +
-					1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
-			{:else}
-				Mostrando {items.length} elementos
-			{/if}
-		</div>
-	{/if}
+	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href="/attractions/new" class="btn btn-outline btn-primary">
 		<Plus />

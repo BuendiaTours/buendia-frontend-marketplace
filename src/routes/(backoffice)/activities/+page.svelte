@@ -35,6 +35,7 @@
 	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
+	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
@@ -474,18 +475,8 @@
 
 <!-- Results Info -->
 <div class="mt-6 flex items-center justify-between">
-	{#if items.length}
-		<div class="pagenav-info text-sm text-base-content/70">
-			{#if pagination}
-				Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
-					1) *
-					pagination.pageSize +
-					1} al {Math.min(pagination.page * pagination.pageSize, pagination.total)} de {pagination.total}
-			{:else}
-				Mostrando {items.length} elementos
-			{/if}
-		</div>
-	{/if}
+	<PagecountAboveTable itemsLength={items.length} {pagination} />
+
 	<button class="btn btn-outline btn-primary">
 		<Plus />
 		<span>{m.activities_newActivity()}</span>
