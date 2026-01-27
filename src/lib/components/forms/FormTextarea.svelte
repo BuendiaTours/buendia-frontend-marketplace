@@ -66,7 +66,7 @@
 </script>
 
 <div class={wrapperClass}>
-	<label class="label text-sm" class:flex={badge} class:justify-between={badge} for={id}>
+	<label class="label inline-flex items-center justify-between text-sm" for={id}>
 		<span>{label}</span>
 		{#if badge}
 			<span>{badge}</span>

@@ -15,7 +15,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				name: attraction.name,
 				slug: attraction.slug,
 				status: attraction.status,
-				descriptionShort: attraction.description,
+				description: attraction.description,
+				descriptionLong: attraction.descriptionLong,
 				photoUrl: attraction.photoUrl
 			},
 			zod(attractionFormSchema)

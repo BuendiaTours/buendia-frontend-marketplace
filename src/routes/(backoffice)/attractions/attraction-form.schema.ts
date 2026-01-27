@@ -12,6 +12,10 @@ export const attractionFormSchema = z.object({
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
 	description: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
+	descriptionLong: z
+		.string()
+		.min(10, 'La descripción larga debe tener al menos 10 caracteres')
+		.max(512),
 	photoUrl: z.string().url('Debe ser una URL válida')
 });
 

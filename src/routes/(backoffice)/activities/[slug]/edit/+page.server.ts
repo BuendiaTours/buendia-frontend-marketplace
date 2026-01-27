@@ -26,6 +26,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				descriptionFull: apiData.descriptionFull || '',
 				descriptionShort: apiData.descriptionShort || '',
 				id: apiData.id || '',
+				infoImportant: apiData.infoImportant || '',
 				isFreeTour: false,
 				location: apiData.location?.city || '',
 				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,

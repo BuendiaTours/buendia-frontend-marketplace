@@ -64,7 +64,17 @@
 			bind:value={$form.id}
 			error={$errors.id}
 			readonly
-			wrapperClass="md:col-span-12"
+			wrapperClass="md:col-span-8"
+		/>
+
+		<FormSelect
+			id="status"
+			label="Estado"
+			bind:value={$form.status}
+			error={$errors.status}
+			apiEndpoint="http://localhost:3333/attraction-status"
+			placeholder="Selecciona un estado"
+			wrapperClass="md:col-span-4"
 		/>
 
 		<FormTextInput
@@ -95,16 +105,6 @@
 			</div>
 			<FormErrorMsg error={$errors.slug} />
 		</div>
-
-		<FormSelect
-			id="status"
-			label="Estado"
-			bind:value={$form.status}
-			error={$errors.status}
-			apiEndpoint="http://localhost:3333/attraction-status"
-			placeholder="Selecciona un estado"
-			wrapperClass="md:col-span-12"
-		/>
 
 		<FormTextarea
 			id="description"

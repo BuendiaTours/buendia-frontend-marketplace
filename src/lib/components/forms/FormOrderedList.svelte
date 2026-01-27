@@ -135,7 +135,7 @@
 </script>
 
 <div class={wrapperClass}>
-	<div class="label text-sm" class:flex={badge} class:justify-between={badge}>
+	<div class="label inline-flex items-center justify-between text-sm">
 		<span>{label}</span>
 		{#if badge}
 			<span>{badge}</span>
