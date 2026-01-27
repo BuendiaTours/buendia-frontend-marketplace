@@ -106,8 +106,11 @@ export function patchFilters<TFilters extends Record<string, any>>(
 		}
 	}
 
-	// Reset page=1 si procede y si existe el campo 'page' en el schema
-	if (shouldResetPage && 'page' in schema.fields) {
+	// Reset page=1 solo si:
+	// 1. Un campo con resetPageOnChange cambió
+	// 2. El campo 'page' existe en el schema
+	// 3. El parámetro 'page' ya está presente en la URL actual (hay paginación activa)
+	if (shouldResetPage && 'page' in schema.fields && current.has('page')) {
 		out.set('page', '1');
 	}
 
