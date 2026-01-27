@@ -4,8 +4,8 @@ import { api, ApiError } from '$lib/api/index';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const destination = await api.destinations.getBySlug(fetch, params.slug);
-		return { destination };
+		const attraction = await api.attractions.getBySlug(fetch, params.slug);
+		return { attraction };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {

@@ -49,11 +49,11 @@ export const attractionsEndpoints = {
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<Attraction> {
 		const path = API_ENDPOINTS.attractions.detail(slug);
 
-		const response = await apiClient.request<{ data: Attraction }>(fetchFn, path, {
+		const response = await apiClient.request<Attraction>(fetchFn, path, {
 			method: 'GET'
 		});
 
-		return response.data.data;
+		return response.data;
 	},
 
 	async search(fetchFn: typeof fetch, params?: AttractionsSearchParams): Promise<Attraction[]> {
