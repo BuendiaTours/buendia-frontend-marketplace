@@ -98,65 +98,69 @@ html[data-theme='dark'] {
 	.bytemd {
 		height: 400px; /* calc(100vh - 200px); */
 		border-radius: var(--radius-sm);
-		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-		background-color: var(--color-base-100) !important;
-		color: var(--color-base-content) !important;
+		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
+		background-color: var(--color-base-100);
+		color: var(--color-base-content);
+	}
+
+	.bytemd-split .bytemd-preview {
+		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
 	}
 
 	.bytemd-toolbar {
 		border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-		background-color: var(--color-base-200) !important;
+		border-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
+		background-color: var(--color-base-200);
 	}
 
 	.CodeMirror {
-		background-color: var(--color-base-100) !important;
-		color: var(--color-base-content) !important;
+		background-color: var(--color-base-100);
+		color: var(--color-base-content);
 		font-family: 'Iosevka', ui-monospace, monospace;
 	}
 
 	.CodeMirror-gutters {
-		background-color: var(--color-base-200) !important;
-		border-right-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+		background-color: var(--color-base-200);
+		border-right-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
 	}
 
 	.CodeMirror-linenumber {
-		color: color-mix(in oklch, var(--color-base-content) 50%, transparent) !important;
+		color: color-mix(in oklch, var(--color-base-content) 50%, transparent);
 	}
 
 	.bytemd-split {
-		border-left-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
+		border-left-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
 	}
 
 	.bytemd-status {
-		border-top-color: color-mix(in oklch, var(--color-base-content) 20%, transparent) !important;
-		background-color: var(--color-base-200) !important;
-		color: color-mix(in oklch, var(--color-base-content) 70%, transparent) !important;
+		border-top-color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
+		background-color: var(--color-base-200);
+		color: color-mix(in oklch, var(--color-base-content) 70%, transparent);
 	}
 
 	.bytemd-toolbar-icon {
 		transition: all 100ms;
-		color: var(--color-base-content) !important;
+		color: var(--color-base-content);
 	}
 
 	.bytemd-toolbar-icon:hover {
-		background-color: var(--color-base-300) !important;
+		background-color: var(--color-base-300);
 	}
 
 	.bytemd-toolbar-icon.bytemd-toolbar-icon-active {
-		background-color: var(--color-primary) !important;
-		color: var(--color-primary-content) !important;
+		background-color: var(--color-primary);
+		color: var(--color-primary-content);
 	}
 
 	/* Preview de Markdown */
 	.bytemd-preview {
-		background-color: var(--color-base-100) !important;
-		color: var(--color-base-content) !important;
+		background-color: var(--color-base-100);
+		color: var(--color-base-content);
 		padding: 1rem;
 	}
 
 	.bytemd-preview a {
-		color: var(--color-primary) !important;
+		color: var(--color-primary);
 	}
 
 	.bytemd-preview code {
