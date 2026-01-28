@@ -22,6 +22,19 @@
 	// Tag
 	import Tag from '$lib/components/Tag.svelte';
 
+	// StarRating
+	import StarRating from '$lib/components/StarRating.svelte';
+
+	// Form Components
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
+	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
+	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+
 	// Range calendar - Probando versión Melt-UI
 	import MeltRangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
@@ -40,6 +53,44 @@
 			console.log('📆 RangeCalendar - Días seleccionados:', days);
 		}
 	}
+
+	// Form examples states
+	let formTextInput = $state('');
+	let formTextarea = $state('');
+	let formSelect = $state<string | undefined>(undefined);
+	let formSlugSource = $state('Mi Título de Ejemplo');
+	let formSlug = $state('');
+	let formCheckboxItems = $state<any[]>([]);
+	let formTags = $state<any[]>([]);
+	let formOrderedItems = $state<any[]>([]);
+	let formMarkdown = $state('# Título\n\nEscribe tu contenido en **Markdown** aquí...');
+
+	// Mock data for form examples
+	const mockCategories = [
+		{ id: '1', name: 'Categoría 1' },
+		{ id: '2', name: 'Categoría 2' },
+		{ id: '3', name: 'Categoría 3' }
+	];
+
+	const mockTags = [
+		{ id: '1', name: 'Tag 1' },
+		{ id: '2', name: 'Tag 2' },
+		{ id: '3', name: 'Tag 3' },
+		{ id: '4', name: 'Tag 4' }
+	];
+
+	const mockSelectOptions = [
+		{ id: 'option1', name: 'Opción 1' },
+		{ id: 'option2', name: 'Opción 2' },
+		{ id: 'option3', name: 'Opción 3' }
+	];
+
+	const mockOrderedItems = [
+		{ id: '1', name: 'Item A' },
+		{ id: '2', name: 'Item B' },
+		{ id: '3', name: 'Item C' },
+		{ id: '4', name: 'Item D' }
+	];
 
 	const lightboxItems = [
 		{
@@ -278,5 +329,175 @@
 			onValueChange={handleRangeCalendarChange}
 			numberOfMonths={2}
 		/>
+
+		<label class="label mt-8">Ejemplo de StarRating</label>
+		<p class="text-sm opacity-70">
+			Componente de valoración con estrellas que redondea automáticamente a medias estrellas
+		</p>
+		<div class="card space-y-4 p-4">
+			<div class="flex items-center gap-4">
+				<span class="w-20 text-sm">4.5 stars:</span>
+				<StarRating value={4.5} size="md" filledClass="bg-orange-400" emptyClass="bg-base-300" />
+			</div>
+			<div class="flex items-center gap-4">
+				<span class="w-20 text-sm">3.2 stars:</span>
+				<StarRating value={3.2} size="sm" filledClass="bg-orange-400" emptyClass="bg-base-300" />
+			</div>
+			<div class="flex items-center gap-4">
+				<span class="w-20 text-sm">5.0 stars:</span>
+				<StarRating value={5.0} size="lg" filledClass="bg-orange-400" emptyClass="bg-base-300" />
+			</div>
+			<div class="flex items-center gap-4">
+				<span class="w-20 text-sm">null:</span>
+				<StarRating value={null} />
+			</div>
+		</div>
+
+		<h2 class="mt-8 text-xl font-bold">Componentes de Formulario</h2>
+
+		<label class="label mt-4">Ejemplo de FormInputText</label>
+		<p class="text-sm opacity-70">Campo de texto reutilizable con label, error y badge</p>
+		<div class="card p-4">
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<FormInputText
+					id="example-text"
+					label="Campo de texto"
+					bind:value={formTextInput}
+					placeholder="Escribe algo..."
+				/>
+				<FormInputText
+					id="example-number"
+					label="Campo numérico"
+					type="number"
+					bind:value={formTextInput}
+					placeholder="0"
+					badge="opcional"
+				/>
+				<FormInputText
+					id="example-readonly"
+					label="Campo solo lectura"
+					value="Valor readonly"
+					badge="read only"
+					readonly
+					wrapperClass="md:col-span-2"
+				/>
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormTextarea</label>
+		<p class="text-sm opacity-70">Campo de texto multilínea con configuración de filas</p>
+		<div class="card p-4">
+			<FormTextarea
+				id="example-textarea"
+				label="Descripción"
+				bind:value={formTextarea}
+				rows={4}
+				placeholder="Escribe una descripción..."
+			/>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormSelect</label>
+		<p class="text-sm opacity-70">Select con opciones estáticas o desde API</p>
+		<div class="card p-4">
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<FormSelect
+					id="example-select"
+					label="Selecciona una opción"
+					bind:value={formSelect}
+					options={mockSelectOptions}
+					placeholder="Elige..."
+				/>
+				<FormSelect
+					id="example-select-badge"
+					label="Con badge"
+					bind:value={formSelect}
+					options={mockSelectOptions}
+					badge="requerido"
+				/>
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormInputSlug</label>
+		<p class="text-sm opacity-70">Campo de slug con generación automática desde otro campo</p>
+		<div class="card p-4">
+			<div class="space-y-4">
+				<FormInputText
+					id="example-slug-source"
+					label="Título (fuente)"
+					bind:value={formSlugSource}
+					placeholder="Escribe un título..."
+				/>
+				<FormInputSlug
+					id="example-slug"
+					label="Slug (generado)"
+					bind:value={formSlug}
+					sourceValue={formSlugSource}
+					generateTooltip="Genera slug desde el título"
+				/>
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormCheckboxGroup</label>
+		<p class="text-sm opacity-70">Grupo de checkboxes para selección múltiple</p>
+		<div class="card p-4">
+			<FormCheckboxGroup
+				main_label="Selecciona categorías"
+				id="example-checkboxes"
+				name="categories[]"
+				key_title="name"
+				key_value="id"
+				bind:items={formCheckboxItems}
+				availableItems={mockCategories}
+			/>
+			<div class="mt-4 text-sm">
+				<strong>Seleccionados:</strong>
+				{formCheckboxItems.length > 0 ? formCheckboxItems.map((c) => c.name).join(', ') : 'Ninguno'}
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormTagManager</label>
+		<p class="text-sm opacity-70">Gestor de tags con combobox y visualización de tags</p>
+		<div class="card p-4">
+			<FormTagManager
+				id="example-tags"
+				label="Tags"
+				bind:tags={formTags}
+				availableTags={mockTags}
+				placeholder="Añade un tag"
+			/>
+			<div class="mt-4 text-sm">
+				<strong>Tags seleccionados:</strong>
+				{formTags.length > 0 ? formTags.map((t) => t.name).join(', ') : 'Ninguno'}
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormOrderedList</label>
+		<p class="text-sm opacity-70">Lista ordenable con drag & drop</p>
+		<div class="card p-4">
+			<FormOrderedList
+				id="example-ordered"
+				label="Items ordenables"
+				bind:items={formOrderedItems}
+				availableItems={mockOrderedItems}
+				placeholder="Selecciona un item..."
+				emptyMessage="No hay items en la lista"
+			/>
+			<div class="mt-4 text-sm">
+				<strong>Orden actual:</strong>
+				{formOrderedItems.length > 0
+					? formOrderedItems.map((item) => item.name).join(' → ')
+					: 'Ninguno'}
+			</div>
+		</div>
+
+		<label class="label mt-4">Ejemplo de FormTextareaMarkdown</label>
+		<p class="text-sm opacity-70">Editor Markdown con preview (ByteMD)</p>
+		<div class="card p-4">
+			<FormTextareaMarkdown
+				id="example-markdown"
+				label="Contenido en Markdown"
+				bind:value={formMarkdown}
+			/>
+		</div>
 	</div>
 </div>
