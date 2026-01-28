@@ -2,6 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
+	import { InfoEmpty, Search } from 'svelte-iconoir';
 
 	/**
 	 * Componente reutilizable para editar coordenadas GeoJSON con mapa de Google Maps
@@ -42,9 +43,13 @@
 		mapClass = 'h-[400px]'
 	}: Props = $props();
 
+	let searchQuery = $state('');
+	let isSearching = $state(false);
+	let searchError = $state<string | null>(null);
+
 	let mapContainer: HTMLDivElement;
-	let map: google.maps.Map | null = null;
-	let marker: google.maps.Marker | null = null;
+	let map: any = null;
+	let marker: any = null;
 	let isMapLoaded = $state(false);
 	let mapError = $state<string | null>(null);
 
@@ -56,7 +61,7 @@
 	const latitude = $derived(value?.coordinates?.[1] ?? defaultCoordinates[1]);
 
 	function initializeMap() {
-		if (!mapContainer || !window.google) return;
+		if (!mapContainer || !(window as any).google) return;
 
 		try {
 			const initialPosition = {
@@ -64,42 +69,132 @@
 				lng: longitude
 			};
 
-			map = new google.maps.Map(mapContainer, {
+			map = new (window as any).google.maps.Map(mapContainer, {
 				center: initialPosition,
 				zoom: 13,
 				mapTypeControl: true,
 				streetViewControl: false,
-				fullscreenControl: false
+				fullscreenControl: false,
+				mapId: 'map-primary'
 			});
 
-			marker = new google.maps.Marker({
-				position: initialPosition,
-				map: map,
-				draggable: true,
-				title: 'Ubicación'
-			});
+			// Try to use AdvancedMarkerElement, fallback to deprecated Marker if not available
+			try {
+				const { AdvancedMarkerElement } = (window as any).google.maps.marker;
+				if (AdvancedMarkerElement) {
+					marker = new AdvancedMarkerElement({
+						position: initialPosition,
+						map: map,
+						title: 'Ubicación',
+						draggable: true
+					});
 
-			// Actualizar coordenadas cuando se mueve el marcador
-			marker.addListener('dragend', () => {
-				if (!marker) return;
-				const position = marker.getPosition();
-				if (position) {
-					updateCoordinates(position.lng(), position.lat());
+					// Update coordinates when marker is dragged
+					marker.addEventListener('dragend', (event: any) => {
+						if (!marker || !event.latLng) return;
+						const { lat, lng } = event.latLng;
+						updateCoordinates(lng, lat);
+					});
+
+					// Add marker when clicking on map
+					map.addListener('click', (e: any) => {
+						if (e.latLng && marker) {
+							marker.position = e.latLng;
+							updateCoordinates(e.latLng.lng(), e.latLng.lat());
+						}
+					});
+				} else {
+					throw new Error('AdvancedMarkerElement not available');
 				}
-			});
+			} catch (advancedMarkerError) {
+				console.warn(
+					'AdvancedMarkerElement not available, falling back to deprecated Marker:',
+					advancedMarkerError
+				);
+				// Fallback to deprecated Marker API
+				marker = new (window as any).google.maps.Marker({
+					position: initialPosition,
+					map: map,
+					draggable: true,
+					title: 'Ubicación'
+				});
 
-			// Añadir marcador al hacer click en el mapa
-			map.addListener('click', (e: google.maps.MapMouseEvent) => {
-				if (e.latLng && marker) {
-					marker.setPosition(e.latLng);
-					updateCoordinates(e.latLng.lng(), e.latLng.lat());
-				}
-			});
+				// Update coordinates when marker is dragged (deprecated API)
+				marker.addListener('dragend', () => {
+					if (!marker) return;
+					const position = marker.getPosition();
+					if (position) {
+						updateCoordinates(position.lng(), position.lat());
+					}
+				});
+
+				// Add marker when clicking on map (deprecated API)
+				map.addListener('click', (e: any) => {
+					if (e.latLng && marker) {
+						marker.setPosition(e.latLng);
+						updateCoordinates(e.latLng.lng(), e.latLng.lat());
+					}
+				});
+			}
 
 			isMapLoaded = true;
 		} catch (err) {
 			console.error('Error initializing map:', err);
 			mapError = 'Error al cargar el mapa';
+		}
+	}
+
+	async function searchLocation() {
+		if (!searchQuery.trim() || !(window as any).google) return;
+
+		isSearching = true;
+		searchError = null;
+
+		try {
+			const geocoder = new (window as any).google.maps.Geocoder();
+			const result = await new Promise<any>((resolve, reject) => {
+				geocoder.geocode({ address: searchQuery }, (results: any, status: string) => {
+					if (status === 'OK' && results) {
+						resolve(results);
+					} else {
+						reject(new Error('No se encontró la ubicación'));
+					}
+				});
+			});
+
+			if (result.length > 0 && result[0].geometry?.location) {
+				const location = result[0].geometry.location;
+				const lat = location.lat();
+				const lng = location.lng();
+
+				// Actualizar coordenadas
+				updateCoordinates(lng, lat);
+
+				// Centrar mapa
+				if (map) {
+					map.setCenter({ lat, lng });
+					map.setZoom(13);
+				}
+
+				// Actualizar marcador con AdvancedMarkerElement
+				if (marker) {
+					marker.position = { lat, lng };
+				}
+
+				searchQuery = '';
+			}
+		} catch (err) {
+			searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
+			console.error('Error searching location:', err);
+		} finally {
+			isSearching = false;
+		}
+	}
+
+	function handleSearchKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			searchLocation();
 		}
 	}
 
@@ -131,14 +226,23 @@
 	function updateMarkerPosition() {
 		if (marker && map) {
 			const position = { lat: latitude, lng: longitude };
-			marker.setPosition(position);
+
+			// Handle both AdvancedMarkerElement and deprecated Marker APIs
+			if (marker.position !== undefined) {
+				// AdvancedMarkerElement
+				marker.position = position;
+			} else if (marker.setPosition) {
+				// Deprecated Marker API
+				marker.setPosition(position);
+			}
+
 			map.setCenter(position);
 		}
 	}
 
 	onMount(() => {
 		// Verificar si Google Maps ya está cargado
-		if (window.google && window.google.maps) {
+		if ((window as any).google && (window as any).google.maps) {
 			initializeMap();
 		} else {
 			// Verificar que existe la API key
@@ -148,12 +252,21 @@
 				return;
 			}
 
-			// Cargar Google Maps API
+			// Cargar Google Maps API con async loading y marker library
 			const script = document.createElement('script');
-			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async&libraries=marker`;
 			script.async = true;
 			script.defer = true;
-			script.onload = () => initializeMap();
+			script.onload = () => {
+				// Wait a bit for Google Maps to fully initialize
+				setTimeout(() => {
+					if ((window as any).google && (window as any).google.maps) {
+						initializeMap();
+					} else {
+						mapError = 'Error al cargar Google Maps. La API no está disponible.';
+					}
+				}, 100);
+			};
 			script.onerror = () => {
 				mapError = 'Error al cargar Google Maps. Verifica la API key.';
 			};
@@ -169,6 +282,58 @@
 			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</label>
+
+	<!-- Búsqueda de ubicación -->
+	<div class="mb-4">
+		<div class="relative">
+			<input
+				type="text"
+				placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
+				class="input input-sm w-full pr-20"
+				bind:value={searchQuery}
+				onkeydown={handleSearchKeydown}
+				disabled={isSearching || !isMapLoaded}
+			/>
+			<button
+				type="button"
+				class="btn absolute top-0 right-0 btn-ghost btn-sm"
+				onclick={searchLocation}
+				disabled={isSearching || !isMapLoaded || !searchQuery.trim()}
+			>
+				{#if isSearching}
+					<span class="loading loading-xs loading-spinner"></span>
+				{:else}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="11" cy="11" r="8"></circle>
+						<path d="m21 21-4.35-4.35"></path>
+					</svg>
+				{/if}
+			</button>
+		</div>
+
+		<!-- Mensaje de advertencia -->
+		<div class="mt-2 flex items-center gap-2 text-xs text-base-content/60">
+			<InfoEmpty class="size-4" />
+			<span
+				>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
+				información.</span
+			>
+		</div>
+
+		{#if searchError}
+			<div class="mt-2 text-xs text-error">{searchError}</div>
+		{/if}
+	</div>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
 		<!-- Grid responsive: stack en mobile, 8+4 cols en desktop -->
