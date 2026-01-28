@@ -16,8 +16,6 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const availableDestinations = data.availableDestinations;
-
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
 	});
@@ -154,7 +152,7 @@
 		id="destintions"
 		label="Destinos"
 		bind:items={$form.destinations}
-		availableItems={availableDestinations}
+		availableItems={data.availableDestinations}
 		error={$errors.destinations?._errors}
 		placeholder="Selecciona un destino..."
 		emptyMessage="No hay destinos asociados"

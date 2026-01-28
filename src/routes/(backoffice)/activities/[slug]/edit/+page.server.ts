@@ -7,12 +7,14 @@ import { activityFormSchema } from '../../activity-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const [activity, tagsResponse, categoriesResponse, attractionsResponse] = await Promise.all([
-			api.activities.getBySlug(fetch, params.slug),
-			fetch('http://localhost:3333/tags').then((res) => res.json()),
-			api.categories.getAll(fetch),
-			api.attractions.getAll(fetch)
-		]);
+		const [activity, tagsResponse, categoriesResponse, attractionsResponse, statusResponse] =
+			await Promise.all([
+				api.activities.getBySlug(fetch, params.slug),
+				fetch('http://localhost:3333/tags').then((res) => res.json()),
+				api.categories.getAll(fetch),
+				api.attractions.getAll(fetch),
+				api.activities.getStatuses(fetch)
+			]);
 
 		const apiData = activity as any;
 		const firstOption = apiData.options?.[0];
@@ -42,7 +44,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			form,
 			availableTags: tagsResponse,
 			availableCategories: categoriesResponse,
-			availableAttractions: attractionsResponse.data || []
+			availableAttractions: attractionsResponse.data || [],
+			availableStatuses: statusResponse || []
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

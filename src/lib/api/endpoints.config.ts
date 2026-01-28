@@ -15,7 +15,8 @@ export const ACTIVITIES_ENDPOINTS = {
 	create: () => BASE_PATHS.activities,
 	update: (slug: string) => `${BASE_PATHS.activities}/${slug}`,
 	delete: (slug: string) => `${BASE_PATHS.activities}/${slug}`,
-	patch: (slug: string) => `${BASE_PATHS.activities}/${slug}`
+	patch: (slug: string) => `${BASE_PATHS.activities}/${slug}`,
+	statuses: () => '/activity-status'
 } as const;
 
 export const LOCATIONS_ENDPOINTS = {

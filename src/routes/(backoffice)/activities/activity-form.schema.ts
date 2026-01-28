@@ -39,7 +39,13 @@ export const activityFormSchema = z.object({
 				name: z.string()
 			})
 		)
-		.default([])
+		.default([]),
+	status: z.enum(
+		['APPROVED', 'DELETED', 'DRAFT', 'PENDING_REVIEW', 'PUBLISHED', 'REJECTED', 'UNPUBLISHED'],
+		{
+			errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
+		}
+	)
 });
 
 export type ActivityFormSchema = z.infer<typeof activityFormSchema>;

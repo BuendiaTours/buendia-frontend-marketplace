@@ -6,13 +6,14 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Form
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
+	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
-	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
-	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories, availableAttractions } = data;
@@ -58,7 +59,7 @@
 			bind:value={$form.id}
 			error={$errors.id}
 			readonly
-			wrapperClass="md:col-span-9"
+			wrapperClass="md:col-span-4"
 		/>
 
 		<FormInputText
@@ -68,7 +69,17 @@
 			bind:value={$form.codeRef}
 			error={$errors.codeRef}
 			disabled
-			wrapperClass="md:col-span-3"
+			wrapperClass="md:col-span-4"
+		/>
+
+		<FormSelect
+			id="status"
+			label="Estado"
+			bind:value={$form.status}
+			error={$errors.status}
+			options={data.availableStatuses}
+			placeholder="Selecciona un estado"
+			wrapperClass="md:col-span-4"
 		/>
 
 		<FormInputText
@@ -92,7 +103,7 @@
 
 		<FormOrderedList
 			id="attractions"
-			label="Attractions"
+			label="Atracciones"
 			bind:items={$form.attractions}
 			availableItems={availableAttractions}
 			error={$errors.attractions?._errors}
