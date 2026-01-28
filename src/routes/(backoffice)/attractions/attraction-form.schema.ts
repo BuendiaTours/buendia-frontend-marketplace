@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Schema de validación para el formulario de attarctions
+ * Schema de validación para el formulario de attractions
  * Usado tanto en creación como en edición
  */
 export const attractionFormSchema = z.object({
@@ -32,7 +32,8 @@ export const attractionFormSchema = z.object({
 			coordinates: z.tuple([z.number(), z.number()])
 		})
 		.nullable()
-		.default(null)
+		.default(null),
+	postalAddress: z.string()
 });
 
 export type AttractionFormSchema = z.infer<typeof attractionFormSchema>;

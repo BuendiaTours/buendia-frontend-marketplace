@@ -23,6 +23,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				descriptionLong: attraction.descriptionLong,
 				photoUrl: attraction.photoUrl,
 				photoUrlHero: attraction.photoUrlHero,
+				postalAddress: attraction.postalAddress,
 				destinations: attraction.destinations || [],
 				location: attraction.location || null
 			},

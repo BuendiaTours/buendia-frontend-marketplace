@@ -160,6 +160,15 @@
 		emptyMessage="No hay destinos asociados"
 	/>
 
+	<FormTextarea
+		id="postalAddress"
+		label="Dirección postal"
+		bind:value={$form.postalAddress}
+		error={$errors.postalAddress}
+		rows={2}
+		wrapperClass="md:col-span-12"
+	/>
+
 	<FormGeoJson
 		id="location"
 		label="Ubicación"

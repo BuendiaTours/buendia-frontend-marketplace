@@ -81,4 +81,14 @@ export type Attraction = {
 	descriptionLong?: string;
 	photoUrl?: string;
 	photoUrlHero?: string;
+	postalAddress?: string;
+	destinations?: Array<{
+		id: string;
+		name: string;
+	}>;
+	location?: {
+		// GeoJSON Point
+		type: 'Point';
+		coordinates: [number, number];
+	} | null;
 };
