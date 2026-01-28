@@ -83,9 +83,9 @@ Props disponibles:
 
 	<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 		{#each $months as month}
-			<table use:melt={$grid} class="w-full border-collapse space-y-1 select-none">
+			<table use:melt={$grid} class="border-collapse space-y-1 select-none">
 				<thead>
-					<tr class="mb-2 flex w-full justify-between">
+					<tr class="mb-2 inline-flex justify-between">
 						{#each $weekdays as day}
 							<th class="w-10 text-xs font-semibold opacity-60">
 								<div>{day.slice(0, 2)}</div>

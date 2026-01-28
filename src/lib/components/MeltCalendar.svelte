@@ -50,7 +50,7 @@ Props disponibles:
 
 <div
 	use:melt={$calendar}
-	class="inline-flexmt-6 rounded-md border border-base-300 bg-base-100 p-[22px] shadow-sm {className}"
+	class="mt-6 flex flex-col rounded-md border border-base-300 bg-base-100 p-[22px] shadow-sm {className}"
 >
 	<header class="flex items-center justify-between">
 		<button
@@ -72,7 +72,7 @@ Props disponibles:
 
 	<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 		{#each $months as month}
-			<table use:melt={$grid} class="w-full border-collapse space-y-1 select-none">
+			<table use:melt={$grid} class="border-collapse space-y-1 select-none">
 				<thead>
 					<tr class="mb-1 inline-flex justify-between">
 						{#each $weekdays as day}
