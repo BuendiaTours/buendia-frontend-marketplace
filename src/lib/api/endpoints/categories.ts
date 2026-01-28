@@ -9,7 +9,7 @@ export type Category = {
 
 export const categoriesEndpoints = {
 	async getAll(fetchFn: typeof fetch): Promise<Category[]> {
-		const path = API_ENDPOINTS.categories.list();
+		const path = API_ENDPOINTS.categories.list.path();
 
 		const response = await apiClient.request<Category[]>(fetchFn, path, {
 			method: 'GET'
@@ -19,7 +19,7 @@ export const categoriesEndpoints = {
 	},
 
 	async getById(fetchFn: typeof fetch, id: string): Promise<Category> {
-		const path = API_ENDPOINTS.categories.detail(id);
+		const path = API_ENDPOINTS.categories.detail.path(id);
 
 		const response = await apiClient.request<Category>(fetchFn, path, {
 			method: 'GET'

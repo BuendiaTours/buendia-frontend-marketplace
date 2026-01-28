@@ -21,7 +21,7 @@ export const activitiesEndpoints = {
 		fetchFn: typeof fetch,
 		params?: ActivitiesGetAllParams
 	): Promise<ActivityListResponse> {
-		const path = buildEndpointUrl(API_ENDPOINTS.activities.list(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.activities.list.path(), params);
 
 		const response = await apiClient.request<ActivityListResponse>(fetchFn, path, {
 			method: 'GET'
@@ -31,7 +31,7 @@ export const activitiesEndpoints = {
 	},
 
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<ActivityListItem> {
-		const path = API_ENDPOINTS.activities.detail(slug);
+		const path = API_ENDPOINTS.activities.detail.path(slug);
 
 		const response = await apiClient.request<ActivityListItem>(fetchFn, path, {
 			method: 'GET'
@@ -41,7 +41,7 @@ export const activitiesEndpoints = {
 	},
 
 	async create(fetchFn: typeof fetch, data: Partial<ActivityListItem>): Promise<ActivityListItem> {
-		const path = API_ENDPOINTS.activities.create();
+		const path = API_ENDPOINTS.activities.create.path();
 
 		const response = await apiClient.request<ActivityListItem>(fetchFn, path, {
 			method: 'POST',
@@ -56,7 +56,7 @@ export const activitiesEndpoints = {
 		slug: string,
 		data: Partial<ActivityListItem>
 	): Promise<ActivityListItem> {
-		const path = API_ENDPOINTS.activities.update(slug);
+		const path = API_ENDPOINTS.activities.update.path(slug);
 
 		const response = await apiClient.request<ActivityListItem>(fetchFn, path, {
 			method: 'PUT',
@@ -67,7 +67,7 @@ export const activitiesEndpoints = {
 	},
 
 	async delete(fetchFn: typeof fetch, slug: string): Promise<void> {
-		const path = API_ENDPOINTS.activities.delete(slug);
+		const path = API_ENDPOINTS.activities.delete.path(slug);
 
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'DELETE'
@@ -75,7 +75,7 @@ export const activitiesEndpoints = {
 	},
 
 	async getStatuses(fetchFn: typeof fetch): Promise<Array<{ id: string; name: string }>> {
-		const path = API_ENDPOINTS.activities.statuses();
+		const path = API_ENDPOINTS.activities.statuses.path();
 
 		const response = await apiClient.request<Array<{ id: string; name: string }>>(fetchFn, path, {
 			method: 'GET'

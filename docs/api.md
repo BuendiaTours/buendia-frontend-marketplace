@@ -354,12 +354,12 @@ api.tags.getById(fetch, id); // GET /tags/:id
 
 Imagina que necesitas agregar funcionalidad para gestionar reservas. Sigue estos pasos:
 
-### Paso 1: Definir Rutas en `endpoints.config.ts`
+### Paso 1: Definir Rutas en `endpoints-metadata.ts`
 
 ```typescript
-// src/lib/api/endpoints.config.ts
+// src/lib/api/endpoints-metadata.ts
 
-// 1.1 Agregar ruta base
+// 1.1 Agregar ruta base (si es necesario)
 export const BASE_PATHS = {
 	activities: '/activities',
 	locations: '/locations',
@@ -367,34 +367,69 @@ export const BASE_PATHS = {
 	bookings: '/bookings' // ← NUEVO
 } as const;
 
-// 1.2 Definir endpoints específicos
-export const BOOKINGS_ENDPOINTS = {
-	/** GET /bookings - Listar reservas */
-	list: () => BASE_PATHS.bookings,
-
-	/** GET /bookings/:id - Detalle de reserva */
-	detail: (id: string) => `${BASE_PATHS.bookings}/${id}`,
-
-	/** POST /bookings - Crear reserva */
-	create: () => BASE_PATHS.bookings,
-
-	/** PUT /bookings/:id/cancel - Cancelar reserva */
-	cancel: (id: string) => `${BASE_PATHS.bookings}/${id}/cancel`,
-
-	/** GET /bookings/user/:userId - Reservas de un usuario */
-	byUser: (userId: string) => `${BASE_PATHS.bookings}/user/${userId}`
-} as const;
-
-// 1.3 Agregar al objeto principal
+// 1.2 Agregar nuevo recurso al objeto API_ENDPOINTS
 export const API_ENDPOINTS = {
-	activities: ACTIVITIES_ENDPOINTS,
-	locations: LOCATIONS_ENDPOINTS,
-	// ... otros existentes
-	bookings: BOOKINGS_ENDPOINTS // ← NUEVO
+	activities: {
+		groupName: 'Activities',
+		groupDescription: 'Gestión de actividades turísticas'
+		// ... endpoints existentes
+	},
+	// ... otros recursos existentes
+
+	// ← NUEVO: Agregar bookings
+	bookings: {
+		groupName: 'Bookings',
+		groupDescription: 'Gestión de reservas',
+
+		/** GET /bookings - Listar reservas */
+		list: {
+			path: () => BASE_PATHS.bookings,
+			method: 'GET',
+			description: 'Obtiene listado de reservas con paginación',
+			params: ['page', 'limit', 'status']
+		},
+
+		/** GET /bookings/:id - Detalle de reserva */
+		detail: {
+			path: (id: string) => `${BASE_PATHS.bookings}/${id}`,
+			method: 'GET',
+			description: 'Obtiene detalles de una reserva específica',
+			params: ['id']
+		},
+
+		/** POST /bookings - Crear reserva */
+		create: {
+			path: () => BASE_PATHS.bookings,
+			method: 'POST',
+			description: 'Crea una nueva reserva',
+			params: ['body']
+		},
+
+		/** PUT /bookings/:id/cancel - Cancelar reserva */
+		cancel: {
+			path: (id: string) => `${BASE_PATHS.bookings}/${id}/cancel`,
+			method: 'PUT',
+			description: 'Cancela una reserva existente',
+			params: ['id']
+		},
+
+		/** GET /bookings/user/:userId - Reservas de un usuario */
+		byUser: {
+			path: (userId: string) => `${BASE_PATHS.bookings}/user/${userId}`,
+			method: 'GET',
+			description: 'Obtiene todas las reservas de un usuario',
+			params: ['userId']
+		}
+	}
 } as const;
 ```
 
-**💡 Tip:** Usa comentarios JSDoc (`/** ... */`) para documentar qué hace cada endpoint.
+**💡 Importante:** Cada endpoint ahora incluye:
+
+- `path`: Función que genera la URL
+- `method`: Método HTTP (GET, POST, PUT, PATCH, DELETE)
+- `description`: Descripción de qué hace el endpoint
+- `params`: Lista de parámetros que acepta
 
 ### Paso 2: Crear Módulo del Endpoint
 
@@ -444,7 +479,7 @@ export const bookingsEndpoints = {
 	 * Obtener lista de reservas
 	 */
 	async getAll(fetchFn: typeof fetch, params?: BookingsGetAllParams): Promise<BookingListResponse> {
-		const path = buildEndpointUrl(API_ENDPOINTS.bookings.list(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.bookings.list.path(), params);
 
 		const response = await apiClient.request<BookingListResponse>(fetchFn, path, { method: 'GET' });
 
@@ -455,7 +490,7 @@ export const bookingsEndpoints = {
 	 * Obtener detalle de una reserva
 	 */
 	async getById(fetchFn: typeof fetch, id: string): Promise<Booking> {
-		const path = API_ENDPOINTS.bookings.detail(id);
+		const path = API_ENDPOINTS.bookings.detail.path(id);
 
 		const response = await apiClient.request<Booking>(fetchFn, path, { method: 'GET' });
 
@@ -466,7 +501,7 @@ export const bookingsEndpoints = {
 	 * Crear una nueva reserva
 	 */
 	async create(fetchFn: typeof fetch, data: CreateBookingData): Promise<Booking> {
-		const path = API_ENDPOINTS.bookings.create();
+		const path = API_ENDPOINTS.bookings.create.path();
 
 		const response = await apiClient.request<Booking>(fetchFn, path, {
 			method: 'POST',
@@ -480,7 +515,7 @@ export const bookingsEndpoints = {
 	 * Cancelar una reserva
 	 */
 	async cancel(fetchFn: typeof fetch, id: string): Promise<Booking> {
-		const path = API_ENDPOINTS.bookings.cancel(id);
+		const path = API_ENDPOINTS.bookings.cancel.path(id);
 
 		const response = await apiClient.request<Booking>(fetchFn, path, { method: 'PUT' });
 
@@ -491,7 +526,7 @@ export const bookingsEndpoints = {
 	 * Obtener reservas de un usuario
 	 */
 	async getByUser(fetchFn: typeof fetch, userId: string): Promise<BookingListResponse> {
-		const path = API_ENDPOINTS.bookings.byUser(userId);
+		const path = API_ENDPOINTS.bookings.byUser.path(userId);
 
 		const response = await apiClient.request<BookingListResponse>(fetchFn, path, { method: 'GET' });
 
@@ -556,14 +591,15 @@ export const load: PageServerLoad = async ({ fetch }) => {
 
 Cuando agregues un nuevo endpoint, verifica:
 
-- [ ] Ruta base agregada en `BASE_PATHS`
-- [ ] Endpoints definidos en `*_ENDPOINTS`
-- [ ] Objeto agregado a `API_ENDPOINTS`
+- [ ] Ruta base agregada en `BASE_PATHS` (si es un recurso nuevo)
+- [ ] Grupo de recurso agregado a `API_ENDPOINTS` con `groupName` y `groupDescription`
+- [ ] Cada endpoint incluye: `path`, `method`, `description`, `params`
 - [ ] Módulo creado en `endpoints/*.ts`
 - [ ] Tipos TypeScript definidos
-- [ ] Métodos implementados con documentación
+- [ ] Métodos implementados usando `.path()` para generar URLs
 - [ ] Exportado desde `index.ts`
 - [ ] Probado en una ruta real
+- [ ] ✨ **Bonus:** El endpoint aparece automáticamente en `/api-catalog`
 
 ---
 
@@ -574,7 +610,7 @@ Cuando agregues un nuevo endpoint, verifica:
 Si la API cambia de URL o versión:
 
 ```typescript
-// src/lib/api/endpoints.config.ts
+// src/lib/api/endpoints-metadata.ts
 
 export const BASE_PATHS = {
 	// Cambiar de v1 a v2
@@ -585,7 +621,7 @@ export const BASE_PATHS = {
 } as const;
 ```
 
-**✅ Ventaja:** Un solo cambio actualiza TODAS las llamadas a la API.
+**✅ Ventaja:** Un solo cambio actualiza TODAS las llamadas a la API y el catálogo en `/api-catalog`.
 
 ### Ajustar Timeouts
 
@@ -904,16 +940,29 @@ async getAll(fetchFn: typeof fetch, params?: GetActivitiesParams) {
 }
 ```
 
-#### 4. Documentar Endpoints con JSDoc
+#### 4. Documentar Endpoints con Metadata Completa
 
 ```typescript
-// ✅ BIEN
-export const BOOKINGS_ENDPOINTS = {
-	/** GET /bookings - Lista de reservas */
-	list: () => BASE_PATHS.bookings,
+// ✅ BIEN - Ahora cada endpoint incluye metadata completa
+export const API_ENDPOINTS = {
+	bookings: {
+		groupName: 'Bookings',
+		groupDescription: 'Gestión de reservas',
 
-	/** POST /bookings/:id/cancel - Cancelar reserva */
-	cancel: (id: string) => `${BASE_PATHS.bookings}/${id}/cancel`
+		list: {
+			path: () => BASE_PATHS.bookings,
+			method: 'GET',
+			description: 'Obtiene listado de reservas con paginación',
+			params: ['page', 'limit', 'status']
+		},
+
+		cancel: {
+			path: (id: string) => `${BASE_PATHS.bookings}/${id}/cancel`,
+			method: 'PUT',
+			description: 'Cancela una reserva existente',
+			params: ['id']
+		}
+	}
 };
 ```
 
@@ -962,8 +1011,8 @@ import { api } from '$lib/api/index';
 // ❌ MAL
 const url = 'https://api.example.com/activities';
 
-// ✅ BIEN - Usa endpoints.config.ts
-const path = API_ENDPOINTS.activities.list();
+// ✅ BIEN - Usa endpoints-metadata.ts
+const path = API_ENDPOINTS.activities.list.path();
 ```
 
 #### 4. No Ignorar Errores
@@ -1112,28 +1161,47 @@ export const load: PageServerLoad = async ({ fetch }) => {
 **Solución (parcial):**
 
 ```typescript
-// endpoints.config.ts
+// endpoints-metadata.ts
 export const BASE_PATHS = {
 	// ... existentes
 	reviews: '/reviews'
 };
 
-export const REVIEWS_ENDPOINTS = {
-	list: () => BASE_PATHS.reviews,
-	create: () => BASE_PATHS.reviews,
-	delete: (id: string) => `${BASE_PATHS.reviews}/${id}`
-};
-
 export const API_ENDPOINTS = {
-	// ... existentes
-	reviews: REVIEWS_ENDPOINTS
+	// ... recursos existentes
+
+	reviews: {
+		groupName: 'Reviews',
+		groupDescription: 'Gestión de reseñas',
+
+		list: {
+			path: () => BASE_PATHS.reviews,
+			method: 'GET',
+			description: 'Obtiene listado de reseñas',
+			params: []
+		},
+
+		create: {
+			path: () => BASE_PATHS.reviews,
+			method: 'POST',
+			description: 'Crea una nueva reseña',
+			params: ['body']
+		},
+
+		delete: {
+			path: (id: string) => `${BASE_PATHS.reviews}/${id}`,
+			method: 'DELETE',
+			description: 'Elimina una reseña',
+			params: ['id']
+		}
+	}
 };
 ```
 
 ```typescript
 // endpoints/reviews.ts
 import { apiClient } from '../client';
-import { API_ENDPOINTS } from '../endpoints.config';
+import { API_ENDPOINTS } from '../endpoints-metadata';
 
 export type Review = {
 	id: string;
@@ -1144,9 +1212,11 @@ export type Review = {
 
 export const reviewsEndpoints = {
 	async getAll(fetchFn: typeof fetch): Promise<Review[]> {
-		const response = await apiClient.request<Review[]>(fetchFn, API_ENDPOINTS.reviews.list(), {
-			method: 'GET'
-		});
+		const response = await apiClient.request<Review[]>(
+			fetchFn,
+			API_ENDPOINTS.reviews.list.path(), // ← Nota el .path()
+			{ method: 'GET' }
+		);
 		return response.data;
 	}
 	// ... implementar create y delete
@@ -1287,7 +1357,10 @@ console.log(response.data); // String con HTML
 
 ### ¿Cómo sé qué endpoints están disponibles?
 
-Revisa `src/lib/api/endpoints.config.ts` - Tiene TODOS los endpoints definidos con comentarios.
+Tienes dos opciones:
+
+1. **Catálogo Visual:** Visita `/api-catalog` en tu navegador - Se genera automáticamente desde la metadata
+2. **Código:** Revisa `src/lib/api/endpoints-metadata.ts` - Tiene TODOS los endpoints definidos con metadata completa
 
 ### ¿Puedo mockear el cliente para tests?
 
@@ -1364,8 +1437,39 @@ Si tienes dudas, revisa:
 
 ---
 
-**Última actualización:** 2026-01-23
+---
 
-**Versión:** 1.0
+## Changelog
+
+### Versión 1.1 - 2026-01-28
+
+**Refactor del Sistema de Endpoints:**
+
+- ✨ **Nueva estructura:** Ahora `API_ENDPOINTS` es la única fuente de verdad con metadata completa
+- 🔧 **Sintaxis actualizada:** Usar `.path()` para obtener URLs: `API_ENDPOINTS.activities.list.path()`
+- 📊 **Metadata incluida:** Cada endpoint tiene `path`, `method`, `description`, y `params`
+- 🗑️ **Eliminado:** Objetos intermedios (`ACTIVITIES_ENDPOINTS`, etc.) - ya no son necesarios
+- 🎁 **Beneficio:** Añadir un endpoint actualiza automáticamente `/api-catalog`
+- 📝 **Archivo principal:** `src/lib/api/endpoints-metadata.ts` (antes `endpoints.config.ts`)
+
+**Migración:**
+
+```typescript
+// ❌ Antes
+const path = API_ENDPOINTS.activities.list();
+
+// ✅ Ahora
+const path = API_ENDPOINTS.activities.list.path();
+```
+
+### Versión 1.0 - 2026-01-23
+
+- Versión inicial de la documentación
+
+---
+
+**Última actualización:** 2026-01-28
+
+**Versión:** 1.1
 
 **Autor:** Equipo de Desarrollo

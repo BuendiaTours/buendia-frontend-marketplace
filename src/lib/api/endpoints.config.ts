@@ -1,15 +1,7 @@
-// Re-export everything from endpoints-metadata for backward compatibility
+// Re-export everything from endpoints-metadata
 export {
 	BASE_PATHS,
-	ACTIVITIES_ENDPOINTS,
-	LOCATIONS_ENDPOINTS,
-	CATEGORIES_ENDPOINTS,
-	TAGS_ENDPOINTS,
-	ATTRACTIONS_ENDPOINTS,
-	DESTINATIONS_ENDPOINTS,
-	AUTH_ENDPOINTS,
 	API_ENDPOINTS,
-	ENDPOINTS_METADATA,
 
 	// Utility functions
 	buildEndpointUrl

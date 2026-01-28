@@ -9,7 +9,7 @@ export type Tag = {
 
 export const tagsEndpoints = {
 	async getAll(fetchFn: typeof fetch): Promise<Tag[]> {
-		const path = API_ENDPOINTS.tags.list();
+		const path = API_ENDPOINTS.tags.list.path();
 
 		const response = await apiClient.request<Tag[]>(fetchFn, path, {
 			method: 'GET'
@@ -19,7 +19,7 @@ export const tagsEndpoints = {
 	},
 
 	async getById(fetchFn: typeof fetch, id: string): Promise<Tag> {
-		const path = API_ENDPOINTS.tags.detail(id);
+		const path = API_ENDPOINTS.tags.detail.path(id);
 
 		const response = await apiClient.request<Tag>(fetchFn, path, {
 			method: 'GET'

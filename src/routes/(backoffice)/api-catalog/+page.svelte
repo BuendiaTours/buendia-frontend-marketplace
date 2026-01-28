@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ENDPOINTS_METADATA } from '$lib/api/endpoints-metadata';
+	import { API_ENDPOINTS } from '$lib/api/endpoints-metadata';
 	import { apiConfig } from '$lib/api/config';
 	import { copyToClipboard } from '$lib/utils/misc';
 	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
@@ -43,7 +43,7 @@
 	const fullUrl = (path: string) => `${apiConfig.baseURL}${path}`;
 
 	// Transformar metadata en estructura para la vista
-	const endpointGroups = Object.entries(ENDPOINTS_METADATA).map(([key, group]) => {
+	const endpointGroups = Object.entries(API_ENDPOINTS).map(([key, group]) => {
 		// Extraer groupName y groupDescription, el resto son endpoints
 		const { groupName, groupDescription, ...endpoints } = group;
 

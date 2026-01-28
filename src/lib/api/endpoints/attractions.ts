@@ -23,7 +23,7 @@ export const attractionsEndpoints = {
 		fetchFn: typeof fetch,
 		params?: AttractionsGetAllParams
 	): Promise<{ data: Attraction[]; pagination: Pagination }> {
-		const path = buildEndpointUrl(API_ENDPOINTS.attractions.list(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.attractions.list.path(), params);
 
 		const response = await apiClient.request<{ data: Attraction[]; pagination: Pagination }>(
 			fetchFn,
@@ -37,7 +37,7 @@ export const attractionsEndpoints = {
 	},
 
 	async getById(fetchFn: typeof fetch, id: string): Promise<Attraction> {
-		const path = API_ENDPOINTS.attractions.detail(id);
+		const path = API_ENDPOINTS.attractions.detail.path(id);
 
 		const response = await apiClient.request<{ data: Attraction }>(fetchFn, path, {
 			method: 'GET'
@@ -47,7 +47,7 @@ export const attractionsEndpoints = {
 	},
 
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<Attraction> {
-		const path = API_ENDPOINTS.attractions.detail(slug);
+		const path = API_ENDPOINTS.attractions.detail.path(slug);
 
 		const response = await apiClient.request<Attraction>(fetchFn, path, {
 			method: 'GET'
@@ -57,7 +57,7 @@ export const attractionsEndpoints = {
 	},
 
 	async search(fetchFn: typeof fetch, params?: AttractionsSearchParams): Promise<Attraction[]> {
-		const path = buildEndpointUrl(API_ENDPOINTS.attractions.search(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.attractions.search.path(), params);
 
 		const response = await apiClient.request<{ data: Attraction[] }>(fetchFn, path, {
 			method: 'GET'
@@ -67,7 +67,7 @@ export const attractionsEndpoints = {
 	},
 
 	async delete(fetchFn: typeof fetch, slug: string): Promise<void> {
-		const path = API_ENDPOINTS.attractions.delete(slug);
+		const path = API_ENDPOINTS.attractions.delete.path(slug);
 
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'DELETE'
@@ -75,7 +75,7 @@ export const attractionsEndpoints = {
 	},
 
 	async getStatuses(fetchFn: typeof fetch): Promise<Array<{ id: string; name: string }>> {
-		const path = API_ENDPOINTS.attractions.statuses();
+		const path = API_ENDPOINTS.attractions.statuses.path();
 
 		const response = await apiClient.request<Array<{ id: string; name: string }>>(fetchFn, path, {
 			method: 'GET'

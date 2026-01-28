@@ -23,7 +23,7 @@ export const destinationsEndpoints = {
 		fetchFn: typeof fetch,
 		params?: DestinationsGetAllParams
 	): Promise<{ data: Destination[]; pagination: Pagination }> {
-		const path = buildEndpointUrl(API_ENDPOINTS.destinations.list(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.destinations.list.path(), params);
 
 		const response = await apiClient.request<{ data: Destination[]; pagination: Pagination }>(
 			fetchFn,
@@ -37,7 +37,7 @@ export const destinationsEndpoints = {
 	},
 
 	async getById(fetchFn: typeof fetch, id: string): Promise<Destination> {
-		const path = API_ENDPOINTS.destinations.detail(id);
+		const path = API_ENDPOINTS.destinations.detail.path(id);
 
 		const response = await apiClient.request<{ data: Destination }>(fetchFn, path, {
 			method: 'GET'
@@ -47,7 +47,7 @@ export const destinationsEndpoints = {
 	},
 
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<Destination> {
-		const path = API_ENDPOINTS.destinations.detail(slug);
+		const path = API_ENDPOINTS.destinations.detail.path(slug);
 
 		const response = await apiClient.request<Destination>(fetchFn, path, {
 			method: 'GET'
@@ -57,7 +57,7 @@ export const destinationsEndpoints = {
 	},
 
 	async search(fetchFn: typeof fetch, params?: DestinationsSearchParams): Promise<Destination[]> {
-		const path = buildEndpointUrl(API_ENDPOINTS.destinations.search(), params);
+		const path = buildEndpointUrl(API_ENDPOINTS.destinations.search.path(), params);
 
 		const response = await apiClient.request<{ data: Destination[] }>(fetchFn, path, {
 			method: 'GET'
@@ -67,7 +67,7 @@ export const destinationsEndpoints = {
 	},
 
 	async delete(fetchFn: typeof fetch, slug: string): Promise<void> {
-		const path = API_ENDPOINTS.destinations.delete(slug);
+		const path = API_ENDPOINTS.destinations.delete.path(slug);
 
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'DELETE'

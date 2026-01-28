@@ -17,7 +17,7 @@ export interface EndpointMetadata {
 }
 
 // Endpoint definitions with metadata
-export const ENDPOINTS_METADATA = {
+export const API_ENDPOINTS = {
 	activities: {
 		groupName: 'Activities',
 		groupDescription: 'Gestión de actividades turísticas',
@@ -215,65 +215,6 @@ export const ENDPOINTS_METADATA = {
 			params: []
 		}
 	}
-} as const;
-
-// Extract path functions for backward compatibility
-export const ACTIVITIES_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.activities.list.path,
-	detail: ENDPOINTS_METADATA.activities.detail.path,
-	create: ENDPOINTS_METADATA.activities.create.path,
-	update: ENDPOINTS_METADATA.activities.update.path,
-	delete: ENDPOINTS_METADATA.activities.delete.path,
-	patch: ENDPOINTS_METADATA.activities.patch.path,
-	statuses: ENDPOINTS_METADATA.activities.statuses.path
-} as const;
-
-export const LOCATIONS_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.locations.list.path,
-	detail: ENDPOINTS_METADATA.locations.detail.path,
-	search: ENDPOINTS_METADATA.locations.search.path
-} as const;
-
-export const CATEGORIES_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.categories.list.path,
-	detail: ENDPOINTS_METADATA.categories.detail.path
-} as const;
-
-export const TAGS_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.tags.list.path,
-	detail: ENDPOINTS_METADATA.tags.detail.path
-} as const;
-
-export const ATTRACTIONS_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.attractions.list.path,
-	detail: ENDPOINTS_METADATA.attractions.detail.path,
-	search: ENDPOINTS_METADATA.attractions.search.path,
-	delete: ENDPOINTS_METADATA.attractions.delete.path,
-	statuses: ENDPOINTS_METADATA.attractions.statuses.path
-} as const;
-
-export const DESTINATIONS_ENDPOINTS = {
-	list: ENDPOINTS_METADATA.destinations.list.path,
-	detail: ENDPOINTS_METADATA.destinations.detail.path,
-	search: ENDPOINTS_METADATA.destinations.search.path,
-	delete: ENDPOINTS_METADATA.destinations.delete.path
-} as const;
-
-export const AUTH_ENDPOINTS = {
-	login: ENDPOINTS_METADATA.auth.login.path,
-	logout: ENDPOINTS_METADATA.auth.logout.path,
-	refresh: ENDPOINTS_METADATA.auth.refresh.path,
-	me: ENDPOINTS_METADATA.auth.me.path
-} as const;
-
-export const API_ENDPOINTS = {
-	activities: ACTIVITIES_ENDPOINTS,
-	locations: LOCATIONS_ENDPOINTS,
-	categories: CATEGORIES_ENDPOINTS,
-	tags: TAGS_ENDPOINTS,
-	attractions: ATTRACTIONS_ENDPOINTS,
-	destinations: DESTINATIONS_ENDPOINTS,
-	auth: AUTH_ENDPOINTS
 } as const;
 
 export function buildEndpointUrl(
