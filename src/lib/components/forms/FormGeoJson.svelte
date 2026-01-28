@@ -75,7 +75,7 @@
 				mapTypeControl: true,
 				streetViewControl: false,
 				fullscreenControl: false,
-				mapId: 'map-primary'
+				mapId: `map-${id}`
 			});
 
 			// Try to use AdvancedMarkerElement, fallback to deprecated Marker if not available
@@ -282,60 +282,50 @@
 			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</label>
+</div>
 
+<div class="rounded-lg border border-base-content/10 p-4">
 	<!-- Búsqueda de ubicación -->
-	<div class="mb-4">
-		<div class="relative">
-			<input
-				type="text"
-				placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
-				class="input input-sm w-full pr-20"
-				bind:value={searchQuery}
-				onkeydown={handleSearchKeydown}
-				disabled={isSearching || !isMapLoaded}
-			/>
-			<button
-				type="button"
-				class="btn absolute top-0 right-0 btn-ghost btn-sm"
-				onclick={searchLocation}
-				disabled={isSearching || !isMapLoaded || !searchQuery.trim()}
-			>
-				{#if isSearching}
-					<span class="loading loading-xs loading-spinner"></span>
-				{:else}
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<circle cx="11" cy="11" r="8"></circle>
-						<path d="m21 21-4.35-4.35"></path>
-					</svg>
-				{/if}
-			</button>
+
+	<div class="mb-2">
+		<div class="mb-4">
+			<div class="relative">
+				<input
+					type="text"
+					placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
+					class="input input-sm w-full pr-20"
+					bind:value={searchQuery}
+					onkeydown={handleSearchKeydown}
+					disabled={isSearching || !isMapLoaded}
+				/>
+				<button
+					type="button"
+					class="btn absolute top-0 right-0 btn-ghost btn-sm"
+					onclick={searchLocation}
+					disabled={isSearching || !isMapLoaded || !searchQuery.trim()}
+				>
+					{#if isSearching}
+						<span class="loading loading-xs loading-spinner"></span>
+					{:else}
+						<Search class="size-4" />
+					{/if}
+				</button>
+			</div>
+
+			<!-- Mensaje de advertencia -->
+			<div class="mt-2 flex items-center gap-2 text-xs text-base-content/60">
+				<InfoEmpty class="size-4" />
+				<span
+					>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
+					información.</span
+				>
+			</div>
+
+			{#if searchError}
+				<div class="mt-2 text-xs text-error">{searchError}</div>
+			{/if}
 		</div>
 
-		<!-- Mensaje de advertencia -->
-		<div class="mt-2 flex items-center gap-2 text-xs text-base-content/60">
-			<InfoEmpty class="size-4" />
-			<span
-				>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
-				información.</span
-			>
-		</div>
-
-		{#if searchError}
-			<div class="mt-2 text-xs text-error">{searchError}</div>
-		{/if}
-	</div>
-
-	<div class="rounded-lg border border-base-content/10 p-4">
 		<!-- Grid responsive: stack en mobile, 8+4 cols en desktop -->
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-12">
 			<!-- Mapa - 8 columnas en desktop, full width en mobile -->
