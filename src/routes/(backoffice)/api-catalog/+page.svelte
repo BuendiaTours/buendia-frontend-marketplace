@@ -43,19 +43,24 @@
 	const fullUrl = (path: string) => `${apiConfig.baseURL}${path}`;
 
 	// Transformar metadata en estructura para la vista
-	const endpointGroups = Object.entries(ENDPOINTS_METADATA).map(([key, group]) => ({
-		key,
-		name: group.groupName,
-		description: group.groupDescription,
-		endpoints: Object.entries(group.endpoints).map(([endpointKey, endpoint]) => ({
-			key: endpointKey,
-			name: endpointKey.charAt(0).toUpperCase() + endpointKey.slice(1),
-			method: endpoint.method,
-			path: getPathWithPlaceholders(endpoint.path),
-			params: endpoint.params?.join(', ') || '-',
-			description: endpoint.description
-		}))
-	}));
+	const endpointGroups = Object.entries(ENDPOINTS_METADATA).map(([key, group]) => {
+		// Extraer groupName y groupDescription, el resto son endpoints
+		const { groupName, groupDescription, ...endpoints } = group;
+
+		return {
+			key,
+			name: groupName,
+			description: groupDescription,
+			endpoints: Object.entries(endpoints).map(([endpointKey, endpoint]: [string, any]) => ({
+				key: endpointKey,
+				name: endpointKey.charAt(0).toUpperCase() + endpointKey.slice(1),
+				method: endpoint.method,
+				path: getPathWithPlaceholders(endpoint.path),
+				params: endpoint.params?.join(', ') || '-',
+				description: endpoint.description
+			}))
+		};
+	});
 </script>
 
 <div class="container mx-auto flex flex-col gap-y-4">
