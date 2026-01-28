@@ -78,7 +78,6 @@
 				mapId: `map-${id}`
 			});
 
-			// Try to use AdvancedMarkerElement, fallback to deprecated Marker if not available
 			try {
 				const { AdvancedMarkerElement } = (window as any).google.maps.marker;
 				if (AdvancedMarkerElement) {
@@ -86,17 +85,19 @@
 						position: initialPosition,
 						map: map,
 						title: 'Ubicación',
-						draggable: true
+						gmpDraggable: true
 					});
 
-					// Update coordinates when marker is dragged
-					marker.addEventListener('dragend', (event: any) => {
-						if (!marker || !event.latLng) return;
-						const { lat, lng } = event.latLng;
-						updateCoordinates(lng, lat);
+					marker.addListener('dragend', (event: any) => {
+						if (!marker) return;
+						const position = marker.position;
+						if (position && position.lat !== undefined && position.lng !== undefined) {
+							const lat = typeof position.lat === 'function' ? position.lat() : position.lat;
+							const lng = typeof position.lng === 'function' ? position.lng() : position.lng;
+							updateCoordinates(lng, lat);
+						}
 					});
 
-					// Add marker when clicking on map
 					map.addListener('click', (e: any) => {
 						if (e.latLng && marker) {
 							marker.position = e.latLng;
@@ -119,7 +120,6 @@
 					title: 'Ubicación'
 				});
 
-				// Update coordinates when marker is dragged (deprecated API)
 				marker.addListener('dragend', () => {
 					if (!marker) return;
 					const position = marker.getPosition();
@@ -128,7 +128,6 @@
 					}
 				});
 
-				// Add marker when clicking on map (deprecated API)
 				map.addListener('click', (e: any) => {
 					if (e.latLng && marker) {
 						marker.setPosition(e.latLng);
@@ -167,18 +166,19 @@
 				const lat = location.lat();
 				const lng = location.lng();
 
-				// Actualizar coordenadas
 				updateCoordinates(lng, lat);
-
-				// Centrar mapa
 				if (map) {
 					map.setCenter({ lat, lng });
 					map.setZoom(13);
 				}
 
-				// Actualizar marcador con AdvancedMarkerElement
+				// Actualizar marcador
 				if (marker) {
-					marker.position = { lat, lng };
+					if (marker.position !== undefined) {
+						marker.position = { lat, lng };
+					} else if (marker.setPosition) {
+						marker.setPosition({ lat, lng });
+					}
 				}
 
 				searchQuery = '';
@@ -227,12 +227,9 @@
 		if (marker && map) {
 			const position = { lat: latitude, lng: longitude };
 
-			// Handle both AdvancedMarkerElement and deprecated Marker APIs
 			if (marker.position !== undefined) {
-				// AdvancedMarkerElement
 				marker.position = position;
 			} else if (marker.setPosition) {
-				// Deprecated Marker API
 				marker.setPosition(position);
 			}
 
@@ -258,7 +255,6 @@
 			script.async = true;
 			script.defer = true;
 			script.onload = () => {
-				// Wait a bit for Google Maps to fully initialize
 				setTimeout(() => {
 					if ((window as any).google && (window as any).google.maps) {
 						initializeMap();
@@ -282,12 +278,8 @@
 			<span class="text-xs opacity-70">{badge}</span>
 		{/if}
 	</label>
-</div>
 
-<div class="rounded-lg border border-base-content/10 p-4">
-	<!-- Búsqueda de ubicación -->
-
-	<div class="mb-2">
+	<div class="rounded-lg border border-base-content/10 p-4">
 		<div class="mb-4">
 			<div class="relative">
 				<input
@@ -313,7 +305,7 @@
 			</div>
 
 			<!-- Mensaje de advertencia -->
-			<div class="mt-2 flex items-center gap-2 text-xs text-base-content/60">
+			<div class="mt-2 flex items-center gap-2 text-xs text-warning">
 				<InfoEmpty class="size-4" />
 				<span
 					>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
@@ -356,7 +348,7 @@
 				</div>
 			</div>
 
-			<!-- Inputs de coordenadas - 4 columnas en desktop, 2 columnas en mobile -->
+			<!-- Inputs de coordenadas -->
 			<div class="md:col-span-4">
 				<div class="grid grid-cols-2 gap-4 md:grid-cols-1">
 					<div>
