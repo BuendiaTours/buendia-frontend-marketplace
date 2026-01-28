@@ -156,7 +156,7 @@
 					if (status === 'OK' && results) {
 						resolve(results);
 					} else {
-						reject(new Error('No se encontró la ubicación'));
+						reject({ status, results });
 					}
 				});
 			});
@@ -183,9 +183,22 @@
 
 				searchQuery = '';
 			}
-		} catch (err) {
-			searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
+		} catch (err: any) {
 			console.error('Error searching location:', err);
+
+			// Check if it's a Geocoding API permission error
+			if (err?.status === 'REQUEST_DENIED') {
+				searchError =
+					'La API key no tiene permisos de Geocoding. Activa "Geocoding API" en Google Cloud Console.';
+			} else if (err?.status === 'ZERO_RESULTS') {
+				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
+			} else if (err?.status === 'OVER_QUERY_LIMIT') {
+				searchError = 'Se ha excedido el límite de consultas de la API. Intenta más tarde.';
+			} else if (err?.status === 'INVALID_REQUEST') {
+				searchError = 'Solicitud inválida. Verifica el formato de la búsqueda.';
+			} else {
+				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
+			}
 		} finally {
 			isSearching = false;
 		}
