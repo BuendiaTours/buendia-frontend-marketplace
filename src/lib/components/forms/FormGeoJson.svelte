@@ -171,68 +171,81 @@
 	</label>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
-		<!-- Inputs de coordenadas -->
-		<div class="mb-4 grid grid-cols-2 gap-4">
-			<div>
-				<label class="label text-xs" for="{id}-longitude">
-					<span>Longitud</span>
-				</label>
-				<input
-					type="number"
-					id="{id}-longitude"
-					name="{id}.coordinates[0]"
-					class="input input-sm w-full"
-					class:input-error={error}
-					value={longitude}
-					step="0.000001"
-					oninput={handleLongitudeChange}
-				/>
+		<!-- Grid responsive: stack en mobile, 8+4 cols en desktop -->
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-12">
+			<!-- Mapa - 8 columnas en desktop, full width en mobile -->
+			<div class="md:col-span-8">
+				<div class="relative overflow-hidden rounded-lg">
+					{#if mapError}
+						<div
+							class="flex items-center justify-center bg-base-200 p-8"
+							style="height: {mapHeight}"
+						>
+							<div class="text-center">
+								<p class="text-sm text-error">{mapError}</p>
+								<p class="mt-2 text-xs text-base-content/50">
+									Configura tu API key de Google Maps en el componente
+								</p>
+							</div>
+						</div>
+					{:else}
+						<div bind:this={mapContainer} style="height: {mapHeight}; width: 100%;">
+							{#if !isMapLoaded}
+								<div
+									class="flex items-center justify-center bg-base-200"
+									style="height: {mapHeight}"
+								>
+									<span class="loading loading-lg loading-spinner"></span>
+								</div>
+							{/if}
+						</div>
+					{/if}
+				</div>
+
+				<div class="mt-2 text-xs text-base-content/50">
+					Haz clic en el mapa o arrastra el marcador para cambiar la ubicación
+				</div>
 			</div>
-			<div>
-				<label class="label text-xs" for="{id}-latitude">
-					<span>Latitud</span>
-				</label>
-				<input
-					type="number"
-					id="{id}-latitude"
-					name="{id}.coordinates[1]"
-					class="input input-sm w-full"
-					class:input-error={error}
-					value={latitude}
-					step="0.000001"
-					oninput={handleLatitudeChange}
-				/>
+
+			<!-- Inputs de coordenadas - 4 columnas en desktop, 2 columnas en mobile -->
+			<div class="md:col-span-4">
+				<div class="grid grid-cols-2 gap-4 md:grid-cols-1">
+					<div>
+						<label class="label text-xs" for="{id}-longitude">
+							<span>Longitud</span>
+						</label>
+						<input
+							type="number"
+							id="{id}-longitude"
+							name="{id}.coordinates[0]"
+							class="input input-sm w-full"
+							class:input-error={error}
+							value={longitude}
+							step="0.000001"
+							oninput={handleLongitudeChange}
+						/>
+					</div>
+					<div>
+						<label class="label text-xs" for="{id}-latitude">
+							<span>Latitud</span>
+						</label>
+						<input
+							type="number"
+							id="{id}-latitude"
+							name="{id}.coordinates[1]"
+							class="input input-sm w-full"
+							class:input-error={error}
+							value={latitude}
+							step="0.000001"
+							oninput={handleLatitudeChange}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<!-- Hidden input para el tipo -->
 		<input type="hidden" name="{id}.type" value="Point" />
-
-		<!-- Mapa de Google -->
-		<div class="relative overflow-hidden rounded-lg">
-			{#if mapError}
-				<div class="flex items-center justify-center bg-base-200 p-8" style="height: {mapHeight}">
-					<div class="text-center">
-						<p class="text-sm text-error">{mapError}</p>
-						<p class="mt-2 text-xs text-base-content/50">
-							Configura tu API key de Google Maps en el componente
-						</p>
-					</div>
-				</div>
-			{:else}
-				<div bind:this={mapContainer} style="height: {mapHeight}; width: 100%;">
-					{#if !isMapLoaded}
-						<div class="flex items-center justify-center bg-base-200" style="height: {mapHeight}">
-							<span class="loading loading-lg loading-spinner"></span>
-						</div>
-					{/if}
-				</div>
-			{/if}
-		</div>
-
-		<div class="mt-2 text-xs text-base-content/50">
-			Haz clic en el mapa o arrastra el marcador para cambiar la ubicación
-		</div>
 
 		<FormErrorMsg {error} />
 	</div>
