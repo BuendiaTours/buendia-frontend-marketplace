@@ -48,6 +48,7 @@
 		badge?: string;
 		disabled?: boolean;
 		wrapperClass?: string;
+		selectClass?: string;
 		[key: string]: any;
 	}
 
@@ -62,6 +63,7 @@
 		badge,
 		disabled = false,
 		wrapperClass = 'md:col-span-12',
+		selectClass = '',
 		...restProps
 	}: Props = $props();
 
@@ -105,7 +107,7 @@
 	<select
 		{id}
 		name={id}
-		class="select w-full"
+		class="select w-full {selectClass}"
 		class:select-error={error}
 		bind:value
 		disabled={disabled || loading}

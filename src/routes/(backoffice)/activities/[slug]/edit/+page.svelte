@@ -16,7 +16,8 @@
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity, availableTags, availableCategories, availableAttractions } = data;
+	const { activity, availableTags, availableCategories, availableAttractions, availableStatuses } =
+		data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -77,9 +78,10 @@
 			label="Estado"
 			bind:value={$form.status}
 			error={$errors.status}
-			options={data.availableStatuses}
+			options={availableStatuses}
 			placeholder="Selecciona un estado"
 			wrapperClass="md:col-span-4"
+			selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
 		/>
 
 		<FormInputText
