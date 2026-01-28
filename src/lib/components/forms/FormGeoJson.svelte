@@ -29,7 +29,7 @@
 		error?: string | string[];
 		badge?: string;
 		wrapperClass?: string;
-		mapHeight?: string;
+		mapClass?: string;
 	}
 
 	let {
@@ -39,7 +39,7 @@
 		error,
 		badge,
 		wrapperClass = 'md:col-span-12',
-		mapHeight = '400px'
+		mapClass = 'h-[400px]'
 	}: Props = $props();
 
 	let mapContainer: HTMLDivElement;
@@ -177,10 +177,7 @@
 			<div class="md:col-span-8">
 				<div class="relative overflow-hidden rounded-lg">
 					{#if mapError}
-						<div
-							class="flex items-center justify-center bg-base-200 p-8"
-							style="height: {mapHeight}"
-						>
+						<div class="flex items-center justify-center bg-base-200 p-8 {mapClass}">
 							<div class="text-center">
 								<p class="text-sm text-error">{mapError}</p>
 								<p class="mt-2 text-xs text-base-content/50">
@@ -189,12 +186,9 @@
 							</div>
 						</div>
 					{:else}
-						<div bind:this={mapContainer} style="height: {mapHeight}; width: 100%;">
+						<div bind:this={mapContainer} class="w-full {mapClass}">
 							{#if !isMapLoaded}
-								<div
-									class="flex items-center justify-center bg-base-200"
-									style="height: {mapHeight}"
-								>
+								<div class="flex items-center justify-center bg-base-200 {mapClass}">
 									<span class="loading loading-lg loading-spinner"></span>
 								</div>
 							{/if}

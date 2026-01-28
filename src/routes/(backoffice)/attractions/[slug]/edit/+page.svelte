@@ -173,8 +173,8 @@
 		id="location"
 		label="Ubicación"
 		bind:value={$form.location}
-		error={$errors.location}
-		mapHeight="400px"
+		error={$errors.location?._errors}
+		mapClass="h-[200px]"
 	/>
 
 	<div class="flex justify-between">
