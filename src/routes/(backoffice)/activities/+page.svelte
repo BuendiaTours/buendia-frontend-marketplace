@@ -361,7 +361,7 @@
 			class="btn btn-square btn-soft"
 			class:border-success={hasDateRange}
 		>
-			<Calendar class={hasDateRange ? 'text-success' : 'text-base-content/70'} />
+			<Calendar class={hasDateRange ? 'text-success' : 'text-neutral-content'} />
 		</button>
 	</div>
 
@@ -615,7 +615,7 @@
 		</table>
 	</div>
 {:else}
-	<p class="text-md mt-6 text-base-content/70">No hay actividades disponibles.</p>
+	<p class="text-md mt-6 text-neutral-content">No hay actividades disponibles.</p>
 {/if}
 
 <!-- Pagination -->

@@ -16,7 +16,7 @@
 </script>
 
 {#if itemsLength}
-	<div class="pagenav-info text-sm text-base-content/70">
+	<div class="pagenav-info text-text-neutral-content text-sm">
 		{#if pagination}
 			Página {pagination.page} de {pagination.totalPages}, mostrando los elementos del {(pagination.page -
 				1) *

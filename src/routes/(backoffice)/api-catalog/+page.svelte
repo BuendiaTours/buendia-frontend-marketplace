@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { ENDPOINTS_METADATA } from '$lib/api/endpoints-metadata';
 	import { apiConfig } from '$lib/api/config';
-	import { Code, Copy, CheckCircle } from 'svelte-iconoir';
+	import { copyToClipboard } from '$lib/utils/misc';
+	import { Copy, CheckCircle } from 'svelte-iconoir';
 
 	let copiedEndpoint = $state<string | null>(null);
 
@@ -9,12 +10,12 @@
 	function getPathWithPlaceholders(pathFn: Function): string {
 		const fnString = pathFn.toString();
 		const paramMatch = fnString.match(/\(([^)]*)\)/);
-		
+
 		if (paramMatch && paramMatch[1]) {
-			const params = paramMatch[1].split(',').map(p => p.trim().split(':')[0].trim());
-			return pathFn(...params.map(p => `:${p}`));
+			const params = paramMatch[1].split(',').map((p) => p.trim().split(':')[0].trim());
+			return pathFn(...params.map((p) => `:${p}`));
 		}
-		
+
 		return pathFn();
 	}
 
@@ -29,15 +30,13 @@
 		return colors[method] || 'badge-ghost';
 	}
 
-	async function copyToClipboard(text: string) {
-		try {
-			await navigator.clipboard.writeText(text);
+	async function handleCopy(text: string) {
+		const success = await copyToClipboard(text);
+		if (success) {
 			copiedEndpoint = text;
 			setTimeout(() => {
 				copiedEndpoint = null;
 			}, 2000);
-		} catch (err) {
-			console.error('Error copying to clipboard:', err);
 		}
 	}
 
@@ -61,12 +60,11 @@
 
 <div class="container mx-auto p-6">
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold mb-2">API Endpoints Catalog</h1>
-		<p class="text-base-content/70 mb-4">
+		<h1 class="mb-2 text-lg">API Endpoints Catalog</h1>
+		<p class="mb-4 text-neutral-content">
 			Catálogo dinámico de endpoints - Se actualiza automáticamente al añadir nuevos endpoints
 		</p>
 		<div class="flex items-center gap-2 rounded-lg bg-base-200 p-4">
-			<Code class="size-5" />
 			<div>
 				<p class="text-sm font-semibold">Base URL</p>
 				<code class="text-sm text-primary">{apiConfig.baseURL}</code>
@@ -77,7 +75,7 @@
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
-				class="stroke-current shrink-0 w-6 h-6"
+				class="h-6 w-6 shrink-0 stroke-current"
 			>
 				<path
 					stroke-linecap="round"
@@ -87,8 +85,7 @@
 				></path>
 			</svg>
 			<span class="text-sm"
-				>Esta página se genera automáticamente desde <code
-					>src/lib/api/endpoints-metadata.ts</code
+				>Esta página se genera automáticamente desde <code>src/lib/api/endpoints-metadata.ts</code
 				></span
 			>
 		</div>
@@ -98,10 +95,10 @@
 		{#each endpointGroups as group}
 			<div class="card bg-base-100 shadow-xl">
 				<div class="card-body">
-					<div class="flex items-center justify-between mb-4">
+					<div class="mb-4 flex items-center justify-between">
 						<div>
 							<h2 class="card-title text-2xl">{group.name}</h2>
-							<p class="text-base-content/70">{group.description}</p>
+							<p class="text-neutral-content">{group.description}</p>
 						</div>
 						<div class="badge badge-outline">{group.endpoints.length} endpoints</div>
 					</div>
@@ -121,12 +118,12 @@
 								{#each group.endpoints as endpoint}
 									<tr>
 										<td>
-											<span class="badge {getMethodColor(endpoint.method)} badge-sm font-mono">
+											<span class="badge {getMethodColor(endpoint.method)} font-mono badge-sm">
 												{endpoint.method}
 											</span>
 										</td>
 										<td>
-											<code class="text-xs bg-base-200 px-2 py-1 rounded">
+											<code class="rounded bg-base-200 px-2 py-1 text-xs">
 												{endpoint.path}
 											</code>
 										</td>
@@ -137,7 +134,7 @@
 										<td>
 											<button
 												class="btn btn-ghost btn-xs"
-												onclick={() => copyToClipboard(fullUrl(endpoint.path))}
+												onclick={() => handleCopy(fullUrl(endpoint.path))}
 												title="Copiar URL completa"
 											>
 												{#if copiedEndpoint === fullUrl(endpoint.path)}
@@ -157,25 +154,25 @@
 		{/each}
 	</div>
 
-	<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+	<div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
 		<div class="card bg-base-200">
 			<div class="card-body">
 				<h3 class="card-title text-lg">Configuración de API</h3>
 				<ul class="space-y-2 text-sm">
 					<li class="flex justify-between">
-						<span class="text-base-content/70">Timeout:</span>
+						<span class="text-neutral-content">Timeout:</span>
 						<code>{apiConfig.timeout}ms</code>
 					</li>
 					<li class="flex justify-between">
-						<span class="text-base-content/70">Reintentos:</span>
+						<span class="text-neutral-content">Reintentos:</span>
 						<code>{apiConfig.retry.attempts} intentos</code>
 					</li>
 					<li class="flex justify-between">
-						<span class="text-base-content/70">Delay entre reintentos:</span>
+						<span class="text-neutral-content">Delay entre reintentos:</span>
 						<code>{apiConfig.retry.delay}ms</code>
 					</li>
 					<li class="flex justify-between">
-						<span class="text-base-content/70">Backoff:</span>
+						<span class="text-neutral-content">Backoff:</span>
 						<code>{apiConfig.retry.backoff}x</code>
 					</li>
 				</ul>
@@ -185,7 +182,7 @@
 		<div class="card bg-base-200">
 			<div class="card-body">
 				<h3 class="card-title text-lg">Notas</h3>
-				<ul class="list-disc list-inside space-y-2 text-sm text-base-content/70">
+				<ul class="list-inside list-disc space-y-2 text-sm text-neutral-content">
 					<li>Los parámetros con <code>:</code> son parámetros de ruta</li>
 					<li>Los endpoints con paginación aceptan <code>page</code> y <code>limit</code></li>
 					<li>Los endpoints protegidos requieren header <code>Authorization</code></li>
@@ -195,22 +192,24 @@
 		</div>
 	</div>
 
-	<div class="mt-8 card bg-success/10 border border-success/20">
+	<div class="card mt-8 border border-success/20 bg-success/10">
 		<div class="card-body">
 			<h3 class="card-title text-lg text-success">✨ Actualización Automática</h3>
-			<p class="text-sm text-base-content/70">
+			<p class="text-sm text-neutral-content">
 				Para añadir un nuevo endpoint, simplemente agrégalo a
-				<code>src/lib/api/endpoints-metadata.ts</code> siguiendo la estructura existente. Esta
-				página se actualizará automáticamente sin necesidad de modificar ningún otro archivo.
+				<code>src/lib/api/endpoints-metadata.ts</code> siguiendo la estructura existente. Esta página
+				se actualizará automáticamente sin necesidad de modificar ningún otro archivo.
 			</p>
-			<div class="mt-4 mockup-code text-xs">
-				<pre><code>// Ejemplo de cómo añadir un nuevo endpoint
+			<div class="mockup-code mt-4 text-xs">
+				<pre><code
+						>// Ejemplo de cómo añadir un nuevo endpoint
 newEndpoint: &#123;
   path: (id: string) => `/new-resource/$&#123;id&#125;`,
   method: 'GET',
   description: 'Descripción del endpoint',
   params: ['id', 'optional-param']
-&#125;</code></pre>
+&#125;</code
+					></pre>
 			</div>
 		</div>
 	</div>
