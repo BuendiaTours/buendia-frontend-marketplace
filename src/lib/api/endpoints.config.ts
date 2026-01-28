@@ -9,6 +9,8 @@ export {
 	DESTINATIONS_ENDPOINTS,
 	AUTH_ENDPOINTS,
 	API_ENDPOINTS,
-	buildEndpointUrl,
-	ENDPOINTS_METADATA
+	ENDPOINTS_METADATA,
+
+	// Utility functions
+	buildEndpointUrl
 } from './endpoints-metadata';

@@ -88,6 +88,10 @@ textarea[readonly]:focus {
 	box-shadow: none;
 }
 
+.card {
+	@apply rounded-box border border-base-content/9 bg-base-100;
+}
+
 /* ByteMD - Tema Dark adaptado a DaisyUI */
 html[data-theme='dark'] {
 	.bytemd {
