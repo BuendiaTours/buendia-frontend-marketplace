@@ -50,7 +50,7 @@ Props disponibles:
 
 <div
 	use:melt={$calendar}
-	class="mt-6 rounded-[15px] border border-base-300 bg-base-100 p-[22px] shadow-sm {className}"
+	class="inline-flexmt-6 rounded-md border border-base-300 bg-base-100 p-[22px] shadow-sm {className}"
 >
 	<header class="flex items-center justify-between">
 		<button
@@ -59,7 +59,7 @@ Props disponibles:
 		>
 			<NavArrowLeft />
 		</button>
-		<div class="text-[15px] font-medium">
+		<div class="text-sm font-medium">
 			{$headingValue}
 		</div>
 		<button
@@ -74,7 +74,7 @@ Props disponibles:
 		{#each $months as month}
 			<table use:melt={$grid} class="w-full border-collapse space-y-1 select-none">
 				<thead>
-					<tr class="mb-1 flex w-full justify-between">
+					<tr class="mb-1 inline-flex justify-between">
 						{#each $weekdays as day}
 							<th class="w-10 rounded-md text-xs font-normal opacity-60">
 								<div>{day.slice(0, 2)}</div>

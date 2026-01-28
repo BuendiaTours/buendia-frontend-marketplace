@@ -182,9 +182,7 @@
 <h1 class="text-lg">Atracciones</h1>
 
 <!-- Filters Bar -->
-<div
-	class="bnd-filter-bar mt-6 flex items-center gap-8 rounded-box border border-base-content/9 bg-base-100 p-2"
->
+<div class="bnd-filter-bar card mt-6 flex items-center gap-8 p-2">
 	<!-- Search Box -->
 	<div class="flex w-full items-center gap-2">
 		<input
@@ -241,7 +239,7 @@
 </div>
 
 <!-- Table -->
-<div class="mt-6 rounded-box border border-base-content/9 bg-base-100">
+<div class="card mt-6">
 	<table class="table table-zebra table-sm">
 		<thead>
 			<tr>
