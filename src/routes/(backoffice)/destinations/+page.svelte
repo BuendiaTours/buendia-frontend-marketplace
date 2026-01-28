@@ -186,7 +186,7 @@
 <h1 class="text-lg">Destinos</h1>
 
 <!-- Filters Bar -->
-<div class="bnd-filter-bar card mt-6 flex items-center gap-8 p-2">
+<div class="bnd-filter-bar card mt-6 flex-row items-center gap-8 p-2">
 	<!-- Search Box -->
 	<div class="flex w-full items-center gap-2">
 		<input

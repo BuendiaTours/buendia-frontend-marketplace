@@ -352,7 +352,7 @@
 <h1 class="text-lg">Actividades</h1>
 
 <!-- Filters Bar -->
-<div class="bnd-filter-bar card mt-6 flex items-center gap-8 p-2">
+<div class="bnd-filter-bar card mt-6 flex-row items-center gap-8 p-2">
 	<div class="tooltip" data-tip={dateRangeTooltip}>
 		<button
 			use:melt={$dateRangeTrigger}

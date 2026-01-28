@@ -70,7 +70,7 @@ Props disponibles:
 		>
 			<NavArrowLeft />
 		</button>
-		<div class="text-base font-semibold">
+		<div class="text-sm font-medium">
 			{$headingValue}
 		</div>
 		<button

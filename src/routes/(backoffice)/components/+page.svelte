@@ -267,28 +267,16 @@
 		<div class="card p-4">
 			<MeltCalendar bind:value onValueChange={handleCalendarChange} />
 		</div>
+
+		<label class="label mt-4">Ejemplo de RangeCalendar de melt-ui</label>
+		<p class="text-sm opacity-70">
+			Selecciona un rango de fechas y revisa la consola del navegador
+		</p>
+
+		<MeltRangeCalendar
+			bind:value={rangeValue}
+			onValueChange={handleRangeCalendarChange}
+			numberOfMonths={2}
+		/>
 	</div>
 </div>
-
-<hr />
-
-<hr />
-
-<label class="label">Ejemplo de Calendar de melt-ui</label>
-<p class="mt-2 text-sm opacity-70">Selecciona una fecha y revisa la consola del navegador</p>
-
-<MeltCalendar bind:value onValueChange={handleCalendarChange} />
-
-<hr />
-
-<h1>Ejemplo de RangeCalendar de melt-ui</h1>
-<p class="mt-2 text-sm opacity-70">
-	Selecciona un rango de fechas y revisa la consola del navegador
-</p>
-
-<MeltRangeCalendar
-	bind:value={rangeValue}
-	onValueChange={handleRangeCalendarChange}
-	numberOfMonths={2}
-	class="mt-6"
-/>
