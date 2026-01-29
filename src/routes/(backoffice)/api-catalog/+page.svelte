@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { API_ENDPOINTS } from '$lib/api/endpoints-metadata';
+	import { API_ENDPOINTS } from '$lib/api/endpoints.config';
 	import { apiConfig } from '$lib/api/config';
 	import { copyToClipboard } from '$lib/utils/misc';
 	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
@@ -77,7 +77,7 @@
 	<div class="alert alert-soft alert-info">
 		<InfoEmpty class="size-4" />
 		<span class="text-sm"
-			>Esta página se genera automáticamente desde <code>src/lib/api/endpoints-metadata.ts</code
+			>Esta página se genera automáticamente desde <code>src/lib/api/endpoints.config.ts</code
 			></span
 		>
 	</div>
@@ -183,8 +183,8 @@
 		<h3 class="text-md card-title text-success">✨ Actualización Automática</h3>
 		<p class="text-sm text-neutral-content">
 			Para añadir un nuevo endpoint, simplemente agrégalo a
-			<code>src/lib/api/endpoints-metadata.ts</code> siguiendo la estructura existente. Esta página se
-			actualizará automáticamente sin necesidad de modificar ningún otro archivo.
+			<code>src/lib/api/endpoints.config.ts</code> siguiendo la estructura existente. Esta página se actualizará
+			automáticamente sin necesidad de modificar ningún otro archivo.
 		</p>
 		<div class="mt-4 rounded rounded-md bg-base-200 p-4 text-xs">
 			<pre><code
