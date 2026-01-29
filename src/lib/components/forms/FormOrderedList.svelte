@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
-	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel } from 'svelte-iconoir';
+	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel, Menu } from 'svelte-iconoir';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
@@ -16,7 +16,7 @@
 	 * @param wrapperClass - (Opcional) Clases CSS del contenedor
 	 * @param emptyMessage - (Opcional) Mensaje cuando no hay items
 	 *
-	 * @example
+	 * @example Uso básico (con flechas de ordenación)
 	 * ```svelte
 	 * <FormOrderedList
 	 *   id="attractions"
@@ -24,6 +24,17 @@
 	 *   bind:items={$form.attractions}
 	 *   availableItems={data.availableAttractions}
 	 *   error={$errors.attractions?._errors}
+	 * />
+	 * ```
+	 *
+	 * @example Con drag and drop
+	 * ```svelte
+	 * <FormOrderedList
+	 *   id="attractions"
+	 *   label="Attractions"
+	 *   bind:items={$form.attractions}
+	 *   availableItems={data.availableAttractions}
+	 *   config={{ useDragAndDrop: true }}
 	 * />
 	 * ```
 	 */
@@ -38,6 +49,10 @@
 		name: string;
 	}
 
+	interface FormOrderedListConfig {
+		useDragAndDrop: boolean;
+	}
+
 	interface Props {
 		id: string;
 		label: string;
@@ -48,7 +63,12 @@
 		placeholder?: string;
 		wrapperClass?: string;
 		emptyMessage?: string;
+		config?: Partial<FormOrderedListConfig>;
 	}
+
+	const DEFAULT_CONFIG: FormOrderedListConfig = {
+		useDragAndDrop: false
+	};
 
 	let {
 		id,
@@ -59,11 +79,16 @@
 		badge,
 		placeholder = 'Selecciona un elemento...',
 		wrapperClass = 'md:col-span-12',
-		emptyMessage = 'No hay elementos asociados'
+		emptyMessage = 'No hay elementos asociados',
+		config = {}
 	}: Props = $props();
+
+	// Merge de configuración con defaults
+	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
 
 	let selectedItemId = $state<string>('');
 	let selectedItemIds = $state<Set<string>>(new Set());
+	let draggedIndex = $state<number | null>(null);
 
 	const itemsForCombobox = $derived(
 		availableItems
@@ -129,6 +154,36 @@
 		items = items.filter((item) => item.id !== itemId);
 	}
 
+	// Drag and drop functions
+	function handleDragStart(event: DragEvent, index: number) {
+		draggedIndex = index;
+		if (event.dataTransfer) {
+			event.dataTransfer.effectAllowed = 'move';
+		}
+	}
+
+	function handleDragOver(event: DragEvent) {
+		event.preventDefault();
+		if (event.dataTransfer) {
+			event.dataTransfer.dropEffect = 'move';
+		}
+	}
+
+	function handleDrop(event: DragEvent, dropIndex: number) {
+		event.preventDefault();
+		if (draggedIndex === null || draggedIndex === dropIndex) return;
+
+		const newItems = [...items];
+		const [draggedItem] = newItems.splice(draggedIndex, 1);
+		newItems.splice(dropIndex, 0, draggedItem);
+		items = newItems;
+		draggedIndex = null;
+	}
+
+	function handleDragEnd() {
+		draggedIndex = null;
+	}
+
 	// function handleDeleteSelected() {
 	// 	items = items.filter((item) => !selectedItemIds.has(item.id));
 	// 	selectedItemIds = new Set();
@@ -158,63 +213,77 @@
 				<table class="table table-sm">
 					<thead>
 						<tr>
-							<th class="w-0 text-center">Ordenar</th>
+							<th class="w-0 text-center">
+								{#if !cfg.useDragAndDrop}
+									Ordenar
+								{/if}
+							</th>
 							<th>Elemento</th>
 							<th class="w-0"></th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each items as item, index}
-							<tr>
+							<tr
+								class:opacity-50={draggedIndex === index}
+								ondragover={cfg.useDragAndDrop ? handleDragOver : undefined}
+								ondrop={cfg.useDragAndDrop ? (e) => handleDrop(e, index) : undefined}
+							>
 								<td class="px-0">
-									<!-- <input
-										type="checkbox"
-										class="checkbox checkbox-sm"
-										checked={selectedItemIds.has(item.id)}
-										onchange={() => toggleItemSelection(item.id)}
-									/> -->
-									<div class="inline-flex gap-1">
-										<div class="tooltip" data-tip="Mover al inicio">
-											<button
-												type="button"
-												class="btn btn-square btn-ghost btn-xs"
-												onclick={() => moveItemToTop(index)}
-												disabled={index === 0}
-											>
-												<Upload size={16} />
-											</button>
+									{#if cfg.useDragAndDrop}
+										<!-- svelte-ignore a11y_no_static_element_interactions -->
+										<div
+											class="cursor-move text-base-content/50 hover:text-base-content"
+											draggable="true"
+											ondragstart={(e) => handleDragStart(e, index)}
+											ondragend={handleDragEnd}
+										>
+											<Menu class="size-5" />
 										</div>
-										<div class="tooltip" data-tip="Mover al inicio">
-											<button
-												type="button"
-												class="btn btn-square btn-ghost btn-xs"
-												onclick={() => moveItemUp(index)}
-												disabled={index === 0}
-											>
-												<NavArrowUp size={16} />
-											</button>
+									{:else}
+										<div class="inline-flex gap-1">
+											<div class="tooltip" data-tip="Mover al inicio">
+												<button
+													type="button"
+													class="btn btn-square btn-ghost btn-xs"
+													onclick={() => moveItemToTop(index)}
+													disabled={index === 0}
+												>
+													<Upload size={16} />
+												</button>
+											</div>
+											<div class="tooltip" data-tip="Mover al inicio">
+												<button
+													type="button"
+													class="btn btn-square btn-ghost btn-xs"
+													onclick={() => moveItemUp(index)}
+													disabled={index === 0}
+												>
+													<NavArrowUp size={16} />
+												</button>
+											</div>
+											<div class="tooltip" data-tip="Mover abajo">
+												<button
+													type="button"
+													class="btn btn-square btn-ghost btn-xs"
+													onclick={() => moveItemDown(index)}
+													disabled={index === items.length - 1}
+												>
+													<NavArrowDown size={16} />
+												</button>
+											</div>
+											<div class="tooltip" data-tip="Mover al final">
+												<button
+													type="button"
+													class="btn btn-square btn-ghost btn-xs"
+													onclick={() => moveItemToBottom(index)}
+													disabled={index === items.length - 1}
+												>
+													<Download size={16} />
+												</button>
+											</div>
 										</div>
-										<div class="tooltip" data-tip="Mover abajo">
-											<button
-												type="button"
-												class="btn btn-square btn-ghost btn-xs"
-												onclick={() => moveItemDown(index)}
-												disabled={index === items.length - 1}
-											>
-												<NavArrowDown size={16} />
-											</button>
-										</div>
-										<div class="tooltip" data-tip="Mover al final">
-											<button
-												type="button"
-												class="btn btn-square btn-ghost btn-xs"
-												onclick={() => moveItemToBottom(index)}
-												disabled={index === items.length - 1}
-											>
-												<Download size={16} />
-											</button>
-										</div>
-									</div>
+									{/if}
 								</td>
 								<td>
 									<span class="text-sm">{item.name}</span>

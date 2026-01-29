@@ -127,9 +127,10 @@
 			label="Destinos"
 			bind:items={$form.destinations}
 			availableItems={data.availableDestinations}
-			error={$errors.destinations?._errors}
 			placeholder="Selecciona un destino..."
 			emptyMessage="No hay destinos asociados"
+			config={{ useDragAndDrop: true }}
+			error={$errors.destinations?._errors}
 		/>
 
 		<FormOrderedList
