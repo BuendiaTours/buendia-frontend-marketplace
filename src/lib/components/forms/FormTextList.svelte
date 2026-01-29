@@ -1,7 +1,8 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { Menu, Cancel, Plus } from 'svelte-iconoir';
-	import { confirmAction } from '$lib/actions/confirmAction';
+	import { onConfirm } from '$lib/actions/confirmAction';
+	import { tick } from 'svelte';
 
 	/**
 	 * Componente reutilizable para gestión de listas de texto ordenables con drag & drop
@@ -49,17 +50,32 @@
 	}: Props = $props();
 
 	let draggedIndex = $state<number | null>(null);
+	let textareaRefs: HTMLTextAreaElement[] = [];
 
-	function addItem() {
+	async function addItem() {
 		items = [...items, ''];
+		await tick();
+		const lastIndex = items.length - 1;
+		if (textareaRefs[lastIndex]) {
+			textareaRefs[lastIndex].focus();
+		}
 	}
 
 	function removeItem(index: number) {
 		items = items.filter((_, i) => i !== index);
 	}
 
-	function removeAllItems() {
-		items = [];
+	async function handleRemoveAll(e: MouseEvent) {
+		const confirmed = await onConfirm(e, {
+			title: 'Eliminar todos',
+			message: '¿Seguro que quieres eliminar todos los elementos de la lista?',
+			confirmText: 'Eliminar todos',
+			cancelText: 'Cancelar',
+			danger: true
+		});
+		if (confirmed) {
+			items = [];
+		}
 	}
 
 	function updateItem(index: number, value: string) {
@@ -111,27 +127,31 @@
 			{#if items.length > 0}
 				{#each items as item, index (index)}
 					<div
-						class="flex items-center gap-2 rounded-lg border border-base-content/10 bg-base-100 p-2 transition-colors"
+						class="flex items-center gap-2 rounded-lg border border-base-content/10 bg-base-100 px-2 py-1 transition-colors"
 						class:opacity-50={draggedIndex === index}
 						role="listitem"
-						draggable="true"
-						ondragstart={(e) => handleDragStart(e, index)}
 						ondragover={handleDragOver}
 						ondrop={(e) => handleDrop(e, index)}
-						ondragend={handleDragEnd}
 					>
 						<!-- Drag handle -->
-						<div class="cursor-move text-base-content/50 hover:text-base-content">
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<div
+							class="cursor-move text-base-content/50 hover:text-base-content"
+							draggable="true"
+							ondragstart={(e) => handleDragStart(e, index)}
+							ondragend={handleDragEnd}
+						>
 							<Menu class="size-5" />
 						</div>
 
 						<!-- Textarea auto-expandible -->
 						<textarea
+							bind:this={textareaRefs[index]}
 							name={`${id}[]`}
 							value={item}
 							oninput={(e) => updateItem(index, e.currentTarget.value)}
 							{placeholder}
-							class="textarea field-sizing-content min-h-[2.0rem] flex-1 resize-none textarea-sm"
+							class="py-1.8 textarea field-sizing-content min-h-[2em] flex-1 resize-none px-2 textarea-sm leading-4"
 							rows="1"
 						></textarea>
 
@@ -156,18 +176,7 @@
 
 		<div class="mt-2 flex items-center gap-2">
 			{#if items.length > 0}
-				<button
-					type="button"
-					class="btn btn-soft btn-xs btn-error"
-					use:confirmAction={{
-						title: 'Eliminar todos',
-						message: '¿Seguro que quieres eliminar todos los elementos de la lista?',
-						confirmText: 'Eliminar todos',
-						cancelText: 'Cancelar',
-						danger: true
-					}}
-					onclick={removeAllItems}
-				>
+				<button type="button" class="btn btn-soft btn-xs btn-error" onclick={handleRemoveAll}>
 					Eliminar todos
 				</button>
 			{/if}
