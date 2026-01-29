@@ -5,7 +5,7 @@
  * Exporta tres funciones principales:
  *
  * 1. showConfirmDialog(options) - Para confirmaciones simples sin manejo de eventos
- * 2. confirmAndSubmit(e, options) - Para confirmaciones con submit automático de formularios
+ * 2. showConfirmDialogAndSubmit(e, options) - Para confirmaciones con submit automático de formularios
  * 3. confirmAction(node, options) - Svelte action para usar con use:confirmAction
  */
 
@@ -56,7 +56,7 @@ export async function showConfirmDialog(options?: ConfirmOptions): Promise<boole
  *
  * @example
  * async function handleDelete(e: MouseEvent) {
- *   const confirmed = await confirmAndSubmit(e, {
+ *   const confirmed = await showConfirmDialogAndSubmit(e, {
  *     title: 'Eliminar',
  *     danger: true
  *   });
@@ -65,7 +65,10 @@ export async function showConfirmDialog(options?: ConfirmOptions): Promise<boole
  *   }
  * }
  */
-export async function confirmAndSubmit(e: MouseEvent, options?: ConfirmOptions): Promise<boolean> {
+export async function showConfirmDialogAndSubmit(
+	e: MouseEvent,
+	options?: ConfirmOptions
+): Promise<boolean> {
 	e.preventDefault();
 	e.stopPropagation();
 
@@ -109,7 +112,7 @@ export async function confirmAndSubmit(e: MouseEvent, options?: ConfirmOptions):
 
 export function confirmAction(node: HTMLElement, options?: ConfirmOptions) {
 	async function handleClick(e: MouseEvent) {
-		await confirmAndSubmit(e, options);
+		await showConfirmDialogAndSubmit(e, options);
 	}
 
 	node.addEventListener('click', handleClick);
