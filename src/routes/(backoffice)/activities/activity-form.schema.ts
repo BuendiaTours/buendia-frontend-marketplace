@@ -41,6 +41,8 @@ export const activityFormSchema = z.object({
 			})
 		)
 		.default([]),
+	excluded: z.array(z.string()).default([]),
+	included: z.array(z.string()).default([]),
 	status: z.enum(
 		['APPROVED', 'DELETED', 'DRAFT', 'PENDING_REVIEW', 'PUBLISHED', 'REJECTED', 'UNPUBLISHED'],
 		{

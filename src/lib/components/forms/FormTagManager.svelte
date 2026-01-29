@@ -107,7 +107,7 @@
 					<TagComponent
 						name="{id}[{i}][id]"
 						value={tag.id}
-						class="badge-primary"
+						class="badge-accent"
 						removable
 						onremove={() => removeTag(i)}
 					>

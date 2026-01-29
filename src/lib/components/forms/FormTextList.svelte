@@ -40,7 +40,7 @@
 	let {
 		id,
 		label,
-		items = $bindable(),
+		items = $bindable([]),
 		error,
 		badge,
 		placeholder = 'Escribe aquí...',
@@ -107,8 +107,8 @@
 	</div>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
-		{#if items.length > 0}
-			<div class="space-y-2">
+		<div class="space-y-1">
+			{#if items.length > 0}
 				{#each items as item, index (index)}
 					<div
 						class="flex items-center gap-2 rounded-lg border border-base-content/10 bg-base-100 p-2 transition-colors"
@@ -122,7 +122,7 @@
 					>
 						<!-- Drag handle -->
 						<div class="cursor-move text-base-content/50 hover:text-base-content">
-							<Menu width="20" height="20" />
+							<Menu class="size-5" />
 						</div>
 
 						<!-- Textarea auto-expandible -->
@@ -131,9 +131,8 @@
 							value={item}
 							oninput={(e) => updateItem(index, e.currentTarget.value)}
 							{placeholder}
-							class="textarea min-h-[2.5rem] flex-1 resize-none textarea-sm leading-tight"
+							class="textarea field-sizing-content min-h-[2.0rem] flex-1 resize-none textarea-sm"
 							rows="1"
-							style="field-sizing: content; max-height: 200px;"
 						></textarea>
 
 						<!-- Delete button -->
@@ -148,17 +147,18 @@
 						</div>
 					</div>
 				{/each}
-			</div>
+			{:else}
+				<div class="py-4 text-center">
+					<span class="text-sm text-base-content/30">{emptyMessage}</span>
+				</div>
+			{/if}
+		</div>
 
-			<div class="mt-4 flex items-center justify-between gap-2">
-				<button type="button" class="btn btn-soft btn-sm" onclick={addItem}>
-					<Plus width="16" height="16" />
-					Añadir elemento
-				</button>
-
+		<div class="mt-2 flex items-center gap-2">
+			{#if items.length > 0}
 				<button
 					type="button"
-					class="btn btn-soft btn-sm btn-error"
+					class="btn btn-soft btn-xs btn-error"
 					use:confirmAction={{
 						title: 'Eliminar todos',
 						message: '¿Seguro que quieres eliminar todos los elementos de la lista?',
@@ -170,18 +170,13 @@
 				>
 					Eliminar todos
 				</button>
-			</div>
-		{:else}
-			<div class="py-8 text-center">
-				<span class="text-sm text-base-content/30">{emptyMessage}</span>
-			</div>
+			{/if}
 
-			<button type="button" class="btn mt-4 btn-soft btn-sm" onclick={addItem}>
-				<Plus width="16" height="16" />
+			<button type="button" class="btn ml-auto btn-soft btn-xs" onclick={addItem}>
+				<Plus class="size-4" />
 				Añadir elemento
 			</button>
-		{/if}
-
-		<FormErrorMsg {error} />
+		</div>
 	</div>
+	<FormErrorMsg {error} />
 </div>

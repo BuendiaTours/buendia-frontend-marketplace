@@ -14,6 +14,7 @@
 	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+	import FormTextList from '$lib/components/forms/FormTextList.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity, availableTags, availableCategories, availableAttractions, availableStatuses } =
@@ -145,6 +146,24 @@
 			bind:value={$form.infoImportant}
 			error={$errors.infoImportant}
 			rows={3}
+		/>
+
+		<FormTextList
+			id="included"
+			label="Elementos incluidos"
+			bind:items={$form.included}
+			error={$errors.included?._errors}
+			placeholder="Escribe un elemento incluido..."
+			badge="opcional"
+		/>
+
+		<FormTextList
+			id="excluded"
+			label="Elementos excluidos"
+			bind:items={$form.excluded}
+			error={$errors.excluded?._errors}
+			placeholder="Escribe un elemento a excluir..."
+			badge="opcional"
 		/>
 
 		<div class="md:col-span-6">

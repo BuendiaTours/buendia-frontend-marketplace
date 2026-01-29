@@ -34,7 +34,11 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
 				slug: apiData.slug || '',
 				tags: apiData.tags || [],
-				title: apiData.title || ''
+				title: apiData.title || '',
+				excluded: apiData.excluded || [],
+				included: apiData.included || [],
+				status: apiData.status || 'DRAFT',
+				phoneContact: apiData.phoneContact || ''
 			},
 			zod(activityFormSchema)
 		);
@@ -76,7 +80,17 @@ export const actions: Actions = {
 				descriptionShort: form.data.descriptionShort,
 				descriptionFull: form.data.descriptionFull,
 				tags: form.data.tags,
-				categories: form.data.categories
+				categories: form.data.categories,
+				excluded: form.data.excluded,
+				included: form.data.included,
+				status: form.data.status,
+				phoneContact: form.data.phoneContact,
+				infoImportant: form.data.infoImportant,
+				location: form.data.location,
+				priceFrom: form.data.priceFrom,
+				currency: form.data.currency,
+				isFreeTour: form.data.isFreeTour,
+				attractions: form.data.attractions
 			} as any);
 
 			throw redirect(303, `/activities/${params.slug}`);
