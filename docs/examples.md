@@ -58,7 +58,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="container mx-auto">
+<div class="backoffice-container">
 	<h1 class="mb-4 text-2xl font-bold">Actividades</h1>
 
 	<div class="overflow-x-auto">

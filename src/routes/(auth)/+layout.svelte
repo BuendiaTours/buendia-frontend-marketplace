@@ -3,7 +3,7 @@
 </script>
 
 <div class="min-h-screen">
-	<main class="container mx-auto px-4">
+	<main class="backoffice-container px-4">
 		{@render children()}
 	</main>
 </div>

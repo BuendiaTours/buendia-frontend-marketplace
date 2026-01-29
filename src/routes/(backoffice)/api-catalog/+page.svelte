@@ -63,7 +63,7 @@
 	});
 </script>
 
-<div class="container mx-auto flex flex-col gap-y-4">
+<div class="backoffice-container flex flex-col gap-y-4">
 	<h1 class="text-lg">API Endpoints Catalog</h1>
 	<p class="mt-4 text-neutral-content">
 		Catálogo dinámico de endpoints - Se actualiza automáticamente al añadir nuevos endpoints

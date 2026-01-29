@@ -22,7 +22,7 @@
 <div class="flex min-h-screen flex-col">
 	<Header title="Backoffice App" />
 
-	<main class="container mx-auto flex-1 p-4">
+	<main class="backoffice-container flex-1 p-4">
 		<LayoutAlertBox />
 		{@render children()}
 	</main>

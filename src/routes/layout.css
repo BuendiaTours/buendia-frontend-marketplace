@@ -43,6 +43,15 @@
 	--font-mono:
 		'Iosevka', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
 		'DejaVu Sans Mono', monospace;
+	--breakpoint-main: 1360px;
+}
+
+/* Creas tu clase personalizada */
+.backoffice-container {
+	width: 100%;
+	max-width: var(--breakpoint-main);
+	margin-inline: auto;
+	padding-inline: 1.5rem;
 }
 
 @utility checkbox {
@@ -193,7 +202,6 @@ html[data-theme='dark'] {
 	.bytemd.bytemd-split.bytemd-fullscreen {
 		z-index: 99;
 	}
-
 }
 
 .dropdown-content {
