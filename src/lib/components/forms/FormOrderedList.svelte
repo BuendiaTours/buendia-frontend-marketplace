@@ -158,9 +158,9 @@
 				<table class="table table-sm">
 					<thead>
 						<tr>
-							<th class="w-0"></th>
-							<th>Elemento</th>
 							<th class="w-0 text-center">Ordenar</th>
+							<th>Elemento</th>
+							<th class="w-0"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -173,21 +173,6 @@
 										checked={selectedItemIds.has(item.id)}
 										onchange={() => toggleItemSelection(item.id)}
 									/> -->
-									<div class="tooltip" data-tip="Eliminar este elemento">
-										<button
-											type="button"
-											class="btn btn-square btn-soft btn-xs btn-error"
-											onclick={() => removeItem(item.id)}
-										>
-											<Cancel size={16} />
-										</button>
-									</div>
-								</td>
-								<td>
-									<span class="text-sm">{item.name}</span>
-									<input type="hidden" name={`${id}[]`} value={item.id} />
-								</td>
-								<td class="pr-0 text-right">
 									<div class="inline-flex gap-1">
 										<div class="tooltip" data-tip="Mover al inicio">
 											<button
@@ -229,6 +214,21 @@
 												<Download size={16} />
 											</button>
 										</div>
+									</div>
+								</td>
+								<td>
+									<span class="text-sm">{item.name}</span>
+									<input type="hidden" name={`${id}[]`} value={item.id} />
+								</td>
+								<td class="pr-0 text-right">
+									<div class="tooltip" data-tip="Eliminar este elemento">
+										<button
+											type="button"
+											class="btn btn-square btn-soft btn-xs btn-error"
+											onclick={() => removeItem(item.id)}
+										>
+											<Cancel size={16} />
+										</button>
 									</div>
 								</td>
 							</tr>
