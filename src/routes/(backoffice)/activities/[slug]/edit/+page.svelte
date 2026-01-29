@@ -17,8 +17,14 @@
 	import FormTextList from '$lib/components/forms/FormTextList.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity, availableTags, availableCategories, availableAttractions, availableStatuses } =
-		data;
+	const {
+		activity,
+		availableTags,
+		availableCategories,
+		availableAttractions,
+		availableDistributives,
+		availableStatuses
+	} = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -124,6 +130,16 @@
 			emptyMessage="No hay destinos asociados"
 		/>
 
+		<FormOrderedList
+			id="distributives"
+			label="Páginas distributivas a las que pertenece"
+			bind:items={$form.distributives}
+			availableItems={availableDistributives}
+			error={$errors.distributives?._errors}
+			placeholder="Selecciona un distributiva..."
+			emptyMessage="No hay distributivas asociadas"
+		/>
+
 		<FormCheckboxGroup
 			main_label="Categorías"
 			id="categories"
@@ -164,6 +180,15 @@
 			bind:items={$form.included}
 			error={$errors.included?._errors}
 			placeholder="Escribe un elemento incluido..."
+			badge="opcional"
+		/>
+
+		<FormTextList
+			id="itemsToBring"
+			label="Elementos necesarios para la actividad"
+			bind:items={$form.itemsToBring}
+			error={$errors.itemsToBring?._errors}
+			placeholder="Escribe un elemento necsario..."
 			badge="opcional"
 		/>
 

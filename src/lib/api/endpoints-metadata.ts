@@ -5,6 +5,7 @@ export const BASE_PATHS = {
 	tags: '/tags',
 	attractions: '/attractions',
 	destinations: '/destinations',
+	distributives: '/distributives',
 	users: '/users',
 	auth: '/auth'
 } as const;
@@ -183,6 +184,23 @@ export const API_ENDPOINTS = {
 			path: (id: string) => `${BASE_PATHS.tags}/${id}`,
 			method: 'GET',
 			description: 'Obtiene detalles de una etiqueta específica',
+			params: ['id']
+		}
+	},
+	distributives: {
+		groupName: 'Distributives',
+		groupDescription: 'Gestión de distributivos',
+		// Endpoints
+		list: {
+			path: () => BASE_PATHS.distributives,
+			method: 'GET',
+			description: 'Obtiene listado de distributivos',
+			params: []
+		},
+		detail: {
+			path: (id: string) => `${BASE_PATHS.distributives}/${id}`,
+			method: 'GET',
+			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
 		}
 	},

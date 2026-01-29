@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			categoriesResponse,
 			attractionsResponse,
 			destinationsResponse,
+			distributivesResponse,
 			statusResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
@@ -20,6 +21,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			api.categories.getAll(fetch),
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),
+			api.distributives.getAll(fetch),
 			api.activities.getStatuses(fetch)
 		]);
 
@@ -45,6 +47,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				excluded: apiData.excluded || [],
 				included: apiData.included || [],
 				destinations: apiData.destinations || [],
+				distributives: apiData.distributives || [],
 				status: apiData.status || 'DRAFT',
 				phoneContact: apiData.phoneContact || ''
 			},
@@ -58,6 +61,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			availableCategories: categoriesResponse,
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
+			availableDistributives: distributivesResponse || [],
 			availableStatuses: statusResponse || []
 		};
 	} catch (err) {
@@ -93,6 +97,7 @@ export const actions: Actions = {
 				excluded: form.data.excluded,
 				included: form.data.included,
 				destinations: form.data.destinations,
+				distributives: form.data.distributives,
 				status: form.data.status,
 				phoneContact: form.data.phoneContact,
 				infoImportant: form.data.infoImportant,
