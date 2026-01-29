@@ -2,6 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
 	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel, Menu } from 'svelte-iconoir';
+	import { showConfirmDialog } from '$lib/actions/confirmAction';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
@@ -37,6 +38,17 @@
 	 *   config={{ useDragAndDrop: true }}
 	 * />
 	 * ```
+	 *
+	 * @example Con botón de eliminar todos
+	 * ```svelte
+	 * <FormOrderedList
+	 *   id="attractions"
+	 *   label="Attractions"
+	 *   bind:items={$form.attractions}
+	 *   availableItems={data.availableAttractions}
+	 *   config={{ showRemoveAll: true }}
+	 * />
+	 * ```
 	 */
 
 	interface Item {
@@ -51,6 +63,7 @@
 
 	interface FormOrderedListConfig {
 		useDragAndDrop: boolean;
+		showRemoveAll: boolean;
 	}
 
 	interface Props {
@@ -67,7 +80,8 @@
 	}
 
 	const DEFAULT_CONFIG: FormOrderedListConfig = {
-		useDragAndDrop: false
+		useDragAndDrop: false,
+		showRemoveAll: false
 	};
 
 	let {
@@ -184,6 +198,19 @@
 		draggedIndex = null;
 	}
 
+	async function handleRemoveAll() {
+		const confirmed = await showConfirmDialog({
+			title: 'Eliminar todos',
+			message: '¿Seguro que quieres eliminar todos los elementos de la lista?',
+			confirmText: 'Eliminar todos',
+			cancelText: 'Cancelar',
+			danger: true
+		});
+		if (confirmed) {
+			items = [];
+		}
+	}
+
 	// function handleDeleteSelected() {
 	// 	items = items.filter((item) => !selectedItemIds.has(item.id));
 	// 	selectedItemIds = new Set();
@@ -211,7 +238,7 @@
 		{#if items.length > 0}
 			<div class="mt-2">
 				<table class="table table-sm">
-					<thead>
+					<!-- thead>
 						<tr>
 							<th class="w-0 text-center">
 								{#if !cfg.useDragAndDrop}
@@ -221,7 +248,7 @@
 							<th>Elemento</th>
 							<th class="w-0"></th>
 						</tr>
-					</thead>
+					</thead -->
 					<tbody>
 						{#each items as item, index}
 							<tr
@@ -229,7 +256,7 @@
 								ondragover={cfg.useDragAndDrop ? handleDragOver : undefined}
 								ondrop={cfg.useDragAndDrop ? (e) => handleDrop(e, index) : undefined}
 							>
-								<td class="px-0">
+								<td class="w-0 px-0">
 									{#if cfg.useDragAndDrop}
 										<!-- svelte-ignore a11y_no_static_element_interactions -->
 										<div
@@ -289,7 +316,7 @@
 									<span class="text-sm">{item.name}</span>
 									<input type="hidden" name={`${id}[]`} value={item.id} />
 								</td>
-								<td class="pr-0 text-right">
+								<td class="w-0 pr-0 text-right">
 									<div class="tooltip" data-tip="Eliminar este elemento">
 										<button
 											type="button"
@@ -304,23 +331,13 @@
 						{/each}
 					</tbody>
 				</table>
-				<!-- <div class="mt-2 flex justify-end">
-					<button
-						type="button"
-						class="btn btn-soft btn-xs btn-error"
-						disabled={!hasSelectedItems}
-						use:confirmAction={{
-							title: 'Eliminar elementos',
-							message: deleteConfirmMessage,
-							confirmText: 'Eliminar',
-							cancelText: 'Cancelar',
-							danger: true
-						}}
-						onclick={handleDeleteSelected}
-					>
-						Eliminar seleccionados {hasSelectedItems ? `(${selectedItemIds.size})` : ''}
-					</button>
-				</div> -->
+				{#if cfg.showRemoveAll}
+					<div class="mt-2 flex justify-end">
+						<button type="button" class="btn btn-soft btn-xs btn-error" onclick={handleRemoveAll}>
+							Eliminar todos
+						</button>
+					</div>
+				{/if}
 			</div>
 		{:else}
 			<div class="mt-3">

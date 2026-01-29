@@ -129,7 +129,7 @@
 			availableItems={data.availableDestinations}
 			placeholder="Selecciona un destino..."
 			emptyMessage="No hay destinos asociados"
-			config={{ useDragAndDrop: true }}
+			config={{ useDragAndDrop: true, showRemoveAll: true }}
 			error={$errors.destinations?._errors}
 		/>
 
