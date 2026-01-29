@@ -7,13 +7,26 @@
 	/**
 	 * Componente reutilizable para editar coordenadas GeoJSON con mapa de Google Maps
 	 *
-	 * @example
+	 * @example Uso básico
 	 * ```svelte
 	 * <FormGeoJson
 	 *   id="location"
 	 *   label="Ubicación"
 	 *   bind:value={$form.location}
 	 *   error={$errors.location}
+	 * />
+	 * ```
+	 *
+	 * @example Con configuración personalizada
+	 * ```svelte
+	 * <FormGeoJson
+	 *   id="location"
+	 *   label="Ubicación"
+	 *   bind:value={$form.location}
+	 *   config={{
+	 *     showSearchBox: true,
+	 *     defaultZoom: 15
+	 *   }}
 	 * />
 	 * ```
 	 */
@@ -23,6 +36,32 @@
 		coordinates: [number, number]; // [longitude, latitude]
 	}
 
+	/**
+	 * Configuración del componente FormGeoJson
+	 */
+	interface FormGeoJsonConfig {
+		showSearchBox: boolean;
+		showCoordinatesDisplay: boolean;
+		enableGeocoding: boolean;
+		defaultZoom: number;
+		mapTypeControl: boolean;
+		streetViewControl: boolean;
+		fullscreenControl: boolean;
+	}
+
+	/**
+	 * Valores por defecto de la configuración
+	 */
+	const DEFAULT_CONFIG: FormGeoJsonConfig = {
+		showSearchBox: false,
+		showCoordinatesDisplay: true,
+		enableGeocoding: true,
+		defaultZoom: 13,
+		mapTypeControl: true,
+		streetViewControl: false,
+		fullscreenControl: false
+	};
+
 	interface Props {
 		id: string;
 		label: string;
@@ -31,6 +70,7 @@
 		badge?: string;
 		wrapperClass?: string;
 		mapClass?: string;
+		config?: Partial<FormGeoJsonConfig>;
 	}
 
 	let {
@@ -40,8 +80,12 @@
 		error,
 		badge,
 		wrapperClass = 'md:col-span-12',
-		mapClass = 'h-[400px]'
+		mapClass = 'h-[400px]',
+		config = {}
 	}: Props = $props();
+
+	// Merge de configuración con defaults
+	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
 
 	let searchQuery = $state('');
 	let isSearching = $state(false);
@@ -71,10 +115,10 @@
 
 			map = new (window as any).google.maps.Map(mapContainer, {
 				center: initialPosition,
-				zoom: 13,
-				mapTypeControl: true,
-				streetViewControl: false,
-				fullscreenControl: false,
+				zoom: cfg.defaultZoom,
+				mapTypeControl: cfg.mapTypeControl,
+				streetViewControl: cfg.streetViewControl,
+				fullscreenControl: cfg.fullscreenControl,
 				mapId: `map-${id}`
 			});
 
@@ -293,43 +337,45 @@
 	</label>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
-		<div class="mb-4">
-			<div class="relative">
-				<input
-					type="text"
-					placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
-					class="input input-sm w-full pr-20"
-					bind:value={searchQuery}
-					onkeydown={handleSearchKeydown}
-					disabled={isSearching || !isMapLoaded}
-				/>
-				<button
-					type="button"
-					class="btn absolute top-0 right-0 btn-ghost btn-sm"
-					onclick={searchLocation}
-					disabled={isSearching || !isMapLoaded || !searchQuery.trim()}
-				>
-					{#if isSearching}
-						<span class="loading loading-xs loading-spinner"></span>
-					{:else}
-						<Search class="size-4" />
-					{/if}
-				</button>
-			</div>
+		{#if cfg.showSearchBox}
+			<div class="mb-4">
+				<div class="relative">
+					<input
+						type="text"
+						placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
+						class="input input-sm w-full pr-20"
+						bind:value={searchQuery}
+						onkeydown={handleSearchKeydown}
+						disabled={isSearching || !isMapLoaded || !cfg.enableGeocoding}
+					/>
+					<button
+						type="button"
+						class="btn absolute top-0 right-0 btn-ghost btn-sm"
+						onclick={searchLocation}
+						disabled={isSearching || !isMapLoaded || !searchQuery.trim() || !cfg.enableGeocoding}
+					>
+						{#if isSearching}
+							<span class="loading loading-xs loading-spinner"></span>
+						{:else}
+							<Search class="size-4" />
+						{/if}
+					</button>
+				</div>
 
-			<!-- Mensaje de advertencia -->
-			<div class="mt-2 flex items-center gap-2 text-xs text-warning">
-				<InfoEmpty class="size-4" />
-				<span
-					>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
-					información.</span
-				>
-			</div>
+				<!-- Mensaje de advertencia -->
+				<div class="mt-2 flex items-center gap-2 text-xs text-warning">
+					<InfoEmpty class="size-4" />
+					<span
+						>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
+						información.</span
+					>
+				</div>
 
-			{#if searchError}
-				<div class="mt-2 text-xs text-error">{searchError}</div>
-			{/if}
-		</div>
+				{#if searchError}
+					<div class="mt-2 text-xs text-error">{searchError}</div>
+				{/if}
+			</div>
+		{/if}
 
 		<!-- Grid responsive: stack en mobile, 8+4 cols en desktop -->
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-12">
@@ -362,40 +408,42 @@
 			</div>
 
 			<!-- Inputs de coordenadas -->
-			<div class="md:col-span-4">
-				<div class="grid grid-cols-2 gap-4 md:grid-cols-1">
-					<div>
-						<label class="label text-xs" for="{id}-longitude">
-							<span>Longitud</span>
-						</label>
-						<input
-							type="number"
-							id="{id}-longitude"
-							name="{id}.coordinates[0]"
-							class="input input-sm w-full"
-							class:input-error={error}
-							value={longitude}
-							step="0.000001"
-							oninput={handleLongitudeChange}
-						/>
-					</div>
-					<div>
-						<label class="label text-xs" for="{id}-latitude">
-							<span>Latitud</span>
-						</label>
-						<input
-							type="number"
-							id="{id}-latitude"
-							name="{id}.coordinates[1]"
-							class="input input-sm w-full"
-							class:input-error={error}
-							value={latitude}
-							step="0.000001"
-							oninput={handleLatitudeChange}
-						/>
+			{#if cfg.showCoordinatesDisplay}
+				<div class="md:col-span-4">
+					<div class="grid grid-cols-2 gap-4 md:grid-cols-1">
+						<div>
+							<label class="label text-xs" for="{id}-longitude">
+								<span>Longitud</span>
+							</label>
+							<input
+								type="number"
+								id="{id}-longitude"
+								name="{id}.coordinates[0]"
+								class="input input-sm w-full"
+								class:input-error={error}
+								value={longitude}
+								step="0.000001"
+								oninput={handleLongitudeChange}
+							/>
+						</div>
+						<div>
+							<label class="label text-xs" for="{id}-latitude">
+								<span>Latitud</span>
+							</label>
+							<input
+								type="number"
+								id="{id}-latitude"
+								name="{id}.coordinates[1]"
+								class="input input-sm w-full"
+								class:input-error={error}
+								value={latitude}
+								step="0.000001"
+								oninput={handleLatitudeChange}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<!-- Hidden input para el tipo -->

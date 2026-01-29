@@ -13,6 +13,7 @@
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
+	import FormTextList from '$lib/components/forms/FormTextList.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -171,8 +172,20 @@
 		id="location"
 		label="Ubicación"
 		bind:value={$form.location}
-		error={$errors.location?._errors}
 		mapClass="h-[200px]"
+		config={{
+			showSearchBox: true
+		}}
+		error={$errors.location?._errors}
+	/>
+
+	<FormTextList
+		id="excluded"
+		label="Elementos excluidos"
+		bind:items={$form.excluded}
+		error={$errors.excluded?._errors}
+		placeholder="Escribe un elemento a excluir..."
+		badge="opcional"
 	/>
 
 	<div class="flex justify-between">
