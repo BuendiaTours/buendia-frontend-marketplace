@@ -48,10 +48,7 @@ Props disponibles:
 	});
 </script>
 
-<div
-	use:melt={$calendar}
-	class="melt-calendar-container flex flex-col rounded-md border border-base-300 bg-base-100 {className}"
->
+<div use:melt={$calendar} class="melt-calendar-container rounded-md {className}">
 	<header class="flex items-center justify-between">
 		<button
 			use:melt={$prevButton}
