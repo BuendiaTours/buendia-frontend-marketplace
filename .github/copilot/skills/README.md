@@ -33,6 +33,9 @@ add-form-field
 
 # Con argumentos
 add-form-field booking-form guestCount number
+
+# De forma verbose
+Ejecuta el skill add-form-field de forma interactiva
 ```
 
 ---

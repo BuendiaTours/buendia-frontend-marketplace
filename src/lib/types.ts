@@ -4,35 +4,35 @@ export type ActivityListItem = {
 	id: string;
 	title: string;
 	slug: string;
-	codeRef: string;
-	descriptionShort: string;
-	descriptionFull: string;
-	infoImportant: string | null;
-	kind: string;
-	status: string;
-	phoneContact: string | null;
-	guideKind: string;
-	transportKind: string;
-	transportLocation: string;
-	voucherInfo: string | null;
 	attractions: Array<{ id: string; name: string }>;
 	categories: Array<{ id: string; name: string }>;
+	codeRef: string;
+	descriptionFull: string;
+	descriptionShort: string;
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
-	tags: Array<{ id: string; name: string }>;
-	included: string[];
 	excluded: string[];
+	guideKind: string;
+	included: string[];
+	infoImportant: string | null;
 	itemsToBring: string[];
-	restrictions: string[];
-	notSuitableFor: string[];
-	willDoing: string[];
+	kind: string;
 	meals: string[];
-	stages: string[];
 	multimedias: string[];
+	notSuitableFor: string[];
 	petsAllowed: {
 		allowed: string;
 		description: string | null;
 	};
+	phoneContact: string | null;
+	restrictions: string[];
+	stages: string[];
+	status: string;
+	tags: Array<{ id: string; name: string }>;
+	transportKind: string;
+	transportLocation: string;
+	voucherInfo: string | null;
+	willDoing: string[];
 };
 
 export type Pagination = {
@@ -48,13 +48,13 @@ export type ActivityListResponse = {
 };
 
 export type ActivityDetail = ActivityListItem & {
-	description: string;
-	highlights: string[];
-	meetingPoint: string;
-	languages: string[];
-	includes: string[];
-	excludes: string[];
 	cancellationPolicy: string;
+	description: string;
+	excludes: string[];
+	highlights: string[];
+	includes: string[];
+	languages: string[];
+	meetingPoint: string;
 };
 
 export type Column<T> = {
