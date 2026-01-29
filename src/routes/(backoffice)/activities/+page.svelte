@@ -480,7 +480,6 @@
 											});
 										}
 									}}
-									allowNull={false}
 								/>
 							{:else}
 								<span>{col.title}</span>
