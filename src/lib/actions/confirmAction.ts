@@ -1,35 +1,12 @@
 // src/lib/actions/confirmAction.ts
 /**
- * Acción de Svelte para mostrar un diálogo de confirmación antes de ejecutar una acción
+ * Utilidades para mostrar diálogos de confirmación antes de ejecutar acciones
  *
- * Uso como Svelte Action (recomendado):
- * import { confirmAction } from '$lib/actions/confirmAction';
+ * Exporta tres funciones principales:
  *
- * <button use:confirmAction={{ title: 'Eliminar', danger: true }}>
- *   Eliminar
- * </button>
- *
- * <form action="/delete" method="post">
- *   <button use:confirmAction={{ title: 'Eliminar', message: '¿Seguro?' }}>
- *     Eliminar
- *   </button>
- * </form>
- *
- * Uso como función helper:
- * import { onConfirm } from '$lib/actions/confirmAction';
- *
- * async function handleDelete(e: MouseEvent) {
- *   const confirmed = await onConfirm(e, { title: 'Eliminar', danger: true });
- *   if (confirmed) {
- *     // hacer algo adicional
- *   }
- * }
- *
- * Características:
- * - Previene el comportamiento por defecto del evento
- * - Muestra un diálogo de confirmación personalizable
- * - Maneja automáticamente el submit de formularios o navegación de enlaces
- * - Funciona con botones y enlaces
+ * 1. showConfirmDialog(options) - Para confirmaciones simples sin manejo de eventos
+ * 2. confirmAndSubmit(e, options) - Para confirmaciones con submit automático de formularios
+ * 3. confirmAction(node, options) - Svelte action para usar con use:confirmAction
  */
 
 import { confirm } from '$lib/components/MeltAlertDialog';
@@ -42,7 +19,53 @@ export interface ConfirmOptions {
 	danger?: boolean;
 }
 
-export async function onConfirm(e: MouseEvent, options?: ConfirmOptions): Promise<boolean> {
+/**
+ * Muestra un diálogo de confirmación y retorna la elección del usuario
+ *
+ * Úsalo para confirmaciones simples antes de ejecutar lógica personalizada
+ * (ej: eliminar elementos, limpiar datos, ejecutar acciones)
+ *
+ * NO maneja automáticamente envíos de formularios ni navegación
+ *
+ * @example
+ * async function handleDeleteAll() {
+ *   const confirmed = await showConfirmDialog({
+ *     title: 'Eliminar todos',
+ *     danger: true
+ *   });
+ *   if (confirmed) {
+ *     items = [];
+ *   }
+ * }
+ */
+export async function showConfirmDialog(options?: ConfirmOptions): Promise<boolean> {
+	return await confirm({
+		title: options?.title || 'Confirmar',
+		message: options?.message || '¿Estás seguro?',
+		confirmText: options?.confirmText || 'Confirmar',
+		cancelText: options?.cancelText || 'Cancelar',
+		danger: options?.danger || false
+	});
+}
+
+/**
+ * Muestra un diálogo de confirmación y maneja automáticamente el submit de formularios o navegación
+ *
+ * Úsalo cuando necesites confirmación antes de enviar un formulario o seguir un enlace
+ * Automáticamente llama preventDefault/stopPropagation y ejecuta la acción si se confirma
+ *
+ * @example
+ * async function handleDelete(e: MouseEvent) {
+ *   const confirmed = await confirmAndSubmit(e, {
+ *     title: 'Eliminar',
+ *     danger: true
+ *   });
+ *   if (confirmed) {
+ *     // Acción adicional después del submit
+ *   }
+ * }
+ */
+export async function confirmAndSubmit(e: MouseEvent, options?: ConfirmOptions): Promise<boolean> {
 	e.preventDefault();
 	e.stopPropagation();
 
@@ -86,7 +109,7 @@ export async function onConfirm(e: MouseEvent, options?: ConfirmOptions): Promis
 
 export function confirmAction(node: HTMLElement, options?: ConfirmOptions) {
 	async function handleClick(e: MouseEvent) {
-		await onConfirm(e, options);
+		await confirmAndSubmit(e, options);
 	}
 
 	node.addEventListener('click', handleClick);

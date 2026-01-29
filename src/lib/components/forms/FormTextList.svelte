@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { Menu, Cancel, Plus } from 'svelte-iconoir';
-	import { onConfirm } from '$lib/actions/confirmAction';
+	import { showConfirmDialog } from '$lib/actions/confirmAction';
 	import { tick } from 'svelte';
 
 	/**
@@ -65,8 +65,8 @@
 		items = items.filter((_, i) => i !== index);
 	}
 
-	async function handleRemoveAll(e: MouseEvent) {
-		const confirmed = await onConfirm(e, {
+	async function handleRemoveAll() {
+		const confirmed = await showConfirmDialog({
 			title: 'Eliminar todos',
 			message: '¿Seguro que quieres eliminar todos los elementos de la lista?',
 			confirmText: 'Eliminar todos',
@@ -162,7 +162,7 @@
 								class="btn btn-square btn-soft btn-xs btn-error"
 								onclick={() => removeItem(index)}
 							>
-								<Cancel width="16" height="16" />
+								<Cancel class="size-4" />
 							</button>
 						</div>
 					</div>
