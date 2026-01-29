@@ -27,17 +27,10 @@
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
 	import FilterSelectRemote from '$lib/components/filters/FilterSelectRemote.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
+	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
 
 	// Icons
-	import {
-		ArrowSeparateVertical,
-		Cancel,
-		Check,
-		NavArrowDown,
-		NavArrowUp,
-		Plus,
-		Search
-	} from 'svelte-iconoir';
+	import { Cancel, Check, Plus, Search } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -139,16 +132,7 @@
 	// ============================================================================
 	// SORTING
 	// ============================================================================
-
-	function handleSort(field: string) {
-		const currentOrder = sort?.field === field ? sort.order : null;
-		const newOrder = currentOrder === 'asc' ? 'desc' : currentOrder === 'desc' ? null : 'asc';
-
-		applyFilterPatch({
-			sort: newOrder ? field : null,
-			order: newOrder
-		});
-	}
+	// Sort logic is now handled inside TableSortableHeader component
 
 	// ============================================================================
 	// TABLA Y PAGINACIÓN
@@ -162,10 +146,6 @@
 
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
-	}
-
-	function handlePageSizeChange(newPageSize: number) {
-		applyFilterPatch({ pageSize: newPageSize });
 	}
 
 	function handleResetSort() {
@@ -253,23 +233,13 @@
 				{#each columns as col}
 					<th>
 						{#if col.sortable}
-							<button
-								type="button"
-								class="btn cursor-pointer pr-2 btn-ghost btn-sm"
-								onclick={() => handleSort(col.key)}
-							>
-								<span class:text-success={sort?.field === col.key}>{col.title}</span>
-
-								{#if sort?.field === col.key}
-									{#if sort.order === 'desc'}
-										<NavArrowDown class="text-success" />
-									{:else}
-										<NavArrowUp class="text-success" />
-									{/if}
-								{:else}
-									<ArrowSeparateVertical class="text-base-content/30" />
-								{/if}
-							</button>
+							<TableSortableHeader
+								title={col.title}
+								field={col.key}
+								currentSort={sort}
+								onSortChange={(newSort) =>
+									applyFilterPatch({ sort: newSort.field, order: newSort.order })}
+							/>
 						{:else}
 							<span>{col.title}</span>
 						{/if}

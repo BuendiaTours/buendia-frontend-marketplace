@@ -190,7 +190,7 @@
 			label="Elementos necesarios para la actividad"
 			bind:items={$form.itemsToBring}
 			error={$errors.itemsToBring?._errors}
-			placeholder="Escribe un elemento necsario..."
+			placeholder="Escribe un elemento necesario..."
 			badge="opcional"
 		/>
 

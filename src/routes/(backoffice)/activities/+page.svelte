@@ -35,21 +35,13 @@
 	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
 	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
+	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
 	// Icons
-	import {
-		ArrowSeparateVertical,
-		Calendar,
-		Cancel,
-		Check,
-		Map,
-		NavArrowDown,
-		NavArrowUp,
-		Plus
-	} from 'svelte-iconoir';
+	import { Calendar, Cancel, Check, Map, Plus } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -324,21 +316,7 @@
 		applyFilterPatch({ page: newPage });
 	}
 
-	function handleSort(columnKey: keyof ActivityListItem) {
-		const currentSort = filters.sort;
-		const currentOrder = filters.order || 'asc';
-
-		if (currentSort === columnKey) {
-			applyFilterPatch({
-				order: currentOrder === 'asc' ? 'desc' : 'asc'
-			});
-		} else {
-			applyFilterPatch({
-				sort: columnKey as 'codeRef' | 'title' | 'status' | 'kind',
-				order: 'asc'
-			});
-		}
-	}
+	// Sort logic is now handled inside TableSortableHeader component
 
 	function handleResetSort() {
 		resetSort($page.url.pathname, $page.url.searchParams, goto);
@@ -490,23 +468,20 @@
 					{#each columns as col}
 						<th>
 							{#if col.sortable}
-								<button
-									type="button"
-									class="btn cursor-pointer pr-2 btn-ghost btn-sm"
-									onclick={() => handleSort(col.key)}
-								>
-									<span class:text-success={sort?.field === col.key}>{col.title}</span>
-
-									{#if sort?.field === col.key}
-										{#if sort.order === 'desc'}
-											<NavArrowDown class="text-success" />
-										{:else}
-											<NavArrowUp class="text-success" />
-										{/if}
-									{:else}
-										<ArrowSeparateVertical class="text-base-content/30" />
-									{/if}
-								</button>
+								<TableSortableHeader
+									title={col.title}
+									field={col.key}
+									currentSort={sort}
+									onSortChange={(newSort) => {
+										if (newSort.field && newSort.order) {
+											applyFilterPatch({
+												sort: newSort.field as 'codeRef' | 'title' | 'status' | 'kind',
+												order: newSort.order as 'asc' | 'desc'
+											});
+										}
+									}}
+									allowNull={false}
+								/>
 							{:else}
 								<span>{col.title}</span>
 							{/if}

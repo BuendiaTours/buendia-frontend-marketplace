@@ -46,7 +46,14 @@
 	--breakpoint-main: 1360px;
 }
 
-/* Creas tu clase personalizada */
+/* Sobrescribir variables de Tailwind */
+@layer base {
+	* {
+		--tw-ring-color: none !important;
+	}
+}
+
+/* Clase personalizada para contenedor del backoffice */
 .backoffice-container {
 	width: 100%;
 	max-width: var(--breakpoint-main);

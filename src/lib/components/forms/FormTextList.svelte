@@ -123,8 +123,8 @@
 	</div>
 
 	<div class="rounded-lg border border-base-content/10 p-4">
-		<div class="space-y-1">
-			{#if items.length > 0}
+		{#if items.length > 0}
+			<div class="mb-2 space-y-1">
 				{#each items as item, index (index)}
 					<div
 						class="flex items-center gap-2 rounded-lg border border-base-content/10 bg-base-100 px-2 py-1 transition-colors"
@@ -167,18 +167,16 @@
 						</div>
 					</div>
 				{/each}
-			{:else}
-				<div class="py-4 text-center">
-					<span class="text-sm text-base-content/30">{emptyMessage}</span>
-				</div>
-			{/if}
-		</div>
+			</div>
+		{/if}
 
-		<div class="mt-2 flex items-center gap-2">
+		<div class="flex items-center gap-2">
 			{#if items.length > 0}
 				<button type="button" class="btn btn-soft btn-xs btn-error" onclick={handleRemoveAll}>
 					Eliminar todos
 				</button>
+			{:else}
+				<span class="text-sm text-base-content/30">{emptyMessage}</span>
 			{/if}
 
 			<button type="button" class="btn ml-auto btn-soft btn-xs" onclick={addItem}>
