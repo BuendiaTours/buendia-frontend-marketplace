@@ -82,5 +82,25 @@ export const activitiesEndpoints = {
 		});
 
 		return response.data;
+	},
+
+	async getKinds(fetchFn: typeof fetch): Promise<Array<{ id: string; name: string }>> {
+		const path = API_ENDPOINTS.activities.kinds.path();
+
+		const response = await apiClient.request<Array<{ id: string; name: string }>>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
+	},
+
+	async getGuideKinds(fetchFn: typeof fetch): Promise<Array<{ id: string; name: string }>> {
+		const path = API_ENDPOINTS.activities.guideKinds.path();
+
+		const response = await apiClient.request<Array<{ id: string; name: string }>>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
 	}
 };

@@ -14,7 +14,9 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			attractionsResponse,
 			destinationsResponse,
 			distributivesResponse,
-			statusResponse
+			statusResponse,
+			kindsResponse,
+			guideKindsResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
 			fetch('http://localhost:3333/tags').then((res) => res.json()),
@@ -22,7 +24,9 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),
 			api.distributives.getAll(fetch),
-			api.activities.getStatuses(fetch)
+			api.activities.getStatuses(fetch),
+			api.activities.getKinds(fetch),
+			api.activities.getGuideKinds(fetch)
 		]);
 
 		const apiData = activity as any;
@@ -49,6 +53,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				destinations: apiData.destinations || [],
 				distributives: apiData.distributives || [],
 				status: apiData.status || 'DRAFT',
+				kind: apiData.kind || '',
+				guideKind: apiData.guideKind || '',
 				phoneContact: apiData.phoneContact || ''
 			},
 			zod(activityFormSchema)
@@ -62,7 +68,9 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
 			availableDistributives: distributivesResponse || [],
-			availableStatuses: statusResponse || []
+			availableStatuses: statusResponse || [],
+			availableKinds: kindsResponse || [],
+			availableGuideKinds: guideKindsResponse || []
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

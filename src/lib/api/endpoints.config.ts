@@ -64,6 +64,18 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene los estados disponibles para actividades',
 			params: []
+		},
+		kinds: {
+			path: () => '/activity-kind',
+			method: 'GET',
+			description: 'Obtiene los tipos para actividades (FREE_TOUR, PAID_TOUR...)',
+			params: []
+		},
+		guideKinds: {
+			path: () => '/activity-guide-kind',
+			method: 'GET',
+			description: 'Obtiene los tipos de guía para actividades',
+			params: []
 		}
 	},
 	attractions: {
