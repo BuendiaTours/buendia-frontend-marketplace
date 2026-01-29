@@ -114,6 +114,16 @@
 			emptyMessage="No hay atracciones asociadas"
 		/>
 
+		<FormOrderedList
+			id="destinations"
+			label="Destinos"
+			bind:items={$form.destinations}
+			availableItems={data.availableDestinations}
+			error={$errors.destinations?._errors}
+			placeholder="Selecciona un destino..."
+			emptyMessage="No hay destinos asociados"
+		/>
+
 		<FormCheckboxGroup
 			main_label="Categorías"
 			id="categories"

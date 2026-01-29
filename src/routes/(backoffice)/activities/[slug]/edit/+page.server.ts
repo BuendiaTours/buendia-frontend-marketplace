@@ -7,14 +7,21 @@ import { activityFormSchema } from '../../activity-form.schema';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const [activity, tagsResponse, categoriesResponse, attractionsResponse, statusResponse] =
-			await Promise.all([
-				api.activities.getBySlug(fetch, params.slug),
-				fetch('http://localhost:3333/tags').then((res) => res.json()),
-				api.categories.getAll(fetch),
-				api.attractions.getAll(fetch),
-				api.activities.getStatuses(fetch)
-			]);
+		const [
+			activity,
+			tagsResponse,
+			categoriesResponse,
+			attractionsResponse,
+			destinationsResponse,
+			statusResponse
+		] = await Promise.all([
+			api.activities.getBySlug(fetch, params.slug),
+			fetch('http://localhost:3333/tags').then((res) => res.json()),
+			api.categories.getAll(fetch),
+			api.attractions.getAll(fetch),
+			api.destinations.getAll(fetch),
+			api.activities.getStatuses(fetch)
+		]);
 
 		const apiData = activity as any;
 		const firstOption = apiData.options?.[0];
@@ -37,6 +44,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				title: apiData.title || '',
 				excluded: apiData.excluded || [],
 				included: apiData.included || [],
+				destinations: apiData.destinations || [],
 				status: apiData.status || 'DRAFT',
 				phoneContact: apiData.phoneContact || ''
 			},
@@ -49,6 +57,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			availableTags: tagsResponse,
 			availableCategories: categoriesResponse,
 			availableAttractions: attractionsResponse.data || [],
+			availableDestinations: destinationsResponse.data || [],
 			availableStatuses: statusResponse || []
 		};
 	} catch (err) {
@@ -83,6 +92,7 @@ export const actions: Actions = {
 				categories: form.data.categories,
 				excluded: form.data.excluded,
 				included: form.data.included,
+				destinations: form.data.destinations,
 				status: form.data.status,
 				phoneContact: form.data.phoneContact,
 				infoImportant: form.data.infoImportant,

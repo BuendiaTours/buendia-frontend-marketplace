@@ -5,18 +5,18 @@ import { z } from 'zod';
  * Usado tanto en creación como en edición
  */
 export const activityFormSchema = z.object({
+	id: z.string(),
+	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
+	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
 	codeRef: z.string(),
 	currency: z.enum(['EUR', 'USD', 'GBP']),
 	descriptionFull: z.string().min(3, 'El campo debe tener al menos 3 caracteres'),
 	descriptionShort: z.string().min(3, 'El campo debe tener al menos 3 caracteres'),
 	infoImportant: z.string(),
-	id: z.string(),
 	isFreeTour: z.boolean(),
 	phoneContact: z.string().optional(),
 	location: z.string().min(2, 'La ubicación debe tener al menos 2 caracteres'),
 	priceFrom: z.number().min(0, 'El precio debe ser mayor o igual a 0'),
-	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
-	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
 	tags: z
 		.array(
 			z.object({
@@ -34,6 +34,14 @@ export const activityFormSchema = z.object({
 		)
 		.default([]),
 	attractions: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
+		.default([]),
+	destinations: z
 		.array(
 			z.object({
 				id: z.string(),
