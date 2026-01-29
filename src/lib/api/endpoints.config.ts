@@ -59,6 +59,7 @@ export const API_ENDPOINTS = {
 			description: 'Elimina una actividad',
 			params: ['slug']
 		},
+		// Datos relacionados con la actividad
 		statuses: {
 			path: () => '/activity-status',
 			method: 'GET',

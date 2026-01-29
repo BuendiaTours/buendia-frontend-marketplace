@@ -23,7 +23,9 @@
 		availableCategories,
 		availableAttractions,
 		availableDistributives,
-		availableStatuses
+		availableStatuses,
+		availableKinds,
+		availableGuideKinds
 	} = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
@@ -201,51 +203,27 @@
 			badge="opcional"
 		/>
 
-		<div class="md:col-span-6">
-			<label class="label text-sm" for="location">Ubicación </label>
-			<input
-				type="text"
-				id="location"
-				name="location"
-				class="input w-full"
-				class:input-error={$errors.location}
-				bind:value={$form.location}
-			/>
-			{#if $errors.location}
-				<span class="text-sm text-error">{$errors.location}</span>
-			{/if}
-		</div>
-
-		<FormInputText
-			id="priceFrom"
-			label="Precio desde"
-			type="number"
-			bind:value={$form.priceFrom}
-			error={$errors.priceFrom}
-			min="0"
-			step="0.01"
-			wrapperClass="md:col-span-3"
+		<FormSelect
+			id="kind"
+			label="Tipo de actividad"
+			bind:value={$form.kind}
+			error={$errors.kind}
+			options={availableKinds}
+			placeholder="Selecciona un tipo"
+			wrapperClass="md:col-span-4"
 		/>
 
-		<div class="md:col-span-3">
-			<label class="label text-sm" for="currency">Moneda</label>
-			<select
-				id="currency"
-				name="currency"
-				class="select w-full"
-				class:select-error={$errors.currency}
-				bind:value={$form.currency}
-			>
-				<option value="EUR">EUR</option>
-				<option value="USD">USD</option>
-				<option value="GBP">GBP</option>
-			</select>
-			{#if $errors.currency}
-				<span class="text-sm text-error">{$errors.currency}</span>
-			{/if}
-		</div>
+		<FormSelect
+			id="guideKind"
+			label="Tipo de guía"
+			bind:value={$form.guideKind}
+			error={$errors.guideKind}
+			options={availableGuideKinds}
+			placeholder="Selecciona un tipo"
+			wrapperClass="md:col-span-4"
+		/>
 
-		<div class="md:col-span-3">
+		<div class="pt-o pt-7 md:col-span-3">
 			<label class="label w-full cursor-pointer text-sm">
 				<input type="checkbox" name="isFreeTour" class="checkbox" bind:checked={$form.isFreeTour} />
 				<span class="label-text">Es Free Tour</span>
