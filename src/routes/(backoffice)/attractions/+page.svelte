@@ -28,6 +28,7 @@
 	import FilterSelectRemote from '$lib/components/filters/FilterSelectRemote.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
+	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
 
 	// Icons
 	import { Cancel, Check, Plus, Search } from 'svelte-iconoir';
@@ -133,6 +134,7 @@
 	// SORTING
 	// ============================================================================
 	// Sort logic is now handled inside TableSortableHeader component
+	// Reset sort logic is now handled inside TableResetSort component
 
 	// ============================================================================
 	// TABLA Y PAGINACIÓN
@@ -146,10 +148,6 @@
 
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
-	}
-
-	function handleResetSort() {
-		resetSort($page.url.pathname, $page.url.searchParams, goto);
 	}
 
 	// ============================================================================
@@ -246,11 +244,7 @@
 					</th>
 				{/each}
 				<th class="w-0">
-					{#if sort}
-						<button class="btn btn-soft btn-sm btn-error" onclick={handleResetSort}
-							>Reset sort</button
-						>
-					{/if}
+					<TableResetSort currentSort={sort} />
 				</th>
 			</tr>
 		</thead>

@@ -36,6 +36,7 @@
 	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
+	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
@@ -317,10 +318,7 @@
 	}
 
 	// Sort logic is now handled inside TableSortableHeader component
-
-	function handleResetSort() {
-		resetSort($page.url.pathname, $page.url.searchParams, goto);
-	}
+	// Reset sort logic is now handled inside TableResetSort component
 </script>
 
 <svelte:head>
@@ -487,11 +485,7 @@
 						</th>
 					{/each}
 					<th class="w-0">
-						{#if sort}
-							<button class="btn btn-soft btn-sm btn-error" onclick={handleResetSort}
-								>Reset sort</button
-							>
-						{/if}
+						<TableResetSort currentSort={sort} />
 					</th>
 				</tr>
 			</thead>
