@@ -323,7 +323,7 @@
 											class="btn btn-square btn-soft btn-xs btn-error"
 											onclick={() => removeItem(item.id)}
 										>
-											<Cancel size={16} />
+											<Cancel class="size-4" />
 										</button>
 									</div>
 								</td>
