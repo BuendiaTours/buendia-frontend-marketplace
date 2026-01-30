@@ -49,7 +49,10 @@
 	<summary class="text-md collapse-title">
 		{@render title()}
 	</summary>
-	<div class="collapse-content grid grid-cols-1 gap-x-6 gap-y-4 pl-64 md:grid-cols-12">
-		{@render content()}
+	<div class="collapse-content grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+		<div class="md:col-span-2">Extra opcions here</div>
+		<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:col-span-8 md:col-span-10 md:grid-cols-12">
+			{@render content()}
+		</div>
 	</div>
 </details>
