@@ -156,7 +156,7 @@
 		<label class="label mt-4">Accordion sencillo de DaisyUI</label>
 		<div class="card block space-y-2 p-4">
 			<details
-				class="collapse border border-base-content/9 bg-base-100"
+				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
 				name="my-accordion-det-1"
 				open
 			>
@@ -165,7 +165,10 @@
 					Click the "Sign Up" button in the top right corner and follow the registration process.
 				</div>
 			</details>
-			<details class="collapse border border-base-content/9 bg-base-100" name="my-accordion-det-1">
+			<details
+				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+				name="my-accordion-det-1"
+			>
 				<summary class="collapse-title font-semibold"
 					>I forgot my password. What should I do?</summary
 				>
@@ -174,7 +177,10 @@
 					email.
 				</div>
 			</details>
-			<details class="collapse border border-base-content/9 bg-base-100" name="my-accordion-det-1">
+			<details
+				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+				name="my-accordion-det-1"
+			>
 				<summary class="collapse-title font-semibold">Can I change my email address?</summary>
 				<div class="collapse-content text-sm">
 					Yes, go to your profile settings and update your email address.

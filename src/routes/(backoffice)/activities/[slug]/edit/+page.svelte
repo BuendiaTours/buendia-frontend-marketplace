@@ -37,7 +37,6 @@
 	<a href={`/activities?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
-
 	<form
 		method="POST"
 		action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, $page.url.searchParams)}
@@ -57,65 +56,89 @@
 			Borrar
 		</button>
 	</form>
-
 	<button form="edit-form" type="submit" class="btn btn-outline btn-primary">Guardar cambios</button
 	>
 </div>
 
-<h1>Editar Actividad</h1>
+<h1 class="">Editar Actividad</h1>
 
-<form id="edit-form" method="POST" use:enhance class="max-w-2xl space-y-4">
+<form id="edit-form" method="POST" use:enhance class="space-y-4">
+	<details
+		class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+		name="my-accordion-det-1"
+		open
+	>
+		<summary class="text-md collapse-title">Datos base</summary>
+		<div class="collapse-content pl-64">
+			<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+				<FormInputText
+					id="id"
+					label="Id"
+					badge="read only"
+					bind:value={$form.id}
+					error={$errors.id}
+					readonly
+					wrapperClass="md:col-span-4"
+				/>
+
+				<FormInputText
+					id="codeRef"
+					label="codeRef"
+					badge="disabled"
+					bind:value={$form.codeRef}
+					error={$errors.codeRef}
+					disabled
+					wrapperClass="md:col-span-4"
+				/>
+
+				<FormSelect
+					id="status"
+					label="Estado"
+					bind:value={$form.status}
+					error={$errors.status}
+					options={availableStatuses}
+					placeholder="Selecciona un estado"
+					wrapperClass="md:col-span-4"
+					selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
+				/>
+
+				<FormInputText
+					id="title"
+					label="Title"
+					badge="read only"
+					bind:value={$form.title}
+					error={$errors.title}
+					readonly
+				/>
+
+				<FormInputSlug
+					id="slug"
+					label="Slug"
+					bind:value={$form.slug}
+					sourceValue={$form.title}
+					error={$errors.slug}
+					generateTooltip="Genera slug a partir del título"
+					wrapperClass="md:col-span-12"
+				/>
+
+				<FormTextareaMarkdown
+					id="descriptionFull"
+					label="Descripcción larga"
+					bind:value={$form.descriptionFull}
+					error={$errors.descriptionFull}
+				/>
+
+				<FormTextarea
+					id="infoImportant"
+					label="Información importante"
+					bind:value={$form.infoImportant}
+					error={$errors.infoImportant}
+					rows={3}
+				/>
+			</div>
+		</div>
+	</details>
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormInputText
-			id="id"
-			label="Id"
-			badge="read only"
-			bind:value={$form.id}
-			error={$errors.id}
-			readonly
-			wrapperClass="md:col-span-4"
-		/>
-
-		<FormInputText
-			id="codeRef"
-			label="codeRef"
-			badge="disabled"
-			bind:value={$form.codeRef}
-			error={$errors.codeRef}
-			disabled
-			wrapperClass="md:col-span-4"
-		/>
-
-		<FormSelect
-			id="status"
-			label="Estado"
-			bind:value={$form.status}
-			error={$errors.status}
-			options={availableStatuses}
-			placeholder="Selecciona un estado"
-			wrapperClass="md:col-span-4"
-			selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
-		/>
-
-		<FormInputText
-			id="title"
-			label="Title"
-			badge="read only"
-			bind:value={$form.title}
-			error={$errors.title}
-			readonly
-		/>
-
-		<FormInputSlug
-			id="slug"
-			label="Slug"
-			bind:value={$form.slug}
-			sourceValue={$form.title}
-			error={$errors.slug}
-			generateTooltip="Genera slug a partir del título"
-			wrapperClass="md:col-span-12"
-		/>
-
 		<FormOrderedList
 			id="attractions"
 			label="Atracciones"
@@ -164,21 +187,6 @@
 			bind:tags={$form.tags}
 			{availableTags}
 			error={$errors.tags?._errors}
-		/>
-
-		<FormTextareaMarkdown
-			id="descriptionFull"
-			label="Descripcción larga"
-			bind:value={$form.descriptionFull}
-			error={$errors.descriptionFull}
-		/>
-
-		<FormTextarea
-			id="infoImportant"
-			label="Información importante"
-			bind:value={$form.infoImportant}
-			error={$errors.infoImportant}
-			rows={3}
 		/>
 
 		<FormTextList
