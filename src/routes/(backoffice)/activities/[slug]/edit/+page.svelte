@@ -83,7 +83,12 @@
 			{#each $form.stages as stage, index}
 				<FormAccordion name="form-stages-{index}" class="md:col-span-12" open>
 					{#snippet title()}
-						{stage.order || index + 1}. {stage.name}
+						<div
+							class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
+						>
+							{stage.order || index + 1}
+						</div>
+						<span>{stage.name}</span>
 					{/snippet}
 					{#snippet asideContent()}
 						<p class="text-xs">Ayuda, descripcción... enlaces...</p>
@@ -181,6 +186,29 @@
 							placeholder="Selecciona requisito"
 							wrapperClass="md:col-span-4"
 						/>
+
+						<div class="md:col-span-12">
+							<label class="label cursor-pointer justify-start gap-3">
+								<input
+									type="checkbox"
+									checked={stage.location !== null}
+									onchange={(e) => {
+										if (e.currentTarget.checked) {
+											// Activar: crear objeto GeoJSON vacío
+											stage.location = {
+												type: 'Point',
+												coordinates: [0, 0]
+											};
+										} else {
+											// Desactivar: establecer a null
+											stage.location = null;
+										}
+									}}
+									class="toggle toggle-success"
+								/>
+								<span class="text-sm">Tiene ubicación geográfica</span>
+							</label>
+						</div>
 
 						{#if stage.location}
 							<FormGeoJson
