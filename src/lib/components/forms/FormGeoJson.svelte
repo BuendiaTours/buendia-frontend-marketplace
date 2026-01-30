@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import { InfoEmpty, Search } from 'svelte-iconoir';
+	import { loadGoogleMapsAPI, isGoogleMapsLoaded } from '$lib/utils/googleMaps';
 
 	/**
 	 * Componente reutilizable para editar coordenadas GeoJSON con mapa de Google Maps
@@ -294,36 +295,30 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		// Verificar si Google Maps ya está cargado
-		if ((window as any).google && (window as any).google.maps) {
+		if (isGoogleMapsLoaded()) {
 			initializeMap();
-		} else {
-			// Verificar que existe la API key
-			const apiKey = env.PUBLIC_GOOGLE_MAPS_API_KEY;
-			if (!apiKey || apiKey === 'your_google_maps_api_key_here') {
-				mapError = 'Configura PUBLIC_GOOGLE_MAPS_API_KEY en el archivo .env';
-				return;
-			}
+			return;
+		}
 
-			// Cargar Google Maps API con async loading y marker library
-			const script = document.createElement('script');
-			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async&libraries=marker`;
-			script.async = true;
-			script.defer = true;
-			script.onload = () => {
-				setTimeout(() => {
-					if ((window as any).google && (window as any).google.maps) {
-						initializeMap();
-					} else {
-						mapError = 'Error al cargar Google Maps. La API no está disponible.';
-					}
-				}, 100);
-			};
-			script.onerror = () => {
-				mapError = 'Error al cargar Google Maps. Verifica la API key.';
-			};
-			document.head.appendChild(script);
+		// Verificar que existe la API key
+		const apiKey = env.PUBLIC_GOOGLE_MAPS_API_KEY;
+		if (!apiKey || apiKey === 'your_google_maps_api_key_here') {
+			mapError = 'Configura PUBLIC_GOOGLE_MAPS_API_KEY en el archivo .env';
+			return;
+		}
+
+		// Cargar Google Maps API usando la utilidad global
+		try {
+			await loadGoogleMapsAPI(apiKey);
+			// Pequeño delay para asegurar que todo está inicializado
+			setTimeout(() => {
+				initializeMap();
+			}, 50);
+		} catch (err) {
+			console.error('Error loading Google Maps:', err);
+			mapError = err instanceof Error ? err.message : 'Error al cargar Google Maps';
 		}
 	});
 </script>
@@ -419,7 +414,7 @@
 								type="number"
 								id="{id}-longitude"
 								name="{id}.coordinates[0]"
-								class="input input-sm w-full"
+								class="input w-full"
 								class:input-error={error}
 								value={longitude}
 								step="0.000001"
@@ -434,7 +429,7 @@
 								type="number"
 								id="{id}-latitude"
 								name="{id}.coordinates[1]"
-								class="input input-sm w-full"
+								class="input w-full"
 								class:input-error={error}
 								value={latitude}
 								step="0.000001"

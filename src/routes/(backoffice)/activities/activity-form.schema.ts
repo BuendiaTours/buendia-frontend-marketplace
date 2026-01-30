@@ -68,11 +68,14 @@ export const activityFormSchema = z.object({
 				duration: z.string().optional(),
 				coords: z
 					.object({
-						latitude: z.number().min(-90).max(90),
-						longitude: z.number().min(-180).max(180)
+						type: z.literal('Point'),
+						coordinates: z.tuple([
+							z.number().min(-180).max(180), // longitude
+							z.number().min(-90).max(90) // latitude
+						])
 					})
 					.nullable()
-					.optional(),
+					.default(null),
 				kind: z.enum(['EXPERIENCE', 'TRANSFER', 'MEAL', 'ACCOMMODATION', 'OTHER'], {
 					errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 				}),

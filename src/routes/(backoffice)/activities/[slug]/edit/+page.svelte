@@ -20,6 +20,7 @@
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 	import FormTextList from '$lib/components/forms/FormTextList.svelte';
+	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const {
@@ -114,7 +115,16 @@
 							label="Nombre"
 							bind:value={stage.name}
 							error={$errors.stages?.[index]?.name}
-							wrapperClass="md:col-span-12"
+							wrapperClass="md:col-span-10"
+						/>
+
+						<FormInputText
+							id={`stages[${index}][duration]`}
+							label="Duración"
+							bind:value={stage.duration}
+							error={$errors.stages?.[index]?.duration}
+							wrapperClass="md:col-span-2"
+							badge="opcional"
 						/>
 
 						<FormTextarea
@@ -124,15 +134,6 @@
 							error={$errors.stages?.[index]?.description}
 							wrapperClass="md:col-span-12"
 							rows={3}
-							badge="opcional"
-						/>
-
-						<FormInputText
-							id={`stages[${index}][duration]`}
-							label="Duración"
-							bind:value={stage.duration}
-							error={$errors.stages?.[index]?.duration}
-							wrapperClass="md:col-span-4"
 							badge="opcional"
 						/>
 
@@ -182,21 +183,17 @@
 						/>
 
 						{#if stage.coords}
-							<FormInputText
-								id={`stages[${index}][coords][latitude]`}
-								label="Latitud"
-								bind:value={stage.coords.latitude}
-								error={$errors.stages?.[index]?.coords?.latitude}
-								wrapperClass="md:col-span-4"
-								badge="opcional"
-							/>
-
-							<FormInputText
-								id={`stages[${index}][coords][longitude]`}
-								label="Longitud"
-								bind:value={stage.coords.longitude}
-								error={$errors.stages?.[index]?.coords?.longitude}
-								wrapperClass="md:col-span-4"
+							<FormGeoJson
+								id={`stages[${index}][coords]`}
+								label="Ubicación"
+								bind:value={stage.coords}
+								mapClass="h-[250px]"
+								config={{
+									showSearchBox: true,
+									defaultZoom: 15
+								}}
+								error={$errors.stages?.[index]?.coords?._errors}
+								wrapperClass="md:col-span-12"
 								badge="opcional"
 							/>
 						{/if}
