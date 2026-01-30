@@ -37,6 +37,11 @@
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
 	});
+
+	// Backup de coordenadas por stage (para poder restaurar si se desactiva/activa el toggle)
+	let locationBackups = $state<
+		Record<number, { type: 'Point'; coordinates: [number, number] } | null>
+	>({});
 </script>
 
 <div
@@ -194,13 +199,20 @@
 									checked={stage.location !== null}
 									onchange={(e) => {
 										if (e.currentTarget.checked) {
-											// Activar: crear objeto GeoJSON vacío
-											stage.location = {
-												type: 'Point',
-												coordinates: [0, 0]
-											};
+											// Activar: restaurar backup o usar coordenadas por defecto
+											if (locationBackups[index]) {
+												stage.location = locationBackups[index];
+											} else {
+												stage.location = {
+													type: 'Point',
+													coordinates: [-3.7038, 40.4168] // Madrid por defecto
+												};
+											}
 										} else {
-											// Desactivar: establecer a null
+											// Desactivar: guardar backup y establecer a null
+											if (stage.location) {
+												locationBackups[index] = { ...stage.location };
+											}
 											stage.location = null;
 										}
 									}}
