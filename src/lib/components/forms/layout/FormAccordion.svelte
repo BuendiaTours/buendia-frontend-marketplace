@@ -33,14 +33,19 @@
 	interface Props {
 		open?: boolean;
 		name?: string;
+		class?: string;
 		title: import('svelte').Snippet;
 		content: import('svelte').Snippet;
 	}
 
-	let { open = false, name, title, content }: Props = $props();
+	let { open = false, name, class: className, title, content }: Props = $props();
 </script>
 
-<details class="collapse-arrow collapse border border-base-content/9 bg-base-100" {name} {open}>
+<details
+	class="collapse-arrow collapse border border-base-content/9 bg-base-100 {className}"
+	{name}
+	{open}
+>
 	<summary class="text-md collapse-title">
 		{@render title()}
 	</summary>

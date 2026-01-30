@@ -74,120 +74,127 @@
 		{/snippet}
 		{#snippet content()}
 			{#each $form.stages as stage, index}
-				<div class="md:col-span-12">
-					<h3 class="mb-4 text-sm font-semibold">Etapa #{stage.order || index + 1}</h3>
+				<FormAccordion name="form-stages" open class="md:grid-cols-12">
+					{#snippet title()}
+						{stage.order || index + 1}. {stage.name}
+					{/snippet}
+					{#snippet content()}
+						<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+							<input
+								type="hidden"
+								id={`stages[${index}][order]`}
+								name={`stages[${index}][order]`}
+								bind:value={stage.order}
+							/>
 
-					<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-						<input
-							type="hidden"
-							id={`stages.${index}.order`}
-							name={`stages.${index}.order`}
-							bind:value={stage.order}
-						/>
+							<input
+								type="hidden"
+								id={`stages[${index}][id]`}
+								name={`stages[${index}][id]`}
+								bind:value={stage.id}
+							/>
 
-						<FormInputText
-							id={`stages.${index}.name`}
-							label="Nombre"
-							bind:value={stage.name}
-							error={$errors.stages?.[index]?.name}
-							wrapperClass="md:col-span-10"
-						/>
+							<input
+								type="hidden"
+								id={`stages[${index}][activityId]`}
+								name={`stages[${index}][activityId]`}
+								bind:value={stage.activityId}
+							/>
 
-						<FormInputText
-							id={`stages.${index}.id`}
-							label="ID"
-							bind:value={stage.id}
-							error={$errors.stages?.[index]?.id}
-							wrapperClass="md:col-span-2"
-							badge="read only"
-							readonly
-						/>
-
-						<FormTextarea
-							id={`stages.${index}.description`}
-							label="Descripción"
-							bind:value={stage.description}
-							error={$errors.stages?.[index]?.description}
-							wrapperClass="md:col-span-12"
-							rows={3}
-							badge="opcional"
-						/>
-
-						<FormInputText
-							id={`stages.${index}.duration`}
-							label="Duración"
-							bind:value={stage.duration}
-							error={$errors.stages?.[index]?.duration}
-							wrapperClass="md:col-span-4"
-							badge="opcional"
-						/>
-
-						<FormSelect
-							id={`stages.${index}.kind`}
-							label="Tipo"
-							bind:value={stage.kind}
-							error={$errors.stages?.[index]?.kind}
-							options={[
-								{ id: 'EXPERIENCE', name: 'Experiencia' },
-								{ id: 'TRANSFER', name: 'Traslado' },
-								{ id: 'MEAL', name: 'Comida' },
-								{ id: 'ACCOMMODATION', name: 'Alojamiento' },
-								{ id: 'OTHER', name: 'Otro' }
-							]}
-							placeholder="Selecciona un tipo"
-							wrapperClass="md:col-span-4"
-						/>
-
-						<FormSelect
-							id={`stages.${index}.relevance`}
-							label="Relevancia"
-							bind:value={stage.relevance}
-							error={$errors.stages?.[index]?.relevance}
-							options={[
-								{ id: 'HIGH', name: 'Alta' },
-								{ id: 'MEDIUM', name: 'Media' },
-								{ id: 'LOW', name: 'Baja' },
-								{ id: 'NONE', name: 'Ninguna' }
-							]}
-							placeholder="Selecciona relevancia"
-							wrapperClass="md:col-span-4"
-						/>
-
-						<FormSelect
-							id={`stages.${index}.requirement`}
-							label="Requisito"
-							bind:value={stage.requirement}
-							error={$errors.stages?.[index]?.requirement}
-							options={[
-								{ id: 'REQUIRED', name: 'Requerido' },
-								{ id: 'OPTIONAL', name: 'Opcional' },
-								{ id: 'CONDITIONAL', name: 'Condicional' }
-							]}
-							placeholder="Selecciona requisito"
-							wrapperClass="md:col-span-4"
-						/>
-
-						{#if stage.coords}
 							<FormInputText
-								id={`stages.${index}.coords.latitude`}
-								label="Latitud"
-								bind:value={stage.coords.latitude}
-								error={$errors.stages?.[index]?.coords?.latitude}
-								wrapperClass="md:col-span-4"
+								id={`stages[${index}][name]`}
+								label="Nombre"
+								bind:value={stage.name}
+								error={$errors.stages?.[index]?.name}
+								wrapperClass="md:col-span-12"
+							/>
+
+							<FormTextarea
+								id={`stages[${index}][description]`}
+								label="Descripción"
+								bind:value={stage.description}
+								error={$errors.stages?.[index]?.description}
+								wrapperClass="md:col-span-12"
+								rows={3}
 								badge="opcional"
 							/>
 
 							<FormInputText
-								id={`stages.${index}.coords.longitude`}
-								label="Longitud"
-								bind:value={stage.coords.longitude}
-								error={$errors.stages?.[index]?.coords?.longitude}
+								id={`stages[${index}][duration]`}
+								label="Duración"
+								bind:value={stage.duration}
+								error={$errors.stages?.[index]?.duration}
 								wrapperClass="md:col-span-4"
 								badge="opcional"
 							/>
-						{/if}
-					</div>
-				</div>
+
+							<FormSelect
+								id={`stages[${index}][kind]`}
+								label="Tipo"
+								bind:value={stage.kind}
+								error={$errors.stages?.[index]?.kind}
+								options={[
+									{ id: 'EXPERIENCE', name: 'Experiencia' },
+									{ id: 'TRANSFER', name: 'Traslado' },
+									{ id: 'MEAL', name: 'Comida' },
+									{ id: 'ACCOMMODATION', name: 'Alojamiento' },
+									{ id: 'OTHER', name: 'Otro' }
+								]}
+								placeholder="Selecciona un tipo"
+								wrapperClass="md:col-span-4"
+							/>
+
+							<FormSelect
+								id={`stages[${index}][relevance]`}
+								label="Relevancia"
+								bind:value={stage.relevance}
+								error={$errors.stages?.[index]?.relevance}
+								options={[
+									{ id: 'HIGH', name: 'Alta' },
+									{ id: 'MEDIUM', name: 'Media' },
+									{ id: 'LOW', name: 'Baja' },
+									{ id: 'NONE', name: 'Ninguna' }
+								]}
+								placeholder="Selecciona relevancia"
+								wrapperClass="md:col-span-4"
+							/>
+
+							<FormSelect
+								id={`stages[${index}][requirement]`}
+								label="Requisito"
+								bind:value={stage.requirement}
+								error={$errors.stages?.[index]?.requirement}
+								options={[
+									{ id: 'REQUIRED', name: 'Requerido' },
+									{ id: 'OPTIONAL', name: 'Opcional' },
+									{ id: 'CONDITIONAL', name: 'Condicional' }
+								]}
+								placeholder="Selecciona requisito"
+								wrapperClass="md:col-span-4"
+							/>
+
+							{#if stage.coords}
+								<FormInputText
+									id={`stages[${index}][coords][latitude]`}
+									label="Latitud"
+									bind:value={stage.coords.latitude}
+									error={$errors.stages?.[index]?.coords?.latitude}
+									wrapperClass="md:col-span-4"
+									badge="opcional"
+								/>
+
+								<FormInputText
+									id={`stages[${index}][coords][longitude]`}
+									label="Longitud"
+									bind:value={stage.coords.longitude}
+									error={$errors.stages?.[index]?.coords?.longitude}
+									wrapperClass="md:col-span-4"
+									badge="opcional"
+								/>
+							{/if}
+						</div>
+					{/snippet}
+				</FormAccordion>
 			{/each}
 		{/snippet}
 	</FormAccordion>
