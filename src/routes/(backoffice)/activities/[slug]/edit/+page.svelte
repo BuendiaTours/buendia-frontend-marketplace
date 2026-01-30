@@ -74,7 +74,7 @@
 		{/snippet}
 		{#snippet content()}
 			{#each $form.stages as stage, index}
-				<FormAccordion name="form-stages" class="grid-cols-12 md:grid-cols-12" open>
+				<FormAccordion name="form-stages-{index}" class="md:col-span-12" open>
 					{#snippet title()}
 						{stage.order || index + 1}. {stage.name}
 					{/snippet}
