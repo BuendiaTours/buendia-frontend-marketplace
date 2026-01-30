@@ -14,6 +14,9 @@
 	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 
+	import { DatabaseRestore } from 'svelte-iconoir';
+	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+
 	let { data }: { data: PageData } = $props();
 
 	const { form, errors, enhance, message } = superForm(data.form, {
@@ -21,7 +24,9 @@
 	});
 </script>
 
-<div class="mb-4 flex items-center justify-between">
+<div
+	class="ticky top-0 z-10 flex items-center justify-between gap-4 border-b border-base-content/10 bg-base-100 py-4"
+>
 	<a href={`/attractions?${$page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
@@ -32,6 +37,7 @@
 			`/attractions/${data.attraction.slug}/delete`,
 			$page.url.searchParams
 		)}
+		class="ml-auto"
 	>
 		<button
 			type="submit"
@@ -47,141 +53,147 @@
 			Delete
 		</button>
 	</form>
+	<button form="edit-form" type="submit" class="btn btn-outline btn-primary">Guardar cambios</button
+	>
 </div>
 
 <h1>Editar Atracción</h1>
 
-<form method="POST" use:enhance class="max-w-2xl space-y-4">
-	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormInputText
-			id="id"
-			label="Id"
-			badge="read only"
-			bind:value={$form.id}
-			error={$errors.id}
-			readonly
-			wrapperClass="md:col-span-8"
-		/>
+<form name="edit-form" method="POST" use:enhance class="space-y-4">
+	<FormAccordion name="form-stages" open>
+		{#snippet title()}
+			<DatabaseRestore class="size-6" />
+			<span>Datos principales</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
+		{/snippet}
+		{#snippet content()}
+			<FormInputText
+				id="id"
+				label="Id"
+				badge="read only"
+				bind:value={$form.id}
+				error={$errors.id}
+				readonly
+				wrapperClass="md:col-span-8"
+			/>
 
-		<FormSelect
-			id="status"
-			label="Estado"
-			bind:value={$form.status}
-			error={$errors.status}
-			options={data.availableStatuses}
-			placeholder="Selecciona un estado"
-			wrapperClass="md:col-span-4"
-		/>
+			<FormSelect
+				id="status"
+				label="Estado"
+				bind:value={$form.status}
+				error={$errors.status}
+				options={data.availableStatuses}
+				placeholder="Selecciona un estado"
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormInputText
-			id="name"
-			label="Nombre"
-			bind:value={$form.name}
-			error={$errors.name}
-			wrapperClass="md:col-span-12"
-		/>
+			<FormInputText
+				id="name"
+				label="Nombre"
+				bind:value={$form.name}
+				error={$errors.name}
+				wrapperClass="md:col-span-12"
+			/>
 
-		<FormInputSlug
-			id="slug"
-			label="Slug"
-			bind:value={$form.slug}
-			sourceValue={$form.name}
-			error={$errors.slug}
-			generateTooltip="Genera slug a partir del nombre"
-			wrapperClass="md:col-span-12"
-		/>
+			<FormInputSlug
+				id="slug"
+				label="Slug"
+				bind:value={$form.slug}
+				sourceValue={$form.name}
+				error={$errors.slug}
+				generateTooltip="Genera slug a partir del nombre"
+				wrapperClass="md:col-span-12"
+			/>
 
-		<FormTextarea
-			id="description"
-			label="Descripción corta"
-			bind:value={$form.description}
-			error={$errors.description}
-			rows={3}
-			wrapperClass="md:col-span-12"
-		/>
+			<FormTextarea
+				id="description"
+				label="Descripción corta"
+				bind:value={$form.description}
+				error={$errors.description}
+				rows={3}
+				wrapperClass="md:col-span-12"
+			/>
 
-		<FormTextareaMarkdown
-			id="descriptionLong"
-			label="Descripcción larga"
-			bind:value={$form.descriptionLong}
-			error={$errors.descriptionLong}
-		/>
+			<FormTextareaMarkdown
+				id="descriptionLong"
+				label="Descripcción larga"
+				bind:value={$form.descriptionLong}
+				error={$errors.descriptionLong}
+			/>
 
-		<div class="md:col-span-4">
-			<div class="rounded-lg border border-base-content/10 p-4">
-				{#if $form.photoUrl}
-					<a href={$form.photoUrl} target="_blank">
-						<img src={$form.photoUrl} alt="" />
-					</a>
-				{/if}
+			<div class="md:col-span-4">
+				<div class="rounded-lg border border-base-content/10 p-4">
+					{#if $form.photoUrl}
+						<a href={$form.photoUrl} target="_blank">
+							<img src={$form.photoUrl} alt="" />
+						</a>
+					{/if}
+				</div>
 			</div>
-		</div>
 
-		<FormInputText
-			id="photoUrlHero"
-			label="URL de imagen principal (Hero)"
-			type="url"
-			bind:value={$form.photoUrlHero}
-			error={$errors.photoUrlHero}
-			wrapperClass="md:col-span-8"
-			placeholder="https://example.com/image.jpg"
-		/>
+			<FormInputText
+				id="photoUrlHero"
+				label="URL de imagen principal (Hero)"
+				type="url"
+				bind:value={$form.photoUrlHero}
+				error={$errors.photoUrlHero}
+				wrapperClass="md:col-span-8"
+				placeholder="https://example.com/image.jpg"
+			/>
 
-		<div class="md:col-span-4">
-			<div class="rounded-lg border border-base-content/10 p-4">
-				{#if $form.photoUrlHero}
-					<a href={$form.photoUrlHero} target="_blank">
-						<img src={$form.photoUrlHero} alt="" />
-					</a>
-				{/if}
+			<div class="md:col-span-4">
+				<div class="rounded-lg border border-base-content/10 p-4">
+					{#if $form.photoUrlHero}
+						<a href={$form.photoUrlHero} target="_blank">
+							<img src={$form.photoUrlHero} alt="" />
+						</a>
+					{/if}
+				</div>
 			</div>
-		</div>
 
-		<FormInputText
-			id="photoUrl"
-			label="URL de imagen secundaria"
-			type="url"
-			bind:value={$form.photoUrl}
-			error={$errors.photoUrl}
-			wrapperClass="md:col-span-8"
-			placeholder="https://example.com/image.jpg"
-		/>
-	</div>
+			<FormInputText
+				id="photoUrl"
+				label="URL de imagen secundaria"
+				type="url"
+				bind:value={$form.photoUrl}
+				error={$errors.photoUrl}
+				wrapperClass="md:col-span-8"
+				placeholder="https://example.com/image.jpg"
+			/>
 
-	<FormOrderedList
-		id="destintions"
-		label="Destinos"
-		bind:items={$form.destinations}
-		availableItems={data.availableDestinations}
-		error={$errors.destinations?._errors}
-		placeholder="Selecciona un destino..."
-		emptyMessage="No hay destinos asociados"
-	/>
+			<FormOrderedList
+				id="destintions"
+				label="Destinos"
+				bind:items={$form.destinations}
+				availableItems={data.availableDestinations}
+				error={$errors.destinations?._errors}
+				placeholder="Selecciona un destino..."
+				emptyMessage="No hay destinos asociados"
+			/>
 
-	<FormTextarea
-		id="postalAddress"
-		label="Dirección postal"
-		bind:value={$form.postalAddress}
-		error={$errors.postalAddress}
-		rows={2}
-		wrapperClass="md:col-span-12"
-	/>
+			<FormTextarea
+				id="postalAddress"
+				label="Dirección postal"
+				bind:value={$form.postalAddress}
+				error={$errors.postalAddress}
+				rows={2}
+				wrapperClass="md:col-span-12"
+			/>
 
-	<FormGeoJson
-		id="location"
-		label="Ubicación"
-		bind:value={$form.location}
-		mapClass="h-[200px]"
-		config={{
-			showSearchBox: true
-		}}
-		error={$errors.location?._errors}
-	/>
-
-	<div class="flex justify-between">
-		<a href={`/attractions/${data.attraction.slug}`} class="btn btn-soft btn-error">Cancelar</a>
-		<button type="submit" class="btn btn-outline btn-primary">Guardar cambios</button>
-	</div>
+			<FormGeoJson
+				id="location"
+				label="Ubicación"
+				bind:value={$form.location}
+				mapClass="h-[450px]"
+				config={{
+					showSearchBox: true
+				}}
+				error={$errors.location?._errors}
+			/>
+		{/snippet}
+	</FormAccordion>
 </form>
 
 <h2 class="mt-8">JSON de la API</h2>

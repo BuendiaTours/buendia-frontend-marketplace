@@ -11,6 +11,9 @@
 	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 
+	import { DatabaseRestore } from 'svelte-iconoir';
+	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+
 	let { data }: { data: PageData } = $props();
 
 	const { form, errors, enhance, message } = superForm(data.form, {
@@ -24,7 +27,9 @@
 	}
 </script>
 
-<div class="mb-4 flex items-center justify-between">
+<div
+	class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-base-content/10 bg-base-100 py-4"
+>
 	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
@@ -35,6 +40,7 @@
 			`/destinations/${data.destination.slug}/delete`,
 			$page.url.searchParams
 		)}
+		class="ml-auto"
 	>
 		<button
 			type="submit"
@@ -50,101 +56,107 @@
 			Delete
 		</button>
 	</form>
+	<button form="edit-form" type="submit" class="btn btn-outline btn-primary">Guardar cambios</button
+	>
 </div>
 
-<h1>Editar Destino</h1>
+<h1 class="text-md my-2 font-semibold">Editar Destino</h1>
 
-<form method="POST" use:enhance class="max-w-2xl space-y-4">
-	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormInputText
-			id="id"
-			label="Id"
-			badge="read only"
-			bind:value={$form.id}
-			error={$errors.id}
-			readonly
-			wrapperClass="md:col-span-12"
-		/>
+<form name="edit-form" method="POST" use:enhance class="space-y-4">
+	<FormAccordion name="form-stages" open>
+		{#snippet title()}
+			<DatabaseRestore class="size-6" />
+			<span>Datos principales</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
+		{/snippet}
+		{#snippet content()}
+			<FormInputText
+				id="id"
+				label="Id"
+				badge="read only"
+				bind:value={$form.id}
+				error={$errors.id}
+				readonly
+				wrapperClass="md:col-span-12"
+			/>
 
-		<FormInputText
-			id="name"
-			label="Nombre"
-			bind:value={$form.name}
-			error={$errors.name}
-			wrapperClass="md:col-span-12"
-		/>
+			<FormInputText
+				id="name"
+				label="Nombre"
+				bind:value={$form.name}
+				error={$errors.name}
+				wrapperClass="md:col-span-12"
+			/>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="slug"><span>Slug</span></label>
-			<div class="flex gap-2">
-				<input
-					type="text"
-					id="slug"
-					name="slug"
-					class="input w-full"
-					class:input-error={$errors.slug}
-					bind:value={$form.slug}
-				/>
+			<div class="md:col-span-12">
+				<label class="label text-sm" for="slug"><span>Slug</span></label>
+				<div class="flex gap-2">
+					<input
+						type="text"
+						id="slug"
+						name="slug"
+						class="input w-full"
+						class:input-error={$errors.slug}
+						bind:value={$form.slug}
+					/>
 
-				<div class="tooltip" data-tip="Genera slug a partir del nombre">
-					<button type="button" class="btn btn-square btn-soft" onclick={generateSlug}>
-						<Refresh />
-					</button>
+					<div class="tooltip" data-tip="Genera slug a partir del nombre">
+						<button type="button" class="btn btn-square btn-soft" onclick={generateSlug}>
+							<Refresh />
+						</button>
+					</div>
+				</div>
+				<FormErrorMsg error={$errors.slug} />
+			</div>
+
+			<div class="md:col-span-12">
+				<label class="label text-sm" for="kind">Tipo</label>
+				<select
+					id="kind"
+					name="kind"
+					class="select w-full"
+					class:select-error={$errors.kind}
+					bind:value={$form.kind}
+				>
+					<option value="CITY">Ciudad</option>
+					<option value="REGION">Región</option>
+					<option value="COUNTRY">País</option>
+				</select>
+				<FormErrorMsg error={$errors.kind} />
+			</div>
+
+			<FormTextarea
+				id="descriptionShort"
+				label="Descripción corta"
+				bind:value={$form.descriptionShort}
+				error={$errors.descriptionShort}
+				rows={3}
+				wrapperClass="md:col-span-12"
+			/>
+
+			<div class="md:col-span-4">
+				<div class="rounded-lg border border-base-content/10 p-4">
+					{#if $form.photoUrlHero}
+						<a href={$form.photoUrlHero} target="_blank">
+							<img src={$form.photoUrlHero} alt="" />
+						</a>
+					{/if}
 				</div>
 			</div>
-			<FormErrorMsg error={$errors.slug} />
-		</div>
 
-		<div class="md:col-span-12">
-			<label class="label text-sm" for="kind">Tipo</label>
-			<select
-				id="kind"
-				name="kind"
-				class="select w-full"
-				class:select-error={$errors.kind}
-				bind:value={$form.kind}
-			>
-				<option value="CITY">Ciudad</option>
-				<option value="REGION">Región</option>
-				<option value="COUNTRY">País</option>
-			</select>
-			<FormErrorMsg error={$errors.kind} />
-		</div>
-
-		<FormTextarea
-			id="descriptionShort"
-			label="Descripción corta"
-			bind:value={$form.descriptionShort}
-			error={$errors.descriptionShort}
-			rows={3}
-			wrapperClass="md:col-span-12"
-		/>
-
-		<div class="md:col-span-4">
-			<div class="rounded-lg border border-base-content/10 p-4">
-				{#if $form.photoUrlHero}
-					<a href={$form.photoUrlHero} target="_blank">
-						<img src={$form.photoUrlHero} alt="" />
-					</a>
-				{/if}
-			</div>
-		</div>
-
-		<FormInputText
-			id="photoUrlHero"
-			label="URL de imagen principal"
-			type="url"
-			bind:value={$form.photoUrlHero}
-			error={$errors.photoUrlHero}
-			wrapperClass="md:col-span-8"
-			placeholder="https://example.com/image.jpg"
-		/>
-	</div>
-
-	<div class="flex justify-between">
-		<a href={`/destinations/${data.destination.slug}`} class="btn btn-soft btn-error">Cancelar</a>
-		<button type="submit" class="btn btn-outline btn-primary">Guardar cambios</button>
-	</div>
+			<FormInputText
+				id="photoUrlHero"
+				label="URL de imagen principal"
+				type="url"
+				bind:value={$form.photoUrlHero}
+				error={$errors.photoUrlHero}
+				wrapperClass="md:col-span-8"
+				placeholder="https://example.com/image.jpg"
+			/>
+		{/snippet}
+	</FormAccordion>
 </form>
 
 <h2 class="mt-8">JSON de la API</h2>
