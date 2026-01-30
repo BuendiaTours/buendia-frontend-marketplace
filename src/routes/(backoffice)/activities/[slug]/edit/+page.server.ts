@@ -52,6 +52,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				included: apiData.included || [],
 				destinations: apiData.destinations || [],
 				distributives: apiData.distributives || [],
+				stages: apiData.stages || [],
 				status: apiData.status || 'DRAFT',
 				kind: apiData.kind || '',
 				guideKind: apiData.guideKind || '',

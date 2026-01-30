@@ -5,6 +5,9 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
+	// Form layout
+	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+
 	// Form
 	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
@@ -33,7 +36,9 @@
 	});
 </script>
 
-<div class="sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 py-4">
+<div
+	class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-base-content/10 bg-base-100 py-4"
+>
 	<a href={`/activities?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
@@ -60,199 +65,334 @@
 	>
 </div>
 
-<h1 class="">Editar Actividad</h1>
+<h1 class="text-md my-2 font-semibold">Editar Actividad</h1>
 
 <form id="edit-form" method="POST" use:enhance class="space-y-4">
-	<details
-		class="collapse-arrow collapse border border-base-content/9 bg-base-100"
-		name="my-accordion-det-1"
-		open
-	>
-		<summary class="text-md collapse-title">Datos base</summary>
-		<div class="collapse-content pl-64">
-			<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-				<FormInputText
-					id="id"
-					label="Id"
-					badge="read only"
-					bind:value={$form.id}
-					error={$errors.id}
-					readonly
-					wrapperClass="md:col-span-4"
-				/>
+	<FormAccordion name="form-stages" open>
+		{#snippet title()}
+			Itinerario y traslados
+		{/snippet}
+		{#snippet content()}
+			{#each $form.stages as stage, index}
+				<div class="md:col-span-12">
+					<h3 class="mb-4 text-sm font-semibold">Etapa #{stage.order || index + 1}</h3>
 
-				<FormInputText
-					id="codeRef"
-					label="codeRef"
-					badge="disabled"
-					bind:value={$form.codeRef}
-					error={$errors.codeRef}
-					disabled
-					wrapperClass="md:col-span-4"
-				/>
+					<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+						<input
+							type="hidden"
+							id={`stages.${index}.order`}
+							name={`stages.${index}.order`}
+							bind:value={stage.order}
+						/>
 
-				<FormSelect
-					id="status"
-					label="Estado"
-					bind:value={$form.status}
-					error={$errors.status}
-					options={availableStatuses}
-					placeholder="Selecciona un estado"
-					wrapperClass="md:col-span-4"
-					selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
-				/>
+						<FormInputText
+							id={`stages.${index}.name`}
+							label="Nombre"
+							bind:value={stage.name}
+							error={$errors.stages?.[index]?.name}
+							wrapperClass="md:col-span-10"
+						/>
 
-				<FormInputText
-					id="title"
-					label="Title"
-					badge="read only"
-					bind:value={$form.title}
-					error={$errors.title}
-					readonly
-				/>
+						<FormInputText
+							id={`stages.${index}.id`}
+							label="ID"
+							bind:value={stage.id}
+							error={$errors.stages?.[index]?.id}
+							wrapperClass="md:col-span-2"
+							badge="read only"
+							readonly
+						/>
 
-				<FormInputSlug
-					id="slug"
-					label="Slug"
-					bind:value={$form.slug}
-					sourceValue={$form.title}
-					error={$errors.slug}
-					generateTooltip="Genera slug a partir del título"
-					wrapperClass="md:col-span-12"
-				/>
+						<FormTextarea
+							id={`stages.${index}.description`}
+							label="Descripción"
+							bind:value={stage.description}
+							error={$errors.stages?.[index]?.description}
+							wrapperClass="md:col-span-12"
+							rows={3}
+							badge="opcional"
+						/>
 
-				<FormTextareaMarkdown
-					id="descriptionFull"
-					label="Descripcción larga"
-					bind:value={$form.descriptionFull}
-					error={$errors.descriptionFull}
-				/>
+						<FormInputText
+							id={`stages.${index}.duration`}
+							label="Duración"
+							bind:value={stage.duration}
+							error={$errors.stages?.[index]?.duration}
+							wrapperClass="md:col-span-4"
+							badge="opcional"
+						/>
 
-				<FormTextarea
-					id="infoImportant"
-					label="Información importante"
-					bind:value={$form.infoImportant}
-					error={$errors.infoImportant}
-					rows={3}
-				/>
-			</div>
-		</div>
-	</details>
-	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<FormOrderedList
-			id="attractions"
-			label="Atracciones"
-			bind:items={$form.attractions}
-			availableItems={availableAttractions}
-			error={$errors.attractions?._errors}
-			placeholder="Selecciona una atracción..."
-			emptyMessage="No hay atracciones asociadas"
-		/>
+						<FormSelect
+							id={`stages.${index}.kind`}
+							label="Tipo"
+							bind:value={stage.kind}
+							error={$errors.stages?.[index]?.kind}
+							options={[
+								{ id: 'EXPERIENCE', name: 'Experiencia' },
+								{ id: 'TRANSFER', name: 'Traslado' },
+								{ id: 'MEAL', name: 'Comida' },
+								{ id: 'ACCOMMODATION', name: 'Alojamiento' },
+								{ id: 'OTHER', name: 'Otro' }
+							]}
+							placeholder="Selecciona un tipo"
+							wrapperClass="md:col-span-4"
+						/>
 
-		<FormOrderedList
-			id="destinations"
-			label="Destinos"
-			bind:items={$form.destinations}
-			availableItems={data.availableDestinations}
-			placeholder="Selecciona un destino..."
-			emptyMessage="No hay destinos asociados"
-			config={{ useDragAndDrop: true, showRemoveAll: true }}
-			error={$errors.destinations?._errors}
-		/>
+						<FormSelect
+							id={`stages.${index}.relevance`}
+							label="Relevancia"
+							bind:value={stage.relevance}
+							error={$errors.stages?.[index]?.relevance}
+							options={[
+								{ id: 'HIGH', name: 'Alta' },
+								{ id: 'MEDIUM', name: 'Media' },
+								{ id: 'LOW', name: 'Baja' },
+								{ id: 'NONE', name: 'Ninguna' }
+							]}
+							placeholder="Selecciona relevancia"
+							wrapperClass="md:col-span-4"
+						/>
 
-		<FormOrderedList
-			id="distributives"
-			label="Páginas distributivas a las que pertenece"
-			bind:items={$form.distributives}
-			availableItems={availableDistributives}
-			error={$errors.distributives?._errors}
-			placeholder="Selecciona un distributiva..."
-			emptyMessage="No hay distributivas asociadas"
-		/>
+						<FormSelect
+							id={`stages.${index}.requirement`}
+							label="Requisito"
+							bind:value={stage.requirement}
+							error={$errors.stages?.[index]?.requirement}
+							options={[
+								{ id: 'REQUIRED', name: 'Requerido' },
+								{ id: 'OPTIONAL', name: 'Opcional' },
+								{ id: 'CONDITIONAL', name: 'Condicional' }
+							]}
+							placeholder="Selecciona requisito"
+							wrapperClass="md:col-span-4"
+						/>
 
-		<FormCheckboxGroup
-			main_label="Categorías"
-			id="categories"
-			name="categories[]"
-			key_title="name"
-			key_value="id"
-			bind:items={$form.categories}
-			availableItems={availableCategories}
-			error={$errors.categories?._errors}
-		/>
+						{#if stage.coords}
+							<FormInputText
+								id={`stages.${index}.coords.latitude`}
+								label="Latitud"
+								bind:value={stage.coords.latitude}
+								error={$errors.stages?.[index]?.coords?.latitude}
+								wrapperClass="md:col-span-4"
+								badge="opcional"
+							/>
 
-		<FormTagManager
-			id="tags"
-			label="Tags"
-			bind:tags={$form.tags}
-			{availableTags}
-			error={$errors.tags?._errors}
-		/>
+							<FormInputText
+								id={`stages.${index}.coords.longitude`}
+								label="Longitud"
+								bind:value={stage.coords.longitude}
+								error={$errors.stages?.[index]?.coords?.longitude}
+								wrapperClass="md:col-span-4"
+								badge="opcional"
+							/>
+						{/if}
+					</div>
+				</div>
+			{/each}
+		{/snippet}
+	</FormAccordion>
 
-		<FormTextList
-			id="included"
-			label="Elementos incluidos"
-			bind:items={$form.included}
-			error={$errors.included?._errors}
-			placeholder="Escribe un elemento incluido..."
-			badge="opcional"
-		/>
+	<FormAccordion name="form-base-data" open>
+		{#snippet title()}
+			Datos base
+		{/snippet}
+		{#snippet content()}
+			<FormInputText
+				id="id"
+				label="Id"
+				badge="read only"
+				bind:value={$form.id}
+				error={$errors.id}
+				readonly
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormTextList
-			id="itemsToBring"
-			label="Elementos necesarios para la actividad"
-			bind:items={$form.itemsToBring}
-			error={$errors.itemsToBring?._errors}
-			placeholder="Escribe un elemento necesario..."
-			badge="opcional"
-		/>
+			<FormInputText
+				id="codeRef"
+				label="codeRef"
+				badge="disabled"
+				bind:value={$form.codeRef}
+				error={$errors.codeRef}
+				disabled
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormTextList
-			id="excluded"
-			label="Elementos excluidos"
-			bind:items={$form.excluded}
-			error={$errors.excluded?._errors}
-			placeholder="Escribe un elemento a excluir..."
-			badge="opcional"
-		/>
+			<FormSelect
+				id="status"
+				label="Estado"
+				bind:value={$form.status}
+				error={$errors.status}
+				options={availableStatuses}
+				placeholder="Selecciona un estado"
+				wrapperClass="md:col-span-4"
+				selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
+			/>
 
-		<FormSelect
-			id="kind"
-			label="Tipo de actividad"
-			bind:value={$form.kind}
-			error={$errors.kind}
-			options={availableKinds}
-			placeholder="Selecciona un tipo"
-			wrapperClass="md:col-span-4"
-		/>
+			<FormSelect
+				id="kind"
+				label="Tipo de actividad"
+				bind:value={$form.kind}
+				error={$errors.kind}
+				options={availableKinds}
+				placeholder="Selecciona un tipo"
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormSelect
-			id="guideKind"
-			label="Tipo de guía"
-			bind:value={$form.guideKind}
-			error={$errors.guideKind}
-			options={availableGuideKinds}
-			placeholder="Selecciona un tipo"
-			wrapperClass="md:col-span-4"
-		/>
+			<FormSelect
+				id="guideKind"
+				label="Tipo de guía"
+				bind:value={$form.guideKind}
+				error={$errors.guideKind}
+				options={availableGuideKinds}
+				placeholder="Selecciona un tipo"
+				wrapperClass="md:col-span-4"
+			/>
 
+			<FormInputText
+				id="title"
+				label="Title"
+				badge="read only"
+				bind:value={$form.title}
+				error={$errors.title}
+				readonly
+			/>
+
+			<FormInputSlug
+				id="slug"
+				label="Slug"
+				bind:value={$form.slug}
+				sourceValue={$form.title}
+				error={$errors.slug}
+				generateTooltip="Genera slug a partir del título"
+				wrapperClass="md:col-span-12"
+			/>
+
+			<FormTextareaMarkdown
+				id="descriptionFull"
+				label="Descripcción larga"
+				bind:value={$form.descriptionFull}
+				error={$errors.descriptionFull}
+			/>
+
+			<FormTextarea
+				id="infoImportant"
+				label="Información importante"
+				bind:value={$form.infoImportant}
+				error={$errors.infoImportant}
+				rows={3}
+			/>
+		{/snippet}
+	</FormAccordion>
+
+	<FormAccordion name="form-cats-tags">
+		{#snippet title()}
+			Categorización
+		{/snippet}
+		{#snippet content()}
+			<FormCheckboxGroup
+				main_label="Categorías"
+				id="categories"
+				name="categories[]"
+				key_title="name"
+				key_value="id"
+				bind:items={$form.categories}
+				availableItems={availableCategories}
+				error={$errors.categories?._errors}
+			/>
+
+			<FormTagManager
+				id="tags"
+				label="Tags"
+				bind:tags={$form.tags}
+				{availableTags}
+				error={$errors.tags?._errors}
+			/>
+		{/snippet}
+	</FormAccordion>
+
+	<FormAccordion name="form-vinculaciones">
+		{#snippet title()}
+			Vinculaciones
+		{/snippet}
+		{#snippet content()}
+			<FormOrderedList
+				id="attractions"
+				label="Atracciones"
+				bind:items={$form.attractions}
+				availableItems={availableAttractions}
+				error={$errors.attractions?._errors}
+				placeholder="Selecciona una atracción..."
+				emptyMessage="No hay atracciones asociadas"
+			/>
+
+			<FormOrderedList
+				id="destinations"
+				label="Destinos"
+				bind:items={$form.destinations}
+				availableItems={data.availableDestinations}
+				placeholder="Selecciona un destino..."
+				emptyMessage="No hay destinos asociados"
+				config={{ useDragAndDrop: true, showRemoveAll: true }}
+				error={$errors.destinations?._errors}
+			/>
+
+			<FormOrderedList
+				id="distributives"
+				label="Páginas distributivas a las que pertenece"
+				bind:items={$form.distributives}
+				availableItems={availableDistributives}
+				error={$errors.distributives?._errors}
+				placeholder="Selecciona un distributiva..."
+				emptyMessage="No hay distributivas asociadas"
+			/>
+		{/snippet}
+	</FormAccordion>
+
+	<FormAccordion name="form-includes">
+		{#snippet title()}
+			Elementos incluídos, excluídoss y necesarios
+		{/snippet}
+		{#snippet content()}
+			<FormTextList
+				id="included"
+				label="Elementos incluidos"
+				bind:items={$form.included}
+				error={$errors.included?._errors}
+				placeholder="Escribe un elemento incluido..."
+				badge="opcional"
+			/>
+
+			<FormTextList
+				id="itemsToBring"
+				label="Elementos necesarios para la actividad"
+				bind:items={$form.itemsToBring}
+				error={$errors.itemsToBring?._errors}
+				placeholder="Escribe un elemento necesario..."
+				badge="opcional"
+			/>
+
+			<FormTextList
+				id="excluded"
+				label="Elementos excluidos"
+				bind:items={$form.excluded}
+				error={$errors.excluded?._errors}
+				placeholder="Escribe un elemento a excluir..."
+				badge="opcional"
+			/>
+		{/snippet}
+	</FormAccordion>
+
+	<!-- <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
 		<div class="pt-o pt-7 md:col-span-3">
 			<label class="label w-full cursor-pointer text-sm">
 				<input type="checkbox" name="isFreeTour" class="checkbox" bind:checked={$form.isFreeTour} />
 				<span class="label-text">Es Free Tour</span>
 			</label>
 		</div>
-
-		<div class="md:col-span-9">Otro contenido</div>
-	</div>
-
-	<div class="flex justify-between">
-		<a href={`/activities/${activity.slug}`} class="btn btn-soft btn-error">Cancelar</a>
-		<button type="submit" class="btn btn-outline btn-primary">Guardar cambios</button>
-	</div>
+	</div> -->
 </form>
 
-<h2 class="mt-8">JSON de la API</h2>
+<h2 class="mt-8 text-sm">JSON de la API</h2>
 <pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
 		activity,
 		null,

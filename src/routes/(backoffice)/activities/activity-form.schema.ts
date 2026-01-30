@@ -57,6 +57,34 @@ export const activityFormSchema = z.object({
 			})
 		)
 		.default([]),
+	stages: z
+		.array(
+			z.object({
+				id: z.string(),
+				activityId: z.string(),
+				order: z.number().int().min(1),
+				name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
+				description: z.string().optional(),
+				duration: z.string().optional(),
+				coords: z
+					.object({
+						latitude: z.number().min(-90).max(90),
+						longitude: z.number().min(-180).max(180)
+					})
+					.nullable()
+					.optional(),
+				kind: z.enum(['EXPERIENCE', 'TRANSFER', 'MEAL', 'ACCOMMODATION', 'OTHER'], {
+					errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
+				}),
+				relevance: z.enum(['HIGH', 'MEDIUM', 'LOW', 'NONE'], {
+					errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
+				}),
+				requirement: z.enum(['REQUIRED', 'OPTIONAL', 'CONDITIONAL'], {
+					errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
+				})
+			})
+		)
+		.default([]),
 	excluded: z.array(z.string()).default([]),
 	included: z.array(z.string()).default([]),
 	itemsToBring: z.array(z.string()).default([]),
