@@ -36,9 +36,10 @@
 		class?: string;
 		title: import('svelte').Snippet;
 		content: import('svelte').Snippet;
+		asideContent?: import('svelte').Snippet;
 	}
 
-	let { open = false, name, class: className, title, content }: Props = $props();
+	let { open = false, name, class: className, title, content, asideContent }: Props = $props();
 </script>
 
 <details
@@ -47,12 +48,22 @@
 	{open}
 >
 	<summary class="text-md collapse-title">
-		{@render title()}
+		<div>{@render title()}</div>
 	</summary>
-	<div class="collapse-content grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
-		<div class="md:col-span-2">Extra opcions here</div>
-		<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:col-span-8 md:col-span-10 md:grid-cols-12">
-			{@render content()}
+	<div class="collapse-content">
+		<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
+			{#if asideContent}
+				<div class="md:col-span-2">
+					{@render asideContent()}
+				</div>
+			{/if}
+			<div
+				class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12 {asideContent
+					? 'md:col-span-10'
+					: 'md:col-span-12'}"
+			>
+				{@render content()}
+			</div>
 		</div>
 	</div>
 </details>

@@ -70,13 +70,19 @@
 <form id="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>
 		{#snippet title()}
-			Itinerario y traslados
+			<span>Itinerario y traslados</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
 			{#each $form.stages as stage, index}
 				<FormAccordion name="form-stages-{index}" class="md:col-span-12" open>
 					{#snippet title()}
 						{stage.order || index + 1}. {stage.name}
+					{/snippet}
+					{#snippet asideContent()}
+						<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 					{/snippet}
 					{#snippet content()}
 						<input
@@ -199,7 +205,10 @@
 
 	<FormAccordion name="form-base-data" open>
 		{#snippet title()}
-			Datos base
+			<span>Datos base</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
 			<FormInputText
@@ -291,7 +300,10 @@
 
 	<FormAccordion name="form-cats-tags">
 		{#snippet title()}
-			Categorización
+			<span>Categorización</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
 			<FormCheckboxGroup
@@ -317,7 +329,10 @@
 
 	<FormAccordion name="form-vinculaciones">
 		{#snippet title()}
-			Vinculaciones
+			<span>Vinculaciones</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
 			<FormOrderedList
@@ -355,7 +370,10 @@
 
 	<FormAccordion name="form-includes">
 		{#snippet title()}
-			Elementos incluídos, excluídoss y necesarios
+			<span>Elementos incluídos, excluídoss y necesarios</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
 			<FormTextList
