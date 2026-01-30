@@ -66,7 +66,7 @@ export const activityFormSchema = z.object({
 				name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
 				description: z.string().optional(),
 				duration: z.string().optional(),
-				coords: z
+				location: z
 					.object({
 						type: z.literal('Point'),
 						coordinates: z.tuple([
@@ -91,6 +91,8 @@ export const activityFormSchema = z.object({
 	excluded: z.array(z.string()).default([]),
 	included: z.array(z.string()).default([]),
 	itemsToBring: z.array(z.string()).default([]),
+	kind: z.string().optional(),
+	guideKind: z.string().optional(),
 	status: z.enum(
 		['APPROVED', 'DELETED', 'DRAFT', 'PENDING_REVIEW', 'PUBLISHED', 'REJECTED', 'UNPUBLISHED'],
 		{

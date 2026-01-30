@@ -182,17 +182,17 @@
 							wrapperClass="md:col-span-4"
 						/>
 
-						{#if stage.coords}
+						{#if stage.location}
 							<FormGeoJson
-								id={`stages[${index}][coords]`}
+								id={`stages[${index}][location]`}
 								label="Ubicación"
-								bind:value={stage.coords}
+								bind:value={stage.location}
 								mapClass="h-[250px]"
 								config={{
 									showSearchBox: true,
 									defaultZoom: 15
 								}}
-								error={$errors.stages?.[index]?.coords?._errors}
+								error={$errors.stages?.[index]?.location?._errors}
 								wrapperClass="md:col-span-12"
 								badge="opcional"
 							/>
