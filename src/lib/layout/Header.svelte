@@ -10,7 +10,7 @@
 	const isActive = (path: string) => $page.url.pathname === path;
 </script>
 
-<header class="navbar bg-base-100 shadow-sm">
+<header class="navbar border-b border-base-content/10 bg-base-100">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">

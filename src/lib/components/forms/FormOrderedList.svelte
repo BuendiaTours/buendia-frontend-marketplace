@@ -276,7 +276,7 @@
 													onclick={() => moveItemToTop(index)}
 													disabled={index === 0}
 												>
-													<Upload size={16} />
+													<Upload class="size-5" />
 												</button>
 											</div>
 											<div class="tooltip" data-tip="Mover al inicio">
@@ -286,7 +286,7 @@
 													onclick={() => moveItemUp(index)}
 													disabled={index === 0}
 												>
-													<NavArrowUp size={16} />
+													<NavArrowUp class="size-5" />
 												</button>
 											</div>
 											<div class="tooltip" data-tip="Mover abajo">
@@ -296,7 +296,7 @@
 													onclick={() => moveItemDown(index)}
 													disabled={index === items.length - 1}
 												>
-													<NavArrowDown size={16} />
+													<NavArrowDown class="size-5" />
 												</button>
 											</div>
 											<div class="tooltip" data-tip="Mover al final">
@@ -306,7 +306,7 @@
 													onclick={() => moveItemToBottom(index)}
 													disabled={index === items.length - 1}
 												>
-													<Download size={16} />
+													<Download class="size-5" />
 												</button>
 											</div>
 										</div>

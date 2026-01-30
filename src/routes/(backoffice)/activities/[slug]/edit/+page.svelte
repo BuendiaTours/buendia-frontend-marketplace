@@ -33,14 +33,15 @@
 	});
 </script>
 
-<div class="mb-4 flex items-center justify-between">
-	<a href={`/activities?${$page.url.searchParams.toString()}`} class="link">
+<div class="sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 py-4">
+	<a href={`/activities?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
 
 	<form
 		method="POST"
 		action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, $page.url.searchParams)}
+		class="ml-auto"
 	>
 		<button
 			type="submit"
@@ -53,14 +54,17 @@
 				danger: true
 			}}
 		>
-			Delete
+			Borrar
 		</button>
 	</form>
+
+	<button form="edit-form" type="submit" class="btn btn-outline btn-primary">Guardar cambios</button
+	>
 </div>
 
 <h1>Editar Actividad</h1>
 
-<form method="POST" use:enhance class="max-w-2xl space-y-4">
+<form id="edit-form" method="POST" use:enhance class="max-w-2xl space-y-4">
 	<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
 		<FormInputText
 			id="id"
