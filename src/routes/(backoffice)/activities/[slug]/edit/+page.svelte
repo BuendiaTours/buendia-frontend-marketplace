@@ -5,6 +5,8 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
+	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
+
 	// Form layout
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
 
@@ -70,6 +72,7 @@
 <form id="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>
 		{#snippet title()}
+			<Map class="size-6" />
 			<span>Itinerario y traslados</span>
 		{/snippet}
 		{#snippet asideContent()}
@@ -205,6 +208,7 @@
 
 	<FormAccordion name="form-base-data" open>
 		{#snippet title()}
+			<DatabaseRestore class="size-6" />
 			<span>Datos base</span>
 		{/snippet}
 		{#snippet asideContent()}
@@ -300,6 +304,7 @@
 
 	<FormAccordion name="form-cats-tags">
 		{#snippet title()}
+			<FolderSettings class="size-6" />
 			<span>Categorización</span>
 		{/snippet}
 		{#snippet asideContent()}
@@ -329,6 +334,7 @@
 
 	<FormAccordion name="form-vinculaciones">
 		{#snippet title()}
+			<Link class="size-6" />
 			<span>Vinculaciones</span>
 		{/snippet}
 		{#snippet asideContent()}
@@ -370,6 +376,7 @@
 
 	<FormAccordion name="form-includes">
 		{#snippet title()}
+			<TaskList class="size-6" />
 			<span>Elementos incluídos, excluídoss y necesarios</span>
 		{/snippet}
 		{#snippet asideContent()}

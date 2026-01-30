@@ -104,6 +104,10 @@ textarea[readonly]:focus {
 	box-shadow: none;
 }
 
+details:has(.input-error, .select-error, .textarea-error) {
+	@apply border-error;
+}
+
 /* Card de DaisyUI */
 .card {
 	@apply rounded-box border border-base-content/9 bg-base-100;

@@ -48,7 +48,7 @@
 	{open}
 >
 	<summary class="text-md collapse-title">
-		<div>{@render title()}</div>
+		<div class="flex items-center gap-2">{@render title()}</div>
 	</summary>
 	<div class="collapse-content">
 		<div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-12">
@@ -67,3 +67,4 @@
 		</div>
 	</div>
 </details>
+
