@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { Menu } from 'svelte-iconoir';
 
 	/**
 	 * Componente reutilizable para acordeones en formularios
 	 *
 	 * @param open - Si el acordeón debe estar abierto por defecto
 	 * @param name - Nombre del grupo de acordeones (para comportamiento radio)
+	 * @param sortable - Si el acordeón puede ser reordenado mediante drag & drop (muestra handle cuando está cerrado)
 	 *
 	 * @example Uso básico
 	 * ```svelte
@@ -30,21 +32,54 @@
 	 *   {#snippet content()}..{/snippet}
 	 * </FormAccordion>
 	 * ```
+	 *
+	 * @example Acordeones ordenables (sortable)
+	 * ```svelte
+	 * {#each items as item, index}
+	 *   <FormAccordion name="item-{index}" sortable>
+	 *     {#snippet title()}
+	 *       {index + 1}. {item.name}
+	 *     {/snippet}
+	 *     {#snippet content()}
+	 *       <FormInputText ... />
+	 *     {/snippet}
+	 *   </FormAccordion>
+	 * {/each}
+	 * ```
+	 * Nota: Cuando sortable=true, el icono de drag solo aparece cuando el acordeón está cerrado.
 	 */
 
 	interface Props {
 		open?: boolean;
 		name?: string;
 		class?: string;
+		sortable?: boolean;
 		title: import('svelte').Snippet;
 		content: import('svelte').Snippet;
 		asideContent?: import('svelte').Snippet;
+		ondragstart?: (event: DragEvent) => void;
+		ondragover?: (event: DragEvent) => void;
+		ondrop?: (event: DragEvent) => void;
+		ondragend?: (event: DragEvent) => void;
 	}
 
-	let { open = false, name, class: className, title, content, asideContent }: Props = $props();
+	let {
+		open = false,
+		name,
+		class: className,
+		sortable = false,
+		title,
+		content,
+		asideContent,
+		ondragstart,
+		ondragover,
+		ondrop,
+		ondragend
+	}: Props = $props();
 
 	let detailsElement: HTMLDetailsElement;
 	let hasChildAccordions = $state(false);
+	let isOpen = $state(open);
 
 	onMount(() => {
 		// Detectar si hay acordeones hijos
@@ -52,6 +87,14 @@
 			':scope > .collapse-content details.collapse'
 		);
 		hasChildAccordions = childDetails.length > 0;
+
+		// Observar cambios en el estado open/closed del accordion
+		const observer = new MutationObserver(() => {
+			isOpen = detailsElement.open;
+		});
+		observer.observe(detailsElement, { attributes: true, attributeFilter: ['open'] });
+
+		return () => observer.disconnect();
 	});
 
 	function expandAllChildren(event: MouseEvent) {
@@ -85,10 +128,25 @@
 	class="collapse-arrow collapse border border-base-content/9 bg-base-100 {className}"
 	{name}
 	{open}
+	{ondragover}
+	{ondrop}
 >
 	<summary class="text-md collapse-title">
 		<div class="flex w-full items-center justify-between gap-2">
-			<div class="flex items-center gap-2">{@render title()}</div>
+			<div class="flex items-center gap-2">
+				{#if sortable && !isOpen}
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div
+						class="cursor-move text-base-content/50 hover:text-base-content"
+						draggable="true"
+						{ondragstart}
+						{ondragend}
+					>
+						<Menu class="size-5" />
+					</div>
+				{/if}
+				{@render title()}
+			</div>
 
 			{#if hasChildAccordions}
 				<div class="flex gap-1">

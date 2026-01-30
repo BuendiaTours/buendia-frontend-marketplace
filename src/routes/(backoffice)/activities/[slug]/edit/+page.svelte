@@ -42,6 +42,41 @@
 	let locationBackups = $state<
 		Record<number, { type: 'Point'; coordinates: [number, number] } | null>
 	>({});
+
+	// Estado para drag & drop de stages
+	let draggedStageIndex = $state<number | null>(null);
+
+	function handleStageDragStart(event: DragEvent, index: number) {
+		draggedStageIndex = index;
+		event.dataTransfer!.effectAllowed = 'move';
+	}
+
+	function handleStageDragOver(event: DragEvent) {
+		event.preventDefault();
+		event.dataTransfer!.dropEffect = 'move';
+	}
+
+	function handleStageDrop(event: DragEvent, targetIndex: number) {
+		event.preventDefault();
+		if (draggedStageIndex === null || draggedStageIndex === targetIndex) return;
+
+		// Reordenar el array
+		const stages = [...$form.stages];
+		const [draggedStage] = stages.splice(draggedStageIndex, 1);
+		stages.splice(targetIndex, 0, draggedStage);
+
+		// Actualizar los valores de order
+		stages.forEach((stage, idx) => {
+			stage.order = idx + 1;
+		});
+
+		$form.stages = stages;
+		draggedStageIndex = null;
+	}
+
+	function handleStageDragEnd() {
+		draggedStageIndex = null;
+	}
 </script>
 
 <div
@@ -86,7 +121,16 @@
 		{/snippet}
 		{#snippet content()}
 			{#each $form.stages as stage, index}
-				<FormAccordion name="form-stages-{index}" class="md:col-span-12" open>
+				<FormAccordion
+					name="form-stages-{index}"
+					class="md:col-span-12"
+					sortable
+					open
+					ondragstart={(e) => handleStageDragStart(e, index)}
+					ondragover={handleStageDragOver}
+					ondrop={(e) => handleStageDrop(e, index)}
+					ondragend={handleStageDragEnd}
+				>
 					{#snippet title()}
 						<div
 							class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
