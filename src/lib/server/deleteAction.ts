@@ -50,7 +50,7 @@ export function createDeleteAction(config: DeleteActionConfig) {
 
 			setFlashMessage(cookies, {
 				type: 'success',
-				message: `${config.resourceNameWithArticle.charAt(0).toUpperCase() + config.resourceNameWithArticle.slice(1)} eliminad${config.resourceName.endsWith('a') ? 'a' : 'o'} correctamente`
+				message: 'El elemento fue eliminado correctamente.'
 			});
 
 			const searchParams = url.searchParams.toString();
@@ -58,21 +58,21 @@ export function createDeleteAction(config: DeleteActionConfig) {
 
 			throw redirect(303, redirectUrl);
 		} catch (err) {
-			let errorMessage = `Error al eliminar ${config.resourceNameWithArticle}`;
+			let errorMessage = 'Error al eliminar el elemento.';
 
 			if (err instanceof ApiError) {
 				switch (err.type) {
 					case 'not_found':
-						errorMessage = `${config.resourceNameWithArticle.charAt(0).toUpperCase() + config.resourceNameWithArticle.slice(1)} no existe o ya fue eliminad${config.resourceName.endsWith('a') ? 'a' : 'o'}`;
+						errorMessage = 'El elemento no existe o ya fue eliminado.';
 						break;
 					case 'forbidden':
-						errorMessage = `No tienes permisos para eliminar ${config.resourceNameWithArticle}`;
+						errorMessage = 'No tienes permisos para eliminar el elemento.';
 						break;
 					case 'server_error':
-						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde';
+						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
 						break;
 					default:
-						errorMessage = `Error al eliminar ${config.resourceNameWithArticle} (${err.status || 'desconocido'})`;
+						errorMessage = `Error al eliminar el elemento (${err.status || 'desconocido'}).`;
 				}
 			}
 

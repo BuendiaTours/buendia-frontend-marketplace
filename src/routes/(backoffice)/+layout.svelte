@@ -9,8 +9,9 @@
 	import 'swiper/css/scrollbar';
 
 	// Components
+	// import MsgAlertBox from '$lib/components/msg/MsgAlertBox.svelte';
 	import AlertDialog from '$lib/components/MeltAlertDialog.svelte';
-	import MsgAlertBox from '$lib/components/msg/MsgAlertBox.svelte';
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
 
 	// Partials o elementos reutilizables
 	import Header from '$lib/layout/Header.svelte';
@@ -23,7 +24,7 @@
 	<Header title="Backoffice App" />
 
 	<main class="backoffice-container flex-1 px-4">
-		<MsgAlertBox />
+		<!-- MsgAlertBox /-->
 		{@render children()}
 	</main>
 
@@ -31,3 +32,4 @@
 </div>
 
 <AlertDialog />
+<MsgMeltToast />
