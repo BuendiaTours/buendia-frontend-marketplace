@@ -147,8 +147,8 @@
 			type="submit"
 			class="btn btn-soft btn-error"
 			use:confirmAction={{
-				title: 'Eliminar actividad',
-				message: '¿Seguro que quieres eliminar esta actividad?',
+				title: 'Eliminar elemento',
+				message: '¿Seguro que quieres eliminar este elemento?',
 				confirmText: 'Eliminar',
 				cancelText: 'Cancelar',
 				danger: true

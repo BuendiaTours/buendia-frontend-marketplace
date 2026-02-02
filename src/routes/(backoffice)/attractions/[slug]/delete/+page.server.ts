@@ -4,7 +4,7 @@ import { api } from '$lib/api/index';
 
 export const actions: Actions = {
 	default: createDeleteAction({
-		basePath: '/activities',
-		deleteFn: api.activities.delete
+		basePath: '/attractions',
+		deleteFn: api.attractions.delete
 	})
 };

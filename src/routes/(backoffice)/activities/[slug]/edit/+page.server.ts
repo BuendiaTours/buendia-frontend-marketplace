@@ -94,14 +94,19 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, fetch }) => {
+		console.log('📝 [edit action] Formulario recibido para:', params.slug);
+
 		const form = await superValidate(request, zod(activityFormSchema));
+		console.log('📝 [edit action] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
+			console.error('📝 [edit action] Errores de validación:', form.errors);
 			return fail(400, { form });
 		}
 
 		try {
-			await api.activities.update(fetch, params.slug, {
+			console.log('📝 [edit action] Llamando a API para actualizar...');
+			const result = await api.activities.update(fetch, params.slug, {
 				id: form.data.id,
 				codeRef: form.data.codeRef,
 				title: form.data.title,
@@ -124,16 +129,25 @@ export const actions: Actions = {
 				attractions: form.data.attractions
 			} as any);
 
+			console.log('✅ [edit action] API respondió exitosamente:', result);
+			console.log('📝 [edit action] Redirigiendo a:', `/activities/${params.slug}`);
+
 			throw redirect(303, `/activities/${params.slug}`);
 		} catch (err) {
+			console.error('❌ [edit action] Error capturado:', err);
+			console.error('❌ [edit action] Tipo de error:', err?.constructor?.name);
+
 			if (err instanceof ApiError) {
+				console.error('❌ [edit action] ApiError con status:', err.status);
 				return fail(err.status || 500, { form });
 			}
 
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
+				console.log('✅ [edit action] Es un redirect, dejándolo pasar');
 				throw err;
 			}
 
+			console.error('❌ [edit action] Error desconocido, retornando 503');
 			return fail(503, { form });
 		}
 	}

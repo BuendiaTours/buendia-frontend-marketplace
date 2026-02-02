@@ -1,5 +1,5 @@
 <script lang="ts">
 </script>
 
-<h1 class="text-xl">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<h2 class="mt-4 text-lg">Welcome to Backoffice app</h2>
+<p>Visit <a class="link" href="/api-catalog">API endpoints</a> to see the ones available</p>

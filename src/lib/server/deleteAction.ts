@@ -7,10 +7,6 @@ import { setFlashMessage } from '$lib/server/flashMessages';
  * Configuración para crear un action handler de eliminación
  */
 export interface DeleteActionConfig {
-	/** Nombre del recurso en singular (ej: 'actividad', 'destino') */
-	resourceName: string;
-	/** Nombre del recurso en singular con artículo (ej: 'la actividad', 'el destino') */
-	resourceNameWithArticle: string;
 	/** Ruta base para redirección (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Función que realiza la eliminación en la API */
@@ -27,8 +23,6 @@ export interface DeleteActionConfig {
  *
  * export const actions = {
  *   default: createDeleteAction({
- *     resourceName: 'actividad',
- *     resourceNameWithArticle: 'la actividad',
  *     basePath: '/activities',
  *     deleteFn: api.activities.delete
  *   })
