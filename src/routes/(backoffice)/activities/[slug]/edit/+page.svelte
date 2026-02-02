@@ -7,6 +7,9 @@
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
+	// Components
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+
 	// Form layout
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
 
@@ -31,7 +34,8 @@
 		availableDistributives,
 		availableStatuses,
 		availableKinds,
-		availableGuideKinds
+		availableGuideKinds,
+		breadcrumbs
 	} = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
@@ -108,7 +112,7 @@
 	>
 </div>
 
-<h1 class="text-md my-2 font-semibold">Editar Actividad</h1>
+<LocationBar title="Editar Actividad" {breadcrumbs} />
 
 <form id="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-base-data" open>

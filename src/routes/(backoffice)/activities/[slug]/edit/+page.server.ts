@@ -4,8 +4,9 @@ import { api, ApiError } from '$lib/api/index';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { activityFormSchema } from '../../activity-form.schema';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const [
 			activity,
@@ -61,6 +62,10 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			zod(activityFormSchema)
 		);
 
+		const breadcrumbs = buildBreadcrumbs(url.pathname, {
+			label: apiData.title || 'Actividad'
+		});
+
 		return {
 			activity,
 			form,
@@ -71,7 +76,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			availableDistributives: distributivesResponse || [],
 			availableStatuses: statusResponse || [],
 			availableKinds: kindsResponse || [],
-			availableGuideKinds: guideKindsResponse || []
+			availableGuideKinds: guideKindsResponse || [],
+			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

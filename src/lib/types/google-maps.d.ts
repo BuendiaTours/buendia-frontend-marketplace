@@ -6,48 +6,110 @@ declare global {
 }
 
 declare namespace google.maps {
-	class Map {
+	export class Map {
 		constructor(mapDiv: HTMLElement, opts?: MapOptions);
 		setCenter(latlng: LatLng | LatLngLiteral): void;
+		setZoom(zoom: number): void;
+		getZoom(): number;
 		addListener(eventName: string, handler: Function): void;
 	}
 
-	class Marker {
+	export class Marker {
 		constructor(opts?: MarkerOptions);
 		setPosition(latlng: LatLng | LatLngLiteral): void;
 		getPosition(): LatLng | null;
 		addListener(eventName: string, handler: Function): void;
 	}
 
-	class LatLng {
+	export class LatLng {
 		constructor(lat: number, lng: number);
 		lat(): number;
 		lng(): number;
 	}
 
-	interface LatLngLiteral {
+	export interface LatLngLiteral {
 		lat: number;
 		lng: number;
 	}
 
-	interface MapOptions {
+	export interface MapOptions {
 		center?: LatLng | LatLngLiteral;
 		zoom?: number;
 		mapTypeControl?: boolean;
 		streetViewControl?: boolean;
 		fullscreenControl?: boolean;
+		mapId?: string;
 	}
 
-	interface MarkerOptions {
+	export interface MarkerOptions {
 		position?: LatLng | LatLngLiteral;
 		map?: Map;
 		draggable?: boolean;
 		title?: string;
 	}
 
-	interface MapMouseEvent {
+	export interface MapMouseEvent {
 		latLng: LatLng | null;
 	}
+
+	export namespace marker {
+		export class AdvancedMarkerElement {
+			constructor(options?: AdvancedMarkerElementOptions);
+			position: LatLng | LatLngLiteral | null;
+			map: Map | null;
+			addListener(eventName: string, handler: Function): void;
+		}
+
+		export interface AdvancedMarkerElementOptions {
+			map?: Map;
+			position?: LatLng | LatLngLiteral;
+			title?: string;
+		}
+	}
+
+	export namespace places {
+		export class Geocoder {
+			geocode(
+				request: GeocoderRequest,
+				callback?: (results: GeocoderResult[], status: GeocoderStatus) => void
+			): Promise<GeocoderResponse>;
+		}
+
+		export interface GeocoderRequest {
+			address?: string;
+			location?: LatLng | LatLngLiteral;
+			placeId?: string;
+			region?: string;
+		}
+
+		export interface GeocoderResponse {
+			results: GeocoderResult[];
+		}
+
+		export interface GeocoderResult {
+			geometry: {
+				location: LatLng;
+			};
+			formatted_address: string;
+			place_id: string;
+		}
+
+		export enum GeocoderStatus {
+			OK = 'OK',
+			ZERO_RESULTS = 'ZERO_RESULTS',
+			OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
+			REQUEST_DENIED = 'REQUEST_DENIED',
+			INVALID_REQUEST = 'INVALID_REQUEST',
+			UNKNOWN_ERROR = 'UNKNOWN_ERROR'
+		}
+	}
 }
+
+export interface BreadcrumbItem {
+	label: string;
+	href?: string;
+}
+
+export type BreadcrumbConfig = BreadcrumbItem[];
 
 export {};
