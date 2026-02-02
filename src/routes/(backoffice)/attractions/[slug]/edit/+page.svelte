@@ -5,6 +5,9 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
+	// Components
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+
 	// Form components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
@@ -57,7 +60,7 @@
 	>
 </div>
 
-<h1 class="text-md my-2 font-semibold">Editar Atracción</h1>
+<LocationBar title="Editar Atracción" breadcrumbs={data.breadcrumbs} />
 
 <form name="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>

@@ -3,12 +3,15 @@ import type { PageServerLoad } from './$types';
 import { destinationsFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
 import { parseFilters } from '$lib/utils/filters';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema
 	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
 
 	try {
+		const breadcrumbs = generateBreadcrumbs(url.pathname);
+
 		const response = await api.destinations.getAll(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
@@ -25,7 +28,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			items: response.data || [],
 			pagination: response.pagination || null,
 			filters,
-			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
+			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
+			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

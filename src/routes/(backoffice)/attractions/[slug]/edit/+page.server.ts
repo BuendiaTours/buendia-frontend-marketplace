@@ -1,11 +1,13 @@
-import { error, fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import { attractionFormSchema } from '../../attraction-form.schema';
 import { api, ApiError } from '$lib/api/index';
+import { apiConfig } from '$lib/api/config';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { attractionFormSchema } from '../../attraction-form.schema';
+import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const [attraction, destinationsResponse, statusResponse] = await Promise.all([
 			api.attractions.getBySlug(fetch, params.slug),
@@ -13,28 +15,35 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			api.attractions.getStatuses(fetch)
 		]);
 
+		const apiData = attraction as any;
+
 		const form = await superValidate(
 			{
-				id: attraction.id,
-				name: attraction.name,
-				slug: attraction.slug,
-				status: attraction.status,
-				description: attraction.description,
-				descriptionLong: attraction.descriptionLong,
-				photoUrl: attraction.photoUrl,
-				photoUrlHero: attraction.photoUrlHero,
-				postalAddress: attraction.postalAddress,
-				destinations: attraction.destinations || [],
-				location: attraction.location || null
+				id: apiData.id,
+				name: apiData.name,
+				slug: apiData.slug,
+				status: apiData.status,
+				description: apiData.description,
+				descriptionLong: apiData.descriptionLong,
+				photoUrl: apiData.photoUrl,
+				photoUrlHero: apiData.photoUrlHero,
+				postalAddress: apiData.postalAddress,
+				destinations: apiData.destinations || [],
+				location: apiData.location || null
 			},
 			zod(attractionFormSchema)
 		);
+
+		const breadcrumbs = buildBreadcrumbs(url.pathname, {
+			label: apiData.name || 'Atracción'
+		});
 
 		return {
 			attraction,
 			form,
 			availableDestinations: destinationsResponse.data || [],
-			availableStatuses: statusResponse || []
+			availableStatuses: statusResponse || [],
+			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

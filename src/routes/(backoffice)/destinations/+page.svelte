@@ -29,6 +29,7 @@
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
 	// Icons
 	import { Cancel, Check, Plus, Search } from 'svelte-iconoir';
@@ -50,6 +51,7 @@
 			} | null;
 			filters: DestinationsFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
+			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
 
@@ -161,7 +163,7 @@
 	<title>Destinos - Backoffice</title>
 </svelte:head>
 
-<h1 class="text-md my-2 font-semibold">Listado de destinos</h1>
+<LocationBar title="Listado de destinos" breadcrumbs={data.breadcrumbs} />
 
 <!-- Filters Bar -->
 <div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
