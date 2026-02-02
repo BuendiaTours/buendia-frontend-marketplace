@@ -18,8 +18,10 @@
 
 	// Icons
 	import { DatabaseRestore } from 'svelte-iconoir';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 
 	let { data }: { data: PageData } = $props();
+	const { destination, breadcrumbs } = data;
 
 	const { form, errors, enhance, message } = superForm(data.form, {
 		dataType: 'json'
@@ -65,7 +67,7 @@
 	>
 </div>
 
-<LocationBar title="Editar Destino" breadcrumbs={data.breadcrumbs} />
+<LocationBar title="Editar destino" {breadcrumbs} />
 
 <form name="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>
@@ -95,26 +97,15 @@
 				wrapperClass="md:col-span-12"
 			/>
 
-			<div class="md:col-span-12">
-				<label class="label text-sm" for="slug"><span>Slug</span></label>
-				<div class="flex gap-2">
-					<input
-						type="text"
-						id="slug"
-						name="slug"
-						class="input w-full"
-						class:input-error={$errors.slug}
-						bind:value={$form.slug}
-					/>
-
-					<div class="tooltip" data-tip="Genera slug a partir del nombre">
-						<button type="button" class="btn btn-square btn-soft" onclick={generateSlug}>
-							<Refresh />
-						</button>
-					</div>
-				</div>
-				<FormErrorMsg error={$errors.slug} />
-			</div>
+			<FormInputSlug
+				id="slug"
+				label="Slug"
+				bind:value={$form.slug}
+				sourceValue={$form.name}
+				error={$errors.slug}
+				generateTooltip="Genera slug a partir del nombre"
+				wrapperClass="md:col-span-12"
+			/>
 
 			<div class="md:col-span-12">
 				<label class="label text-sm" for="kind">Tipo</label>
