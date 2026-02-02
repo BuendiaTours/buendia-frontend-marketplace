@@ -1,6 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { api, ApiError } from '$lib/api/index';
+import { apiConfig } from '$lib/api/config';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { activityFormSchema } from '../../activity-form.schema';
@@ -20,7 +21,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			guideKindsResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
-			fetch('http://localhost:3333/tags').then((res) => res.json()),
+			fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
 			api.categories.getAll(fetch),
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),

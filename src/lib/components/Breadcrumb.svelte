@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BreadcrumbItem } from '$lib/types/google-maps';
-	// import { Home } from 'svelte-iconoir';
+	import { Home } from 'svelte-iconoir';
 
 	interface Props {
 		items: BreadcrumbItem[];
@@ -14,11 +14,26 @@
 		{#each items as item, index}
 			<li>
 				{#if index === items.length - 1}
-					<span class="font-semibold">{item.label}</span>
+					<span class="font-semibold">
+						{#if item.label === 'Inicio'}
+							<Home class="inline size-4" />
+						{/if}
+						{item.label}
+					</span>
 				{:else if item.href}
-					<a href={item.href}>{item.label}</a>
+					<a href={item.href}>
+						{#if item.label === 'Inicio'}
+							<Home class="inline size-4" />
+						{/if}
+						{item.label}
+					</a>
 				{:else}
-					<span>{item.label}</span>
+					<span>
+						{#if item.label === 'Inicio'}
+							<Home class="inline size-4" />
+						{/if}
+						{item.label}
+					</span>
 				{/if}
 			</li>
 		{/each}
