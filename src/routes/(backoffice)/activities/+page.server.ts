@@ -3,11 +3,14 @@ import type { PageServerLoad } from './$types';
 import { parseFilters } from '$lib/utils/filters';
 import { activitiesFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(activitiesFiltersSchema, url.searchParams);
 
 	try {
+		const breadcrumbs = generateBreadcrumbs(url.pathname);
+
 		const [response, kindsResponse, statusesResponse] = await Promise.all([
 			api.activities.getAll(fetch, {
 				page: filters.page,
@@ -34,7 +37,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
 			activityKinds: kindsResponse || [],
-			activityStatuses: statusesResponse || []
+			activityStatuses: statusesResponse || [],
+			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {

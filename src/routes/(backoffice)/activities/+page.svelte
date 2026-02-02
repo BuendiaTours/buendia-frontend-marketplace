@@ -38,6 +38,7 @@
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
 
@@ -63,6 +64,7 @@
 			sort: { field: string; order: 'asc' | 'desc' } | null;
 			activityKinds: Array<{ id: string; name: string }>;
 			activityStatuses: Array<{ id: string; name: string }>;
+			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
 
@@ -383,7 +385,7 @@
 	<title>Actividades - Backoffice</title>
 </svelte:head>
 
-<h1 class="text-md my-2 font-semibold">Listado de actividades</h1>
+<LocationBar title="Listado de actividades" breadcrumbs={data.breadcrumbs} />
 
 <!-- Filters Bar -->
 <div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
