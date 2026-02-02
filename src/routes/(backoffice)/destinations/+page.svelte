@@ -164,7 +164,7 @@
 <h1 class="text-md my-2 font-semibold">Listado de destinos</h1>
 
 <!-- Filters Bar -->
-<div class="bnd-filter-bar card flex-row items-center gap-8 p-2">
+<div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
 	<!-- Search Box -->
 	<div class="flex w-full items-center gap-2">
 		<input
