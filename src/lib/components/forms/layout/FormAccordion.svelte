@@ -57,6 +57,7 @@
 		title: import('svelte').Snippet;
 		content: import('svelte').Snippet;
 		asideContent?: import('svelte').Snippet;
+		titleBarActions?: import('svelte').Snippet;
 		ondragstart?: (event: DragEvent) => void;
 		ondragover?: (event: DragEvent) => void;
 		ondrop?: (event: DragEvent) => void;
@@ -68,13 +69,14 @@
 		name,
 		class: className,
 		sortable = false,
-		title,
-		content,
 		asideContent,
-		ondragstart,
+		content,
+		ondragend,
 		ondragover,
+		ondragstart,
 		ondrop,
-		ondragend
+		title,
+		titleBarActions
 	}: Props = $props();
 
 	let detailsElement: HTMLDetailsElement;
@@ -149,8 +151,8 @@
 				{@render title()}
 			</div>
 
-			{#if hasChildAccordions}
-				<div class="flex gap-1">
+			<div class="flex gap-1">
+				{#if hasChildAccordions}
 					<button
 						type="button"
 						onclick={expandAllChildren}
@@ -167,8 +169,11 @@
 					>
 						Cerrar hijos
 					</button>
-				</div>
-			{/if}
+				{/if}
+				{#if titleBarActions}
+					{@render titleBarActions()}
+				{/if}
+			</div>
 		</div>
 	</summary>
 	<div class="collapse-content">

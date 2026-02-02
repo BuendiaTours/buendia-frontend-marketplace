@@ -345,6 +345,9 @@
 			<Map class="size-6" />
 			<span>Itinerario y traslados</span>
 		{/snippet}
+		{#snippet titleBarActions()}
+			<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary">Añadir etapa</button>
+		{/snippet}
 		{#snippet asideContent()}
 			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
