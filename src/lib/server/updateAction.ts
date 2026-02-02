@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect, fail } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/flashMessages';
@@ -11,10 +11,13 @@ export interface UpdateActionConfig {
 	/** Ruta base para redirección después de guardar (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	schema: any;
 	/** Función que realiza la actualización en la API */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<any>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	transformData?: (formData: any) => any;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
@@ -40,7 +43,7 @@ export interface UpdateActionConfig {
  * };
  * ```
  */
-export function createUpdateAction<T extends Record<string, any>>(config: UpdateActionConfig<T>) {
+export function createUpdateAction(config: UpdateActionConfig) {
 	return async ({ request, params, fetch, cookies }: RequestEvent) => {
 		const slug = params.slug;
 		if (!slug) {
@@ -58,7 +61,7 @@ export function createUpdateAction<T extends Record<string, any>>(config: Update
 				type: 'error',
 				message: 'Por favor, corrige los errores del formulario.'
 			});
-			return { form };
+			return fail(400, { form });
 		}
 
 		try {
@@ -130,7 +133,7 @@ export function createUpdateAction<T extends Record<string, any>>(config: Update
 					message: errorMessage
 				});
 
-				return { form };
+				return fail(err.status || 500, { form });
 			}
 
 			// Error desconocido
@@ -140,7 +143,7 @@ export function createUpdateAction<T extends Record<string, any>>(config: Update
 				message: 'Error inesperado al guardar. Por favor, inténtalo de nuevo.'
 			});
 
-			return { form };
+			return fail(503, { form });
 		}
 	};
 }
