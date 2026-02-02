@@ -46,7 +46,9 @@ export function createDeleteAction(config: DeleteActionConfig) {
 		const fromPath = refererUrl.pathname;
 
 		try {
-			await config.deleteFn(fetch, slug);
+			console.log('🗑️ [deleteAction] Intentando eliminar:', slug);
+			const result = await config.deleteFn(fetch, slug);
+			console.log('✅ [deleteAction] Eliminación exitosa:', result);
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -58,21 +60,44 @@ export function createDeleteAction(config: DeleteActionConfig) {
 
 			throw redirect(303, redirectUrl);
 		} catch (err) {
+			console.error(' [deleteAction] Error capturado:', err);
+			console.error(' [deleteAction] Tipo de error:', err?.constructor?.name);
+			console.error(' [deleteAction] Es ApiError?:', err instanceof ApiError);
+
+			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
+			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
+				console.log(' [deleteAction] Es un redirect, dejándolo pasar');
+				throw err;
+			}
+
 			let errorMessage = 'Error al eliminar el elemento.';
 
-			if (err instanceof ApiError) {
-				switch (err.type) {
-					case 'not_found':
+			if (err instanceof ApiError && err.status) {
+				switch (err.status) {
+					case 400: // Bad Request - Solicitud inválida
+						errorMessage = 'La solicitud de eliminación no es válida.';
+						break;
+					case 401: // Unauthorized - No autenticado
+						errorMessage = 'Debes iniciar sesión para eliminar este elemento.';
+						break;
+					case 403: // Forbidden - No autorizado
+						errorMessage = 'No tienes permisos para eliminar este elemento.';
+						break;
+					case 404: // Not Found - Elemento no encontrado
 						errorMessage = 'El elemento no existe o ya fue eliminado.';
 						break;
-					case 'forbidden':
-						errorMessage = 'No tienes permisos para eliminar el elemento.';
+					case 409: // Conflict - Conflicto (ej: elemento tiene dependencias)
+						errorMessage =
+							'No se puede eliminar el elemento porque está siendo usado por otros recursos.';
 						break;
-					case 'server_error':
+					case 500: // Internal Server Error - Error del servidor
 						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
 						break;
+					case 503: // Service Unavailable - Servicio no disponible
+						errorMessage = 'El servicio no está disponible. Por favor, inténtalo más tarde.';
+						break;
 					default:
-						errorMessage = `Error al eliminar el elemento (${err.status || 'desconocido'}).`;
+						errorMessage = `Error al eliminar el elemento (código ${err.status}).`;
 				}
 			}
 

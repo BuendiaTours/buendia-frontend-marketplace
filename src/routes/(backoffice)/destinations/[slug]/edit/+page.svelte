@@ -38,7 +38,7 @@
 <LocationBar title="Editar destino" {breadcrumbs} />
 
 <div
-	class="sticky top-0 z-10 mb-1 flex items-center justify-between gap-4 border-t border-b border-base-content/10 bg-base-100 py-4"
+	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
 >
 	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
