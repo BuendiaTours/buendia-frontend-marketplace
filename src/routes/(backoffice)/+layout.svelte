@@ -10,7 +10,7 @@
 
 	// Components
 	import AlertDialog from '$lib/components/MeltAlertDialog.svelte';
-	import LayoutAlertBox from '$lib/components/LayoutAlertBox.svelte';
+	import MsgAlertBox from '$lib/components/msg/MsgAlertBox.svelte';
 
 	// Partials o elementos reutilizables
 	import Header from '$lib/layout/Header.svelte';
@@ -23,7 +23,7 @@
 	<Header title="Backoffice App" />
 
 	<main class="backoffice-container flex-1 px-4">
-		<LayoutAlertBox />
+		<MsgAlertBox />
 		{@render children()}
 	</main>
 

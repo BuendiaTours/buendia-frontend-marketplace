@@ -25,6 +25,12 @@
 	// StarRating
 	import StarRating from '$lib/components/StarRating.svelte';
 
+	// Message Components
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+
+	// Variable para acceder a la función addToast del componente
+	let toastComponent: MsgMeltToast;
+
 	// Form Components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
@@ -505,5 +511,73 @@
 				bind:value={formMarkdown}
 			/>
 		</div>
+
+		<label class="label mt-4">Ejemplo de MsgMeltToast</label>
+		<p class="text-sm opacity-70">Notificaciones toast usando Melt-UI</p>
+		<div class="card p-4">
+			<div class="flex flex-wrap gap-2">
+				<button
+					class="btn btn-sm btn-info"
+					onclick={() => {
+						toastComponent?.addToast({
+							data: {
+								title: 'Info',
+								description: 'Esta es una notificación informativa',
+								type: 'info'
+							}
+						});
+					}}
+				>
+					Mostrar Info
+				</button>
+				<button
+					class="btn btn-sm btn-success"
+					onclick={() => {
+						toastComponent?.addToast({
+							data: {
+								title: 'Success',
+								description: '¡Operación completada con éxito!',
+								type: 'success'
+							}
+						});
+					}}
+				>
+					Mostrar Success
+				</button>
+				<button
+					class="btn btn-sm btn-warning"
+					onclick={() => {
+						toastComponent?.addToast({
+							data: {
+								title: 'Warning',
+								description: 'Por favor, revisa esta información',
+								type: 'warning'
+							}
+						});
+					}}
+				>
+					Mostrar Warning
+				</button>
+				<button
+					class="btn btn-sm btn-error"
+					onclick={() => {
+						toastComponent?.addToast({
+							data: {
+								title: 'Error',
+								description: 'Ha ocurrido un error en la operación',
+								type: 'error'
+							}
+						});
+					}}
+				>
+					Mostrar Error
+				</button>
+			</div>
+			<p class="mt-4 text-xs opacity-60">
+				Los toasts aparecerán en la esquina superior derecha y se pueden cerrar manualmente
+			</p>
+		</div>
 	</div>
 </div>
+
+<MsgMeltToast bind:this={toastComponent} />
