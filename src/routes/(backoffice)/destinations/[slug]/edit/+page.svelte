@@ -19,6 +19,7 @@
 	// Icons
 	import { DatabaseRestore } from 'svelte-iconoir';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { destination, breadcrumbs } = data;
@@ -155,9 +156,4 @@
 	</FormAccordion>
 </form>
 
-<h2 class="mt-8">JSON de la API</h2>
-<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
-		data.destination,
-		null,
-		2
-	)}</pre>
+<DebugApiJson data={data.destination} />

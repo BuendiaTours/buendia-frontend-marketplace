@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	export let data: { activity: ActivityDetail };
 	const { activity } = data;
@@ -42,8 +43,4 @@
 	</div>
 </div>
 
-<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
-		activity,
-		null,
-		2
-	)}</pre>
+<DebugApiJson data={activity} />

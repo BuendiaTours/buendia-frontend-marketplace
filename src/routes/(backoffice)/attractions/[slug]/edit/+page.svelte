@@ -20,6 +20,7 @@
 
 	// Icons
 	import { DatabaseRestore } from 'svelte-iconoir';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -200,9 +201,4 @@
 	</FormAccordion>
 </form>
 
-<h2 class="mt-8">JSON de la API</h2>
-<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
-		data.attraction,
-		null,
-		2
-	)}</pre>
+<DebugApiJson data={data.attraction} />

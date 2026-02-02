@@ -9,6 +9,7 @@
 
 	// Components
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	// Form layout
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
@@ -571,9 +572,4 @@
 	</div> -->
 </form>
 
-<h2 class="mt-8 text-sm">JSON de la API</h2>
-<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
-		activity,
-		null,
-		2
-	)}</pre>
+<DebugApiJson data={activity} />
