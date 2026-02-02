@@ -61,6 +61,8 @@
 			} | null;
 			filters: ActivitiesFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
+			activityKinds: Array<{ id: string; name: string }>;
+			activityStatuses: Array<{ id: string; name: string }>;
 		};
 	} = $props();
 
@@ -71,17 +73,33 @@
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
+	// Crear mapeos para traducciones
+	const activityKindsMap = $derived(
+		data.activityKinds.reduce((acc: Record<string, string>, item) => {
+			acc[item.id] = item.name;
+			return acc;
+		}, {})
+	);
+
+	const activityStatusesMap = $derived(
+		data.activityStatuses.reduce((acc: Record<string, string>, item) => {
+			acc[item.id] = item.name;
+			return acc;
+		}, {})
+	);
+
 	// ============================================================================
-	// DESTINATIONS (cargadas desde API)
+	// DESTINATIONS (cargadas desde API en cliente)
 	// ============================================================================
 
 	let destinations = $state<{ value: string; label: string }[]>([]);
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`${PUBLIC_API_BASE_URL}/destinations`);
-			if (response.ok) {
-				const json = await response.json();
+			// Cargar destinations
+			const destResponse = await fetch(`${PUBLIC_API_BASE_URL}/destinations`);
+			if (destResponse.ok) {
+				const json = await destResponse.json();
 				const data: Destination[] = json.data || json;
 				destinations = data.map((loc) => ({
 					value: loc.slug,
@@ -89,7 +107,7 @@
 				}));
 			}
 		} catch (error) {
-			console.error('Error cargando destinations:', error);
+			console.error('Error cargando destinations desde API:', error);
 		}
 	});
 
@@ -247,6 +265,46 @@
 
 	function handleClearLocation() {
 		handleLocationChange(undefined);
+	}
+
+	// ============================================================================
+	// FILTRO: KIND
+	// ============================================================================
+
+	let selectedKind = $state(filters.kind || '');
+
+	$effect(() => {
+		selectedKind = filters.kind || '';
+	});
+
+	function handleKindChange(value: string | undefined) {
+		applyFilterPatch({
+			kind: value ? value : (null as any)
+		});
+	}
+
+	function handleClearKind() {
+		handleKindChange(undefined);
+	}
+
+	// ============================================================================
+	// FILTRO: STATUS
+	// ============================================================================
+
+	let selectedStatus = $state(filters.status || '');
+
+	$effect(() => {
+		selectedStatus = filters.status || '';
+	});
+
+	function handleStatusChange(value: string | undefined) {
+		applyFilterPatch({
+			status: value ? value : (null as any)
+		});
+	}
+
+	function handleClearStatus() {
+		handleStatusChange(undefined);
 	}
 
 	// ============================================================================
@@ -420,12 +478,50 @@
 		</div>
 	</div>
 
-	<select class="select">
-		<option disabled selected>Pick a font</option>
-		<option>Inter</option>
-		<option>Poppins</option>
-		<option>Raleway</option>
-	</select>
+	<div class="flex items-center gap-2">
+		<select
+			class="select"
+			value={selectedKind}
+			onchange={(e) => handleKindChange(e.currentTarget.value || undefined)}
+		>
+			<option value="">Todos los tipos</option>
+			{#each data.activityKinds as kind}
+				<option value={kind.id}>{kind.name}</option>
+			{/each}
+		</select>
+		<div class="tooltip" data-tip="Limpiar tipo">
+			<button
+				class="btn btn-square btn-soft btn-error"
+				disabled={!selectedKind}
+				onclick={handleClearKind}
+			>
+				<Cancel />
+			</button>
+		</div>
+	</div>
+
+	<div class="flex items-center gap-2">
+		<select
+			class="select"
+			value={selectedStatus}
+			onchange={(e) => handleStatusChange(e.currentTarget.value || undefined)}
+		>
+			<option value="">Todos los estados</option>
+			{#each data.activityStatuses as status}
+				<option value={status.id}>{status.name}</option>
+			{/each}
+		</select>
+
+		<div class="tooltip" data-tip="Limpiar estado">
+			<button
+				class="btn btn-square btn-soft btn-error"
+				disabled={!selectedStatus}
+				onclick={handleClearStatus}
+			>
+				<Cancel />
+			</button>
+		</div>
+	</div>
 
 	<div class="ml-auto flex items-center gap-2">
 		<FilterAdvancedDialog
@@ -519,6 +615,14 @@
 								<td>
 									{item[col.key].map((d: any) => d.name).join(', ')}
 								</td>
+							{:else if col.key === 'kind'}
+								<td>
+									{activityKindsMap[item[col.key]] || item[col.key]}
+								</td>
+							{:else if col.key === 'status'}
+								<td>
+									{activityStatusesMap[item[col.key]] || item[col.key]}
+								</td>
 							{:else}
 								<td>
 									{item[col.key]}
@@ -573,8 +677,8 @@
 										</form>
 									</li>
 								</ul>
-							</div></td
-						>
+							</div>
+						</td>
 					</tr>
 				{/each}
 			</tbody>

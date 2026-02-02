@@ -45,6 +45,8 @@ export type ActivitiesFilters = {
 	to?: string;
 	// Búsqueda
 	destination?: string;
+	kind?: string;
+	status?: string;
 	// Booleanos, todos se inicializan igual
 	audioGuideAvailable?: boolean;
 	breakfastIncluded?: boolean;
@@ -102,6 +104,32 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 					out.set('destination', value);
 				} else {
 					out.delete('destination');
+				}
+			},
+			resetPageOnChange: true
+		},
+		kind: {
+			parse: (raw) => {
+				return raw || undefined;
+			},
+			serialize: (value, out) => {
+				if (value) {
+					out.set('kind', value);
+				} else {
+					out.delete('kind');
+				}
+			},
+			resetPageOnChange: true
+		},
+		status: {
+			parse: (raw) => {
+				return raw || undefined;
+			},
+			serialize: (value, out) => {
+				if (value) {
+					out.set('status', value);
+				} else {
+					out.delete('status');
 				}
 			},
 			resetPageOnChange: true

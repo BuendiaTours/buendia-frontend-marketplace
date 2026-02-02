@@ -8,6 +8,8 @@ export type ActivitiesGetAllParams = {
 	from?: string;
 	to?: string;
 	destination?: string;
+	kind?: string;
+	status?: string;
 	isFreeTour?: boolean;
 	freeForKids?: boolean;
 	breakfast?: boolean;
