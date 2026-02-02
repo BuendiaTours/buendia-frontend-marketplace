@@ -57,7 +57,7 @@
 	>
 </div>
 
-<h1>Editar Atracción</h1>
+<h1 class="text-md my-2 font-semibold">Editar Atracción</h1>
 
 <form name="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>

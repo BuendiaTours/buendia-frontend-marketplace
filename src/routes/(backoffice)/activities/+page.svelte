@@ -325,10 +325,10 @@
 	<title>Actividades - Backoffice</title>
 </svelte:head>
 
-<h1 class="text-lg">Actividades</h1>
+<h1 class="text-md my-2 font-semibold">Listado de actividades</h1>
 
 <!-- Filters Bar -->
-<div class="bnd-filter-bar card mt-6 flex-row items-center gap-8 p-2">
+<div class="bnd-filter-bar card flex-row items-center gap-8 p-2">
 	<div class="tooltip" data-tip={dateRangeTooltip}>
 		<button
 			use:melt={$dateRangeTrigger}

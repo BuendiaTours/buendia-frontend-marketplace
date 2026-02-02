@@ -161,10 +161,10 @@
 	<title>Destinos - Backoffice</title>
 </svelte:head>
 
-<h1 class="text-lg">Destinos</h1>
+<h1 class="text-md my-2 font-semibold">Listado de destinos</h1>
 
 <!-- Filters Bar -->
-<div class="bnd-filter-bar card mt-6 flex-row items-center gap-8 p-2">
+<div class="bnd-filter-bar card flex-row items-center gap-8 p-2">
 	<!-- Search Box -->
 	<div class="flex w-full items-center gap-2">
 		<input
