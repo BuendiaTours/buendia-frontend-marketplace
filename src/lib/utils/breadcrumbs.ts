@@ -3,13 +3,13 @@ import type { BreadcrumbItem } from '$lib/types/google-maps';
 // Mapeo de rutas a labels legibles
 const routeLabels: Record<string, string> = {
 	'': 'Inicio',
-	'activities': 'Actividades',
-	'attractions': 'Atracciones',
-	'destinations': 'Destinos',
-	'distributives': 'Distributivos',
-	'edit': 'Editar',
-	'create': 'Crear',
-	'new': 'Nuevo'
+	activities: 'Actividades',
+	attractions: 'Atracciones',
+	destinations: 'Destinos',
+	distributives: 'Distributivos',
+	edit: 'Editar',
+	create: 'Crear',
+	new: 'Nuevo'
 };
 
 /**
@@ -61,16 +61,30 @@ export function generateBreadcrumbs(
 /**
  * Combina breadcrumbs auto-generados con un item final personalizado
  * Útil para páginas de detalle donde necesitas el título del recurso
+ * Esta función filtra slugs y palabras como 'edit' para páginas de detalle
  */
 export function buildBreadcrumbs(
 	pathname: string,
 	finalItem?: { label: string; href?: string }
 ): BreadcrumbItem[] {
-	const auto = generateBreadcrumbs(pathname);
+	// Para páginas de detalle (ej: /attractions/alhambra/edit)
+	// Solo queremos: Inicio > Atracciones > [Nombre del recurso]
+	const segments = pathname.split('/').filter(Boolean);
+	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: '/' }];
 
-	if (finalItem) {
-		return [...auto, finalItem];
+	// Solo procesar el primer segmento (la sección principal)
+	if (segments.length > 0) {
+		const section = segments[0];
+		breadcrumbs.push({
+			label: routeLabels[section] || section,
+			href: `/${section}`
+		});
 	}
 
-	return auto;
+	// Añadir el item final si existe (el título del recurso)
+	if (finalItem) {
+		breadcrumbs.push(finalItem);
+	}
+
+	return breadcrumbs;
 }
