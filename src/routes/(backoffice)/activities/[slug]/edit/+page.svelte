@@ -10,6 +10,7 @@
 	// Components
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
 
 	// Form layout
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
@@ -39,8 +40,36 @@
 		breadcrumbs
 	} = data;
 
+	// Referencia al componente toast para mostrar notificaciones
+	let toastComponent: MsgMeltToast;
+
 	const { form, errors, enhance, message } = superForm(data.form, {
-		dataType: 'json'
+		dataType: 'json',
+		onUpdate({ form }) {
+			// Se ejecuta después de la validación pero antes del envío
+			if (!form.valid) {
+				// Mostrar toast inmediatamente cuando hay errores de validación
+				toastComponent?.addToast({
+					data: {
+						title: 'Errores en el formulario',
+						description: 'Por favor, corrige los errores marcados en el formulario.',
+						type: 'error'
+					}
+				});
+			}
+		},
+		onError({ result }) {
+			// Mostrar toast cuando hay errores de validación del servidor
+			if (result.type === 'failure' && result.status === 400) {
+				toastComponent?.addToast({
+					data: {
+						title: 'Errores en el formulario',
+						description: 'Por favor, corrige los errores marcados en el formulario.',
+						type: 'error'
+					}
+				});
+			}
+		}
 	});
 
 	// Backup de coordenadas por stage (para poder restaurar si se desactiva/activa el toggle)
@@ -573,3 +602,5 @@
 </form>
 
 <DebugApiJson data={activity} />
+
+<MsgMeltToast bind:this={toastComponent} />

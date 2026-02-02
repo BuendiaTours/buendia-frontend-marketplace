@@ -5,6 +5,7 @@ import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { setFlashMessage } from '$lib/server/flashMessages';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
@@ -93,7 +94,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, params, fetch }) => {
+	default: async ({ request, params, fetch, cookies }) => {
 		console.log('📝 [edit action] Formulario recibido para:', params.slug);
 
 		const form = await superValidate(request, zod(activityFormSchema));
@@ -101,6 +102,10 @@ export const actions: Actions = {
 
 		if (!form.valid) {
 			console.error('📝 [edit action] Errores de validación:', form.errors);
+			setFlashMessage(cookies, {
+				type: 'error',
+				message: 'Por favor, corrige los errores del formulario.'
+			});
 			return fail(400, { form });
 		}
 
@@ -122,7 +127,6 @@ export const actions: Actions = {
 				status: form.data.status,
 				phoneContact: form.data.phoneContact,
 				infoImportant: form.data.infoImportant,
-				location: form.data.location,
 				priceFrom: form.data.priceFrom,
 				currency: form.data.currency,
 				isFreeTour: form.data.isFreeTour,
@@ -130,25 +134,55 @@ export const actions: Actions = {
 			} as any);
 
 			console.log('✅ [edit action] API respondió exitosamente:', result);
-			console.log('📝 [edit action] Redirigiendo a:', `/activities/${params.slug}`);
 
-			throw redirect(303, `/activities/${params.slug}`);
+			setFlashMessage(cookies, {
+				type: 'success',
+				message: 'Los cambios se guardaron correctamente.'
+			});
+
+			const redirectPath = `/activities/${params.slug}/edit`;
+			console.log('📝 [edit action] Redirigiendo a:', redirectPath);
+
+			throw redirect(303, redirectPath);
 		} catch (err) {
 			console.error('❌ [edit action] Error capturado:', err);
 			console.error('❌ [edit action] Tipo de error:', err?.constructor?.name);
 
-			if (err instanceof ApiError) {
-				console.error('❌ [edit action] ApiError con status:', err.status);
-				return fail(err.status || 500, { form });
-			}
-
+			// Si es un redirect, dejarlo pasar
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
 				console.log('✅ [edit action] Es un redirect, dejándolo pasar');
 				throw err;
 			}
 
-			console.error('❌ [edit action] Error desconocido, retornando 503');
-			return fail(503, { form });
+			let errorMessage = 'Error al guardar los cambios.';
+
+			if (err instanceof ApiError && err.status) {
+				console.error('❌ [edit action] ApiError con status:', err.status);
+				switch (err.status) {
+					case 400:
+						errorMessage = 'Los datos enviados no son válidos.';
+						break;
+					case 404:
+						errorMessage = 'El elemento no existe.';
+						break;
+					case 409:
+						errorMessage = 'Ya existe un elemento con estos datos. Verifica el slug o nombre.';
+						break;
+					case 500:
+						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
+						break;
+					default:
+						errorMessage = `Error al guardar los cambios (código ${err.status}).`;
+				}
+			}
+
+			setFlashMessage(cookies, {
+				type: 'error',
+				message: errorMessage
+			});
+
+			console.error('❌ [edit action] Retornando form con error');
+			return fail(err instanceof ApiError ? err.status || 500 : 503, { form });
 		}
 	}
 };
