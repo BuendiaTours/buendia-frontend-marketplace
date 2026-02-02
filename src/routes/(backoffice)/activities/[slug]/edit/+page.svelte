@@ -100,6 +100,33 @@
 			stage.order = i + 1;
 		});
 	}
+
+	function handleAddStage() {
+		// Colapsar todos los acordeones hijos
+		const stageAccordions = document.querySelectorAll('[name^="form-stages-"]');
+		stageAccordions.forEach((accordion) => {
+			if (accordion instanceof HTMLDetailsElement) {
+				accordion.open = false;
+			}
+		});
+
+		// Crear nuevo stage
+		const newOrder = $form.stages.length + 1;
+		const newStage = {
+			id: `temp-${Date.now()}`, // ID temporal hasta que se guarde
+			activityId: $form.id,
+			order: newOrder,
+			name: `Etapa ${newOrder}`,
+			description: '',
+			duration: '',
+			location: null, // Geolocalización desactivada por defecto
+			kind: 'EXPERIENCE' as const,
+			relevance: 'MEDIUM' as const,
+			requirement: 'REQUIRED' as const
+		};
+
+		$form.stages = [...$form.stages, newStage];
+	}
 </script>
 
 <div
@@ -346,7 +373,13 @@
 			<span>Itinerario y traslados</span>
 		{/snippet}
 		{#snippet titleBarActions()}
-			<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary">Añadir etapa</button>
+			<button
+				type="button"
+				class="btn ml-6 btn-outline btn-xs btn-primary"
+				onclick={handleAddStage}
+			>
+				Añadir etapa
+			</button>
 		{/snippet}
 		{#snippet asideContent()}
 			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
