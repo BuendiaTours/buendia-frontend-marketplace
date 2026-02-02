@@ -5,7 +5,8 @@
 	import { tick } from 'svelte';
 
 	/**
-	 * Componente reutilizable para gestión de listas de texto ordenables con drag & drop
+	 * Componente reutilizable para gestión de listas de strings ordenables con drag & drop
+	 * Permite añadir texto libre y ordenar los items
 	 *
 	 * @param id - ID del campo para el formulario
 	 * @param label - Texto del label principal
@@ -18,7 +19,7 @@
 	 *
 	 * @example
 	 * ```svelte
-	 * <FormTextList
+	 * <FormOrderedStringList
 	 *   id="excluded"
 	 *   label="Elementos excluidos"
 	 *   bind:items={$form.excluded}

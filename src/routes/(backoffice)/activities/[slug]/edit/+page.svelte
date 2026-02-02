@@ -17,12 +17,12 @@
 	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormTextList from '$lib/components/forms/FormTextList.svelte';
+	import FormOrderedStringList from '$lib/components/forms/FormOrderedStringList.svelte';
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -296,7 +296,7 @@
 			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
-			<FormOrderedList
+			<FormOrderedObjectList
 				id="attractions"
 				label="Atracciones"
 				bind:items={$form.attractions}
@@ -306,7 +306,7 @@
 				emptyMessage="No hay atracciones asociadas"
 			/>
 
-			<FormOrderedList
+			<FormOrderedObjectList
 				id="destinations"
 				label="Destinos"
 				bind:items={$form.destinations}
@@ -317,7 +317,7 @@
 				error={$errors.destinations?._errors}
 			/>
 
-			<FormOrderedList
+			<FormOrderedObjectList
 				id="distributives"
 				label="Páginas distributivas a las que pertenece"
 				bind:items={$form.distributives}
@@ -338,7 +338,7 @@
 			<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 		{/snippet}
 		{#snippet content()}
-			<FormTextList
+			<FormOrderedStringList
 				id="included"
 				label="Elementos incluidos"
 				bind:items={$form.included}
@@ -347,7 +347,7 @@
 				badge="opcional"
 			/>
 
-			<FormTextList
+			<FormOrderedStringList
 				id="itemsToBring"
 				label="Elementos necesarios para la actividad"
 				bind:items={$form.itemsToBring}
@@ -356,7 +356,7 @@
 				badge="opcional"
 			/>
 
-			<FormTextList
+			<FormOrderedStringList
 				id="excluded"
 				label="Elementos excluidos"
 				bind:items={$form.excluded}

@@ -6,6 +6,7 @@
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox
+	 * Permite seleccionar objetos de una lista predefinida y ordenarlos
 	 *
 	 * @param id - ID del campo para el formulario
 	 * @param label - Texto del label principal
@@ -19,7 +20,7 @@
 	 *
 	 * @example Uso básico (con flechas de ordenación)
 	 * ```svelte
-	 * <FormOrderedList
+	 * <FormOrderedObjectList
 	 *   id="attractions"
 	 *   label="Attractions"
 	 *   bind:items={$form.attractions}
@@ -30,7 +31,7 @@
 	 *
 	 * @example Con drag and drop
 	 * ```svelte
-	 * <FormOrderedList
+	 * <FormOrderedObjectList
 	 *   id="attractions"
 	 *   label="Attractions"
 	 *   bind:items={$form.attractions}
@@ -41,7 +42,7 @@
 	 *
 	 * @example Con botón de eliminar todos
 	 * ```svelte
-	 * <FormOrderedList
+	 * <FormOrderedObjectList
 	 *   id="attractions"
 	 *   label="Attractions"
 	 *   bind:items={$form.attractions}
@@ -61,7 +62,7 @@
 		name: string;
 	}
 
-	interface FormOrderedListConfig {
+	interface FormOrderedObjectListConfig {
 		useDragAndDrop: boolean;
 		showRemoveAll: boolean;
 	}
@@ -76,10 +77,10 @@
 		placeholder?: string;
 		wrapperClass?: string;
 		emptyMessage?: string;
-		config?: Partial<FormOrderedListConfig>;
+		config?: Partial<FormOrderedObjectListConfig>;
 	}
 
-	const DEFAULT_CONFIG: FormOrderedListConfig = {
+	const DEFAULT_CONFIG: FormOrderedObjectListConfig = {
 		useDragAndDrop: false,
 		showRemoveAll: false
 	};

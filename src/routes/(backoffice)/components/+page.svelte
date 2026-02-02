@@ -32,7 +32,7 @@
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
-	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
 
 	// Range calendar - Probando versión Melt-UI
@@ -477,10 +477,10 @@
 			</div>
 		</div>
 
-		<label class="label mt-4">Ejemplo de FormOrderedList</label>
+		<label class="label mt-4">Ejemplo de FormOrderedObjectList</label>
 		<p class="text-sm opacity-70">Lista ordenable con drag & drop</p>
 		<div class="card p-4">
-			<FormOrderedList
+			<FormOrderedObjectList
 				id="example-ordered"
 				label="Items ordenables"
 				bind:items={formOrderedItems}

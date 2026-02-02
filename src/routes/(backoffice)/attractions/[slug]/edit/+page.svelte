@@ -13,7 +13,7 @@
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
@@ -167,7 +167,7 @@
 				placeholder="https://example.com/image.jpg"
 			/>
 
-			<FormOrderedList
+			<FormOrderedObjectList
 				id="destintions"
 				label="Destinos"
 				bind:items={$form.destinations}
