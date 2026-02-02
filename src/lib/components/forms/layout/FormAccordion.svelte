@@ -126,6 +126,7 @@
 <details
 	bind:this={detailsElement}
 	class="collapse-arrow collapse border border-base-content/9 bg-base-100 {className}"
+	id={name}
 	{name}
 	{open}
 	{ondragover}

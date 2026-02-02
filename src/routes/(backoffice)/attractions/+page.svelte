@@ -293,13 +293,16 @@
 								</td>
 							{:else if col.key === 'status'}
 								<td>
-									<span>
-										{item.status === 'ACTIVE'
-											? 'Activo'
-											: item.status === 'DRAFT'
-												? 'Borrador'
-												: 'Inactivo'}
-									</span>
+									{#if item.status === 'ACTIVE'}
+										<div aria-label="success" class="mr-1 status status-lg status-success"></div>
+										<span>Activo</span>
+									{:else if item.status === 'DRAFT'}
+										<div aria-label="status" class="mr-1 status status-lg status-neutral"></div>
+										<span>Borrador</span>
+									{:else}
+										<div aria-label="error" class="mr-1 status status-lg status-error"></div>
+										<span>Inactivo</span>
+									{/if}
 								</td>
 							{:else}
 								<td>
