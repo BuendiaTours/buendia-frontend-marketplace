@@ -3,7 +3,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction } from '$lib/actions/confirmAction';
+	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
@@ -80,6 +80,25 @@
 
 	function handleStageDragEnd() {
 		draggedStageIndex = null;
+	}
+
+	async function handleRemoveStage(index: number) {
+		const confirmed = await showConfirmDialog({
+			title: 'Eliminar etapa',
+			message: '¿Estás seguro de que quieres eliminar esta etapa?',
+			confirmText: 'Eliminar',
+			cancelText: 'Cancelar',
+			danger: true
+		});
+
+		if (!confirmed) return;
+
+		$form.stages = $form.stages.filter((_, i) => i !== index);
+
+		// Reordenar los stages restantes
+		$form.stages.forEach((stage, i) => {
+			stage.order = i + 1;
+		});
 	}
 </script>
 
@@ -321,7 +340,7 @@
 		{/snippet}
 	</FormAccordion>
 
-	<FormAccordion name="form-stages">
+	<FormAccordion name="form-stages" open>
 		{#snippet title()}
 			<Map class="size-6" />
 			<span>Itinerario y traslados</span>
@@ -335,6 +354,7 @@
 					name="form-stages-{index}"
 					class="md:col-span-12"
 					sortable
+					open
 					ondragstart={(e) => handleStageDragStart(e, index)}
 					ondragover={handleStageDragOver}
 					ondrop={(e) => handleStageDrop(e, index)}
@@ -490,6 +510,16 @@
 								badge="opcional"
 							/>
 						{/if}
+
+						<div class="flex gap-2 md:col-span-12">
+							<button
+								type="button"
+								class="btn ml-auto btn-soft btn-xs btn-error"
+								onclick={() => handleRemoveStage(index)}
+							>
+								Eliminar esta etapa
+							</button>
+						</div>
 					{/snippet}
 				</FormAccordion>
 			{/each}
