@@ -1,18 +1,23 @@
 <script lang="ts">
-	import type { Destination } from '$lib/types';
-	import { page } from '$app/stores';
-	import { superForm } from 'sveltekit-superforms';
-	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
-	import { slugify } from '$lib/utils/strings';
+	import { page } from '$app/stores';
 	import { Refresh } from 'svelte-iconoir';
+	import { slugify } from '$lib/utils/strings';
+	import { superForm } from 'sveltekit-superforms';
+	import type { PageData } from './$types';
+
+	// Form components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-
-	import { DatabaseRestore } from 'svelte-iconoir';
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+
+	// Components
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+
+	// Icons
+	import { DatabaseRestore } from 'svelte-iconoir';
 
 	let { data }: { data: PageData } = $props();
 
@@ -60,7 +65,7 @@
 	>
 </div>
 
-<h1 class="text-md my-2 font-semibold">Editar Destino</h1>
+<LocationBar title="Editar Destino" breadcrumbs={data.breadcrumbs} />
 
 <form name="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>

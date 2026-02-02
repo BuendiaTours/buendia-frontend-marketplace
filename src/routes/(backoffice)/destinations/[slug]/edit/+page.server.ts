@@ -1,27 +1,38 @@
-import { error, fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
 import { api, ApiError } from '$lib/api/index';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { destinationFormSchema } from '../../destination-form.schema';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { destinationFormSchema } from '../../destination-form.schema';
+import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const destination = await api.destinations.getBySlug(fetch, params.slug);
 
+		const apiData = destination as any;
+
 		const form = await superValidate(
 			{
-				id: destination.id,
-				name: destination.name,
-				slug: destination.slug,
-				kind: destination.kind,
-				descriptionShort: destination.descriptionShort,
-				photoUrlHero: destination.photoUrlHero
+				id: apiData.id,
+				name: apiData.name,
+				slug: apiData.slug,
+				kind: apiData.kind,
+				descriptionShort: apiData.descriptionShort,
+				photoUrlHero: apiData.photoUrlHero
 			},
 			zod(destinationFormSchema)
 		);
 
-		return { destination, form };
+		const breadcrumbs = buildBreadcrumbs(url.pathname, {
+			label: apiData.name || 'Destino'
+		});
+
+		return {
+			destination,
+			form,
+			breadcrumbs
+		};
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {

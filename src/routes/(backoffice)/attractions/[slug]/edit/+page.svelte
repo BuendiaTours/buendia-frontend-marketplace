@@ -9,16 +9,17 @@
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
 	// Form components
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
-	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
-
-	import { DatabaseRestore } from 'svelte-iconoir';
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
+	import FormOrderedList from '$lib/components/forms/FormOrderedList.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+
+	// Icons
+	import { DatabaseRestore } from 'svelte-iconoir';
 
 	let { data }: { data: PageData } = $props();
 

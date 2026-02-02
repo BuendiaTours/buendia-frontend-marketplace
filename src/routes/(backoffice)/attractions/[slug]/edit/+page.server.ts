@@ -1,6 +1,5 @@
 import { attractionFormSchema } from '../../attraction-form.schema';
 import { api, ApiError } from '$lib/api/index';
-import { apiConfig } from '$lib/api/config';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
