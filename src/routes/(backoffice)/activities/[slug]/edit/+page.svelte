@@ -390,7 +390,6 @@
 					name="form-stages-{index}"
 					class="md:col-span-12"
 					sortable
-					open
 					ondragstart={(e) => handleStageDragStart(e, index)}
 					ondragover={handleStageDragOver}
 					ondrop={(e) => handleStageDrop(e, index)}

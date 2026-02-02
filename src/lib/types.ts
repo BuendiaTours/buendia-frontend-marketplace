@@ -92,3 +92,10 @@ export type Attraction = {
 		coordinates: [number, number];
 	} | null;
 };
+
+export interface BreadcrumbItem {
+	label: string;
+	href?: string;
+}
+
+export type BreadcrumbConfig = BreadcrumbItem[];

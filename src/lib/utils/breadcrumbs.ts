@@ -1,4 +1,4 @@
-import type { BreadcrumbItem } from '$lib/types/google-maps';
+import type { BreadcrumbItem } from '$lib/types';
 
 // Mapeo de rutas a labels legibles
 const routeLabels: Record<string, string> = {

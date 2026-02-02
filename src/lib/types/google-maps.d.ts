@@ -105,11 +105,4 @@ declare namespace google.maps {
 	}
 }
 
-export interface BreadcrumbItem {
-	label: string;
-	href?: string;
-}
-
-export type BreadcrumbConfig = BreadcrumbItem[];
-
 export {};

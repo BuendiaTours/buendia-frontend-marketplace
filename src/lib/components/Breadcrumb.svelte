@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BreadcrumbItem } from '$lib/types/google-maps';
+	import type { BreadcrumbItem } from '$lib/types';
 	import { Home } from 'svelte-iconoir';
 
 	interface Props {
