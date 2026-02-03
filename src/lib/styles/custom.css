@@ -32,3 +32,17 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+/* Animación de fade de borde verde a original */
+@keyframes fade-border-success {
+	0% {
+		border-color: var(--color-success);
+	}
+	100% {
+		border-color: color-mix(in oklab, var(--color-base-content) 9%, transparent);
+	}
+}
+
+.animate-fade-border-success {
+	animation: fade-border-success 2s ease-out forwards;
+}

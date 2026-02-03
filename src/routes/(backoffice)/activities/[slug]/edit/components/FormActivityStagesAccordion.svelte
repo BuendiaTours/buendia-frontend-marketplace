@@ -131,6 +131,8 @@
 		) as HTMLDetailsElement;
 		if (newAccordion) {
 			newAccordion.open = true;
+			// Añadir animación de fade del borde verde
+			newAccordion.classList.add('animate-fade-border-success');
 		}
 	}
 </script>
