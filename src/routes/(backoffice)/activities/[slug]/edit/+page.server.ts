@@ -16,16 +16,14 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			categoriesResponse,
 			attractionsResponse,
 			destinationsResponse,
-			distributivesResponse,
-			guideKindsResponse
+			distributivesResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
 			fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
 			api.categories.getAll(fetch),
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),
-			api.distributives.getAll(fetch),
-			api.activities.getGuideKinds(fetch)
+			api.distributives.getAll(fetch)
 		]);
 
 		const apiData = activity as any;
@@ -72,7 +70,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
 			availableDistributives: distributivesResponse || [],
-			availableGuideKinds: guideKindsResponse || [],
 			breadcrumbs
 		};
 	} catch (err) {

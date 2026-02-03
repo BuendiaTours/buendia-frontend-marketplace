@@ -11,6 +11,7 @@
 		ACTIVITY_STATUS_OPTIONS,
 		ACTIVITY_KIND_OPTIONS
 	} from '$lib/config/enums';
+	import { ACTIVITY_GUIDE_KIND_OPTIONS } from '$lib/generated/enums';
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
@@ -41,7 +42,6 @@
 		availableCategories,
 		availableAttractions,
 		availableDistributives,
-		availableGuideKinds,
 		breadcrumbs
 	} = data;
 
@@ -251,7 +251,7 @@
 				label="Tipo de guía"
 				bind:value={$form.guideKind}
 				error={$errors.guideKind}
-				options={availableGuideKinds}
+				options={ACTIVITY_GUIDE_KIND_OPTIONS}
 				placeholder="Selecciona un tipo"
 				wrapperClass="md:col-span-4"
 			/>
