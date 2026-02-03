@@ -42,7 +42,7 @@
 		label: string;
 		value: string | undefined;
 		error?: string | string[];
-		options?: Option[];
+		options?: readonly Option[];
 		apiEndpoint?: string;
 		placeholder?: string;
 		badge?: string;

@@ -17,8 +17,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			attractionsResponse,
 			destinationsResponse,
 			distributivesResponse,
-			statusResponse,
-			kindsResponse,
 			guideKindsResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
@@ -27,8 +25,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),
 			api.distributives.getAll(fetch),
-			api.activities.getStatuses(fetch),
-			api.activities.getKinds(fetch),
 			api.activities.getGuideKinds(fetch)
 		]);
 
@@ -76,8 +72,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
 			availableDistributives: distributivesResponse || [],
-			availableStatuses: statusResponse || [],
-			availableKinds: kindsResponse || [],
 			availableGuideKinds: guideKindsResponse || [],
 			breadcrumbs
 		};

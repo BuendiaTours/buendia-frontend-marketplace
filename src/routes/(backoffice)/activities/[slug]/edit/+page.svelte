@@ -6,7 +6,11 @@
 	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
 
 	// Enums
-	import { ACTIVITY_NOT_SUITABLE_FOR_OPTIONS } from '$lib/config/enums';
+	import {
+		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
+		ACTIVITY_STATUS_OPTIONS,
+		ACTIVITY_KIND_OPTIONS
+	} from '$lib/config/enums';
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
@@ -37,8 +41,6 @@
 		availableCategories,
 		availableAttractions,
 		availableDistributives,
-		availableStatuses,
-		availableKinds,
 		availableGuideKinds,
 		breadcrumbs
 	} = data;
@@ -228,7 +230,7 @@
 				label="Estado"
 				bind:value={$form.status}
 				error={$errors.status}
-				options={availableStatuses}
+				options={ACTIVITY_STATUS_OPTIONS}
 				placeholder="Selecciona un estado"
 				wrapperClass="md:col-span-4"
 				selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
@@ -239,7 +241,7 @@
 				label="Tipo de actividad"
 				bind:value={$form.kind}
 				error={$errors.kind}
-				options={availableKinds}
+				options={ACTIVITY_KIND_OPTIONS}
 				placeholder="Selecciona un tipo"
 				wrapperClass="md:col-span-4"
 			/>
