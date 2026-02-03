@@ -16,7 +16,7 @@ export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = [
 export type ActivityNotSuitableFor = (typeof ACTIVITY_NOT_SUITABLE_FOR_OPTIONS)[number]['id'];
 export const ACTIVITY_NOT_SUITABLE_FOR_VALUES = ACTIVITY_NOT_SUITABLE_FOR_OPTIONS.map(
 	(opt) => opt.id
-);
+) as [string, ...string[]];
 
 export const ACTIVITY_STATUS_OPTIONS = [
 	{ id: 'APPROVED', name: 'Aprobada' },
@@ -29,7 +29,10 @@ export const ACTIVITY_STATUS_OPTIONS = [
 ] as const;
 
 export type ActivityStatus = (typeof ACTIVITY_STATUS_OPTIONS)[number]['id'];
-export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.id);
+export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
 
 // Stages
 
@@ -40,7 +43,10 @@ export const STAGE_REQUIREMENT_OPTIONS = [
 ] as const;
 
 export type StageRequirement = (typeof STAGE_REQUIREMENT_OPTIONS)[number]['id'];
-export const STAGE_REQUIREMENT_VALUES = STAGE_REQUIREMENT_OPTIONS.map((opt) => opt.id);
+export const STAGE_REQUIREMENT_VALUES = STAGE_REQUIREMENT_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
 
 export const STAGE_KIND_OPTIONS = [
 	{
@@ -56,7 +62,7 @@ export const STAGE_KIND_OPTIONS = [
 ] as const;
 
 export type StageKind = (typeof STAGE_KIND_OPTIONS)[number]['id'];
-export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id);
+export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 
 export const STAGE_RELEVANCE_OPTIONS = [
 	{ id: 'HIGH', name: 'Alta' },
@@ -66,7 +72,10 @@ export const STAGE_RELEVANCE_OPTIONS = [
 ] as const;
 
 export type StageRelevance = (typeof STAGE_RELEVANCE_OPTIONS)[number]['id'];
-export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.id);
+export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
 
 // Attractions
 
@@ -77,7 +86,10 @@ export const ATTRACTION_STATUS_OPTIONS = [
 ] as const;
 
 export type AttractionStatus = (typeof ATTRACTION_STATUS_OPTIONS)[number]['id'];
-export const ATTRACTION_STATUS_VALUES = ATTRACTION_STATUS_OPTIONS.map((opt) => opt.id);
+export const ATTRACTION_STATUS_VALUES = ATTRACTION_STATUS_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
 
 // Destinations
 
@@ -88,4 +100,7 @@ export const DESTINATION_KIND_OPTIONS = [
 ] as const;
 
 export type DestinationKind = (typeof DESTINATION_KIND_OPTIONS)[number]['id'];
-export const DESTINATION_KIND_VALUES = DESTINATION_KIND_OPTIONS.map((opt) => opt.id);
+export const DESTINATION_KIND_VALUES = DESTINATION_KIND_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];

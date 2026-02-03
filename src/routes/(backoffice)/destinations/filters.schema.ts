@@ -1,6 +1,9 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
 
+// Enums
+import { DESTINATION_KIND_VALUES, type DestinationKind } from '$lib/config/enums';
+
 export type DestinationsFilters = {
 	// Paginación (opcional - solo si la API la provee)
 	page?: number;
@@ -10,7 +13,7 @@ export type DestinationsFilters = {
 	order?: 'asc' | 'desc';
 	// Búsqueda
 	q?: string;
-	kind?: 'CITY' | 'REGION' | 'COUNTRY';
+	kind?: DestinationKind;
 	// Filtros avanzados
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
@@ -66,9 +69,8 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 		},
 		kind: {
 			parse: (raw) => {
-				// if (raw === 'CITY' || raw === 'REGION' || raw === 'COUNTRY') {
-				if (raw === 'CITY' || raw === 'REGION' || raw === 'COUNTRY') {
-					return raw;
+				if (DESTINATION_KIND_VALUES.includes(raw as DestinationKind)) {
+					return raw as DestinationKind;
 				}
 				return undefined;
 			},

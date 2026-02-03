@@ -1,5 +1,7 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+
+// Enums
 import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$lib/config/enums';
 
 export type AttractionsFilters = {

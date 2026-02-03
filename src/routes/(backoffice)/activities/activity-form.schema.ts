@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 // Enums used
 import {
-	ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
-	ACTIVITY_STATUS_OPTIONS,
-	STAGE_KIND_OPTIONS,
-	STAGE_REQUIREMENT_OPTIONS,
-	STAGE_RELEVANCE_OPTIONS
+	ACTIVITY_NOT_SUITABLE_FOR_VALUES,
+	ACTIVITY_STATUS_VALUES,
+	STAGE_KIND_VALUES,
+	STAGE_REQUIREMENT_VALUES,
+	STAGE_RELEVANCE_VALUES
 } from '$lib/config/enums';
 
 /**
@@ -81,35 +81,25 @@ export const activityFormSchema = z.object({
 					})
 					.nullable()
 					.default(null),
-				kind: z.enum(STAGE_KIND_OPTIONS.map((option) => option.id) as [string, ...string[]], {
+				kind: z.enum(STAGE_KIND_VALUES, {
 					errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 				}),
-				relevance: z.enum(
-					STAGE_RELEVANCE_OPTIONS.map((option) => option.id) as [string, ...string[]],
-					{
-						errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
-					}
-				),
-				requirement: z.enum(
-					STAGE_REQUIREMENT_OPTIONS.map((option) => option.id) as [string, ...string[]],
-					{
-						errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
-					}
-				)
+				relevance: z.enum(STAGE_RELEVANCE_VALUES, {
+					errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
+				}),
+				requirement: z.enum(STAGE_REQUIREMENT_VALUES, {
+					errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
+				})
 			})
 		)
 		.default([]),
 	excluded: z.array(z.string()).default([]),
 	included: z.array(z.string()).default([]),
 	itemsToBring: z.array(z.string()).default([]),
-	notSuitableFor: z
-		.array(
-			z.enum(ACTIVITY_NOT_SUITABLE_FOR_OPTIONS.map((option) => option.id) as [string, ...string[]])
-		)
-		.default([]),
+	notSuitableFor: z.array(z.enum(ACTIVITY_NOT_SUITABLE_FOR_VALUES)).default([]),
 	kind: z.string().optional(),
 	guideKind: z.string().optional(),
-	status: z.enum(ACTIVITY_STATUS_OPTIONS.map((option) => option.id) as [string, ...string[]], {
+	status: z.enum(ACTIVITY_STATUS_VALUES, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	})
 });

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Enums used
-import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+import { DESTINATION_KIND_VALUES } from '$lib/config/enums';
 
 /**
  * Schema de validación para el formulario de destinations
@@ -11,7 +11,7 @@ export const destinationFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
 	slug: z.string().min(2, 'El slug debe tener al menos 2 caracteres').max(100),
-	kind: z.enum(DESTINATION_KIND_OPTIONS.map((option) => option.id) as [string, ...string[]], {
+	kind: z.enum(DESTINATION_KIND_VALUES, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
 	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
