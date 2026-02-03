@@ -66,6 +66,7 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 		},
 		kind: {
 			parse: (raw) => {
+				// if (raw === 'CITY' || raw === 'REGION' || raw === 'COUNTRY') {
 				if (raw === 'CITY' || raw === 'REGION' || raw === 'COUNTRY') {
 					return raw;
 				}
