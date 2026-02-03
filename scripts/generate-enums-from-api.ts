@@ -84,115 +84,54 @@ async function generateEnums() {
  * Run: npm run generate:enums
  */
 
-// ============================================================================
-// STAGE KINDS
-// ============================================================================
+// Activities
 
-export const STAGE_KINDS = ${JSON.stringify(
-			stageKinds.map((k) => k.id),
-			null,
-			2
-		)} as const;
-
-export type StageKind = (typeof STAGE_KINDS)[number];
-
-export const STAGE_KINDS_OPTIONS = ${JSON.stringify(
-			stageKinds.map((k) => ({ id: k.id, name: k.name })),
-			null,
-			2
-		)};
-
-export const STAGE_KINDS_MAP = {
-${stageKinds.map((k) => `\t${k.id}: ${JSON.stringify(k)}`).join(',\n')}
-} as const;
-
-// ============================================================================
-// STAGE RELEVANCES
-// ============================================================================
-
-export const STAGE_RELEVANCES = ${JSON.stringify(
-			stageRelevances.map((r) => r.id),
-			null,
-			2
-		)} as const;
-
-export type StageRelevance = (typeof STAGE_RELEVANCES)[number];
-
-export const STAGE_RELEVANCES_OPTIONS = ${JSON.stringify(
-			stageRelevances.map((r) => ({ id: r.id, name: r.name })),
-			null,
-			2
-		)};
-
-export const STAGE_RELEVANCES_MAP = {
-${stageRelevances.map((r) => `\t${r.id}: ${JSON.stringify(r)}`).join(',\n')}
-} as const;
-
-// ============================================================================
-// STAGE REQUIREMENTS
-// ============================================================================
-
-export const STAGE_REQUIREMENTS = ${JSON.stringify(
-			stageRequirements.map((r) => r.id),
-			null,
-			2
-		)} as const;
-
-export type StageRequirement = (typeof STAGE_REQUIREMENTS)[number];
-
-export const STAGE_REQUIREMENTS_OPTIONS = ${JSON.stringify(
-			stageRequirements.map((r) => ({ id: r.id, name: r.name })),
-			null,
-			2
-		)};
-
-export const STAGE_REQUIREMENTS_MAP = {
-${stageRequirements.map((r) => `\t${r.id}: ${JSON.stringify(r)}`).join(',\n')}
-} as const;
-
-// ============================================================================
-// ACTIVITY STATUSES
-// ============================================================================
-
-export const ACTIVITY_STATUSES = ${JSON.stringify(
-			activityStatuses.map((s) => s.id),
-			null,
-			2
-		)} as const;
-
-export type ActivityStatus = (typeof ACTIVITY_STATUSES)[number];
-
-export const ACTIVITY_STATUSES_OPTIONS = ${JSON.stringify(
-			activityStatuses.map((s) => ({ id: s.id, name: s.name })),
-			null,
-			2
-		)};
-
-export const ACTIVITY_STATUSES_MAP = {
-${activityStatuses.map((s) => `\t${s.id}: ${JSON.stringify(s)}`).join(',\n')}
-} as const;
-
-// ============================================================================
-// NOT SUITABLE FOR
-// ============================================================================
-
-export const NOT_SUITABLE_FOR = ${JSON.stringify(
-			notSuitableFor.map((n) => n.id),
-			null,
-			2
-		)} as const;
-
-export type NotSuitableFor = (typeof NOT_SUITABLE_FOR)[number];
-
-export const NOT_SUITABLE_FOR_OPTIONS = ${JSON.stringify(
+export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = ${JSON.stringify(
 			notSuitableFor.map((n) => ({ id: n.id, name: n.name })),
 			null,
-			2
-		)};
+			'\t'
+		)} as const;
 
-export const NOT_SUITABLE_FOR_MAP = {
-${notSuitableFor.map((n) => `\t${n.id}: ${JSON.stringify(n)}`).join(',\n')}
-} as const;
+export type ActivityNotSuitableFor = (typeof ACTIVITY_NOT_SUITABLE_FOR_OPTIONS)[number]['id'];
+export const ACTIVITY_NOT_SUITABLE_FOR_VALUES = ACTIVITY_NOT_SUITABLE_FOR_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
+export const ACTIVITY_STATUS_OPTIONS = ${JSON.stringify(
+			activityStatuses.map((s) => ({ id: s.id, name: s.name })),
+			null,
+			'\t'
+		)} as const;
+
+export type ActivityStatus = (typeof ACTIVITY_STATUS_OPTIONS)[number]['id'];
+export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
+// Stages
+
+export const STAGE_REQUIREMENT_OPTIONS = ${JSON.stringify(
+			stageRequirements.map((r) => ({ id: r.id, name: r.name })),
+			null,
+			'\t'
+		)} as const;
+
+export type StageRequirement = (typeof STAGE_REQUIREMENT_OPTIONS)[number]['id'];
+export const STAGE_REQUIREMENT_VALUES = STAGE_REQUIREMENT_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
+export const STAGE_KIND_OPTIONS = ${JSON.stringify(
+			stageKinds.map((k) => ({ id: k.id, name: k.name, description: k.description })),
+			null,
+			'\t'
+		)} as const;
+
+export type StageKind = (typeof STAGE_KIND_OPTIONS)[number]['id'];
+export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
+export const STAGE_RELEVANCE_OPTIONS = ${JSON.stringify(
+			stageRelevances.map((r) => ({ id: r.id, name: r.name })),
+			null,
+			'\t'
+		)} as const;
+
+export type StageRelevance = (typeof STAGE_RELEVANCE_OPTIONS)[number]['id'];
+export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 `;
 
 		// Write to file
@@ -210,7 +149,7 @@ ${notSuitableFor.map((n) => `\t${n.id}: ${JSON.stringify(n)}`).join(',\n')}
 		fs.writeFileSync(outputFile, content, 'utf-8');
 
 		console.log(`✅ Enums generated successfully!`);
-		console.log(`📁 File: src/lib/generated/enums.ts\n`);
+		console.log(`📁 File: src/lib/generated/generated-enums-from-api.ts\n`);
 
 		// Show summary
 		console.log('📊 Summary:');
