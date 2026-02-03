@@ -10,7 +10,10 @@
 		ACTIVITY_GUIDE_KIND_OPTIONS,
 		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
 		ACTIVITY_STATUS_OPTIONS,
-		ACTIVITY_KIND_OPTIONS
+		ACTIVITY_KIND_OPTIONS,
+		MEAL_KIND_OPTIONS,
+		MEAL_FORMAT_OPTIONS,
+		MEAL_ADDITIONAL_OPTIONS
 	} from '$lib/config/enums';
 
 	import {
@@ -141,6 +144,22 @@
 		$form.stages.forEach((stage, i) => {
 			stage.order = i + 1;
 		});
+	}
+
+	async function handleRemoveMeal(index: number) {
+		const confirmed = await showConfirmDialog({
+			title: 'Eliminar comida',
+			message: '¿Estás seguro de que quieres eliminar esta comida?',
+			confirmText: 'Eliminar',
+			cancelText: 'Cancelar',
+			danger: true
+		});
+		if (!confirmed) return;
+		$form.meals = $form.meals.filter((_, i) => i !== index);
+		// Reordenar los stages restantes
+		// $form.stages.forEach((stage, i) => {
+		// 	stage.order = i + 1;
+		// });
 	}
 
 	function handleAddStage() {
@@ -438,173 +457,70 @@
 		{/snippet}
 		{#snippet content()}
 			{#each $form.meals as meal, index}
-				<FormAccordion
-					name="form-stages-{index}"
-					class="md:col-span-12"
-					sortable
-					ondragstart={(e) => handleStageDragStart(e, index)}
-					ondragover={handleStageDragOver}
-					ondrop={(e) => handleStageDrop(e, index)}
-					ondragend={handleStageDragEnd}
-				>
+				<FormAccordion name="form-meals-{index}" class="md:col-span-12">
 					{#snippet title()}
 						<div
 							class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
 						>
-							{stage.order || index + 1}
+							{index + 1}
 						</div>
-						<span>{stage.name}</span>
+						<span>{meal.id}</span>
 					{/snippet}
 					{#snippet asideContent()}
 						<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 					{/snippet}
 					{#snippet content()}
-						<input
+						<!-- <input
 							type="hidden"
-							id={`stages[${index}][order]`}
-							name={`stages[${index}][order]`}
-							bind:value={stage.order}
-						/>
-
-						<input
-							type="hidden"
-							id={`stages[${index}][id]`}
-							name={`stages[${index}][id]`}
-							bind:value={stage.id}
-						/>
-
-						<input
-							type="hidden"
-							id={`stages[${index}][activityId]`}
-							name={`stages[${index}][activityId]`}
-							bind:value={stage.activityId}
-						/>
+							id={`meals[${index}][id]`}
+							name={`meals[${index}][id]`}
+							bind:value={meal.id}
+						/> -->
 
 						<FormInputText
-							id={`stages[${index}][name]`}
-							label="Nombre"
-							bind:value={stage.name}
-							error={$errors.stages?.[index]?.name}
-							wrapperClass="md:col-span-10"
-						/>
-
-						<FormInputText
-							id={`stages[${index}][duration]`}
-							label="Duración"
-							bind:value={stage.duration}
-							error={$errors.stages?.[index]?.duration}
-							wrapperClass="md:col-span-2"
-							badge="opcional"
-						/>
-
-						<FormTextarea
-							id={`stages[${index}][description]`}
-							label="Descripción"
-							bind:value={stage.description}
-							error={$errors.stages?.[index]?.description}
-							wrapperClass="md:col-span-12"
-							rows={3}
-							badge="opcional"
+							id={`meals[${index}][id]`}
+							label="Id"
+							bind:value={meal.id}
+							readonly
+							error={$errors.meals?.[index]?.id}
+							wrapperClass="md:col-span-6"
 						/>
 
 						<FormSelect
 							id={`stages[${index}][kind]`}
 							label="Tipo"
-							bind:value={stage.kind}
-							error={$errors.stages?.[index]?.kind}
-							options={[
-								{ id: 'EXPERIENCE', name: 'Experiencia' },
-								{ id: 'TRANSFER', name: 'Traslado' },
-								{ id: 'MEAL', name: 'Comida' },
-								{ id: 'ACCOMMODATION', name: 'Alojamiento' },
-								{ id: 'OTHER', name: 'Otro' }
-							]}
+							bind:value={meal.kind}
+							error={$errors.meals?.[index]?.kind}
+							options={MEAL_KIND_OPTIONS}
 							placeholder="Selecciona un tipo"
-							wrapperClass="md:col-span-4"
+							wrapperClass="md:col-span-3"
 						/>
 
 						<FormSelect
-							id={`stages[${index}][relevance]`}
-							label="Relevancia"
-							bind:value={stage.relevance}
-							error={$errors.stages?.[index]?.relevance}
-							options={[
-								{ id: 'HIGH', name: 'Alta' },
-								{ id: 'MEDIUM', name: 'Media' },
-								{ id: 'LOW', name: 'Baja' },
-								{ id: 'NONE', name: 'Ninguna' }
-							]}
-							placeholder="Selecciona relevancia"
-							wrapperClass="md:col-span-4"
+							id={`meals[${index}][format]`}
+							label="Tipo"
+							bind:value={meal.format}
+							error={$errors.meals?.[index]?.format}
+							options={MEAL_FORMAT_OPTIONS}
+							placeholder="Selecciona un tipo"
+							wrapperClass="md:col-span-3"
 						/>
 
-						<FormSelect
-							id={`stages[${index}][requirement]`}
-							label="Requisito"
-							bind:value={stage.requirement}
-							error={$errors.stages?.[index]?.requirement}
-							options={[
-								{ id: 'REQUIRED', name: 'Requerido' },
-								{ id: 'OPTIONAL', name: 'Opcional' },
-								{ id: 'CONDITIONAL', name: 'Condicional' }
-							]}
-							placeholder="Selecciona requisito"
-							wrapperClass="md:col-span-4"
+						<FormTagManager
+							id="additionalOptions"
+							label="Opciones adicionales"
+							bind:tags={$form.meals?.[index]?.additionalOptions}
+							{MEAL_ADDITIONAL_OPTIONS}
+							error={$errors.meals?.[index]?.additionalOptions?._errors}
 						/>
-
-						<div class="md:col-span-12">
-							<label class="label cursor-pointer justify-start gap-3">
-								<input
-									type="checkbox"
-									checked={stage.location !== null}
-									onchange={(e) => {
-										if (e.currentTarget.checked) {
-											// Activar: restaurar backup o usar coordenadas por defecto
-											if (locationBackups[index]) {
-												stage.location = locationBackups[index];
-											} else {
-												stage.location = {
-													type: 'Point',
-													coordinates: [-3.7038, 40.4168] // Madrid por defecto
-												};
-											}
-										} else {
-											// Desactivar: guardar backup y establecer a null
-											if (stage.location) {
-												locationBackups[index] = { ...stage.location };
-											}
-											stage.location = null;
-										}
-									}}
-									class="toggle toggle-success"
-								/>
-								<span class="text-sm">Tiene ubicación geográfica</span>
-							</label>
-						</div>
-
-						{#if stage.location}
-							<FormGeoJson
-								id={`stages[${index}][location]`}
-								label="Ubicación"
-								bind:value={stage.location}
-								mapClass="h-[250px]"
-								config={{
-									showSearchBox: true,
-									defaultZoom: 15
-								}}
-								error={$errors.stages?.[index]?.location?._errors}
-								wrapperClass="md:col-span-12"
-								badge="opcional"
-							/>
-						{/if}
 
 						<div class="flex gap-2 md:col-span-12">
 							<button
 								type="button"
 								class="btn ml-auto btn-soft btn-xs btn-error"
-								onclick={() => handleRemoveStage(index)}
+								onclick={() => handleRemoveMeal(index)}
 							>
-								Eliminar esta etapa
+								Eliminar esta comida
 							</button>
 						</div>
 					{/snippet}
