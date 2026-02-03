@@ -57,17 +57,20 @@ async function generateEnums() {
 
 	try {
 		// Fetch all enums in parallel
-		const [stageKinds, stageRelevances, stageRequirements, activityStatuses] = await Promise.all([
-			fetchEnum('/stage-kinds'),
-			fetchEnum('/stage-relevances'),
-			fetchEnum('/stage-requirements'),
-			fetchEnum('/activity-status')
-		]);
+		const [stageKinds, stageRelevances, stageRequirements, activityStatuses, notSuitableFor] =
+			await Promise.all([
+				fetchEnum('/stage-kinds'),
+				fetchEnum('/stage-relevances'),
+				fetchEnum('/stage-requirements'),
+				fetchEnum('/activity-status'),
+				fetchEnum('/not-suitable-for')
+			]);
 
 		console.log(`✅ Stage Kinds: ${stageKinds.length} items`);
 		console.log(`✅ Stage Relevances: ${stageRelevances.length} items`);
 		console.log(`✅ Stage Requirements: ${stageRequirements.length} items`);
-		console.log(`✅ Activity Statuses: ${activityStatuses.length} items\n`);
+		console.log(`✅ Activity Statuses: ${activityStatuses.length} items`);
+		console.log(`✅ Not Suitable For: ${notSuitableFor.length} items\n`);
 
 		const timestamp = new Date().toISOString();
 
@@ -168,6 +171,28 @@ export const ACTIVITY_STATUSES_OPTIONS = ${JSON.stringify(
 export const ACTIVITY_STATUSES_MAP = {
 ${activityStatuses.map((s) => `\t${s.id}: ${JSON.stringify(s)}`).join(',\n')}
 } as const;
+
+// ============================================================================
+// NOT SUITABLE FOR
+// ============================================================================
+
+export const NOT_SUITABLE_FOR = ${JSON.stringify(
+			notSuitableFor.map((n) => n.id),
+			null,
+			2
+		)} as const;
+
+export type NotSuitableFor = (typeof NOT_SUITABLE_FOR)[number];
+
+export const NOT_SUITABLE_FOR_OPTIONS = ${JSON.stringify(
+			notSuitableFor.map((n) => ({ id: n.id, name: n.name })),
+			null,
+			2
+		)};
+
+export const NOT_SUITABLE_FOR_MAP = {
+${notSuitableFor.map((n) => `\t${n.id}: ${JSON.stringify(n)}`).join(',\n')}
+} as const;
 `;
 
 		// Write to file
@@ -193,6 +218,7 @@ ${activityStatuses.map((s) => `\t${s.id}: ${JSON.stringify(s)}`).join(',\n')}
 		console.log(`   - Stage Relevances: ${stageRelevances.map((r) => r.id).join(', ')}`);
 		console.log(`   - Stage Requirements: ${stageRequirements.map((r) => r.id).join(', ')}`);
 		console.log(`   - Activity Statuses: ${activityStatuses.map((s) => s.id).join(', ')}`);
+		console.log(`   - Not Suitable For: ${notSuitableFor.map((n) => n.id).join(', ')}`);
 	} catch (error) {
 		console.error('\n❌ Failed to generate enums:', error);
 		process.exit(1);

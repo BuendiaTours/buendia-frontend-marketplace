@@ -19,7 +19,7 @@ export type ActivityListItem = {
 	kind: string;
 	meals: string[];
 	multimedias: string[];
-	notSuitableFor: string[];
+	notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
 	petsAllowed: {
 		allowed: string;
 		description: string | null;
@@ -33,13 +33,6 @@ export type ActivityListItem = {
 	transportLocation: string;
 	voucherInfo: string | null;
 	willDoing: string[];
-};
-
-export type Pagination = {
-	page: number;
-	pageSize: number;
-	total: number;
-	totalPages: number;
 };
 
 export type ActivityListResponse = {
@@ -91,6 +84,13 @@ export type Attraction = {
 		type: 'Point';
 		coordinates: [number, number];
 	} | null;
+};
+
+export type Pagination = {
+	page: number;
+	pageSize: number;
+	total: number;
+	totalPages: number;
 };
 
 export interface BreadcrumbItem {
