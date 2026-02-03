@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/confirmAction';
 	import { OrangeSlice } from 'svelte-iconoir';
@@ -40,7 +41,7 @@
 		meals = meals.filter((_, i) => i !== index);
 	}
 
-	function handleAddMeal() {
+	async function handleAddMeal() {
 		// Colapsar todos los acordeones hijos
 		const mealAccordions = document.querySelectorAll('[name^="form-meals-"]');
 		mealAccordions.forEach((accordion) => {
@@ -59,6 +60,18 @@
 		};
 
 		meals = [...meals, newMeal];
+
+		// Esperar a que Svelte actualice el DOM
+		await tick();
+
+		// Abrir el nuevo acordeón
+		const newIndex = meals.length - 1;
+		const newAccordion = document.querySelector(
+			`[name="form-meals-${newIndex}"]`
+		) as HTMLDetailsElement;
+		if (newAccordion) {
+			newAccordion.open = true;
+		}
 	}
 </script>
 

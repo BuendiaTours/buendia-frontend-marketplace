@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/confirmAction';
 	import { Map } from 'svelte-iconoir';
@@ -94,7 +95,7 @@
 		});
 	}
 
-	function handleAddStage() {
+	async function handleAddStage() {
 		// Colapsar todos los acordeones hijos
 		const stageAccordions = document.querySelectorAll('[name^="form-stages-"]');
 		stageAccordions.forEach((accordion) => {
@@ -119,6 +120,18 @@
 		};
 
 		stages = [...stages, newStage];
+
+		// Esperar a que Svelte actualice el DOM
+		await tick();
+
+		// Abrir el nuevo acordeón
+		const newIndex = stages.length - 1;
+		const newAccordion = document.querySelector(
+			`[name="form-stages-${newIndex}"]`
+		) as HTMLDetailsElement;
+		if (newAccordion) {
+			newAccordion.open = true;
+		}
 	}
 </script>
 
