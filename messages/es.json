@@ -39,5 +39,9 @@
 	"activities_pagination_page": "Página",
 	"activities_pagination_of": "de",
 	"activities_pagination_showing": "mostrando los elementos del",
-	"activities_pagination_to": "al"
+	"activities_pagination_to": "al",
+	"enums_stageKinds_transfer_name": "Transfer",
+	"enums_stageKinds_transfer_description": "Movimiento entre puntos (bus, tren, coche, barco, etc.)",
+	"enums_stageKinds_experience_name": "Experiencia",
+	"enums_stageKinds_experience_description": "Experiencia (visita, comida, show, concierto, etc.)"
 }

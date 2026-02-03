@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+// Enums used
+import {
+	ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
+	ACTIVITY_STATUS_OPTIONS,
+	STAGE_KIND_OPTIONS,
+	STAGE_REQUIREMENT_OPTIONS,
+	STAGE_RELEVANCE_OPTIONS
+} from '$lib/config/enums';
+
 /**
  * Schema de validación para el formulario de actividades
  * Usado tanto en creación como en edición
@@ -9,13 +18,10 @@ export const activityFormSchema = z.object({
 	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
 	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
 	codeRef: z.string(),
-	currency: z.enum(['EUR', 'USD', 'GBP']),
 	descriptionFull: z.string().min(3, 'El campo debe tener al menos 3 caracteres'),
 	descriptionShort: z.string().min(3, 'El campo debe tener al menos 3 caracteres'),
 	infoImportant: z.string(),
-	isFreeTour: z.boolean(),
 	phoneContact: z.string().optional(),
-	priceFrom: z.number().min(0, 'El precio debe ser mayor o igual a 0'),
 	tags: z
 		.array(
 			z.object({
@@ -75,15 +81,21 @@ export const activityFormSchema = z.object({
 					})
 					.nullable()
 					.default(null),
-				kind: z.enum(['EXPERIENCE', 'TRANSFER', 'MEAL', 'ACCOMMODATION', 'OTHER'], {
+				kind: z.enum(STAGE_KIND_OPTIONS.map((option) => option.id) as [string, ...string[]], {
 					errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 				}),
-				relevance: z.enum(['HIGH', 'MEDIUM', 'LOW', 'NONE'], {
-					errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
-				}),
-				requirement: z.enum(['REQUIRED', 'OPTIONAL', 'CONDITIONAL'], {
-					errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
-				})
+				relevance: z.enum(
+					STAGE_RELEVANCE_OPTIONS.map((option) => option.id) as [string, ...string[]],
+					{
+						errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
+					}
+				),
+				requirement: z.enum(
+					STAGE_REQUIREMENT_OPTIONS.map((option) => option.id) as [string, ...string[]],
+					{
+						errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
+					}
+				)
 			})
 		)
 		.default([]),
@@ -91,16 +103,15 @@ export const activityFormSchema = z.object({
 	included: z.array(z.string()).default([]),
 	itemsToBring: z.array(z.string()).default([]),
 	notSuitableFor: z
-		.array(z.enum(['ADULTS', 'CHILDREN', 'FAMILIES', 'GROUPS', 'INDIVIDUALS']))
+		.array(
+			z.enum(ACTIVITY_NOT_SUITABLE_FOR_OPTIONS.map((option) => option.id) as [string, ...string[]])
+		)
 		.default([]),
 	kind: z.string().optional(),
 	guideKind: z.string().optional(),
-	status: z.enum(
-		['APPROVED', 'DELETED', 'DRAFT', 'PENDING_REVIEW', 'PUBLISHED', 'REJECTED', 'UNPUBLISHED'],
-		{
-			errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
-		}
-	)
+	status: z.enum(ACTIVITY_STATUS_OPTIONS.map((option) => option.id) as [string, ...string[]], {
+		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
+	})
 });
 
 export type ActivityFormSchema = z.infer<typeof activityFormSchema>;

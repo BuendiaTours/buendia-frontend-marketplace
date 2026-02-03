@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+// Enums used
+import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
+
 /**
  * Schema de validación para el formulario de attractions
  * Usado tanto en creación como en edición
@@ -8,7 +11,7 @@ export const attractionFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
 	slug: z.string().min(2, 'El slug debe tener al menos 2 caracteres').max(100),
-	status: z.enum(['ACTIVE', 'DRAFT', 'INACTIVE'], {
+	status: z.enum(ATTRACTION_STATUS_OPTIONS.map((option) => option.id) as [string, ...string[]], {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
 	description: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
