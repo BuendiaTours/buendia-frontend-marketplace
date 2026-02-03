@@ -38,6 +38,42 @@ interface EnumItem {
 	description?: string;
 }
 
+interface EnumConfig {
+	name: string;
+	endpoint: string;
+	typeName: string;
+	section?: string;
+	includeDescription?: boolean;
+}
+
+const ENUM_CONFIGS: EnumConfig[] = [
+	{
+		name: 'ACTIVITY_STATUS_OPTIONS',
+		endpoint: '/activity-status',
+		typeName: 'ActivityStatus',
+		section: 'Activities'
+	},
+	{
+		name: 'STAGE_REQUIREMENT_OPTIONS',
+		endpoint: '/stage-requirements',
+		typeName: 'StageRequirement',
+		section: 'Stages'
+	},
+	{
+		name: 'STAGE_KIND_OPTIONS',
+		endpoint: '/stage-kinds',
+		typeName: 'StageKind',
+		section: 'Stages',
+		includeDescription: true
+	},
+	{
+		name: 'STAGE_RELEVANCE_OPTIONS',
+		endpoint: '/stage-relevances',
+		typeName: 'StageRelevance',
+		section: 'Stages'
+	}
+];
+
 async function fetchEnum(endpoint: string): Promise<EnumItem[]> {
 	try {
 		const response = await fetch(`${API_BASE}${endpoint}`);
@@ -51,31 +87,56 @@ async function fetchEnum(endpoint: string): Promise<EnumItem[]> {
 	}
 }
 
+function generateEnumBlock(config: EnumConfig, items: EnumItem[]): string {
+	const optionsName = config.name;
+	const valuesName = config.name.replace('_OPTIONS', '_VALUES');
+	const typeName = config.typeName;
+
+	const itemsData = items.map((item) => {
+		const obj: Record<string, string> = { id: item.id, name: item.name };
+		if (config.includeDescription && item.description) {
+			obj.description = item.description;
+		}
+		return obj;
+	});
+
+	return `export const ${optionsName} = ${JSON.stringify(itemsData, null, '\t')} as const;
+
+export type ${typeName} = (typeof ${optionsName})[number]['id'];
+export const ${valuesName} = ${optionsName}.map((opt) => opt.id) as [string, ...string[]];
+`;
+}
+
 async function generateEnums() {
 	console.log('🔄 Fetching enums from API...');
 	console.log(`📡 API Base: ${API_BASE}\n`);
 
 	try {
 		// Fetch all enums in parallel
-		const [stageKinds, stageRelevances, stageRequirements, activityStatuses, notSuitableFor] =
-			await Promise.all([
-				fetchEnum('/stage-kinds'),
-				fetchEnum('/stage-relevances'),
-				fetchEnum('/stage-requirements'),
-				fetchEnum('/activity-status'),
-				fetchEnum('/not-suitable-for')
-			]);
+		const enumsData = await Promise.all(
+			ENUM_CONFIGS.map(async (config) => {
+				const items = await fetchEnum(config.endpoint);
+				console.log(`✅ ${config.name}: ${items.length} items`);
+				return { config, items };
+			})
+		);
 
-		console.log(`✅ Stage Kinds: ${stageKinds.length} items`);
-		console.log(`✅ Stage Relevances: ${stageRelevances.length} items`);
-		console.log(`✅ Stage Requirements: ${stageRequirements.length} items`);
-		console.log(`✅ Activity Statuses: ${activityStatuses.length} items`);
-		console.log(`✅ Not Suitable For: ${notSuitableFor.length} items\n`);
+		console.log('');
 
 		const timestamp = new Date().toISOString();
 
+		// Group by section
+		const sections = new Map<string, { config: EnumConfig; items: EnumItem[] }[]>();
+		enumsData.forEach((data) => {
+			const section = data.config.section || 'Other';
+			if (!sections.has(section)) {
+				sections.set(section, []);
+			}
+			sections.get(section)!.push(data);
+		});
+
 		// Generate TypeScript file content
-		const content = `/**
+		let content = `/**
  * Auto-generated enums from API
  * Generated: ${timestamp}
  * API Base: ${API_BASE}
@@ -84,55 +145,16 @@ async function generateEnums() {
  * Run: npm run generate:enums
  */
 
-// Activities
-
-export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = ${JSON.stringify(
-			notSuitableFor.map((n) => ({ id: n.id, name: n.name })),
-			null,
-			'\t'
-		)} as const;
-
-export type ActivityNotSuitableFor = (typeof ACTIVITY_NOT_SUITABLE_FOR_OPTIONS)[number]['id'];
-export const ACTIVITY_NOT_SUITABLE_FOR_VALUES = ACTIVITY_NOT_SUITABLE_FOR_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
-
-export const ACTIVITY_STATUS_OPTIONS = ${JSON.stringify(
-			activityStatuses.map((s) => ({ id: s.id, name: s.name })),
-			null,
-			'\t'
-		)} as const;
-
-export type ActivityStatus = (typeof ACTIVITY_STATUS_OPTIONS)[number]['id'];
-export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
-
-// Stages
-
-export const STAGE_REQUIREMENT_OPTIONS = ${JSON.stringify(
-			stageRequirements.map((r) => ({ id: r.id, name: r.name })),
-			null,
-			'\t'
-		)} as const;
-
-export type StageRequirement = (typeof STAGE_REQUIREMENT_OPTIONS)[number]['id'];
-export const STAGE_REQUIREMENT_VALUES = STAGE_REQUIREMENT_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
-
-export const STAGE_KIND_OPTIONS = ${JSON.stringify(
-			stageKinds.map((k) => ({ id: k.id, name: k.name, description: k.description })),
-			null,
-			'\t'
-		)} as const;
-
-export type StageKind = (typeof STAGE_KIND_OPTIONS)[number]['id'];
-export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
-
-export const STAGE_RELEVANCE_OPTIONS = ${JSON.stringify(
-			stageRelevances.map((r) => ({ id: r.id, name: r.name })),
-			null,
-			'\t'
-		)} as const;
-
-export type StageRelevance = (typeof STAGE_RELEVANCE_OPTIONS)[number]['id'];
-export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 `;
+
+		// Generate blocks for each section
+		sections.forEach((sectionEnums, sectionName) => {
+			content += `// ${sectionName}\n\n`;
+			sectionEnums.forEach(({ config, items }) => {
+				content += generateEnumBlock(config, items);
+				content += '\n';
+			});
+		});
 
 		// Write to file
 		const fs = await import('fs');
@@ -149,15 +171,13 @@ export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.i
 		fs.writeFileSync(outputFile, content, 'utf-8');
 
 		console.log(`✅ Enums generated successfully!`);
-		console.log(`📁 File: src/lib/generated/generated-enums-from-api.ts\n`);
+		console.log(`📁 File: src/lib/generated/enums.ts\n`);
 
 		// Show summary
 		console.log('📊 Summary:');
-		console.log(`   - Stage Kinds: ${stageKinds.map((k) => k.id).join(', ')}`);
-		console.log(`   - Stage Relevances: ${stageRelevances.map((r) => r.id).join(', ')}`);
-		console.log(`   - Stage Requirements: ${stageRequirements.map((r) => r.id).join(', ')}`);
-		console.log(`   - Activity Statuses: ${activityStatuses.map((s) => s.id).join(', ')}`);
-		console.log(`   - Not Suitable For: ${notSuitableFor.map((n) => n.id).join(', ')}`);
+		enumsData.forEach(({ config, items }) => {
+			console.log(`   - ${config.name}: ${items.map((i) => i.id).join(', ')}`);
+		});
 	} catch (error) {
 		console.error('\n❌ Failed to generate enums:', error);
 		process.exit(1);

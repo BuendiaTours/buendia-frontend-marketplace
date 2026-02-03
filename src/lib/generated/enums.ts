@@ -1,218 +1,107 @@
 /**
  * Auto-generated enums from API
- * Generated: 2026-01-30T10:27:43.138Z
+ * Generated: 2026-02-03T10:44:52.681Z
  * API Base: http://localhost:3333
- *
+ * 
  * DO NOT EDIT MANUALLY
  * Run: npm run generate:enums
  */
 
-// ============================================================================
-// STAGE KINDS
-// ============================================================================
+// Activities
 
-export const STAGE_KINDS = ['TRANSFER', 'EXPERIENCE'] as const;
-
-export type StageKind = (typeof STAGE_KINDS)[number];
-
-export const STAGE_KINDS_OPTIONS = [
+export const ACTIVITY_STATUS_OPTIONS = [
 	{
-		id: 'TRANSFER',
-		name: 'Transfer'
+		"id": "APPROVED",
+		"name": "Aprobada"
 	},
 	{
-		id: 'EXPERIENCE',
-		name: 'Experience'
+		"id": "DELETED",
+		"name": "Borrada"
+	},
+	{
+		"id": "DRAFT",
+		"name": "Borrador"
+	},
+	{
+		"id": "PENDING_REVIEW",
+		"name": "Pendiente de revisión"
+	},
+	{
+		"id": "PUBLISHED",
+		"name": "Publicada"
+	},
+	{
+		"id": "REJECTED",
+		"name": "Rechazada"
+	},
+	{
+		"id": "UNPUBLISHED",
+		"name": "No publicada"
 	}
-];
-
-export const STAGE_KINDS_MAP = {
-	TRANSFER: {
-		id: 'TRANSFER',
-		name: 'Transfer',
-		description: 'Movimiento entre puntos (bus, tren, coche, barco, etc.)'
-	},
-	EXPERIENCE: {
-		id: 'EXPERIENCE',
-		name: 'Experience',
-		description: 'Experiencia (visita, comida, show, concierto, etc.)'
-	}
-} as const;
-
-// ============================================================================
-// STAGE RELEVANCES
-// ============================================================================
-
-export const STAGE_RELEVANCES = ['HIGH', 'MEDIUM', 'LOW', 'NONE'] as const;
-
-export type StageRelevance = (typeof STAGE_RELEVANCES)[number];
-
-export const STAGE_RELEVANCES_OPTIONS = [
-	{
-		id: 'HIGH',
-		name: 'Alta'
-	},
-	{
-		id: 'MEDIUM',
-		name: 'Media'
-	},
-	{
-		id: 'LOW',
-		name: 'Baja'
-	},
-	{
-		id: 'NONE',
-		name: 'Ninguna'
-	}
-];
-
-export const STAGE_RELEVANCES_MAP = {
-	HIGH: { id: 'HIGH', name: 'Alta', description: 'Alta prioridad' },
-	MEDIUM: { id: 'MEDIUM', name: 'Media', description: 'Prioridad media' },
-	LOW: { id: 'LOW', name: 'Baja', description: 'Baja prioridad' },
-	NONE: { id: 'NONE', name: 'Ninguna', description: 'Sin relevancia especial' }
-} as const;
-
-// ============================================================================
-// STAGE REQUIREMENTS
-// ============================================================================
-
-export const STAGE_REQUIREMENTS = ['REQUIRED', 'OPTIONAL', 'SUGGESTED', 'NONE'] as const;
-
-export type StageRequirement = (typeof STAGE_REQUIREMENTS)[number];
-
-export const STAGE_REQUIREMENTS_OPTIONS = [
-	{
-		id: 'REQUIRED',
-		name: 'Obligatorio'
-	},
-	{
-		id: 'OPTIONAL',
-		name: 'Opcional'
-	},
-	{
-		id: 'SUGGESTED',
-		name: 'Recomendado'
-	},
-	{
-		id: 'NONE',
-		name: 'Ninguno'
-	}
-];
-
-export const STAGE_REQUIREMENTS_MAP = {
-	REQUIRED: {
-		id: 'REQUIRED',
-		name: 'Obligatorio',
-		description: 'Obligatorio para completar la actividad'
-	},
-	OPTIONAL: { id: 'OPTIONAL', name: 'Opcional', description: 'Opcional' },
-	SUGGESTED: { id: 'SUGGESTED', name: 'Recomendado', description: 'Recomendado' },
-	NONE: { id: 'NONE', name: 'Ninguno', description: 'Sin requisito específico' }
-} as const;
-
-// ============================================================================
-// ACTIVITY STATUSES
-// ============================================================================
-
-export const ACTIVITY_STATUSES = [
-	'APPROVED',
-	'DELETED',
-	'DRAFT',
-	'PENDING_REVIEW',
-	'PUBLISHED',
-	'REJECTED',
-	'UNPUBLISHED'
 ] as const;
 
-export type ActivityStatus = (typeof ACTIVITY_STATUSES)[number];
+export type ActivityStatus = (typeof ACTIVITY_STATUS_OPTIONS)[number]['id'];
+export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 
-export const ACTIVITY_STATUSES_OPTIONS = [
+// Stages
+
+export const STAGE_REQUIREMENT_OPTIONS = [
 	{
-		id: 'APPROVED',
-		name: 'Aprobada'
+		"id": "REQUIRED",
+		"name": "Obligatorio"
 	},
 	{
-		id: 'DELETED',
-		name: 'Borrada'
+		"id": "OPTIONAL",
+		"name": "Opcional"
 	},
 	{
-		id: 'DRAFT',
-		name: 'Borrador'
+		"id": "SUGGESTED",
+		"name": "Recomendado"
 	},
 	{
-		id: 'PENDING_REVIEW',
-		name: 'Pendiente de revisión'
-	},
-	{
-		id: 'PUBLISHED',
-		name: 'Publicada'
-	},
-	{
-		id: 'REJECTED',
-		name: 'Rechazada'
-	},
-	{
-		id: 'UNPUBLISHED',
-		name: 'No publicada'
+		"id": "NONE",
+		"name": "Ninguno"
 	}
-];
-
-export const ACTIVITY_STATUSES_MAP = {
-	APPROVED: { id: 'APPROVED', name: 'Aprobada', desc: 'APPROVED' },
-	DELETED: { id: 'DELETED', name: 'Borrada', desc: 'DELETED' },
-	DRAFT: { id: 'DRAFT', name: 'Borrador', desc: 'DRAFT' },
-	PENDING_REVIEW: { id: 'PENDING_REVIEW', name: 'Pendiente de revisión', desc: 'PENDING_REVIEW' },
-	PUBLISHED: { id: 'PUBLISHED', name: 'Publicada', desc: 'PUBLISHED' },
-	REJECTED: { id: 'REJECTED', name: 'Rechazada', desc: 'REJECTED' },
-	UNPUBLISHED: { id: 'UNPUBLISHED', name: 'No publicada', desc: 'UNPUBLISHED' }
-} as const;
-
-// ============================================================================
-// NOT SUITABLE FOR
-// ============================================================================
-
-export const NOT_SUITABLE_FOR = [
-	'ADULTS',
-	'CHILDREN',
-	'FAMILIES',
-	'GROUPS',
-	'INDIVIDUALS'
 ] as const;
 
-export type NotSuitableFor = (typeof NOT_SUITABLE_FOR)[number];
+export type StageRequirement = (typeof STAGE_REQUIREMENT_OPTIONS)[number]['id'];
+export const STAGE_REQUIREMENT_VALUES = STAGE_REQUIREMENT_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 
-export const NOT_SUITABLE_FOR_OPTIONS = [
+export const STAGE_KIND_OPTIONS = [
 	{
-		id: 'ADULTS',
-		name: 'Adultos'
+		"id": "TRANSFER",
+		"name": "Transfer",
+		"description": "Movimiento entre puntos (bus, tren, coche, barco, etc.)"
 	},
 	{
-		id: 'CHILDREN',
-		name: 'Niños'
-	},
-	{
-		id: 'FAMILIES',
-		name: 'Familias'
-	},
-	{
-		id: 'GROUPS',
-		name: 'Grupos'
-	},
-	{
-		id: 'INDIVIDUALS',
-		name: 'Individuales'
+		"id": "EXPERIENCE",
+		"name": "Experience",
+		"description": "Experiencia (visita, comida, show, concierto, etc.)"
 	}
-];
+] as const;
 
-export const NOT_SUITABLE_FOR_MAP = {
-	ADULTS: { id: 'ADULTS', name: 'Adultos', description: 'No recomendado para adultos' },
-	CHILDREN: { id: 'CHILDREN', name: 'Niños', description: 'No recomendado para niños' },
-	FAMILIES: { id: 'FAMILIES', name: 'Familias', description: 'No recomendado para familias' },
-	GROUPS: { id: 'GROUPS', name: 'Grupos', description: 'No recomendado para grupos' },
-	INDIVIDUALS: {
-		id: 'INDIVIDUALS',
-		name: 'Individuales',
-		description: 'No recomendado para personas individuales'
+export type StageKind = (typeof STAGE_KIND_OPTIONS)[number]['id'];
+export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
+export const STAGE_RELEVANCE_OPTIONS = [
+	{
+		"id": "HIGH",
+		"name": "Alta"
+	},
+	{
+		"id": "MEDIUM",
+		"name": "Media"
+	},
+	{
+		"id": "LOW",
+		"name": "Baja"
+	},
+	{
+		"id": "NONE",
+		"name": "Ninguna"
 	}
-} as const;
+] as const;
+
+export type StageRelevance = (typeof STAGE_RELEVANCE_OPTIONS)[number]['id'];
+export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
+
