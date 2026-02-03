@@ -22,6 +22,9 @@
 	// i18n
 	import * as m from '$paraglide/messages';
 
+	// Enums
+	import { ACTIVITY_KIND_OPTIONS } from '$lib/config/enums';
+
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
 	import { confirmAction } from '$lib/actions/confirmAction';
@@ -58,7 +61,6 @@
 			} | null;
 			filters: ActivitiesFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
-			activityKinds: Array<{ id: string; name: string }>;
 			activityStatuses: Array<{ id: string; name: string }>;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
@@ -73,7 +75,7 @@
 
 	// Crear mapeos para traducciones
 	const activityKindsMap = $derived(
-		data.activityKinds.reduce((acc: Record<string, string>, item) => {
+		ACTIVITY_KIND_OPTIONS.reduce((acc: Record<string, string>, item) => {
 			acc[item.id] = item.name;
 			return acc;
 		}, {})
@@ -483,7 +485,7 @@
 			onchange={(e) => handleKindChange(e.currentTarget.value || undefined)}
 		>
 			<option value="">Todos los tipos</option>
-			{#each data.activityKinds as kind}
+			{#each ACTIVITY_KIND_OPTIONS as kind}
 				<option value={kind.id}>{kind.name}</option>
 			{/each}
 		</select>

@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const [response, kindsResponse, statusesResponse] = await Promise.all([
+		const [response, statusesResponse] = await Promise.all([
 			api.activities.getAll(fetch, {
 				page: filters.page,
 				pageSize: filters.pageSize,
@@ -27,7 +27,6 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 				breakfast: filters.breakfastIncluded,
 				wheelchairAccessible: filters.wheelchairAccessible
 			}),
-			api.activities.getKinds(fetch),
 			api.activities.getStatuses(fetch)
 		]);
 
@@ -36,7 +35,6 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pagination: response.pagination || null,
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
-			activityKinds: kindsResponse || [],
 			activityStatuses: statusesResponse || [],
 			breadcrumbs
 		};
