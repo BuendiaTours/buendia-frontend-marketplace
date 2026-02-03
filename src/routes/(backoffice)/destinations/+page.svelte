@@ -19,6 +19,9 @@
 	// i18n
 	import * as m from '$paraglide/messages';
 
+	// Enums
+	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
 
@@ -32,7 +35,7 @@
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
 	// Icons
-	import { Cancel, Check, Plus, Search } from 'svelte-iconoir';
+	import { Cancel, Plus, Search } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -296,7 +299,7 @@
 							{:else if col.key === 'kind'}
 								<td>
 									<span>
-										{item.kind === 'CITY' ? 'Ciudad' : item.kind === 'REGION' ? 'Región' : 'País'}
+										{DESTINATION_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
 									</span>
 								</td>
 							{:else}

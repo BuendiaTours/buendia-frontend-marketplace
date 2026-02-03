@@ -2,23 +2,25 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { page } from '$app/stores';
-	import { Refresh } from 'svelte-iconoir';
 	import { slugify } from '$lib/utils/strings';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
+	// Enums
+	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+
 	// Form components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormErrorMsg from '$lib/components/forms/FormErrorMsg.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 
 	// Components
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
 	// Icons
 	import { DatabaseRestore } from 'svelte-iconoir';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -108,21 +110,15 @@
 				wrapperClass="md:col-span-12"
 			/>
 
-			<div class="md:col-span-12">
-				<label class="label text-sm" for="kind">Tipo</label>
-				<select
-					id="kind"
-					name="kind"
-					class="select w-full"
-					class:select-error={$errors.kind}
-					bind:value={$form.kind}
-				>
-					<option value="CITY">Ciudad</option>
-					<option value="REGION">Región</option>
-					<option value="COUNTRY">País</option>
-				</select>
-				<FormErrorMsg error={$errors.kind} />
-			</div>
+			<FormSelect
+				id="kind"
+				label="Tipo"
+				bind:value={$form.kind}
+				error={$errors.kind}
+				options={DESTINATION_KIND_OPTIONS}
+				placeholder="Selecciona un tipo"
+				wrapperClass="md:col-span-12"
+			/>
 
 			<FormTextarea
 				id="descriptionShort"
