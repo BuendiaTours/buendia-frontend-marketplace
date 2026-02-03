@@ -6,7 +6,11 @@ import {
 	ACTIVITY_STATUS_VALUES,
 	STAGE_KIND_VALUES,
 	STAGE_REQUIREMENT_VALUES,
-	STAGE_RELEVANCE_VALUES
+	STAGE_RELEVANCE_VALUES,
+	MEAL_ADDITIONAL_VALUES,
+	MEAL_ALLERGEN_VALUES,
+	MEAL_FORMAT_VALUES,
+	MEAL_KIND_VALUES
 } from '$lib/config/enums';
 
 /**
@@ -89,6 +93,21 @@ export const activityFormSchema = z.object({
 				}),
 				requirement: z.enum(STAGE_REQUIREMENT_VALUES, {
 					errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
+				})
+			})
+		)
+		.default([]),
+	meals: z
+		.array(
+			z.object({
+				id: z.string(),
+				additionalOptions: z.array(z.enum(MEAL_ADDITIONAL_VALUES)).default([]),
+				allergens: z.array(z.enum(MEAL_ALLERGEN_VALUES)).default([]),
+				format: z.enum(MEAL_FORMAT_VALUES, {
+					errorMap: () => ({ message: 'Debe seleccionar un formato válido' })
+				}),
+				kind: z.enum(MEAL_KIND_VALUES, {
+					errorMap: () => ({ message: 'Debe seleccionar un tipo de comida válido' })
 				})
 			})
 		)
