@@ -1,4 +1,5 @@
 // src/lib/types.ts
+import type { ActivityNotSuitableFor, DestinationKind, AttractionStatus } from '$lib/config/enums';
 
 export type ActivityListItem = {
 	id: string;
@@ -19,7 +20,7 @@ export type ActivityListItem = {
 	kind: string;
 	meals: string[];
 	multimedias: string[];
-	notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
+	notSuitableFor: Array<ActivityNotSuitableFor>;
 	petsAllowed: {
 		allowed: string;
 		description: string | null;
@@ -60,7 +61,7 @@ export type Destination = {
 	id: string;
 	name: string;
 	slug: string;
-	kind: 'CITY' | 'REGION' | 'COUNTRY';
+	kind: DestinationKind;
 	descriptionShort: string;
 	photoUrlHero: string;
 };
@@ -69,7 +70,7 @@ export type Attraction = {
 	id: string;
 	name: string;
 	slug: string;
-	status?: 'ACTIVE' | 'DRAFT' | 'INACTIVE';
+	status?: AttractionStatus;
 	description?: string;
 	descriptionLong?: string;
 	photoUrl?: string;
