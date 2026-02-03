@@ -1,5 +1,6 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$lib/config/enums';
 
 export type AttractionsFilters = {
 	// Paginación (opcional - solo si la API la provee)
@@ -10,7 +11,7 @@ export type AttractionsFilters = {
 	order?: 'asc' | 'desc';
 	// Búsqueda
 	q?: string;
-	status?: 'ACTIVE' | 'DRAFT' | 'INACTIVE';
+	status?: AttractionStatus;
 	// Filtros avanzados
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
@@ -66,8 +67,8 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 		},
 		status: {
 			parse: (raw) => {
-				if (raw === 'ACTIVE' || raw === 'DRAFT' || raw === 'INACTIVE') {
-					return raw;
+				if (ATTRACTION_STATUS_VALUES.includes(raw as AttractionStatus)) {
+					return raw as AttractionStatus;
 				}
 				return undefined;
 			},
