@@ -34,6 +34,18 @@ export const ACTIVITY_STATUS_VALUES = ACTIVITY_STATUS_OPTIONS.map((opt) => opt.i
 	...string[]
 ];
 
+export const ACTIVITY_KIND_OPTIONS = [
+	{ id: 'PAID_TOUR', name: 'Tour pagado' },
+	{ id: 'FREE_TOUR', name: 'Tour gratuito' },
+	{ id: 'OTHER', name: 'Otro' }
+];
+
+export type ActivityKind = (typeof ACTIVITY_KIND_OPTIONS)[number]['id'];
+export const ACTIVITY_KIND_VALUES = ACTIVITY_KIND_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
+
 // Stages
 
 export const STAGE_REQUIREMENT_OPTIONS = [
