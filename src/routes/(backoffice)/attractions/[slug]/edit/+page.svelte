@@ -5,6 +5,9 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 
+	// Enums
+	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
+
 	// Components
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
@@ -89,7 +92,7 @@
 				label="Estado"
 				bind:value={$form.status}
 				error={$errors.status}
-				options={data.availableStatuses}
+				options={ATTRACTION_STATUS_OPTIONS}
 				placeholder="Selecciona un estado"
 				wrapperClass="md:col-span-4"
 			/>

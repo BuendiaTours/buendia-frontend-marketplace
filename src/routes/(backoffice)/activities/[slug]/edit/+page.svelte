@@ -7,11 +7,11 @@
 
 	// Enums
 	import {
+		ACTIVITY_GUIDE_KIND_OPTIONS,
 		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
 		ACTIVITY_STATUS_OPTIONS,
 		ACTIVITY_KIND_OPTIONS
 	} from '$lib/config/enums';
-	import { ACTIVITY_GUIDE_KIND_OPTIONS } from '$lib/generated/enums';
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 

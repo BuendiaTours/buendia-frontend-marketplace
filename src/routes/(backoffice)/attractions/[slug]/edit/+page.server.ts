@@ -8,10 +8,9 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const [attraction, destinationsResponse, statusResponse] = await Promise.all([
+		const [attraction, destinationsResponse] = await Promise.all([
 			api.attractions.getBySlug(fetch, params.slug),
-			api.destinations.getAll(fetch),
-			api.attractions.getStatuses(fetch)
+			api.destinations.getAll(fetch)
 		]);
 
 		const apiData = attraction as any;
@@ -41,7 +40,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			attraction,
 			form,
 			availableDestinations: destinationsResponse.data || [],
-			availableStatuses: statusResponse || [],
 			breadcrumbs
 		};
 	} catch (err) {

@@ -44,22 +44,10 @@ export const ACTIVITY_GUIDE_KIND_VALUES = ACTIVITY_GUIDE_KIND_OPTIONS.map((opt) 
 ///////////////////////////////////////
 
 export const STAGE_REQUIREMENT_OPTIONS = [
-	{
-		id: 'REQUIRED',
-		name: 'Obligatorio'
-	},
-	{
-		id: 'OPTIONAL',
-		name: 'Opcional'
-	},
-	{
-		id: 'SUGGESTED',
-		name: 'Recomendado'
-	},
-	{
-		id: 'NONE',
-		name: 'Ninguno'
-	}
+	{ id: 'REQUIRED', name: 'Obligatorio' },
+	{ id: 'OPTIONAL', name: 'Opcional' },
+	{ id: 'SUGGESTED', name: 'Recomendado' },
+	{ id: 'NONE', name: 'Ninguno' }
 ] as const;
 
 export type StageRequirement = (typeof STAGE_REQUIREMENT_OPTIONS)[number]['id'];
@@ -85,22 +73,10 @@ export type StageKind = (typeof STAGE_KIND_OPTIONS)[number]['id'];
 export const STAGE_KIND_VALUES = STAGE_KIND_OPTIONS.map((opt) => opt.id) as [string, ...string[]];
 
 export const STAGE_RELEVANCE_OPTIONS = [
-	{
-		id: 'HIGH',
-		name: 'Alta'
-	},
-	{
-		id: 'MEDIUM',
-		name: 'Media'
-	},
-	{
-		id: 'LOW',
-		name: 'Baja'
-	},
-	{
-		id: 'NONE',
-		name: 'Ninguna'
-	}
+	{ id: 'HIGH', name: 'Alta' },
+	{ id: 'MEDIUM', name: 'Media' },
+	{ id: 'LOW', name: 'Baja' },
+	{ id: 'NONE', name: 'Ninguna' }
 ] as const;
 
 export type StageRelevance = (typeof STAGE_RELEVANCE_OPTIONS)[number]['id'];

@@ -3,7 +3,9 @@ import * as m from '$paraglide/messages';
 // Array de las claves
 // STAGE_KINDS_OPTIONS.map((option) => option.id) as [string, ...string[]]
 
+///////////////////////////////////////
 // Activities
+///////////////////////////////////////
 
 export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = [
 	{ id: 'ADULTS', name: 'Adultos' },
@@ -46,7 +48,23 @@ export const ACTIVITY_KIND_VALUES = ACTIVITY_KIND_OPTIONS.map((opt) => opt.id) a
 	...string[]
 ];
 
+export const ACTIVITY_GUIDE_KIND_OPTIONS = [
+	{ id: 'AUTO', name: 'Auto' },
+	{ id: 'CUSTOM_LANGUAGE', name: 'Idioma personalizado' },
+	{ id: 'DRIVER', name: 'Conductor' },
+	{ id: 'GUEST', name: 'Invitado' },
+	{ id: 'INSTRUCTOR', name: 'Instructor' }
+];
+
+export type ActivityGuideKind = (typeof ACTIVITY_GUIDE_KIND_OPTIONS)[number]['id'];
+export const ACTIVITY_GUIDE_KIND_VALUES = ACTIVITY_GUIDE_KIND_OPTIONS.map((opt) => opt.id) as [
+	string,
+	...string[]
+];
+
+///////////////////////////////////////
 // Stages
+///////////////////////////////////////
 
 export const STAGE_REQUIREMENT_OPTIONS = [
 	{ id: 'REQUIRED', name: 'Requerido' },
@@ -89,7 +107,9 @@ export const STAGE_RELEVANCE_VALUES = STAGE_RELEVANCE_OPTIONS.map((opt) => opt.i
 	...string[]
 ];
 
+///////////////////////////////////////
 // Attractions
+///////////////////////////////////////
 
 export const ATTRACTION_STATUS_OPTIONS = [
 	{ id: 'ACTIVE', name: 'Activo' },
@@ -103,7 +123,9 @@ export const ATTRACTION_STATUS_VALUES = ATTRACTION_STATUS_OPTIONS.map((opt) => o
 	...string[]
 ];
 
+///////////////////////////////////////
 // Destinations
+///////////////////////////////////////
 
 export const DESTINATION_KIND_OPTIONS = [
 	{ id: 'CITY', name: 'Ciudad' },
