@@ -8,6 +8,13 @@
 	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
 
+	// Enums
+	import {
+		STAGE_KIND_OPTIONS,
+		STAGE_RELEVANCE_OPTIONS,
+		STAGE_REQUIREMENT_OPTIONS
+	} from '$lib/config/enums';
+
 	interface Stage {
 		id: string;
 		activityId: string;
@@ -204,13 +211,7 @@
 						label="Tipo"
 						bind:value={stage.kind}
 						error={errors?.[index]?.kind}
-						options={[
-							{ id: 'EXPERIENCE', name: 'Experiencia' },
-							{ id: 'TRANSFER', name: 'Traslado' },
-							{ id: 'MEAL', name: 'Comida' },
-							{ id: 'ACCOMMODATION', name: 'Alojamiento' },
-							{ id: 'OTHER', name: 'Otro' }
-						]}
+						options={STAGE_KIND_OPTIONS}
 						placeholder="Selecciona un tipo"
 						wrapperClass="md:col-span-4"
 					/>
@@ -220,12 +221,7 @@
 						label="Relevancia"
 						bind:value={stage.relevance}
 						error={errors?.[index]?.relevance}
-						options={[
-							{ id: 'HIGH', name: 'Alta' },
-							{ id: 'MEDIUM', name: 'Media' },
-							{ id: 'LOW', name: 'Baja' },
-							{ id: 'NONE', name: 'Ninguna' }
-						]}
+						options={STAGE_RELEVANCE_OPTIONS}
 						placeholder="Selecciona relevancia"
 						wrapperClass="md:col-span-4"
 					/>
@@ -235,11 +231,7 @@
 						label="Requisito"
 						bind:value={stage.requirement}
 						error={errors?.[index]?.requirement}
-						options={[
-							{ id: 'REQUIRED', name: 'Requerido' },
-							{ id: 'OPTIONAL', name: 'Opcional' },
-							{ id: 'CONDITIONAL', name: 'Condicional' }
-						]}
+						options={STAGE_REQUIREMENT_OPTIONS}
 						placeholder="Selecciona requisito"
 						wrapperClass="md:col-span-4"
 					/>
@@ -248,25 +240,27 @@
 						<label class="label cursor-pointer justify-start gap-3">
 							<input
 								type="checkbox"
-								checked={stage.location !== null}
+								checked={stages[index].location !== null}
 								onchange={(e) => {
 									if (e.currentTarget.checked) {
 										// Activar: restaurar backup o usar coordenadas por defecto
 										if (locationBackups[index]) {
-											stage.location = locationBackups[index];
+											stages[index].location = locationBackups[index];
 										} else {
-											stage.location = {
+											stages[index].location = {
 												type: 'Point',
 												coordinates: [-3.7038, 40.4168] // Madrid por defecto
 											};
 										}
 									} else {
 										// Desactivar: guardar backup y establecer a null
-										if (stage.location) {
-											locationBackups[index] = { ...stage.location };
+										if (stages[index].location) {
+											locationBackups[index] = { ...stages[index].location };
 										}
-										stage.location = null;
+										stages[index].location = null;
 									}
+									// Forzar reactividad
+									stages = [...stages];
 								}}
 								class="toggle toggle-success"
 							/>
@@ -274,11 +268,11 @@
 						</label>
 					</div>
 
-					{#if stage.location}
+					{#if stages[index].location}
 						<FormGeoJson
 							id={`stages[${index}][location]`}
 							label="Ubicación"
-							bind:value={stage.location}
+							bind:value={stages[index].location}
 							mapClass="h-[250px]"
 							config={{
 								showSearchBox: true,

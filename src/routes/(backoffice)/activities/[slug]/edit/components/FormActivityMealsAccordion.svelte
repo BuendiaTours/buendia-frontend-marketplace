@@ -120,25 +120,31 @@
 					/>
 
 					<FormTagManager
-						id="additionalOptions"
+						id="additionalOptions-{index}"
 						label="Opciones adicionales"
-						bind:tags={meal.additionalOptions}
+						bind:tags={meals[index].additionalOptions}
 						availableTags={MEAL_ADDITIONAL_OPTIONS}
 						valueType="string"
 						error={errors?.[index]?.additionalOptions?._errors}
 						wrapperClass="md:col-span-12"
 						placeholder="Selecciona las opciónes adicionales..."
+						onTagsChange={() => {
+							meals = [...meals];
+						}}
 					/>
 
 					<FormTagManager
-						id="allergens"
+						id="allergens-{index}"
 						label="Alérgenos"
-						bind:tags={meal.allergens}
+						bind:tags={meals[index].allergens}
 						availableTags={MEAL_ALLERGEN_OPTIONS}
 						valueType="string"
 						error={errors?.[index]?.allergens?._errors}
 						wrapperClass="md:col-span-12"
 						placeholder="Selecciona los alérgenos"
+						onTagsChange={() => {
+							meals = [...meals];
+						}}
 					/>
 
 					<div class="flex gap-2 md:col-span-12">

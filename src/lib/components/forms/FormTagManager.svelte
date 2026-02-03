@@ -85,6 +85,7 @@
 		placeholder?: string;
 		wrapperClass?: string;
 		emptyMessage?: string;
+		onTagsChange?: () => void;
 	}
 
 	let {
@@ -97,7 +98,8 @@
 		badge,
 		placeholder = 'Añade un tag',
 		wrapperClass = 'md:col-span-12',
-		emptyMessage = 'No hay tags asignados'
+		emptyMessage = 'No hay tags asignados',
+		onTagsChange
 	}: Props = $props();
 
 	const tagsForCombobox = $derived(
@@ -137,6 +139,7 @@
 		}
 
 		selectedTagId = undefined;
+		onTagsChange?.();
 	}
 
 	function removeTag(index: number) {
@@ -145,6 +148,7 @@
 		} else {
 			tags = (tags as TagItem[]).filter((_, i) => i !== index) as TagItem[];
 		}
+		onTagsChange?.();
 	}
 </script>
 
