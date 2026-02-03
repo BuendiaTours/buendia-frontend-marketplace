@@ -76,7 +76,7 @@
 		},
 		onError({ result }) {
 			// Mostrar toast cuando hay errores de validación del servidor
-			if (result.type === 'failure' && result.status === 400) {
+			if (result.status === 400) {
 				toastComponent?.addToast({
 					data: {
 						title: 'Errores en el formulario',
@@ -188,6 +188,27 @@
 		};
 
 		$form.stages = [...$form.stages, newStage];
+	}
+
+	function handleAddMeal() {
+		// Colapsar todos los acordeones hijos
+		const mealAccordions = document.querySelectorAll('[name^="form-meals-"]');
+		mealAccordions.forEach((accordion) => {
+			if (accordion instanceof HTMLDetailsElement) {
+				accordion.open = false;
+			}
+		});
+
+		// Crear nueva comida
+		const newMeal = {
+			id: `temp-${Date.now()}`, // ID temporal hasta que se guarde
+			additionalOptions: [] as string[],
+			allergens: [] as string[],
+			format: 'BUFFET' as const,
+			kind: 'LUNCH' as const
+		};
+
+		$form.meals = [...$form.meals, newMeal];
 	}
 </script>
 
@@ -445,11 +466,7 @@
 			<span>Comidas</span>
 		{/snippet}
 		{#snippet titleBarActions()}
-			<button
-				type="button"
-				class="btn ml-6 btn-outline btn-xs btn-primary"
-				onclick={handleAddStage}
-			>
+			<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary" onclick={handleAddMeal}>
 				Añadir comida
 			</button>
 		{/snippet}
