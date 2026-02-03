@@ -11,31 +11,27 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const [response, statusesResponse] = await Promise.all([
-			api.activities.getAll(fetch, {
-				page: filters.page,
-				pageSize: filters.pageSize,
-				sort: filters.sort,
-				order: filters.order,
-				from: filters.from,
-				to: filters.to,
-				destination: filters.destination,
-				kind: filters.kind,
-				status: filters.status,
-				isFreeTour: filters.isFreeTour,
-				freeForKids: filters.kidsFreeTour,
-				breakfast: filters.breakfastIncluded,
-				wheelchairAccessible: filters.wheelchairAccessible
-			}),
-			api.activities.getStatuses(fetch)
-		]);
+		const response = await api.activities.getAll(fetch, {
+			page: filters.page,
+			pageSize: filters.pageSize,
+			sort: filters.sort,
+			order: filters.order,
+			from: filters.from,
+			to: filters.to,
+			destination: filters.destination,
+			kind: filters.kind,
+			status: filters.status,
+			isFreeTour: filters.isFreeTour,
+			freeForKids: filters.kidsFreeTour,
+			breakfast: filters.breakfastIncluded,
+			wheelchairAccessible: filters.wheelchairAccessible
+		});
 
 		return {
 			items: response.data || [],
 			pagination: response.pagination || null,
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
-			activityStatuses: statusesResponse || [],
 			breadcrumbs
 		};
 	} catch (err) {

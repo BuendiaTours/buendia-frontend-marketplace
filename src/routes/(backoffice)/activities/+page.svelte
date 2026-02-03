@@ -14,7 +14,7 @@
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
-	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
@@ -23,7 +23,7 @@
 	import * as m from '$paraglide/messages';
 
 	// Enums
-	import { ACTIVITY_KIND_OPTIONS } from '$lib/config/enums';
+	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/config/enums';
 
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
@@ -61,7 +61,6 @@
 			} | null;
 			filters: ActivitiesFilters;
 			sort: { field: string; order: 'asc' | 'desc' } | null;
-			activityStatuses: Array<{ id: string; name: string }>;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
@@ -72,21 +71,6 @@
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
-
-	// Crear mapeos para traducciones
-	const activityKindsMap = $derived(
-		ACTIVITY_KIND_OPTIONS.reduce((acc: Record<string, string>, item) => {
-			acc[item.id] = item.name;
-			return acc;
-		}, {})
-	);
-
-	const activityStatusesMap = $derived(
-		data.activityStatuses.reduce((acc: Record<string, string>, item) => {
-			acc[item.id] = item.name;
-			return acc;
-		}, {})
-	);
 
 	// ============================================================================
 	// DESTINATIONS (cargadas desde API en cliente)
@@ -507,7 +491,7 @@
 			onchange={(e) => handleStatusChange(e.currentTarget.value || undefined)}
 		>
 			<option value="">Todos los estados</option>
-			{#each data.activityStatuses as status}
+			{#each ACTIVITY_STATUS_OPTIONS as status}
 				<option value={status.id}>{status.name}</option>
 			{/each}
 		</select>
@@ -617,11 +601,12 @@
 								</td>
 							{:else if col.key === 'kind'}
 								<td>
-									{activityKindsMap[item[col.key]] || item[col.key]}
+									{ACTIVITY_KIND_OPTIONS.find((k) => k.id === item[col.key])?.name || item[col.key]}
 								</td>
 							{:else if col.key === 'status'}
 								<td>
-									{activityStatusesMap[item[col.key]] || item[col.key]}
+									{ACTIVITY_STATUS_OPTIONS.find((s) => s.id === item[col.key])?.name ||
+										item[col.key]}
 								</td>
 							{:else}
 								<td>
