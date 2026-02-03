@@ -6,6 +6,25 @@
 	/**
 	 * Componente reutilizable para gestión de tags en formularios
 	 *
+	 * Soporta dos modos de funcionamiento según el tipo de datos:
+	 *
+	 * ## Modo 1: Objetos (valueType="object" - por defecto)
+	 * Para trabajar con objetos que tienen id y name
+	 *
+	 * Estructura de datos esperada:
+	 * ```typescript
+	 * tags: [
+	 *   { id: "aa0e8400-e29b-41d4-a716-446655440010", name: "Cruceros" },
+	 *   { id: "aa0e8400-e29b-41d4-a716-446655440016", name: "Familiar" }
+	 * ]
+	 *
+	 * availableTags: [
+	 *   { id: "aa0e8400-e29b-41d4-a716-446655440010", name: "Cruceros" },
+	 *   { id: "aa0e8400-e29b-41d4-a716-446655440016", name: "Familiar" },
+	 *   { id: "aa0e8400-e29b-41d4-a716-446655440020", name: "Aventura" }
+	 * ]
+	 * ```
+	 *
 	 * @example
 	 * ```svelte
 	 * <FormTagManager
@@ -14,6 +33,33 @@
 	 *   bind:tags={$form.tags}
 	 *   availableTags={data.availableTags}
 	 *   error={$errors.tags?._errors}
+	 * />
+	 * ```
+	 *
+	 * ## Modo 2: Strings (valueType="string")
+	 * Para trabajar con arrays de strings simples (ideal para enums)
+	 *
+	 * Estructura de datos esperada:
+	 * ```typescript
+	 * tags: ["VEGAN", "GLUTEN_FREE", "FRESH", "LOCAL"]
+	 *
+	 * availableTags: [
+	 *   { id: "VEGAN", name: "Vegana" },
+	 *   { id: "GLUTEN_FREE", name: "Sin gluten" },
+	 *   { id: "FRESH", name: "Fresca" },
+	 *   { id: "LOCAL", name: "Local" }
+	 * ]
+	 * ```
+	 *
+	 * @example
+	 * ```svelte
+	 * <FormTagManager
+	 *   id="additionalOptions"
+	 *   label="Opciones adicionales"
+	 *   bind:tags={$form.meals[index].additionalOptions}
+	 *   availableTags={MEAL_ADDITIONAL_OPTIONS}
+	 *   valueType="string"
+	 *   error={$errors.meals?.[index]?.additionalOptions?._errors}
 	 * />
 	 * ```
 	 */
@@ -31,8 +77,9 @@
 	interface Props {
 		id: string;
 		label: string;
-		tags: TagItem[];
+		tags: TagItem[] | string[];
 		availableTags?: AvailableTag[];
+		valueType?: 'object' | 'string';
 		error?: string | string[];
 		badge?: string;
 		placeholder?: string;
@@ -45,6 +92,7 @@
 		label,
 		tags = $bindable(),
 		availableTags = [],
+		valueType = 'object',
 		error,
 		badge,
 		placeholder = 'Añade un tag',
@@ -54,7 +102,12 @@
 
 	const tagsForCombobox = $derived(
 		availableTags
-			?.filter((tag) => !tags.some((selectedTag) => selectedTag.id === tag.id))
+			?.filter((tag) => {
+				if (valueType === 'string') {
+					return !(tags as string[]).includes(tag.id);
+				}
+				return !(tags as TagItem[]).some((selectedTag) => selectedTag.id === tag.id);
+			})
 			.map((tag) => ({
 				value: tag.id,
 				label: tag.name
@@ -66,19 +119,32 @@
 	function handleTagSelect(tagId: string | undefined) {
 		if (!tagId) return;
 
-		const tagExists = tags.some((t) => t.id === tagId);
-		if (tagExists) return;
+		if (valueType === 'string') {
+			const tagExists = (tags as string[]).includes(tagId);
+			if (tagExists) return;
+			tags = [...(tags as string[]), tagId] as string[];
+		} else {
+			const tagExists = (tags as TagItem[]).some((t) => t.id === tagId);
+			if (tagExists) return;
 
-		const selectedTag = availableTags?.find((t) => t.id === tagId);
-		if (selectedTag) {
-			tags = [...tags, { id: selectedTag.id, name: selectedTag.name }];
+			const selectedTag = availableTags?.find((t) => t.id === tagId);
+			if (selectedTag) {
+				tags = [
+					...(tags as TagItem[]),
+					{ id: selectedTag.id, name: selectedTag.name }
+				] as TagItem[];
+			}
 		}
 
 		selectedTagId = undefined;
 	}
 
 	function removeTag(index: number) {
-		tags = tags.filter((_, i) => i !== index);
+		if (valueType === 'string') {
+			tags = (tags as string[]).filter((_, i) => i !== index) as string[];
+		} else {
+			tags = (tags as TagItem[]).filter((_, i) => i !== index) as TagItem[];
+		}
 	}
 </script>
 
@@ -102,17 +168,32 @@
 		<div class="mt-4 flex flex-wrap gap-2">
 			{#if tags.length === 0}
 				<span class="text-sm text-base-content/50">{emptyMessage}</span>
-			{:else}
+			{:else if valueType === 'string'}
 				{#each tags as tag, i}
+					{@const stringTag = tag as string}
+					{@const availableTag = availableTags?.find((t) => t.id === stringTag)}
 					<TagComponent
-						name="{id}[{i}][id]"
-						value={tag.id}
+						name="{id}[{i}]"
+						value={stringTag}
 						class="badge-accent"
 						removable
 						onremove={() => removeTag(i)}
 					>
-						{tag.name}
-						<input type="hidden" name="{id}[{i}][name]" value={tag.name} />
+						{availableTag?.name || stringTag}
+					</TagComponent>
+				{/each}
+			{:else}
+				{#each tags as tag, i}
+					{@const objectTag = tag as TagItem}
+					<TagComponent
+						name="{id}[{i}][id]"
+						value={objectTag.id}
+						class="badge-accent"
+						removable
+						onremove={() => removeTag(i)}
+					>
+						{objectTag.name}
+						<input type="hidden" name="{id}[{i}][name]" value={objectTag.name} />
 					</TagComponent>
 				{/each}
 			{/if}

@@ -13,7 +13,8 @@
 		ACTIVITY_KIND_OPTIONS,
 		MEAL_KIND_OPTIONS,
 		MEAL_FORMAT_OPTIONS,
-		MEAL_ADDITIONAL_OPTIONS
+		MEAL_ADDITIONAL_OPTIONS,
+		MEAL_ALLERGEN_OPTIONS
 	} from '$lib/config/enums';
 
 	import {
@@ -509,9 +510,23 @@
 						<FormTagManager
 							id="additionalOptions"
 							label="Opciones adicionales"
-							bind:tags={$form.meals?.[index]?.additionalOptions}
-							{MEAL_ADDITIONAL_OPTIONS}
+							bind:tags={$form.meals[index].additionalOptions}
+							availableTags={MEAL_ADDITIONAL_OPTIONS}
+							valueType="string"
 							error={$errors.meals?.[index]?.additionalOptions?._errors}
+							wrapperClass="md:col-span-12"
+							placeholder="Selecciona las opciónes adicionales..."
+						/>
+
+						<FormTagManager
+							id="allergens"
+							label="Alérgenos"
+							bind:tags={$form.meals[index].allergens}
+							availableTags={MEAL_ALLERGEN_OPTIONS}
+							valueType="string"
+							error={$errors.meals?.[index]?.allergens?._errors}
+							wrapperClass="md:col-span-12"
+							placeholder="Selecciona los lárgenos"
 						/>
 
 						<div class="flex gap-2 md:col-span-12">
