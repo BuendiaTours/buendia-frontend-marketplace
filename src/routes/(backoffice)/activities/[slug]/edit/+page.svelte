@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
+	import { v4 as uuidv4 } from 'uuid';
 
 	// Enums
 	import {
@@ -175,16 +176,16 @@
 		// Crear nuevo stage
 		const newOrder = $form.stages.length + 1;
 		const newStage = {
-			id: `temp-${Date.now()}`, // ID temporal hasta que se guarde
+			id: uuidv4(), // ID temporal hasta que se guarde
 			activityId: $form.id,
 			order: newOrder,
 			name: `Etapa ${newOrder}`,
 			description: '',
 			duration: '',
 			location: null, // Geolocalización desactivada por defecto
-			kind: 'EXPERIENCE' as const,
-			relevance: 'MEDIUM' as const,
-			requirement: 'REQUIRED' as const
+			kind: null, //'EXPERIENCE' as const,
+			relevance: null, //'MEDIUM' as const,
+			requirement: null //'REQUIRED' as const
 		};
 
 		$form.stages = [...$form.stages, newStage];
@@ -201,11 +202,11 @@
 
 		// Crear nueva comida
 		const newMeal = {
-			id: `temp-${Date.now()}`, // ID temporal hasta que se guarde
+			id: uuidv4(), // ID temporal hasta que se guarde
 			additionalOptions: [] as string[],
 			allergens: [] as string[],
-			format: 'BUFFET' as const,
-			kind: 'LUNCH' as const
+			format: null, // 'BUFFET' as const,
+			kind: null // 'LUNCH' as const
 		};
 
 		$form.meals = [...$form.meals, newMeal];
