@@ -4,7 +4,9 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
-	import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/generated/enums';
+
+	// Enums
+	import { ACTIVITY_NOT_SUITABLE_FOR_OPTIONS } from '$lib/config/enums';
 
 	import { Map, DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
@@ -400,7 +402,7 @@
 				id="notSuitableFor"
 				label="No recomendado para"
 				bind:value={$form.notSuitableFor}
-				options={NOT_SUITABLE_FOR_OPTIONS}
+				options={ACTIVITY_NOT_SUITABLE_FOR_OPTIONS}
 				error={$errors.notSuitableFor?._errors}
 				badge="opcional"
 				wrapperClass="md:col-span-12"

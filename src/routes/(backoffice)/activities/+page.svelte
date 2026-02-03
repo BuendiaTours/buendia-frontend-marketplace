@@ -1,8 +1,4 @@
 <script lang="ts">
-	// ============================================================================
-	// IMPORTS
-	// ============================================================================
-
 	// Types
 	import type { ActivityListItem, Column, Destination } from '$lib/types';
 	import type { ActivitiesFilters } from './filters.schema';
@@ -40,10 +36,10 @@
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
-	import { fade, scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	// Icons
-	import { Calendar, Cancel, Check, Map, Plus } from 'svelte-iconoir';
+	import { Calendar, Cancel, Map, Plus } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
