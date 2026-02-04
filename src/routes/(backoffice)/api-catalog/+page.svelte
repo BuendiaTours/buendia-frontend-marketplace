@@ -85,7 +85,7 @@
 	{#each endpointGroups as group}
 		<div class="card p-4">
 			<div
-				class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+				class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 pb-4"
 			>
 				<div>
 					<h2 class="text-md card-title">{group.name}</h2>

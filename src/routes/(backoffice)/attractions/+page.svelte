@@ -216,7 +216,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href="/attractions/new" class="btn btn-outline btn-primary">
+	<a href="/attractions/create" class="btn btn-outline btn-primary">
 		<Plus />
 		Nueva atracción
 	</a>

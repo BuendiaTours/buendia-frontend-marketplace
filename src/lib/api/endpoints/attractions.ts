@@ -82,5 +82,31 @@ export const attractionsEndpoints = {
 		});
 
 		return response.data;
+	},
+
+	async create(fetchFn: typeof fetch, data: Partial<Attraction>): Promise<Attraction> {
+		const path = API_ENDPOINTS.attractions.list.path();
+
+		const response = await apiClient.request<Attraction>(fetchFn, path, {
+			method: 'POST',
+			body: JSON.stringify(data)
+		});
+
+		return response.data;
+	},
+
+	async update(
+		fetchFn: typeof fetch,
+		slug: string,
+		data: Partial<Attraction>
+	): Promise<Attraction> {
+		const path = API_ENDPOINTS.attractions.detail.path(slug);
+
+		const response = await apiClient.request<Attraction>(fetchFn, path, {
+			method: 'PUT',
+			body: JSON.stringify(data)
+		});
+
+		return response.data;
 	}
 };

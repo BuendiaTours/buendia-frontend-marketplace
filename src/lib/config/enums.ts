@@ -10,7 +10,7 @@ import * as m from '$paraglide/messages';
 export const ACTIVITY_STATUS_OPTIONS = [
 	{ id: 'APPROVED', name: 'Aprobada' },
 	{ id: 'DELETED', name: 'Eliminada' },
-	{ id: 'DRAFT', name: 'Borraor' },
+	{ id: 'DRAFT', name: 'Borrador' },
 	{ id: 'PENDING_REVIEW', name: 'Pendiente de revisión' },
 	{ id: 'PUBLISHED', name: 'Publicada' },
 	{ id: 'REJECTED', name: 'Rechazada' },

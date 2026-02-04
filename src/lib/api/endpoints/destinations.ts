@@ -72,5 +72,31 @@ export const destinationsEndpoints = {
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'DELETE'
 		});
+	},
+
+	async create(fetchFn: typeof fetch, data: Partial<Destination>): Promise<Destination> {
+		const path = API_ENDPOINTS.destinations.list.path();
+
+		const response = await apiClient.request<Destination>(fetchFn, path, {
+			method: 'POST',
+			body: JSON.stringify(data)
+		});
+
+		return response.data;
+	},
+
+	async update(
+		fetchFn: typeof fetch,
+		slug: string,
+		data: Partial<Destination>
+	): Promise<Destination> {
+		const path = API_ENDPOINTS.destinations.detail.path(slug);
+
+		const response = await apiClient.request<Destination>(fetchFn, path, {
+			method: 'PUT',
+			body: JSON.stringify(data)
+		});
+
+		return response.data;
 	}
 };
