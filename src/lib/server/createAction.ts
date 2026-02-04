@@ -70,7 +70,13 @@ export function createCreateAction(config: CreateActionConfig) {
 				type: 'error',
 				message: errorMessage
 			});
-			return fail(400, { form });
+			return fail(400, {
+				form,
+				alert: {
+					type: 'error',
+					message: errorMessage
+				}
+			});
 		}
 
 		try {
@@ -156,7 +162,13 @@ export function createCreateAction(config: CreateActionConfig) {
 					message: errorMessage
 				});
 
-				return fail(err.status || 500, { form });
+				return fail(err.status || 500, {
+					form,
+					alert: {
+						type: 'error',
+						message: errorMessage
+					}
+				});
 			}
 
 			// 7. Error desconocido
@@ -167,7 +179,13 @@ export function createCreateAction(config: CreateActionConfig) {
 				message: errorMessage
 			});
 
-			return fail(503, { form });
+			return fail(503, {
+				form,
+				alert: {
+					type: 'error',
+					message: errorMessage
+				}
+			});
 		}
 	};
 }

@@ -57,11 +57,18 @@ export function createUpdateAction(config: UpdateActionConfig) {
 
 		if (!form.valid) {
 			console.error('💾 [updateAction] Errores de validación:', form.errors);
+			const errorMessage = 'Por favor, corrige los errores del formulario.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: 'Por favor, corrige los errores del formulario.'
+				message: errorMessage
 			});
-			return fail(400, { form });
+			return fail(400, {
+				form,
+				alert: {
+					type: 'error',
+					message: errorMessage
+				}
+			});
 		}
 
 		try {
@@ -133,17 +140,30 @@ export function createUpdateAction(config: UpdateActionConfig) {
 					message: errorMessage
 				});
 
-				return fail(err.status || 500, { form });
+				return fail(err.status || 500, {
+					form,
+					alert: {
+						type: 'error',
+						message: errorMessage
+					}
+				});
 			}
 
 			// Error desconocido
 			console.error('❌ [updateAction] Error desconocido');
+			const unknownErrorMessage = 'Error inesperado al guardar. Por favor, inténtalo de nuevo.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: 'Error inesperado al guardar. Por favor, inténtalo de nuevo.'
+				message: unknownErrorMessage
 			});
 
-			return fail(503, { form });
+			return fail(503, {
+				form,
+				alert: {
+					type: 'error',
+					message: unknownErrorMessage
+				}
+			});
 		}
 	};
 }
