@@ -7,7 +7,7 @@
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 
 	// Environment
@@ -100,7 +100,7 @@
 	// ============================================================================
 
 	function applyFilterPatch(patch: Partial<ActivitiesFilters>) {
-		const currentParams = $page.url.searchParams;
+		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(activitiesFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, {
 			replaceState: true,
@@ -112,7 +112,7 @@
 	const hasFilters = $derived(hasActiveFilters(filters));
 
 	function handleClearFilters() {
-		clearAllFilters($page.url.pathname, $page.url.searchParams, goto);
+		clearAllFilters(page.url.pathname, page.url.searchParams, goto);
 	}
 
 	// ============================================================================
@@ -531,10 +531,10 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<button class="btn btn-outline btn-primary">
+	<a href="/activities/create" class="btn btn-outline btn-primary">
 		<Plus />
 		<span>{m.activities_newActivity()}</span>
-	</button>
+	</a>
 </div>
 
 {#if items.length}
@@ -591,7 +591,7 @@
 								</td>
 							{:else if col.key === 'title'}
 								<td>
-									<a href={buildUrlWithFilters(`/activities/${item.slug}`, $page.url.searchParams)}>
+									<a href={buildUrlWithFilters(`/activities/${item.slug}`, page.url.searchParams)}>
 										{item[col.key]}
 									</a>
 								</td>
@@ -623,7 +623,7 @@
 								>
 									<li>
 										<a
-											href={buildUrlWithFilters(`/activities/${item.slug}`, $page.url.searchParams)}
+											href={buildUrlWithFilters(`/activities/${item.slug}`, page.url.searchParams)}
 										>
 											View
 										</a>
@@ -632,7 +632,7 @@
 										<a
 											href={buildUrlWithFilters(
 												`/activities/${item.slug}/edit`,
-												$page.url.searchParams
+												page.url.searchParams
 											)}
 										>
 											Edit
@@ -643,7 +643,7 @@
 											method="POST"
 											action={buildUrlWithFilters(
 												`/activities/${item.slug}/delete`,
-												$page.url.searchParams
+												page.url.searchParams
 											)}
 										>
 											<button

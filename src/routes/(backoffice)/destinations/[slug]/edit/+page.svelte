@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { slugify } from '$lib/utils/strings';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
@@ -42,7 +42,7 @@
 <div
 	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
 >
-	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="link">
+	<a href={`/destinations?${page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
@@ -50,7 +50,7 @@
 		method="POST"
 		action={buildUrlWithFilters(
 			`/destinations/${data.destination.slug}/delete`,
-			$page.url.searchParams
+			page.url.searchParams
 		)}
 		class="ml-auto"
 	>

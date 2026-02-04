@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
@@ -37,7 +37,7 @@
 <div
 	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
 >
-	<a href={`/attractions?${$page.url.searchParams.toString()}`} class="link">
+	<a href={`/attractions?${page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
@@ -45,7 +45,7 @@
 		method="POST"
 		action={buildUrlWithFilters(
 			`/attractions/${data.attraction.slug}/delete`,
-			$page.url.searchParams
+			page.url.searchParams
 		)}
 		class="ml-auto"
 	>

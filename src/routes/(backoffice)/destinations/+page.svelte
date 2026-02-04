@@ -9,7 +9,7 @@
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	// Utils
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
@@ -105,13 +105,13 @@
 	// ============================================================================
 
 	function applyFilterPatch(patch: Record<string, any>) {
-		const currentParams = $page.url.searchParams;
+		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
 	function handleClearFilters() {
-		clearAllFilters($page.url.pathname, $page.url.searchParams, goto);
+		clearAllFilters(page.url.pathname, page.url.searchParams, goto);
 		searchQuery = '';
 	}
 
@@ -286,7 +286,7 @@
 										<a
 											href={buildUrlWithFilters(
 												`/destinations/${item.slug}`,
-												$page.url.searchParams
+												page.url.searchParams
 											)}
 										>
 											{item[col.key]}
@@ -319,7 +319,7 @@
 										<a
 											href={buildUrlWithFilters(
 												`/destinations/${item.slug}`,
-												$page.url.searchParams
+												page.url.searchParams
 											)}
 										>
 											Ver
@@ -329,7 +329,7 @@
 										<a
 											href={buildUrlWithFilters(
 												`/destinations/${item.slug}/edit`,
-												$page.url.searchParams
+												page.url.searchParams
 											)}>Editar</a
 										>
 									</li>

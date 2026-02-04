@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ActivityDetail } from '$lib/types';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
@@ -9,14 +9,14 @@
 	const { activity } = data;
 </script>
 
-<div class="mb-4 flex items-center justify-between">
-	<a href={`/activities?${$page.url.searchParams.toString()}`} class="link">
-		← Volver al listado
-	</a>
+<div
+	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+>
+	<a href={`/activities?${page.url.searchParams.toString()}`} class="link"> ← Volver al listado </a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, $page.url.searchParams)}
+			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, page.url.searchParams)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
@@ -24,7 +24,7 @@
 
 		<form
 			method="POST"
-			action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, $page.url.searchParams)}
+			action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, page.url.searchParams)}
 		>
 			<button
 				type="submit"

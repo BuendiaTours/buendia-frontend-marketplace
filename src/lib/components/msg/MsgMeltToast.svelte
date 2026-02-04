@@ -3,12 +3,12 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { Cancel, InfoEmpty, WarningTriangle, CheckCircle } from 'svelte-iconoir';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	/**
 	 * Componente de Toast usando Melt-UI
 	 * Muestra notificaciones temporales en la esquina superior derecha
-	 * Se integra con el sistema de alertas de SvelteKit ($page.form.alert o $page.data.alert)
+	 * Se integra con el sistema de alertas de SvelteKit (page.form.alert o page.data.alert)
 	 */
 
 	type ToastType = 'info' | 'warning' | 'error' | 'success';
@@ -51,10 +51,9 @@
 		}
 	};
 
-	// Obtener el mensaje de alerta desde $page.form o $page.data
+	// Obtener el mensaje de alerta desde page.form o page.data
 	const alert = $derived(
-		($page.form?.alert as AlertMessage | undefined) ||
-			($page.data?.alert as AlertMessage | undefined)
+		(page.form?.alert as AlertMessage | undefined) || (page.data?.alert as AlertMessage | undefined)
 	);
 
 	// Mostrar toast automáticamente cuando hay una alerta

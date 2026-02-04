@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { InfoEmpty, WarningTriangle, Cancel, CheckCircle } from 'svelte-iconoir';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	type AlertType = 'info' | 'warning' | 'error' | 'success';
 
@@ -9,11 +9,10 @@
 		message: string;
 	}
 
-	// Obtener el mensaje de alerta desde $page.form (cuando viene de una action)
-	// o desde $page.data (cuando viene del load)
+	// Obtener el mensaje de alerta desde page.form (cuando viene de una action)
+	// o desde page.data (cuando viene del load)
 	const alert = $derived(
-		($page.form?.alert as AlertMessage | undefined) ||
-			($page.data?.alert as AlertMessage | undefined)
+		(page.form?.alert as AlertMessage | undefined) || (page.data?.alert as AlertMessage | undefined)
 	);
 
 	const alertConfig = {

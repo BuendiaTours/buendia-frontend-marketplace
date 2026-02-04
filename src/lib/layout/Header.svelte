@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	type Props = {
 		title?: string;
@@ -7,7 +7,7 @@
 
 	let { title = 'Mi Aplicación' }: Props = $props();
 
-	const isActive = (path: string) => $page.url.pathname === path;
+	const isActive = (path: string) => page.url.pathname === path;
 </script>
 
 <header class="navbar border-b border-base-content/10 bg-base-100">

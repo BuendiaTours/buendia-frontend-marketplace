@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 
 	/**
@@ -12,7 +12,7 @@
 	 *
 	 * @example Con texto personalizado
 	 * ```svelte
-	 * <TableResetSort 
+	 * <TableResetSort
 	 *   currentSort={sort}
 	 *   config={{ buttonText: 'Limpiar orden' }}
 	 * />
@@ -43,8 +43,8 @@
 	const showButton = $derived(currentSort?.field !== null && currentSort?.field !== undefined);
 
 	async function handleResetSort() {
-		const currentParams = $page.url.searchParams;
-		const pathname = $page.url.pathname;
+		const currentParams = page.url.searchParams;
+		const pathname = page.url.pathname;
 		const newParams = new URLSearchParams(currentParams.toString());
 
 		// Eliminar parámetros de ordenación

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Destination } from '$lib/types';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
@@ -9,14 +9,16 @@
 	const { destination } = data;
 </script>
 
-<div class="mb-4 flex items-center justify-between">
-	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="link">
+<div
+	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+>
+	<a href={`/destinations?${page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/destinations/${destination.slug}/edit`, $page.url.searchParams)}
+			href={buildUrlWithFilters(`/destinations/${destination.slug}/edit`, page.url.searchParams)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
@@ -26,7 +28,7 @@
 			method="POST"
 			action={buildUrlWithFilters(
 				`/destinations/${destination.slug}/delete`,
-				$page.url.searchParams
+				page.url.searchParams
 			)}
 		>
 			<button
