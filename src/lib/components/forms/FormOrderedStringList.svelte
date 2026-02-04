@@ -32,7 +32,7 @@
 		id: string;
 		label: string;
 		items: string[];
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		placeholder?: string;
 		wrapperClass?: string;

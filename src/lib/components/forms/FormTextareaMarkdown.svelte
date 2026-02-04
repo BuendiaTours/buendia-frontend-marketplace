@@ -34,7 +34,7 @@
 		id: string;
 		label: string;
 		value: string;
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		mode?: 'split' | 'tab' | 'auto';
 		wrapperClass?: string;

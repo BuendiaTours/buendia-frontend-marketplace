@@ -39,7 +39,7 @@
 		key_value: string;
 		items: any[];
 		availableItems?: any[];
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		wrapperClass?: string;
 		containerClass?: string;

@@ -41,7 +41,7 @@
 		id: string;
 		label: string;
 		value: string | undefined;
-		error?: string | string[];
+		error?: any;
 		options?: readonly Option[];
 		apiEndpoint?: string;
 		placeholder?: string;

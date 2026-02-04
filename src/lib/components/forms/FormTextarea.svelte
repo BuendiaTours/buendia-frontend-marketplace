@@ -40,7 +40,7 @@
 		id: string;
 		label: string;
 		value: string;
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		readonly?: boolean;
 		disabled?: boolean;

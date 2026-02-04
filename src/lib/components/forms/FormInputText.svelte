@@ -42,7 +42,7 @@
 		id: string;
 		label: string;
 		value: string | number;
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		readonly?: boolean;
 		disabled?: boolean;

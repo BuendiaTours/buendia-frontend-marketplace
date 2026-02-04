@@ -67,7 +67,7 @@
 		id: string;
 		label: string;
 		value: GeoJsonPoint | null;
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		wrapperClass?: string;
 		mapClass?: string;

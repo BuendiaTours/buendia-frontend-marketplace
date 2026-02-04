@@ -72,7 +72,7 @@
 		label: string;
 		items: Item[];
 		availableItems?: AvailableItem[];
-		error?: string | string[];
+		error?: any;
 		badge?: string;
 		placeholder?: string;
 		wrapperClass?: string;
