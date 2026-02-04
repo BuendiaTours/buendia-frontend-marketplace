@@ -62,8 +62,9 @@
 		use:melt={$trigger}
 		class="btn btn-square btn-soft"
 		class:border-success={hasActiveFilters}
+		class:bg-white={hasActiveFilters}
 	>
-		<FilterAlt class={hasActiveFilters ? 'text-success' : 'text-neutral-content'} />
+		<FilterAlt class={hasActiveFilters ? 'text-success' : 'text-base'} />
 	</button>
 </div>
 

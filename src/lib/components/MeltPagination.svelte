@@ -49,7 +49,10 @@ Props disponibles:
 </script>
 
 <nav use:melt={$root} class="my-8 flex items-center justify-center">
-	<button use:melt={$prevButton} class="btn mr-2 btn-ghost btn-sm data-[disabled]:btn-disabled">
+	<button
+		use:melt={$prevButton}
+		class="btn mr-2 btn-square btn-ghost btn-sm data-[disabled]:btn-disabled"
+	>
 		<NavArrowLeft class="size-5" />
 	</button>
 
@@ -68,7 +71,10 @@ Props disponibles:
 		{/each}
 	</div>
 
-	<button use:melt={$nextButton} class="btn ml-2 btn-ghost btn-sm data-[disabled]:btn-disabled">
+	<button
+		use:melt={$nextButton}
+		class="btn ml-2 btn-square btn-ghost btn-sm data-[disabled]:btn-disabled"
+	>
 		<NavArrowRight class="size-5" />
 	</button>
 </nav>
