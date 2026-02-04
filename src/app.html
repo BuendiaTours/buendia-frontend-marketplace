@@ -1,9 +1,25 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon-red.svg" type="image/svg+xml" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- ✨ Script anti-FART: Se ejecuta ANTES de renderizar -->
+		<script>
+			// Leer tema guardado en localStorage
+			const savedTheme = localStorage.getItem('theme');
+
+			if (savedTheme) {
+				// Usar tema guardado
+				document.documentElement.setAttribute('data-theme', savedTheme);
+			} else {
+				// Si no hay tema guardado, detectar preferencia del sistema
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

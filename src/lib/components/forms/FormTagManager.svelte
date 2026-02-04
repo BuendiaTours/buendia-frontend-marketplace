@@ -80,7 +80,7 @@
 		tags: TagItem[] | string[];
 		availableTags?: AvailableTag[];
 		valueType?: 'object' | 'string';
-		error?: any;
+		error?: string | string[];
 		badge?: string;
 		placeholder?: string;
 		wrapperClass?: string;

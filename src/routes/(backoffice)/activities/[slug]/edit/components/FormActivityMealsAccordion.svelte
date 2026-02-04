@@ -71,8 +71,26 @@
 		) as HTMLDetailsElement;
 		if (newAccordion) {
 			newAccordion.open = true;
-			// Añadir animación de fade del borde verde
-			newAccordion.classList.add('animate-fade-border-success');
+			// Añadir clases de borde verde y grosor
+			newAccordion.classList.add('!border-success', '!border-4');
+
+			// Hacer que parpadee 4 veces
+			let pulseCount = 0;
+			const pulseInterval = setInterval(() => {
+				if (pulseCount % 2 === 0) {
+					// Quitar borde
+					newAccordion.classList.remove('!border-success', '!border-4');
+				} else {
+					// Añadir borde
+					newAccordion.classList.add('!border-success', '!border-4');
+				}
+				pulseCount++;
+				if (pulseCount >= 8) {
+					clearInterval(pulseInterval);
+					// Dejar sin borde al final
+					newAccordion.classList.remove('!border-success', '!border-4');
+				}
+			}, 300);
 		}
 	}
 </script>

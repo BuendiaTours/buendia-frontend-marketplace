@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 
 	type Props = {
 		title?: string;
@@ -58,6 +59,9 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		<a href="/login" class="btn btn-sm">Login</a>
+		<!-- ✨ Theme Switcher -->
+		<ThemeSwitcher />
+
+		<a href="/login" class="btn ml-2 btn-sm">Login</a>
 	</div>
 </header>

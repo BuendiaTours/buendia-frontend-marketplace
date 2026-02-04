@@ -16,7 +16,7 @@
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, page.url.searchParams)}
+			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, $page.url.searchParams)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit

@@ -36,7 +36,7 @@
 		label: string;
 		value: string;
 		sourceValue: string;
-		error?: any;
+		error?: string | string[];
 		badge?: string;
 		generateTooltip?: string;
 		disabled?: boolean;
