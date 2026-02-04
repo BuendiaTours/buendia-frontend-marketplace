@@ -109,11 +109,18 @@ export const actions: Actions = {
 
 		if (!form.valid) {
 			console.error('🆕 [createActivity] Errores de validación:', form.errors);
+			const errorMessage = 'Por favor, corrige los errores del formulario.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: 'Por favor, corrige los errores del formulario.'
+				message: errorMessage
 			});
-			return fail(400, { form });
+			return fail(400, {
+				form,
+				alert: {
+					type: 'error',
+					message: errorMessage
+				}
+			});
 		}
 
 		try {
@@ -129,11 +136,11 @@ export const actions: Actions = {
 			// tiene 'meals: string[]' pero el formulario envía objetos completos
 			// TODO: Actualizar el tipo ActivityListItem cuando la API lo soporte
 			const result = await api.activities.create(fetch, form.data as any);
-			console.log('✅ [createActivity] Actividad creada exitosamente:', result);
+			console.log('✅ [createActivity] Elemento creado exitosamente:', result);
 
 			setFlashMessage(cookies, {
 				type: 'success',
-				message: 'Actividad creada correctamente.'
+				message: 'Elemento creado correctamente.'
 			});
 
 			// Redirigir a la página de edición de la nueva actividad
@@ -159,14 +166,17 @@ export const actions: Actions = {
 						errorMessage = 'Los datos enviados no son válidos.';
 						break;
 					case 401: // Unauthorized - No autenticado
-						errorMessage = 'Debes iniciar sesión para crear actividades.';
+						errorMessage = 'Debes iniciar sesión para crear este elemento.';
 						break;
 					case 403: // Forbidden - No autorizado
-						errorMessage = 'No tienes permisos para crear actividades.';
+						errorMessage = 'No tienes permisos para crear este elemento.';
+						break;
+					case 404: // Forbidden - No autorizado
+						errorMessage = 'No existe el endpoint de creación en la API (?).';
 						break;
 					case 409: // Conflict - Conflicto (ej: slug duplicado)
 						errorMessage =
-							'Ya existe una actividad con este slug. Por favor, elige otro título o slug.';
+							'Ya existe un elemento con este slug. Por favor, elige otro título o slug.';
 						break;
 					case 422: // Unprocessable Entity - Validación fallida en servidor
 						errorMessage = 'Los datos no cumplen con los requisitos del servidor.';
@@ -178,7 +188,7 @@ export const actions: Actions = {
 						errorMessage = 'El servicio no está disponible. Por favor, inténtalo más tarde.';
 						break;
 					default:
-						errorMessage = `Error al crear la actividad (código ${err.status}).`;
+						errorMessage = `Error al crear el elemento (código ${err.status}).`;
 				}
 
 				setFlashMessage(cookies, {
@@ -186,17 +196,31 @@ export const actions: Actions = {
 					message: errorMessage
 				});
 
-				return fail(err.status || 500, { form });
+				return fail(err.status || 500, {
+					form,
+					alert: {
+						type: 'error',
+						message: errorMessage
+					}
+				});
 			}
 
 			// Error desconocido
 			console.error('❌ [createActivity] Error desconocido');
+			const unknownErrorMessage =
+				'Error inesperado al crear la actividad. Por favor, inténtalo de nuevo.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: 'Error inesperado al crear la actividad. Por favor, inténtalo de nuevo.'
+				message: unknownErrorMessage
 			});
 
-			return fail(503, { form });
+			return fail(503, {
+				form,
+				alert: {
+					type: 'error',
+					message: unknownErrorMessage
+				}
+			});
 		}
 	}
 };
