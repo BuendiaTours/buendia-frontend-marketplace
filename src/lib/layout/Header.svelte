@@ -44,7 +44,9 @@
 				<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
 			</ul>
 		</div>
-		<a href="/" class="btn text-xl btn-ghost">{title}</a>
+		<a href="/" class="p-2 mix-blend-difference">
+			<img class="w-32" src="/buendia-logo.svg" alt={title} />
+		</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
