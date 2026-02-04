@@ -182,7 +182,7 @@
 	</div>
 
 	<FilterSelectRemote
-		apiEndpoint="http://localhost:3333/attraction-status"
+		apiEndpoint="/api/attraction-status"
 		filterKey="status"
 		currentValue={filters.status}
 		placeholder="Selecciona estado"

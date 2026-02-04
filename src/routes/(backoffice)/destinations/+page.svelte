@@ -185,7 +185,7 @@
 	</div>
 
 	<FilterSelectRemote
-		apiEndpoint="http://localhost:3333/destination-kind"
+		apiEndpoint="/api/destination-kind"
 		filterKey="kind"
 		currentValue={filters.kind}
 		placeholder="Selecciona tipo"

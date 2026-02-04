@@ -26,7 +26,7 @@
 	 *   label="Tipo"
 	 *   bind:value={$form.kind}
 	 *   error={$errors.kind}
-	 *   apiEndpoint="http://localhost:3333/destination-kind"
+	 *   apiEndpoint="/api/destination-kind"
 	 *   placeholder="Selecciona un tipo"
 	 * />
 	 * ```
