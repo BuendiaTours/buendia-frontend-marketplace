@@ -1,6 +1,7 @@
 import { apiClient } from '../client';
 import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
 import type { ActivityListResponse, ActivityListItem } from '$lib/types';
+import type { ActivityStatus, ActivityKind } from '$lib/config/enums';
 
 export type ActivitiesGetAllParams = {
 	page?: number;
@@ -8,8 +9,8 @@ export type ActivitiesGetAllParams = {
 	from?: string;
 	to?: string;
 	destination?: string;
-	kind?: string;
-	status?: string;
+	kind?: ActivityKind;
+	status?: ActivityStatus;
 	isFreeTour?: boolean;
 	freeForKids?: boolean;
 	breakfast?: boolean;

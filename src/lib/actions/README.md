@@ -4,9 +4,9 @@ Esta carpeta contiene **Svelte actions**.
 
 Una _action_ en Svelte es una función que:
 
-- se aplica directamente a un nodo del DOM usando `use:`
-- añade comportamiento al elemento (eventos, listeners, efectos, etc.)
-- puede devolver un `destroy()` para limpieza
+- Se aplica directamente a un nodo del DOM usando `use:`
+- Añade comportamiento al elemento (eventos, listeners, efectos, etc.)
+- Puede devolver un `destroy()` para limpieza
 
 ## Qué SÍ va aquí
 

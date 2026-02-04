@@ -1,12 +1,13 @@
 import { apiClient } from '../client';
 import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
 import type { Attraction, Pagination } from '$lib/types';
+import type { AttractionStatus } from '$lib/config/enums';
 
 export type AttractionsGetAllParams = {
 	page?: number;
 	pageSize?: number;
 	q?: string;
-	status?: 'ACTIVE' | 'DRAFT' | 'INACTIVE';
+	status?: AttractionStatus;
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;

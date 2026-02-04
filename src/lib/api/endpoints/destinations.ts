@@ -1,12 +1,13 @@
 import { apiClient } from '../client';
 import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
 import type { Destination, Pagination } from '$lib/types';
+import type { DestinationKind } from '$lib/config/enums';
 
 export type DestinationsGetAllParams = {
 	page?: number;
 	pageSize?: number;
 	q?: string;
-	kind?: 'CITY' | 'REGION' | 'COUNTRY';
+	kind?: DestinationKind;
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
