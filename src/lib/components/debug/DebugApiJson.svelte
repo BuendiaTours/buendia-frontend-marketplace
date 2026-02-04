@@ -15,7 +15,7 @@
 	let { data, title = 'JSON de la API' }: Props = $props();
 </script>
 
-<details class="collapse bg-base-100" name="my-accordion-det-1" open>
+<details class="collapse bg-base-100" name="my-accordion-det-1">
 	<summary class="collapse-title text-xs font-semibold">{title}</summary>
 	<div class="collapse-content text-sm">
 		<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
