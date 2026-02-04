@@ -68,7 +68,7 @@
 
 <div class="backoffice-container flex flex-col gap-y-4">
 	<h1 class="text-lg">API Endpoints Catalog</h1>
-	<p class="mt-4 text-neutral-content">
+	<p class="mt-4">
 		Catálogo dinámico de endpoints - Se actualiza automáticamente al añadir nuevos endpoints
 	</p>
 	<div class="flex items-center gap-2 rounded-lg bg-base-200 p-4">
@@ -94,9 +94,7 @@
 			>
 				<div>
 					<h2 class="text-md card-title">API Proxy Endpoints</h2>
-					<p class="text-sm text-neutral-content">
-						Endpoints internos que actúan como proxy a la API externa
-					</p>
+					<p class="text-sm">Endpoints internos que actúan como proxy a la API externa</p>
 				</div>
 				<div class="badge rounded-md badge-secondary">
 					{data.proxyEndpoints.length}
@@ -176,7 +174,7 @@
 			>
 				<div>
 					<h2 class="text-md card-title">{group.name}</h2>
-					<p class="text-sm text-neutral-content">{group.description}</p>
+					<p class="text-sm">{group.description}</p>
 				</div>
 				<div class="badge rounded-md badge-neutral">{group.endpoints.length} endpoints</div>
 			</div>
@@ -239,19 +237,19 @@
 			<h3 class="card-title text-lg">Configuración de API</h3>
 			<ul class="space-y-2 text-sm">
 				<li class="flex justify-between">
-					<span class="text-neutral-content">Timeout:</span>
+					<span>Timeout:</span>
 					<code>{apiConfig.timeout}ms</code>
 				</li>
 				<li class="flex justify-between">
-					<span class="text-neutral-content">Reintentos:</span>
+					<span>Reintentos:</span>
 					<code>{apiConfig.retry.attempts} intentos</code>
 				</li>
 				<li class="flex justify-between">
-					<span class="text-neutral-content">Delay entre reintentos:</span>
+					<span>Delay entre reintentos:</span>
 					<code>{apiConfig.retry.delay}ms</code>
 				</li>
 				<li class="flex justify-between">
-					<span class="text-neutral-content">Backoff:</span>
+					<span>Backoff:</span>
 					<code>{apiConfig.retry.backoff}x</code>
 				</li>
 			</ul>
@@ -259,7 +257,7 @@
 
 		<div class="card p-4">
 			<h3 class="text-md card-title">Notas</h3>
-			<ul class="list-inside list-disc space-y-2 text-sm text-neutral-content">
+			<ul class="list-inside list-disc space-y-2 text-sm">
 				<li>Los parámetros con <code>:</code> son parámetros de ruta</li>
 				<li>Los endpoints con paginación aceptan <code>page</code> y <code>limit</code></li>
 				<li>Los endpoints protegidos requieren header <code>Authorization</code></li>
@@ -270,7 +268,7 @@
 
 	<div class="card border-success/20 bg-success/10 p-4">
 		<h3 class="text-md card-title text-success">✨ Actualización Automática</h3>
-		<p class="text-sm text-neutral-content">
+		<p class="text-sm">
 			Para añadir un nuevo endpoint, simplemente agrégalo a
 			<code>src/lib/api/endpoints.config.ts</code> siguiendo la estructura existente. Esta página se actualizará
 			automáticamente sin necesidad de modificar ningún otro archivo.

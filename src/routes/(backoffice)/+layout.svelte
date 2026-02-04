@@ -18,6 +18,14 @@
 	import Footer from '$lib/layout/Footer.svelte';
 
 	let { children } = $props();
+
+	// Añadir clase al <html> cuando estamos en backoffice
+	$effect(() => {
+		document.documentElement.classList.add('bnd-backoffice');
+		return () => {
+			document.documentElement.classList.remove('bnd-backoffice');
+		};
+	});
 </script>
 
 <div class="flex min-h-screen flex-col">

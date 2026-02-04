@@ -671,7 +671,7 @@
 		</table>
 	</div>
 {:else}
-	<p class="text-md mt-6 text-neutral-content">No hay actividades disponibles.</p>
+	<p class="text-md mt-6">No hay actividades disponibles.</p>
 {/if}
 
 <!-- Pagination -->

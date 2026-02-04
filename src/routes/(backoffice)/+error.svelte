@@ -19,7 +19,7 @@
 			{/if}
 		</h1>
 
-		<p class="text-neutral-content">
+		<p class="text-base">
 			{#if isApiError}
 				No se puede conectar con el servidor. Por favor, verifica que la API esté funcionando e
 				intenta de nuevo.
