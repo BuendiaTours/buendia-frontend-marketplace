@@ -1,8 +1,11 @@
 <script lang="ts">
+	import type { PageData } from './$types';
 	import { API_ENDPOINTS } from '$lib/api/endpoints.config';
 	import { apiConfig } from '$lib/api/config';
 	import { copyToClipboard } from '$lib/utils/misc';
 	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
+
+	let { data }: { data: PageData } = $props();
 
 	let copiedEndpoint = $state<string | null>(null);
 
@@ -74,14 +77,98 @@
 			<code class="text-sm text-primary">{apiConfig.baseURL}</code>
 		</div>
 	</div>
-	<div class="alert alert-soft alert-info">
+
+	<!-- API Proxy Endpoints -->
+	{#if data.proxyEndpoints && data.proxyEndpoints.length > 0}
+		<div class="alert-secondary mt-4 alert alert-soft">
+			<InfoEmpty class="size-4" />
+			<span class="text-sm">
+				Los endpoints proxy se detectan automáticamente desde
+				<code>src/routes/api/</code>
+			</span>
+		</div>
+
+		<div class="card p-4">
+			<div
+				class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 pb-4"
+			>
+				<div>
+					<h2 class="text-md card-title">API Proxy Endpoints</h2>
+					<p class="text-sm text-neutral-content">
+						Endpoints internos que actúan como proxy a la API externa
+					</p>
+				</div>
+				<div class="badge rounded-md badge-secondary">
+					{data.proxyEndpoints.length}
+					{data.proxyEndpoints.length === 1 ? 'proxy' : 'proxies'}
+				</div>
+			</div>
+
+			<div class="overflow-x-auto">
+				<table class="table table-zebra">
+					<thead>
+						<tr>
+							<th class="w-24">Método</th>
+							<th>Endpoint Interno</th>
+							<th>Endpoint Externo</th>
+							<th>Descripción</th>
+							<th class="w-16"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each data.proxyEndpoints as endpoint}
+							<tr class="text-xs">
+								<td>
+									<span
+										class="badge w-16 rounded-sm {getMethodColor(
+											endpoint.method
+										)} font-mono badge-sm"
+									>
+										{endpoint.method}
+									</span>
+								</td>
+								<td>
+									<span class="font-mono">
+										{endpoint.internalPath}
+									</span>
+								</td>
+								<td>
+									<span class="font-mono text-base-content/60">
+										{endpoint.externalPath}
+									</span>
+								</td>
+								<td>{endpoint.description}</td>
+								<td>
+									<button
+										class="btn btn-square btn-ghost btn-xs"
+										onclick={() => handleCopy(endpoint.internalPath)}
+										title="Copiar URL interna"
+									>
+										{#if copiedEndpoint === endpoint.internalPath}
+											<CheckCircle class="size-4 text-success" />
+										{:else}
+											<Copy class="size-4" />
+										{/if}
+									</button>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	{/if}
+
+	<div class="alert alert-soft">
 		<InfoEmpty class="size-4" />
 		<span class="text-sm"
-			>Esta página se genera automáticamente desde <code>src/lib/api/endpoints.config.ts</code
+			>Los endpoints a continuación se generan automáticamente desde <code
+				>src/lib/api/endpoints.config.ts</code
 			></span
 		>
 	</div>
 
+	<!-- API Externa Endpoints -->
 	{#each endpointGroups as group}
 		<div class="card p-4">
 			<div

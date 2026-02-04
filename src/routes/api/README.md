@@ -92,12 +92,37 @@ src/routes/api/
    <FilterSelectRemote apiEndpoint="/api/tu-endpoint" ... />
    ```
 
+## Catálogo automático
+
+✨ **Todos los endpoints proxy aparecen automáticamente en el catálogo de API** (`/api-catalog`)
+
+El sistema escanea esta carpeta y extrae información de los comentarios JSDoc para mostrar:
+
+- Método HTTP (GET, POST, etc.)
+- Path interno (`/api/endpoint-name`)
+- Path externo (endpoint de la API externa)
+- Descripción del endpoint
+
+**Formato recomendado de comentarios JSDoc:**
+
+```typescript
+/**
+ * API Proxy Endpoint: [Nombre descriptivo]
+ *
+ * [Descripción del propósito del endpoint]
+ *
+ * Endpoint externo: GET /path-en-api-externa
+ * Endpoint interno: GET /api/path-interno
+ */
+```
+
 ## Notas importantes
 
 - Estos endpoints **NO** son para operaciones CRUD normales (crear, actualizar, eliminar)
 - Solo para datos que necesitan cargarse asíncronamente desde el cliente
 - Para operaciones normales, usa `+page.server.ts` con el `load()` function
 - Todos los endpoints reutilizan el `apiClient` de `$lib/api` para consistencia
+- Los endpoints se detectan automáticamente y aparecen en `/api-catalog`
 
 ## Configuración
 
