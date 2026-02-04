@@ -4,10 +4,10 @@ Esta carpeta contiene **funciones utilitarias puras** y reutilizables.
 
 Son helpers que:
 
-- no dependen del DOM
-- no dependen de Svelte
-- no tienen efectos secundarios
-- pueden usarse tanto en cliente como en servidor
+- No dependen del DOM
+- No dependen de Svelte
+- No tienen efectos secundarios
+- Pueden usarse tanto en cliente como en servidor
 
 ## Qué SÍ va aquí
 

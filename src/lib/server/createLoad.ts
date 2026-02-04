@@ -61,7 +61,7 @@ export function createCreateLoad(config: CreateLoadConfig) {
 		const { schema, initialValues, loadAvailableData, breadcrumbLabel, entityName } = config;
 
 		try {
-			console.log(`📦 [createLoad] Iniciando load para crear ${entityName}`);
+			console.log(`📦 [createLoad] Iniciando load para crear [${entityName}]`);
 
 			// 1. Generar UUID único (server-side por seguridad)
 			const dataWithUuid = {
@@ -74,7 +74,7 @@ export function createCreateLoad(config: CreateLoadConfig) {
 			// 2. Cargar listas disponibles (si se proporciona la función)
 			let availableData = {};
 			if (loadAvailableData) {
-				console.log(`📦 [createLoad] Cargando datos disponibles para ${entityName}...`);
+				console.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
 				availableData = await loadAvailableData(fetch);
 				console.log(`✅ [createLoad] Datos cargados:`, Object.keys(availableData));
 			}
@@ -95,7 +95,7 @@ export function createCreateLoad(config: CreateLoadConfig) {
 				breadcrumbs
 			};
 		} catch (err) {
-			console.error(`❌ [createLoad] Error al cargar página de creación de ${entityName}:`, err);
+			console.error(`❌ [createLoad] Error al cargar página de creación de [${entityName}]:`, err);
 
 			if (err instanceof ApiError) {
 				throw error(
@@ -104,7 +104,7 @@ export function createCreateLoad(config: CreateLoadConfig) {
 				);
 			}
 
-			throw error(503, `No se pudo cargar la página de creación de ${entityName}.`);
+			throw error(503, `No se pudo cargar la página de creación de [${entityName}].`);
 		}
 	};
 }

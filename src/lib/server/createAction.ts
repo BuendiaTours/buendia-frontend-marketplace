@@ -133,16 +133,16 @@ export function createCreateAction(config: CreateActionConfig) {
 						errorMessage = 'Los datos enviados no son válidos.';
 						break;
 					case 401: // Unauthorized - No autenticado
-						errorMessage = `Debes iniciar sesión para crear ${entityName}s.`;
+						errorMessage = `Debes iniciar sesión para crear [${entityName}].`;
 						break;
 					case 403: // Forbidden - No autorizado
-						errorMessage = `No tienes permisos para crear ${entityName}s.`;
+						errorMessage = `No tienes permisos para crear [${entityName}].`;
 						break;
 					case 404: // Not Found - Endpoint no encontrado
 						errorMessage = 'Endpoint de creación no encontrado en la API.';
 						break;
 					case 409: // Conflict - Conflicto (ej: slug duplicado)
-						errorMessage = `Ya existe ${article === 'el' ? 'un' : 'una'} ${entityName} con este slug. Por favor, elige otro.`;
+						errorMessage = `Ya existe [${entityName}] con este slug. Por favor, elige otro.`;
 						break;
 					case 422: // Unprocessable Entity - Validación fallida en servidor
 						errorMessage = 'Los datos no cumplen con los requisitos del servidor.';
@@ -154,7 +154,7 @@ export function createCreateAction(config: CreateActionConfig) {
 						errorMessage = 'El servicio no está disponible. Por favor, inténtalo más tarde.';
 						break;
 					default:
-						errorMessage = `Error al crear ${article} ${entityName} (código ${err.status}).`;
+						errorMessage = `Error al crear [${article}] {${entityName}} (código ${err.status}).`;
 				}
 
 				setFlashMessage(cookies, {
@@ -173,7 +173,7 @@ export function createCreateAction(config: CreateActionConfig) {
 
 			// 7. Error desconocido
 			console.error(`❌ [createAction] Error desconocido`);
-			errorMessage = `Error inesperado al crear ${entityName}. Por favor, inténtalo de nuevo.`;
+			errorMessage = `Error inesperado al crear [${entityName}]. Por favor, inténtalo de nuevo.`;
 			setFlashMessage(cookies, {
 				type: 'error',
 				message: errorMessage
