@@ -74,7 +74,7 @@
 	<div class="flex items-center gap-2 rounded-lg bg-base-200 p-4">
 		<div>
 			<label class="label w-full text-sm">Base URL</label>
-			<code class="text-sm text-primary">{apiConfig.baseURL}</code>
+			<code class="text-md">{apiConfig.baseURL}</code>
 		</div>
 	</div>
 
@@ -117,7 +117,7 @@
 					</thead>
 					<tbody>
 						{#each data.proxyEndpoints as endpoint}
-							<tr class="text-xs">
+							<tr class="text-md">
 								<td>
 									<span
 										class="badge w-16 rounded-sm {getMethodColor(
@@ -194,7 +194,7 @@
 					</thead>
 					<tbody>
 						{#each group.endpoints as endpoint}
-							<tr class="text-xs">
+							<tr class="text-sm">
 								<td>
 									<span
 										class="badge w-16 rounded-sm {getMethodColor(
