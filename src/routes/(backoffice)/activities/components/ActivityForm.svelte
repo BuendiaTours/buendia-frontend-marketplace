@@ -240,6 +240,14 @@
 				wrapperClass="md:col-span-12"
 			/>
 
+			<FormTextarea
+				id="descriptionShort"
+				label="Descripcción corta"
+				bind:value={$form.descriptionShort}
+				error={$errors.descriptionShort}
+				rows={3}
+			/>
+
 			<FormTextareaMarkdown
 				id="descriptionFull"
 				label="Descripción larga"
