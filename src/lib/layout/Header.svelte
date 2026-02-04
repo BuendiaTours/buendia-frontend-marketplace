@@ -7,7 +7,14 @@
 
 	let { title = 'Mi Aplicación' }: Props = $props();
 
-	const isActive = (path: string) => page.url.pathname === path;
+	const isActive = (path: string) => {
+		// Para la raíz, comparación exacta
+		if (path === '/') {
+			return page.url.pathname === '/';
+		}
+		// Para otras rutas, verificar si comienza con el path
+		return page.url.pathname.startsWith(path);
+	};
 </script>
 
 <header class="navbar border-b border-base-content/10 bg-base-100">
