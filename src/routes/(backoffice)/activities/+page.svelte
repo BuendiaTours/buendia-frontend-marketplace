@@ -565,7 +565,7 @@
 									}}
 								/>
 							{:else}
-								<span class="text-sm">{col.title}</span>
+								<span>{col.title}</span>
 							{/if}
 						</th>
 					{/each}

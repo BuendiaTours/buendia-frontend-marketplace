@@ -73,7 +73,7 @@
 </script>
 
 <div class="inline-flex gap-2">
-	<span class="text-sm cursor-pointer" onclick={handleClick} class:text-success={isActive}>{title}</span>
+	<span class="cursor-pointer" onclick={handleClick} class:text-success={isActive}>{title}</span>
 		{#if isActive}
 			{#if isDesc}
 				<NavArrowDown class="size-4 text-success" />
