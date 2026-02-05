@@ -37,6 +37,18 @@
 	let drawerRightOpen = $state(false);
 	let drawerNoOverlayOpen = $state(false);
 
+	// MeltDrawerManager
+	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+	let selectedItemId = $state<string | null>(null);
+
+	// Mock data para ejemplo de MeltDrawerManager
+	const mockItems = [
+		{ id: '1', name: 'Producto A', description: 'Descripción del producto A', price: 29.99 },
+		{ id: '2', name: 'Producto B', description: 'Descripción del producto B', price: 39.99 },
+		{ id: '3', name: 'Producto C', description: 'Descripción del producto C', price: 49.99 },
+		{ id: '4', name: 'Producto D', description: 'Descripción del producto D', price: 59.99 }
+	];
+
 	// Form Components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
@@ -553,6 +565,34 @@
 			</p>
 		</div>
 
+		<label class="label mt-4">Ejemplo de MeltDrawerManager</label>
+		<p class="text-sm opacity-70">
+			Wrapper para gestionar drawers dinámicos con listas de items (automáticamente maneja
+			animaciones y estado)
+		</p>
+		<div class="card p-4">
+			<p class="mb-4 text-sm">
+				Este componente simplifica el uso de drawers con listas dinámicas. Encapsula toda la
+				lógica de sincronización y delay de animación.
+			</p>
+			<div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+				{#each mockItems as item}
+					<button
+						class="btn btn-outline btn-sm"
+						onclick={() => {
+							selectedItemId = item.id;
+						}}
+					>
+						Ver {item.name}
+					</button>
+				{/each}
+			</div>
+			<p class="mt-4 text-xs opacity-60">
+				Ideal para listados, tablas o grids donde cada item tiene un botón "Ver detalles". Solo
+				se renderiza el drawer del item seleccionado.
+			</p>
+		</div>
+
 		<label class="label mt-4">Ejemplo de MsgMeltToast</label>
 		<p class="text-sm opacity-70">Notificaciones toast usando Melt-UI</p>
 		<div class="card p-4">
@@ -681,3 +721,31 @@
 		</button>
 	</div>
 </MeltDrawer>
+
+<MeltDrawerManager
+	bind:selectedId={selectedItemId}
+	items={mockItems}
+	title={(item) => `Detalles de ${item.name}`}
+	config={{ side: 'right', width: 450 }}
+>
+	{#snippet content(item)}
+		<div class="space-y-4">
+			<div class="rounded-lg bg-base-200 p-4">
+				<h3 class="mb-2 font-semibold">{item.name}</h3>
+				<p class="text-sm opacity-80">{item.description}</p>
+			</div>
+			<div class="stats shadow">
+				<div class="stat">
+					<div class="stat-title">Precio</div>
+					<div class="stat-value text-primary">${item.price}</div>
+				</div>
+			</div>
+			<div class="alert alert-info">
+				<span class="text-sm">
+					Este drawer se gestiona automáticamente con MeltDrawerManager. No necesitas manejar
+					estados ni animaciones manualmente.
+				</span>
+			</div>
+		</div>
+	{/snippet}
+</MeltDrawerManager>

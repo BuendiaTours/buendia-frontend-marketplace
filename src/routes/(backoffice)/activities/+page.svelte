@@ -41,31 +41,9 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 
-	// MeltDrawer
-	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
-	let openDrawerId = $state<string | null>(null);
-	let drawerOpen = $state(false);
-	let mountedDrawerId = $state<string | null>(null);
-
-	// Sincronizar drawerOpen con openDrawerId
-	$effect(() => {
-		if (openDrawerId !== null) {
-			mountedDrawerId = openDrawerId;
-			drawerOpen = true;
-		}
-	});
-
-	// Cuando el drawer se cierra, esperar a que termine la animación antes de desmontar
-	$effect(() => {
-		if (!drawerOpen && mountedDrawerId !== null) {
-			// Esperar 300ms (duración de la animación) antes de desmontar
-			const timeout = setTimeout(() => {
-				mountedDrawerId = null;
-				openDrawerId = null;
-			}, 300);
-			return () => clearTimeout(timeout);
-		}
-	});
+	// MeltDrawerManager - Gestiona drawers dinámicos con animaciones
+	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+	let selectedActivityId = $state<string | null>(null);
 
 	// Icons
 	import { Calendar, Cancel, Map, Plus } from 'svelte-iconoir';
@@ -659,7 +637,7 @@
 										<button
 											class=""
 											onclick={() => {
-												openDrawerId = item.id;
+												selectedActivityId = item.id;
 											}}
 										>
 											Ver detalles
@@ -717,32 +695,28 @@
 	</div>
 {/if}
 
-{#if mountedDrawerId}
-	{@const selectedItem = items.find((item) => item.id === mountedDrawerId)}
-	{#if selectedItem}
-		<MeltDrawer
-			bind:open={drawerOpen}
-			title="Detalles de {selectedItem.title}"
-			config={{ side: 'right', width: 400 }}
-		>
-			{#snippet children()}
-				<div class="space-y-4">
-					<p><strong>ID:</strong> {selectedItem.id}</p>
-					<p><strong>Título:</strong> {selectedItem.title}</p>
-					<p><strong>Slug:</strong> {selectedItem.slug}</p>
-					<p><strong>Código:</strong> {selectedItem.codeRef}</p>
-					<p><strong>Estado:</strong> {selectedItem.status}</p>
-					{#if selectedItem.descriptionShort}
-						<div>
-							<strong>Descripción corta:</strong>
-							<p class="text-sm opacity-80">{selectedItem.descriptionShort}</p>
-						</div>
-					{/if}
+<MeltDrawerManager
+	bind:selectedId={selectedActivityId}
+	items={items}
+	title={(item) => `Detalles de ${item.title}`}
+	config={{ side: 'right', width: 400 }}
+>
+	{#snippet content(item)}
+		<div class="space-y-4">
+			<p><strong>ID:</strong> {item.id}</p>
+			<p><strong>Título:</strong> {item.title}</p>
+			<p><strong>Slug:</strong> {item.slug}</p>
+			<p><strong>Código:</strong> {item.codeRef}</p>
+			<p><strong>Estado:</strong> {item.status}</p>
+			{#if item.descriptionShort}
+				<div>
+					<strong>Descripción corta:</strong>
+					<p class="text-sm opacity-80">{item.descriptionShort}</p>
 				</div>
-			{/snippet}
-		</MeltDrawer>
-	{/if}
-{/if}
+			{/if}
+		</div>
+	{/snippet}
+</MeltDrawerManager>
 
 <style>
 	.arrow {
