@@ -1,0 +1,65 @@
+/* Personalizaciones de componentes DaisyUI */
+
+/* Toggles heredan el tick del checkbox de Bits UI */
+input[type='checkbox'].toggle {
+	/* Sino hereda el tick del checkbox de Bits UI (creo)*/
+	background-image: none !important;
+}
+
+/* Selects personalizados */
+select {
+	background-repeat: no-repeat !important;
+	background-position: right 0.75rem center !important;
+	background-size: 1rem !important;
+	padding-right: 2.5rem !important;
+
+	/* Select icon - tema light (oscuro) */
+	html[data-theme='light'] & {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+	}
+
+	/* Select icon - tema dark (blanco) */
+	html[data-theme='dark'] & {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+	}
+}
+
+/* Checkboxes transparentes */
+input:where([type='checkbox']) {
+	background-color: transparent;
+}
+
+/* Inputs y textareas readonly */
+input[readonly],
+textarea[readonly] {
+	background-image: repeating-linear-gradient(
+		45deg,
+		var(--color-base-200),
+		var(--color-base-200) 10px,
+		var(--color-base-300) 10px,
+		var(--color-base-300) 20px
+	);
+	cursor: not-allowed;
+	opacity: 0.9;
+}
+
+input[readonly]:focus,
+textarea[readonly]:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+/* Details con inputs en error */
+details:has(.input-error, .select-error, .textarea-error) {
+	@apply border-error;
+}
+
+/* Card de DaisyUI */
+.card {
+	@apply rounded-box border border-base-content/9 bg-base-100;
+}
+
+/* Dropdown content */
+.dropdown-content {
+	@apply border border-base-content/9;
+}

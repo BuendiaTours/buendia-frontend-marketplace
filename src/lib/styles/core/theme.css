@@ -1,0 +1,7 @@
+/* Variables de tema y configuración custom de Tailwind */
+@theme {
+	--font-mono:
+		'Iosevka', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+		'DejaVu Sans Mono', monospace;
+	--breakpoint-main: 1360px;
+}

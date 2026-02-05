@@ -1,0 +1,13 @@
+/* Utilities y clases helper custom */
+
+/* Clase personalizada para contenedor del backoffice */
+.backoffice-container {
+	width: 100%;
+	max-width: var(--breakpoint-main);
+	margin-inline: auto;
+	padding-inline: 1.5rem;
+}
+
+@utility checkbox {
+	@apply rounded-sm;
+}

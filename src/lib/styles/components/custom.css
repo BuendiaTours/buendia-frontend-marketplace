@@ -1,0 +1,15 @@
+/* Componentes personalizados que no están en Tailwind/DaisyUI */
+
+.card-custom {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 12px;
+	padding: 1.5rem;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Utilidades específicas de tu proyecto */
+.text-gradient {
+	background: linear-gradient(to right, #667eea, #764ba2);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
