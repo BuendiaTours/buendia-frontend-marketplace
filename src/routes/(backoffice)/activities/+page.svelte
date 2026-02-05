@@ -43,7 +43,24 @@
 
 	// MeltDrawer
 	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
-	let drawerRightOpen = $state(false);
+	let openDrawerId = $state<string | null>(null);
+
+	// Crear un mapa reactivo para controlar el estado de cada drawer
+	const drawerStates = $state<Record<string, boolean>>({});
+
+	// Sincronizar drawerStates con openDrawerId
+	$effect(() => {
+		if (openDrawerId) {
+			drawerStates[openDrawerId] = true;
+		}
+	});
+
+	// Detectar cuando un drawer se cierra y resetear openDrawerId
+	$effect(() => {
+		if (openDrawerId && drawerStates[openDrawerId] === false) {
+			openDrawerId = null;
+		}
+	});
 
 	// Icons
 	import { Calendar, Cancel, Map, Plus } from 'svelte-iconoir';
@@ -637,20 +654,11 @@
 										<button
 											class=""
 											onclick={() => {
-												drawerRightOpen = true;
+												openDrawerId = item.id;
 											}}
 										>
 											Ver detalles
 										</button>
-										<MeltDrawer
-											bind:open={drawerRightOpen}
-											title="Detalles en drawer derecho"
-											config={{ side: 'right', width: 400 }}
-										>
-											<div class="space-y-4">
-												Detalles del elemento con id: {item.id}, nombre: {item.title}
-											</div>
-										</MeltDrawer>
 									</li>
 									<li>
 										<a
@@ -716,3 +724,27 @@
 		z-index: -1;
 	}
 </style>
+
+{#each items as item (item.id)}
+	<MeltDrawer
+		bind:open={drawerStates[item.id]}
+		title="Detalles de {item.title}"
+		config={{ side: 'right', width: 400 }}
+	>
+		{#snippet children()}
+			<div class="space-y-4">
+				<p><strong>ID:</strong> {item.id}</p>
+				<p><strong>Título:</strong> {item.title}</p>
+				<p><strong>Slug:</strong> {item.slug}</p>
+				<p><strong>Código:</strong> {item.codeRef}</p>
+				<p><strong>Estado:</strong> {item.status}</p>
+				{#if item.descriptionShort}
+					<div>
+						<strong>Descripción corta:</strong>
+						<p class="text-sm opacity-80">{item.descriptionShort}</p>
+					</div>
+				{/if}
+			</div>
+		{/snippet}
+	</MeltDrawer>
+{/each}
