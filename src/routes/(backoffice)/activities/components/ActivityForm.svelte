@@ -374,10 +374,13 @@
 			/>
 
 			<FormCheckboxGroup
+				main_label="No recomendado para"
 				id="notSuitableFor"
-				label="No recomendado para"
-				bind:value={$form.notSuitableFor}
-				options={ACTIVITY_NOT_SUITABLE_FOR_OPTIONS}
+				name="notSuitableFor[]"
+				key_title="name"
+				key_value="id"
+				bind:items={$form.notSuitableFor}
+				availableItems={ACTIVITY_NOT_SUITABLE_FOR_OPTIONS}
 				error={$errors.notSuitableFor?._errors}
 				badge="opcional"
 				wrapperClass="md:col-span-12"

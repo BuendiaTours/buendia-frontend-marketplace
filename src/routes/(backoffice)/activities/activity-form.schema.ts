@@ -115,7 +115,14 @@ export const activityFormSchema = z.object({
 	excluded: z.array(z.string()).default([]),
 	included: z.array(z.string()).default([]),
 	itemsToBring: z.array(z.string()).default([]),
-	notSuitableFor: z.array(z.enum(ACTIVITY_NOT_SUITABLE_FOR_VALUES)).default([]),
+	notSuitableFor: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
+		.default([]),
 	kind: z.string().optional(),
 	guideKind: z.string().optional(),
 	status: z.enum(ACTIVITY_STATUS_VALUES, {

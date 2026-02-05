@@ -38,7 +38,7 @@
 		key_title: string;
 		key_value: string;
 		items: any[];
-		availableItems?: any[];
+		availableItems?: readonly any[];
 		error?: any;
 		badge?: string;
 		wrapperClass?: string;
