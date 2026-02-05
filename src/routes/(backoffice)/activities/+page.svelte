@@ -45,16 +45,25 @@
 	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
 	let openDrawerId = $state<string | null>(null);
 	let drawerOpen = $state(false);
+	let mountedDrawerId = $state<string | null>(null);
 
 	// Sincronizar drawerOpen con openDrawerId
 	$effect(() => {
-		drawerOpen = openDrawerId !== null;
+		if (openDrawerId !== null) {
+			mountedDrawerId = openDrawerId;
+			drawerOpen = true;
+		}
 	});
 
-	// Cuando el drawer se cierra, resetear openDrawerId
+	// Cuando el drawer se cierra, esperar a que termine la animación antes de desmontar
 	$effect(() => {
-		if (!drawerOpen && openDrawerId !== null) {
-			openDrawerId = null;
+		if (!drawerOpen && mountedDrawerId !== null) {
+			// Esperar 300ms (duración de la animación) antes de desmontar
+			const timeout = setTimeout(() => {
+				mountedDrawerId = null;
+				openDrawerId = null;
+			}, 300);
+			return () => clearTimeout(timeout);
 		}
 	});
 
@@ -708,8 +717,8 @@
 	</div>
 {/if}
 
-{#if openDrawerId}
-	{@const selectedItem = items.find((item) => item.id === openDrawerId)}
+{#if mountedDrawerId}
+	{@const selectedItem = items.find((item) => item.id === mountedDrawerId)}
 	{#if selectedItem}
 		<MeltDrawer
 			bind:open={drawerOpen}
