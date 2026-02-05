@@ -17,34 +17,34 @@ input:where([type='datetime-local']),
 input:where([type='month']),
 input:where([type='week']),
 input:where([type='time']) {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Textareas */
 .textarea,
 textarea {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Selects */
 .select,
 select {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Checkboxes */
 input:where([type='checkbox']):not(.toggle) {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Radios */
 input:where([type='radio']) {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* File inputs */
 input:where([type='file']) {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Estados hover (no disabled, no readonly) */
@@ -54,42 +54,42 @@ input:where([type='file']) {
 input:hover:not(:disabled):not([readonly]),
 textarea:hover:not(:disabled):not([readonly]),
 select:hover:not(:disabled) {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 	opacity: 0.8;
 }
 
 /* Estado focus - usa primary */
-.input:focus,
+/* .input:focus,
 .textarea:focus,
 .select:focus,
 input:focus,
 textarea:focus,
 select:focus {
-	border-color: var(--color-primary) !important;
+	border-color: var(--color-primary);
 	outline: none;
-}
+} */
 
 /* Toggles heredan el tick del checkbox de Bits UI */
 input[type='checkbox'].toggle {
 	/* Sino hereda el tick del checkbox de Bits UI (creo)*/
-	background-image: none !important;
+	background-image: none;
 }
 
 /* Selects personalizados */
 select {
-	background-repeat: no-repeat !important;
-	background-position: right 0.75rem center !important;
-	background-size: 1rem !important;
-	padding-right: 2.5rem !important;
+	background-repeat: no-repeat;
+	background-position: right 0.75rem center;
+	background-size: 1rem;
+	padding-right: 2.5rem;
 
 	/* Select icon - tema light (oscuro) */
 	html[data-theme='light'] & {
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 	}
 
 	/* Select icon - tema dark (blanco) */
 	html[data-theme='dark'] & {
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 	}
 }
 
@@ -127,27 +127,27 @@ details:has(.input-error, .select-error, .textarea-error) {
 
 /* MeltComboBox - Dropdown menu border */
 .melt-combobox-menu {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* MeltCalendar y MeltRangeCalendar - Container border */
 .melt-calendar-container {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Contenedores de formulario genéricos */
 .form-container {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Otros componentes con borders que actúan como formularios */
 details {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Sobrescribir border-base-content/10 en componentes inline */
 .rounded-lg.border.border-base-content\/10 {
-	border-color: var(--color-input-border) !important;
+	border-color: var(--color-input-border);
 }
 
 /* Tablas - Tamaño de texto personalizado */
