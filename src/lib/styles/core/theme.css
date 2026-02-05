@@ -5,3 +5,7 @@
 		'DejaVu Sans Mono', monospace;
 	--breakpoint-main: 1360px;
 }
+
+html[data-theme="light"] #bnd-header-logo {
+	filter: invert(1);
+}

@@ -31,7 +31,7 @@
 
 	const DEFAULT_CONFIG: TableResetSortConfig = {
 		buttonText: 'Reset sort',
-		buttonClass: 'btn btn-soft btn-sm btn-error'
+		buttonClass: 'btn btn-soft btn-xs btn-error'
 	};
 
 	let { currentSort, config = {} }: Props = $props();

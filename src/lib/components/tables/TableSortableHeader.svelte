@@ -72,16 +72,16 @@
 	}
 </script>
 
-<button type="button" class="btn cursor-pointer pr-2 btn-ghost btn-sm" onclick={handleClick}>
-	<span class:text-success={isActive}>{title}</span>
-
-	{#if isActive}
-		{#if isDesc}
-			<NavArrowDown class="text-success" />
+<div class="inline-flex gap-2">
+	<span class="text-sm cursor-pointer" onclick={handleClick} class:text-success={isActive}>{title}</span>
+		{#if isActive}
+			{#if isDesc}
+				<NavArrowDown class="size-4 text-success" />
+			{:else}
+				<NavArrowUp class="size-4 text-success" />
+			{/if}
 		{:else}
-			<NavArrowUp class="text-success" />
+			<ArrowSeparateVertical class="size-4 text-base-content/30" />
 		{/if}
-	{:else}
-		<ArrowSeparateVertical class="text-base-content/30" />
-	{/if}
-</button>
+</div>
+

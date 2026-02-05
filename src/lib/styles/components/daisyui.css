@@ -63,3 +63,12 @@ details:has(.input-error, .select-error, .textarea-error) {
 .dropdown-content {
 	@apply border border-base-content/9;
 }
+
+table.table {
+	& :where(thead, tfoot) {
+		@apply text-xs;
+		span {
+			@apply text-xs;
+		}
+	}
+}

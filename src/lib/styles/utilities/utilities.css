@@ -11,3 +11,8 @@
 @utility checkbox {
 	@apply rounded-sm;
 }
+
+/* Invertir colores para logos en modo dark */
+.invert {
+	filter: invert(1);
+}
