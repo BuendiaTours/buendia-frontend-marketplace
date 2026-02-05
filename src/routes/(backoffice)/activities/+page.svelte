@@ -41,6 +41,10 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 
+	// MeltDrawer
+	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
+	let drawerRightOpen = $state(false);
+
 	// Icons
 	import { Calendar, Cancel, Map, Plus } from 'svelte-iconoir';
 
@@ -628,6 +632,25 @@
 										>
 											View
 										</a>
+									</li>
+									<li>
+										<button
+											class=""
+											onclick={() => {
+												drawerRightOpen = true;
+											}}
+										>
+											Ver detalles
+										</button>
+										<MeltDrawer
+											bind:open={drawerRightOpen}
+											title="Detalles en drawer derecho"
+											config={{ side: 'right', width: 400 }}
+										>
+											<div class="space-y-4">
+												Detalles del elemento con id: {item.id}, nombre: {item.title}
+											</div>
+										</MeltDrawer>
 									</li>
 									<li>
 										<a
