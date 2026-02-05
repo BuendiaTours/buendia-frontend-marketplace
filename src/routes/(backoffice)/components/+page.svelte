@@ -675,31 +675,31 @@
 		<div class="card flex flex-row gap-2 p-4">
 			<div>
 				<label class="label">Ejemplo 1: Diálogo Modal Básico</label>
-				<p class="mb-4 text-sm opacity-70">
+				<p class="mb-4 text-xs opacity-70">
 					Diálogo modal con título, contenido y acciones. Se cierra con ESC o click fuera.
 				</p>
-				<button class="btn btn-primary" onclick={() => modalDialog.showModal()}>
+				<button class="btn btn-primary btn-sm" onclick={() => modalDialog.showModal()}>
 					Abrir Diálogo Modal
 				</button>
 			</div>
 
 			<div>
 				<label class="label">Ejemplo 2: Diálogo No-Modal</label>
-				<p class="mb-4 text-sm opacity-70">
+				<p class="mb-4 text-xs opacity-70">
 					Diálogo no-modal que permite interacción con el resto de la página.
 				</p>
-				<button class="btn btn-secondary" onclick={() => basicDialog.show()}>
+				<button class="btn btn-secondary btn-sm" onclick={() => basicDialog.show()}>
 					Abrir Diálogo No-Modal
 				</button>
 			</div>
 
 			<div>
 				<label class="label">Ejemplo 3: Diálogo con Formulario</label>
-				<p class="mb-4 text-sm opacity-70">
+				<p class="mb-4 text-xs opacity-70">
 					Formulario dentro del diálogo usando <code>method="dialog"</code> para cerrar automáticamente
 					al enviar.
 				</p>
-				<button class="btn btn-accent" onclick={() => formDialog.showModal()}>
+				<button class="btn btn-accent btn-sm" onclick={() => formDialog.showModal()}>
 					Abrir Formulario
 				</button>
 			</div>
