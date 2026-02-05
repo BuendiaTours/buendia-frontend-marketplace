@@ -622,10 +622,7 @@
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
 								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
-								<ul
-									tabindex="-1"
-									class="dropdown-content menu rounded-box bg-base-100 z-1 w-52 p-2 shadow-sm"
-								>
+								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
 										<a
 											href={buildUrlWithFilters(`/activities/${item.slug}`, page.url.searchParams)}

@@ -18,7 +18,7 @@
 	};
 </script>
 
-<header class="navbar border-b border-base-content/10 bg-base-100">
+<header class="navbar border-base-content/10 bg-base-100 border-b">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -37,7 +37,7 @@
 					/>
 				</svg>
 			</div>
-			<ul class="dropdown-content menu z-[1] mt-3 w-52 menu-sm rounded-box bg-base-100 p-2 shadow">
+			<ul class="dropdown-content menu">
 				<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
 				<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
 				<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>
@@ -62,6 +62,6 @@
 		<!-- ✨ Theme Switcher -->
 		<ThemeSwitcher />
 
-		<a href="/login" class="btn ml-2 btn-sm">Login</a>
+		<a href="/login" class="btn btn-sm ml-2">Login</a>
 	</div>
 </header>

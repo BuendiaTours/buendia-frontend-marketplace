@@ -265,7 +265,7 @@
 
 <!-- Table -->
 <div class="card mt-6">
-	<table class="table table-zebra table-sm">
+	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
 				<th class="w-12">
@@ -321,13 +321,13 @@
 							{:else if col.key === 'status'}
 								<td>
 									{#if item.status === 'ACTIVE'}
-										<div aria-label="success" class="mr-1 status status-lg status-success"></div>
+										<div aria-label="success" class="status status-lg status-success mr-1"></div>
 										<span>Activo</span>
 									{:else if item.status === 'DRAFT'}
-										<div aria-label="status" class="mr-1 status status-lg status-neutral"></div>
+										<div aria-label="status" class="status status-lg status-neutral mr-1"></div>
 										<span>Borrador</span>
 									{:else}
-										<div aria-label="error" class="mr-1 status status-lg status-error"></div>
+										<div aria-label="error" class="status status-lg status-error mr-1"></div>
 										<span>Inactivo</span>
 									{/if}
 								</td>
@@ -339,11 +339,8 @@
 						{/each}
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
-								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
-								<ul
-									tabindex="-1"
-									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"
-								>
+								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
+								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
 										<a
 											href={buildUrlWithFilters(`/attractions/${item.slug}`, page.url.searchParams)}
@@ -391,14 +388,14 @@
 <!-- Drawer con datos asíncronos -->
 <MeltDrawerManager
 	bind:selectedId={selectedAttractionId}
-	items={items}
+	{items}
 	title={(item) => `Detalles de ${item.title}`}
 	config={{ side: 'right', width: 500 }}
 >
 	{#snippet content(item)}
 		<div class="space-y-4">
 			<!-- Información de la atracción -->
-			<div class="rounded-lg bg-base-200 p-4">
+			<div class="bg-base-200 rounded-lg p-4">
 				<h3 class="mb-2 font-semibold">{item.title}</h3>
 				<p class="text-sm opacity-80">ID: {item.id}</p>
 				<p class="text-sm opacity-80">Slug: {item.slug}</p>
@@ -419,10 +416,8 @@
 				/>
 			{:else if attractionData}
 				<!-- Datos cargados - Mostrar JSON -->
-				<div class="rounded-lg bg-base-200 p-4">
-					<h4 class="mb-3 font-semibold">
-						Respuesta de la API
-					</h4>
+				<div class="bg-base-200 rounded-lg p-4">
+					<h4 class="mb-3 font-semibold">Respuesta de la API</h4>
 					<div class="mockup-code">
 						<pre class="px-4"><code>{JSON.stringify(attractionData, null, 2)}</code></pre>
 					</div>
@@ -443,7 +438,9 @@
 						></path>
 					</svg>
 					<span class="text-sm">
-						Datos cargados desde: <code class="text-xs">http://localhost:3333/attractions/{item.slug}</code>
+						Datos cargados desde: <code class="text-xs"
+							>http://localhost:3333/attractions/{item.slug}</code
+						>
 					</span>
 				</div>
 			{/if}

@@ -227,7 +227,7 @@
 
 <!-- Table -->
 <div class="card mt-6">
-	<table class="table table-zebra table-sm">
+	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
 				<th class="w-12">
@@ -292,7 +292,7 @@
 											{item[col.key]}
 										</a>
 									</p>
-									<p class="text-xs text-base-content/50">
+									<p class="text-base-content/50 text-xs">
 										{item['descriptionShort']}
 									</p>
 								</td>
@@ -310,11 +310,8 @@
 						{/each}
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
-								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
-								<ul
-									tabindex="-1"
-									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"
-								>
+								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
+								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
 										<a
 											href={buildUrlWithFilters(
