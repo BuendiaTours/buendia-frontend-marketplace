@@ -86,7 +86,7 @@
 	<div class="card p-4">
 		<div class={containerClass}>
 			{#each availableItems as item, index}
-				<label class="label cursor-pointer justify-start gap-3" for={id}>
+				<label class="label cursor-pointer justify-start gap-3" for="checkbox-{id}-{index}">
 					<input
 						type="checkbox"
 						id="checkbox-{id}-{index}"

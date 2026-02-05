@@ -18,5 +18,5 @@ export const apiConfig = {
 		'X-App-Version': '1.0.0'
 	},
 
-	debug: import.meta.env.DEV
+	debug: true
 } as const;

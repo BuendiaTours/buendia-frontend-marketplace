@@ -10,13 +10,13 @@
 </script>
 
 <div
-	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
 	<a href={`/activities?${page.url.searchParams.toString()}`} class="link"> ← Volver al listado </a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, $page.url.searchParams)}
+			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, page.url.searchParams)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
