@@ -1,51 +1,30 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { WarningTriangle } from 'svelte-iconoir';
+	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
 	const isApiError = $derived(page.status === 500 || page.status === 502 || page.status === 503);
+
+	const errorTitle = $derived(
+		isApiError ? 'Servicio no disponible' : `Error ${page.status}`
+	);
+
+	const errorMessage = $derived(
+		isApiError
+			? 'No se puede conectar con el servidor. Por favor, verifica que la API esté funcionando e intenta de nuevo.'
+			: page.error?.message || 'Ha ocurrido un error inesperado'
+	);
+
+	const technicalDetails = $derived({
+		status: page.status,
+		message: page.error?.message,
+		url: page.url.pathname
+	});
 </script>
 
-<div class="flex min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
-	<div class="text-error">
-		<WarningTriangle width={64} height={64} />
-	</div>
-
-	<div class="max-w-md space-y-2">
-		<h1 class="text-3xl font-bold">
-			{#if isApiError}
-				Servicio no disponible
-			{:else}
-				Error {page.status}
-			{/if}
-		</h1>
-
-		<p class="text-base">
-			{#if isApiError}
-				No se puede conectar con el servidor. Por favor, verifica que la API esté funcionando e
-				intenta de nuevo.
-			{:else}
-				{page.error?.message || 'Ha ocurrido un error inesperado'}
-			{/if}
-		</p>
-	</div>
-
-	<div class="flex gap-3">
+<ErrorDisplay title={errorTitle} message={errorMessage} technicalDetails={technicalDetails}>
+	{#snippet actions()}
 		<a href="/" class="btn btn-primary">Volver al inicio</a>
 		<button class="btn btn-outline" onclick={() => window.location.reload()}> Reintentar </button>
-	</div>
-
-	{#if import.meta.env.DEV}
-		<details class="mt-8 max-w-2xl text-left">
-			<summary class="cursor-pointer text-sm text-base-content/50">Detalles técnicos (dev)</summary>
-			<pre class="mt-2 rounded bg-base-200 p-4 text-xs">{JSON.stringify(
-					{
-						status: page.status,
-						message: page.error?.message,
-						url: page.url.pathname
-					},
-					null,
-					2
-				)}</pre>
-		</details>
-	{/if}
-</div>
+	{/snippet}
+</ErrorDisplay>
