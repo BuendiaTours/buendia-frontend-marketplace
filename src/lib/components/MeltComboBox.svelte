@@ -123,7 +123,7 @@ Soporta modo single y multiple.
 	{/if}
 	<input
 		use:melt={$input}
-		class={`input w-full bg-transparent pr-10 text-success ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? 'border-success' : ''}`}
+		class={`input text-success w-full bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? 'border-success' : ''}`}
 		{placeholder}
 		aria-label={placeholder}
 		{name}
@@ -136,7 +136,7 @@ Soporta modo single y multiple.
 {#if $open}
 	<ul
 		use:melt={$menu}
-		class="z-50 flex max-h-[300px] flex-col overflow-hidden rounded-box border border-base-content/10 bg-base-100 shadow-lg {className}"
+		class="rounded-box border-base-content/10 bg-base-100 z-50 flex max-h-[300px] flex-col overflow-hidden border shadow-lg {className}"
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -147,7 +147,7 @@ Soporta modo single y multiple.
 						value: item.value,
 						label: item.label
 					})}
-					class="relative cursor-pointer scroll-my-2 rounded-md py-2 pr-4 pl-4 data-[disabled]:opacity-50 data-[highlighted]:bg-base-200 data-[highlighted]:text-base-content"
+					class="data-[highlighted]:bg-base-200 data-[highlighted]:text-base-content relative cursor-pointer scroll-my-2 rounded-md py-2 pr-4 pl-4 data-[disabled]:opacity-50"
 				>
 					{#if $isSelected(item.value)}
 						<div class="check">
@@ -173,7 +173,7 @@ Soporta modo single y multiple.
 		left: 0.5rem;
 		top: 50%;
 		z-index: 10;
-		color: hsl(var(--su));
+		color: var(--color-success);
 		translate: 0 calc(-50% + 1px);
 	}
 </style>

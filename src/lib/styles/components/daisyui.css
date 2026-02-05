@@ -54,16 +54,7 @@ details:has(.input-error, .select-error, .textarea-error) {
 	@apply border-error;
 }
 
-/* Card de DaisyUI */
-.card {
-	@apply rounded-box border border-base-content/9 bg-base-100;
-}
-
-/* Dropdown content */
-.dropdown-content {
-	@apply border border-base-content/9;
-}
-
+/* Tablas - Tamaño de texto personalizado */
 table.table {
 	& :where(thead, tfoot) {
 		@apply text-xs;

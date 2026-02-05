@@ -390,7 +390,7 @@
 		<div
 			use:melt={$dateRangeContent}
 			transition:fade={{ duration: 100 }}
-			class="z-50 rounded-box border border-base-content/10 bg-base-100 p-4 shadow-lg"
+			class="rounded-box border-base-content/10 bg-base-100 z-50 border p-4 shadow-lg"
 		>
 			<div use:melt={$dateRangeArrow} class="arrow"></div>
 			<div class="flex flex-col gap-2">
@@ -415,7 +415,7 @@
 					</button>
 					<button
 						disabled={!hasDateRange}
-						class="btn ml-auto btn-soft btn-xs btn-error"
+						class="btn btn-soft btn-xs btn-error ml-auto"
 						onclick={handleClearDateRange}
 					>
 						Limpiar selección
@@ -544,7 +544,7 @@
 
 {#if items.length}
 	<div class="card mt-6">
-		<table class="table table-zebra table-sm">
+		<table class="table-zebra table-sm table">
 			<thead>
 				<tr>
 					<th><input type="checkbox" class="checkbox checkbox-sm" use:checkAll /></th>
@@ -621,10 +621,10 @@
 						{/each}
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
-								<div tabindex="0" role="button" class="text-bold btn m-1 btn-sm">⋮</div>
+								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
 								<ul
 									tabindex="-1"
-									class="dropdown-content menu z-1 w-52 rounded-box bg-base-100 p-2 shadow-sm"
+									class="dropdown-content menu rounded-box bg-base-100 z-1 w-52 p-2 shadow-sm"
 								>
 									<li>
 										<a
@@ -697,7 +697,7 @@
 
 <MeltDrawerManager
 	bind:selectedId={selectedActivityId}
-	items={items}
+	{items}
 	title={(item) => `Detalles de ${item.title}`}
 	config={{ side: 'right', width: 400 }}
 >
@@ -721,14 +721,12 @@
 <style>
 	.arrow {
 		position: absolute;
-		background-color: hsl(var(--b1));
+		background-color: var(--color-base-100);
 		width: 10px;
 		height: 10px;
 		transform: rotate(45deg);
-		border-top: 1px solid hsl(var(--bc) / 0.1);
-		border-left: 1px solid hsl(var(--bc) / 0.1);
+		border-top: 1px solid var(--border-color-divider);
+		border-left: 1px solid var(--border-color-divider);
 		z-index: -1;
 	}
 </style>
-
-

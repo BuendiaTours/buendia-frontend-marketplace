@@ -1,4 +1,11 @@
 /* Variables de tema y configuración custom de Tailwind */
+
+/* 
+   NOTA: Los temas light/dark se definen directamente en layout.css
+   usando @plugin 'daisyui/theme' {} (sistema nativo de DaisyUI 5.x)
+*/
+
+/* Configuración de Tailwind */
 @theme {
 	--font-mono:
 		'Iosevka', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
@@ -6,6 +13,7 @@
 	--breakpoint-main: 1360px;
 }
 
-html[data-theme="light"] #bnd-header-logo {
+/* Header logo filter para light theme */
+html[data-theme='light'] #bnd-header-logo {
 	filter: invert(1);
 }

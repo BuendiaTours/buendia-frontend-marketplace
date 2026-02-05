@@ -63,12 +63,7 @@ USO CON FORMULARIO:
 		actions?: any;
 	}
 
-	let {
-		title = '',
-		config = {},
-		content,
-		actions
-	}: Props = $props();
+	let { title = '', config = {}, content, actions }: Props = $props();
 
 	const defaultConfig: PureHtmlDialogConfig = {
 		modal: true,
@@ -121,13 +116,13 @@ USO CON FORMULARIO:
 
 <dialog
 	bind:this={dialogElement}
-	class="rounded-lg bg-base-100 p-0 shadow-xl backdrop:bg-black/50"
+	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-black/50"
 	onclick={handleBackdropClick}
 	onkeydown={handleKeydown}
 >
 	<!-- Header con título y botón de cerrar -->
 	{#if title}
-		<div class="border-b border-base-content/10 px-6 py-4">
+		<div class="border-base-content/10 border-b px-6 py-4">
 			<div class="flex items-center justify-between">
 				<h3 class="text-lg font-semibold">{title}</h3>
 				<button
@@ -151,7 +146,7 @@ USO CON FORMULARIO:
 
 	<!-- Acciones (footer) -->
 	{#if actions}
-		<div class="border-t border-base-content/10 px-6 py-4">
+		<div class="border-base-content/10 border-t px-6 py-4">
 			<div class="flex justify-end gap-2">
 				{@render actions()}
 			</div>
@@ -213,11 +208,11 @@ USO CON FORMULARIO:
 	}
 
 	dialog::-webkit-scrollbar-thumb {
-		background: hsl(var(--bc) / 0.2);
+		background: color-mix(in srgb, var(--color-base-content) 20%, transparent);
 		border-radius: 4px;
 	}
 
 	dialog::-webkit-scrollbar-thumb:hover {
-		background: hsl(var(--bc) / 0.3);
+		background: color-mix(in srgb, var(--color-base-content) 30%, transparent);
 	}
 </style>
