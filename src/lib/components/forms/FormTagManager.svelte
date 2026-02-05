@@ -160,7 +160,7 @@
 		{/if}
 	</label>
 
-	<div class="rounded-lg border border-base-content/10 p-4">
+	<div class="card p-4">
 		<MeltComboBox
 			items={tagsForCombobox}
 			type="single"
@@ -171,7 +171,7 @@
 
 		<div class="mt-4 flex flex-wrap gap-2">
 			{#if tags.length === 0}
-				<span class="text-sm text-base-content/50">{emptyMessage}</span>
+				<span class="text-base-content/50 text-sm">{emptyMessage}</span>
 			{:else if valueType === 'string'}
 				{#each tags as tag, i}
 					{@const stringTag = tag as string}

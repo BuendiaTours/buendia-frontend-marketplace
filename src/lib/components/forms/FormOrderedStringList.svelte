@@ -123,12 +123,12 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-base-content/10 p-4">
+	<div class="card p-4">
 		{#if items.length > 0}
 			<div class="mb-2 space-y-1">
 				{#each items as item, index (index)}
 					<div
-						class="flex items-center gap-2 rounded-lg border border-base-content/10 bg-base-100 px-2 py-1 transition-colors"
+						class="card flex items-center gap-2 px-2 py-1 transition-colors"
 						class:opacity-50={draggedIndex === index}
 						role="listitem"
 						ondragover={handleDragOver}
@@ -137,7 +137,7 @@
 						<!-- Drag handle -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
-							class="cursor-move text-base-content/50 hover:text-base-content"
+							class="text-base-content/50 hover:text-base-content cursor-move"
 							draggable="true"
 							ondragstart={(e) => handleDragStart(e, index)}
 							ondragend={handleDragEnd}
@@ -152,7 +152,7 @@
 							value={item}
 							oninput={(e) => updateItem(index, e.currentTarget.value)}
 							{placeholder}
-							class="py-1.8 textarea field-sizing-content min-h-[2em] flex-1 resize-none px-2 textarea-sm leading-4"
+							class="py-1.8 textarea textarea-sm field-sizing-content min-h-[2em] flex-1 resize-none px-2 leading-4"
 							rows="1"
 						></textarea>
 
@@ -177,10 +177,10 @@
 					Eliminar todos
 				</button>
 			{:else}
-				<span class="text-sm text-base-content/30">{emptyMessage}</span>
+				<span class="text-base-content/30 text-sm">{emptyMessage}</span>
 			{/if}
 
-			<button type="button" class="btn ml-auto btn-soft btn-xs" onclick={addItem}>
+			<button type="button" class="btn btn-soft btn-xs ml-auto" onclick={addItem}>
 				<Plus class="size-4" />
 				Añadir elemento
 			</button>

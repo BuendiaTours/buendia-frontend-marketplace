@@ -39,7 +39,7 @@
 </script>
 
 <div
-	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
 	<a href={`/destinations?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
@@ -140,7 +140,7 @@
 			/>
 
 			<div class="md:col-span-4">
-				<div class="rounded-lg border border-base-content/10 p-4">
+				<div class="card p-4">
 					{#if $form.photoUrlHero}
 						<a href={$form.photoUrlHero} target="_blank">
 							<img src={$form.photoUrlHero} alt="" />

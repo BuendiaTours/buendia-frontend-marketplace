@@ -136,7 +136,7 @@ Soporta modo single y multiple.
 {#if $open}
 	<ul
 		use:melt={$menu}
-		class="rounded-box border-base-content/10 bg-base-100 z-50 flex max-h-[300px] flex-col overflow-hidden border shadow-lg {className}"
+		class="melt-combobox-menu rounded-box bg-base-100 z-50 flex max-h-[300px] flex-col overflow-hidden border shadow-lg {className}"
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->

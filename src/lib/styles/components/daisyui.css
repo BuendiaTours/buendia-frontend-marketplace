@@ -1,5 +1,74 @@
 /* Personalizaciones de componentes DaisyUI */
 
+/* === BORDES DE FORMULARIOS COHERENTES === */
+/* Todos los elementos de formulario usan --color-input-border */
+
+/* Inputs: text, email, number, password, etc. */
+.input,
+input:where([type='text']),
+input:where([type='email']),
+input:where([type='number']),
+input:where([type='password']),
+input:where([type='search']),
+input:where([type='tel']),
+input:where([type='url']),
+input:where([type='date']),
+input:where([type='datetime-local']),
+input:where([type='month']),
+input:where([type='week']),
+input:where([type='time']) {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Textareas */
+.textarea,
+textarea {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Selects */
+.select,
+select {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Checkboxes */
+input:where([type='checkbox']):not(.toggle) {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Radios */
+input:where([type='radio']) {
+	border-color: var(--color-input-border) !important;
+}
+
+/* File inputs */
+input:where([type='file']) {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Estados hover (no disabled, no readonly) */
+.input:hover:not(:disabled):not([readonly]),
+.textarea:hover:not(:disabled):not([readonly]),
+.select:hover:not(:disabled),
+input:hover:not(:disabled):not([readonly]),
+textarea:hover:not(:disabled):not([readonly]),
+select:hover:not(:disabled) {
+	border-color: var(--color-input-border) !important;
+	opacity: 0.8;
+}
+
+/* Estado focus - usa primary */
+.input:focus,
+.textarea:focus,
+.select:focus,
+input:focus,
+textarea:focus,
+select:focus {
+	border-color: var(--color-primary) !important;
+	outline: none;
+}
+
 /* Toggles heredan el tick del checkbox de Bits UI */
 input[type='checkbox'].toggle {
 	/* Sino hereda el tick del checkbox de Bits UI (creo)*/
@@ -52,6 +121,33 @@ textarea[readonly]:focus {
 /* Details con inputs en error */
 details:has(.input-error, .select-error, .textarea-error) {
 	@apply border-error;
+}
+
+/* === COMPONENTES ESPECÍFICOS === */
+
+/* MeltComboBox - Dropdown menu border */
+.melt-combobox-menu {
+	border-color: var(--color-input-border) !important;
+}
+
+/* MeltCalendar y MeltRangeCalendar - Container border */
+.melt-calendar-container {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Contenedores de formulario genéricos */
+.form-container {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Otros componentes con borders que actúan como formularios */
+details {
+	border-color: var(--color-input-border) !important;
+}
+
+/* Sobrescribir border-base-content/10 en componentes inline */
+.rounded-lg.border.border-base-content\/10 {
+	border-color: var(--color-input-border) !important;
 }
 
 /* Tablas - Tamaño de texto personalizado */

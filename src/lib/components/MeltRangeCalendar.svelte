@@ -59,11 +59,11 @@ Props disponibles:
 	});
 </script>
 
-<div use:melt={$calendar} class="border border-base-content/10 bg-base-100 p-6 {className}">
+<div use:melt={$calendar} class="melt-calendar-container bg-base-100 border p-6 {className}">
 	<header class="flex items-center justify-between">
 		<button
 			use:melt={$prevButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowLeft />
 		</button>
@@ -72,7 +72,7 @@ Props disponibles:
 		</div>
 		<button
 			use:melt={$nextButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowRight />
 		</button>
@@ -104,13 +104,13 @@ Props disponibles:
 											'data-[outside-month]:pointer-events-none data-[outside-month]:opacity-40',
 											'data-[unavailable]:line-through',
 											'data-[selected]:bg-primary/20 data-[selected]:font-semibold',
-											'data-[selection-start]:bg-primary data-[selection-start]:font-bold data-[selection-start]:text-primary-content',
-											'data-[selection-end]:bg-primary data-[selection-end]:font-bold data-[selection-end]:text-primary-content',
+											'data-[selection-start]:bg-primary data-[selection-start]:text-primary-content data-[selection-start]:font-bold',
+											'data-[selection-end]:bg-primary data-[selection-end]:text-primary-content data-[selection-end]:font-bold',
 											'data-[selected]:not([data-selection-start]):not([data-selection-end]):rounded-none'
 										)}
 									>
 										<div
-											class="absolute top-1 hidden size-1.5 rounded-full bg-primary group-data-[selected]:bg-primary group-data-[today]:block"
+											class="bg-primary group-data-[selected]:bg-primary absolute top-1 hidden size-1.5 rounded-full group-data-[today]:block"
 										></div>
 										{date.day}
 									</button>

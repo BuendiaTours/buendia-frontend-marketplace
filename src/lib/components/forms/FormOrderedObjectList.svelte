@@ -226,7 +226,7 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-base-content/10 p-4">
+	<div class="card p-4">
 		<MeltComboBox
 			{id}
 			items={itemsForCombobox}
@@ -238,7 +238,7 @@
 
 		{#if items.length > 0}
 			<div class="mt-2">
-				<table class="table table-sm">
+				<table class="table-sm table">
 					<!-- thead>
 						<tr>
 							<th class="w-0 text-center">
@@ -261,7 +261,7 @@
 									{#if cfg.useDragAndDrop}
 										<!-- svelte-ignore a11y_no_static_element_interactions -->
 										<div
-											class="cursor-move text-base-content/50 hover:text-base-content"
+											class="text-base-content/50 hover:text-base-content cursor-move"
 											draggable="true"
 											ondragstart={(e) => handleDragStart(e, index)}
 											ondragend={handleDragEnd}
@@ -342,7 +342,7 @@
 			</div>
 		{:else}
 			<div class="mt-3">
-				<span class="text-sm text-base-content/30">{emptyMessage}</span>
+				<span class="text-base-content/30 text-sm">{emptyMessage}</span>
 			</div>
 		{/if}
 

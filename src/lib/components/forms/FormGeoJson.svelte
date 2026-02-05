@@ -331,7 +331,7 @@
 		{/if}
 	</label>
 
-	<div class="rounded-lg border border-base-content/10 p-4">
+	<div class="card p-4">
 		{#if cfg.showSearchBox}
 			<div class="mb-4">
 				<div class="relative">
@@ -345,7 +345,7 @@
 					/>
 					<button
 						type="button"
-						class="btn absolute top-0 right-0 btn-ghost btn-sm"
+						class="btn btn-ghost btn-sm absolute top-0 right-0"
 						onclick={searchLocation}
 						disabled={isSearching || !isMapLoaded || !searchQuery.trim() || !cfg.enableGeocoding}
 					>
@@ -358,7 +358,7 @@
 				</div>
 
 				<!-- Mensaje de advertencia -->
-				<div class="mt-2 flex items-center gap-2 text-xs text-warning">
+				<div class="text-warning mt-2 flex items-center gap-2 text-xs">
 					<InfoEmpty class="size-4" />
 					<span
 						>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
@@ -367,7 +367,7 @@
 				</div>
 
 				{#if searchError}
-					<div class="mt-2 text-xs text-error">{searchError}</div>
+					<div class="text-error mt-2 text-xs">{searchError}</div>
 				{/if}
 			</div>
 		{/if}
@@ -378,10 +378,10 @@
 			<div class="md:col-span-8">
 				<div class="relative overflow-hidden rounded-lg">
 					{#if mapError}
-						<div class="flex items-center justify-center bg-base-200 p-8 {mapClass}">
+						<div class="bg-base-200 flex items-center justify-center p-8 {mapClass}">
 							<div class="text-center">
-								<p class="text-sm text-error">{mapError}</p>
-								<p class="mt-2 text-xs text-base-content/50">
+								<p class="text-error text-sm">{mapError}</p>
+								<p class="text-base-content/50 mt-2 text-xs">
 									Configura tu API key de Google Maps en el componente
 								</p>
 							</div>
@@ -389,7 +389,7 @@
 					{:else}
 						<div bind:this={mapContainer} class="w-full {mapClass}">
 							{#if !isMapLoaded}
-								<div class="flex items-center justify-center bg-base-200 {mapClass}">
+								<div class="bg-base-200 flex items-center justify-center {mapClass}">
 									<span class="loading loading-lg loading-spinner"></span>
 								</div>
 							{/if}
@@ -397,7 +397,7 @@
 					{/if}
 				</div>
 
-				<div class="mt-2 text-xs text-base-content/50">
+				<div class="text-base-content/50 mt-2 text-xs">
 					Haz clic en el mapa o arrastra el marcador para cambiar la ubicación
 				</div>
 			</div>

@@ -83,7 +83,7 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-base-content/10 p-4">
+	<div class="card p-4">
 		<div class={containerClass}>
 			{#each availableItems as item, index}
 				<label class="label cursor-pointer justify-start gap-3" for={id}>
