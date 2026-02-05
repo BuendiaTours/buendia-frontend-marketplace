@@ -51,7 +51,7 @@
 					: 'left-0 bottom-0 right-0 border-b border-base-content/9'
 	);
 
-	const width = $derived(mergedConfig.width ?? 350);
+	const width = $derived(mergedConfig.width ?? defaultConfig.width!);
 
 	const flyConfig = $derived(
 		mergedConfig.side === 'left'
