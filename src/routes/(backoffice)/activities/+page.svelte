@@ -380,7 +380,6 @@
 			use:melt={$dateRangeTrigger}
 			class="btn btn-square btn-soft"
 			class:!border-success={hasDateRange}
-			class:bg-white={hasDateRange}
 		>
 			<Calendar class={hasDateRange ? 'text-success' : 'text-base'} />
 		</button>

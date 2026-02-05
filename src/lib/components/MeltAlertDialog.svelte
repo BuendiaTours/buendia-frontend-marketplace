@@ -100,12 +100,12 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 	<div use:melt={$portalled}>
 		<div
 			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-black/50"
+			class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
 			transition:fade={{ duration: 150 }}
 		></div>
 		<div
 			use:melt={$content}
-			class="fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-300 bg-base-100 p-6 shadow-xl sm:max-w-lg"
+			class="rounded-box border-base-300 bg-base-100 fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 border p-6 shadow-xl sm:max-w-lg"
 			transition:scale={{ duration: 150, start: 0.95 }}
 		>
 			<div class="flex flex-col gap-4 pb-2">
@@ -132,7 +132,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 			<button
 				use:melt={$close}
 				aria-label="Cerrar"
-				class="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm"
+				class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
 			>
 				<Cancel class="size-4" />
 			</button>

@@ -47,8 +47,8 @@
 				? 'right-0 top-0 border-l border-base-content/9'
 				: mergedConfig.side === 'top'
 					? 'left-0 top-0 right-0 border-t border-base-content/9'
-					// Bottom
-					: 'left-0 bottom-0 right-0 border-b border-base-content/9'
+					: // Bottom
+						'left-0 bottom-0 right-0 border-b border-base-content/9'
 	);
 
 	const width = $derived(mergedConfig.width ?? defaultConfig.width!);
@@ -79,7 +79,7 @@
 		{#if mergedConfig.showOverlay}
 			<div
 				use:melt={$overlay}
-				class="fixed inset-0 z-50 bg-black/50"
+				class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
 				transition:fade={{ duration: 150 }}
 			/>
 		{/if}

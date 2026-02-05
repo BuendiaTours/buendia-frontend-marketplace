@@ -116,7 +116,7 @@ USO CON FORMULARIO:
 
 <dialog
 	bind:this={dialogElement}
-	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-black/50"
+	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-[var(--default-overlay-bg)]"
 	onclick={handleBackdropClick}
 	onkeydown={handleKeydown}
 >

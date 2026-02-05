@@ -100,6 +100,10 @@
 	--border: 1px;
 }
 
+:root {
+	--default-overlay-bg: rgba(0, 0, 0, 0.55);
+}
+
 /* Core styles */
 @import '$lib/styles/core/fonts.css';
 @import '$lib/styles/core/theme.css';
