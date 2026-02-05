@@ -31,6 +31,9 @@
 	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
+	// MeltDrawerManager - Gestiona drawers dinámicos con animaciones
+	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+
 	// Icons
 	import { Cancel, Check, Plus, Search } from 'svelte-iconoir';
 
@@ -61,6 +64,43 @@
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
+
+	// ============================================================================
+	// DRAWER STATE & ASYNC DATA
+	// ============================================================================
+
+	let selectedAttractionId = $state<string | null>(null);
+	let attractionData = $state<any>(null);
+	let isLoadingData = $state(false);
+	let dataError = $state<string | null>(null);
+
+	// Cargar datos cuando se selecciona una atracción
+	$effect(() => {
+		if (selectedAttractionId) {
+			// Encontrar el slug de la atracción seleccionada
+			const selectedAttraction = items.find((item) => item.id === selectedAttractionId);
+			if (!selectedAttraction) return;
+
+			isLoadingData = true;
+			dataError = null;
+			attractionData = null;
+
+			// Cargar datos desde la API local
+			fetch(`http://localhost:3333/attractions/${selectedAttraction.slug}`)
+				.then((response) => {
+					if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+					return response.json();
+				})
+				.then((data) => {
+					attractionData = data;
+					isLoadingData = false;
+				})
+				.catch((error) => {
+					dataError = error.message;
+					isLoadingData = false;
+				});
+		}
+	});
 
 	// ============================================================================
 	// SEARCH STATE
@@ -311,12 +351,24 @@
 										</a>
 									</li>
 									<li>
+										<button
+											class=""
+											onclick={() => {
+												selectedAttractionId = item.id;
+											}}
+										>
+											Ver detalles
+										</button>
+									</li>
+									<li>
 										<a
 											href={buildUrlWithFilters(
 												`/attractions/${item.slug}/edit`,
 												page.url.searchParams
-											)}>Editar</a
+											)}
 										>
+											Editar
+										</a>
 									</li>
 								</ul>
 							</div></td
@@ -334,3 +386,80 @@
 		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
 	</div>
 {/if}
+
+<!-- Drawer con datos asíncronos -->
+<MeltDrawerManager
+	bind:selectedId={selectedAttractionId}
+	items={items}
+	title={(item) => `Detalles de ${item.title}`}
+	config={{ side: 'right', width: 500 }}
+>
+	{#snippet content(item)}
+		<div class="space-y-4">
+			<!-- Información de la atracción -->
+			<div class="rounded-lg bg-base-200 p-4">
+				<h3 class="mb-2 font-semibold">{item.title}</h3>
+				<p class="text-sm opacity-80">ID: {item.id}</p>
+				<p class="text-sm opacity-80">Slug: {item.slug}</p>
+			</div>
+
+			<!-- Sección de datos asíncronos -->
+			<div class="divider">Datos desde API (localhost:3333)</div>
+
+			{#if isLoadingData}
+				<!-- Estado de carga -->
+				<div class="flex flex-col items-center justify-center py-8">
+					<span class="loading loading-spinner loading-lg text-primary"></span>
+					<p class="mt-4 text-sm opacity-70">Cargando datos...</p>
+				</div>
+			{:else if dataError}
+				<!-- Estado de error -->
+				<div class="alert alert-error">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6 shrink-0 stroke-current"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+						/>
+					</svg>
+					<span>{dataError}</span>
+				</div>
+			{:else if attractionData}
+				<!-- Datos cargados - Mostrar JSON -->
+				<div class="rounded-lg bg-base-200 p-4">
+					<h4 class="mb-3 font-semibold">
+						Respuesta de la API
+					</h4>
+					<div class="mockup-code">
+						<pre class="px-4"><code>{JSON.stringify(attractionData, null, 2)}</code></pre>
+					</div>
+				</div>
+
+				<div class="alert alert-info">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						class="h-6 w-6 shrink-0 stroke-current"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+						></path>
+					</svg>
+					<span class="text-sm">
+						Datos cargados desde: <code class="text-xs">http://localhost:3333/attractions/{item.slug}</code>
+					</span>
+				</div>
+			{/if}
+		</div>
+	{/snippet}
+</MeltDrawerManager>
