@@ -83,8 +83,8 @@ export function createCreateAction(config: CreateActionConfig) {
 			console.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
 			console.log(`🆕 [createAction] Datos a enviar:`, {
 				id: form.data.id,
-				...(form.data.title && { title: form.data.title }),
-				...(form.data.name && { name: form.data.name }),
+				...(form.data.title ? { title: form.data.title } : {}),
+				...(form.data.name ? { name: form.data.name } : {}),
 				slug: form.data.slug
 			});
 

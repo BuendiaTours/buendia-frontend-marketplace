@@ -9,7 +9,6 @@ import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
  */
 export interface CreateLoadConfig {
 	/** Schema de validación (adaptador de Zod) */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	schema: any;
 	/** Valores iniciales del formulario (sin UUID, se genera automáticamente) */
 	initialValues: Record<string, any>;

@@ -41,6 +41,13 @@
 	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
 	let selectedItemId = $state<string | null>(null);
 
+	// PureHtmlDialog
+	import PureHtmlDialog from '$lib/components/PureHtmlDialog.svelte';
+	let basicDialog: PureHtmlDialog;
+	let modalDialog: PureHtmlDialog;
+	let formDialog: PureHtmlDialog;
+	let formResult = $state<string>('');
+
 	// Mock data para ejemplo de MeltDrawerManager
 	const mockItems = [
 		{ id: '1', name: 'Producto A', description: 'Descripción del producto A', price: 29.99 },
@@ -180,7 +187,7 @@
 		<label class="label mt-4">Accordion sencillo de DaisyUI</label>
 		<div class="card block space-y-2 p-4">
 			<details
-				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+				class="collapse-arrow border-base-content/9 bg-base-100 collapse border"
 				name="my-accordion-det-1"
 				open
 			>
@@ -190,7 +197,7 @@
 				</div>
 			</details>
 			<details
-				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+				class="collapse-arrow border-base-content/9 bg-base-100 collapse border"
 				name="my-accordion-det-1"
 			>
 				<summary class="collapse-title font-semibold"
@@ -202,7 +209,7 @@
 				</div>
 			</details>
 			<details
-				class="collapse-arrow collapse border border-base-content/9 bg-base-100"
+				class="collapse-arrow border-base-content/9 bg-base-100 collapse border"
 				name="my-accordion-det-1"
 			>
 				<summary class="collapse-title font-semibold">Can I change my email address?</summary>
@@ -572,8 +579,8 @@
 		</p>
 		<div class="card p-4">
 			<p class="mb-4 text-sm">
-				Este componente simplifica el uso de drawers con listas dinámicas. Encapsula toda la
-				lógica de sincronización y delay de animación.
+				Este componente simplifica el uso de drawers con listas dinámicas. Encapsula toda la lógica
+				de sincronización y delay de animación.
 			</p>
 			<div class="grid grid-cols-1 gap-2 md:grid-cols-2">
 				{#each mockItems as item}
@@ -588,8 +595,8 @@
 				{/each}
 			</div>
 			<p class="mt-4 text-xs opacity-60">
-				Ideal para listados, tablas o grids donde cada item tiene un botón "Ver detalles". Solo
-				se renderiza el drawer del item seleccionado.
+				Ideal para listados, tablas o grids donde cada item tiene un botón "Ver detalles". Solo se
+				renderiza el drawer del item seleccionado.
 			</p>
 		</div>
 
@@ -658,6 +665,51 @@
 				Los toasts aparecerán en la esquina superior derecha y se pueden cerrar manualmente
 			</p>
 		</div>
+
+		<label class="label mt-4">PureHtmlDialog - Diálogo HTML Nativo</label>
+		<p class="text-sm opacity-70">
+			Componente basado en el elemento <code>&lt;dialog&gt;</code> estándar de HTML5 con estilos de Tailwind
+			y DaisyUI. Incluye soporte para modal/no-modal, backdrop personalizable, y gestión automática de
+			accesibilidad.
+		</p>
+		<div class="card flex flex-row gap-2 p-4">
+			<div>
+				<label class="label">Ejemplo 1: Diálogo Modal Básico</label>
+				<p class="mb-4 text-sm opacity-70">
+					Diálogo modal con título, contenido y acciones. Se cierra con ESC o click fuera.
+				</p>
+				<button class="btn btn-primary" onclick={() => modalDialog.showModal()}>
+					Abrir Diálogo Modal
+				</button>
+			</div>
+
+			<div>
+				<label class="label">Ejemplo 2: Diálogo No-Modal</label>
+				<p class="mb-4 text-sm opacity-70">
+					Diálogo no-modal que permite interacción con el resto de la página.
+				</p>
+				<button class="btn btn-secondary" onclick={() => basicDialog.show()}>
+					Abrir Diálogo No-Modal
+				</button>
+			</div>
+
+			<div>
+				<label class="label">Ejemplo 3: Diálogo con Formulario</label>
+				<p class="mb-4 text-sm opacity-70">
+					Formulario dentro del diálogo usando <code>method="dialog"</code> para cerrar automáticamente
+					al enviar.
+				</p>
+				<button class="btn btn-accent" onclick={() => formDialog.showModal()}>
+					Abrir Formulario
+				</button>
+			</div>
+
+			{#if formResult}
+				<div class="alert alert-success mt-4">
+					<span>Formulario enviado con: <strong>{formResult}</strong></span>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -669,7 +721,7 @@
 		<p class="text-sm opacity-70">
 			Puedes incluir cualquier contenido HTML aquí: formularios, listas, imágenes, etc.
 		</p>
-		<div class="rounded-lg bg-base-200 p-4">
+		<div class="bg-base-200 rounded-lg p-4">
 			<h3 class="mb-2 font-semibold">Ejemplo de contenido</h3>
 			<ul class="list-inside list-disc space-y-1 text-sm">
 				<li>Item 1</li>
@@ -690,15 +742,15 @@
 >
 	<div class="space-y-4">
 		<p>Este drawer se abre desde la derecha y tiene un ancho personalizado de 400px.</p>
-		<div class="rounded-lg bg-primary/10 p-4">
-			<h3 class="mb-2 font-semibold text-primary">Configuración</h3>
+		<div class="bg-primary/10 rounded-lg p-4">
+			<h3 class="text-primary mb-2 font-semibold">Configuración</h3>
 			<code class="text-xs">
 				{JSON.stringify({ side: 'right', width: 400 }, null, 2)}
 			</code>
 		</div>
 		<p class="text-sm opacity-70">
-			El drawer se puede cerrar haciendo clic en el botón X, presionando ESC, o haciendo clic
-			fuera del drawer.
+			El drawer se puede cerrar haciendo clic en el botón X, presionando ESC, o haciendo clic fuera
+			del drawer.
 		</p>
 	</div>
 </MeltDrawer>
@@ -730,7 +782,7 @@
 >
 	{#snippet content(item)}
 		<div class="space-y-4">
-			<div class="rounded-lg bg-base-200 p-4">
+			<div class="bg-base-200 rounded-lg p-4">
 				<h3 class="mb-2 font-semibold">{item.name}</h3>
 				<p class="text-sm opacity-80">{item.description}</p>
 			</div>
@@ -749,3 +801,152 @@
 		</div>
 	{/snippet}
 </MeltDrawerManager>
+
+<!-- Diálogo Modal Básico -->
+<PureHtmlDialog bind:this={modalDialog} title="Diálogo Modal">
+	{#snippet content()}
+		<div class="space-y-4">
+			<p>Este es un diálogo modal que bloquea la interacción con el resto de la página.</p>
+			<div class="alert alert-info">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					class="h-6 w-6 shrink-0 stroke-current"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+					></path>
+				</svg>
+				<span>Puedes cerrarlo con ESC, click fuera, o el botón de cerrar.</span>
+			</div>
+			<ul class="list-inside list-disc space-y-2">
+				<li>Usa el elemento <code>&lt;dialog&gt;</code> nativo</li>
+				<li>Backdrop con <code>::backdrop</code> CSS</li>
+				<li>Accesibilidad integrada (focus trap, ARIA)</li>
+				<li>Animaciones CSS suaves</li>
+			</ul>
+		</div>
+	{/snippet}
+	{#snippet actions()}
+		<button class="btn btn-ghost" onclick={() => modalDialog.close()}>Cancelar</button>
+		<button class="btn btn-primary" onclick={() => modalDialog.close()}>Aceptar</button>
+	{/snippet}
+</PureHtmlDialog>
+
+<!-- Diálogo No-Modal -->
+<PureHtmlDialog
+	bind:this={basicDialog}
+	title="Diálogo No-Modal"
+	config={{ modal: false, closeOnBackdrop: false }}
+>
+	{#snippet content()}
+		<div class="space-y-4">
+			<p>Este es un diálogo no-modal. Puedes interactuar con el resto de la página.</p>
+			<div class="alert alert-warning">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6 shrink-0 stroke-current"
+					fill="none"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+				<span>No tiene backdrop y no bloquea la interacción.</span>
+			</div>
+		</div>
+	{/snippet}
+	{#snippet actions()}
+		<button class="btn btn-primary" onclick={() => basicDialog.close()}>Cerrar</button>
+	{/snippet}
+</PureHtmlDialog>
+
+<!-- Diálogo con Formulario -->
+<PureHtmlDialog bind:this={formDialog} title="Formulario de Contacto">
+	{#snippet content()}
+		<form
+			method="dialog"
+			class="space-y-4"
+			onsubmit={(e) => {
+				const formData = new FormData(e.currentTarget);
+				formResult = formData.get('name') as string;
+			}}
+		>
+			<div class="form-control">
+				<label class="label" for="dialog-name">
+					<span class="label-text">Nombre</span>
+				</label>
+				<input
+					id="dialog-name"
+					type="text"
+					name="name"
+					placeholder="Tu nombre"
+					class="input input-bordered"
+					required
+				/>
+			</div>
+
+			<div class="form-control">
+				<label class="label" for="dialog-email">
+					<span class="label-text">Email</span>
+				</label>
+				<input
+					id="dialog-email"
+					type="email"
+					name="email"
+					placeholder="tu@email.com"
+					class="input input-bordered"
+					required
+				/>
+			</div>
+
+			<div class="form-control">
+				<label class="label" for="dialog-message">
+					<span class="label-text">Mensaje</span>
+				</label>
+				<textarea
+					id="dialog-message"
+					name="message"
+					placeholder="Tu mensaje"
+					class="textarea textarea-bordered"
+					rows="3"
+					required
+				></textarea>
+			</div>
+
+			<div class="alert alert-info">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					class="h-6 w-6 shrink-0 stroke-current"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+					></path>
+				</svg>
+				<span class="text-sm">
+					El formulario usa <code>method="dialog"</code> para cerrar automáticamente al enviar.
+				</span>
+			</div>
+
+			<div class="flex justify-end gap-2 pt-4">
+				<button type="button" class="btn btn-ghost" onclick={() => formDialog.close()}>
+					Cancelar
+				</button>
+				<button type="submit" class="btn btn-primary">Enviar</button>
+			</div>
+		</form>
+	{/snippet}
+</PureHtmlDialog>
