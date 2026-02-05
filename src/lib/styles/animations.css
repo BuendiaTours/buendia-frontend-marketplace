@@ -3,10 +3,10 @@
 /* Animación de fade de borde verde a original */
 @keyframes fade-border-success {
 	0% {
-		border-color: var(--color-success);
+		border-color: var(--color-success) !important;
 	}
 	100% {
-		border-color: color-mix(in oklab, var(--color-base-content) 9%, transparent);
+		border-color: color-mix(in oklab, var(--color-base-content) 9%, transparent) !important;
 	}
 }
 

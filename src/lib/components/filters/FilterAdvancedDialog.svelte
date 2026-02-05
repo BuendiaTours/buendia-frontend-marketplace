@@ -61,7 +61,7 @@
 	<button
 		use:melt={$trigger}
 		class="btn btn-square btn-soft"
-		class:border-success={hasActiveFilters}
+		class:!border-success={hasActiveFilters}
 		class:bg-white={hasActiveFilters}
 	>
 		<FilterAlt class={hasActiveFilters ? 'text-success' : 'text-base'} />
@@ -78,7 +78,7 @@
 		></div>
 		<div
 			use:melt={$content}
-			class="fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-box border border-base-300 bg-base-100 p-6 shadow-xl sm:max-w-lg"
+			class="rounded-box border-base-300 bg-base-100 fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 border p-6 shadow-xl sm:max-w-lg"
 			transition:scale={{ duration: 150, start: 0.95 }}
 		>
 			<h2 use:melt={$title} class="mb-4 text-lg font-semibold">Filtros avanzados</h2>
@@ -97,7 +97,7 @@
 				<button class="btn btn-primary" onclick={handleApply}>Aplicar</button>
 			</div>
 
-			<button use:melt={$close} class="btn absolute top-4 right-4 btn-circle btn-ghost btn-sm">
+			<button use:melt={$close} class="btn btn-circle btn-ghost btn-sm absolute top-4 right-4">
 				<Cancel />
 			</button>
 		</div>

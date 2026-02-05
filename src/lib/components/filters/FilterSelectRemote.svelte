@@ -66,7 +66,7 @@
 		class="select {width}"
 		value={selectedValue || ''}
 		onchange={handleChange}
-		class:border-success={selectedValue !== undefined}
+		class:!border-success={selectedValue !== undefined}
 		class:text-success={selectedValue !== undefined}
 	>
 		<option value="" disabled>{placeholder}</option>

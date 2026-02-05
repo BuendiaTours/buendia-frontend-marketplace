@@ -121,7 +121,7 @@
 
 <!-- Barra de acciones sticky -->
 <div
-	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
 	<a href={`/activities?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
@@ -198,7 +198,7 @@
 				options={ACTIVITY_STATUS_OPTIONS}
 				placeholder="Selecciona un estado"
 				wrapperClass="md:col-span-4"
-				selectClass={$form.status == 'APPROVED' ? 'border-2 border-success' : ''}
+				selectClass={$form.status == 'APPROVED' ? 'border-2 !border-success' : ''}
 			/>
 
 			<FormSelect

@@ -123,7 +123,7 @@ Soporta modo single y multiple.
 	{/if}
 	<input
 		use:melt={$input}
-		class={`input text-success w-full bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? 'border-success' : ''}`}
+		class={`input text-success w-full bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'} ${hasValue ? '!border-success' : ''}`}
 		{placeholder}
 		aria-label={placeholder}
 		{name}
