@@ -31,6 +31,12 @@
 	// Variable para acceder a la función addToast del componente
 	let toastComponent: MsgMeltToast;
 
+	// MeltDrawer
+	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
+	let drawerLeftOpen = $state(false);
+	let drawerRightOpen = $state(false);
+	let drawerNoOverlayOpen = $state(false);
+
 	// Form Components
 	import FormInputText from '$lib/components/forms/FormInputText.svelte';
 	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
@@ -512,6 +518,41 @@
 			/>
 		</div>
 
+		<label class="label mt-4">Ejemplo de MeltDrawer</label>
+		<p class="text-sm opacity-70">Panel lateral deslizable con Melt-UI</p>
+		<div class="card p-4">
+			<div class="flex flex-wrap gap-2">
+				<button
+					class="btn btn-sm btn-primary"
+					onclick={() => {
+						drawerLeftOpen = true;
+					}}
+				>
+					Abrir Drawer Izquierdo
+				</button>
+				<button
+					class="btn btn-sm btn-secondary"
+					onclick={() => {
+						drawerRightOpen = true;
+					}}
+				>
+					Abrir Drawer Derecho
+				</button>
+				<button
+					class="btn btn-sm btn-accent"
+					onclick={() => {
+						drawerNoOverlayOpen = true;
+					}}
+				>
+					Abrir Sin Overlay
+				</button>
+			</div>
+			<p class="mt-4 text-xs opacity-60">
+				Los drawers se pueden configurar para abrirse desde la izquierda o derecha, con o sin
+				overlay
+			</p>
+		</div>
+
 		<label class="label mt-4">Ejemplo de MsgMeltToast</label>
 		<p class="text-sm opacity-70">Notificaciones toast usando Melt-UI</p>
 		<div class="card p-4">
@@ -581,3 +622,62 @@
 </div>
 
 <MsgMeltToast bind:this={toastComponent} />
+
+<MeltDrawer bind:open={drawerLeftOpen} title="Drawer Izquierdo" config={{ side: 'left' }}>
+	<div class="space-y-4">
+		<p>Este es un drawer que se abre desde la izquierda.</p>
+		<p class="text-sm opacity-70">
+			Puedes incluir cualquier contenido HTML aquí: formularios, listas, imágenes, etc.
+		</p>
+		<div class="rounded-lg bg-base-200 p-4">
+			<h3 class="mb-2 font-semibold">Ejemplo de contenido</h3>
+			<ul class="list-inside list-disc space-y-1 text-sm">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+			</ul>
+		</div>
+		<button class="btn btn-primary btn-sm" onclick={() => (drawerLeftOpen = false)}>
+			Cerrar Drawer
+		</button>
+	</div>
+</MeltDrawer>
+
+<MeltDrawer
+	bind:open={drawerRightOpen}
+	title="Drawer Derecho"
+	config={{ side: 'right', width: 400 }}
+>
+	<div class="space-y-4">
+		<p>Este drawer se abre desde la derecha y tiene un ancho personalizado de 400px.</p>
+		<div class="rounded-lg bg-primary/10 p-4">
+			<h3 class="mb-2 font-semibold text-primary">Configuración</h3>
+			<code class="text-xs">
+				{JSON.stringify({ side: 'right', width: 400 }, null, 2)}
+			</code>
+		</div>
+		<p class="text-sm opacity-70">
+			El drawer se puede cerrar haciendo clic en el botón X, presionando ESC, o haciendo clic
+			fuera del drawer.
+		</p>
+	</div>
+</MeltDrawer>
+
+<MeltDrawer
+	bind:open={drawerNoOverlayOpen}
+	title="Sin Overlay"
+	config={{ side: 'right', showOverlay: false, closeOnOutsideClick: false }}
+>
+	<div class="space-y-4">
+		<p>Este drawer no tiene overlay de fondo y no se cierra al hacer clic fuera.</p>
+		<div class="alert alert-info">
+			<span class="text-sm">
+				Útil para paneles de herramientas o configuraciones que el usuario puede querer mantener
+				abiertos mientras interactúa con el contenido principal.
+			</span>
+		</div>
+		<button class="btn btn-outline btn-sm" onclick={() => (drawerNoOverlayOpen = false)}>
+			Cerrar
+		</button>
+	</div>
+</MeltDrawer>
