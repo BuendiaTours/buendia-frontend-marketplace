@@ -44,20 +44,16 @@
 	// MeltDrawer
 	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
 	let openDrawerId = $state<string | null>(null);
+	let drawerOpen = $state(false);
 
-	// Crear un mapa reactivo para controlar el estado de cada drawer
-	const drawerStates = $state<Record<string, boolean>>({});
-
-	// Sincronizar drawerStates con openDrawerId
+	// Sincronizar drawerOpen con openDrawerId
 	$effect(() => {
-		if (openDrawerId) {
-			drawerStates[openDrawerId] = true;
-		}
+		drawerOpen = openDrawerId !== null;
 	});
 
-	// Detectar cuando un drawer se cierra y resetear openDrawerId
+	// Cuando el drawer se cierra, resetear openDrawerId
 	$effect(() => {
-		if (openDrawerId && drawerStates[openDrawerId] === false) {
+		if (!drawerOpen && openDrawerId !== null) {
 			openDrawerId = null;
 		}
 	});
@@ -712,6 +708,33 @@
 	</div>
 {/if}
 
+{#if openDrawerId}
+	{@const selectedItem = items.find((item) => item.id === openDrawerId)}
+	{#if selectedItem}
+		<MeltDrawer
+			bind:open={drawerOpen}
+			title="Detalles de {selectedItem.title}"
+			config={{ side: 'right', width: 400 }}
+		>
+			{#snippet children()}
+				<div class="space-y-4">
+					<p><strong>ID:</strong> {selectedItem.id}</p>
+					<p><strong>Título:</strong> {selectedItem.title}</p>
+					<p><strong>Slug:</strong> {selectedItem.slug}</p>
+					<p><strong>Código:</strong> {selectedItem.codeRef}</p>
+					<p><strong>Estado:</strong> {selectedItem.status}</p>
+					{#if selectedItem.descriptionShort}
+						<div>
+							<strong>Descripción corta:</strong>
+							<p class="text-sm opacity-80">{selectedItem.descriptionShort}</p>
+						</div>
+					{/if}
+				</div>
+			{/snippet}
+		</MeltDrawer>
+	{/if}
+{/if}
+
 <style>
 	.arrow {
 		position: absolute;
@@ -725,26 +748,4 @@
 	}
 </style>
 
-{#each items as item (item.id)}
-	<MeltDrawer
-		bind:open={drawerStates[item.id]}
-		title="Detalles de {item.title}"
-		config={{ side: 'right', width: 400 }}
-	>
-		{#snippet children()}
-			<div class="space-y-4">
-				<p><strong>ID:</strong> {item.id}</p>
-				<p><strong>Título:</strong> {item.title}</p>
-				<p><strong>Slug:</strong> {item.slug}</p>
-				<p><strong>Código:</strong> {item.codeRef}</p>
-				<p><strong>Estado:</strong> {item.status}</p>
-				{#if item.descriptionShort}
-					<div>
-						<strong>Descripción corta:</strong>
-						<p class="text-sm opacity-80">{item.descriptionShort}</p>
-					</div>
-				{/if}
-			</div>
-		{/snippet}
-	</MeltDrawer>
-{/each}
+
