@@ -1,135 +1,239 @@
-# API Routes (Proxy Endpoints)
+# API Directory
 
-## Propósito
+Este directorio está reservado para endpoints HTTP tradicionales que necesiten ser accesibles públicamente o por servicios externos (webhooks, integraciones de terceros, etc.).
 
-Esta carpeta contiene **endpoints proxy** que actúan como intermediarios entre el cliente (navegador) y la API REST externa.
+## 🎯 Cuándo Usar Este Directorio
 
-## ¿Por qué existen estos endpoints?
+Crea endpoints aquí solo para:
 
-### Problema
+1. **Webhooks**: Endpoints que reciben notificaciones de servicios externos (Stripe, PayPal, etc.)
+2. **Integraciones Públicas**: APIs que necesitan ser consumidas por sistemas externos
+3. **Endpoints de Autenticación OAuth**: Callbacks de proveedores de identidad externos
 
-Algunos componentes del frontend (como `FilterSelectRemote`) necesitan hacer peticiones asíncronas desde el navegador (en el `onMount`). Si hacemos estas peticiones directamente a la API externa, exponemos:
+## ❌ NO Usar Para
 
-- La dirección IP/URL de la API backend
-- Detalles de infraestructura interna
-- Potenciales vectores de ataque
+Para comunicación **interna** entre componentes y servidor, usa **Remote Functions** en lugar de crear endpoints HTTP manualmente.
 
-### Solución
+---
 
-Los endpoints en esta carpeta actúan como **proxies del lado del servidor**:
+## ⚠️ Migración: API Proxies → Remote Functions
 
-```
-Cliente (navegador)          SvelteKit App            API Externa
-     |                            |                        |
-     |  GET /api/attraction-status|                        |
-     |--------------------------->|                        |
-     |                            | GET /attraction-status |
-     |                            |----------------------->|
-     |                            |<-----------------------|
-     |<---------------------------|                        |
-     |     JSON Response          |                        |
-```
+Los antiguos endpoints proxy (`/api/destination-kind`, `/api/attraction-status`) fueron **reemplazados por Remote Functions** en favor de:
 
-## Características
+- ✅ Type-safety automático
+- ✅ Menos boilerplate
+- ✅ Mejor experiencia de desarrollo
 
-✅ **Seguridad**: La URL de la API externa nunca se expone al cliente  
-✅ **Consistencia**: Usa la infraestructura `$lib/api` existente (cliente, manejo de errores, retry, timeout)  
-✅ **Mantenibilidad**: Un solo punto de configuración (`.env`)  
-✅ **SSR Compatible**: Funciona tanto en servidor como cliente
-
-## Estructura
+### Antes (API Proxies) ❌
 
 ```
-src/routes/api/
-├── README.md                    # Este archivo
-├── attraction-status/
-│   └── +server.ts              # GET /api/attraction-status
-└── destination-kind/
-    └── +server.ts              # GET /api/destination-kind
+Component → fetch('/api/destination-kind') → +server.ts → API Externa
 ```
 
-## Uso desde componentes
+### Ahora (Remote Functions) ✅
 
-```svelte
-<!-- ANTES (❌ Expone la API externa) -->
-<FilterSelectRemote apiEndpoint="http://localhost:3333/attraction-status" ... />
-
-<!-- AHORA (✅ Usa endpoint interno) -->
-<FilterSelectRemote apiEndpoint="/api/attraction-status" ... />
+```
+Component → await getDestinationKinds() → common.remote.ts → API Externa
 ```
 
-## Cómo añadir un nuevo endpoint proxy
+---
 
-1. **Crear la carpeta del endpoint**:
+## Remote Functions (Enfoque Recomendado)
 
-   ```bash
-   mkdir -p src/routes/api/tu-endpoint
-   ```
+### ¿Qué son?
 
-2. **Crear el archivo `+server.ts`**:
+Remote Functions permiten llamar funciones del servidor directamente desde componentes, con type-safety completo y sin crear endpoints HTTP manualmente.
 
-   ```typescript
-   import { json } from '@sveltejs/kit';
-   import { apiClient } from '$lib/api/client';
-   import { ApiError } from '$lib/api/errors';
-   import type { RequestHandler } from './$types';
+### Ventajas
 
-   export const GET: RequestHandler = async ({ fetch }) => {
-   	try {
-   		const response = await apiClient.request(fetch, '/tu-endpoint-en-api-externa');
-   		return json(response.data);
-   	} catch (error) {
-   		if (error instanceof ApiError) {
-   			return json({ error: error.message }, { status: error.status || 500 });
-   		}
-   		return json({ error: 'Internal server error' }, { status: 500 });
-   	}
-   };
-   ```
+✅ **Type-Safety Automático**: Los tipos fluyen del servidor al cliente  
+✅ **Menos Código**: No necesitas crear archivos `+server.ts`  
+✅ **Declarativo**: Usa `{#each await queryFunction()}` directamente  
+✅ **Batching**: Agrupa múltiples queries automáticamente (`query.batch`)  
+✅ **Caché**: Las queries se cachean mientras estén en la página  
+✅ **Error Handling**: Integrado con `ApiClient` (retry, timeout, etc.)
 
-3. **Usar en tu componente**:
-   ```svelte
-   <FilterSelectRemote apiEndpoint="/api/tu-endpoint" ... />
-   ```
+### Ejemplo Completo
 
-## Catálogo automático
-
-✨ **Todos los endpoints proxy aparecen automáticamente en el catálogo de API** (`/api-catalog`)
-
-El sistema escanea esta carpeta y extrae información de los comentarios JSDoc para mostrar:
-
-- Método HTTP (GET, POST, etc.)
-- Path interno (`/api/endpoint-name`)
-- Path externo (endpoint de la API externa)
-- Descripción del endpoint
-
-**Formato recomendado de comentarios JSDoc:**
+#### 1. Definir Remote Function
 
 ```typescript
-/**
- * API Proxy Endpoint: [Nombre descriptivo]
- *
- * [Descripción del propósito del endpoint]
- *
- * Endpoint externo: GET /path-en-api-externa
- * Endpoint interno: GET /api/path-interno
- */
+// src/lib/api/common.remote.ts
+import { query } from '$app/server';
+import { apiClient } from './client';
+
+export const getDestinationKinds = query(async () => {
+	const response = await apiClient.request(fetch, '/destination-kind');
+	return response.data;
+});
 ```
 
-## Notas importantes
+#### 2. Usar en Componente
 
-- Estos endpoints **NO** son para operaciones CRUD normales (crear, actualizar, eliminar)
-- Solo para datos que necesitan cargarse asíncronamente desde el cliente
-- Para operaciones normales, usa `+page.server.ts` con el `load()` function
-- Todos los endpoints reutilizan el `apiClient` de `$lib/api` para consistencia
-- Los endpoints se detectan automáticamente y aparecen en `/api-catalog`
+```svelte
+<script lang="ts">
+  import { getDestinationKinds } from '$lib/api/common.remote';
+</script>
 
-## Configuración
+<!-- Forma 1: Con await (recomendado) -->
+{#each await getDestinationKinds() as kind}
+  <option value={kind.id}>{kind.name}</option>
+{/each}
 
-La URL de la API externa se configura en `.env`:
+<!-- Forma 2: Con .current, .loading, .error -->
+<script>
+  const query = getDestinationKinds();
+</script>
 
-```env
-PUBLIC_API_BASE_URL=http://localhost:3333
+{#if query.loading}
+  <p>Cargando...</p>
+{:else if query.error}
+  <p>Error: {query.error.message}</p>
+{:else}
+  {#each query.current as kind}
+    <option value={kind.id}>{kind.name}</option>
+  {/each}
+{/if}
 ```
 
-Los endpoints proxy usan automáticamente esta configuración a través de `$lib/api/config.ts`.
+### Configuración Requerida
+
+Asegúrate de tener estas opciones habilitadas en `svelte.config.js`:
+
+```javascript
+export default {
+	kit: {
+		experimental: {
+			remoteFunctions: true
+		}
+	},
+	compilerOptions: {
+		experimental: {
+			async: true // Para usar await en templates
+		}
+	}
+};
+```
+
+### Remote Functions Disponibles
+
+Ver: `src/lib/api/common.remote.ts`
+
+| Función                   | Descripción                  | Endpoint Externo     |
+| ------------------------- | ---------------------------- | -------------------- |
+| `getDestinationKinds()`   | Tipos de destino disponibles | `/destination-kind`  |
+| `getAttractionStatuses()` | Estados de atracciones       | `/attraction-status` |
+
+### Componentes
+
+- ✅ `FilterSelectQuery.svelte` - Selector de filtros con Remote Functions (nuevo)
+- ⚠️ `FilterSelectRemote.svelte` - Deprecado (usa fetch a `/api/*`)
+
+---
+
+## Cómo Agregar Nuevas Remote Functions
+
+### 1. Añadir la función en `common.remote.ts`
+
+```typescript
+export const getTuNuevaQuery = query(async () => {
+	const response = await apiClient.request(fetch, '/tu-endpoint');
+	return response.data;
+});
+```
+
+### 2. Usar en tu componente
+
+```svelte
+<script>
+	import { getTuNuevaQuery } from '$lib/api/common.remote';
+</script>
+
+{#each await getTuNuevaQuery() as item}
+	<div>{item.name}</div>
+{/each}
+```
+
+### 3. Con validación (schemas)
+
+Si tu query acepta parámetros, puedes validarlos con Zod o Valibot:
+
+```typescript
+import * as v from 'valibot';
+
+export const buscarActividades = query(
+	v.string(), // Schema para validar el input
+	async (query: string) => {
+		const response = await apiClient.request(fetch, `/activities/search?q=${query}`);
+		return response.data;
+	}
+);
+```
+
+Uso:
+
+```svelte
+{#each await buscarActividades('playa') as activity}
+	<div>{activity.title}</div>
+{/each}
+```
+
+---
+
+## Remote Forms (Bonus)
+
+Para formularios, también puedes usar `form()`:
+
+```typescript
+import { form } from '$app/server';
+import * as v from 'valibot';
+
+export const crearDestino = form(
+	v.object({
+		nombre: v.string(),
+		tipo: v.picklist(['CITY', 'COUNTRY', 'REGION'])
+	}),
+	async (data) => {
+		const response = await apiClient.request(fetch, '/destinations', {
+			method: 'POST',
+			body: JSON.stringify(data)
+		});
+		redirect(303, `/destinations/${response.data.slug}`);
+	}
+);
+```
+
+Uso:
+
+```svelte
+<form {...crearDestino}>
+	<input {...crearDestino.fields.nombre.as('text')} />
+	<select {...crearDestino.fields.tipo.as('select')}>
+		<option>CITY</option>
+		<option>COUNTRY</option>
+	</select>
+	<button>Crear</button>
+</form>
+```
+
+---
+
+## Más Información
+
+- [Documentación oficial de Remote Functions](https://svelte.dev/docs/kit/remote-functions)
+- [API Catalog](/api-catalog) - Catálogo completo de endpoints
+- Ejemplos: `src/lib/api/common.remote.ts`
+- Componentes: `src/lib/components/filters/FilterSelectQuery.svelte`
+
+---
+
+## TL;DR
+
+| Necesitas...                  | Usa...                                 |
+| ----------------------------- | -------------------------------------- |
+| Datos internos en componentes | Remote Functions (`*.remote.ts`)       |
+| Webhooks externos             | Endpoints tradicionales (`+server.ts`) |
+| OAuth callbacks               | Endpoints tradicionales (`+server.ts`) |
+| APIs públicas                 | Endpoints tradicionales (`+server.ts`) |
+
+**Regla de oro**: Si es interno, usa Remote Functions. Si es externo, usa `+server.ts`.

@@ -71,91 +71,28 @@
 	<p class="mt-4">
 		Catálogo dinámico de endpoints - Se actualiza automáticamente al añadir nuevos endpoints
 	</p>
-	<div class="flex items-center gap-2 rounded-lg bg-base-200 p-4">
+	<div class="bg-base-200 flex items-center gap-2 rounded-lg p-4">
 		<div>
 			<label class="label w-full text-sm">Base URL</label>
 			<code class="text-md">{apiConfig.baseURL}</code>
 		</div>
 	</div>
 
-	<!-- API Proxy Endpoints -->
-	{#if data.proxyEndpoints && data.proxyEndpoints.length > 0}
-		<div class="alert-secondary mt-4 alert alert-soft">
-			<InfoEmpty class="size-4" />
+	<!-- Remote Functions Info -->
+	<div class="alert alert-success alert-soft">
+		<InfoEmpty class="size-4" />
+		<div class="flex flex-col gap-1">
+			<span class="text-sm font-semibold">Remote Functions Habilitadas</span>
 			<span class="text-sm">
-				Los endpoints proxy se detectan automáticamente desde
-				<code>src/routes/api/</code>
+				Los antiguos endpoints proxy (<code>/api/*</code>) han sido reemplazados por
+				<strong>Remote Functions</strong> de SvelteKit. Estas permiten llamadas type-safe desde componentes
+				al servidor sin necesidad de crear endpoints HTTP manualmente.
+			</span>
+			<span class="text-base-content/70 mt-1 text-xs">
+				📁 Ver: <code>src/lib/api/common.remote.ts</code>
 			</span>
 		</div>
-
-		<div class="card p-4">
-			<div
-				class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 pb-4"
-			>
-				<div>
-					<h2 class="text-md card-title">API Proxy Endpoints</h2>
-					<p class="text-sm">Endpoints internos que actúan como proxy a la API externa</p>
-				</div>
-				<div class="badge rounded-md badge-secondary">
-					{data.proxyEndpoints.length}
-					{data.proxyEndpoints.length === 1 ? 'proxy' : 'proxies'}
-				</div>
-			</div>
-
-			<div class="overflow-x-auto">
-				<table class="table table-zebra">
-					<thead>
-						<tr>
-							<th class="w-24">Método</th>
-							<th>Endpoint Interno</th>
-							<th>Endpoint Externo</th>
-							<th>Descripción</th>
-							<th class="w-16"></th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each data.proxyEndpoints as endpoint}
-							<tr class="text-md">
-								<td>
-									<span
-										class="badge w-16 rounded-sm {getMethodColor(
-											endpoint.method
-										)} font-mono badge-sm"
-									>
-										{endpoint.method}
-									</span>
-								</td>
-								<td>
-									<span class="font-mono">
-										{endpoint.internalPath}
-									</span>
-								</td>
-								<td>
-									<span class="font-mono text-base-content/60">
-										{endpoint.externalPath}
-									</span>
-								</td>
-								<td>{endpoint.description}</td>
-								<td>
-									<button
-										class="btn btn-square btn-ghost btn-xs"
-										onclick={() => handleCopy(endpoint.internalPath)}
-										title="Copiar URL interna"
-									>
-										{#if copiedEndpoint === endpoint.internalPath}
-											<CheckCircle class="size-4 text-success" />
-										{:else}
-											<Copy class="size-4" />
-										{/if}
-									</button>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	{/if}
+	</div>
 
 	<div class="alert alert-soft">
 		<InfoEmpty class="size-4" />
@@ -170,17 +107,17 @@
 	{#each endpointGroups as group}
 		<div class="card p-4">
 			<div
-				class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 bg-base-100 pb-4"
+				class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 pb-4"
 			>
 				<div>
 					<h2 class="text-md card-title">{group.name}</h2>
 					<p class="text-sm">{group.description}</p>
 				</div>
-				<div class="badge rounded-md badge-neutral">{group.endpoints.length} endpoints</div>
+				<div class="badge badge-neutral rounded-md">{group.endpoints.length} endpoints</div>
 			</div>
 
 			<div class="overflow-x-auto">
-				<table class="table table-zebra">
+				<table class="table-zebra table">
 					<thead>
 						<tr>
 							<th class="w-24">Método</th>
@@ -197,7 +134,7 @@
 									<span
 										class="badge w-16 rounded-sm {getMethodColor(
 											endpoint.method
-										)} font-mono badge-sm"
+										)} badge-sm font-mono"
 									>
 										{endpoint.method}
 									</span>
@@ -218,7 +155,7 @@
 										title="Copiar URL completa"
 									>
 										{#if copiedEndpoint === fullUrl(endpoint.path)}
-											<CheckCircle class="size-4 text-success" />
+											<CheckCircle class="text-success size-4" />
 										{:else}
 											<Copy class="size-4" />
 										{/if}
@@ -273,7 +210,7 @@
 			<code>src/lib/api/endpoints.config.ts</code> siguiendo la estructura existente. Esta página se actualizará
 			automáticamente sin necesidad de modificar ningún otro archivo.
 		</p>
-		<div class="mt-4 rounded rounded-md bg-base-200 p-4 text-xs">
+		<div class="bg-base-200 mt-4 rounded rounded-md p-4 text-xs">
 			<pre><code
 					>// Ejemplo de cómo añadir un nuevo endpoint
 newEndpoint: &#123;
