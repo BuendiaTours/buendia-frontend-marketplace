@@ -69,7 +69,7 @@
 			</ul>
 		</div>
 		<a href={ROUTES.backoffice.home} class="p-2">
-			<img id="bnd-header-logo" class="w-32" src="/buendia-logo.svg" alt={title} />
+			<img id="bnd-header-logo" class="w-32" src="/backoffice/buendia-logo.svg" alt={title} />
 		</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
