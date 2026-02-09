@@ -33,19 +33,19 @@
 	import { confirmAction } from '$lib/actions/confirmAction';
 
 	// Components
-	import Pagination from '$lib/components/MeltPagination.svelte';
-	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
-	import RangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
-	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
-	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
-	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
+	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
+	import MeltComboBox from '$lib/components/backoffice/MeltComboBox.svelte';
+	import RangeCalendar from '$lib/components/backoffice/MeltRangeCalendar.svelte';
+	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
+	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
+	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 
 	// MeltDrawerManager - Gestiona drawers dinámicos con animaciones
-	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+	import MeltDrawerManager from '$lib/components/backoffice/MeltDrawerManager.svelte';
 	let selectedActivityId = $state<string | null>(null);
 
 	// Icons

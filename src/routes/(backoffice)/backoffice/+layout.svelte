@@ -12,8 +12,8 @@
 	import 'swiper/css/scrollbar';
 
 	// Components
-	import AlertDialog from '$lib/components/MeltAlertDialog.svelte';
-	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+	import AlertDialog from '$lib/components/backoffice/MeltAlertDialog.svelte';
+	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
 
 	// Layout backoffice
 	import Header from '$lib/layout/Header.svelte';

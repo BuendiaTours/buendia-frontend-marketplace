@@ -3,10 +3,10 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/confirmAction';
 	import { OrangeSlice } from 'svelte-iconoir';
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
 	import {
 		MEAL_KIND_OPTIONS,
 		MEAL_FORMAT_OPTIONS,

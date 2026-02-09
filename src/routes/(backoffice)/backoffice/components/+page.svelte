@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Components
-	import { openLightbox } from '$lib/components/PhotoSwipe';
-	import SwiperElement from '$lib/components/Swiper.svelte';
+	import { openLightbox } from '$lib/components/backoffice/PhotoSwipe';
+	import SwiperElement from '$lib/components/backoffice/Swiper.svelte';
 
 	// Actions
 	import { confirmAction } from '$lib/actions/confirmAction';
@@ -11,7 +11,7 @@
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
 
 	// Calendar - Probando versión Melt-UI
-	import MeltCalendar from '$lib/components/MeltCalendar.svelte';
+	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
 	function handleCalendarChange(newValue: any) {
@@ -20,29 +20,29 @@
 	}
 
 	// Tag
-	import Tag from '$lib/components/Tag.svelte';
+	import Tag from '$lib/components/backoffice/Tag.svelte';
 
 	// StarRating
-	import StarRating from '$lib/components/StarRating.svelte';
+	import StarRating from '$lib/components/backoffice/StarRating.svelte';
 
 	// Message Components
-	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
 
 	// Variable para acceder a la función addToast del componente
 	let toastComponent: MsgMeltToast;
 
 	// MeltDrawer
-	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
+	import MeltDrawer from '$lib/components/backoffice/MeltDrawer.svelte';
 	let drawerLeftOpen = $state(false);
 	let drawerRightOpen = $state(false);
 	let drawerNoOverlayOpen = $state(false);
 
 	// MeltDrawerManager
-	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+	import MeltDrawerManager from '$lib/components/backoffice/MeltDrawerManager.svelte';
 	let selectedItemId = $state<string | null>(null);
 
 	// PureHtmlDialog
-	import PureHtmlDialog from '$lib/components/PureHtmlDialog.svelte';
+	import PureHtmlDialog from '$lib/components/backoffice/PureHtmlDialog.svelte';
 	let basicDialog: PureHtmlDialog;
 	let modalDialog: PureHtmlDialog;
 	let formDialog: PureHtmlDialog;
@@ -57,17 +57,17 @@
 	];
 
 	// Form Components
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
-	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
-	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
-	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
+	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
+	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 
 	// Range calendar - Probando versión Melt-UI
-	import MeltRangeCalendar from '$lib/components/MeltRangeCalendar.svelte';
+	import MeltRangeCalendar from '$lib/components/backoffice/MeltRangeCalendar.svelte';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
 	let rangeValue = $state<DateRange | undefined>({

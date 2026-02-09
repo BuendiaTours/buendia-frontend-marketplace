@@ -9,7 +9,7 @@
  * 3. confirmAction(node, options) - Svelte action para usar con use:confirmAction
  */
 
-import { confirm } from '$lib/components/MeltAlertDialog';
+import { confirm } from '$lib/components/backoffice/MeltAlertDialog';
 
 export interface ConfirmOptions {
 	title?: string;

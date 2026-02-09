@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/backoffice/ThemeSwitcher.svelte';
 	import { ROUTES } from '$lib/config/routes';
 
 	type Props = {

@@ -11,12 +11,12 @@
 	import { DatabaseRestore } from 'svelte-iconoir';
 
 	// Components
-	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 
 	interface Props {
 		data: {

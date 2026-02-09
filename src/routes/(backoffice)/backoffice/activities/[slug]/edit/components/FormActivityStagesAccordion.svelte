@@ -3,11 +3,11 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/confirmAction';
 	import { Map } from 'svelte-iconoir';
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
 
 	// Enums
 	import {

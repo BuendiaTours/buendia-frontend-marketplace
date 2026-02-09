@@ -11,15 +11,15 @@
 
 	// Components
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
-	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
-	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 
 	interface Props {
 		data: {

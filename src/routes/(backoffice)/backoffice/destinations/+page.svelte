@@ -29,13 +29,13 @@
 	import { checkAll } from '$lib/actions/checkAll';
 
 	// Components
-	import Pagination from '$lib/components/MeltPagination.svelte';
-	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
-	import FilterSelect from '$lib/components/filters/FilterSelect.svelte';
+	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
+	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
+	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
 	import { getDestinationKinds } from '$lib/api/common.remote';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
-	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
-	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
+	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
+	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Icons

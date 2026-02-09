@@ -29,22 +29,22 @@
 	import { DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
 	// Components
-	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
-	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
 
 	// Form layout
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 
 	// Form
-	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormOrderedStringList from '$lib/components/forms/FormOrderedStringList.svelte';
+	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
+	import FormOrderedStringList from '$lib/components/backoffice/forms/FormOrderedStringList.svelte';
 
 	// Section components
 	import FormActivityMealsAccordion from '../[slug]/edit/components/FormActivityMealsAccordion.svelte';

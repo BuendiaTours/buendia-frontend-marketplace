@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
-	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 	import { ROUTES } from '$lib/config/routes';
 
 	export let data: { destination: Destination };
