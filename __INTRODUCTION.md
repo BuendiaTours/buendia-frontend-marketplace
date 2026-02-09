@@ -883,7 +883,9 @@ setFlashMessage(cookies, {
 <ThemeSwitcher />
 ```
 
-**Slots para contenido dinámico:**
+**Contenido dinámico: Slots (clásico) vs Snippets (Svelte 5)**
+
+#### Opción 1: Slots (Funciona en Svelte 4 y 5)
 
 ```svelte
 <!-- Card.svelte -->
@@ -901,6 +903,83 @@ setFlashMessage(cookies, {
 	<button slot="footer">Action</button>
 </Card>
 ```
+
+#### Opción 2: Snippets (Nuevo en Svelte 5 - Recomendado)
+
+```svelte
+<!-- Card.svelte -->
+<script lang="ts">
+	let { header, children, footer } = $props<{
+		header?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+		footer?: import('svelte').Snippet;
+	}>();
+</script>
+
+<div class="card">
+	{#if header}
+		{@render header()}
+	{/if}
+
+	{#if children}
+		{@render children()}
+	{/if}
+
+	{#if footer}
+		{@render footer()}
+	{/if}
+</div>
+
+<!-- Uso -->
+<Card>
+	{#snippet header()}
+		<h2>Title</h2>
+	{/snippet}
+
+	<p>Content goes here</p>
+
+	{#snippet footer()}
+		<button>Action</button>
+	{/snippet}
+</Card>
+```
+
+**Ventajas de Snippets:**
+
+- ✅ Type-safe (puedes tipar los parámetros del snippet)
+- ✅ Más flexibles (puedes pasar datos al snippet)
+- ✅ Mejor control sobre cuándo renderizar
+- ✅ Pueden recibir argumentos
+
+**Ejemplo avanzado con parámetros:**
+
+```svelte
+<!-- List.svelte -->
+<script lang="ts">
+	let { items, renderItem } = $props<{
+		items: any[];
+		renderItem: import('svelte').Snippet<[item: any, index: number]>;
+	}>();
+</script>
+
+<ul>
+	{#each items as item, i}
+		<li>{@render renderItem(item, i)}</li>
+	{/each}
+</ul>
+
+<!-- Uso -->
+<List items={activities}>
+	{#snippet renderItem(activity, index)}
+		<strong>{index + 1}.</strong> {activity.title}
+	{/snippet}
+</List>
+```
+
+**¿Cuál usar?**
+
+- **Slots:** Para casos simples, compatibilidad con Svelte 4
+- **Snippets:** Para casos avanzados, mejor type-safety, código nuevo
 
 ### 6.3 Sistema de estilos
 
@@ -1418,26 +1497,6 @@ if (data.user?.name) {
 5. Probar a crear un componente reutilizable
 6. Leer la documentación de Svelte 5 sobre runes
 
----
-
-## TIMING BREAKDOWN
-
-| Parte     | Tema                    | Duración     |
-| --------- | ----------------------- | ------------ |
-| 1         | Conceptos fundamentales | 30 min       |
-| 2         | Estructura del proyecto | 20 min       |
-| 3         | Svelte básico           | 30 min       |
-| 4         | Rutas y páginas         | 20 min       |
-| 5         | Consumo de APIs         | 25 min       |
-| 6         | Componentes y UI        | 15 min       |
-| 7         | Patterns y workflows    | 10 min       |
-| 8         | Hands-on práctica       | 10 min       |
-| **Total** |                         | **2h 40min** |
-
-_Ajustar según ritmo del grupo. Priorizar Partes 1-5 si hay restricción de tiempo._
-
----
-
 ## NOTAS PARA EL INSTRUCTOR
 
 ### Conceptos clave a enfatizar:
@@ -1456,18 +1515,3 @@ _Ajustar según ritmo del grupo. Priorizar Partes 1-5 si hay restricción de tie
 3. **Mutación incorrecta de arrays/objetos** → Usar spread operator o métodos inmutables
 4. **No tipar props correctamente** → Errores de TypeScript
 5. **Confundir `.svelte` con `.server.ts`** → Código del cliente en el servidor o viceversa
-
-### Demos recomendadas:
-
-1. Crear una página desde cero en vivo
-2. Mostrar HMR en acción (cambiar código y ver actualización)
-3. Debuggear un error de TypeScript juntos
-4. Mostrar cómo funciona un filtro URL-driven
-5. Comparar jQuery (imperativo) vs Svelte (reactivo) con ejemplo simple
-
----
-
-**Versión:** 1.0  
-**Última actualización:** 2026-02-06  
-**Audiencia:** Junior frontend developers (jQuery/Drupal background)  
-**Proyecto:** buendia-frontend-core (SvelteKit + TypeScript)

@@ -25,7 +25,7 @@
 	// Components
 	import Pagination from '$lib/components/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
-	import FilterSelectQuery from '$lib/components/filters/FilterSelectQuery.svelte';
+	import FilterSelect from '$lib/components/filters/FilterSelect.svelte';
 	import { getAttractionStatuses } from '$lib/api/common.remote';
 	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
@@ -223,8 +223,8 @@
 		</button>
 	</div>
 
-	<FilterSelectQuery
-		queryFunction={getAttractionStatuses}
+	<FilterSelect
+		source={{ type: 'remote', queryFunction: getAttractionStatuses }}
 		filterKey="status"
 		currentValue={filters.status}
 		placeholder="Selecciona estado"
