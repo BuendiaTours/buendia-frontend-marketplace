@@ -1,0 +1,20 @@
+<script lang="ts">
+	// CSS específico del marketplace (solo Tailwind, sin DaisyUI)
+	import './layout-marketplace.css';
+
+	let { children } = $props();
+
+	// Añadir clase al <html> cuando estamos en marketplace
+	$effect(() => {
+		document.documentElement.classList.add('bnd-marketplace');
+		return () => {
+			document.documentElement.classList.remove('bnd-marketplace');
+		};
+	});
+</script>
+
+<div class="min-h-screen">
+	<main>
+		{@render children()}
+	</main>
+</div>
