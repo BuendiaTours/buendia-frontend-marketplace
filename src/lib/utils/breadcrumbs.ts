@@ -1,4 +1,5 @@
 import type { BreadcrumbItem } from '$lib/types';
+import { ROUTES } from '$lib/config/routes';
 
 // Mapeo de rutas a labels legibles
 const routeLabels: Record<string, string> = {
@@ -28,7 +29,7 @@ export function generateBreadcrumbs(
 
 	// Auto-generar desde la ruta
 	const segments = pathname.split('/').filter(Boolean);
-	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: '/' }];
+	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: ROUTES.backoffice.home }];
 
 	let currentPath = '';
 	segments.forEach((segment, index) => {
@@ -70,7 +71,7 @@ export function buildBreadcrumbs(
 	// Para páginas de detalle (ej: /attractions/alhambra/edit)
 	// Solo queremos: Inicio > Atracciones > [Nombre del recurso]
 	const segments = pathname.split('/').filter(Boolean);
-	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: '/' }];
+	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: ROUTES.backoffice.home }];
 
 	// Solo procesar el primer segmento (la sección principal)
 	if (segments.length > 0) {

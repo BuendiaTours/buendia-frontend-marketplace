@@ -4,21 +4,28 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
+	import { ROUTES } from '$lib/config/routes';
 
 	export let data: { destination: Destination };
 	const { destination } = data;
 </script>
 
 <div
-	class="bnd-main-actions sticky top-0 z-10 flex items-center justify-between gap-4 border-t border-base-content/10 bg-base-100 py-4"
+	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`/backoffice/destinations?${page.url.searchParams.toString()}`} class="link">
+	<a
+		href={`${ROUTES.backoffice.destinations.list}?${page.url.searchParams.toString()}`}
+		class="link"
+	>
 		← Volver al listado
 	</a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/destinations/${destination.slug}/edit`, page.url.searchParams)}
+			href={buildUrlWithFilters(
+				ROUTES.backoffice.destinations.edit(destination.slug),
+				page.url.searchParams
+			)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
@@ -27,7 +34,7 @@
 		<form
 			method="POST"
 			action={buildUrlWithFilters(
-				`/destinations/${destination.slug}/delete`,
+				ROUTES.backoffice.destinations.delete(destination.slug),
 				page.url.searchParams
 			)}
 		>

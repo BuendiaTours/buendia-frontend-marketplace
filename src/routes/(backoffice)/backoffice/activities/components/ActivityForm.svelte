@@ -16,6 +16,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
 	import type { ActivityListItem } from '$lib/types';
+	import { ROUTES } from '$lib/config/routes';
 
 	// Enums
 	import {
@@ -123,14 +124,20 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`/backoffice/activities?${page.url.searchParams.toString()}`} class="btn btn-ghost">
+	<a
+		href={`${ROUTES.backoffice.activities.list}?${page.url.searchParams.toString()}`}
+		class="btn btn-ghost"
+	>
 		← Volver al listado
 	</a>
 
 	{#if isEditMode && activitySlug}
 		<form
 			method="POST"
-			action={buildUrlWithFilters(`/activities/${activitySlug}/delete`, page.url.searchParams)}
+			action={buildUrlWithFilters(
+				ROUTES.backoffice.activities.delete(activitySlug),
+				page.url.searchParams
+			)}
 			class="ml-auto"
 		>
 			<button
