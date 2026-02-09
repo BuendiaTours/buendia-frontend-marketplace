@@ -19,6 +19,9 @@
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 
+	// Routes
+	import { ROUTES } from '$lib/config/routes';
+
 	// i18n
 	import * as m from '$paraglide/messages';
 
@@ -535,7 +538,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href="/backoffice/activities/create" class="btn btn-outline btn-primary">
+	<a href={ROUTES.backoffice.activities.create} class="btn btn-outline btn-primary">
 		<Plus />
 		<span>{m.activities_newActivity()}</span>
 	</a>
@@ -595,7 +598,12 @@
 								</td>
 							{:else if col.key === 'title'}
 								<td>
-									<a href={buildUrlWithFilters(`/activities/${item.slug}`, page.url.searchParams)}>
+									<a
+										href={buildUrlWithFilters(
+											ROUTES.backoffice.activities.detail(item.slug),
+											page.url.searchParams
+										)}
+									>
 										{item[col.key]}
 									</a>
 								</td>
@@ -624,7 +632,10 @@
 								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
 										<a
-											href={buildUrlWithFilters(`/activities/${item.slug}`, page.url.searchParams)}
+											href={buildUrlWithFilters(
+												ROUTES.backoffice.activities.detail(item.slug),
+												page.url.searchParams
+											)}
 										>
 											View
 										</a>
@@ -642,7 +653,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/activities/${item.slug}/edit`,
+												ROUTES.backoffice.activities.edit(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -653,7 +664,7 @@
 										<form
 											method="POST"
 											action={buildUrlWithFilters(
-												`/activities/${item.slug}/delete`,
+												ROUTES.backoffice.activities.delete(item.slug),
 												page.url.searchParams
 											)}
 										>

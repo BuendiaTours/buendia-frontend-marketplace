@@ -22,6 +22,9 @@
 	// Enums
 	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
 
+	// Routes
+	import { ROUTES } from '$lib/config/routes';
+
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
 
@@ -220,7 +223,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href="/backoffice/destinations/create" class="btn btn-outline btn-primary">
+	<a href={ROUTES.backoffice.destinations.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nuevo destino
 	</a>
@@ -286,7 +289,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}`,
+												ROUTES.backoffice.destinations.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -316,7 +319,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}`,
+												ROUTES.backoffice.destinations.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -326,14 +329,14 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/destinations/${item.slug}/edit`,
+												ROUTES.backoffice.destinations.edit(item.slug),
 												page.url.searchParams
 											)}>Editar</a
 										>
 									</li>
 								</ul>
-							</div></td
-						>
+							</div>
+						</td>
 					</tr>
 				{/each}
 			{/if}

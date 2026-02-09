@@ -19,6 +19,9 @@
 	// i18n
 	import * as m from '$paraglide/messages';
 
+	// Routes
+	import { ROUTES } from '$lib/config/routes';
+
 	// Actions
 	import { checkAll } from '$lib/actions/checkAll';
 
@@ -258,7 +261,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href="/backoffice/attractions/create" class="btn btn-outline btn-primary">
+	<a href={ROUTES.backoffice.attractions.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nueva atracción
 	</a>
@@ -344,7 +347,10 @@
 								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
 										<a
-											href={buildUrlWithFilters(`/attractions/${item.slug}`, page.url.searchParams)}
+											href={buildUrlWithFilters(
+												ROUTES.backoffice.attractions.detail(item.slug),
+												page.url.searchParams
+											)}
 										>
 											Ver
 										</a>
