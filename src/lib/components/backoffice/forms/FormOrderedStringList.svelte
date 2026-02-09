@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { Menu, Cancel, Plus } from 'svelte-iconoir';
-	import { showConfirmDialog } from '$lib/actions/confirmAction';
+	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { tick } from 'svelte';
 
 	/**

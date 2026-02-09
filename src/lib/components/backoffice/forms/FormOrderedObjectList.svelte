@@ -2,7 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
 	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel, Menu } from 'svelte-iconoir';
-	import { showConfirmDialog } from '$lib/actions/confirmAction';
+	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 
 	/**
 	 * Componente reutilizable para gestión de listas ordenables con selección mediante ComboBox

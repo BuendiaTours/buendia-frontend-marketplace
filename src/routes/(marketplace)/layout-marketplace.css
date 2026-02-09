@@ -5,9 +5,5 @@
  * Todos los componentes del marketplace serán custom y totalmente independientes.
  */
 
-/* Referenciar Tailwind desde el layout padre */
-@reference '../layout.css';
-
-body {
-	@apply bg-red-500;
-}
+/* Estilos custom de componentes marketplace */
+@import '$lib/styles/marketplace/components/photoswipe.css';

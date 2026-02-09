@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction } from '$lib/actions/confirmAction';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
 	import { ROUTES } from '$lib/config/routes';
 	import { DatabaseRestore } from 'svelte-iconoir';

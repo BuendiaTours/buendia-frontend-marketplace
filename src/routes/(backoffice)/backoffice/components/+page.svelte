@@ -4,8 +4,8 @@
 	import SwiperElement from '$lib/components/backoffice/Swiper.svelte';
 
 	// Actions
-	import { confirmAction } from '$lib/actions/confirmAction';
-	import { photoswipeGallery } from '$lib/actions/photoswipeGallery';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
+	import { photoswipeGallery } from '$lib/actions/backoffice/photoswipeGallery';
 
 	import { getLocalTimeZone, today } from '@internationalized/date';
 	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';

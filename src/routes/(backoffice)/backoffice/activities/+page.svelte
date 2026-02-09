@@ -29,8 +29,8 @@
 	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/config/enums';
 
 	// Actions
-	import { checkAll } from '$lib/actions/checkAll';
-	import { confirmAction } from '$lib/actions/confirmAction';
+	import { checkAll } from '$lib/actions/backoffice/checkAll';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';

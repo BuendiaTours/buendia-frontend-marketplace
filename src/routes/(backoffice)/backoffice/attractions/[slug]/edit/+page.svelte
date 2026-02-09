@@ -3,7 +3,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction } from '$lib/actions/confirmAction';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 
 	// Enums
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';

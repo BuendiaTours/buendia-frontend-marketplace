@@ -1,0 +1,51 @@
+/**
+ * PHOTOSWIPE - Marketplace Custom Styles
+ * 
+ * Estilos personalizados para PhotoSwipe en el marketplace.
+ * Estos estilos son diferentes a los del backoffice y se adaptan
+ * al diseño y experiencia del usuario final.
+ */
+
+/* Personalización del lightbox para marketplace */
+.pswp {
+	/* Fondo más oscuro para mejor contraste */
+	--pswp-bg: rgba(0, 0, 0, 0.95);
+}
+
+/* Botones de UI con estilo marketplace */
+.pswp__button {
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+	transition: background-color 0.2s ease;
+}
+
+.pswp__button:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Contador de imágenes */
+.pswp__counter {
+	font-size: 14px;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.9);
+}
+
+/* Zoom button personalizado */
+.pswp__button--zoom {
+	/* Marketplace: zoom más visible */
+	opacity: 1;
+}
+
+/* Caption/título de la imagen */
+.pswp__caption {
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+	padding: 20px;
+}
+
+.pswp__caption__center {
+	text-align: center;
+	font-size: 16px;
+	color: white;
+	max-width: 800px;
+	margin: 0 auto;
+}

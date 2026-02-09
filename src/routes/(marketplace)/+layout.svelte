@@ -2,6 +2,9 @@
 	// CSS específico del marketplace (solo Tailwind, sin DaisyUI)
 	import './layout-marketplace.css';
 
+	// CSS de PhotoSwipe (librería externa)
+	import 'photoswipe/style.css';
+
 	let { children } = $props();
 
 	// Añadir clase al <html> cuando estamos en marketplace

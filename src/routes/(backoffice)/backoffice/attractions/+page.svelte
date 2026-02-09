@@ -23,7 +23,7 @@
 	import { ROUTES } from '$lib/config/routes';
 
 	// Actions
-	import { checkAll } from '$lib/actions/checkAll';
+	import { checkAll } from '$lib/actions/backoffice/checkAll';
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';

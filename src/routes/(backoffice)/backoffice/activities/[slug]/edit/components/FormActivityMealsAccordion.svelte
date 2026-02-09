@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
-	import { showConfirmDialog } from '$lib/actions/confirmAction';
+	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { OrangeSlice } from 'svelte-iconoir';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';

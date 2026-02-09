@@ -14,7 +14,7 @@
 	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
+	import { confirmAction, showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import type { ActivityListItem } from '$lib/types';
 	import { ROUTES } from '$lib/config/routes';
 
