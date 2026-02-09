@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
+	import { ROUTES } from '$lib/config/routes';
 
 	// Enums
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
@@ -37,14 +38,17 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`/backoffice/attractions?${$page.url.searchParams.toString()}`} class="link">
+	<a
+		href={`${ROUTES.backoffice.attractions.list}?${$page.url.searchParams.toString()}`}
+		class="link"
+	>
 		← Volver al listado
 	</a>
 
 	<form
 		method="POST"
 		action={buildUrlWithFilters(
-			`/attractions/${data.attraction.slug}/delete`,
+			ROUTES.backoffice.attractions.delete(data.attraction.slug),
 			$page.url.searchParams
 		)}
 		class="ml-auto"
