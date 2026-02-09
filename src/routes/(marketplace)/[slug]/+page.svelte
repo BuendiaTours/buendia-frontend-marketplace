@@ -31,6 +31,25 @@
 		{/if}
 	</div>
 
+	<!-- Categories List -->
+	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+		<h2 class="mb-4 text-2xl font-semibold text-gray-800">Categorías</h2>
+
+		{#if data.categories && data.categories.length > 0}
+			<ul class="space-y-3">
+				{#each data.categories as category}
+					<li class="border-b border-gray-100 pb-3 last:border-b-0">
+						<a href="/categoria/{category.slug}" class="block hover:text-blue-600 hover:underline">
+							<h3 class="text-lg font-medium text-gray-800">{category.name}</h3>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="text-gray-500">No hay categorías disponibles en este destino.</p>
+		{/if}
+	</div>
+
 	<!-- Activities List -->
 	<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 		<h2 class="mb-4 text-2xl font-semibold text-gray-800">
@@ -41,10 +60,7 @@
 			<ul class="space-y-3">
 				{#each data.activities as activity}
 					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a
-							href="/actividad/{activity.slug}"
-							class="block hover:text-blue-600 hover:underline"
-						>
+						<a href="/actividad/{activity.slug}" class="block hover:text-blue-600 hover:underline">
 							<h3 class="text-lg font-medium text-gray-800">{activity.title}</h3>
 							{#if activity.descriptionShort}
 								<p class="mt-1 text-sm text-gray-600">{activity.descriptionShort}</p>
