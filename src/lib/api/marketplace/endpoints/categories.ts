@@ -6,7 +6,6 @@
 
 import { apiClient } from '../../shared/client';
 import { API_ENDPOINTS } from '../../shared/endpoints.config';
-import type { Pagination } from '$lib/types';
 
 export type Category = {
 	id: string;
@@ -19,17 +18,14 @@ export type Category = {
 export const categoriesEndpoints = {
 	/**
 	 * Obtener listado público de categorías
+	 * La API devuelve un array directo, no un objeto paginado
 	 */
-	async getAll(fetchFn: typeof fetch): Promise<{ data: Category[]; pagination: Pagination }> {
+	async getAll(fetchFn: typeof fetch): Promise<Category[]> {
 		const path = API_ENDPOINTS.categories.list.path();
 
-		const response = await apiClient.request<{ data: Category[]; pagination: Pagination }>(
-			fetchFn,
-			path,
-			{
-				method: 'GET'
-			}
-		);
+		const response = await apiClient.request<Category[]>(fetchFn, path, {
+			method: 'GET'
+		});
 
 		return response.data;
 	},

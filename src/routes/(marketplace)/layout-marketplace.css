@@ -5,5 +5,8 @@
  * Todos los componentes del marketplace serán custom y totalmente independientes.
  */
 
+/* Layout marketplace */
+@import '$lib/styles/marketplace/layout.css';
+
 /* Estilos custom de componentes marketplace */
 @import '$lib/styles/marketplace/components/photoswipe.css';

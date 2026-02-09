@@ -40,7 +40,7 @@
 				{#each data.categories as category}
 					<li class="border-b border-gray-100 pb-3 last:border-b-0">
 						<a href="/categoria/{category.slug}" class="block hover:text-blue-600 hover:underline">
-							<h3 class="text-lg font-medium text-gray-800">{category.name}</h3>
+							{category.name}
 						</a>
 					</li>
 				{/each}

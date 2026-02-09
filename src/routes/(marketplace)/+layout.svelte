@@ -5,6 +5,10 @@
 	// CSS de PhotoSwipe (librería externa)
 	import 'photoswipe/style.css';
 
+	// Layout marketplace
+	import Header from '$lib/layout/marketplace/Header.svelte';
+	import Footer from '$lib/layout/marketplace/Footer.svelte';
+
 	let { children } = $props();
 
 	// Añadir clase al <html> cuando estamos en marketplace
@@ -20,8 +24,13 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 </svelte:head>
 
-<div class="min-h-screen">
-	<main>
+<div class="flex min-h-screen flex-col">
+	<Header title="Backoffice App" />
+
+	<main class="marketplace-container flex-1 px-4">
+		<!-- MsgAlertBox /-->
 		{@render children()}
 	</main>
+
+	<Footer />
 </div>
