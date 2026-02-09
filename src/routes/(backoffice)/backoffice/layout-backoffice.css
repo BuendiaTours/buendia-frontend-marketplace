@@ -116,17 +116,17 @@
 }
 
 /* Core styles - Backoffice specific */
-@import '$lib/styles/core/fonts.css';
-@import '$lib/styles/core/theme.css';
-@import '$lib/styles/core/base.css';
+@import '$lib/styles/backoffice/core/fonts.css';
+@import '$lib/styles/backoffice/core/theme.css';
+@import '$lib/styles/backoffice/core/base.css';
 
 /* Utilities - Backoffice specific */
-@import '$lib/styles/utilities/utilities.css';
+@import '$lib/styles/backoffice/utilities/utilities.css';
 
 /* Components - Backoffice specific */
-@import '$lib/styles/components/daisyui.css';
-@import '$lib/styles/components/bytemd.css';
-@import '$lib/styles/components/custom.css';
+@import '$lib/styles/backoffice/components/daisyui.css';
+@import '$lib/styles/backoffice/components/bytemd.css';
+@import '$lib/styles/backoffice/components/custom.css';
 
 /* Animations - Backoffice specific */
-@import '$lib/styles/animations.css';
+@import '$lib/styles/backoffice/animations.css';
