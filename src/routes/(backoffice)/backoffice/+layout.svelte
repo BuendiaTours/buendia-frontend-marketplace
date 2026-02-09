@@ -1,4 +1,7 @@
 <script lang="ts">
+	// CSS específico del backoffice (DaisyUI + themes + custom)
+	import './layout-backoffice.css';
+
 	// CSS global del lightbox
 	import 'photoswipe/style.css';
 
@@ -9,11 +12,10 @@
 	import 'swiper/css/scrollbar';
 
 	// Components
-	// import MsgAlertBox from '$lib/components/msg/MsgAlertBox.svelte';
 	import AlertDialog from '$lib/components/MeltAlertDialog.svelte';
 	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
 
-	// Partials o elementos reutilizables
+	// Layout backoffice
 	import Header from '$lib/layout/Header.svelte';
 	import Footer from '$lib/layout/Footer.svelte';
 
