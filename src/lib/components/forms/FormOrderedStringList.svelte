@@ -128,7 +128,7 @@
 			<div class="mb-2 space-y-1">
 				{#each items as item, index (index)}
 					<div
-						class="card flex items-center gap-2 px-2 py-1 transition-colors"
+						class="card flex flex-row items-center gap-2 px-2 py-1 transition-colors"
 						class:opacity-50={draggedIndex === index}
 						role="listitem"
 						ondragover={handleDragOver}
