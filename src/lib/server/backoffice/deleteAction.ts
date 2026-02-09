@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
-import { setFlashMessage } from '$lib/server/flashMessages';
+import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 
 /**
  * Configuración para crear un action handler de eliminación

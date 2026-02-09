@@ -16,8 +16,8 @@
 	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
 
 	// Layout backoffice
-	import Header from '$lib/layout/Header.svelte';
-	import Footer from '$lib/layout/Footer.svelte';
+	import Header from '$lib/layout/backoffice/Header.svelte';
+	import Footer from '$lib/layout/backoffice/Footer.svelte';
 
 	let { children } = $props();
 

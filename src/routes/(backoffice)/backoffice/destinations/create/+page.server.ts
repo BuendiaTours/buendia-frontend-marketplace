@@ -1,5 +1,5 @@
-import { createCreateLoad } from '$lib/server/createLoad';
-import { createCreateAction } from '$lib/server/createAction';
+import { createCreateLoad } from '$lib/server/backoffice/createLoad';
+import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { destinationFormSchema } from '../destination-form.schema';
 import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';

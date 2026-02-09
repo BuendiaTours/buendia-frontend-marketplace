@@ -6,7 +6,7 @@ import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
-import { createUpdateAction } from '$lib/server/updateAction';
+import { createUpdateAction } from '$lib/server/backoffice/updateAction';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
