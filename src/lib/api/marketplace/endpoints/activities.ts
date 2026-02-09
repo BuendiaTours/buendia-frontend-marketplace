@@ -30,6 +30,7 @@ export type ActivitiesPublicParams = {
 	search?: string; // Búsqueda de texto
 	destination?: string; // Filtro por destino
 	category?: string; // Filtro por categoría
+	kind?: string; // Filtro por tipo (FREE_TOUR, PAID_TOUR, etc.)
 	priceMin?: number; // Rango de precio
 	priceMax?: number;
 	dateFrom?: string; // Filtros de fecha
