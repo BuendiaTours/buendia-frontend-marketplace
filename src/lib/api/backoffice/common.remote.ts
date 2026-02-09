@@ -13,7 +13,7 @@
  * Uso en componentes:
  * ```svelte
  * <script>
- *   import { getDestinationKinds } from '$lib/api/common.remote';
+ *   import { getDestinationKinds } from '$lib/api/backoffice/common.remote';
  * </script>
  *
  * {#each await getDestinationKinds() as kind}
@@ -23,7 +23,7 @@
  */
 
 import { query } from '$app/server';
-import { apiClient } from './client';
+import { apiClient } from '../shared/client';
 
 /**
  * Tipo para las opciones de selección que devuelven estos endpoints

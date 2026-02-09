@@ -29,7 +29,7 @@
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import { getAttractionStatuses } from '$lib/api/common.remote';
+	import { getAttractionStatuses } from '$lib/api/backoffice/common.remote';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
@@ -368,7 +368,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												`/attractions/${item.slug}/edit`,
+												ROUTES.backoffice.attractions.edit(item.slug),
 												page.url.searchParams
 											)}
 										>

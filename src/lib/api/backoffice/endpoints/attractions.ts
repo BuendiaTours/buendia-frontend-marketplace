@@ -1,5 +1,5 @@
-import { apiClient } from '../client';
-import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
+import { apiClient } from '../../shared/client';
+import { API_ENDPOINTS, buildEndpointUrl } from '../../shared/endpoints.config';
 import type { Attraction, Pagination } from '$lib/types';
 import type { AttractionStatus } from '$lib/config/enums';
 

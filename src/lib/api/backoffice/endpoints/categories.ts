@@ -1,5 +1,5 @@
-import { apiClient } from '../client';
-import { API_ENDPOINTS } from '../endpoints.config';
+import { apiClient } from '../../shared/client';
+import { API_ENDPOINTS } from '../../shared/endpoints.config';
 
 export type Category = {
 	id: string;

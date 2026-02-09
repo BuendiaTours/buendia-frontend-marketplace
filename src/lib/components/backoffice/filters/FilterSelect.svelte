@@ -101,7 +101,7 @@
 	```svelte
 	<script>
 	  import FilterSelect from '$lib/components/filters/FilterSelect.svelte';
-	  import { getDestinationKinds } from '$lib/api/common.remote';
+	  import { getDestinationKinds } from '$lib/api/backoffice/common.remote';
 	  
 	  function handleFilterChange(key, value) {
 	    console.log(`Filter ${key} changed to:`, value);

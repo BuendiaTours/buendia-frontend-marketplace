@@ -2,7 +2,7 @@ import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { activityFormSchema } from '../activity-form.schema';
 import { api } from '$lib/api/index';
-import { apiConfig } from '$lib/api/config';
+import { apiConfig } from '$lib/api';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';

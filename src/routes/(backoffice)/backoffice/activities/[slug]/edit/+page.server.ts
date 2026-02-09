@@ -1,6 +1,6 @@
 import { activityFormSchema } from '../../activity-form.schema';
 import { api, ApiError } from '$lib/api/index';
-import { apiConfig } from '$lib/api/config';
+import { apiConfig } from '$lib/api';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';

@@ -1,28 +1,13 @@
-export { apiClient } from './client';
-export { apiConfig } from './config';
-export * from './types';
-export * from './errors';
-export * from './endpoints.config';
+/**
+ * API - Default Export
+ *
+ * Por compatibilidad, este archivo re-exporta todo desde api/backoffice
+ * para que los imports existentes sigan funcionando.
+ *
+ * NOTA: Eventualmente, cuando dividas en 2 repos, eliminarás este archivo
+ * y cada proyecto tendrá su propio entry point:
+ * - Backoffice: import from '$lib/api/backoffice'
+ * - Marketplace: import from '$lib/api/marketplace'
+ */
 
-import { activitiesEndpoints } from './endpoints/activities';
-import { destinationsEndpoints } from './endpoints/destinations';
-import { categoriesEndpoints } from './endpoints/categories';
-import { tagsEndpoints } from './endpoints/tags';
-import { attractionsEndpoints } from './endpoints/attractions';
-import { distributivesEndpoints } from './endpoints/distributives';
-
-export const api = {
-	activities: activitiesEndpoints,
-	destinations: destinationsEndpoints,
-	categories: categoriesEndpoints,
-	tags: tagsEndpoints,
-	attractions: attractionsEndpoints,
-	distributives: distributivesEndpoints
-};
-
-export type { ActivitiesGetAllParams } from './endpoints/activities';
-export type { DestinationsSearchParams } from './endpoints/destinations';
-export type { Category } from './endpoints/categories';
-export type { Tag } from './endpoints/tags';
-export type { Attraction } from '$lib/types';
-export type { Distributive } from './endpoints/distributives';
+export * from './backoffice/index';

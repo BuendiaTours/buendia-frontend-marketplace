@@ -1,5 +1,5 @@
-import { apiClient } from '../client';
-import { API_ENDPOINTS, buildEndpointUrl } from '../endpoints.config';
+import { apiClient } from '../../shared/client';
+import { API_ENDPOINTS, buildEndpointUrl } from '../../shared/endpoints.config';
 import type { ActivityListResponse, ActivityListItem } from '$lib/types';
 import type { ActivityStatus, ActivityKind } from '$lib/config/enums';
 
