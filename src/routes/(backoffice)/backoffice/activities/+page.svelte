@@ -36,8 +36,8 @@
 	import FilterAdvancedDialog from '$lib/components/filters/FilterAdvancedDialog.svelte';
 	import TableSortableHeader from '$lib/components/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/tables/TableResetSort.svelte';
-	import PagecountAboveTable from '$lib/layout/partials/PagecountAboveTable.svelte';
-	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
+	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 

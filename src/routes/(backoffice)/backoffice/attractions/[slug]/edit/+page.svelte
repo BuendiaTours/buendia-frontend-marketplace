@@ -9,7 +9,7 @@
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
 
 	// Components
-	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Form components
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';

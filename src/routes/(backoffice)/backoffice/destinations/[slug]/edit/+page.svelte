@@ -6,7 +6,7 @@
 	 */
 	import type { PageData } from './$types';
 	import DestinationForm from '../../components/DestinationForm.svelte';
-	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>

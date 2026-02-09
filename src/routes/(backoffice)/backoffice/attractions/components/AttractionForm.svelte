@@ -10,7 +10,7 @@
 	import { DatabaseRestore } from 'svelte-iconoir';
 
 	// Components
-	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
 	import FormGeoJson from '$lib/components/forms/FormGeoJson.svelte';
