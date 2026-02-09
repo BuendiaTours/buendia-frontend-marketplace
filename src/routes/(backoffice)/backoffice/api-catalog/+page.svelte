@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { API_ENDPOINTS } from '$lib/api/endpoints.config';
-	import { apiConfig } from '$lib/api/config';
+	import { API_ENDPOINTS } from '$lib/api/shared/endpoints.config';
+	import { apiConfig } from '$lib/api/shared/config';
 	import { copyToClipboard } from '$lib/utils/misc';
 	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
 
