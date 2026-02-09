@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import { ROUTES } from '$lib/config/routes';
 
 	type Props = {
 		title?: string;
@@ -9,11 +10,6 @@
 	let { title = 'Mi Aplicación' }: Props = $props();
 
 	const isActive = (path: string) => {
-		// Para la raíz, comparación exacta
-		if (path === '/') {
-			return page.url.pathname === '/';
-		}
-		// Para otras rutas, verificar si comienza con el path
 		return page.url.pathname.startsWith(path);
 	};
 </script>
@@ -38,30 +34,84 @@
 				</svg>
 			</div>
 			<ul class="dropdown-content menu">
-				<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
-				<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
-				<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>
-				<li><a href="/attractions" class:menu-active={isActive('/attractions')}>Atracciones</a></li>
-				<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
+				<li>
+					<a
+						href={ROUTES.backoffice.activities.list}
+						class:menu-active={isActive(ROUTES.backoffice.activities.list)}
+					>
+						Actividades
+					</a>
+				</li>
+				<li>
+					<a
+						href={ROUTES.backoffice.destinations.list}
+						class:menu-active={isActive(ROUTES.backoffice.destinations.list)}
+					>
+						Destinos
+					</a>
+				</li>
+				<li>
+					<a
+						href={ROUTES.backoffice.attractions.list}
+						class:menu-active={isActive(ROUTES.backoffice.attractions.list)}
+					>
+						Atracciones
+					</a>
+				</li>
+				<li>
+					<a
+						href={ROUTES.backoffice.components}
+						class:menu-active={isActive(ROUTES.backoffice.components)}
+					>
+						Componentes
+					</a>
+				</li>
 			</ul>
 		</div>
-		<a href="/" class="p-2">
+		<a href={ROUTES.backoffice.home} class="p-2">
 			<img id="bnd-header-logo" class="w-32" src="/buendia-logo.svg" alt={title} />
 		</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
-			<li><a href="/" class:menu-active={isActive('/')}>Inicio</a></li>
-			<li><a href="/activities" class:menu-active={isActive('/activities')}>Actividades</a></li>
-			<li><a href="/destinations" class:menu-active={isActive('/destinations')}>Destinos</a></li>
-			<li><a href="/attractions" class:menu-active={isActive('/attractions')}>Atracciones</a></li>
-			<li><a href="/components" class:menu-active={isActive('/components')}>Componentes</a></li>
+			<li>
+				<a
+					href={ROUTES.backoffice.activities.list}
+					class:menu-active={isActive(ROUTES.backoffice.activities.list)}
+				>
+					Actividades
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.destinations.list}
+					class:menu-active={isActive(ROUTES.backoffice.destinations.list)}
+				>
+					Destinos
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.attractions.list}
+					class:menu-active={isActive(ROUTES.backoffice.attractions.list)}
+				>
+					Atracciones
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.components}
+					class:menu-active={isActive(ROUTES.backoffice.components)}
+				>
+					Componentes
+				</a>
+			</li>
 		</ul>
 	</div>
 	<div class="navbar-end">
 		<!-- ✨ Theme Switcher -->
 		<ThemeSwitcher />
 
-		<a href="/login" class="btn btn-sm ml-2">Login</a>
+		<a href={ROUTES.backoffice.login} class="btn btn-sm ml-2">Login</a>
 	</div>
 </header>
