@@ -30,6 +30,10 @@
 	});
 </script>
 
+<svelte:head>
+	<link rel="icon" href="/backoffice/favicon.svg" type="image/svg+xml" />
+</svelte:head>
+
 <div class="flex min-h-screen flex-col">
 	<Header title="Backoffice App" />
 

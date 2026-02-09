@@ -8,13 +8,17 @@
 	let { children } = $props();
 
 	// Añadir clase al <html> cuando estamos en marketplace
-	$effect(() => {
-		document.documentElement.classList.add('bnd-marketplace');
-		return () => {
-			document.documentElement.classList.remove('bnd-marketplace');
-		};
-	});
+	// $effect(() => {
+	// 	document.documentElement.classList.add('bnd-marketplace');
+	// 	return () => {
+	// 		document.documentElement.classList.remove('bnd-marketplace');
+	// 	};
+	// });
 </script>
+
+<svelte:head>
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</svelte:head>
 
 <div class="min-h-screen">
 	<main>
