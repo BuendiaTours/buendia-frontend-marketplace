@@ -4,6 +4,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
+	import { ROUTES } from '$lib/config/routes';
 
 	export let data: { activity: ActivityDetail };
 	const { activity } = data;
@@ -12,11 +13,16 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`/backoffice/activities?${page.url.searchParams.toString()}`} class="link"> ← Volver al listado </a>
+	<a href={`${ROUTES.backoffice.activities.list}?${page.url.searchParams.toString()}`} class="link">
+		← Volver al listado
+	</a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(`/activities/${activity.slug}/edit`, page.url.searchParams)}
+			href={buildUrlWithFilters(
+				ROUTES.backoffice.activities.edit(activity.slug),
+				page.url.searchParams
+			)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
@@ -24,7 +30,10 @@
 
 		<form
 			method="POST"
-			action={buildUrlWithFilters(`/activities/${activity.slug}/delete`, page.url.searchParams)}
+			action={buildUrlWithFilters(
+				ROUTES.backoffice.activities.delete(activity.slug),
+				page.url.searchParams
+			)}
 		>
 			<button
 				type="submit"
