@@ -7,6 +7,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+	import { ROUTES } from '$lib/config/routes';
 	import { DatabaseRestore } from 'svelte-iconoir';
 
 	// Components
@@ -41,7 +42,10 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`/backoffice/destinations?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
+	<a
+		href={`${ROUTES.backoffice.destinations.list}?${$page.url.searchParams.toString()}`}
+		class="btn btn-ghost"
+	>
 		← Volver al listado
 	</a>
 
@@ -49,7 +53,7 @@
 		<form
 			method="POST"
 			action={buildUrlWithFilters(
-				`/destinations/${destinationSlug}/delete`,
+				ROUTES.backoffice.destinations.delete(destinationSlug),
 				$page.url.searchParams
 			)}
 			class="ml-auto"
