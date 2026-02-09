@@ -1,4 +1,7 @@
 <script lang="ts">
+	// CSS específico del backoffice (DaisyUI + themes + custom)
+	import '../layout-backoffice.css';
+
 	let { children } = $props();
 
 	// Añadir clase al <html> cuando estamos en auth
