@@ -6,6 +6,7 @@
  */
 
 /* Layout marketplace */
+@import '$lib/styles/marketplace/core/colors.css';
 @import '$lib/styles/marketplace/core/theme.css';
 @import '$lib/styles/marketplace/core/fonts.css';
 @import '$lib/styles/marketplace/core/typography.css';
