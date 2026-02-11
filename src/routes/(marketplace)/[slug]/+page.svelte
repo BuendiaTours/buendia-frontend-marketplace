@@ -13,9 +13,13 @@
 	}
 </script>
 
-<div class="mx-auto max-w-4xl px-4 py-16">
+<div class="bnd-container">
+	<div class="my-6">
+		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
+	</div>
+
 	<!-- Destination Info -->
-	<div class="mb-8 rounded-lg bg-blue-50 p-8">
+	<div class="bnd-card mb-8">
 		<h1 class="mb-4 text-4xl font-bold text-gray-900">{data.destination.name}</h1>
 		{#if data.destination.descriptionShort}
 			<p class="text-lg text-gray-600">{data.destination.descriptionShort}</p>
@@ -32,7 +36,7 @@
 	</div>
 
 	<!-- Categories List -->
-	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-8">
 		<h2 class="mb-4 text-2xl font-semibold text-gray-800">Categorías</h2>
 
 		{#if data.categories && data.categories.length > 0}
@@ -51,7 +55,7 @@
 	</div>
 
 	<!-- Activities List -->
-	<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-8">
 		<h2 class="mb-4 text-2xl font-semibold text-gray-800">
 			Actividades en {data.destination.name}
 		</h2>
@@ -84,7 +88,4 @@
 	</div>
 
 	<!-- Back to home link -->
-	<div class="mt-8 text-center">
-		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
-	</div>
 </div>

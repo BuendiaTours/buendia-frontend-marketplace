@@ -14,7 +14,7 @@
 	--page-content-area: 75.5rem; /* 1208 */
 
 	/* Font Families */
-	--font-family-sans: var(--font-sans);
-	--font-family-serif: var(--font-serif);
-	--font-family-mono: var(--font-mono);
+	--font-family-sans: var(--font-sans); /* Inter */
+	--font-family-serif: var(--font-serif); /* Literata */
+	--font-family-mono: var(--font-mono); /* SF Mono */
 }

@@ -4,13 +4,13 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="mx-auto max-w-4xl px-4 py-16">
-	<div class="mb-8 rounded-lg bg-blue-50 p-8 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-gray-900">Home del Marketplace</h1>
+<div class="bnd-container mt-6">
+	<div class="bnd-card mb-2 p-2 text-center">
+		<h1 class="mb-4 font-serif text-4xl font-semibold text-gray-900">Home del Marketplace</h1>
 		<p class="text-lg text-gray-600">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 	</div>
 
-	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-8">
 		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Destinos</h2>
 
 		{#if data.destinations && data.destinations.length > 0}
@@ -28,7 +28,7 @@
 		{/if}
 	</div>
 
-	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-8">
 		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Free tours</h2>
 
 		{#if data.freeTours && data.freeTours.length > 0}
@@ -46,7 +46,7 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-4">
 		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Paid tours</h2>
 
 		{#if data.paidTours && data.paidTours.length > 0}
@@ -64,7 +64,7 @@
 		{/if}
 	</div>
 
-	<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+	<div class="bnd-card mb-6">
 		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Other tours</h2>
 
 		{#if data.otherTours && data.otherTours.length > 0}

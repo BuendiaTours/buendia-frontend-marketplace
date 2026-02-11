@@ -10,5 +10,8 @@
 @import '$lib/styles/marketplace/core/fonts.css';
 @import '$lib/styles/marketplace/layout.css';
 
-/* Estilos custom de componentes marketplace */
+/* Componentes de terceros */
 @import '$lib/styles/marketplace/components/photoswipe.css';
+
+/* Componentes propios */
+@import '$lib/styles/marketplace/components/bnd-card.css';
