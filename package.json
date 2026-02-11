@@ -12,7 +12,9 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"generate:enums": "npx tsx scripts/generate-enums-from-api.ts"
+		"generate:enums": "npx tsx scripts/generate-enums-from-api.ts",
+		"storybook": "storybook dev -p 6006 --config-dir .storybook-marketplace",
+		"build-storybook": "storybook build --config-dir .storybook-marketplace -o storybook-static-marketplace"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
@@ -41,7 +43,19 @@
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.48.1",
 		"valibot": "^1.2.0",
-		"vite": "^7.2.6"
+		"vite": "^7.2.6",
+		"storybook": "^10.2.8",
+		"@storybook/sveltekit": "^10.2.8",
+		"@storybook/addon-svelte-csf": "^5.0.10",
+		"@chromatic-com/storybook": "^5.0.1",
+		"@storybook/addon-vitest": "^10.2.8",
+		"@storybook/addon-a11y": "^10.2.8",
+		"@storybook/addon-docs": "^10.2.8",
+		"eslint-plugin-storybook": "^10.2.8",
+		"vitest": "^4.0.18",
+		"playwright": "^1.58.2",
+		"@vitest/browser-playwright": "^4.0.18",
+		"@vitest/coverage-v8": "^4.0.18"
 	},
 	"dependencies": {
 		"@bytemd/plugin-gfm": "^1.21.0",
