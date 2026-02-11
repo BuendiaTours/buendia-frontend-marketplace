@@ -26,10 +26,11 @@
 </script>
 
 <div
-	class="bnd-badge inline-flex items-center gap-2 rounded-sm px-2 py-1 uppercase {data.class || ''}"
+	class="bnd-badge text-p-xs inline-flex min-h-7 items-center gap-1 rounded-sm px-2 py-1 font-bold uppercase {data.class ||
+		''}"
 >
 	{#if IconComponent}
-		<IconComponent class="size-4" />
+		<IconComponent class="size-5" />
 	{/if}
 	{data.title}
 </div>
