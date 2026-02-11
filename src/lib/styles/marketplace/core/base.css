@@ -1,0 +1,28 @@
+/**
+ * MARKETPLACE BASE STYLES
+ * 
+ * Estilos base aplicados por defecto a elementos HTML
+ */
+
+/* Aplicar tipografía base por defecto a body */
+body {
+	font-family: var(--font-sans);
+	font-weight: 500; /* medium */
+	font-size: var(--font-size-p-base);
+	line-height: var(--line-height-p-base);
+}
+
+/* Responsive para body */
+@media (max-width: 1024px) {
+	body {
+		font-size: var(--font-size-p-base-tablet);
+		line-height: var(--line-height-p-base-tablet);
+	}
+}
+
+@media (max-width: 640px) {
+	body {
+		font-size: var(--font-size-p-base-mobile);
+		line-height: var(--line-height-p-base-mobile);
+	}
+}

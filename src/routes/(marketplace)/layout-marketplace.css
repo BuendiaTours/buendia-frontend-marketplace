@@ -8,10 +8,65 @@
 /* Layout marketplace */
 @import '$lib/styles/marketplace/core/theme.css';
 @import '$lib/styles/marketplace/core/fonts.css';
+@import '$lib/styles/marketplace/core/typography.css';
+@import '$lib/styles/marketplace/core/base.css';
 @import '$lib/styles/marketplace/layout.css';
+
+/* Utilities */
+@import '$lib/styles/marketplace/utilities/icons.css';
+@import '$lib/styles/marketplace/utilities/typography.css';
 
 /* Componentes de terceros */
 @import '$lib/styles/marketplace/components/photoswipe.css';
 
 /* Componentes propios */
 @import '$lib/styles/marketplace/components/bnd-card.css';
+
+/* ============================================
+   DISABLE TAILWIND DEFAULT TEXT CLASSES
+   ============================================
+   Deshabilitamos las clases de texto por defecto de Tailwind
+   para forzar el uso de nuestras clases personalizadas
+   ============================================ */
+
+.text-xs,
+.text-sm,
+.text-base,
+.text-lg,
+.text-xl,
+.text-2xl,
+.text-3xl,
+.text-4xl,
+.text-5xl,
+.text-6xl,
+.text-7xl,
+.text-8xl,
+.text-9xl {
+	/* Deshabilitamos estas clases en el marketplace */
+	font-size: unset !important;
+	line-height: unset !important;
+}
+
+/* Mensaje de advertencia en consola para desarrollo */
+.text-xs::before,
+.text-sm::before,
+.text-base::before,
+.text-lg::before,
+.text-xl::before,
+.text-2xl::before,
+.text-3xl::before,
+.text-4xl::before,
+.text-5xl::before,
+.text-6xl::before,
+.text-7xl::before,
+.text-8xl::before,
+.text-9xl::before {
+	content: '⚠️ Usa clases de tipografía custom (text-h1, text-p-base, etc.)';
+	display: block;
+	color: red;
+	font-size: 12px;
+	font-weight: bold;
+	background: yellow;
+	padding: 4px;
+	margin-bottom: 4px;
+}

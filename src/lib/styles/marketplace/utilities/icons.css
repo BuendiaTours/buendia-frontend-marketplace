@@ -1,0 +1,30 @@
+/*
+<Home class="icon-sm" />
+<Home class="icon-md" />
+<Home class="icon-lg" />
+*/
+
+.icon-xs {
+	width: var(--size-icon-xs);
+	height: var(--size-icon-xs);
+}
+.icon-sm {
+	width: var(--size-icon-sm);
+	height: var(--size-icon-sm);
+}
+.icon-md {
+	width: var(--size-icon-md);
+	height: var(--size-icon-md);
+}
+.icon-lg {
+	width: var(--size-icon-lg);
+	height: var(--size-icon-lg);
+}
+.icon-xl {
+	width: var(--size-icon-xl);
+	height: var(--size-icon-xl);
+}
+.icon-2xl {
+	width: var(--size-icon-2xl);
+	height: var(--size-icon-2xl);
+}
