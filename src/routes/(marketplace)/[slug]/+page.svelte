@@ -20,9 +20,9 @@
 
 	<!-- Destination Info -->
 	<div class="bnd-card mb-8">
-		<h1 class="mb-4 text-4xl font-bold text-gray-900">{data.destination.name}</h1>
+		<h1 class="mb-4 font-bold text-gray-900">{data.destination.name}</h1>
 		{#if data.destination.descriptionShort}
-			<p class="text-lg text-gray-600">{data.destination.descriptionShort}</p>
+			<p class="text-gray-600">{data.destination.descriptionShort}</p>
 		{/if}
 		{#if data.destination.photoUrlHero}
 			<div class="mt-4">
@@ -37,7 +37,7 @@
 
 	<!-- Categories List -->
 	<div class="bnd-card mb-8">
-		<h2 class="mb-4 text-2xl font-semibold text-gray-800">Categorías</h2>
+		<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
 
 		{#if data.categories && data.categories.length > 0}
 			<ul class="space-y-3">
@@ -56,7 +56,7 @@
 
 	<!-- Activities List -->
 	<div class="bnd-card mb-8">
-		<h2 class="mb-4 text-2xl font-semibold text-gray-800">
+		<h2 class="mb-4 font-semibold text-gray-800">
 			Actividades en {data.destination.name}
 		</h2>
 
@@ -65,9 +65,9 @@
 				{#each data.activities as activity}
 					<li class="border-b border-gray-100 pb-3 last:border-b-0">
 						<a href="/actividad/{activity.slug}" class="block hover:text-blue-600 hover:underline">
-							<h3 class="text-lg font-medium text-gray-800">{activity.title}</h3>
+							<h3 class="font-medium text-gray-800">{activity.title}</h3>
 							{#if activity.descriptionShort}
-								<p class="mt-1 text-sm text-gray-600">{activity.descriptionShort}</p>
+								<p class="mt-1 text-gray-600">{activity.descriptionShort}</p>
 							{/if}
 						</a>
 					</li>

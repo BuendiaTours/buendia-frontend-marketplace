@@ -6,12 +6,12 @@
 
 <div class="bnd-container mt-6">
 	<div class="bnd-card mb-2 p-2 text-center">
-		<h1 class="mb-4 font-serif text-4xl font-semibold text-gray-900">Home del Marketplace</h1>
-		<p class="text-lg text-gray-600">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
+		<h1 class="mb-4 font-serif font-semibold text-gray-900">Home del Marketplace</h1>
+		<p class="text-gray-600">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 	</div>
 
 	<div class="bnd-card mb-8">
-		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Destinos</h2>
+		<h2 class="mb-3 font-semibold text-gray-800">Destinos</h2>
 
 		{#if data.destinations && data.destinations.length > 0}
 			<ul class="mt-4 space-y-2">
@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="bnd-card mb-8">
-		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Free tours</h2>
+		<h2 class="mb-3 font-semibold text-gray-800">Free tours</h2>
 
 		{#if data.freeTours && data.freeTours.length > 0}
 			<ul class="mt-4 space-y-2">
@@ -47,7 +47,7 @@
 	</div>
 
 	<div class="bnd-card mb-4">
-		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Paid tours</h2>
+		<h2 class="mb-3 font-semibold text-gray-800">Paid tours</h2>
 
 		{#if data.paidTours && data.paidTours.length > 0}
 			<ul class="mt-4 space-y-2">
@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="bnd-card mb-6">
-		<h2 class="mb-3 text-2xl font-semibold text-gray-800">Other tours</h2>
+		<h2 class="mb-3 font-semibold text-gray-800">Other tours</h2>
 
 		{#if data.otherTours && data.otherTours.length > 0}
 			<ul class="mt-4 space-y-2">
