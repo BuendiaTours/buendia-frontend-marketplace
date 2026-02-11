@@ -20,8 +20,8 @@
 	<div class="bnd-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>
 		<div class="mb-2 flex gap-2">
-			<Badge options={{ icon: 'FireFlame', title: activity.kind, class: 'bg-red-500' }} />
-			<Badge options={{ title: activity.status, class: 'bg-green-500' }} />
+			<Badge data={{ icon: 'FireFlame', title: activity.kind, class: 'bg-red-500' }} />
+			<Badge data={{ title: activity.status, class: 'bg-green-500' }} />
 		</div>
 		{#if activity.descriptionShort}
 			<p class="text-gray-600">{activity.descriptionShort}</p>
