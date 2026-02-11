@@ -7,12 +7,13 @@
  * Conversión: 1rem = 16px
  */
 
-@theme {
-	/* ============================================
-	   HEADINGS - UI
-	   ============================================ */
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   Variables disponibles globalmente
+   ============================================ */
 
-	/* H1 - Serif Semibold */
+:root {
+	/* HEADINGS - UI */
 	--font-size-h1: 2.25rem; /* 36px */
 	--line-height-h1: 2.75rem; /* 44px */
 	--font-size-h1-tablet: 2.125rem; /* 34px */
@@ -20,7 +21,6 @@
 	--font-size-h1-mobile: 1.875rem; /* 30px */
 	--line-height-h1-mobile: 2.125rem; /* 34px */
 
-	/* H2 - Sans Bold */
 	--font-size-h2: 1.375rem; /* 22px */
 	--line-height-h2: 1.625rem; /* 26px */
 	--font-size-h2-tablet: 1.375rem; /* 22px */
@@ -28,7 +28,6 @@
 	--font-size-h2-mobile: 1.25rem; /* 20px */
 	--line-height-h2-mobile: 1.5rem; /* 24px */
 
-	/* H3 - Sans Bold */
 	--font-size-h3: 1.125rem; /* 18px */
 	--line-height-h3: 1.5rem; /* 24px */
 	--font-size-h3-tablet: 1.125rem; /* 18px */
@@ -36,7 +35,6 @@
 	--font-size-h3-mobile: 1.0625rem; /* 17px */
 	--line-height-h3-mobile: 1.5rem; /* 24px */
 
-	/* H4 - Sans Bold */
 	--font-size-h4: 1rem; /* 16px */
 	--line-height-h4: 1.375rem; /* 22px */
 	--font-size-h4-tablet: 1rem; /* 16px */
@@ -44,11 +42,7 @@
 	--font-size-h4-mobile: 1rem; /* 16px */
 	--line-height-h4-mobile: 1.375rem; /* 22px */
 
-	/* ============================================
-	   PARAGRAPHS - UI
-	   ============================================ */
-
-	/* P-LG - Sans Medium */
+	/* PARAGRAPHS - UI */
 	--font-size-p-lg: 1.125rem; /* 18px */
 	--line-height-p-lg: 1.5rem; /* 24px */
 	--font-size-p-lg-tablet: 1.125rem; /* 18px */
@@ -56,7 +50,6 @@
 	--font-size-p-lg-mobile: 1.0625rem; /* 17px */
 	--line-height-p-lg-mobile: 1.5rem; /* 24px */
 
-	/* P-BASE - Sans Medium */
 	--font-size-p-base: 1rem; /* 16px */
 	--line-height-p-base: 1.5rem; /* 24px */
 	--font-size-p-base-tablet: 1rem; /* 16px */
@@ -64,7 +57,6 @@
 	--font-size-p-base-mobile: 1rem; /* 16px */
 	--line-height-p-base-mobile: 1.5rem; /* 24px */
 
-	/* P-SM - Sans Medium */
 	--font-size-p-sm: 0.875rem; /* 14px */
 	--line-height-p-sm: 1.25rem; /* 20px */
 	--font-size-p-sm-tablet: 0.875rem; /* 14px */
@@ -72,7 +64,6 @@
 	--font-size-p-sm-mobile: 0.875rem; /* 14px */
 	--line-height-p-sm-mobile: 1.25rem; /* 20px */
 
-	/* P-XS - Sans Medium */
 	--font-size-p-xs: 0.75rem; /* 12px */
 	--line-height-p-xs: 1rem; /* 16px */
 	--font-size-p-xs-tablet: 0.75rem; /* 12px */
@@ -80,11 +71,7 @@
 	--font-size-p-xs-mobile: 0.75rem; /* 12px */
 	--line-height-p-xs-mobile: 1rem; /* 16px */
 
-	/* ============================================
-	   SPECIAL - Price & Metrics
-	   ============================================ */
-
-	/* PRICE - Sans Black */
+	/* SPECIAL - Price & Metrics */
 	--font-size-price: 2rem; /* 32px */
 	--line-height-price: 2.25rem; /* 36px */
 	--font-size-price-tablet: 1.875rem; /* 30px */
@@ -92,7 +79,6 @@
 	--font-size-price-mobile: 1.625rem; /* 26px */
 	--line-height-price-mobile: 1.75rem; /* 28px */
 
-	/* METRIC - Sans Black */
 	--font-size-metric: 2rem; /* 32px */
 	--line-height-metric: 2.25rem; /* 36px */
 	--font-size-metric-tablet: 1.875rem; /* 30px */
@@ -100,11 +86,7 @@
 	--font-size-metric-mobile: 1.625rem; /* 26px */
 	--line-height-metric-mobile: 1.75rem; /* 28px */
 
-	/* ============================================
-	   EDITORIAL - Headings
-	   ============================================ */
-
-	/* EDITORIAL-H1 - Serif Bold */
+	/* EDITORIAL - Headings */
 	--font-size-editorial-h1: 4rem; /* 64px */
 	--line-height-editorial-h1: 4.5rem; /* 72px */
 	--font-size-editorial-h1-tablet: 3rem; /* 48px */
@@ -112,7 +94,6 @@
 	--font-size-editorial-h1-mobile: 2.25rem; /* 36px */
 	--line-height-editorial-h1-mobile: 2.75rem; /* 44px */
 
-	/* EDITORIAL-H2 - Serif Bold */
 	--font-size-editorial-h2: 2.125rem; /* 34px */
 	--line-height-editorial-h2: 2.625rem; /* 42px */
 	--font-size-editorial-h2-tablet: 2.125rem; /* 34px */
@@ -120,7 +101,6 @@
 	--font-size-editorial-h2-mobile: 1.75rem; /* 28px */
 	--line-height-editorial-h2-mobile: 2.25rem; /* 36px */
 
-	/* EDITORIAL-H3 - Serif Bold */
 	--font-size-editorial-h3: 1.5rem; /* 24px */
 	--line-height-editorial-h3: 1.875rem; /* 30px */
 	--font-size-editorial-h3-tablet: 2.125rem; /* 34px */
@@ -128,7 +108,6 @@
 	--font-size-editorial-h3-mobile: 1.375rem; /* 22px */
 	--line-height-editorial-h3-mobile: 1.75rem; /* 28px */
 
-	/* EDITORIAL-H4 - Serif Bold */
 	--font-size-editorial-h4: 1.25rem; /* 20px */
 	--line-height-editorial-h4: 1.625rem; /* 26px */
 	--font-size-editorial-h4-tablet: 1.25rem; /* 20px */
@@ -136,11 +115,7 @@
 	--font-size-editorial-h4-mobile: 1.25rem; /* 20px */
 	--line-height-editorial-h4-mobile: 1.5rem; /* 24px */
 
-	/* ============================================
-	   EDITORIAL - Paragraphs
-	   ============================================ */
-
-	/* EDITORIAL-P-LG - Sans Medium */
+	/* EDITORIAL - Paragraphs */
 	--font-size-editorial-p-lg: 1.25rem; /* 20px */
 	--line-height-editorial-p-lg: 2rem; /* 32px */
 	--font-size-editorial-p-lg-tablet: 1.125rem; /* 18px */
@@ -148,7 +123,6 @@
 	--font-size-editorial-p-lg-mobile: 1.125rem; /* 18px */
 	--line-height-editorial-p-lg-mobile: 1.75rem; /* 28px */
 
-	/* EDITORIAL-P-BASE - Sans Medium */
 	--font-size-editorial-p-base: 1.125rem; /* 18px */
 	--line-height-editorial-p-base: 1.75rem; /* 28px */
 	--font-size-editorial-p-base-tablet: 1.125rem; /* 18px */
@@ -156,7 +130,6 @@
 	--font-size-editorial-p-base-mobile: 1rem; /* 16px */
 	--line-height-editorial-p-base-mobile: 1.625rem; /* 26px */
 
-	/* EDITORIAL-P-SM - Sans Medium */
 	--font-size-editorial-p-sm: 1rem; /* 16px */
 	--line-height-editorial-p-sm: 1.625rem; /* 26px */
 	--font-size-editorial-p-sm-tablet: 1rem; /* 16px */
