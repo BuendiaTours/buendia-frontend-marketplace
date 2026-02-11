@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="bnd-container">
+<div class="bnd-wrapper">
 	<div class="my-6">
 		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
 	</div>

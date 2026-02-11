@@ -6,7 +6,7 @@
 </script>
 
 <!-- Back to home link -->
-<div class="bnd-container">
+<div class="bnd-wrapper">
 	<div class="mt-8">
 		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
 	</div>
@@ -14,7 +14,7 @@
 
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
 
-<div class="bnd-container">
+<div class="bnd-wrapper">
 	<!-- Activity Header -->
 	<div class="bnd-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>

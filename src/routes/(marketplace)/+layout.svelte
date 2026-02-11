@@ -27,7 +27,7 @@
 <div class="flex min-h-screen flex-col">
 	<Header title="Backoffice App" />
 
-	<main class="bnd-main-content-area flex-1">
+	<main class="bnd-layout-content-area flex-1">
 		<!-- MsgAlertBox /-->
 		{@render children()}
 	</main>
