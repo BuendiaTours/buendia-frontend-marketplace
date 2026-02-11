@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import Badge from '$lib/components/marketplace/Badge.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -19,8 +20,8 @@
 	<div class="bnd-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>
 		<div class="mb-2 flex gap-2">
-			<span class="rounded bg-blue-600 px-3 py-1 text-white">{activity.kind}</span>
-			<span class="rounded bg-gray-600 px-3 py-1 text-white">{activity.status}</span>
+			<Badge options={{ icon: 'FireFlame', title: activity.kind, class: 'bg-red-500' }} />
+			<Badge options={{ title: activity.status, class: 'bg-green-500' }} />
 		</div>
 		{#if activity.descriptionShort}
 			<p class="text-gray-600">{activity.descriptionShort}</p>

@@ -1,16 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 
 	let { data }: { data: PageData } = $props();
-
-	function handlePageChange(newPage: number) {
-		const url = new URL($page.url);
-		url.searchParams.set('page', newPage.toString());
-		goto(url.toString());
-	}
 </script>
 
 <div class="bnd-wrapper">
@@ -74,13 +65,13 @@
 				{/each}
 			</ul>
 
-			<!-- Pagination -->
-			{#if data.pagination.totalPages > 1}
-				<MeltPagination
-					count={data.pagination.total}
-					perPage={data.pagination.pageSize}
-					onPageChange={handlePageChange}
-				/>
+			<!-- Pagination info -->
+			{#if data.pagination && data.pagination.total > data.pagination.pageSize}
+				<div class="mt-4 text-center text-gray-600">
+					Página {data.pagination.page} de {Math.ceil(
+						data.pagination.total / data.pagination.pageSize
+					)}
+				</div>
 			{/if}
 		{:else}
 			<p class="text-gray-500">No hay actividades disponibles en este destino.</p>
