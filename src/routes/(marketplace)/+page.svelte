@@ -11,9 +11,9 @@
 		</h1>
 		<p class="text-neutral-700">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 		<div>
-			<div class="bdn-button">Button</div>
-			<div class="bdn-button bdn-button-sm bdn-button-primary">Button</div>
-			<div class="bdn-button bdn-button-lg">Button</div>
+			<div class="b-button">Button</div>
+			<div class="b-button b-button-sm b-button-primary">Button</div>
+			<div class="b-button b-button-lg">Button</div>
 		</div>
 	</div>
 
