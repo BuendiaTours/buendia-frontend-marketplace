@@ -1,10 +1,10 @@
 # AI Project Context
 
-This project is a SvelteKit application for a REST API frontend.
+This project is a SvelteKit application for a REST API frontend with two domains: **backoffice** (admin panel) and **marketplace** (public-facing).
 
 ## Framework
 
-- **SvelteKit v5** (runes enabled)
+- **SvelteKit v5** (runes enabled, experimental `remoteFunctions` and `async` compiler)
 - **TypeScript** (strict mode)
 - **Vite** as build tool
 
@@ -32,7 +32,7 @@ This project is a SvelteKit application for a REST API frontend.
 - **API Client**: Use `import { api, ApiError } from '$lib/api/index'` for all API calls
 - **Never use `fetch()` directly** - always use the centralized API client
 - **Pagination, filters and sorting** are server-driven via URL params
-- **Route groups**: `(app)` for authenticated pages, `(auth)` for login/register
+- **Route groups**: `(backoffice)` for admin pages, `(marketplace)` for public pages, `(marketplace-checkout)` for checkout flow. `(auth)` is nested inside `(backoffice)`
 - **Dynamic routes**: Use `[slug]` for dynamic parameters
 
 ## API Client
@@ -41,19 +41,20 @@ This project is a SvelteKit application for a REST API frontend.
 - **Always import from** `$lib/api/index`
 - **Usage**: `await api.activities.getAll(fetch, { page: 1 })`
 - **Error handling**: Wrap in try-catch and check for `ApiError` instance
+- **Dual API**: Separate clients for backoffice (`$lib/api/backoffice`) and marketplace (`$lib/api/marketplace`). Default export (`$lib/api/index`) re-exports backoffice for backwards compatibility.
 - **Configuration**:
-  - Routes: `src/lib/api/endpoints.config.ts`
-  - Behavior: `src/lib/api/config.ts`
+  - Routes: `src/lib/api/shared/endpoints.config.ts`
+  - Behavior: `src/lib/api/shared/config.ts`
 - **Features**: Retry logic, timeout, error handling tipado, logging
 - **Never use** `PUBLIC_API_BASE_URL` directly - let the client handle it
 
 ## Forms & Validation
 
 - **SvelteKit Superforms** for form handling
-- **Zod** for schema validation (not Valibot)
+- **Zod** for schema validation (valibot is installed but NOT used — use Zod)
 - **Progressive enhancement** with `use:enhance`
 - **Server-side validation** in `+page.server.ts`
-- Form schemas in separate `.schema.ts` files
+- Form schemas in separate `.schema.ts` files colocated with their routes
 
 ## UI Components & Libraries
 
@@ -62,6 +63,9 @@ This project is a SvelteKit application for a REST API frontend.
 - **PhotoSwipe**: Image galleries
 - **Swiper**: Carousels and sliders
 - **@internationalized/date**: Date handling
+- **bytemd**: Markdown editor (used in `FormTextareaMarkdown`)
+- **theme-change**: Theme switching support
+- **Storybook v10**: Component development (config: `.storybook-marketplace`)
 
 ## Internationalization (i18n)
 
@@ -96,7 +100,7 @@ This project is a SvelteKit application for a REST API frontend.
 - ❌ No Redux or Vuex
 - ❌ No Vue-specific concepts
 - ❌ No Svelte 4 legacy syntax (`export let`, `$:`, etc.)
-- ❌ No Valibot (use Zod instead)
+- ❌ No Valibot (installed as dependency but NOT used — always use Zod)
 - ❌ No heavy UI libraries (Material UI, Ant Design, etc.)
 - ❌ No CSS-in-JS libraries
 
@@ -139,9 +143,9 @@ add-form-field booking-form guestCount number
 **Files to modify:**
 
 1. `src/lib/types.ts` - Add property to type
-2. `src/lib/schemas/[resource].schema.ts` - Add Zod validation
-3. `src/routes/(backoffice)/[resource]/[slug]/edit/+page.server.ts` - Update data handler
-4. `src/routes/(backoffice)/[resource]/[slug]/edit/+page.svelte` - Add UI component
+2. `src/routes/(backoffice)/backoffice/[resource]/[resource]-form.schema.ts` - Add Zod validation
+3. `src/routes/(backoffice)/backoffice/[resource]/[slug]/edit/+page.server.ts` - Update data handler
+4. `src/routes/(backoffice)/backoffice/[resource]/[slug]/edit/+page.svelte` - Add UI component
 
 **Pro tip:** Use the `add-form-field` skill for step-by-step guidance.
 
@@ -151,9 +155,9 @@ add-form-field booking-form guestCount number
 
 **Files to modify:**
 
-1. `src/lib/api/endpoints-metadata.ts` - Add metadata
-2. `src/lib/api/endpoints/[resource].ts` - Implement method
-3. `src/lib/api/index.ts` - Export (if new resource)
+1. `src/lib/api/shared/endpoints.config.ts` - Add endpoint configuration
+2. `src/lib/api/backoffice/endpoints/[resource].ts` or `src/lib/api/marketplace/endpoints/[resource].ts` - Implement method
+3. `src/lib/api/backoffice/index.ts` or `src/lib/api/marketplace/index.ts` - Export (if new resource)
 
 **Pro tip:** Use the `add-api-endpoint` skill for detailed workflow.
 
@@ -163,10 +167,9 @@ add-form-field booking-form guestCount number
 
 **Steps:**
 
-1. Analyze similar components in `src/lib/components/`
+1. Analyze similar components in `src/lib/components/backoffice/` or `src/lib/components/marketplace/`
 2. Use Svelte 5 runes (`$props()`, `$state()`, `$derived()`)
-3. Document with JSDoc
-4. Add example to `/components` page
+3. Add example to `/components` page
 
 **Pro tip:** Use the `create-component` skill for templates and patterns.
 
@@ -207,7 +210,7 @@ const path = API_ENDPOINTS.activities.list();
 	let count = $state(0);
 
 	// Derived
-	const doubled = $derived(() => count * 2);
+	const doubled = $derived(count * 2);
 
 	// Effect
 	$effect(() => {
@@ -247,7 +250,7 @@ try {
 
 ```
 → Use Superforms + Zod schema
-→ Components from `$lib/components/forms/`
+→ Components from `$lib/components/backoffice/forms/`
 → Server-side validation in actions
 → Handle errors with `fail()`
 ```
@@ -275,27 +278,42 @@ try {
 ```
 src/
 ├── lib/
-│   ├── types.ts                    ← All TypeScript types
-│   ├── schemas/                    ← Zod validation schemas
-│   ├── api/                        ← API client and endpoints
-│   │   ├── endpoints-metadata.ts   ← Endpoint definitions (source of truth)
-│   │   ├── endpoints/              ← Endpoint implementations
-│   │   └── index.ts                ← Centralized exports
-│   ├── components/                 ← Reusable components
-│   │   ├── forms/                  ← Form components
-│   │   └── *.svelte                ← UI components
-│   ├── actions/                    ← Svelte actions
-│   └── utils/                      ← Utility functions
+│   ├── types.ts                          ← All TypeScript types
+│   ├── api/                              ← API client and endpoints
+│   │   ├── shared/
+│   │   │   ├── endpoints.config.ts       ← Endpoint definitions (source of truth)
+│   │   │   ├── config.ts                 ← API behavior config (retry, timeout, headers)
+│   │   │   ├── client.ts                 ← HTTP client
+│   │   │   ├── errors.ts                 ← ApiError class
+│   │   │   └── types.ts                  ← API types
+│   │   ├── backoffice/
+│   │   │   ├── endpoints/                ← Backoffice endpoint implementations
+│   │   │   └── index.ts                  ← Backoffice API exports
+│   │   ├── marketplace/
+│   │   │   ├── endpoints/                ← Marketplace endpoint implementations
+│   │   │   └── index.ts                  ← Marketplace API exports
+│   │   └── index.ts                      ← Re-exports backoffice (backwards compat)
+│   ├── components/
+│   │   ├── backoffice/
+│   │   │   ├── forms/                    ← Backoffice form components
+│   │   │   └── *.svelte                  ← Backoffice UI components
+│   │   └── marketplace/                  ← Marketplace UI components
+│   ├── actions/                          ← Svelte actions
+│   │   ├── backoffice/
+│   │   └── marketplace/
+│   └── utils/                            ← Utility functions
 └── routes/
-    ├── (backoffice)/               ← Admin/authenticated pages
+    ├── (backoffice)/backoffice/          ← Admin pages
+    │   ├── (auth)/                       ← Login/register (nested)
     │   └── [resource]/
-    │       ├── +page.svelte        ← Client component
-    │       ├── +page.server.ts     ← Server logic
-    │       └── [slug]/
-    │           └── edit/
-    │               ├── +page.svelte
-    │               └── +page.server.ts
-    └── (auth)/                     ← Login/register pages
+    │       ├── +page.svelte
+    │       ├── +page.server.ts
+    │       ├── [resource]-form.schema.ts ← Zod schema (colocated)
+    │       └── [slug]/edit/
+    │           ├── +page.svelte
+    │           └── +page.server.ts
+    ├── (marketplace)/                    ← Public-facing pages
+    └── (marketplace-checkout)/           ← Checkout flow
 ```
 
 ---
@@ -337,7 +355,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
-import { activityEditSchema } from '$lib/schemas/activity.schema';
+import { activityEditSchema } from '../activity-form.schema';
 
 export const actions: Actions = {
 	default: async ({ request, params, fetch }) => {
@@ -378,22 +396,21 @@ export const actions: Actions = {
 ### When modifying forms:
 
 - Update ALL related files (types, schema, server, UI)
-- Use form components from `$lib/components/forms/`
+- Use form components from `$lib/components/backoffice/forms/`
 - Always bind to `$form.*` and `$errors.*`
 
 ### When working with API:
 
 - Use `.path()` to get URLs (post-refactor structure)
 - Always handle `ApiError` in catch blocks
-- Include metadata in `endpoints-metadata.ts`
+- Add config in `src/lib/api/shared/endpoints.config.ts`
 - Verify endpoint appears in `/api-catalog`
 
 ### When creating components:
 
-- Study similar components first
+- Study similar components first in `src/lib/components/backoffice/` or `src/lib/components/marketplace/`
 - Use `$props()` for props, not `export let`
 - Use `$bindable()` for two-way binding
-- Document with JSDoc and examples
 - Add visual example to `/components` page
 
 ---
