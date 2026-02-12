@@ -23,6 +23,7 @@
 		background-color: var(--color-action-primary-bg-active);
 	}
 
+	&.disabled,
 	&[disabled] {
 		background-color: var(--color-action-primary-bg-disabled);
 		color: var(--color-action-primary-text-disabled);
@@ -60,6 +61,7 @@
 			color: var(--color-action-secondary-text-active);
 		}
 
+		&.disabled,
 		&[disabled] {
 			border-color: var(--color-action-secondary-border-disabled);
 			background-color: var(--color-action-secondary-bg-disabled);
@@ -85,6 +87,7 @@
 			color: var(--color-action-tertiary-text-active);
 		}
 
+		&.disabled,
 		&[disabled] {
 			border-color: var(--color-action-tertiary-border-disabled);
 			background-color: var(--color-action-tertiary-bg-disabled);

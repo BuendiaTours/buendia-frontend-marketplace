@@ -30,6 +30,16 @@
 			<div class="b-button b-button-secondary b-button-sm b-button-primary" disabled>Button</div>
 			<div class="b-button b-button-secondary b-button-lg" disabled>Button</div>
 		</div>
+		<div>
+			<div class="b-button b-button-tertiary">Button</div>
+			<div class="b-button b-button-tertiary b-button-sm b-button-primary">Button</div>
+			<div class="b-button b-button-tertiary b-button-lg">Button</div>
+		</div>
+		<div>
+			<div class="b-button b-button-tertiary" disabled>Button</div>
+			<div class="b-button b-button-tertiary b-button-sm b-button-primary" disabled>Button</div>
+			<div class="b-button b-button-tertiary b-button-lg" disabled>Button</div>
+		</div>
 	</div>
 
 	<div class="b-card mb-8">
