@@ -17,7 +17,7 @@
 
 <div class="b-wrapper">
 	<!-- Activity Header -->
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>
 		<div class="mb-2 flex gap-2">
 			<Badge data={{ icon: 'FireFlame', title: activity.kind, class: 'bg-red-500' }} />
@@ -29,7 +29,7 @@
 	</div>
 
 	<!-- Basic Info -->
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h2 class="mb-4 font-semibold text-gray-800">Información básica</h2>
 		<dl class="space-y-2">
 			<div>
@@ -63,7 +63,7 @@
 
 	<!-- Description -->
 	{#if activity.descriptionFull}
-		<div class="b-card mb-8">
+		<div class="a-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Descripción completa</h2>
 			<div class="prose max-w-none text-gray-600">
 				{@html activity.descriptionFull}
@@ -73,7 +73,7 @@
 
 	<!-- Important Info -->
 	{#if activity.infoImportant}
-		<div class="b-card mb-8">
+		<div class="a-card mb-8">
 			<h2 class="mb-4 font-semibold text-yellow-900">⚠️ Información importante</h2>
 			<p class="text-yellow-800">{activity.infoImportant}</p>
 		</div>
@@ -81,7 +81,7 @@
 
 	<!-- Destinations -->
 	{#if activity.destinations && activity.destinations.length > 0}
-		<div class="b-card mb-8">
+		<div class="a-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Destinos</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.destinations as destination}
@@ -93,7 +93,7 @@
 
 	<!-- Categories -->
 	{#if activity.categories && activity.categories.length > 0}
-		<div class="b-card mb-8">
+		<div class="a-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.categories as category}
@@ -105,7 +105,7 @@
 
 	<!-- Attractions -->
 	{#if activity.attractions && activity.attractions.length > 0}
-		<div class="b-card mb-8">
+		<div class="a-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Atracciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.attractions as attraction}

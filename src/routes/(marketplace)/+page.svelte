@@ -5,44 +5,44 @@
 </script>
 
 <div class="b-wrapper mt-6">
-	<div class="b-card mb-2 p-2 text-center">
+	<div class="a-card mb-2 p-2 text-center">
 		<h1 class="bg:var(--color-status-success-bg) mb-4 font-serif font-semibold text-gray-900">
 			Home del Marketplace
 		</h1>
 		<p class="text-neutral-700">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 		<div>
-			<div class="b-button">Button</div>
-			<div class="b-button b-button-sm b-button-primary">Button</div>
-			<div class="b-button b-button-lg">Button</div>
+			<div class="a-button">Button</div>
+			<div class="a-button a-button-sm a-button-primary">Button</div>
+			<div class="a-button a-button-lg">Button</div>
 		</div>
 		<div>
-			<div class="b-button" disabled>Button</div>
-			<div class="b-button b-button-sm b-button-primary" disabled>Button</div>
-			<div class="b-button b-button-lg" disabled>Button</div>
+			<div class="a-button" disabled>Button</div>
+			<div class="a-button a-button-sm a-button-primary" disabled>Button</div>
+			<div class="a-button a-button-lg" disabled>Button</div>
 		</div>
 		<div>
-			<div class="b-button b-button-secondary">Button</div>
-			<div class="b-button b-button-secondary b-button-sm b-button-primary">Button</div>
-			<div class="b-button b-button-secondary b-button-lg">Button</div>
+			<div class="a-button a-button-secondary">Button</div>
+			<div class="a-button a-button-secondary a-button-sm a-button-primary">Button</div>
+			<div class="a-button a-button-secondary a-button-lg">Button</div>
 		</div>
 		<div>
-			<div class="b-button b-button-secondary" disabled>Button</div>
-			<div class="b-button b-button-secondary b-button-sm b-button-primary" disabled>Button</div>
-			<div class="b-button b-button-secondary b-button-lg" disabled>Button</div>
+			<div class="a-button a-button-secondary" disabled>Button</div>
+			<div class="a-button a-button-secondary a-button-sm a-button-primary" disabled>Button</div>
+			<div class="a-button a-button-secondary a-button-lg" disabled>Button</div>
 		</div>
 		<div>
-			<div class="b-button b-button-tertiary">Button</div>
-			<div class="b-button b-button-tertiary b-button-sm b-button-primary">Button</div>
-			<div class="b-button b-button-tertiary b-button-lg">Button</div>
+			<div class="a-button a-button-tertiary">Button</div>
+			<div class="a-button a-button-tertiary a-button-sm a-button-primary">Button</div>
+			<div class="a-button a-button-tertiary a-button-lg">Button</div>
 		</div>
 		<div>
-			<div class="b-button b-button-tertiary" disabled>Button</div>
-			<div class="b-button b-button-tertiary b-button-sm b-button-primary" disabled>Button</div>
-			<div class="b-button b-button-tertiary b-button-lg" disabled>Button</div>
+			<div class="a-button a-button-tertiary" disabled>Button</div>
+			<div class="a-button a-button-tertiary a-button-sm a-button-primary" disabled>Button</div>
+			<div class="a-button a-button-tertiary a-button-lg" disabled>Button</div>
 		</div>
 	</div>
 
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h2 class="mb-3 font-semibold text-gray-800">Destinos</h2>
 
 		{#if data.destinations && data.destinations.length > 0}
@@ -60,7 +60,7 @@
 		{/if}
 	</div>
 
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h2 class="mb-3 font-semibold text-gray-800">Free tours</h2>
 
 		{#if data.freeTours && data.freeTours.length > 0}
@@ -78,7 +78,7 @@
 		{/if}
 	</div>
 
-	<div class="b-card mb-4">
+	<div class="a-card mb-4">
 		<h2 class="mb-3 font-semibold text-gray-800">Paid tours</h2>
 
 		{#if data.paidTours && data.paidTours.length > 0}
@@ -96,7 +96,7 @@
 		{/if}
 	</div>
 
-	<div class="b-card mb-6">
+	<div class="a-card mb-6">
 		<h2 class="mb-3 font-semibold text-gray-800">Other tours</h2>
 
 		{#if data.otherTours && data.otherTours.length > 0}

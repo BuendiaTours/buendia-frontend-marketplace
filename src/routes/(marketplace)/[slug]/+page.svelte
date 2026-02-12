@@ -10,7 +10,7 @@
 	</div>
 
 	<!-- Destination Info -->
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{data.destination.name}</h1>
 		{#if data.destination.descriptionShort}
 			<p class="text-gray-600">{data.destination.descriptionShort}</p>
@@ -27,7 +27,7 @@
 	</div>
 
 	<!-- Categories List -->
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
 
 		{#if data.categories && data.categories.length > 0}
@@ -46,7 +46,7 @@
 	</div>
 
 	<!-- Activities List -->
-	<div class="b-card mb-8">
+	<div class="a-card mb-8">
 		<h2 class="mb-4 font-semibold text-gray-800">
 			Actividades en {data.destination.name}
 		</h2>

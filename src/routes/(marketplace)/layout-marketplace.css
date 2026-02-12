@@ -21,8 +21,13 @@
 @import '$lib/styles/marketplace/components/photoswipe.css';
 
 /* Componentes propios */
-@import '$lib/styles/marketplace/components/b-button.css';
-@import '$lib/styles/marketplace/components/b-card.css';
+/* Atoms */
+@import '$lib/styles/marketplace/components/atoms/a-button.css';
+@import '$lib/styles/marketplace/components/atoms/a-card.css';
+
+/* Molecules */
+
+/* Organisms */
 
 /* ============================================
    DISABLE TAILWIND DEFAULT TEXT CLASSES
