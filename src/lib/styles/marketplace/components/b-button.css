@@ -67,4 +67,29 @@
 			cursor: not-allowed;
 		}
 	}
+
+	&.b-button-tertiary {
+		border: 1px solid var(--color-action-tertiary-border);
+		background-color: var(--color-action-tertiary-bg);
+		color: var(--color-action-tertiary-text);
+
+		&:hover {
+			border-color: var(--color-action-tertiary-border-hover);
+			background-color: var(--color-action-tertiary-bg-hover);
+			color: var(--color-action-tertiary-text-hover);
+		}
+
+		&:active {
+			border-color: var(--color-action-tertiary-border-active);
+			background-color: var(--color-action-tertiary-bg-active);
+			color: var(--color-action-tertiary-text-active);
+		}
+
+		&[disabled] {
+			border-color: var(--color-action-tertiary-border-disabled);
+			background-color: var(--color-action-tertiary-bg-disabled);
+			color: var(--color-action-tertiary-text-disabled);
+			cursor: not-allowed;
+		}
+	}
 }

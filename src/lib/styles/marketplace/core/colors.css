@@ -213,6 +213,28 @@
 	--color-action-primary-border: var(--color-action-primary-border) 3;
 	--color-action-primary-border-disabled: var(--color-action-primary-border-disabled);
 
+	--color-action-secondary-bg: var(--color-action-secondary-bg) 3;
+	--color-action-secondary-bg-hover: var(--color-action-secondary-bg-hover) 7;
+	--color-action-secondary-bg-active: var(--color-action-secondary-bg-active) 7;
+	--color-action-secondary-bg-disabled: var(--color-action-secondary-bg-disabled) a;
+	--color-action-secondary-text: var(--color-action-secondary-text) f;
+	--color-action-secondary-text-disabled: var(--color-action-secondary-text-disabled) 6;
+	--color-action-secondary-icon: var(--color-action-secondary-icon) f;
+	--color-action-secondary-icon-disabled: var(--color-action-secondary-icon-disabled) 6;
+	--color-action-secondary-border: var(--color-action-secondary-border) 3;
+	--color-action-secondary-border-disabled: var(--color-action-secondary-border-disabled);
+
+	--color-action-tertiary-bg: var(--color-action-tertiary-bg) 3;
+	--color-action-tertiary-bg-hover: var(--color-action-tertiary-bg-hover) 7;
+	--color-action-tertiary-bg-active: var(--color-action-tertiary-bg-active) 7;
+	--color-action-tertiary-bg-disabled: var(--color-action-tertiary-bg-disabled) a;
+	--color-action-tertiary-text: var(--color-action-tertiary-text) f;
+	--color-action-tertiary-text-disabled: var(--color-action-tertiary-text-disabled) 6;
+	--color-action-tertiary-icon: var(--color-action-tertiary-icon) f;
+	--color-action-tertiary-icon-disabled: var(--color-action-tertiary-icon-disabled) 6;
+	--color-action-tertiary-border: var(--color-action-tertiary-border) 3;
+	--color-action-tertiary-border-disabled: var(--color-action-tertiary-border-disabled);
+
 	--color-brand-accent-100: var(--color-brand-accent-100);
 	--color-brand-accent-300: var(--color-brand-accent-300);
 	--color-brand-accent-500: var(--color-brand-accent-500);
