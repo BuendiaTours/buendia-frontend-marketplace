@@ -17,6 +17,16 @@ import '../src/routes/(marketplace)/layout-marketplace.css';
 import 'photoswipe/style.css';
 
 const preview: Preview = {
+	decorators: [
+		(story) => {
+			// Añadir clase al HTML element
+			if (typeof document !== 'undefined') {
+				document.documentElement.classList.add('storybook');
+			}
+			return story();
+		}
+	],
+
 	parameters: {
 		// Controls
 		controls: {
