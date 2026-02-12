@@ -1,7 +1,7 @@
 .b-button {
 	display: inline-flex;
 	min-height: 3rem; /* 48 */
-	padding: 0.75rem 1rem;
+	padding: 0.5rem 1rem;
 	border-radius: var(--radius-lg);
 	align-items: center;
 	justify-content: center;
@@ -13,7 +13,7 @@
 
 	cursor: pointer;
 	background-color: var(--color-action-primary-bg);
-	transition: background-color 0.2s ease;
+	transition: background-color border-color color 0.25s ease;
 
 	&:hover {
 		background-color: var(--color-action-primary-bg-hover);
@@ -23,19 +23,48 @@
 		background-color: var(--color-action-primary-bg-active);
 	}
 
-	&:disabled {
+	&[disabled] {
 		background-color: var(--color-action-primary-bg-disabled);
 		color: var(--color-action-primary-text-disabled);
 		cursor: not-allowed;
 	}
 
+	/* Sizes */
 	&.b-button-lg {
-		font-size: var(--font-size-p-base);
-		line-height: var(--line-height-p-base);
+		font-size: var(--font-size-p-lg-tablet);
+		line-height: var(--line-height-p-lg-tablet);
 	}
 
 	&.b-button-sm {
-		font-size: var(--font-size-p-base);
-		line-height: var(--line-height-p-base);
+		min-height: 1.5rem; /* 48 */
+		padding: 0.5rem 1rem;
+		font-size: var(--font-size-p-sm);
+		line-height: var(--line-height-p-sm);
+	}
+
+	/* Variants */
+	&.b-button-secondary {
+		border: 1px solid var(--color-action-secondary-border);
+		background-color: var(--color-action-secondary-bg);
+		color: var(--color-action-secondary-text);
+
+		&:hover {
+			border-color: var(--color-action-secondary-border-hover);
+			background-color: var(--color-action-secondary-bg-hover);
+			color: var(--color-action-secondary-text-hover);
+		}
+
+		&:active {
+			border-color: var(--color-action-secondary-border-active);
+			background-color: var(--color-action-secondary-bg-active);
+			color: var(--color-action-secondary-text-active);
+		}
+
+		&[disabled] {
+			border-color: var(--color-action-secondary-border-disabled);
+			background-color: var(--color-action-secondary-bg-disabled);
+			color: var(--color-action-secondary-text-disabled);
+			cursor: not-allowed;
+		}
 	}
 }

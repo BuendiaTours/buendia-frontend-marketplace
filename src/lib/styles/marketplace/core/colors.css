@@ -22,7 +22,35 @@
 	--color-action-primary-icon: #ffffff;
 	--color-action-primary-icon-disabled: #969ba6;
 	--color-action-primary-border: #4a33b3;
-	--color-action-primary-border-disabled: #cfd3d;
+	--color-action-primary-border-disabled: #cfd3da;
+
+	--color-action-secondary-bg: #ffffff;
+	--color-action-secondary-bg-hover: #ffffff;
+	--color-action-secondary-bg-active: #ffffff;
+	--color-action-secondary-bg-disabled: #ffffff;
+	--color-action-secondary-text: #4a33b3;
+	--color-action-secondary-text-hover: #1d1346;
+	--color-action-secondary-text-disabled: #969ba6;
+	--color-action-secondary-icon: #4a33b3;
+	--color-action-secondary-icon-hover: #1d1346;
+	--color-action-secondary-icon-disabled: #969ba6;
+	--color-action-secondary-border: #4a33b3;
+	--color-action-secondary-border-hover: #1d1346;
+	--color-action-secondary-border-disabled: #969ba6;
+
+	--color-action-tertiary-bg: #ffffff;
+	--color-action-tertiary-bg-hover: #ffffff;
+	--color-action-tertiary-bg-active: #ffffff;
+	--color-action-tertiary-bg-disabled: #ffffff;
+	--color-action-tertiary-text: #2e3138;
+	--color-action-tertiary-text-hover: #1d1346;
+	--color-action-tertiary-text-disabled: #969ba6;
+	--color-action-tertiary-icon: #2e3138;
+	--color-action-tertiary-icon-hover: #1d1346;
+	--color-action-tertiary-icon-disabled: #969ba6;
+	--color-action-tertiary-border: #2e3138;
+	--color-action-tertiary-border-hover: #1d1346;
+	--color-action-tertiary-border-disabled: #969ba6;
 
 	--color-brand-accent-100: #eae6f5;
 	--color-brand-accent-300: #8a78d9;
