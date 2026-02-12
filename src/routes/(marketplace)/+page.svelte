@@ -6,7 +6,9 @@
 
 <div class="bnd-wrapper mt-6">
 	<div class="bnd-card mb-2 p-2 text-center">
-		<h1 class="mb-4 font-serif font-semibold text-gray-900">Home del Marketplace</h1>
+		<h1 class="bg:var(--color-status-success-bg) mb-4 font-serif font-semibold text-gray-900">
+			Home del Marketplace
+		</h1>
 		<p class="text-gray-600">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 	</div>
 

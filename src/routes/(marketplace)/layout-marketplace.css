@@ -21,6 +21,7 @@
 @import '$lib/styles/marketplace/components/photoswipe.css';
 
 /* Componentes propios */
+@import '$lib/styles/marketplace/components/bnd-button.css';
 @import '$lib/styles/marketplace/components/bnd-card.css';
 
 /* ============================================
