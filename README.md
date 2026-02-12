@@ -280,7 +280,7 @@ Renderiza el campo en el HTML:
 		bind:value={$form.newField}
 	/>
 	{#if $errors.newField}
-		<span class="text-sm text-error">{$errors.newField}</span>
+		<span class="text-error text-sm">{$errors.newField}</span>
 	{/if}
 </div>
 ```
@@ -325,7 +325,7 @@ Renderiza el campo en el HTML:
 - Tailwind
 - DaisyUI
 - Bit UI
-- Componentes y nomenclatura `bnd-`
+- Componentes y nomenclatura `b-`
 - Rutas
 - Contextos? `(app)`
 - Layouts

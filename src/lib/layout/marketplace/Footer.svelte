@@ -2,6 +2,6 @@
 	const currentYear = new Date().getFullYear();
 </script>
 
-<footer class="bnd-layout-footer-area">
-	<div class="bnd-wrapper">Main footer</div>
+<footer class="b-layout-footer-area">
+	<div class="b-wrapper">Main footer</div>
 </footer>

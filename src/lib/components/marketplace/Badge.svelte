@@ -26,7 +26,7 @@
 </script>
 
 <div
-	class="bnd-badge text-p-xs inline-flex min-h-7 items-center gap-1 rounded-sm px-2 py-1 font-bold uppercase {data.class ||
+	class="b-badge text-p-xs inline-flex min-h-7 items-center gap-1 rounded-sm px-2 py-1 font-bold uppercase {data.class ||
 		''}"
 >
 	{#if IconComponent}

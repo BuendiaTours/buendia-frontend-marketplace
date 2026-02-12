@@ -4,15 +4,20 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="bnd-wrapper mt-6">
-	<div class="bnd-card mb-2 p-2 text-center">
+<div class="b-wrapper mt-6">
+	<div class="b-card mb-2 p-2 text-center">
 		<h1 class="bg:var(--color-status-success-bg) mb-4 font-serif font-semibold text-gray-900">
 			Home del Marketplace
 		</h1>
-		<p class="text-gray-600">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
+		<p class="text-neutral-700">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
+		<div>
+			<div class="bdn-button">Button</div>
+			<div class="bdn-button bdn-button-sm bdn-button-primary">Button</div>
+			<div class="bdn-button bdn-button-lg">Button</div>
+		</div>
 	</div>
 
-	<div class="bnd-card mb-8">
+	<div class="b-card mb-8">
 		<h2 class="mb-3 font-semibold text-gray-800">Destinos</h2>
 
 		{#if data.destinations && data.destinations.length > 0}
@@ -30,7 +35,7 @@
 		{/if}
 	</div>
 
-	<div class="bnd-card mb-8">
+	<div class="b-card mb-8">
 		<h2 class="mb-3 font-semibold text-gray-800">Free tours</h2>
 
 		{#if data.freeTours && data.freeTours.length > 0}
@@ -48,7 +53,7 @@
 		{/if}
 	</div>
 
-	<div class="bnd-card mb-4">
+	<div class="b-card mb-4">
 		<h2 class="mb-3 font-semibold text-gray-800">Paid tours</h2>
 
 		{#if data.paidTours && data.paidTours.length > 0}
@@ -66,7 +71,7 @@
 		{/if}
 	</div>
 
-	<div class="bnd-card mb-6">
+	<div class="b-card mb-6">
 		<h2 class="mb-3 font-semibold text-gray-800">Other tours</h2>
 
 		{#if data.otherTours && data.otherTours.length > 0}

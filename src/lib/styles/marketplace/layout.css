@@ -1,18 +1,18 @@
 /* Clase personalizada para contenedor del backoffice */
 
-.bnd-layout-content-area {
+.b-layout-content-area {
 	background-color: blue;
 }
 
-.bnd-layout-header-area {
+.b-layout-header-area {
 	background-color: #ee0000;
 }
 
-.bnd-layout-footer-area {
+.b-layout-footer-area {
 	background-color: #00ee00;
 }
 
-.bnd-wrapper {
+.b-wrapper {
 	width: 100%;
 	max-width: var(--breakpoint-xl);
 	margin-inline: auto;
