@@ -12,6 +12,7 @@
 	color: var(--color-action-primary-text);
 
 	cursor: pointer;
+	user-select: none;
 	background-color: var(--color-action-primary-bg);
 	transition: background-color border-color color 0.25s ease;
 
