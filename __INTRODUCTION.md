@@ -72,25 +72,36 @@
 ```
 buendia-frontend-core/
 ├── src/
-│   ├── routes/          # Páginas (rutas automáticas)
-│   │   ├── (backoffice)/ # Grupo: backoffice
-│   │   ├── (auth)/       # Grupo: autenticación
-│   │   └── +layout.svelte # Layout raíz
+│   ├── routes/                    # Páginas (rutas automáticas)
+│   │   ├── (backoffice)/          # Grupo: backoffice (admin panel)
+│   │   │   └── backoffice/
+│   │   │       ├── (auth)/        # Grupo: autenticación (ANIDADO)
+│   │   │       ├── activities/
+│   │   │       ├── destinations/
+│   │   │       └── ...
+│   │   ├── (marketplace)/         # Grupo: marketplace (público)
+│   │   ├── (marketplace-checkout)/ # Grupo: checkout
+│   │   └── +layout.svelte         # Layout raíz
 │   │
-│   ├── lib/             # Código reutilizable
-│   │   ├── api/         # Cliente API y endpoints
-│   │   ├── components/  # Componentes UI
-│   │   ├── utils/       # Funciones auxiliares
-│   │   ├── types.ts     # Tipos TypeScript
-│   │   └── config/      # Configuraciones
+│   ├── lib/                       # Código reutilizable
+│   │   ├── api/                   # Cliente API y endpoints
+│   │   │   ├── shared/            # Código compartido (config, client, errors)
+│   │   │   ├── backoffice/        # API del backoffice
+│   │   │   └── marketplace/       # API del marketplace
+│   │   ├── components/            # Componentes UI
+│   │   │   ├── backoffice/        # Componentes del backoffice
+│   │   │   └── marketplace/       # Componentes del marketplace
+│   │   ├── utils/                 # Funciones auxiliares
+│   │   ├── types.ts               # Tipos TypeScript
+│   │   └── config/                # Configuraciones
 │   │
-│   ├── paraglide/       # i18n (auto-generado)
-│   ├── app.html         # Plantilla HTML base
-│   └── app.d.ts         # Tipos globales
+│   ├── paraglide/                 # i18n (auto-generado)
+│   ├── app.html                   # Plantilla HTML base
+│   └── app.d.ts                   # Tipos globales
 │
-├── static/              # Assets estáticos (imágenes, fuentes)
-├── scripts/             # Scripts de build/generación
-└── [archivos config]    # svelte.config.js, package.json, etc.
+├── static/                        # Assets estáticos (imágenes, fuentes)
+├── scripts/                       # Scripts de build/generación
+└── [archivos config]              # svelte.config.js, package.json, etc.
 ```
 
 ### 2.2 Archivos de configuración importantes
@@ -109,7 +120,54 @@ buendia-frontend-core/
   - `PUBLIC_API_BASE_URL` - URL de la API externa
   - `PUBLIC_GOOGLE_MAPS_API_KEY` - API key de Google Maps
 
-### 2.3 Alias y convenciones
+### 2.3 Arquitectura Dual: Backoffice vs Marketplace
+
+Este proyecto maneja **dos dominios separados** con código, componentes y APIs independientes:
+
+#### **Backoffice (Admin Panel)**
+
+- **Rutas:** `(backoffice)/backoffice/`
+  - `/backoffice/activities` - Gestión de actividades
+  - `/backoffice/destinations` - Gestión de destinos
+  - `/backoffice/login` - Autenticación de admins
+- **Componentes:** `$lib/components/backoffice/`
+  - Formularios complejos (FormInputText, FormSelect, etc.)
+  - Tablas con filtros avanzados
+  - UI con DaisyUI
+- **API:** `$lib/api/backoffice/`
+  - CRUD completo de recursos
+  - Permisos de administrador
+- **Usuarios:** Administradores internos del sistema
+
+#### **Marketplace (Público)**
+
+- **Rutas:** `(marketplace)/`, `(marketplace-checkout)/`
+  - `/actividad/[slug]` - Detalle de actividad pública
+  - `/destino/[slug]` - Detalle de destino
+  - `/checkout` - Proceso de compra
+- **Componentes:** `$lib/components/marketplace/`
+  - Componentes de catálogo
+  - Carrito de compra
+  - UI optimizada para conversión
+- **API:** `$lib/api/marketplace/`
+  - Solo lectura (consultas)
+  - Datos públicos
+- **Usuarios:** Clientes finales del marketplace
+
+#### **Código Compartido**
+
+- **`$lib/api/shared/`** - Cliente HTTP, configuración, manejo de errores
+- **`$lib/utils/`** - Funciones auxiliares comunes
+- **`$lib/types.ts`** - Tipos TypeScript compartidos
+
+**¿Por qué esta separación?**
+
+- ✅ Código más mantenible (cambios en backoffice no afectan marketplace)
+- ✅ Permisos y seguridad separados
+- ✅ Bundles optimizados (menos JS en marketplace)
+- ✅ Equipos pueden trabajar en paralelo
+
+### 2.4 Alias y convenciones
 
 - **`$lib/...`** - Atajo para importar desde `src/lib/`
 
@@ -526,32 +584,46 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 
 ### 5.1 Arquitectura de la capa API
 
-**Estructura:**
+**Estructura (arquitectura dual):**
 
 ```
 src/lib/api/
-├── config.ts              # Configuración (timeout, retry, baseURL)
-├── client.ts              # Cliente HTTP reutilizable
-├── errors.ts              # Clases de error personalizadas
-├── types.ts               # Tipos TypeScript para API
-├── endpoints.config.ts    # Definición de todos los endpoints
-├── common.remote.ts       # Remote Functions (queries simples)
-├── endpoints/             # Módulos por recurso
-│   ├── activities.ts      # CRUD de activities
-│   ├── destinations.ts    # CRUD de destinations
-│   ├── attractions.ts     # CRUD de attractions
-│   └── ...
-└── index.ts               # Export unificado
+├── shared/                      # Código compartido entre backoffice y marketplace
+│   ├── config.ts                # Configuración (timeout, retry, baseURL)
+│   ├── client.ts                # Cliente HTTP reutilizable
+│   ├── errors.ts                # Clases de error personalizadas (ApiError)
+│   ├── types.ts                 # Tipos TypeScript para API
+│   └── endpoints.config.ts      # Definición de todos los endpoints
+│
+├── backoffice/                  # API del backoffice (admin)
+│   ├── common.remote.ts         # Remote Functions (dropdowns, catálogos)
+│   ├── endpoints/               # Módulos por recurso
+│   │   ├── activities.ts        # CRUD completo de activities
+│   │   ├── destinations.ts      # CRUD completo de destinations
+│   │   ├── attractions.ts       # CRUD completo de attractions
+│   │   ├── categories.ts
+│   │   ├── distributives.ts
+│   │   └── tags.ts
+│   └── index.ts                 # Export del backoffice API
+│
+├── marketplace/                 # API del marketplace (público)
+│   ├── endpoints/               # Módulos por recurso (solo lectura)
+│   │   ├── activities.ts        # Consultas públicas de activities
+│   │   ├── categories.ts
+│   │   └── destinations.ts
+│   └── index.ts                 # Export del marketplace API
+│
+└── index.ts                     # Re-exporta backoffice (backwards compatibility)
 ```
 
 **Cliente API centralizado:**
 
 ```typescript
-// $lib/api/client.ts
+// $lib/api/shared/client.ts
 export class ApiClient {
 	// ✅ Retry automático (3 intentos)
-	// ✅ Timeout configurable (30s default)
-	// ✅ Error handling tipado
+	// ✅ Timeout configurable (5s default)
+	// ✅ Error handling tipado (ApiError)
 	// ✅ Logging en desarrollo
 
 	async request<T>(fetch: typeof fetch, path: string, options?: ApiRequestOptions) {
@@ -565,26 +637,43 @@ export const apiClient = new ApiClient(apiConfig);
 **Uso en endpoints:**
 
 ```typescript
-// $lib/api/endpoints/activities.ts
+// $lib/api/backoffice/endpoints/activities.ts
+import { apiClient } from '$lib/api/shared/client';
+import { API_ENDPOINTS } from '$lib/api/shared/endpoints.config';
+
 export const activitiesEndpoints = {
 	async getAll(fetchFn: typeof fetch, params?: any) {
-		const response = await apiClient.request(fetchFn, '/activities', { method: 'GET' });
+		const path = API_ENDPOINTS.activities.list.path();
+		const response = await apiClient.request(fetchFn, path, { method: 'GET', params });
 		return response.data;
 	},
 
 	async getBySlug(fetchFn: typeof fetch, slug: string) {
-		const response = await apiClient.request(fetchFn, `/activities/${slug}`, { method: 'GET' });
+		const path = API_ENDPOINTS.activities.detail.path({ slug });
+		const response = await apiClient.request(fetchFn, path, { method: 'GET' });
 		return response.data;
 	},
 
 	async create(fetchFn: typeof fetch, data: any) {
-		const response = await apiClient.request(fetchFn, '/activities', {
+		const path = API_ENDPOINTS.activities.create.path();
+		const response = await apiClient.request(fetchFn, path, {
 			method: 'POST',
 			body: JSON.stringify(data)
 		});
 		return response.data;
 	}
 };
+```
+
+**Importar la API:**
+
+```typescript
+// Para código de backoffice (default)
+import { api } from '$lib/api/index'; // Re-exporta backoffice
+
+// O explícitamente
+import { api } from '$lib/api/backoffice';
+import { api } from '$lib/api/marketplace';
 ```
 
 ### 5.2 Load functions para datos iniciales (SSR)
@@ -630,12 +719,20 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 **Definición (`*.remote.ts`):**
 
 ```typescript
-// $lib/api/common.remote.ts
+// $lib/api/backoffice/common.remote.ts
 import { query } from '$app/server';
-import { apiClient } from './client';
+import { apiClient } from '$lib/api/shared/client';
+import { API_ENDPOINTS } from '$lib/api/shared/endpoints.config';
 
 export const getDestinationKinds = query(async () => {
-	const response = await apiClient.request(fetch, '/destination-kind');
+	const path = API_ENDPOINTS.destinationKinds.list.path();
+	const response = await apiClient.request(fetch, path);
+	return response.data;
+});
+
+export const getAttractionStatuses = query(async () => {
+	const path = API_ENDPOINTS.attractionStatuses.list.path();
+	const response = await apiClient.request(fetch, path);
 	return response.data;
 });
 ```
@@ -644,7 +741,7 @@ export const getDestinationKinds = query(async () => {
 
 ```svelte
 <script lang="ts">
-  import { getDestinationKinds } from '$lib/api/common.remote';
+  import { getDestinationKinds } from '$lib/api/backoffice/common.remote';
 </script>
 
 <!-- Forma 1: Con await (recomendado) -->
@@ -670,12 +767,23 @@ export const getDestinationKinds = query(async () => {
 {/if}
 ```
 
+**¿Cuándo usar Remote Functions vs Load Functions?**
+
+| Criterio | Remote Functions | Load Functions |
+|----------|------------------|----------------|
+| **Timing** | Después del render inicial | Antes del render (SSR) |
+| **Uso ideal** | Datos secundarios (dropdowns, filtros) | Datos principales de la página |
+| **SEO** | No indexable | Indexable por buscadores |
+| **Loading state** | Necesitas manejar loading | Ya cargado al renderizar |
+| **Ejemplo** | Lista de categorías para un select | Detalles de una actividad |
+
 **Ventajas:**
 
 - ✅ Type-safe (tipos automáticos)
 - ✅ Se ejecuta en el servidor (acceso a secrets)
 - ✅ Sintaxis declarativa con `{#await}`
 - ✅ Menos código que fetch manual
+- ✅ Ideal para datos que cambian raramente (catálogos, enums)
 
 ### 5.4 Form Actions para mutaciones
 
@@ -789,16 +897,49 @@ try {
 }
 ```
 
-**Flash messages para feedback:**
+**Pattern real del proyecto (con Flash messages y redirect):**
 
 ```typescript
+// +page.server.ts - Action completa
+import { fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { api, ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/flashMessages';
+import type { Actions } from './$types';
 
-// En action
-setFlashMessage(cookies, {
-	type: 'success',
-	message: 'Activity created successfully!'
-});
+export const actions: Actions = {
+	default: async ({ request, fetch, cookies }) => {
+		const form = await superValidate(request, zod(activitySchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		try {
+			const activity = await api.activities.create(fetch, form.data);
+
+			// Flash message de éxito
+			setFlashMessage(cookies, {
+				type: 'success',
+				message: 'Activity created successfully!'
+			});
+
+			// Redirigir al detalle
+			throw redirect(303, `/backoffice/activities/${activity.slug}`);
+		} catch (err) {
+			if (err instanceof ApiError) {
+				// Error tipado de la API
+				return fail(err.status || 500, {
+					form,
+					error: err.message
+				});
+			}
+			// Error desconocido
+			return fail(500, { form, error: 'Unexpected error occurred' });
+		}
+	}
+};
 ```
 
 ---
@@ -807,24 +948,27 @@ setFlashMessage(cookies, {
 
 ### 6.1 Componentes de formulario
 
-**Componentes disponibles en `$lib/components/forms/`:**
+**Componentes disponibles en `$lib/components/backoffice/forms/`:**
 
 - `FormInputText` - Input de texto
 - `FormInputSlug` - Input con generación automática de slug
 - `FormTextarea` - Textarea
-- `FormTextareaMarkdown` - Textarea con editor Markdown
+- `FormTextareaMarkdown` - Textarea con editor Markdown (bytemd)
 - `FormSelect` - Select dropdown
 - `FormCheckboxGroup` - Grupo de checkboxes
 - `FormTagManager` - Gestor de tags con autocompletado
+- `FormGeoJson` - Editor de coordenadas geográficas
+- `FormOrderedStringList` - Lista ordenada de strings (drag & drop)
+- `FormOrderedObjectList` - Lista ordenada de objetos (drag & drop)
 - `FormErrorMsg` - Mensaje de error
 
 **Pattern de uso:**
 
 ```svelte
 <script lang="ts">
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 
 	let title = $state('');
 	let description = $state('');
@@ -860,14 +1004,14 @@ setFlashMessage(cookies, {
 
 ### 6.2 Componentes reutilizables
 
-**Importar desde $lib:**
+**Importar desde $lib (backoffice):**
 
 ```svelte
 <script lang="ts">
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
-	import Tag from '$lib/components/Tag.svelte';
-	import StarRating from '$lib/components/StarRating.svelte';
-	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import Breadcrumb from '$lib/components/backoffice/Breadcrumb.svelte';
+	import Tag from '$lib/components/backoffice/Tag.svelte';
+	import StarRating from '$lib/components/backoffice/StarRating.svelte';
+	import ThemeSwitcher from '$lib/components/backoffice/ThemeSwitcher.svelte';
 </script>
 
 <Breadcrumb items={breadcrumbs} />
@@ -882,6 +1026,8 @@ setFlashMessage(cookies, {
 
 <ThemeSwitcher />
 ```
+
+**Nota:** Si estás trabajando en marketplace, usa `$lib/components/marketplace/` en su lugar.
 
 **Contenido dinámico: Slots (clásico) vs Snippets (Svelte 5)**
 
@@ -1175,6 +1321,9 @@ npm run check    # Verificar tipos
 
 ```typescript
 // filters.schema.ts - Definir estructura
+import { createPageField, createPageSizeField } from '$lib/utils/filters';
+import type { FiltersSchema } from '$lib/utils/filters';
+
 export type ActivitiesFilters = {
 	page: number;
 	pageSize: number;
@@ -1186,11 +1335,27 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 	fields: {
 		page: createPageField(),
 		pageSize: createPageSizeField(),
-		status: createStringField('status'),
-		search: createStringField('search')
+		// Campos string opcionales se definen inline
+		status: {
+			type: 'string',
+			queryParam: 'status',
+			optional: true
+		},
+		search: {
+			type: 'string',
+			queryParam: 'search',
+			optional: true
+		}
 	}
 };
 ```
+
+**Helpers disponibles:**
+- `createPageField()` - Campo de paginación
+- `createPageSizeField()` - Tamaño de página
+- `createBooleanField()` - Campos booleanos
+- `createSortField()` - Campo de ordenación
+- `createOrderField()` - Dirección de orden (asc/desc)
 
 ```typescript
 // +page.server.ts - Parsear y usar
@@ -1294,6 +1459,541 @@ activities/
 4. **UPDATE:** Load → API.getBySlug + Init form → Action → API.update → Redirect
 5. **DELETE:** Load → API.getBySlug → Action → API.delete → Redirect
 
+---
+
+### 7.3.1 Tutorial Completo: Crear Vista de Edición
+
+**Objetivo:** Crear desde cero `/backoffice/activities/[slug]/edit` con formulario completo.
+
+Este tutorial cubre **todos los pasos** necesarios: API, tipos, validación y UI.
+
+---
+
+#### **PASO 1: Definir el endpoint en la API**
+
+**1.1 - Añadir configuración del endpoint**
+
+```typescript
+// src/lib/api/shared/endpoints.config.ts
+export const API_ENDPOINTS = {
+	activities: {
+		list: {
+			path: () => '/activities',
+			method: 'GET'
+		},
+		detail: {
+			path: ({ slug }: { slug: string }) => `/activities/${slug}`,
+			method: 'GET'
+		},
+		update: {
+			path: ({ slug }: { slug: string }) => `/activities/${slug}`,
+			method: 'PUT'
+		}
+	}
+	// ... otros recursos
+};
+```
+
+**1.2 - Implementar métodos en el endpoint**
+
+```typescript
+// src/lib/api/backoffice/endpoints/activities.ts
+import { apiClient } from '$lib/api/shared/client';
+import { API_ENDPOINTS } from '$lib/api/shared/endpoints.config';
+import type { ActivityDetail } from '$lib/types';
+
+export const activitiesEndpoints = {
+	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<ActivityDetail> {
+		const path = API_ENDPOINTS.activities.detail.path({ slug });
+		const response = await apiClient.request<ActivityDetail>(fetchFn, path, {
+			method: 'GET'
+		});
+		return response.data;
+	},
+
+	async update(fetchFn: typeof fetch, slug: string, data: Partial<ActivityDetail>) {
+		const path = API_ENDPOINTS.activities.update.path({ slug });
+		const response = await apiClient.request(fetchFn, path, {
+			method: 'PUT',
+			body: JSON.stringify(data)
+		});
+		return response.data;
+	}
+};
+```
+
+**1.3 - Exportar en el índice**
+
+```typescript
+// src/lib/api/backoffice/index.ts
+import { activitiesEndpoints } from './endpoints/activities';
+
+export const api = {
+	activities: activitiesEndpoints
+	// ... otros recursos
+};
+```
+
+---
+
+#### **PASO 2: Definir tipos TypeScript**
+
+```typescript
+// src/lib/types.ts
+export type ActivityDetail = {
+	id: string;
+	title: string;
+	slug: string;
+	codeRef: string;
+	descriptionFull: string;
+	descriptionShort: string;
+	infoImportant: string | null;
+	phoneContact: string | null;
+	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+	tags: Array<{ id: string; name: string }>;
+	categories: Array<{ id: string; name: string }>;
+	attractions: Array<{ id: string; name: string }>;
+	destinations: Array<{ id: string; name: string }>;
+	// ... más campos según tu API
+};
+
+export type ActivityFormData = Omit<ActivityDetail, 'id'>; // Para crear
+export type ActivityUpdateData = Partial<ActivityDetail>; // Para actualizar
+```
+
+**Relación con validación:**
+- Los tipos TypeScript definen la **estructura** de los datos
+- Los schemas Zod definen las **reglas de validación**
+- Superforms conecta ambos automáticamente
+
+---
+
+#### **PASO 3: Crear schema de validación con Zod**
+
+```typescript
+// src/routes/(backoffice)/backoffice/activities/activity-form.schema.ts
+import { z } from 'zod';
+import {
+	ACTIVITY_STATUS_VALUES // Enums generados desde la API
+} from '$lib/config/enums';
+
+/**
+ * Schema de validación para el formulario de actividades
+ * Usado tanto en creación como en edición
+ */
+export const activityFormSchema = z.object({
+	id: z.string(),
+	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
+	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
+	codeRef: z.string().min(1, 'El código de referencia es obligatorio'),
+	descriptionFull: z.string().min(10, 'La descripción debe tener al menos 10 caracteres'),
+	descriptionShort: z.string().min(10, 'La descripción corta debe tener al menos 10 caracteres'),
+	infoImportant: z.string().optional(),
+	phoneContact: z.string().optional(),
+	status: z.enum(ACTIVITY_STATUS_VALUES), // Validación con enum
+	tags: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
+		.default([]),
+	categories: z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string()
+			})
+		)
+		.min(1, 'Debe seleccionar al menos una categoría'), // Validación de array
+	attractions: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
+	destinations: z.array(z.object({ id: z.string(), name: z.string() })).default([])
+});
+
+// Tipo inferido del schema
+export type ActivityFormData = z.infer<typeof activityFormSchema>;
+```
+
+**Tipos de validaciones útiles:**
+```typescript
+// String con validaciones
+z.string().min(3).max(100).email() // Email
+z.string().url() // URL
+z.string().regex(/^[a-z-]+$/) // Slug
+
+// Números
+z.number().min(0).max(100)
+z.number().positive()
+z.number().int()
+
+// Opcionales
+z.string().optional() // undefined | string
+z.string().nullable() // null | string
+
+// Arrays
+z.array(z.string()).min(1).max(10)
+z.array(z.object({ id: z.string() }))
+
+// Enums
+z.enum(['DRAFT', 'PUBLISHED'])
+
+// Transformaciones
+z.string().transform((val) => val.trim().toLowerCase())
+```
+
+---
+
+#### **PASO 4: Crear Load Function (servidor)**
+
+```typescript
+// src/routes/(backoffice)/backoffice/activities/[slug]/edit/+page.server.ts
+import { activityFormSchema } from '../../activity-form.schema';
+import { api, ApiError } from '$lib/api/index';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { setFlashMessage } from '$lib/server/flashMessages';
+import type { PageServerLoad, Actions } from './$types';
+
+// LOAD: Cargar datos existentes
+export const load: PageServerLoad = async ({ fetch, params }) => {
+	try {
+		// 1. Cargar datos de la actividad desde la API
+		const [activity, availableCategories, availableTags] = await Promise.all([
+			api.activities.getBySlug(fetch, params.slug),
+			api.categories.getAll(fetch),
+			api.tags.getAll(fetch)
+		]);
+
+		// 2. Inicializar formulario con los datos existentes
+		const form = await superValidate(
+			{
+				id: activity.id,
+				title: activity.title,
+				slug: activity.slug,
+				codeRef: activity.codeRef,
+				descriptionFull: activity.descriptionFull,
+				descriptionShort: activity.descriptionShort,
+				infoImportant: activity.infoImportant || '',
+				phoneContact: activity.phoneContact || '',
+				status: activity.status,
+				tags: activity.tags || [],
+				categories: activity.categories || [],
+				attractions: activity.attractions || [],
+				destinations: activity.destinations || []
+			},
+			zod(activityFormSchema)
+		);
+
+		// 3. Retornar datos para la UI
+		return {
+			activity,
+			form,
+			availableCategories: availableCategories.data || [],
+			availableTags
+		};
+	} catch (err) {
+		if (err instanceof ApiError) {
+			if (err.type === 'not_found') {
+				throw error(404, 'Actividad no encontrada');
+			}
+			throw error(err.status || 500, err.message);
+		}
+		throw error(500, 'Error al cargar la actividad');
+	}
+};
+
+// ACTION: Procesar el submit del formulario
+export const actions: Actions = {
+	default: async ({ request, params, fetch, cookies }) => {
+		// 1. Validar datos del formulario
+		const form = await superValidate(request, zod(activityFormSchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		// 2. Actualizar en la API
+		try {
+			await api.activities.update(fetch, params.slug, form.data);
+
+			// 3. Flash message de éxito
+			setFlashMessage(cookies, {
+				type: 'success',
+				message: 'Actividad actualizada correctamente'
+			});
+
+			// 4. Redirigir al detalle
+			throw redirect(303, `/backoffice/activities/${params.slug}`);
+		} catch (err) {
+			if (err instanceof ApiError) {
+				return fail(err.status || 500, {
+					form,
+					error: err.message
+				});
+			}
+			return fail(500, { form, error: 'Error al actualizar la actividad' });
+		}
+	}
+};
+```
+
+**Flujo de la Load Function:**
+1. **Fetch datos** desde la API externa
+2. **Inicializar Superforms** con datos existentes
+3. **Retornar datos** para renderizar el formulario
+
+**Flujo de la Action:**
+1. **Validar** datos del form con Zod
+2. **Llamar API** para actualizar
+3. **Flash message** + **Redirect** si OK
+4. **Retornar errores** si falla
+
+---
+
+#### **PASO 5: Crear componente del formulario**
+
+```svelte
+<!-- src/routes/(backoffice)/backoffice/activities/[slug]/edit/+page.svelte -->
+<script lang="ts">
+	import { superForm } from 'sveltekit-superforms';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	// Configurar Superforms
+	const { form, errors, enhance, submitting } = superForm(data.form, {
+		dataType: 'json',
+		resetForm: false
+	});
+
+	// Opciones para el select de status
+	const statusOptions = [
+		{ value: 'DRAFT', label: 'Borrador' },
+		{ value: 'PUBLISHED', label: 'Publicado' },
+		{ value: 'ARCHIVED', label: 'Archivado' }
+	];
+</script>
+
+<div class="backoffice-container">
+	<h1 class="mb-6 text-3xl font-bold">Editar Actividad</h1>
+
+	<form method="POST" use:enhance class="space-y-6">
+		<!-- Input de texto simple -->
+		<FormInputText
+			id="title"
+			label="Título"
+			bind:value={$form.title}
+			error={$errors.title}
+			required
+		/>
+
+		<!-- Input con generación automática de slug -->
+		<FormInputSlug
+			id="slug"
+			label="Slug"
+			sourceValue={$form.title}
+			bind:value={$form.slug}
+			error={$errors.slug}
+			required
+		/>
+
+		<FormInputText
+			id="codeRef"
+			label="Código de Referencia"
+			bind:value={$form.codeRef}
+			error={$errors.codeRef}
+			required
+		/>
+
+		<!-- Textarea con múltiples filas -->
+		<FormTextarea
+			id="descriptionFull"
+			label="Descripción Completa"
+			bind:value={$form.descriptionFull}
+			error={$errors.descriptionFull}
+			rows={8}
+			required
+		/>
+
+		<FormTextarea
+			id="descriptionShort"
+			label="Descripción Corta"
+			bind:value={$form.descriptionShort}
+			error={$errors.descriptionShort}
+			rows={4}
+			required
+		/>
+
+		<FormTextarea
+			id="infoImportant"
+			label="Información Importante"
+			bind:value={$form.infoImportant}
+			error={$errors.infoImportant}
+			rows={4}
+		/>
+
+		<!-- Select dropdown -->
+		<FormSelect
+			id="status"
+			label="Estado"
+			bind:value={$form.status}
+			error={$errors.status}
+			options={statusOptions}
+			required
+		/>
+
+		<!-- Tag manager con autocompletado -->
+		<FormTagManager
+			id="tags"
+			label="Tags"
+			bind:value={$form.tags}
+			availableTags={data.availableTags}
+			error={$errors.tags}
+		/>
+
+		<FormTagManager
+			id="categories"
+			label="Categorías"
+			bind:value={$form.categories}
+			availableTags={data.availableCategories}
+			error={$errors.categories}
+			required
+		/>
+
+		<!-- Error general del formulario -->
+		{#if data.error}
+			<div class="alert alert-error">
+				<span>{data.error}</span>
+			</div>
+		{/if}
+
+		<!-- Botones de acción -->
+		<div class="flex gap-4">
+			<button type="submit" class="btn btn-primary" disabled={$submitting}>
+				{$submitting ? 'Guardando...' : 'Guardar Cambios'}
+			</button>
+
+			<a href="/backoffice/activities/{data.activity.slug}" class="btn btn-ghost">
+				Cancelar
+			</a>
+		</div>
+	</form>
+</div>
+```
+
+**Conectando validación con errores en UI:**
+
+1. **Zod valida** en el servidor (`+page.server.ts`)
+2. **Superforms propaga** errores a `$errors`
+3. **Componentes muestran** errores si existen:
+
+```svelte
+<FormInputText
+	id="title"
+	bind:value={$form.title}
+	error={$errors.title}  ← Error de Zod aquí
+/>
+```
+
+Si Zod falla en `z.string().min(3)`, `$errors.title` contendrá:
+```
+['El título debe tener al menos 3 caracteres']
+```
+
+Y el componente lo mostrará automáticamente debajo del input.
+
+---
+
+#### **PASO 6: Probar y debuggear**
+
+**6.1 - Iniciar el servidor:**
+
+```bash
+npm run dev
+```
+
+**6.2 - Navegar a:**
+
+```
+http://localhost:5173/backoffice/activities/lisbon-food-tour/edit
+```
+
+**6.3 - Debugging común:**
+
+```svelte
+<!-- Ver estado actual del formulario -->
+<script>
+	$effect(() => {
+		console.log('Form data:', $form);
+		console.log('Errors:', $errors);
+		console.log('Submitting:', $submitting);
+	});
+</script>
+```
+
+**6.4 - Verificar en DevTools:**
+
+- **Network tab:** Ver requests a la API
+- **Console:** Ver logs de validación
+- **Svelte DevTools:** Inspeccionar estado de componentes
+
+---
+
+#### **Resumen del Flujo Completo**
+
+```
+1. Usuario carga /backoffice/activities/[slug]/edit
+   ↓
+2. Load Function ejecuta en servidor:
+   - api.activities.getBySlug() → fetch datos de API externa
+   - superValidate() → inicializa form con datos
+   ↓
+3. +page.svelte renderiza:
+   - Formulario con datos pre-cargados
+   - Inputs conectados a $form
+   - Errores conectados a $errors
+   ↓
+4. Usuario edita y hace submit
+   ↓
+5. Action ejecuta en servidor:
+   - superValidate() → valida con Zod
+   - Si inválido → return fail(400, { form })
+   - Si válido → api.activities.update()
+   ↓
+6. Si OK:
+   - setFlashMessage('success')
+   - redirect(303, '/backoffice/activities/[slug]')
+   ↓
+7. Si error:
+   - return fail(500, { form, error })
+   - UI muestra errores automáticamente
+```
+
+---
+
+#### **Checklist de Implementación**
+
+- [ ] **API Endpoint** configurado en `endpoints.config.ts`
+- [ ] **Método implementado** en `endpoints/[resource].ts`
+- [ ] **Tipo TypeScript** definido en `$lib/types.ts`
+- [ ] **Schema Zod** creado en `[resource]-form.schema.ts`
+- [ ] **Load Function** implementada en `+page.server.ts`
+- [ ] **Action** implementada en `+page.server.ts`
+- [ ] **Componente** creado en `+page.svelte`
+- [ ] **Formulario conectado** con `superForm()`
+- [ ] **Componentes de form** importados correctamente
+- [ ] **Errores mostrados** en cada campo
+- [ ] **Flash messages** configurados
+- [ ] **Redirect** después de éxito
+- [ ] **Probado** en navegador
+
 ### 7.4 Scripts útiles
 
 **Package.json scripts:**
@@ -1315,6 +2015,10 @@ npm run lint             # Verificar estilo (ESLint)
 
 # Generación
 npm run generate:enums   # Generar enums desde API
+
+# Storybook (desarrollo de componentes)
+npm run storybook        # Servidor de Storybook (port 6006)
+npm run build-storybook  # Build estático de Storybook
 ```
 
 **Workflow recomendado antes de commit:**
@@ -1322,6 +2026,23 @@ npm run generate:enums   # Generar enums desde API
 ```bash
 npm run format && npm run lint && npm run check
 ```
+
+**Storybook para desarrollo de componentes:**
+
+Storybook permite desarrollar y probar componentes de forma aislada:
+
+```bash
+# Iniciar Storybook
+npm run storybook
+
+# Se abre en http://localhost:6006
+```
+
+- ✅ Visualiza componentes sin necesidad de crear páginas
+- ✅ Prueba diferentes estados y props
+- ✅ Documentación viva de componentes
+- ✅ Testing visual automático
+- ✅ Configuración en `.storybook-marketplace/`
 
 ---
 
@@ -1334,12 +2055,12 @@ npm run format && npm run lint && npm run check
 **Paso 1: Crear la ruta**
 
 ```bash
-# Crear carpeta
-mkdir -p src/routes/(backoffice)/tags
+# Crear carpeta (nota: la ruta real tiene doble backoffice/)
+mkdir -p src/routes/(backoffice)/backoffice/tags
 
 # Crear archivos
-touch src/routes/(backoffice)/tags/+page.svelte
-touch src/routes/(backoffice)/tags/+page.server.ts
+touch src/routes/(backoffice)/backoffice/tags/+page.svelte
+touch src/routes/(backoffice)/backoffice/tags/+page.server.ts
 ```
 
 **Paso 2: Load function (server)**
@@ -1362,7 +2083,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 <!-- +page.svelte -->
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Tag from '$lib/components/Tag.svelte';
+	import Tag from '$lib/components/backoffice/Tag.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	const tags = $derived(data.tags);
@@ -1385,7 +2106,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 # Iniciar dev server
 npm run dev
 
-# Abrir http://localhost:5173/tags
+# Abrir http://localhost:5173/backoffice/tags
 ```
 
 **Paso 5: Agregar un filtro simple**
