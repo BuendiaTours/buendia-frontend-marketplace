@@ -1,0 +1,16 @@
+# Validate conventional commit format
+npx --no -- commitlint --edit "$1"
+
+# Verify commit signing is configured (GPG or SSH)
+SIGN_COMMITS=$(git config --get commit.gpgsign)
+if [ "$SIGN_COMMITS" != "true" ]; then
+  echo ""
+  echo "ERROR: Commits must be signed."
+  echo "Configure signing with:"
+  echo "  git config --local commit.gpgsign true"
+  echo "  git config --local user.signingkey <YOUR_KEY_ID>"
+  echo ""
+  echo "See the README for full setup instructions."
+  echo ""
+  exit 1
+fi
