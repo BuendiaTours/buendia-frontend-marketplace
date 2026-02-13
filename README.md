@@ -29,6 +29,201 @@ Arrancar el server: `npm run dev -- --open`
   - Swiper (carousels)
   - @internationalized/date (date handling)
 
+## Configuracion del entorno de desarrollo
+
+### Requisitos previos
+
+- Node.js (v18+)
+- Git (v2.34+ recomendado, necesario para firma de commits)
+- GPG o SSH configurado para firma de commits
+
+### Instalacion
+
+```bash
+git clone <repo-url>
+cd buendia-frontend-core
+npm install
+```
+
+Al ejecutar `npm install`, Husky se configura automaticamente gracias al script `prepare` del `package.json`. Los git hooks quedaran activos sin pasos adicionales.
+
+### Git hooks automaticos
+
+El proyecto usa **Husky** + **lint-staged** + **commitlint** para garantizar la calidad del codigo en cada commit.
+
+| Hook         | Que hace                                                                        |
+| ------------ | ------------------------------------------------------------------------------- |
+| `pre-commit` | Ejecuta Prettier y ESLint (con autofix) sobre los archivos staged               |
+| `commit-msg` | Valida que el mensaje siga Conventional Commits y que la firma este configurada |
+
+Esto significa que:
+
+- No puedes hacer commit de codigo sin formatear o con errores de lint.
+- No puedes hacer commit con mensajes que no sigan el formato convencional.
+- No puedes hacer commit sin tener la firma configurada.
+
+### Conventional Commits
+
+Todos los mensajes de commit deben seguir el formato [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+tipo(alcance opcional): descripcion
+```
+
+**Tipos permitidos:**
+
+| Tipo       | Cuando usarlo                                              |
+| ---------- | ---------------------------------------------------------- |
+| `feat`     | Nueva funcionalidad                                        |
+| `fix`      | Correccion de bug                                          |
+| `docs`     | Cambios en documentacion                                   |
+| `style`    | Formateo, punto y coma, etc. (sin cambio de logica)        |
+| `refactor` | Refactorizacion de codigo (sin nueva funcionalidad ni fix) |
+| `perf`     | Mejora de rendimiento                                      |
+| `test`     | Anadir o corregir tests                                    |
+| `build`    | Cambios en el sistema de build o dependencias              |
+| `ci`       | Cambios en configuracion de CI/CD                          |
+| `chore`    | Tareas de mantenimiento                                    |
+| `revert`   | Revertir un commit anterior                                |
+
+**Ejemplos:**
+
+```bash
+git commit -m "feat: add search filter to activities list"
+git commit -m "fix(auth): resolve token refresh loop"
+git commit -m "docs: update README with commit conventions"
+git commit -m "refactor(api): simplify error handling in client"
+```
+
+### Firma de commits (GPG)
+
+Los commits deben ir firmados. A continuacion se explica como configurarlo en cada sistema operativo. La configuracion es **local al proyecto** (no global).
+
+#### macOS
+
+```bash
+# 1. Instalar GPG
+brew install gnupg
+
+# 2. Generar una clave GPG
+gpg --full-generate-key
+# Selecciona: RSA and RSA, 4096 bits, tu nombre y email del proyecto
+
+# 3. Obtener el ID de tu clave
+gpg --list-secret-keys --keyid-format=long
+# Busca la linea:  sec   rsa4096/XXXXXXXXXXXXXXXX
+# XXXXXXXXXXXXXXXX es tu KEY_ID
+
+# 4. Configurar Git (solo este proyecto)
+git config --local user.signingkey XXXXXXXXXXXXXXXX
+git config --local commit.gpgsign true
+
+# 5. (Opcional) Si GPG pide passphrase en terminal, instalar pinentry-mac
+brew install pinentry-mac
+echo "pinentry-program $(which pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+gpgconf --kill gpg-agent
+```
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+# 1. Instalar GPG (normalmente ya viene instalado)
+sudo apt update && sudo apt install gnupg
+
+# 2. Generar una clave GPG
+gpg --full-generate-key
+
+# 3. Obtener el ID de tu clave
+gpg --list-secret-keys --keyid-format=long
+
+# 4. Configurar Git (solo este proyecto)
+git config --local user.signingkey XXXXXXXXXXXXXXXX
+git config --local commit.gpgsign true
+
+# 5. Configurar GPG para terminal (si da error de pinentry)
+export GPG_TTY=$(tty)
+# Anade la linea anterior a tu ~/.bashrc o ~/.zshrc para que sea permanente
+```
+
+#### Windows
+
+```powershell
+# 1. Instalar GPG (descargar Gpg4win de https://www.gpg4win.org/)
+# O con winget:
+winget install GnuPG.Gpg4win
+
+# 2. Abrir una terminal (Git Bash, PowerShell o CMD) y generar clave
+gpg --full-generate-key
+
+# 3. Obtener el ID de tu clave
+gpg --list-secret-keys --keyid-format=long
+
+# 4. Configurar Git (solo este proyecto)
+git config --local user.signingkey XXXXXXXXXXXXXXXX
+git config --local commit.gpgsign true
+
+# 5. Indicar a Git donde esta GPG (si no lo detecta automaticamente)
+# En Git Bash:
+git config --local gpg.program "C:/Program Files (x86)/GnuPG/bin/gpg.exe"
+# Ajusta la ruta segun tu instalacion de Gpg4win
+```
+
+#### Alternativa: Firma con SSH (todos los sistemas)
+
+Si prefieres usar tu clave SSH existente en vez de GPG:
+
+```bash
+# 1. Configurar Git para usar SSH como formato de firma
+git config --local gpg.format ssh
+git config --local user.signingkey ~/.ssh/id_ed25519  # o tu clave SSH
+
+# 2. Activar firma
+git config --local commit.gpgsign true
+```
+
+#### Subir tu clave publica a GitHub
+
+Para que GitHub muestre el badge "Verified" en tus commits:
+
+1. Exporta tu clave publica:
+   - **GPG:** `gpg --armor --export XXXXXXXXXXXXXXXX`
+   - **SSH:** `cat ~/.ssh/id_ed25519.pub`
+2. Ve a GitHub > Settings > SSH and GPG keys.
+3. Anade la clave como **Signing Key** (GPG o SSH segun corresponda).
+
+#### Verificar que funciona
+
+```bash
+# Intenta hacer un commit de prueba
+git commit --allow-empty -m "test: verify commit signing"
+
+# Verifica que esta firmado
+git log --show-signature -1
+```
+
+### Lint y formato automatico en el editor (Zed)
+
+El proyecto incluye configuracion compartida en `.zed/settings.json`. Al abrir el proyecto en Zed:
+
+- **Format on save** — Prettier formatea automaticamente al guardar
+- **ESLint autofix on save** — Corrige errores de lint al guardar en archivos `.js`, `.ts` y `.svelte`
+- **ESLint en tiempo real** — Muestra errores mientras escribes
+
+No necesitas configurar nada adicional en Zed, la configuracion del proyecto se aplica automaticamente.
+
+### Comandos utiles
+
+```bash
+npm run dev              # Servidor de desarrollo (http://localhost:5173)
+npm run build            # Build de produccion
+npm run preview          # Preview del build de produccion
+npm run check            # Type-check (svelte-kit sync + svelte-check)
+npm run lint             # Verificar formato (Prettier) y lint (ESLint)
+npm run format           # Auto-formatear todo el proyecto con Prettier
+```
+
+---
+
 ## Sistema de API Client
 
 Este proyecto utiliza un **cliente de API centralizado** en `src/lib/api/` para todas las llamadas a la API externa.
