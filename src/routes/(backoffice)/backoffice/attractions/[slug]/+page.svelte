@@ -2,9 +2,8 @@
 	import type { Attraction } from '$lib/types';
 	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
-	import { ROUTES } from '$lib/config/routes';
+	import { confirmAction } from '$lib/actions/confirmAction';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	export let data: { attraction: Attraction };
 	const { attraction } = data;
@@ -13,19 +12,13 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a
-		href={`${ROUTES.backoffice.attractions.list}?${page.url.searchParams.toString()}`}
-		class="link"
-	>
+	<a href={`/backoffice/attractions?${page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
 	<div class="flex gap-2">
 		<a
-			href={buildUrlWithFilters(
-				ROUTES.backoffice.attractions.edit(attraction.slug),
-				page.url.searchParams
-			)}
+			href={buildUrlWithFilters(`/attractions/${attraction.slug}/edit`, page.url.searchParams)}
 			class="btn btn-outline btn-primary"
 		>
 			Edit
@@ -33,10 +26,7 @@
 
 		<form
 			method="POST"
-			action={buildUrlWithFilters(
-				ROUTES.backoffice.attractions.delete(attraction.slug),
-				page.url.searchParams
-			)}
+			action={buildUrlWithFilters(`/attractions/${attraction.slug}/delete`, page.url.searchParams)}
 		>
 			<button
 				type="submit"

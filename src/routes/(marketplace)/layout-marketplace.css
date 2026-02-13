@@ -29,6 +29,9 @@
 
 /* Organisms */
 
+/* Components */
+@import '$lib/styles/marketplace/components/c-star-rating.css';
+
 /* ============================================
    DISABLE TAILWIND DEFAULT TEXT CLASSES
    ============================================

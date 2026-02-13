@@ -1,0 +1,135 @@
+/**
+ * STAR RATING COMPONENT
+ * 
+ * Componente de valoración con estrellas independiente de DaisyUI
+ * Usa máscaras CSS para crear las formas de estrella
+ * Soporta medias estrellas y múltiples tamaños
+ */
+
+/* ============================================
+   VARIABLES
+   ============================================ */
+
+:root {
+	/* Colores */
+	--star-rating-filled: #fbbf24; /* yellow-400 */
+	--star-rating-empty: #d1d5db; /* neutral-300 */
+
+	/* Tamaños (altura de las estrellas) */
+	--star-rating-size-xs: 1rem; /* 16px */
+	--star-rating-size-sm: 1.25rem; /* 20px */
+	--star-rating-size-md: 1.5rem; /* 24px */
+	--star-rating-size-lg: 2rem; /* 32px */
+	--star-rating-size-xl: 2.5rem; /* 40px */
+
+	/* Anchos de las mitades (la mitad del tamaño) */
+	--star-rating-half-xs: 0.5rem; /* 8px */
+	--star-rating-half-sm: 0.625rem; /* 10px */
+	--star-rating-half-md: 0.75rem; /* 12px */
+	--star-rating-half-lg: 1rem; /* 16px */
+	--star-rating-half-xl: 1.25rem; /* 20px */
+}
+
+/* ============================================
+   CONTENEDOR BASE
+   ============================================ */
+
+.c-star-rating {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+/* ============================================
+   MÁSCARA BASE
+   ============================================ */
+
+.c-mask {
+	display: inline-block;
+	height: 1.5rem; /* 24px - default size */
+	width: 1.5rem; /* 24px - default size */
+	border-radius: 0;
+	background-color: currentColor;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-position: center;
+}
+
+/* ============================================
+   FORMA DE ESTRELLA (SVG)
+   ============================================ */
+
+.c-mask-star {
+	/* SVG de estrella de 5 puntas (mismo que DaisyUI) */
+	-webkit-mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3e%3cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'/%3e%3c/svg%3e");
+	mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3e%3cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'/%3e%3c/svg%3e");
+}
+
+/* ============================================
+   RECORTES DE MITADES (para half stars)
+   ============================================ */
+
+.c-mask-half-1 {
+	/* Muestra solo la mitad izquierda */
+	-webkit-mask-size: 200%;
+	mask-size: 200%;
+	-webkit-mask-position: left;
+	mask-position: left;
+}
+
+.c-mask-half-2 {
+	/* Muestra solo la mitad derecha */
+	-webkit-mask-size: 200%;
+	mask-size: 200%;
+	-webkit-mask-position: right;
+	mask-position: right;
+}
+
+/* ============================================
+   TAMAÑOS
+   ============================================ */
+
+/* xs - 16px */
+.c-star-rating-xs .c-mask {
+	height: var(--star-rating-size-xs);
+	width: var(--star-rating-half-xs);
+}
+
+/* sm - 20px */
+.c-star-rating-sm .c-mask {
+	height: var(--star-rating-size-sm);
+	width: var(--star-rating-half-sm);
+}
+
+/* md - 24px */
+.c-star-rating-md .c-mask {
+	height: var(--star-rating-size-md);
+	width: var(--star-rating-half-md);
+}
+
+/* lg - 32px */
+.c-star-rating-lg .c-mask {
+	height: var(--star-rating-size-lg);
+	width: var(--star-rating-half-lg);
+}
+
+/* xl - 40px */
+.c-star-rating-xl .c-mask {
+	height: var(--star-rating-size-xl);
+	width: var(--star-rating-half-xl);
+}
+
+/* ============================================
+   COLORES POR DEFECTO
+   ============================================ */
+
+.c-star-filled {
+	color: var(--star-rating-filled);
+}
+
+.c-star-empty {
+	color: var(--star-rating-empty);
+}

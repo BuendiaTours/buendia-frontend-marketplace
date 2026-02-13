@@ -1,4 +1,5 @@
 <script lang="ts">
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -10,6 +11,9 @@
 			Home del Marketplace
 		</h1>
 		<p class="text-neutral-700">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
+
+		<StarRating value={3.5} size="md" filledClass="text-blue-500" emptyClass="text-blue-100" />
+
 		<div>
 			<div class="e-button">Button</div>
 			<div class="e-button a-button-sm a-button-primary">Button</div>

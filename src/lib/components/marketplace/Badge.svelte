@@ -14,23 +14,20 @@
 	type Badge = {
 		icon?: string;
 		title: string;
-		class?: string;
+		color?: string;
 	};
 
 	let { data }: { data: Badge } = $props();
 
 	// Mapeo dinámico del nombre del icono al componente
-	let IconComponent = $derived(
+	const iconComponent = $derived(
 		data.icon ? (Icons[data.icon as keyof typeof Icons] as ComponentType) : null
 	);
 </script>
 
-<div
-	class="b-badge text-p-xs inline-flex min-h-7 items-center gap-1 rounded-sm px-2 py-1 font-bold uppercase {data.class ||
-		''}"
->
-	{#if IconComponent}
-		<IconComponent class="size-5" />
+<div class="bnd-badge inline-flex items-center gap-2 rounded-sm uppercase {data.color || ''}">
+	{#if iconComponent}
+		<svelte:component this={iconComponent} class="size-4" />
 	{/if}
 	{data.title}
 </div>

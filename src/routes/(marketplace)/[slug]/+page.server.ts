@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 
 	try {
 		// Fetch destination, activities and categories in parallel
-		const [destination, activitiesResult, categories] = await Promise.all([
+		const [destination, activitiesResult, categoriesResult] = await Promise.all([
 			destinationsEndpoints.getBySlug(fetch, slug),
 			activitiesEndpoints.getAll(fetch, {
 				destination: slug,
@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 			destination,
 			activities: activitiesResult.data,
 			pagination: activitiesResult.pagination,
-			categories
+			categories: categoriesResult.data
 		};
 	} catch (err) {
 		console.error(`Error loading destination ${slug}:`, err);

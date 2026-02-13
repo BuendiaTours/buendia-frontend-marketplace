@@ -14,9 +14,8 @@
 	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction, showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
+	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
 	import type { ActivityListItem } from '$lib/types';
-	import { ROUTES } from '$lib/config/routes';
 
 	// Enums
 	import {
@@ -29,22 +28,22 @@
 	import { DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
 	// Components
-	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
-	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
 
 	// Form layout
-	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
 
 	// Form
-	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
-	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
-	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
-	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
-	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
-	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
-	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
-	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
-	import FormOrderedStringList from '$lib/components/backoffice/forms/FormOrderedStringList.svelte';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/forms/FormInputText.svelte';
+	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
+	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
+	import FormOrderedStringList from '$lib/components/forms/FormOrderedStringList.svelte';
 
 	// Section components
 	import FormActivityMealsAccordion from '../[slug]/edit/components/FormActivityMealsAccordion.svelte';
@@ -124,20 +123,14 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a
-		href={`${ROUTES.backoffice.activities.list}?${page.url.searchParams.toString()}`}
-		class="btn btn-ghost"
-	>
+	<a href={`/backoffice/activities?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
 
 	{#if isEditMode && activitySlug}
 		<form
 			method="POST"
-			action={buildUrlWithFilters(
-				ROUTES.backoffice.activities.delete(activitySlug),
-				page.url.searchParams
-			)}
+			action={buildUrlWithFilters(`/activities/${activitySlug}/delete`, page.url.searchParams)}
 			class="ml-auto"
 		>
 			<button
