@@ -9,8 +9,8 @@
 	let { title = 'Mi Aplicación' }: Props = $props();
 </script>
 
-<header class="b-layout-header-area">
-	<div class="b-wrapper">
+<header class="layout-header-area">
+	<div class="wrapper">
 		Main header {title}
 	</div>
 </header>

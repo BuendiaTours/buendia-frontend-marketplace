@@ -11,7 +11,7 @@
 @import '$lib/styles/marketplace/core/fonts.css';
 @import '$lib/styles/marketplace/core/typography.css';
 @import '$lib/styles/marketplace/core/base.css';
-@import '$lib/styles/marketplace/layout.css';
+@import '$lib/styles/marketplace/core/layout.css';
 
 /* Utilities */
 @import '$lib/styles/marketplace/utilities/icons.css';
@@ -22,8 +22,8 @@
 
 /* Componentes propios */
 /* Atoms */
-@import '$lib/styles/marketplace/components/atoms/a-button.css';
-@import '$lib/styles/marketplace/components/atoms/a-card.css';
+@import '$lib/styles/marketplace/elements/e-button.css';
+@import '$lib/styles/marketplace/elements/e-card.css';
 
 /* Molecules */
 
