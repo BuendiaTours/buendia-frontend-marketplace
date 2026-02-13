@@ -37,43 +37,47 @@
    ============================================ */
 
 /* Deshabilitamos estas clases en el marketplace (pero NO en Storybook) */
-html:not(.storybook) .text-xs,
-html:not(.storybook) .text-sm,
-html:not(.storybook) .text-base,
-html:not(.storybook) .text-lg,
-html:not(.storybook) .text-xl,
-html:not(.storybook) .text-2xl,
-html:not(.storybook) .text-3xl,
-html:not(.storybook) .text-4xl,
-html:not(.storybook) .text-5xl,
-html:not(.storybook) .text-6xl,
-html:not(.storybook) .text-7xl,
-html:not(.storybook) .text-8xl,
-html:not(.storybook) .text-9xl {
-	font-size: unset !important;
-	line-height: unset !important;
+html:not(.storybook) {
+	.text-xs,
+	.text-sm,
+	.text-base,
+	.text-lg,
+	.text-xl,
+	.text-2xl,
+	.text-3xl,
+	.text-4xl,
+	.text-5xl,
+	.text-6xl,
+	.text-7xl,
+	.text-8xl,
+	.text-9xl {
+		font-size: unset !important;
+		line-height: unset !important;
+	}
 }
 
 /* Mensaje de advertencia en consola para desarrollo (pero NO en Storybook) */
-html:not(.storybook) .text-xs::before,
-html:not(.storybook) .text-sm::before,
-html:not(.storybook) .text-base::before,
-html:not(.storybook) .text-lg::before,
-html:not(.storybook) .text-xl::before,
-html:not(.storybook) .text-2xl::before,
-html:not(.storybook) .text-3xl::before,
-html:not(.storybook) .text-4xl::before,
-html:not(.storybook) .text-5xl::before,
-html:not(.storybook) .text-6xl::before,
-html:not(.storybook) .text-7xl::before,
-html:not(.storybook) .text-8xl::before,
-html:not(.storybook) .text-9xl::before {
-	content: '⚠️ Usa clases de tipografía custom (text-h1, text-p-base, etc.)';
-	display: block;
-	color: red;
-	font-size: 12px;
-	font-weight: bold;
-	background: yellow;
-	padding: 4px;
-	margin-bottom: 4px;
+html:not(.storybook) {
+	.text-xs::before,
+	.text-sm::before,
+	.text-base::before,
+	.text-lg::before,
+	.text-xl::before,
+	.text-2xl::before,
+	.text-3xl::before,
+	.text-4xl::before,
+	.text-5xl::before,
+	.text-6xl::before,
+	.text-7xl::before,
+	.text-8xl::before,
+	.text-9xl::before {
+		content: '⚠️ Usa clases de tipografía custom (text-h1, text-p-base, etc.)';
+		display: block;
+		color: red;
+		font-size: 12px;
+		font-weight: bold;
+		background: yellow;
+		padding: 4px;
+		margin-bottom: 4px;
+	}
 }
