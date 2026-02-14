@@ -1,5 +1,7 @@
 // src/lib/utils/filters.ts
 
+import { CriteriaSortOption } from '$core/_shared/enums';
+
 export type PatchValue<T> = T | null | undefined;
 
 /**
@@ -436,9 +438,9 @@ export function createSortField<T extends string>(
 
 /**
  * Helper para crear el campo 'order' en schemas de filtros.
- * Valida que el orden sea 'asc' o 'desc'.
+ * Valida que el orden sea 'ASC' o 'DESC' (CriteriaSortOption).
  *
- * @returns FieldDef<'asc' | 'desc' | undefined> configurado para el campo order
+ * @returns FieldDef<CriteriaSortOption | undefined> configurado para el campo order
  *
  * @example
  * ```typescript
@@ -451,11 +453,12 @@ export function createSortField<T extends string>(
  * };
  * ```
  */
-export function createOrderField(): FieldDef<'asc' | 'desc' | undefined> {
+export function createOrderField(): FieldDef<CriteriaSortOption | undefined> {
 	return {
 		parse: (raw) => {
-			if (raw === 'asc' || raw === 'desc') {
-				return raw;
+			const upper = raw?.toUpperCase();
+			if (upper === CriteriaSortOption.ASC || upper === CriteriaSortOption.DESC) {
+				return upper;
 			}
 			return undefined;
 		},

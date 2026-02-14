@@ -19,6 +19,7 @@
 import { apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 import type { CriteriaResult, ActivityListItem } from '$lib/types';
 
 /**
@@ -40,7 +41,7 @@ export type ActivitiesPublicParams = {
 	freeForKids?: boolean;
 	breakfast?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 };
 
 export const activitiesEndpoints = {

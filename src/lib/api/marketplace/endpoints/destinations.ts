@@ -8,6 +8,7 @@
 import { apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 import type { CriteriaResult, Destination } from '$lib/types';
 
 export type DestinationsPublicParams = {
@@ -18,7 +19,7 @@ export type DestinationsPublicParams = {
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 	// SIN: kind (interno)
 };
 

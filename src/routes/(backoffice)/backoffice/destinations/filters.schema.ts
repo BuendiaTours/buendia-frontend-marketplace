@@ -1,5 +1,6 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 // Enums
 import { DESTINATION_KIND_VALUES, type DestinationKind } from '$core/destinations/enums';
@@ -10,7 +11,7 @@ export type DestinationsFilters = {
 	pageSize?: number;
 	// Ordenamiento
 	sort?: 'id' | 'name' | 'slug' | 'kind';
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 	// Búsqueda
 	q?: string;
 	kind?: DestinationKind;

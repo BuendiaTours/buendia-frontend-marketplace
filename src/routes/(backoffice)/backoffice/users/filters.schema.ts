@@ -1,19 +1,18 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createOrderField, createSortField } from '$lib/utils/filters';
-
-const USER_KINDS = ['CLIENT', 'ADMIN'] as const;
-const USER_STATUSES = ['ACTIVE', 'INACTIVE', 'SUSPENDED'] as const;
+import type { CriteriaSortOption } from '$core/_shared/enums';
+import { UserKind, UserStatus, UserSortAttribute } from '$core/users/enums';
 
 export type UsersFilters = {
 	page?: number;
 	pageSize?: number;
-	sort?: 'name' | 'email';
-	order?: 'asc' | 'desc';
+	sort?: UserSortAttribute;
+	order?: CriteriaSortOption;
 	q?: string;
 	email?: string;
 	phone?: string;
-	kind?: (typeof USER_KINDS)[number];
-	status?: (typeof USER_STATUSES)[number];
+	kind?: UserKind;
+	status?: UserStatus;
 };
 
 function createStringField(key: string) {
@@ -67,12 +66,12 @@ export const usersFiltersSchema: FiltersSchema<UsersFilters> = {
 			},
 			resetPageOnChange: false
 		},
-		sort: createSortField(['name', 'email'] as const),
+		sort: createSortField(Object.values(UserSortAttribute)),
 		order: createOrderField(),
 		q: { ...createStringField('q') },
 		email: { ...createStringField('email') },
 		phone: { ...createStringField('phone') },
-		kind: createSelectField('kind', USER_KINDS),
-		status: createSelectField('status', USER_STATUSES)
+		kind: createSelectField('kind', Object.values(UserKind)),
+		status: createSelectField('status', Object.values(UserStatus))
 	}
 };

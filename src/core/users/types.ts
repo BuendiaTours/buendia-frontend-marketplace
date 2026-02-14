@@ -1,4 +1,5 @@
-import type { UserKind, UserRole, UserStatus } from '$core/users/enums';
+import type { UserKind, UserRole, UserStatus, UserSortAttribute } from '$core/users/enums';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 export type User = {
 	id: string;
@@ -22,6 +23,6 @@ export type UserCriteria = {
 	phone?: string;
 	kind?: UserKind;
 	status?: UserStatus;
-	sort?: string;
-	order?: 'asc' | 'desc';
+	sort?: UserSortAttribute;
+	order?: CriteriaSortOption;
 };

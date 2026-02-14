@@ -1,4 +1,5 @@
 import type { AttractionStatus } from '$core/attractions/enums';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 export type { Attraction, CriteriaResult } from '$lib/types';
 
@@ -11,7 +12,7 @@ export type AttractionsGetAllParams = {
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 };
 
 export type AttractionsSearchParams = { q?: string };

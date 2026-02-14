@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Types
 	import type { ActivityListItem, Column, Destination } from '$lib/types';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { ActivitiesFilters } from './filters.schema';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
@@ -69,7 +70,7 @@
 				totalPages: number;
 			} | null;
 			filters: ActivitiesFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
@@ -545,7 +546,7 @@
 										if (newSort.field && newSort.order) {
 											applyFilterPatch({
 												sort: newSort.field as 'codeRef' | 'title' | 'status' | 'kind',
-												order: newSort.order as 'asc' | 'desc'
+												order: newSort.order
 											});
 										}
 									}}

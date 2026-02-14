@@ -32,6 +32,7 @@ import {
 	createOrderField,
 	createSortField
 } from '$lib/utils/filters';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 export type ActivitiesFilters = {
 	// Paginación
@@ -39,7 +40,7 @@ export type ActivitiesFilters = {
 	pageSize: number;
 	// Ordenamiento
 	sort?: 'codeRef' | 'title' | 'status' | 'kind';
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 	// Fechas
 	from?: string;
 	to?: string;

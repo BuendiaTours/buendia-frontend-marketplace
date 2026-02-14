@@ -5,6 +5,7 @@
 
 	// Types
 	import type { Destination, Column } from '$lib/types';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { DestinationsFilters } from './filters.schema';
 
 	// SvelteKit
@@ -54,7 +55,7 @@
 				totalPages: number;
 			} | null;
 			filters: DestinationsFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();

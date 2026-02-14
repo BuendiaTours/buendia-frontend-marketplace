@@ -5,6 +5,7 @@
 
 	// Types
 	import type { Attraction, Column } from '$lib/types';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { AttractionsFilters } from './filters.schema';
 
 	// SvelteKit
@@ -56,7 +57,7 @@
 				totalPages: number;
 			} | null;
 			filters: AttractionsFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();

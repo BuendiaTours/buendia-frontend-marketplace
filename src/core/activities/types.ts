@@ -1,3 +1,5 @@
+import type { CriteriaSortOption } from '$core/_shared/enums';
+
 export type { ActivityListItem, CriteriaResult } from '$lib/types';
 
 export type ActivitiesGetAllParams = {
@@ -13,5 +15,5 @@ export type ActivitiesGetAllParams = {
 	breakfast?: boolean;
 	wheelchairAccessible?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 };

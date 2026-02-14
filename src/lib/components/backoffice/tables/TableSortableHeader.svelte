@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { NavArrowDown, NavArrowUp, ArrowSeparateVertical } from 'svelte-iconoir';
+	import { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**
 	 * Componente reutilizable para cabeceras de tabla ordenables
@@ -28,7 +29,7 @@
 
 	type SortState = {
 		field: string | null;
-		order: 'asc' | 'desc' | null;
+		order: CriteriaSortOption | null;
 	};
 
 	type TableSortableHeaderConfig = {
@@ -38,7 +39,7 @@
 	type Props = {
 		title: string | undefined;
 		field: string;
-		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
+		currentSort?: { field: string | null; order: CriteriaSortOption | null } | null;
 		onSortChange: (newSort: SortState) => void;
 		config?: Partial<TableSortableHeaderConfig>;
 	};
@@ -53,16 +54,22 @@
 	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
 
 	const isActive = $derived(currentSort?.field === field);
-	const isDesc = $derived(currentSort?.order === 'desc');
+	const isDesc = $derived(currentSort?.order === CriteriaSortOption.DESC);
 
 	function handleClick() {
 		const currentOrder = currentSort?.field === field ? currentSort.order : null;
-		let newOrder: 'asc' | 'desc' | null;
+		let newOrder: CriteriaSortOption | null;
 
 		if (cfg.allowNull) {
-			newOrder = currentOrder === 'asc' ? 'desc' : currentOrder === 'desc' ? null : 'asc';
+			newOrder =
+				currentOrder === CriteriaSortOption.ASC
+					? CriteriaSortOption.DESC
+					: currentOrder === CriteriaSortOption.DESC
+						? null
+						: CriteriaSortOption.ASC;
 		} else {
-			newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+			newOrder =
+				currentOrder === CriteriaSortOption.ASC ? CriteriaSortOption.DESC : CriteriaSortOption.ASC;
 		}
 
 		onSortChange({

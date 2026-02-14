@@ -1,4 +1,5 @@
 import type { DestinationKind } from '$core/destinations/enums';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 export type { Destination, CriteriaResult } from '$lib/types';
 
@@ -11,7 +12,7 @@ export type DestinationsGetAllParams = {
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 };
 
 export type DestinationsSearchParams = { q?: string };

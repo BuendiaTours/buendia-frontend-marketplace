@@ -20,3 +20,7 @@ export enum UserStatus {
 	INACTIVE = 'INACTIVE',
 	SUSPENDED = 'SUSPENDED'
 }
+
+export enum UserSortAttribute {
+	NAME = 'NAME'
+}

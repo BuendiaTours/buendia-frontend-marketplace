@@ -62,6 +62,7 @@ export type Column<T> = {
 	key: keyof T;
 	title?: string;
 	sortable?: boolean;
+	sortField?: string;
 };
 
 export type Destination = {

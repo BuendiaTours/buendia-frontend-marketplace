@@ -1,5 +1,6 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+import type { CriteriaSortOption } from '$core/_shared/enums';
 
 // Enums
 import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$core/attractions/enums';
@@ -10,7 +11,7 @@ export type AttractionsFilters = {
 	pageSize?: number;
 	// Ordenamiento
 	sort?: 'id' | 'name' | 'slug' | 'status';
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 	// Búsqueda
 	q?: string;
 	status?: AttractionStatus;

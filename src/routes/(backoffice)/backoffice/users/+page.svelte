@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { User } from '$core/users/types';
 	import type { Column } from '$lib/types';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { UsersFilters } from './filters.schema';
 
 	import { goto } from '$app/navigation';
@@ -12,7 +13,7 @@
 	import { usersFiltersSchema } from './filters.schema';
 
 	import { USER_ROUTES } from '$core/users/routes';
-	import { UserKind, UserStatus } from '$core/users/enums';
+	import { UserKind, UserStatus, UserSortAttribute } from '$core/users/enums';
 	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -35,7 +36,7 @@
 				totalPages: number;
 			} | null;
 			filters: UsersFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
@@ -90,8 +91,8 @@
 	}
 
 	const columns: Column<User>[] = [
-		{ key: 'name', title: 'Nombre', sortable: true },
-		{ key: 'email', title: 'Email', sortable: true },
+		{ key: 'name', title: 'Nombre', sortable: true, sortField: UserSortAttribute.NAME },
+		{ key: 'email', title: 'Email', sortable: false },
 		{ key: 'kind', title: 'Tipo', sortable: false },
 		{ key: 'status', title: 'Estado', sortable: false }
 	];
@@ -190,7 +191,7 @@
 						{#if col.sortable}
 							<TableSortableHeader
 								title={col.title}
-								field={col.key}
+								field={col.sortField ?? String(col.key)}
 								currentSort={sort}
 								onSortChange={(newSort) =>
 									applyFilterPatch({ sort: newSort.field, order: newSort.order })}

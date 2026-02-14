@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**
 	 * Componente reutilizable para botón de reset de ordenación en tablas
@@ -26,7 +27,7 @@
 	};
 
 	type Props = {
-		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
+		currentSort?: { field: string | null; order: CriteriaSortOption | null } | null;
 		config?: Partial<TableResetSortConfig>;
 	};
 
