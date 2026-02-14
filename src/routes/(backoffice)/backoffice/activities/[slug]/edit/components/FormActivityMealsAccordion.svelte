@@ -11,8 +11,8 @@
 		MEAL_KIND_OPTIONS,
 		MEAL_FORMAT_OPTIONS,
 		MEAL_ADDITIONAL_OPTIONS,
-		MEAL_ALLERGEN_OPTIONS
-	} from '$core/activities/enums';
+		ACTIVITY_ALLERGEN_OPTIONS
+	} from '$lib/labels/activities';
 
 	type Meal = {
 		id: string;
@@ -158,7 +158,7 @@
 						id="allergens-{index}"
 						label="Alérgenos"
 						bind:tags={meals[index].allergens}
-						availableTags={MEAL_ALLERGEN_OPTIONS}
+						availableTags={ACTIVITY_ALLERGEN_OPTIONS}
 						valueType="string"
 						error={errors?.[index]?.allergens?._errors}
 						wrapperClass="md:col-span-12"

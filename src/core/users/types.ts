@@ -1,11 +1,13 @@
+import type { UserKind, UserRole, UserStatus } from '$core/users/enums';
+
 export type User = {
 	id: string;
 	email: string;
 	name: string;
 	phone: string;
-	kind: string;
-	status: string;
-	roles: string[];
+	kind: UserKind;
+	status: UserStatus;
+	roles: UserRole[];
 };
 
 export type UserCreateDto = Omit<User, 'id' | 'status' | 'roles'>;

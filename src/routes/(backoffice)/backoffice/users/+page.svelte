@@ -12,6 +12,8 @@
 	import { usersFiltersSchema } from './filters.schema';
 
 	import { USER_ROUTES } from '$core/users/routes';
+	import { UserKind, UserStatus } from '$core/users/enums';
+	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
@@ -137,8 +139,9 @@
 			onchange={() => applyFilterPatch({ kind: kindFilter || null })}
 		>
 			<option value="">Tipo</option>
-			<option value="CLIENT">CLIENT</option>
-			<option value="ADMIN">ADMIN</option>
+			{#each USER_KIND_OPTIONS as opt (opt.id)}
+				<option value={opt.id}>{opt.name}</option>
+			{/each}
 		</select>
 		<select
 			class="select select-bordered select-sm w-36"
@@ -147,9 +150,9 @@
 			onchange={() => applyFilterPatch({ status: statusFilter || null })}
 		>
 			<option value="">Estado</option>
-			<option value="ACTIVE">ACTIVE</option>
-			<option value="INACTIVE">INACTIVE</option>
-			<option value="SUSPENDED">SUSPENDED</option>
+			{#each USER_STATUS_OPTIONS as opt (opt.id)}
+				<option value={opt.id}>{opt.name}</option>
+			{/each}
 		</select>
 		<button class="btn btn-square btn-outline btn-primary btn-sm" onclick={handleSearch}>
 			<Search />
@@ -226,9 +229,9 @@
 						<td>
 							<span
 								class="badge badge-sm"
-								class:badge-success={item.status === 'ACTIVE'}
-								class:badge-warning={item.status === 'SUSPENDED'}
-								class:badge-error={item.status === 'INACTIVE'}
+								class:badge-success={item.status === UserStatus.ACTIVE}
+								class:badge-warning={item.status === UserStatus.SUSPENDED}
+								class:badge-error={item.status === UserStatus.INACTIVE}
 							>
 								{item.status}
 							</span>

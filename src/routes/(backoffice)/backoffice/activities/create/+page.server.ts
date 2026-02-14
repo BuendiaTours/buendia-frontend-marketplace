@@ -4,6 +4,7 @@ import { activityFormSchema } from '../activity-form.schema';
 import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+import { ActivityStatus } from '$core/activities/enums';
 import type { ActivityListItem } from '$lib/types';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -30,7 +31,7 @@ export const load: PageServerLoad = createCreateLoad({
 		infoImportant: '',
 
 		// Estado y tipos
-		status: 'DRAFT',
+		status: ActivityStatus.DRAFT,
 		kind: '',
 		guideKind: '',
 

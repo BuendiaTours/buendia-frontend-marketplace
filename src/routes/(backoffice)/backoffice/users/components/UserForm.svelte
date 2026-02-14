@@ -9,6 +9,7 @@
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
 
 	type Props = {
 		data: {
@@ -25,17 +26,6 @@
 	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json'
 	});
-
-	const kindOptions = [
-		{ id: 'CLIENT', name: 'Cliente' },
-		{ id: 'ADMIN', name: 'Administrador' }
-	];
-
-	const statusOptions = [
-		{ id: 'ACTIVE', name: 'Activo' },
-		{ id: 'INACTIVE', name: 'Inactivo' },
-		{ id: 'SUSPENDED', name: 'Suspendido' }
-	];
 </script>
 
 <div
@@ -71,14 +61,14 @@
 				label="Tipo"
 				bind:value={$form.kind}
 				error={$errors.kind}
-				options={kindOptions}
+				options={USER_KIND_OPTIONS}
 			/>
 			<FormSelect
 				id="status"
 				label="Estado"
 				bind:value={$form.status}
 				error={$errors.status}
-				options={statusOptions}
+				options={USER_STATUS_OPTIONS}
 			/>
 		{/snippet}
 	</FormAccordion>

@@ -28,7 +28,7 @@
 	import * as m from '$paraglide/messages';
 
 	// Enums
-	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$core/activities/enums';
+	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/labels/activities';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';

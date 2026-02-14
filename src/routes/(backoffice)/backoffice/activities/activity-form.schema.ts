@@ -1,15 +1,14 @@
 import { z } from 'zod/v3';
 
-// Enums used
 import {
-	ACTIVITY_STATUS_VALUES,
-	STAGE_KIND_VALUES,
-	STAGE_REQUIREMENT_VALUES,
-	STAGE_RELEVANCE_VALUES,
-	MEAL_ADDITIONAL_VALUES,
-	MEAL_ALLERGEN_VALUES,
-	MEAL_FORMAT_VALUES,
-	MEAL_KIND_VALUES
+	ActivityStatus,
+	StageKind,
+	StageRequirement,
+	StageRelevance,
+	MealAdditional,
+	ActivityAllergen,
+	MealFormat,
+	MealKind
 } from '$core/activities/enums';
 
 /**
@@ -84,13 +83,13 @@ export const activityFormSchema = z.object({
 					})
 					.nullable()
 					.default(null),
-				kind: z.enum(STAGE_KIND_VALUES, {
+				kind: z.nativeEnum(StageKind, {
 					errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 				}),
-				relevance: z.enum(STAGE_RELEVANCE_VALUES, {
+				relevance: z.nativeEnum(StageRelevance, {
 					errorMap: () => ({ message: 'Debe seleccionar una relevancia válida' })
 				}),
-				requirement: z.enum(STAGE_REQUIREMENT_VALUES, {
+				requirement: z.nativeEnum(StageRequirement, {
 					errorMap: () => ({ message: 'Debe seleccionar un requisito válido' })
 				})
 			})
@@ -100,12 +99,12 @@ export const activityFormSchema = z.object({
 		.array(
 			z.object({
 				id: z.string(),
-				additionalOptions: z.array(z.enum(MEAL_ADDITIONAL_VALUES)).default([]),
-				allergens: z.array(z.enum(MEAL_ALLERGEN_VALUES)).default([]),
-				format: z.enum(MEAL_FORMAT_VALUES, {
+				additionalOptions: z.array(z.nativeEnum(MealAdditional)).default([]),
+				allergens: z.array(z.nativeEnum(ActivityAllergen)).default([]),
+				format: z.nativeEnum(MealFormat, {
 					errorMap: () => ({ message: 'Debe seleccionar un formato válido' })
 				}),
-				kind: z.enum(MEAL_KIND_VALUES, {
+				kind: z.nativeEnum(MealKind, {
 					errorMap: () => ({ message: 'Debe seleccionar un tipo de comida válido' })
 				})
 			})
@@ -124,7 +123,7 @@ export const activityFormSchema = z.object({
 		.default([]),
 	kind: z.string().optional(),
 	guideKind: z.string().optional(),
-	status: z.enum(ACTIVITY_STATUS_VALUES, {
+	status: z.nativeEnum(ActivityStatus, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	})
 });

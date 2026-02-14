@@ -14,7 +14,7 @@
 		STAGE_KIND_OPTIONS,
 		STAGE_RELEVANCE_OPTIONS,
 		STAGE_REQUIREMENT_OPTIONS
-	} from '$core/activities/enums';
+	} from '$lib/labels/activities';
 
 	type Stage = {
 		id: string;

@@ -18,10 +18,9 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 				name: user.name,
 				email: user.email,
 				phone: user.phone,
-				kind: user.kind as 'CLIENT' | 'ADMIN',
-				status: (user.status as 'ACTIVE' | 'INACTIVE' | 'SUSPENDED') || undefined,
-				roles:
-					(user.roles as ('SUPPLY' | 'CUSTOMER_ATTENDANT' | 'FINANCES' | 'CONTENT')[]) || undefined
+				kind: user.kind,
+				status: user.status || undefined,
+				roles: user.roles || undefined
 			},
 			zod(userFormSchema),
 			{ errors: false }

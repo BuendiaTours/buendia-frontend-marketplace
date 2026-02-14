@@ -4,6 +4,7 @@ import { userFormSchema } from '../user-form.schema';
 import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+import { UserStatus } from '$core/users/enums';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = createCreateLoad({
@@ -13,7 +14,7 @@ export const load: PageServerLoad = createCreateLoad({
 		email: '',
 		phone: '',
 		kind: undefined,
-		status: 'ACTIVE',
+		status: UserStatus.ACTIVE,
 		roles: []
 	},
 	breadcrumbLabel: 'Nuevo usuario',

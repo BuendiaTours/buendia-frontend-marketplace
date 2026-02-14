@@ -1,5 +1,3 @@
-import type { ActivityStatus, ActivityKind } from '$core/activities/enums';
-
 export type { ActivityListItem, CriteriaResult } from '$lib/types';
 
 export type ActivitiesGetAllParams = {
@@ -8,8 +6,8 @@ export type ActivitiesGetAllParams = {
 	from?: string;
 	to?: string;
 	destination?: string;
-	kind?: ActivityKind;
-	status?: ActivityStatus;
+	kind?: string;
+	status?: string;
 	isFreeTour?: boolean;
 	freeForKids?: boolean;
 	breakfast?: boolean;
