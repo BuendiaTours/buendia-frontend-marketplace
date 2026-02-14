@@ -29,10 +29,10 @@ export type ApiResponse<T> = {
 	headers: Headers;
 };
 
-export interface AuthProvider {
+export type AuthProvider = {
 	getToken(): Promise<string | null>;
 	formatHeaders(token: string): Record<string, string>;
-}
+};
 
 export type CriteriaResult<T> = {
 	data: T[];

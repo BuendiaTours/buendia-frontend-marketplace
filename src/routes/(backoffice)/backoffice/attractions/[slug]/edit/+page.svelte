@@ -28,7 +28,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const { form, errors, enhance, message } = superForm(data.form, {
+	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json'
 	});
 </script>
@@ -135,7 +135,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrl}
-						<a href={$form.photoUrl} target="_blank">
+						<a href={$form.photoUrl} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrl} alt="" />
 						</a>
 					{/if}
@@ -155,7 +155,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank">
+						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrlHero} alt="" />
 						</a>
 					{/if}

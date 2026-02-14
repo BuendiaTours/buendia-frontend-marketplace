@@ -13,12 +13,9 @@
 
 	// Utils
 	import type { PatchValue } from '$lib/utils/filters';
-	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { destinationsFiltersSchema } from './filters.schema';
-
-	// i18n
-	import * as m from '$paraglide/messages';
 
 	// Enums
 	import { DESTINATION_KIND_OPTIONS } from '$api-destinations/enums';

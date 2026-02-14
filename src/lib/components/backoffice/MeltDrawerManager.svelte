@@ -38,7 +38,7 @@ CASOS DE USO:
 
 USO:
 ```svelte
-<script>
+<script lang="ts">
   let selectedItemId = $state<string | null>(null);
   const items = [...]; // Array de items
 </script>
@@ -69,13 +69,13 @@ VENTAJAS:
 	import type { MeltDrawerManagerConfig } from './MeltDrawerManager';
 	import type { Snippet } from 'svelte';
 
-	interface Props<T extends { id: string } = { id: string; [key: string]: unknown }> {
+	type Props<T extends { id: string } = { id: string; [key: string]: unknown }> = {
 		selectedId?: string | null;
 		items: T[];
 		title?: string | ((item: T) => string);
 		config?: MeltDrawerManagerConfig;
 		content: Snippet<[T]>;
-	}
+	};
 
 	let {
 		selectedId = $bindable<string | null>(null),

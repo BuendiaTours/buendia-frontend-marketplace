@@ -10,12 +10,12 @@
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
 			form: SuperValidated<UserFormSchema>;
 		};
 		mode: 'create' | 'edit';
-	}
+	};
 
 	let { data, mode }: Props = $props();
 

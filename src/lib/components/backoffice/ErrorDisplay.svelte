@@ -41,14 +41,14 @@ USO COMPLETO:
 	import { WarningTriangle } from 'svelte-iconoir';
 	import type { Snippet } from 'svelte';
 
-	interface Props {
+	type Props = {
 		icon?: Snippet;
 		title: string;
 		message: string;
 		technicalDetails?: Record<string, unknown>;
 		showTechnicalDetails?: boolean;
 		actions?: Snippet;
-	}
+	};
 
 	let {
 		icon,

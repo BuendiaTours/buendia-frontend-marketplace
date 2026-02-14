@@ -13,12 +13,12 @@ type PhotoSwipeItem =
 			html: string;
 	  };
 
-export interface PhotoSwipeOptions {
+export type PhotoSwipeOptions = {
 	bgOpacity?: number;
 	wheelToZoom?: boolean;
 	showHideAnimationType?: 'fade' | 'zoom' | 'none';
 	[key: string]: unknown;
-}
+};
 
 export async function openLightbox(
 	items: PhotoSwipeItem[],

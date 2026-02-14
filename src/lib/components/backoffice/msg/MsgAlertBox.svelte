@@ -4,10 +4,10 @@
 
 	type AlertType = 'info' | 'warning' | 'error' | 'success';
 
-	interface AlertMessage {
+	type AlertMessage = {
 		type: AlertType;
 		message: string;
-	}
+	};
 
 	// Obtener el mensaje de alerta desde page.form (cuando viene de una action)
 	// o desde page.data (cuando viene del load)

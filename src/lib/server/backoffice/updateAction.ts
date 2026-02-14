@@ -2,13 +2,14 @@ import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de actualización/guardado
  */
-export interface UpdateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> {
+export type UpdateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
 	/** Ruta base para redirección después de guardar (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
@@ -23,7 +24,7 @@ export interface UpdateActionConfig<T extends Record<string, unknown> = Record<s
 	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
-}
+};
 
 /**
  * Crea un action handler genérico para actualizar/guardar recursos.
@@ -54,10 +55,10 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			throw new Error('Slug parameter is required');
 		}
 
-		console.log('💾 [updateAction] Procesando guardado para:', slug);
+		logger.log('💾 [updateAction] Procesando guardado para:', slug);
 
 		const form = await superValidate(request, config.schema);
-		console.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
+		logger.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
 			console.error('💾 [updateAction] Errores de validación:', form.errors);
@@ -76,13 +77,13 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 		}
 
 		try {
-			console.log('💾 [updateAction] Llamando a API para actualizar...');
+			logger.log('💾 [updateAction] Llamando a API para actualizar...');
 
 			// Transformar datos si se proporciona función de transformación
 			const dataToSend = config.transformData ? config.transformData(form.data) : form.data;
 
 			await config.updateFn(fetch, slug, dataToSend);
-			console.log('✅ [updateAction] API respondió exitosamente');
+			logger.log('✅ [updateAction] API respondió exitosamente');
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -94,7 +95,7 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 				? `${config.basePath}/${slug}/edit`
 				: `${config.basePath}/${slug}`;
 
-			console.log('💾 [updateAction] Redirigiendo a:', redirectPath);
+			logger.log('💾 [updateAction] Redirigiendo a:', redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje

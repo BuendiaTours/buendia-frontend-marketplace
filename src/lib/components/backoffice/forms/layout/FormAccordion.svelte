@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 	import { Menu } from 'svelte-iconoir';
 
@@ -49,20 +50,20 @@
 	 * Nota: Cuando sortable=true, el icono de drag solo aparece cuando el acordeón está cerrado.
 	 */
 
-	interface Props {
+	type Props = {
 		open?: boolean;
 		name?: string;
 		class?: string;
 		sortable?: boolean;
-		title: import('svelte').Snippet;
-		content: import('svelte').Snippet;
-		asideContent?: import('svelte').Snippet;
-		titleBarActions?: import('svelte').Snippet;
+		title: Snippet;
+		content: Snippet;
+		asideContent?: Snippet;
+		titleBarActions?: Snippet;
 		ondragstart?: (event: DragEvent) => void;
 		ondragover?: (event: DragEvent) => void;
 		ondrop?: (event: DragEvent) => void;
 		ondragend?: (event: DragEvent) => void;
-	}
+	};
 
 	let {
 		open = false,
@@ -81,7 +82,7 @@
 
 	let detailsElement: HTMLDetailsElement;
 	let hasChildAccordions = $state(false);
-	let isOpen = $state(open);
+	let isOpen = $state(false);
 
 	onMount(() => {
 		// Detectar si hay acordeones hijos
@@ -89,6 +90,9 @@
 			':scope > .collapse-content details.collapse'
 		);
 		hasChildAccordions = childDetails.length > 0;
+
+		// Sincronizar estado inicial
+		isOpen = detailsElement.open;
 
 		// Observar cambios en el estado open/closed del accordion
 		const observer = new MutationObserver(() => {

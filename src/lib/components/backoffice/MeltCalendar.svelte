@@ -26,7 +26,7 @@ Props disponibles:
 	let { value = $bindable(), onValueChange, class: className = '' }: Props = $props();
 
 	const {
-		elements: { calendar, heading, grid, cell, prevButton, nextButton },
+		elements: { calendar, grid, cell, prevButton, nextButton },
 		states: { months, headingValue, weekdays, value: calendarValue }
 	} = createCalendar({
 		...(value && { defaultValue: value }),
@@ -42,9 +42,8 @@ Props disponibles:
 
 	// Sincronizar value externo con el calendario
 	$effect(() => {
-		if (value !== $calendarValue) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Melt UI internal type mismatch
-			calendarValue.set(value as any);
+		if (value?.toString() !== $calendarValue?.toString()) {
+			calendarValue.set(value);
 		}
 	});
 </script>
@@ -90,14 +89,14 @@ Props disponibles:
 										class={cn(
 											'group relative inline-flex size-10 cursor-pointer items-center justify-center rounded-lg border border-transparent bg-transparent p-0 text-sm font-normal whitespace-nowrap',
 											'hover:border-base-content',
-											'data-[disabled]:pointer-events-none data-[disabled]:opacity-30',
-											'data-[outside-month]:pointer-events-none',
-											'data-[selected]:bg-primary data-[selected]:text-primary-content data-[selected]:font-medium',
-											'data-[unavailable]:line-through data-[unavailable]:opacity-50'
+											'data-disabled:pointer-events-none data-disabled:opacity-30',
+											'data-outside-month:pointer-events-none',
+											'data-selected:bg-primary data-selected:text-primary-content data-selected:font-medium',
+											'data-unavailable:line-through data-unavailable:opacity-50'
 										)}
 									>
 										<div
-											class="bg-base-content group-data-[selected]:bg-primary-content absolute top-[5px] hidden size-1 rounded-full group-data-[today]:block"
+											class="bg-base-content group-data-selected:bg-primary-content absolute top-1.25 hidden size-1 rounded-full group-data-today:block"
 										></div>
 										{date.day}
 									</button>

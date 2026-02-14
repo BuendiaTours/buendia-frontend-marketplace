@@ -64,17 +64,17 @@
 	 * ```
 	 */
 
-	interface TagItem {
+	type TagItem = {
 		id: string;
 		name: string;
-	}
+	};
 
-	interface AvailableTag {
+	type AvailableTag = {
 		id: string;
 		name: string;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		tags: TagItem[] | string[];
@@ -86,7 +86,7 @@
 		wrapperClass?: string;
 		emptyMessage?: string;
 		onTagsChange?: () => void;
-	}
+	};
 
 	let {
 		id,

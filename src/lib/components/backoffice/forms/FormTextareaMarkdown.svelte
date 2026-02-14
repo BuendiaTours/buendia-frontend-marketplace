@@ -30,7 +30,7 @@
 	 * ```
 	 */
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		value: string;
@@ -38,7 +38,7 @@
 		badge?: string;
 		mode?: 'split' | 'tab' | 'auto';
 		wrapperClass?: string;
-	}
+	};
 
 	let {
 		id,

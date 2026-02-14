@@ -2,9 +2,9 @@
 	import type { BreadcrumbItem } from '$lib/types';
 	import { Home } from 'svelte-iconoir';
 
-	interface Props {
+	type Props = {
 		items: BreadcrumbItem[];
-	}
+	};
 
 	let { items }: Props = $props();
 </script>

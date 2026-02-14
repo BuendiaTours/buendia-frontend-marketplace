@@ -18,12 +18,12 @@
 	 * <StarRating value={4.5} filledClass="c-star-filled" emptyClass="c-star-empty" />
 	 */
 
-	interface Props {
+	type Props = {
 		value: number | null;
 		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		filledClass?: string;
 		emptyClass?: string;
-	}
+	};
 
 	let {
 		value,

@@ -30,12 +30,9 @@
 	// Verificar si hay filtros activos
 	const hasActiveFilters = $derived(Object.values(localFilters).some((value) => value));
 
-	// Contar filtros activos
-	const activeFiltersCount = $derived(Object.values(localFilters).filter((value) => value).length);
-
 	// Dialog de Melt UI
 	const {
-		elements: { trigger, overlay, content, title, description, close, portalled },
+		elements: { trigger, overlay, content, title, close, portalled },
 		states: { open }
 	} = createDialog({
 		forceVisible: true
@@ -72,7 +69,7 @@
 	<div use:melt={$portalled}>
 		<div
 			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
+			class="fixed inset-0 z-50 bg-(--default-overlay-bg)"
 			transition:fade={{ duration: 150 }}
 		></div>
 		<div

@@ -62,7 +62,7 @@ export default defineConfig([
 			'svelte/no-navigation-without-resolve': 'off',
 
 			// Errores — deben corregirse
-			'no-console': ['warn', { allow: ['warn', 'error'] }],
+			'no-console': ['error', { allow: ['warn', 'error'] }],
 			'no-unused-vars': 'off', // Usamos @typescript-eslint/no-unused-vars
 			'@typescript-eslint/no-unused-vars': [
 				'warn',
@@ -71,7 +71,14 @@ export default defineConfig([
 					varsIgnorePattern: '^_',
 					ignoreRestSiblings: true
 				}
-			]
+			],
+
+			// Calidad y seguridad
+			'@typescript-eslint/consistent-type-imports': 'error',
+			'@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+			'@typescript-eslint/no-non-null-assertion': 'error',
+			'svelte/no-target-blank': 'error',
+			'svelte/no-top-level-browser-globals': 'error'
 		}
 	},
 
@@ -100,11 +107,12 @@ export default defineConfig([
 		}
 	},
 
-	// Tipos .d.ts: libs externas usan Function
+	// Tipos .d.ts: libs externas usan Function e interface para declaration merging
 	{
 		files: ['**/*.d.ts'],
 		rules: {
-			'@typescript-eslint/no-unsafe-function-type': 'off'
+			'@typescript-eslint/no-unsafe-function-type': 'off',
+			'@typescript-eslint/consistent-type-definitions': 'off'
 		}
 	}
 ]);

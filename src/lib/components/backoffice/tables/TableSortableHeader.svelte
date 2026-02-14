@@ -26,22 +26,22 @@
 	 * ```
 	 */
 
-	interface SortState {
+	type SortState = {
 		field: string | null;
 		order: 'asc' | 'desc' | null;
-	}
+	};
 
-	interface TableSortableHeaderConfig {
+	type TableSortableHeaderConfig = {
 		allowNull: boolean;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		title: string | undefined;
 		field: string;
 		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
 		onSortChange: (newSort: SortState) => void;
 		config?: Partial<TableSortableHeaderConfig>;
-	}
+	};
 
 	const DEFAULT_CONFIG: TableSortableHeaderConfig = {
 		allowNull: true

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Componente Pagination con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/pagination
 
@@ -27,7 +27,7 @@ Props disponibles:
 
 	const {
 		elements: { root, pageTrigger, prevButton, nextButton },
-		states: { pages, range },
+		states: { pages },
 		options
 	} = createPagination({
 		count: 0,
@@ -51,7 +51,7 @@ Props disponibles:
 <nav use:melt={$root} class="my-8 flex items-center justify-center">
 	<button
 		use:melt={$prevButton}
-		class="btn btn-square btn-ghost btn-sm data-[disabled]:btn-disabled mr-2"
+		class="btn btn-square btn-ghost btn-sm data-disabled:btn-disabled mr-2"
 	>
 		<NavArrowLeft class="size-5" />
 	</button>
@@ -63,7 +63,7 @@ Props disponibles:
 			{:else}
 				<button
 					use:melt={$pageTrigger(page)}
-					class="btn join-item btn-sm data-[selected]:text-success"
+					class="btn join-item btn-sm data-selected:text-success"
 				>
 					{page.value}
 				</button>
@@ -73,7 +73,7 @@ Props disponibles:
 
 	<button
 		use:melt={$nextButton}
-		class="btn btn-square btn-ghost btn-sm data-[disabled]:btn-disabled ml-2"
+		class="btn btn-square btn-ghost btn-sm data-disabled:btn-disabled ml-2"
 	>
 		<NavArrowRight class="size-5" />
 	</button>

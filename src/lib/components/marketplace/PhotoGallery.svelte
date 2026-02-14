@@ -47,7 +47,7 @@
 			data-pswp-width={image.width}
 			data-pswp-height={image.height}
 			target="_blank"
-			rel="noreferrer"
+			rel="noopener noreferrer"
 			class="gallery-item"
 		>
 			<img src={image.thumb} alt={image.alt} class="gallery-image" />

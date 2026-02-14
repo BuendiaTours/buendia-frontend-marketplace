@@ -13,12 +13,9 @@
 
 	// Utils
 	import type { PatchValue } from '$lib/utils/filters';
-	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { attractionsFiltersSchema } from './filters.schema';
-
-	// i18n
-	import * as m from '$paraglide/messages';
 
 	// Routes
 	import { ATTRACTION_ROUTES } from '$api-attractions/routes';
@@ -41,7 +38,7 @@
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 
 	// Icons
-	import { Cancel, Check, Plus, Search, WarningTriangle } from 'svelte-iconoir';
+	import { Cancel, Plus, Search } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA

@@ -31,7 +31,7 @@
 	 * ```
 	 */
 
-	interface Props {
+	type Props = {
 		id: string;
 		name: string;
 		main_label: string;
@@ -43,7 +43,7 @@
 		badge?: string;
 		wrapperClass?: string;
 		containerClass?: string;
-	}
+	};
 
 	let {
 		id,

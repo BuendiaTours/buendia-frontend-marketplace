@@ -20,15 +20,15 @@
 	 * ```
 	 */
 
-	interface TableResetSortConfig {
+	type TableResetSortConfig = {
 		buttonText: string;
 		buttonClass: string;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
 		config?: Partial<TableResetSortConfig>;
-	}
+	};
 
 	const DEFAULT_CONFIG: TableResetSortConfig = {
 		buttonText: 'Reset sort',

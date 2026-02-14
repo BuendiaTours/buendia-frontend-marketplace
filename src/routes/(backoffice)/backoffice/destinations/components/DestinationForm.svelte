@@ -19,7 +19,7 @@
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
@@ -27,7 +27,7 @@
 		};
 		mode: 'create' | 'edit';
 		destinationSlug?: string;
-	}
+	};
 
 	let { data, mode, destinationSlug }: Props = $props();
 
@@ -144,7 +144,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank">
+						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrlHero} alt="" />
 						</a>
 					{/if}

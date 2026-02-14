@@ -7,10 +7,10 @@
 	 * @param title - (Opcional) Título del bloque de debug
 	 */
 
-	interface Props {
+	type Props = {
 		data: unknown;
 		title?: string;
-	}
+	};
 
 	let { data, title = 'JSON de la API' }: Props = $props();
 </script>

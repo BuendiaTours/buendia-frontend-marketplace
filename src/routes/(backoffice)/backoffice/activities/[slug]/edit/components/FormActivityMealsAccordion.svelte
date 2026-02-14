@@ -14,19 +14,19 @@
 		MEAL_ALLERGEN_OPTIONS
 	} from '$api-activities/enums';
 
-	interface Meal {
+	type Meal = {
 		id: string;
 		additionalOptions: string[];
 		allergens: string[];
-		format: string | null;
-		kind: string | null;
-	}
+		format: string;
+		kind: string;
+	};
 
-	interface Props {
+	type Props = {
 		meals: Meal[];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
-	}
+	};
 
 	let { meals = $bindable(), errors }: Props = $props();
 
@@ -52,12 +52,12 @@
 		});
 
 		// Crear nueva comida
-		const newMeal = {
+		const newMeal: Meal = {
 			id: uuidv4(),
-			additionalOptions: [] as string[],
-			allergens: [] as string[],
-			format: null,
-			kind: null
+			additionalOptions: [],
+			allergens: [],
+			format: '',
+			kind: ''
 		};
 
 		meals = [...meals, newMeal];

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { WarningTriangle } from 'svelte-iconoir';
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 	import { ROUTES } from '$lib/config/routes';
 

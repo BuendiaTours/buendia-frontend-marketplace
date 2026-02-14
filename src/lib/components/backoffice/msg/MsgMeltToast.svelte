@@ -13,16 +13,16 @@
 
 	type ToastType = 'info' | 'warning' | 'error' | 'success';
 
-	interface ToastData {
+	type ToastData = {
 		title: string;
 		description: string;
 		type: ToastType;
-	}
+	};
 
-	interface AlertMessage {
+	type AlertMessage = {
 		type: ToastType;
 		message: string;
-	}
+	};
 
 	const {
 		elements: { content, title, description, close },

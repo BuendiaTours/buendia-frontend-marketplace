@@ -2,13 +2,14 @@ import { redirect, fail } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de creación
  */
-export interface CreateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> {
+export type CreateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
 	/** Ruta base para redirección después de crear (ej: '/activities', '/attractions') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
@@ -25,7 +26,7 @@ export interface CreateActionConfig<T extends Record<string, unknown> = Record<s
 	redirectToList?: boolean;
 	/** Campo del formulario a usar como identificador en la URL de redirección (default: 'slug') */
 	redirectField?: string;
-}
+};
 
 /**
  * Crea un action handler genérico para crear recursos.
@@ -70,11 +71,11 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			redirectField = 'slug'
 		} = config;
 
-		console.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
+		logger.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
 
 		// 1. Validar formulario
 		const form = await superValidate(request, schema);
-		console.log(`🆕 [createAction] Validación:`, form.valid ? '✅ Válido' : '❌ Inválido');
+		logger.log(`🆕 [createAction] Validación:`, form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
 			console.error(`🆕 [createAction] Errores de validación:`, form.errors);
@@ -93,8 +94,8 @@ export function createCreateAction<T extends Record<string, unknown>>(
 		}
 
 		try {
-			console.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
-			console.log(`🆕 [createAction] Datos a enviar:`, {
+			logger.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
+			logger.log(`🆕 [createAction] Datos a enviar:`, {
 				id: form.data.id,
 				...(form.data.title ? { title: form.data.title } : {}),
 				...(form.data.name ? { name: form.data.name } : {}),
@@ -106,7 +107,7 @@ export function createCreateAction<T extends Record<string, unknown>>(
 
 			// 3. Llamar a la API para crear el recurso
 			await createFn(fetch, dataToSend);
-			console.log(`✅ [createAction] ${entityName} creado exitosamente`);
+			logger.log(`✅ [createAction] ${entityName} creado exitosamente`);
 
 			// 4. Flash message de éxito
 			const successMessage = `${entityName.charAt(0).toUpperCase() + entityName.slice(1)} ${entityName.endsWith('ión') ? 'creada' : 'creado'} correctamente.`;
@@ -126,7 +127,7 @@ export function createCreateAction<T extends Record<string, unknown>>(
 					: `${basePath}/${identifier}`;
 			}
 
-			console.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
+			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			console.error(`❌ [createAction] Error capturado:`, err);
@@ -134,7 +135,7 @@ export function createCreateAction<T extends Record<string, unknown>>(
 
 			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				console.log(`✅ [createAction] Es un redirect, dejándolo pasar`);
+				logger.log(`✅ [createAction] Es un redirect, dejándolo pasar`);
 				throw err;
 			}
 

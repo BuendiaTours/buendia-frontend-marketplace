@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { logger } from '$lib/utils/logger';
 import { apiConfig } from '$api-shared/config';
 import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$api-shared/types';
 import {
@@ -45,7 +46,7 @@ export class ApiClient {
 
 	private log(level: 'info' | 'error', message: string, data?: unknown) {
 		if (this.config.debug) {
-			console[level](`[API] ${message}`, data || '');
+			logger[level === 'info' ? 'log' : 'error'](`[API] ${message}`, data || '');
 		}
 	}
 
@@ -206,7 +207,7 @@ export class ApiClient {
 			};
 			queryLog.push(entry);
 			if (queryLog.length > QUERY_LOG_MAX) queryLog.shift();
-			console.log(`[API] Query #${this.queryCount} ${method} ${pathForLog}`);
+			logger.log(`[API] Query #${this.queryCount} ${method} ${pathForLog}`);
 		}
 
 		try {
@@ -237,7 +238,7 @@ export class ApiClient {
 			}
 
 			if (dev) {
-				console.log(
+				logger.log(
 					`[API] Backend response ${method} ${pathForLog}:`,
 					JSON.stringify(data, null, 2)
 				);

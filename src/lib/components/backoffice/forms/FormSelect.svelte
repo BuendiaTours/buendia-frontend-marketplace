@@ -32,12 +32,12 @@
 	 * ```
 	 */
 
-	interface Option {
+	type Option = {
 		id: string;
 		name: string;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		value: string | undefined;
@@ -50,7 +50,7 @@
 		wrapperClass?: string;
 		selectClass?: string;
 		[key: string]: unknown;
-	}
+	};
 
 	let {
 		id,

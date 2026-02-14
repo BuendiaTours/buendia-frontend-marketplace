@@ -2,7 +2,6 @@ import { z } from 'zod/v3';
 
 // Enums used
 import {
-	ACTIVITY_NOT_SUITABLE_FOR_VALUES,
 	ACTIVITY_STATUS_VALUES,
 	STAGE_KIND_VALUES,
 	STAGE_REQUIREMENT_VALUES,

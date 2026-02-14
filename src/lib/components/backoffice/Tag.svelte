@@ -24,6 +24,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 -->
 
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { Cancel } from 'svelte-iconoir';
 
 	let {
@@ -39,7 +40,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 		class?: string;
 		removable?: boolean;
 		onremove?: () => void;
-		children?: import('svelte').Snippet;
+		children?: Snippet;
 	} = $props();
 
 	function handleRemove(e: MouseEvent) {

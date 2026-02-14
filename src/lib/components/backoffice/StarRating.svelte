@@ -15,12 +15,12 @@
 	 * ... etc
 	 */
 
-	interface Props {
+	type Props = {
 		value: number | null;
 		size?: 'xs' | 'sm' | 'md' | 'lg';
 		filledClass?: string;
 		emptyClass?: string;
-	}
+	};
 
 	let {
 		value,

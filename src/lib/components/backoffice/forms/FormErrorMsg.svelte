@@ -13,9 +13,9 @@
 	 * ```
 	 */
 
-	interface Props {
+	type Props = {
 		error?: string | string[];
-	}
+	};
 
 	let { error }: Props = $props();
 

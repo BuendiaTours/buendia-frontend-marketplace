@@ -32,15 +32,15 @@
 	 * ```
 	 */
 
-	interface GeoJsonPoint {
+	type GeoJsonPoint = {
 		type: 'Point';
 		coordinates: [number, number]; // [longitude, latitude]
-	}
+	};
 
 	/**
 	 * Configuración del componente FormGeoJson
 	 */
-	interface FormGeoJsonConfig {
+	type FormGeoJsonConfig = {
 		showSearchBox: boolean;
 		showCoordinatesDisplay: boolean;
 		enableGeocoding: boolean;
@@ -48,7 +48,7 @@
 		mapTypeControl: boolean;
 		streetViewControl: boolean;
 		fullscreenControl: boolean;
-	}
+	};
 
 	/**
 	 * Valores por defecto de la configuración
@@ -63,7 +63,7 @@
 		fullscreenControl: false
 	};
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		value: GeoJsonPoint | null;
@@ -72,7 +72,7 @@
 		wrapperClass?: string;
 		mapClass?: string;
 		config?: Partial<FormGeoJsonConfig>;
-	}
+	};
 
 	let {
 		id,
@@ -91,8 +91,9 @@
 	let searchQuery = $state('');
 	let isSearching = $state(false);
 	let searchError = $state<string | null>(null);
+	// eslint-disable-next-line svelte/no-top-level-browser-globals -- type-only usage for bind:this
+	let mapContainer = $state<HTMLDivElement>();
 
-	let mapContainer: HTMLDivElement;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 	let map: any = null;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
@@ -139,7 +140,7 @@
 					});
 
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-					marker.addListener('dragend', (event: any) => {
+					marker.addListener('dragend', (_event: any) => {
 						if (!marker) return;
 						const position = marker.position;
 						if (position && position.lat !== undefined && position.lng !== undefined) {

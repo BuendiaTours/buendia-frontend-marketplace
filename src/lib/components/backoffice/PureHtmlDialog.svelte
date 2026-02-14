@@ -23,7 +23,7 @@ VENTAJAS DEL <dialog> NATIVO:
 
 USO BÁSICO:
 ```svelte
-<script>
+<script lang="ts">
   let dialog;
 </script>
 
@@ -57,12 +57,12 @@ USO CON FORMULARIO:
 	import type { PureHtmlDialogConfig } from './PureHtmlDialog';
 	import type { Snippet } from 'svelte';
 
-	interface Props {
+	type Props = {
 		title?: string;
 		config?: PureHtmlDialogConfig;
 		content?: Snippet;
 		actions?: Snippet;
-	}
+	};
 
 	let { title = '', config = {}, content, actions }: Props = $props();
 
@@ -117,7 +117,7 @@ USO CON FORMULARIO:
 
 <dialog
 	bind:this={dialogElement}
-	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-[var(--default-overlay-bg)]"
+	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-(--default-overlay-bg)"
 	onclick={handleBackdropClick}
 	onkeydown={handleKeydown}
 >

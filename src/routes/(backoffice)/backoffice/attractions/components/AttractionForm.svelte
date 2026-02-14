@@ -11,7 +11,6 @@
 	import type { Attraction } from '$lib/types';
 
 	// Components
-	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
@@ -22,7 +21,7 @@
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
@@ -31,7 +30,7 @@
 		};
 		mode: 'create' | 'edit';
 		attractionSlug?: string;
-	}
+	};
 
 	let { data, mode, attractionSlug }: Props = $props();
 
@@ -152,7 +151,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrl}
-						<a href={$form.photoUrl} target="_blank">
+						<a href={$form.photoUrl} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrl} alt="" />
 						</a>
 					{/if}
@@ -172,7 +171,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank">
+						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrlHero} alt="" />
 						</a>
 					{/if}

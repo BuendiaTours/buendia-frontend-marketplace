@@ -16,7 +16,7 @@
 		STAGE_REQUIREMENT_OPTIONS
 	} from '$api-activities/enums';
 
-	interface Stage {
+	type Stage = {
 		id: string;
 		activityId: string;
 		order: number;
@@ -30,15 +30,15 @@
 		kind: string | null;
 		relevance: string | null;
 		requirement: string | null;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		stages: Stage[];
 		activityId: string;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
 		locationBackups: Record<number, { type: 'Point'; coordinates: [number, number] } | null>;
-	}
+	};
 
 	let { stages = $bindable(), activityId, errors, locationBackups = $bindable() }: Props = $props();
 
@@ -47,12 +47,12 @@
 
 	function handleStageDragStart(event: DragEvent, index: number) {
 		draggedStageIndex = index;
-		event.dataTransfer!.effectAllowed = 'move';
+		if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
 	}
 
 	function handleStageDragOver(event: DragEvent) {
 		event.preventDefault();
-		event.dataTransfer!.dropEffect = 'move';
+		if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
 	}
 
 	function handleStageDrop(event: DragEvent, targetIndex: number) {

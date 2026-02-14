@@ -52,22 +52,22 @@
 	 * ```
 	 */
 
-	interface Item {
+	type Item = {
 		id: string;
 		name: string;
-	}
+	};
 
-	interface AvailableItem {
+	type AvailableItem = {
 		id: string;
 		name: string;
-	}
+	};
 
-	interface FormOrderedObjectListConfig {
+	type FormOrderedObjectListConfig = {
 		useDragAndDrop: boolean;
 		showRemoveAll: boolean;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		items: Item[];
@@ -78,7 +78,7 @@
 		wrapperClass?: string;
 		emptyMessage?: string;
 		config?: Partial<FormOrderedObjectListConfig>;
-	}
+	};
 
 	const DEFAULT_CONFIG: FormOrderedObjectListConfig = {
 		useDragAndDrop: false,

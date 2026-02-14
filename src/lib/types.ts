@@ -94,9 +94,9 @@ export type Pagination = {
 	totalPages: number;
 };
 
-export interface BreadcrumbItem {
+export type BreadcrumbItem = {
 	label: string;
 	href?: string;
-}
+};
 
 export type BreadcrumbConfig = BreadcrumbItem[];

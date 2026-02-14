@@ -14,7 +14,7 @@
 	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction, showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import type { ActivityListItem, BreadcrumbItem } from '$lib/types';
 
 	// Enums
@@ -49,7 +49,7 @@
 	import FormActivityMealsAccordion from '../[slug]/edit/components/FormActivityMealsAccordion.svelte';
 	import FormActivityStagesAccordion from '../[slug]/edit/components/FormActivityStagesAccordion.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
@@ -63,7 +63,7 @@
 		};
 		mode: 'create' | 'edit';
 		activitySlug?: string;
-	}
+	};
 
 	let { data, mode, activitySlug }: Props = $props();
 
@@ -71,13 +71,7 @@
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
 
-	const {
-		availableTags,
-		availableCategories,
-		availableAttractions,
-		availableDistributives,
-		breadcrumbs
-	} = data;
+	const { availableTags, availableCategories, availableAttractions, availableDistributives } = data;
 
 	// En modo edit tenemos activity, en create no
 	const activity = $derived(isEditMode ? data.activity : null);
@@ -85,7 +79,7 @@
 	// Referencia al componente toast para mostrar notificaciones
 	let toastComponent: MsgMeltToast;
 
-	const { form, errors, enhance, message } = superForm(data.form, {
+	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json',
 		onUpdate({ form }) {
 			// Se ejecuta después de la validación pero antes del envío

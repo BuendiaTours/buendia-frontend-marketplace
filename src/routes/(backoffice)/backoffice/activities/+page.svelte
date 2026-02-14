@@ -323,12 +323,7 @@
 
 	// Popover de Melt-UI para filtro de fechas
 	const {
-		elements: {
-			trigger: dateRangeTrigger,
-			content: dateRangeContent,
-			arrow: dateRangeArrow,
-			close: dateRangeClose
-		},
+		elements: { trigger: dateRangeTrigger, content: dateRangeContent, arrow: dateRangeArrow },
 		states: { open: dateRangePopoverOpen }
 	} = createPopover({
 		forceVisible: true,

@@ -15,6 +15,7 @@ Props disponibles:
 <script lang="ts">
 	import { createRangeCalendar, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { NavArrowLeft, NavArrowRight } from 'svelte-iconoir';
+	import { untrack } from 'svelte';
 	import cn from 'clsx';
 
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
@@ -34,28 +35,30 @@ Props disponibles:
 	}: Props = $props();
 
 	const {
-		elements: { calendar, heading, grid, cell, prevButton, nextButton },
-		states: { months, headingValue, weekdays, value: calendarValue },
-		helpers: { isDateDisabled, isDateUnavailable }
-	} = createRangeCalendar({
-		...(value && { defaultValue: value }),
-		locale: 'es-ES',
-		numberOfMonths,
-		weekStartsOn: 0,
-		fixedWeeks: true,
-		onValueChange: ({ next }) => {
-			value = next;
-			onValueChange?.(next);
-			return next;
-		}
-	});
+		elements: { calendar, grid, cell, prevButton, nextButton },
+		states: { months, headingValue, weekdays, value: calendarValue }
+	} = untrack(() =>
+		createRangeCalendar({
+			...(value && { defaultValue: value }),
+			locale: 'es-ES',
+			numberOfMonths,
+			weekStartsOn: 0,
+			fixedWeeks: true,
+			onValueChange: ({ next }) => {
+				value = next;
+				onValueChange?.(next);
+				return next;
+			}
+		})
+	);
 
 	// Sincronizar value externo con el calendario
 	$effect(() => {
-		// Si el value externo cambia, actualizar el calendario
-		if (value !== $calendarValue) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Melt UI internal type mismatch
-			calendarValue.set(value as any);
+		const isSame =
+			value?.start?.toString() === $calendarValue?.start?.toString() &&
+			value?.end?.toString() === $calendarValue?.end?.toString();
+		if (!isSame && value) {
+			calendarValue.set(value);
 		}
 	});
 </script>
@@ -101,17 +104,17 @@ Props disponibles:
 										class={cn(
 											'group rounded-btn relative inline-flex size-10 cursor-pointer items-center justify-center border border-transparent bg-transparent p-0 text-sm font-normal transition-colors',
 											'hover:bg-base-200',
-											'data-[disabled]:pointer-events-none data-[disabled]:opacity-30',
-											'data-[outside-month]:pointer-events-none data-[outside-month]:opacity-40',
-											'data-[unavailable]:line-through',
-											'data-[selected]:bg-primary/20 data-[selected]:font-semibold',
-											'data-[selection-start]:bg-primary data-[selection-start]:text-primary-content data-[selection-start]:font-bold',
-											'data-[selection-end]:bg-primary data-[selection-end]:text-primary-content data-[selection-end]:font-bold',
-											'data-[selected]:not([data-selection-start]):not([data-selection-end]):rounded-none'
+											'data-disabled:pointer-events-none data-disabled:opacity-30',
+											'data-outside-month:pointer-events-none data-outside-month:opacity-40',
+											'data-unavailable:line-through',
+											'data-selected:bg-primary/20 data-selected:font-semibold',
+											'data-selection-start:bg-primary data-selection-start:text-primary-content data-selection-start:font-bold',
+											'data-selection-end:bg-primary data-selection-end:text-primary-content data-selection-end:font-bold',
+											'data-selected:not([data-selection-start]):not([data-selection-end]):rounded-none'
 										)}
 									>
 										<div
-											class="bg-primary group-data-[selected]:bg-primary absolute top-1 hidden size-1.5 rounded-full group-data-[today]:block"
+											class="bg-primary group-data-selected:bg-primary absolute top-1 hidden size-1.5 rounded-full group-data-today:block"
 										></div>
 										{date.day}
 									</button>

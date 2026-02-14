@@ -28,7 +28,7 @@
 	 * ```
 	 */
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		items: string[];
@@ -37,7 +37,7 @@
 		placeholder?: string;
 		wrapperClass?: string;
 		emptyMessage?: string;
-	}
+	};
 
 	let {
 		id,

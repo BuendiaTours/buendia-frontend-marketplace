@@ -2,6 +2,7 @@
 	// Components
 	import { openLightbox } from '$lib/components/backoffice/PhotoSwipe';
 	import SwiperElement from '$lib/components/backoffice/Swiper.svelte';
+	import { logger } from '$lib/utils/logger';
 
 	// Actions
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
@@ -15,7 +16,7 @@
 	let value = $state(today(getLocalTimeZone()));
 
 	function handleCalendarChange(newValue: typeof value) {
-		console.log('Calendar value changed:', newValue);
+		logger.log('Calendar value changed:', newValue);
 		value = newValue;
 	}
 
@@ -76,12 +77,12 @@
 	});
 
 	function handleRangeCalendarChange(newRange: DateRange | undefined) {
-		console.log('📆 RangeCalendar - Rango seleccionado:', newRange);
+		logger.log('📆 RangeCalendar - Rango seleccionado:', newRange);
 		if (newRange?.start && newRange?.end) {
-			console.log('📆 RangeCalendar - Inicio:', newRange.start.toString());
-			console.log('📆 RangeCalendar - Fin:', newRange.end.toString());
+			logger.log('📆 RangeCalendar - Inicio:', newRange.start.toString());
+			logger.log('📆 RangeCalendar - Fin:', newRange.end.toString());
 			const days = newRange.end.compare(newRange.start);
-			console.log('📆 RangeCalendar - Días seleccionados:', days);
+			logger.log('📆 RangeCalendar - Días seleccionados:', days);
 		}
 	}
 
@@ -179,9 +180,9 @@
 				value="1"
 				class="badge-outline badge-secondary"
 				removable
-				onremove={() => console.log('removed')}>Form Tag</Tag
+				onremove={() => logger.log('removed')}>Form Tag</Tag
 			>
-			<Tag class="badge-primary" removable onremove={() => console.log('removed')}>Removable</Tag>
+			<Tag class="badge-primary" removable onremove={() => logger.log('removed')}>Removable</Tag>
 		</div>
 
 		<label class="label mt-4">Accordion sencillo de DaisyUI</label>
@@ -258,7 +259,7 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
@@ -272,7 +273,7 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
@@ -286,7 +287,7 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
