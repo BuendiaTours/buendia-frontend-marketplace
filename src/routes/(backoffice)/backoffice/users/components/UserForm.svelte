@@ -52,7 +52,7 @@
 			<span>Datos del usuario</span>
 		{/snippet}
 		{#snippet content()}
-			<FormInputText id="id" label="Id" badge="read only" bind:value={$form.id} readonly />
+			<input type="hidden" name="id" bind:value={$form.id} />
 			<FormInputText id="name" label="Nombre" bind:value={$form.name} error={$errors.name} />
 			<FormInputText id="email" label="Email" bind:value={$form.email} error={$errors.email} />
 			<FormInputText id="phone" label="Teléfono" bind:value={$form.phone} error={$errors.phone} />

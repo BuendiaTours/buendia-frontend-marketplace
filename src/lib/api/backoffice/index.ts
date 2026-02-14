@@ -26,7 +26,7 @@ import * as destinations from '$core/destinations/requests';
 import * as categories from '$core/categories/requests';
 import * as tags from '$core/tags/requests';
 import * as distributives from '$core/distributives/requests';
-import * as users from '$core/users/requests';
+import { USER_REQUEST } from '$core/users/requests';
 
 export const api = {
 	activities: { ...activities, delete: activities.deleteBySlug },
@@ -35,7 +35,7 @@ export const api = {
 	categories,
 	tags,
 	distributives,
-	users
+	users: USER_REQUEST
 };
 
 // Export tipos específicos

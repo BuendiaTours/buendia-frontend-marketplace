@@ -10,7 +10,7 @@ export type User = {
 	roles: UserRole[];
 };
 
-export type UserCreateDto = Omit<User, 'id' | 'status' | 'roles'>;
+export type UserCreateDto = Omit<User, 'status' | 'roles'>;
 
 export type UserUpdateDto = Partial<Omit<User, 'id'>>;
 
@@ -20,8 +20,8 @@ export type UserCriteria = {
 	q?: string;
 	email?: string;
 	phone?: string;
-	kind?: string;
-	status?: string;
+	kind?: UserKind;
+	status?: UserStatus;
 	sort?: string;
 	order?: 'asc' | 'desc';
 };

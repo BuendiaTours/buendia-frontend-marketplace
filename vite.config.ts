@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import tailwindcss from '@tailwindcss/vite';
+import devtoolsJson from 'vite-plugin-devtools-json';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import path from 'node:path';
@@ -21,7 +22,8 @@ export default defineConfig({
 			outdir: './src/paraglide'
 		}),
 		sveltekit(),
-		tailwindcss()
+		tailwindcss(),
+		devtoolsJson()
 	],
 	test: {
 		projects: [

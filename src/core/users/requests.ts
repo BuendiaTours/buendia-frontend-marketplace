@@ -1,32 +1,18 @@
 import type { CriteriaResult } from '$core/_shared/types';
-import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import { get, getWithParams, post, patch } from '$core/_shared/helpers';
 import type { User, UserCreateDto, UserUpdateDto, UserCriteria } from '$core/users/types';
 
 const BASE = '/users';
 
-export async function findByCriteria(
-	fetchFn: typeof fetch,
-	criteria?: UserCriteria
-): Promise<CriteriaResult<User>> {
-	return getWithParams<CriteriaResult<User>>(fetchFn, BASE, criteria);
-}
+export const USER_REQUEST = {
+	create: (fetchFn: typeof fetch, data: UserCreateDto): Promise<void> => post(fetchFn, BASE, data),
 
-export async function findById(fetchFn: typeof fetch, id: string): Promise<User> {
-	return get<User>(fetchFn, `${BASE}/${id}`);
-}
+	update: (fetchFn: typeof fetch, id: string, data: UserUpdateDto): Promise<void> =>
+		patch(fetchFn, `${BASE}/${id}`, data),
 
-export async function create(fetchFn: typeof fetch, data: UserCreateDto): Promise<void> {
-	return post(fetchFn, BASE, data);
-}
+	findById: (fetchFn: typeof fetch, id: string): Promise<User> =>
+		get<User>(fetchFn, `${BASE}/${id}`),
 
-export async function update(
-	fetchFn: typeof fetch,
-	id: string,
-	data: UserUpdateDto
-): Promise<void> {
-	return patch(fetchFn, `${BASE}/${id}`, data);
-}
-
-export async function remove(fetchFn: typeof fetch, id: string): Promise<void> {
-	return del(fetchFn, `${BASE}/${id}`);
-}
+	findByCriteria: (fetchFn: typeof fetch, criteria?: UserCriteria): Promise<CriteriaResult<User>> =>
+		getWithParams<CriteriaResult<User>>(fetchFn, BASE, criteria)
+};
