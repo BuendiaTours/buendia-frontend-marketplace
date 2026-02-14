@@ -3,12 +3,13 @@
 	import { fade, fly } from 'svelte/transition';
 	import { Cancel } from 'svelte-iconoir';
 	import type { MeltDrawerConfig } from './MeltDrawer';
+	import type { Snippet } from 'svelte';
 
 	interface Props {
 		open?: boolean;
 		title?: string;
 		config?: MeltDrawerConfig;
-		children?: any;
+		children?: Snippet;
 	}
 
 	let { open = $bindable(false), title = '', config = {}, children }: Props = $props();

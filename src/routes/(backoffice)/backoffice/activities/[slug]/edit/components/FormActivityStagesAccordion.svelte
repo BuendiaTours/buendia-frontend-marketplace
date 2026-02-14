@@ -35,6 +35,7 @@
 	interface Props {
 		stages: Stage[];
 		activityId: string;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
 		locationBackups: Record<number, { type: 'Point'; coordinates: [number, number] } | null>;
 	}
@@ -151,7 +152,7 @@
 		<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 	{/snippet}
 	{#snippet content()}
-		{#each stages as stage, index}
+		{#each stages as stage, index (stage.id)}
 			<FormAccordion
 				name="form-stages-{index}"
 				class="md:col-span-12"

@@ -3,22 +3,24 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 import { superValidate } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de actualización/guardado
  */
-export interface UpdateActionConfig {
+export interface UpdateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> {
 	/** Ruta base para redirección después de guardar (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Función que realiza la actualización en la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<void>;
+	updateFn: (
+		fetchFn: typeof globalThis.fetch,
+		slug: string,
+		data: T | Record<string, unknown>
+	) => Promise<void>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	transformData?: (formData: any) => any;
+	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
 }
@@ -43,7 +45,9 @@ export interface UpdateActionConfig {
  * };
  * ```
  */
-export function createUpdateAction(config: UpdateActionConfig) {
+export function createUpdateAction<T extends Record<string, unknown>>(
+	config: UpdateActionConfig<T>
+) {
 	return async ({ request, params, fetch, cookies }: RequestEvent) => {
 		const slug = params.slug;
 		if (!slug) {

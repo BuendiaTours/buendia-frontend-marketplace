@@ -17,7 +17,7 @@ export type FieldDef<T> = {
 	resetPageOnChange?: boolean;
 };
 
-export type FiltersSchema<TFilters extends Record<string, any>> = {
+export type FiltersSchema<TFilters extends Record<string, unknown>> = {
 	fields: {
 		[K in keyof TFilters]: FieldDef<TFilters[K]>;
 	};
@@ -26,7 +26,7 @@ export type FiltersSchema<TFilters extends Record<string, any>> = {
 /**
  * Parsea la URL (searchParams) a un objeto tipado usando el schema.
  */
-export function parseFilters<TFilters extends Record<string, any>>(
+export function parseFilters<TFilters extends Record<string, unknown>>(
 	schema: FiltersSchema<TFilters>,
 	searchParams: URLSearchParams
 ): TFilters {
@@ -48,7 +48,7 @@ export function parseFilters<TFilters extends Record<string, any>>(
  * Serializa un objeto de filtros a URLSearchParams según el schema.
  * - Si un campo no debe estar en URL, su serializer debe "delete".
  */
-export function serializeFilters<TFilters extends Record<string, any>>(
+export function serializeFilters<TFilters extends Record<string, unknown>>(
 	schema: FiltersSchema<TFilters>,
 	filters: Partial<TFilters>,
 	base?: URLSearchParams
@@ -56,8 +56,9 @@ export function serializeFilters<TFilters extends Record<string, any>>(
 	const out = new URLSearchParams(base ? base.toString() : undefined);
 
 	for (const key in schema.fields) {
-		const field = schema.fields[key];
-		const value = filters[key as keyof TFilters];
+		const k = key as Extract<keyof TFilters, string>;
+		const field = schema.fields[k];
+		const value = filters[k];
 		field.serialize(value, out, filters as Record<string, unknown>);
 	}
 
@@ -75,7 +76,7 @@ export function serializeFilters<TFilters extends Record<string, any>>(
  * Además:
  * - Si cambia un campo marcado con resetPageOnChange, pone page=1 (si existe en el schema)
  */
-export function patchFilters<TFilters extends Record<string, any>>(
+export function patchFilters<TFilters extends Record<string, unknown>>(
 	schema: FiltersSchema<TFilters>,
 	current: URLSearchParams,
 	patch: { [K in keyof TFilters]?: PatchValue<TFilters[K]> }
@@ -98,7 +99,7 @@ export function patchFilters<TFilters extends Record<string, any>>(
 			out.delete(String(key));
 		} else {
 			// valor => delegamos en serializer
-			field.serialize(value as any, out, {} as Record<string, unknown>);
+			field.serialize(value as TFilters[typeof key], out, {} as Record<string, unknown>);
 		}
 
 		if (field.resetPageOnChange) {
@@ -136,7 +137,7 @@ export function patchFilters<TFilters extends Record<string, any>>(
  * </button>
  * ```
  */
-export function hasActiveFilters<TFilters extends Record<string, any>>(
+export function hasActiveFilters<TFilters extends Record<string, unknown>>(
 	filters: TFilters,
 	excludeKeys: (keyof TFilters)[] = ['page', 'pageSize', 'sort', 'order']
 ): boolean {

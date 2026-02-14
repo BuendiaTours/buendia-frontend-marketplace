@@ -71,12 +71,7 @@ export default defineConfig([
 					varsIgnorePattern: '^_',
 					ignoreRestSiblings: true
 				}
-			],
-
-			// Calidad — warn para corregir incrementalmente
-			'@typescript-eslint/no-explicit-any': 'warn',
-			'svelte/require-each-key': 'warn',
-			'svelte/prefer-writable-derived': 'warn'
+			]
 		}
 	},
 
@@ -100,6 +95,7 @@ export default defineConfig([
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'svelte/require-each-key': 'off',
+			'svelte/prefer-writable-derived': 'off',
 			'no-useless-escape': 'off'
 		}
 	},

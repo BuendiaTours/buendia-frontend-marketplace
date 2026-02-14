@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
+	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { usersFiltersSchema } from './filters.schema';
@@ -58,7 +59,9 @@
 		statusFilter = filters.status || '';
 	});
 
-	async function applyFilterPatch(patch: Record<string, any>) {
+	async function applyFilterPatch(patch: {
+		[K in keyof UsersFilters]?: PatchValue<UsersFilters[K]>;
+	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(usersFiltersSchema, currentParams, patch);
 		const url = `${page.url.pathname}?${newParams.toString()}`;
@@ -179,7 +182,7 @@
 	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
-				{#each columns as col}
+				{#each columns as col (col.key)}
 					<th>
 						{#if col.sortable}
 							<TableSortableHeader
@@ -209,7 +212,7 @@
 					</td>
 				</tr>
 			{:else}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<tr>
 						<td>
 							<a href={buildUrlWithFilters(USER_ROUTES.detail(item.id), page.url.searchParams)}>

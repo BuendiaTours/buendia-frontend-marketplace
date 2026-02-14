@@ -14,7 +14,7 @@
 	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
-	function handleCalendarChange(newValue: any) {
+	function handleCalendarChange(newValue: typeof value) {
 		console.log('Calendar value changed:', newValue);
 		value = newValue;
 	}
@@ -91,9 +91,9 @@
 	let formSelect = $state<string | undefined>(undefined);
 	let formSlugSource = $state('Mi Título de Ejemplo');
 	let formSlug = $state('');
-	let formCheckboxItems = $state<any[]>([]);
-	let formTags = $state<any[]>([]);
-	let formOrderedItems = $state<any[]>([]);
+	let formCheckboxItems = $state<Array<{ id: string; name: string }>>([]);
+	let formTags = $state<Array<{ id: string; name: string }>>([]);
+	let formOrderedItems = $state<Array<{ id: string; name: string }>>([]);
 	let formMarkdown = $state('# Título\n\nEscribe tu contenido en **Markdown** aquí...');
 
 	// Mock data for form examples
@@ -583,7 +583,7 @@
 				de sincronización y delay de animación.
 			</p>
 			<div class="grid grid-cols-1 gap-2 md:grid-cols-2">
-				{#each mockItems as item}
+				{#each mockItems as item (item.id)}
 					<button
 						class="btn btn-outline btn-sm"
 						onclick={() => {

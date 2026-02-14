@@ -54,14 +54,28 @@
 			key,
 			name: groupName,
 			description: groupDescription,
-			endpoints: Object.entries(endpoints).map(([endpointKey, endpoint]: [string, any]) => ({
-				key: endpointKey,
-				name: endpointKey.charAt(0).toUpperCase() + endpointKey.slice(1),
-				method: endpoint.method,
-				path: getPathWithPlaceholders(endpoint.path),
-				params: endpoint.params?.join(', ') || '-',
-				description: endpoint.description
-			}))
+			endpoints: Object.entries(endpoints)
+				.filter(
+					(
+						entry
+					): entry is [
+						string,
+						{
+							method: string;
+							path: (...args: string[]) => string;
+							params?: string[];
+							description: string;
+						}
+					] => typeof entry[1] === 'object' && entry[1] !== null && 'method' in entry[1]
+				)
+				.map(([endpointKey, endpoint]) => ({
+					key: endpointKey,
+					name: endpointKey.charAt(0).toUpperCase() + endpointKey.slice(1),
+					method: endpoint.method,
+					path: getPathWithPlaceholders(endpoint.path),
+					params: endpoint.params?.join(', ') || '-',
+					description: endpoint.description
+				}))
 		};
 	});
 </script>
@@ -94,7 +108,7 @@
 					>Ver últimas {data.queryLog.length} queries</summary
 				>
 				<div class="bg-base-200 mt-2 max-h-48 overflow-y-auto rounded p-2 font-mono text-xs">
-					{#each data.queryLog.slice().reverse() as entry}
+					{#each data.queryLog.slice().reverse() as entry (entry.n)}
 						<div class="flex gap-2 py-0.5">
 							<span class="text-base-content/60 shrink-0">#{entry.n}</span>
 							<span class="badge badge-ghost badge-sm">{entry.method}</span>
@@ -124,7 +138,7 @@
 	</div>
 
 	<!-- API Externa Endpoints -->
-	{#each endpointGroups as group}
+	{#each endpointGroups as group (group.name)}
 		<div class="card p-4">
 			<div
 				class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 pb-4"
@@ -148,7 +162,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each group.endpoints as endpoint}
+						{#each group.endpoints as endpoint, i (i)}
 							<tr class="text-sm">
 								<td>
 									<span

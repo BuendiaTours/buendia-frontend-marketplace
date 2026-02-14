@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Componente MeltCalendar con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/calendar
 
@@ -43,6 +43,7 @@ Props disponibles:
 	// Sincronizar value externo con el calendario
 	$effect(() => {
 		if (value !== $calendarValue) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Melt UI internal type mismatch
 			calendarValue.set(value as any);
 		}
 	});
@@ -68,11 +69,11 @@ Props disponibles:
 	</header>
 
 	<div class="flex flex-col space-y-4 pt-4">
-		{#each $months as month}
+		{#each $months as month, i (i)}
 			<table use:melt={$grid} class="border-collapse space-y-1 select-none">
 				<thead>
 					<tr class="mb-1 inline-flex justify-between">
-						{#each $weekdays as day}
+						{#each $weekdays as day, j (j)}
 							<th class="w-10 rounded-md text-xs font-normal opacity-60">
 								<div>{day.slice(0, 2)}</div>
 							</th>
@@ -80,9 +81,9 @@ Props disponibles:
 					</tr>
 				</thead>
 				<tbody>
-					{#each month.weeks as weekDates}
+					{#each month.weeks as weekDates, wi (wi)}
 						<tr class="flex w-full">
-							{#each weekDates as date}
+							{#each weekDates as date, di (di)}
 								<td class="relative size-10 p-0 text-center text-sm">
 									<button
 										use:melt={$cell(date, month.value)}

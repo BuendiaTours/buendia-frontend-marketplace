@@ -93,7 +93,9 @@
 	let searchError = $state<string | null>(null);
 
 	let mapContainer: HTMLDivElement;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 	let map: any = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 	let marker: any = null;
 	let isMapLoaded = $state(false);
 	let mapError = $state<string | null>(null);
@@ -106,6 +108,7 @@
 	const latitude = $derived(value?.coordinates?.[1] ?? defaultCoordinates[1]);
 
 	function initializeMap() {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 		if (!mapContainer || !(window as any).google) return;
 
 		try {
@@ -114,6 +117,7 @@
 				lng: longitude
 			};
 
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 			map = new (window as any).google.maps.Map(mapContainer, {
 				center: initialPosition,
 				zoom: cfg.defaultZoom,
@@ -124,6 +128,7 @@
 			});
 
 			try {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 				const { AdvancedMarkerElement } = (window as any).google.maps.marker;
 				if (AdvancedMarkerElement) {
 					marker = new AdvancedMarkerElement({
@@ -133,6 +138,7 @@
 						gmpDraggable: true
 					});
 
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 					marker.addListener('dragend', (event: any) => {
 						if (!marker) return;
 						const position = marker.position;
@@ -143,6 +149,7 @@
 						}
 					});
 
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 					map.addListener('click', (e: any) => {
 						if (e.latLng && marker) {
 							marker.position = e.latLng;
@@ -158,6 +165,7 @@
 					advancedMarkerError
 				);
 				// Fallback to deprecated Marker API
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 				marker = new (window as any).google.maps.Marker({
 					position: initialPosition,
 					map: map,
@@ -173,6 +181,7 @@
 					}
 				});
 
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 				map.addListener('click', (e: any) => {
 					if (e.latLng && marker) {
 						marker.setPosition(e.latLng);
@@ -189,14 +198,18 @@
 	}
 
 	async function searchLocation() {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 		if (!searchQuery.trim() || !(window as any).google) return;
 
 		isSearching = true;
 		searchError = null;
 
 		try {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 			const geocoder = new (window as any).google.maps.Geocoder();
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 			const result = await new Promise<any>((resolve, reject) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
 				geocoder.geocode({ address: searchQuery }, (results: any, status: string) => {
 					if (status === 'OK' && results) {
 						resolve(results);
@@ -228,18 +241,19 @@
 
 				searchQuery = '';
 			}
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('Error searching location:', err);
 
 			// Check if it's a Geocoding API permission error
-			if (err?.status === 'REQUEST_DENIED') {
+			const geoErr = err as { status?: string };
+			if (geoErr?.status === 'REQUEST_DENIED') {
 				searchError =
 					'La API key no tiene permisos de Geocoding. Activa "Geocoding API" en Google Cloud Console.';
-			} else if (err?.status === 'ZERO_RESULTS') {
+			} else if (geoErr?.status === 'ZERO_RESULTS') {
 				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
-			} else if (err?.status === 'OVER_QUERY_LIMIT') {
+			} else if (geoErr?.status === 'OVER_QUERY_LIMIT') {
 				searchError = 'Se ha excedido el límite de consultas de la API. Intenta más tarde.';
-			} else if (err?.status === 'INVALID_REQUEST') {
+			} else if (geoErr?.status === 'INVALID_REQUEST') {
 				searchError = 'Solicitud inválida. Verifica el formato de la búsqueda.';
 			} else {
 				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';

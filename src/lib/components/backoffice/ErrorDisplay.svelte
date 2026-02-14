@@ -39,21 +39,22 @@ USO COMPLETO:
 
 <script lang="ts">
 	import { WarningTriangle } from 'svelte-iconoir';
+	import type { Snippet } from 'svelte';
 
 	interface Props {
-		icon?: any;
+		icon?: Snippet;
 		title: string;
 		message: string;
-		technicalDetails?: any;
+		technicalDetails?: Record<string, unknown>;
 		showTechnicalDetails?: boolean;
-		actions?: any;
+		actions?: Snippet;
 	}
 
 	let {
 		icon,
 		title,
 		message,
-		technicalDetails = null,
+		technicalDetails,
 		showTechnicalDetails = true,
 		actions
 	}: Props = $props();

@@ -26,7 +26,8 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			api.distributives.getAll(fetch)
 		]);
 
-		const apiData = activity as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
+		const apiData = activity as Record<string, any>;
 		const firstOption = apiData.options?.[0];
 
 		const form = await superValidate(

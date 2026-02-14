@@ -9,6 +9,7 @@
 	import { DESTINATION_KIND_OPTIONS } from '$api-destinations/enums';
 	import { DESTINATION_ROUTES } from '$api-destinations/routes';
 	import { DatabaseRestore } from 'svelte-iconoir';
+	import type { Destination } from '$lib/types';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
@@ -20,8 +21,9 @@
 
 	interface Props {
 		data: {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			destination?: any;
+			destination?: Destination;
 		};
 		mode: 'create' | 'edit';
 		destinationSlug?: string;

@@ -40,14 +40,14 @@
 		id: string;
 		label: string;
 		value: string;
-		error?: any;
+		error?: string | string[];
 		badge?: string;
 		readonly?: boolean;
 		disabled?: boolean;
 		placeholder?: string;
 		rows?: number;
 		wrapperClass?: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	}
 
 	let {

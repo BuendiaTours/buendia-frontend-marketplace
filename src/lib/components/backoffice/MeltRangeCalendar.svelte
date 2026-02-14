@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Componente RangeCalendar reutilizable con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/range-calendar
 
@@ -54,6 +54,7 @@ Props disponibles:
 	$effect(() => {
 		// Si el value externo cambia, actualizar el calendario
 		if (value !== $calendarValue) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Melt UI internal type mismatch
 			calendarValue.set(value as any);
 		}
 	});
@@ -79,11 +80,11 @@ Props disponibles:
 	</header>
 
 	<div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-		{#each $months as month}
+		{#each $months as month, i (i)}
 			<table use:melt={$grid} class="border-collapse space-y-1 select-none">
 				<thead>
 					<tr class="mb-2 inline-flex justify-between">
-						{#each $weekdays as day}
+						{#each $weekdays as day, j (j)}
 							<th class="w-10 text-xs font-semibold opacity-60">
 								<div>{day.slice(0, 2)}</div>
 							</th>
@@ -91,9 +92,9 @@ Props disponibles:
 					</tr>
 				</thead>
 				<tbody>
-					{#each month.weeks as weekDates}
+					{#each month.weeks as weekDates, wi (wi)}
 						<tr class="flex w-full">
-							{#each weekDates as date}
+							{#each weekDates as date, di (di)}
 								<td class="relative m-0 size-10 p-0 text-center text-sm focus-within:z-20">
 									<button
 										use:melt={$cell(date, month.value)}

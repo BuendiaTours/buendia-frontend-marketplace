@@ -8,7 +8,7 @@
 	 */
 
 	interface Props {
-		data: any;
+		data: unknown;
 		title?: string;
 	}
 

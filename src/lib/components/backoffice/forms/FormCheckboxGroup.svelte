@@ -37,9 +37,9 @@
 		main_label: string;
 		key_title: string;
 		key_value: string;
-		items: any[];
-		availableItems?: readonly any[];
-		error?: any;
+		items: Record<string, string>[];
+		availableItems?: readonly Record<string, string>[];
+		error?: string | string[];
 		badge?: string;
 		wrapperClass?: string;
 		containerClass?: string;
@@ -63,9 +63,9 @@
 		return items.some((item) => item[key_value] === itemValue);
 	}
 
-	function toggleItem(item: any, checked: boolean) {
+	function toggleItem(item: Record<string, string>, checked: boolean) {
 		if (checked) {
-			const newItem: any = {};
+			const newItem: Record<string, string> = {};
 			newItem[key_value] = item[key_value];
 			newItem[key_title] = item[key_title];
 			items = [...items, newItem];
@@ -85,7 +85,7 @@
 
 	<div class="card p-4">
 		<div class={containerClass}>
-			{#each availableItems as item, index}
+			{#each availableItems as item, index (index)}
 				<label class="label cursor-pointer justify-start gap-3" for="checkbox-{id}-{index}">
 					<input
 						type="checkbox"

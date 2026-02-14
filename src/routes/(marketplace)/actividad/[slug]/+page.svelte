@@ -85,7 +85,7 @@
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Destinos</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.destinations as destination}
+				{#each activity.destinations as destination (destination.name)}
 					<li>{destination.name}</li>
 				{/each}
 			</ul>
@@ -97,7 +97,7 @@
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.categories as category}
+				{#each activity.categories as category (category.name)}
 					<li>{category.name}</li>
 				{/each}
 			</ul>
@@ -109,7 +109,7 @@
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Atracciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.attractions as attraction}
+				{#each activity.attractions as attraction (attraction.name)}
 					<li>{attraction.name}</li>
 				{/each}
 			</ul>
@@ -121,7 +121,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">✅ Incluido</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.included as item}
+				{#each activity.included as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -133,7 +133,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">❌ No incluido</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.excluded as item}
+				{#each activity.excluded as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -145,7 +145,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🎒 Qué llevar</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.itemsToBring as item}
+				{#each activity.itemsToBring as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -157,7 +157,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🎯 Qué harás</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.willDoing as item}
+				{#each activity.willDoing as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -169,7 +169,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🍽️ Comidas</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.meals as meal}
+				{#each activity.meals as meal, i (i)}
 					<li>{meal}</li>
 				{/each}
 			</ul>
@@ -181,7 +181,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📍 Etapas</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.stages as stage}
+				{#each activity.stages as stage, i (i)}
 					<li>{stage}</li>
 				{/each}
 			</ul>
@@ -193,7 +193,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🚫 Restricciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.restrictions as restriction}
+				{#each activity.restrictions as restriction, i (i)}
 					<li>{restriction}</li>
 				{/each}
 			</ul>
@@ -205,7 +205,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">⚠️ No recomendado para</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.notSuitableFor as item}
+				{#each activity.notSuitableFor as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -230,7 +230,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🏷️ Etiquetas</h2>
 			<div class="flex flex-wrap gap-2">
-				{#each activity.tags as tag}
+				{#each activity.tags as tag (tag.name)}
 					<span class="rounded-full bg-gray-200 px-3 py-1 text-gray-700">{tag.name}</span>
 				{/each}
 			</div>
@@ -242,7 +242,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📄 Páginas distributivas</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.distributives as distributive}
+				{#each activity.distributives as distributive (distributive.name)}
 					<li>{distributive.name}</li>
 				{/each}
 			</ul>
@@ -270,7 +270,7 @@
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📸 Multimedia</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.multimedias as media}
+				{#each activity.multimedias as media, i (i)}
 					<li>{media}</li>
 				{/each}
 			</ul>

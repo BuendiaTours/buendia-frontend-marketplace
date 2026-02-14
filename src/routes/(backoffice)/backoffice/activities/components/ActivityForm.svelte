@@ -15,7 +15,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction, showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
-	import type { ActivityListItem } from '$lib/types';
+	import type { ActivityListItem, BreadcrumbItem } from '$lib/types';
 
 	// Enums
 	import {
@@ -51,13 +51,14 @@
 
 	interface Props {
 		data: {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			availableTags: any[];
-			availableCategories: any[];
-			availableAttractions: any[];
-			availableDestinations: any[];
-			availableDistributives: any[];
-			breadcrumbs: any[];
+			availableTags: Array<{ id: string; name: string }>;
+			availableCategories: Array<{ id: string; name: string }>;
+			availableAttractions: Array<{ id: string; name: string }>;
+			availableDestinations: Array<{ id: string; name: string }>;
+			availableDistributives: Array<{ id: string; name: string }>;
+			breadcrumbs: BreadcrumbItem[];
 			activity?: ActivityListItem; // Solo en modo edit
 		};
 		mode: 'create' | 'edit';
@@ -79,7 +80,7 @@
 	} = data;
 
 	// En modo edit tenemos activity, en create no
-	const activity = $derived(isEditMode ? (data as any).activity : null);
+	const activity = $derived(isEditMode ? data.activity : null);
 
 	// Referencia al componente toast para mostrar notificaciones
 	let toastComponent: MsgMeltToast;

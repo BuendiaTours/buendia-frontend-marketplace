@@ -14,6 +14,7 @@
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 	// Utils
+	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
@@ -107,7 +108,9 @@
 	// HELPERS GENERALES
 	// ============================================================================
 
-	function applyFilterPatch(patch: Partial<ActivitiesFilters>) {
+	function applyFilterPatch(patch: {
+		[K in keyof ActivitiesFilters]?: PatchValue<ActivitiesFilters[K]>;
+	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(activitiesFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, {
@@ -172,8 +175,8 @@
 			});
 		} else {
 			applyFilterPatch({
-				from: null as any,
-				to: null as any
+				from: null,
+				to: null
 			});
 		}
 	}
@@ -218,18 +221,14 @@
 	// FILTRO: FREE TOUR
 	// ============================================================================
 
-	let freeTourChecked = $state(false);
-
-	$effect(() => {
-		freeTourChecked = filters.isFreeTour ?? false;
-	});
+	let freeTourChecked = $derived(filters.isFreeTour ?? false);
 
 	function handleFreeTourChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		freeTourChecked = target.checked;
 
 		applyFilterPatch({
-			isFreeTour: (freeTourChecked ? true : null) as any
+			isFreeTour: freeTourChecked ? true : null
 		});
 	}
 
@@ -237,11 +236,7 @@
 	// FILTRO: DESTINATION
 	// ============================================================================
 
-	let selectedDestination = $state<string | undefined>(undefined);
-
-	$effect(() => {
-		selectedDestination = filters.destination;
-	});
+	let selectedDestination = $derived(filters.destination);
 
 	// Key para forzar recreación del ComboBox cuando se cargan las locations
 	// Esto asegura que el inputDefaultValue se calcule correctamente
@@ -252,7 +247,7 @@
 		selectedDestination = locationValue;
 
 		applyFilterPatch({
-			destination: locationValue ? locationValue : (null as any)
+			destination: locationValue ? locationValue : null
 		});
 	}
 
@@ -264,15 +259,11 @@
 	// FILTRO: KIND
 	// ============================================================================
 
-	let selectedKind = $state(filters.kind || '');
-
-	$effect(() => {
-		selectedKind = filters.kind || '';
-	});
+	let selectedKind = $derived(filters.kind || '');
 
 	function handleKindChange(value: string | undefined) {
 		applyFilterPatch({
-			kind: value ? value : (null as any)
+			kind: value ? value : null
 		});
 	}
 
@@ -284,15 +275,11 @@
 	// FILTRO: STATUS
 	// ============================================================================
 
-	let selectedStatus = $state(filters.status || '');
-
-	$effect(() => {
-		selectedStatus = filters.status || '';
-	});
+	let selectedStatus = $derived(filters.status || '');
 
 	function handleStatusChange(value: string | undefined) {
 		applyFilterPatch({
-			status: value ? value : (null as any)
+			status: value ? value : null
 		});
 	}
 
@@ -315,21 +302,21 @@
 
 	// Crear objeto con los valores actuales de los filtros avanzados
 	const currentAdvancedFilters = $derived(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, filters[f.key] ?? false]))
 	);
 
 	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof ActivitiesFilters]?: PatchValue<ActivitiesFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = appliedFilters[filter.key] || (null as any);
+			patch[filter.key] = appliedFilters[filter.key] || null;
 		});
 		applyFilterPatch(patch);
 	}
 
 	function handleClearAdvancedFilters() {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof ActivitiesFilters]?: PatchValue<ActivitiesFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = null as any;
+			patch[filter.key] = null;
 		});
 		applyFilterPatch(patch);
 	}
@@ -478,7 +465,7 @@
 			onchange={(e) => handleKindChange(e.currentTarget.value || undefined)}
 		>
 			<option value="">Todos los tipos</option>
-			{#each ACTIVITY_KIND_OPTIONS as kind}
+			{#each ACTIVITY_KIND_OPTIONS as kind (kind.id)}
 				<option value={kind.id}>{kind.name}</option>
 			{/each}
 		</select>
@@ -500,7 +487,7 @@
 			onchange={(e) => handleStatusChange(e.currentTarget.value || undefined)}
 		>
 			<option value="">Todos los estados</option>
-			{#each ACTIVITY_STATUS_OPTIONS as status}
+			{#each ACTIVITY_STATUS_OPTIONS as status (status.id)}
 				<option value={status.id}>{status.name}</option>
 			{/each}
 		</select>
@@ -552,7 +539,7 @@
 			<thead>
 				<tr>
 					<th><input type="checkbox" class="checkbox checkbox-sm" use:checkAll /></th>
-					{#each columns as col}
+					{#each columns as col (col.key)}
 						<th>
 							{#if col.sortable}
 								<TableSortableHeader
@@ -580,7 +567,7 @@
 			</thead>
 
 			<tbody>
-				{#each items as item}
+				{#each items as item (item.id)}
 					<tr>
 						<td>
 							<input
@@ -591,7 +578,7 @@
 								class="checkbox checkbox-sm"
 							/>
 						</td>
-						{#each columns as col}
+						{#each columns as col (col.key)}
 							{#if col.key === 'id'}
 								<td>
 									<div class="tooltip" data-tip={item.id}>
@@ -611,7 +598,7 @@
 								</td>
 							{:else if col.key === 'destinations'}
 								<td>
-									{item[col.key].map((d: any) => d.name).join(', ')}
+									{item[col.key].map((d: { id: string; name: string }) => d.name).join(', ')}
 								</td>
 							{:else if col.key === 'kind'}
 								<td>

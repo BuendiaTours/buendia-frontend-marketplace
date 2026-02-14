@@ -51,7 +51,7 @@
 
 		{#if data.destinations && data.destinations.length > 0}
 			<ul class="mt-4 space-y-2">
-				{#each data.destinations as destination}
+				{#each data.destinations as destination (destination.slug)}
 					<li class="text-gray-700">
 						<a href="/{destination.slug}" class="hover:text-blue-600 hover:underline">
 							{destination.name}
@@ -69,7 +69,7 @@
 
 		{#if data.freeTours && data.freeTours.length > 0}
 			<ul class="mt-4 space-y-2">
-				{#each data.freeTours as activity}
+				{#each data.freeTours as activity (activity.slug)}
 					<li class="text-gray-700">
 						<a href="/actividad/{activity.slug}" class="hover:text-blue-600 hover:underline">
 							{activity.title}
@@ -87,7 +87,7 @@
 
 		{#if data.paidTours && data.paidTours.length > 0}
 			<ul class="mt-4 space-y-2">
-				{#each data.paidTours as activity}
+				{#each data.paidTours as activity (activity.slug)}
 					<li class="text-gray-700">
 						<a href="/actividad/{activity.slug}" class="hover:text-blue-600 hover:underline">
 							{activity.title}
@@ -105,7 +105,7 @@
 
 		{#if data.otherTours && data.otherTours.length > 0}
 			<ul class="mt-4 space-y-2">
-				{#each data.otherTours as activity}
+				{#each data.otherTours as activity (activity.slug)}
 					<li class="text-gray-700">
 						<a href="/actividad/{activity.slug}" class="hover:text-blue-600 hover:underline">
 							{activity.title}

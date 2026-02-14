@@ -8,6 +8,7 @@
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { ATTRACTION_STATUS_OPTIONS } from '$api-attractions/enums';
 	import { DatabaseRestore } from 'svelte-iconoir';
+	import type { Attraction } from '$lib/types';
 
 	// Components
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
@@ -23,9 +24,10 @@
 
 	interface Props {
 		data: {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			availableDestinations: any[];
-			attraction?: any;
+			availableDestinations: Array<{ id: string; name: string }>;
+			attraction?: Attraction;
 		};
 		mode: 'create' | 'edit';
 		attractionSlug?: string;

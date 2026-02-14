@@ -15,7 +15,8 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			api.destinations.getAll(fetch)
 		]);
 
-		const apiData = attraction as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
+		const apiData = attraction as Record<string, any>;
 
 		const form = await superValidate(
 			{

@@ -4,6 +4,7 @@ import { activityFormSchema } from '../activity-form.schema';
 import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+import type { ActivityListItem } from '$lib/types';
 import type { PageServerLoad, Actions } from './$types';
 
 /**
@@ -73,7 +74,8 @@ export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityFormSchema),
-		createFn: (fetch, data) => api.activities.create(fetch, data as any),
+		createFn: (fetch, data) =>
+			api.activities.create(fetch, data as unknown as Partial<ActivityListItem>),
 		entityName: 'actividad',
 		redirectToEdit: true
 	})

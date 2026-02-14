@@ -53,6 +53,7 @@ Soporta modo single y multiple.
 		name,
 		icon: Icon,
 		class: className = 'w-full',
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union default
 		type = 'multiple' as any,
 		value = $bindable(),
 		onValueChange
@@ -74,11 +75,15 @@ Soporta modo single y multiple.
 		onSelectedChange: ({ next }) => {
 			if (isSingleMode) {
 				const newValue = next?.value as string | undefined;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union type narrowing
 				value = newValue as any;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union callback
 				onValueChange?.(newValue as any);
 			} else {
 				const newValue = Array.isArray(next) ? next.map((item) => item.value as string) : [];
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union type narrowing
 				value = newValue as any;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union callback
 				onValueChange?.(newValue as any);
 			}
 			return next;

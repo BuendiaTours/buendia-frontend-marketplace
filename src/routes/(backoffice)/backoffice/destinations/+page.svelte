@@ -12,6 +12,7 @@
 	import { page } from '$app/state';
 
 	// Utils
+	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { destinationsFiltersSchema } from './filters.schema';
@@ -72,11 +73,7 @@
 	// SEARCH STATE
 	// ============================================================================
 
-	let searchQuery = $state('');
-
-	$effect(() => {
-		searchQuery = filters.q || '';
-	});
+	let searchQuery = $derived(filters.q || '');
 
 	// ============================================================================
 	// FILTRO: KIND
@@ -84,8 +81,8 @@
 
 	function handleKindFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
-			[filterKey]: value === null ? (null as any) : value
-		});
+			[filterKey]: value
+		} as { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> });
 	}
 
 	// ============================================================================
@@ -100,14 +97,16 @@
 
 	// Crear objeto con los valores actuales de los filtros avanzados
 	const currentAdvancedFilters = $derived(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, filters[f.key] ?? false]))
 	);
 
 	// ============================================================================
 	// FILTER FUNCTIONS
 	// ============================================================================
 
-	function applyFilterPatch(patch: Record<string, any>) {
+	function applyFilterPatch(patch: {
+		[K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]>;
+	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
@@ -119,17 +118,17 @@
 	}
 
 	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = appliedFilters[filter.key] || (null as any);
+			patch[filter.key] = appliedFilters[filter.key] || null;
 		});
 		applyFilterPatch(patch);
 	}
 
 	function handleClearAdvancedFilters() {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = null as any;
+			patch[filter.key] = null;
 		});
 		applyFilterPatch(patch);
 	}
@@ -236,7 +235,7 @@
 				<th class="w-12">
 					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
 				</th>
-				{#each columns as col}
+				{#each columns as col (col.key)}
 					<th>
 						{#if col.sortable}
 							<TableSortableHeader
@@ -266,7 +265,7 @@
 					</td>
 				</tr>
 			{:else}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<tr>
 						<td>
 							<input
@@ -276,7 +275,7 @@
 								class="checkbox checkbox-sm"
 							/>
 						</td>
-						{#each columns as col}
+						{#each columns as col (col.key)}
 							{#if col.key === 'id'}
 								<td>
 									<div class="tooltip" data-tip={item.id}>

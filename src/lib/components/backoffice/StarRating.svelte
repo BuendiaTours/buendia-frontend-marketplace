@@ -69,7 +69,7 @@
 
 {#if value !== null}
 	<div class="rating rating-half {sizeClass()}">
-		{#each stars() as star, index}
+		{#each stars() as star, index (index)}
 			{#if star === 'full'}
 				<div
 					class="mask mask-star-2 mask-half-1 {filledClass}"

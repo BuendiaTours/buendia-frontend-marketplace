@@ -4,7 +4,7 @@
 	type Option = {
 		id: string;
 		name: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	};
 
 	let {
@@ -25,12 +25,7 @@
 		onFilterChange: (filterKey: string, value: string | null) => void;
 	} = $props();
 
-	let selectedValue = $state<string | undefined>(undefined);
-
-	// Sincronizar con el valor externo cuando cambie
-	$effect(() => {
-		selectedValue = currentValue;
-	});
+	let selectedValue = $derived(currentValue);
 
 	function handleChange(event: Event) {
 		const target = event.target as HTMLSelectElement;
@@ -75,7 +70,7 @@
 	>
 		<option value="" disabled>{placeholder}</option>
 
-		{#each options as option}
+		{#each options as option (option.id)}
 			<option value={option.id}>{option.name}</option>
 		{/each}
 	</select>

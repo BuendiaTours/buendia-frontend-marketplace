@@ -55,12 +55,13 @@ USO CON FORMULARIO:
 <script lang="ts">
 	import { Cancel } from 'svelte-iconoir';
 	import type { PureHtmlDialogConfig } from './PureHtmlDialog';
+	import type { Snippet } from 'svelte';
 
 	interface Props {
 		title?: string;
 		config?: PureHtmlDialogConfig;
-		content?: any;
-		actions?: any;
+		content?: Snippet;
+		actions?: Snippet;
 	}
 
 	let { title = '', config = {}, content, actions }: Props = $props();

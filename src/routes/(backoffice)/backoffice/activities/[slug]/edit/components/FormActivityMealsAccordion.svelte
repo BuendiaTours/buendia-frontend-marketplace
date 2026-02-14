@@ -24,6 +24,7 @@
 
 	interface Props {
 		meals: Meal[];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
 	}
 
@@ -96,7 +97,7 @@
 		<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 	{/snippet}
 	{#snippet content()}
-		{#each meals as meal, index}
+		{#each meals as meal, index (meal.id)}
 			<FormAccordion name="form-meals-{index}" class="md:col-span-12">
 				{#snippet title()}
 					<div

@@ -11,7 +11,7 @@
 
 <div class="breadcrumbs text-sm">
 	<ul>
-		{#each items as item, index}
+		{#each items as item, index (index)}
 			<li>
 				{#if index === items.length - 1}
 					<span class="font-semibold">

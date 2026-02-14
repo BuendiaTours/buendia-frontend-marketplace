@@ -42,14 +42,14 @@
 		id: string;
 		label: string;
 		value: string | number;
-		error?: any;
+		error?: string | string[];
 		badge?: string;
 		readonly?: boolean;
 		disabled?: boolean;
 		type?: string;
 		placeholder?: string;
 		wrapperClass?: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	}
 
 	let {

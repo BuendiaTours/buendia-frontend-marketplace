@@ -3,24 +3,22 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 import { superValidate } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de creación
  */
-export interface CreateActionConfig {
+export interface CreateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> {
 	/** Ruta base para redirección después de crear (ej: '/activities', '/attractions') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Función que realiza la creación en la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	createFn: (fetchFn: typeof globalThis.fetch, data: any) => Promise<void>;
+	createFn: (fetchFn: typeof globalThis.fetch, data: T | Record<string, unknown>) => Promise<void>;
 	/** Nombre de la entidad para mensajes (ej: 'actividad', 'atracción', 'destino') */
 	entityName: string;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	transformData?: (formData: any) => any;
+	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
 	/** Si true, redirige al listado (basePath) ignorando redirectToEdit y redirectField */
@@ -57,7 +55,9 @@ export interface CreateActionConfig {
  * };
  * ```
  */
-export function createCreateAction(config: CreateActionConfig) {
+export function createCreateAction<T extends Record<string, unknown>>(
+	config: CreateActionConfig<T>
+) {
 	return async ({ request, fetch, cookies }: RequestEvent) => {
 		const {
 			basePath,

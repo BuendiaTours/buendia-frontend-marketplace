@@ -83,7 +83,7 @@
 			<h2 use:melt={$title} class="mb-4 text-lg font-semibold">Filtros avanzados</h2>
 
 			<div class="mb-6 flex flex-col gap-3">
-				{#each filters as filter}
+				{#each filters as filter (filter.key)}
 					<label class="flex cursor-pointer items-center gap-3">
 						<input type="checkbox" class="checkbox" bind:checked={localFilters[filter.key]} />
 						<span class="text-sm select-none">{filter.label}</span>

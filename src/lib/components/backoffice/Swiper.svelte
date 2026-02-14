@@ -23,9 +23,10 @@ Ejemplo de uso:
 	import { onMount } from 'svelte';
 	import { registerSwiperElements } from '$lib/components/backoffice/Swiper';
 
-	export let options: Record<string, any> = {};
+	export let options: Record<string, unknown> = {};
 	export let className = '';
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Swiper web component element
 	let el: any;
 
 	onMount(async () => {

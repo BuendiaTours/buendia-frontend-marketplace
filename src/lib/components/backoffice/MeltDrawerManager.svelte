@@ -67,13 +67,14 @@ VENTAJAS:
 <script lang="ts">
 	import MeltDrawer from './MeltDrawer.svelte';
 	import type { MeltDrawerManagerConfig } from './MeltDrawerManager';
+	import type { Snippet } from 'svelte';
 
-	interface Props<T = any> {
+	interface Props<T extends { id: string } = { id: string; [key: string]: unknown }> {
 		selectedId?: string | null;
 		items: T[];
 		title?: string | ((item: T) => string);
 		config?: MeltDrawerManagerConfig;
-		content: any;
+		content: Snippet<[T]>;
 	}
 
 	let {
@@ -110,7 +111,7 @@ VENTAJAS:
 
 	// Encontrar el item seleccionado basado en mountedItemId
 	const selectedItem = $derived(
-		mountedItemId ? items.find((item: any) => item.id === mountedItemId) : null
+		mountedItemId ? items.find((item) => item.id === mountedItemId) : null
 	);
 
 	// Resolver el título: puede ser string o función

@@ -41,7 +41,7 @@
 		id: string;
 		label: string;
 		value: string | undefined;
-		error?: any;
+		error?: string | string[];
 		options?: readonly Option[];
 		apiEndpoint?: string;
 		placeholder?: string;
@@ -49,7 +49,7 @@
 		disabled?: boolean;
 		wrapperClass?: string;
 		selectClass?: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	}
 
 	let {
@@ -116,7 +116,7 @@
 		<option value="" disabled selected={!value}>
 			{loading ? 'Cargando...' : loadError ? 'Error al cargar opciones' : placeholder}
 		</option>
-		{#each finalOptions as option}
+		{#each finalOptions as option (option.id)}
 			<option value={option.id}>{option.name}</option>
 		{/each}
 	</select>

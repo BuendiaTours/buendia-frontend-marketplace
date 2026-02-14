@@ -12,7 +12,8 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const destination = await api.destinations.getBySlug(fetch, params.slug);
 
-		const apiData = destination as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
+		const apiData = destination as Record<string, any>;
 
 		const form = await superValidate(
 			{
