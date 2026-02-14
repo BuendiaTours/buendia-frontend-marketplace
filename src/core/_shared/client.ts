@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { logger } from '$lib/utils/logger';
-import { apiConfig } from '$api-shared/config';
-import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$api-shared/types';
+import { apiConfig } from '$core/_shared/config';
+import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$core/_shared/types';
 import {
 	ApiError,
 	createNetworkError,
@@ -12,7 +12,7 @@ import {
 	createValidationError,
 	createServerError,
 	createUnknownError
-} from '$api-shared/errors';
+} from '$core/_shared/errors';
 
 /** Historial de requests para debugging de throttling (solo en DEV) */
 export type QueryLogEntry = { n: number; method: string; path: string; ts: string };

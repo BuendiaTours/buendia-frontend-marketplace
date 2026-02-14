@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
-import { handleApiError } from '$api-shared/errors';
+import { handleApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	try {

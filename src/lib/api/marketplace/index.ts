@@ -7,10 +7,10 @@
  */
 
 // Re-export shared (base común)
-export { apiClient } from '$api-shared/client';
-export { apiConfig } from '$api-shared/config';
-export * from '$api-shared/types';
-export * from '$api-shared/errors';
+export { apiClient } from '$core/_shared/client';
+export { apiConfig } from '$core/_shared/config';
+export * from '$core/_shared/types';
+export * from '$core/_shared/errors';
 
 // Endpoints marketplace (solo lectura)
 import { activitiesEndpoints } from './endpoints/activities';

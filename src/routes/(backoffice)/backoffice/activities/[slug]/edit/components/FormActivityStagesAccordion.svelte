@@ -14,7 +14,7 @@
 		STAGE_KIND_OPTIONS,
 		STAGE_RELEVANCE_OPTIONS,
 		STAGE_REQUIREMENT_OPTIONS
-	} from '$api-activities/enums';
+	} from '$core/activities/enums';
 
 	type Stage = {
 		id: string;

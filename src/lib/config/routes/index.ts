@@ -1,7 +1,7 @@
 /**
  * ROUTES CONFIGURATION
  *
- * Rutas definidas en cada módulo API ($api-users/routes, $api-activities/routes, etc.)
+ * Rutas definidas en cada módulo API ($core/users/routes, $core/activities/routes, etc.)
  * y agregadas aquí para Header, breadcrumbs y usos que necesitan todas.
  *
  * Estructura:

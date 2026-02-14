@@ -1,5 +1,5 @@
-import type { Category } from '$api-categories/types';
-import { get } from '$api-shared/helpers';
+import type { Category } from '$core/categories/types';
+import { get } from '$core/_shared/helpers';
 
 const BASE = '/categories';
 

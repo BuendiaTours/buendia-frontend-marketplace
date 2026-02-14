@@ -1,5 +1,5 @@
-import type { Distributive } from '$api-distributives/types';
-import { get } from '$api-shared/helpers';
+import type { Distributive } from '$core/distributives/types';
+import { get } from '$core/_shared/helpers';
 
 const BASE = '/distributives';
 

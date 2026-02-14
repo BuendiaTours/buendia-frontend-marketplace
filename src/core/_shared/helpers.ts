@@ -1,5 +1,5 @@
-import { apiClient } from '$api-shared/client';
-import { buildEndpointUrl, toSkipLimit } from '$api-shared/params';
+import { apiClient } from '$core/_shared/client';
+import { buildEndpointUrl, toSkipLimit } from '$core/_shared/params';
 
 export async function get<T>(fetchFn: typeof fetch, path: string): Promise<T> {
 	const response = await apiClient.request<T>(fetchFn, path, { method: 'GET' });

@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { parseFilters } from '$lib/utils/filters';
 import { activitiesFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
-import { buildPagination } from '$api-shared/params';
+import { buildPagination } from '$core/_shared/params';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {

@@ -12,7 +12,7 @@
 		MEAL_FORMAT_OPTIONS,
 		MEAL_ADDITIONAL_OPTIONS,
 		MEAL_ALLERGEN_OPTIONS
-	} from '$api-activities/enums';
+	} from '$core/activities/enums';
 
 	type Meal = {
 		id: string;

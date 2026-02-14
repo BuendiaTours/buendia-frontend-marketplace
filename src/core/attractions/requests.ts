@@ -1,7 +1,7 @@
 import type { CriteriaResult, Attraction } from '$lib/types';
-import type { AttractionsGetAllParams, AttractionsSearchParams } from '$api-attractions/types';
-import { get, getWithParams, post, put, del } from '$api-shared/helpers';
-import { toSkipLimit } from '$api-shared/params';
+import type { AttractionsGetAllParams, AttractionsSearchParams } from '$core/attractions/types';
+import { get, getWithParams, post, put, del } from '$core/_shared/helpers';
+import { toSkipLimit } from '$core/_shared/params';
 
 const BASE = '/attractions';
 const SLUG = (slug: string) => `${BASE}/slug/${slug}`;

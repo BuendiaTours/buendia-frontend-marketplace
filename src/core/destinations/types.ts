@@ -1,4 +1,4 @@
-import type { DestinationKind } from '$api-destinations/enums';
+import type { DestinationKind } from '$core/destinations/enums';
 
 export type { Destination, CriteriaResult } from '$lib/types';
 

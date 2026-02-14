@@ -16,9 +16,9 @@
  * - kind (interno)
  */
 
-import { apiClient } from '$api-shared/client';
-import { API_ENDPOINTS } from '$api-shared/endpoints.config';
-import { toSkipLimit, buildEndpointUrl } from '$api-shared/params';
+import { apiClient } from '$core/_shared/client';
+import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
+import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
 import type { CriteriaResult, ActivityListItem } from '$lib/types';
 
 /**

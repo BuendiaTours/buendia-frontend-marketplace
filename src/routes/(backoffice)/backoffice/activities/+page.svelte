@@ -22,13 +22,13 @@
 	import { SvelteDate } from 'svelte/reactivity';
 
 	// Routes
-	import { ACTIVITY_ROUTES } from '$api-activities/routes';
+	import { ACTIVITY_ROUTES } from '$core/activities/routes';
 
 	// i18n
 	import * as m from '$paraglide/messages';
 
 	// Enums
-	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$api-activities/enums';
+	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$core/activities/enums';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';

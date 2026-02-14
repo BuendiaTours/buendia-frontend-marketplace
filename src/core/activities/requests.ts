@@ -1,7 +1,7 @@
 import type { CriteriaResult, ActivityListItem } from '$lib/types';
-import type { ActivitiesGetAllParams } from '$api-activities/types';
-import { get, getWithParams, post, put, del } from '$api-shared/helpers';
-import { toSkipLimit } from '$api-shared/params';
+import type { ActivitiesGetAllParams } from '$core/activities/types';
+import { get, getWithParams, post, put, del } from '$core/_shared/helpers';
+import { toSkipLimit } from '$core/_shared/params';
 
 const BASE = '/activities';
 const SLUG = (slug: string) => `${BASE}/slug/${slug}`;

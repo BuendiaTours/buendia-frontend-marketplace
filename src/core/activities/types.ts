@@ -1,4 +1,4 @@
-import type { ActivityStatus, ActivityKind } from '$api-activities/enums';
+import type { ActivityStatus, ActivityKind } from '$core/activities/enums';
 
 export type { ActivityListItem, CriteriaResult } from '$lib/types';
 

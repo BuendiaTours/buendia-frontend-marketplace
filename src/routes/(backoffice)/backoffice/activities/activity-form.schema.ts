@@ -10,7 +10,7 @@ import {
 	MEAL_ALLERGEN_VALUES,
 	MEAL_FORMAT_VALUES,
 	MEAL_KIND_VALUES
-} from '$api-activities/enums';
+} from '$core/activities/enums';
 
 /**
  * Schema de validación para el formulario de actividades

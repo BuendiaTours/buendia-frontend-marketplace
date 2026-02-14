@@ -1,5 +1,5 @@
 import { error as httpError } from '@sveltejs/kit';
-import type { ApiErrorDetails, ApiErrorType } from '$api-shared/types';
+import type { ApiErrorDetails, ApiErrorType } from '$core/_shared/types';
 
 export class ApiError extends Error {
 	type: ApiErrorType;

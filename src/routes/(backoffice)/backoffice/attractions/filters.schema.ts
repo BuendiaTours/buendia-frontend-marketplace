@@ -2,7 +2,7 @@ import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
 
 // Enums
-import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$api-attractions/enums';
+import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$core/attractions/enums';
 
 export type AttractionsFilters = {
 	// Paginación (opcional - solo si la API la provee)

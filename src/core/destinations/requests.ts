@@ -1,7 +1,7 @@
 import type { CriteriaResult, Destination } from '$lib/types';
-import type { DestinationsGetAllParams, DestinationsSearchParams } from '$api-destinations/types';
-import { get, getWithParams, post, put, del } from '$api-shared/helpers';
-import { toSkipLimit } from '$api-shared/params';
+import type { DestinationsGetAllParams, DestinationsSearchParams } from '$core/destinations/types';
+import { get, getWithParams, post, put, del } from '$core/_shared/helpers';
+import { toSkipLimit } from '$core/_shared/params';
 
 const BASE = '/destinations';
 const SLUG = (slug: string) => `${BASE}/slug/${slug}`;

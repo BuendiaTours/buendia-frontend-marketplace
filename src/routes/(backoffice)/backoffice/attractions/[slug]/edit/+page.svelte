@@ -4,10 +4,10 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { ATTRACTION_ROUTES } from '$api-attractions/routes';
+	import { ATTRACTION_ROUTES } from '$core/attractions/routes';
 
 	// Enums
-	import { ATTRACTION_STATUS_OPTIONS } from '$api-attractions/enums';
+	import { ATTRACTION_STATUS_OPTIONS } from '$core/attractions/enums';
 
 	// Components
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';

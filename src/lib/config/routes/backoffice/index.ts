@@ -4,10 +4,10 @@
  */
 
 import { backoffice } from '../core';
-import { USER_ROUTES } from '$api-users/routes';
-import { ACTIVITY_ROUTES } from '$api-activities/routes';
-import { ATTRACTION_ROUTES } from '$api-attractions/routes';
-import { DESTINATION_ROUTES } from '$api-destinations/routes';
+import { USER_ROUTES } from '$core/users/routes';
+import { ACTIVITY_ROUTES } from '$core/activities/routes';
+import { ATTRACTION_ROUTES } from '$core/attractions/routes';
+import { DESTINATION_ROUTES } from '$core/destinations/routes';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {

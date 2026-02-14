@@ -1,4 +1,4 @@
-import type { AttractionStatus } from '$api-attractions/enums';
+import type { AttractionStatus } from '$core/attractions/enums';
 
 export type { Attraction, CriteriaResult } from '$lib/types';
 

@@ -18,10 +18,10 @@
 	import { destinationsFiltersSchema } from './filters.schema';
 
 	// Enums
-	import { DESTINATION_KIND_OPTIONS } from '$api-destinations/enums';
+	import { DESTINATION_KIND_OPTIONS } from '$core/destinations/enums';
 
 	// Routes
-	import { DESTINATION_ROUTES } from '$api-destinations/routes';
+	import { DESTINATION_ROUTES } from '$core/destinations/routes';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';

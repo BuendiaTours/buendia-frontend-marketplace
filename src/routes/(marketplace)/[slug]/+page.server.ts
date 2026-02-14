@@ -2,8 +2,8 @@ import type { PageServerLoad } from './$types';
 import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
 import { categoriesEndpoints } from '$lib/api/marketplace/endpoints/categories';
-import { buildPagination } from '$api-shared/params';
-import { handleApiError } from '$api-shared/errors';
+import { buildPagination } from '$core/_shared/params';
+import { handleApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const { slug } = params;

@@ -23,7 +23,7 @@
 		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
 		ACTIVITY_STATUS_OPTIONS,
 		ACTIVITY_KIND_OPTIONS
-	} from '$api-activities/enums';
+	} from '$core/activities/enums';
 
 	import { DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 

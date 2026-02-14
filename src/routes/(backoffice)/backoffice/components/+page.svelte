@@ -161,6 +161,7 @@
 	más complejos normalmente requiere más estilado y muchos usan JS
 </p>
 
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
 	<div class="md:col-span-4">
 		<p>Navegación</p>
@@ -265,7 +266,7 @@
 				<img
 					class="block h-48 w-48 object-cover"
 					src="https://picsum.photos/id/237/200/200.jpg"
-					alt="Photo 1"
+					alt="Sample 1"
 				/>
 			</a>
 			<a
@@ -279,7 +280,7 @@
 				<img
 					class="block h-48 w-48 object-cover"
 					src="https://picsum.photos/id/238/200/200.jpg"
-					alt="Photo 1"
+					alt="Sample 2"
 				/>
 			</a>
 			<a

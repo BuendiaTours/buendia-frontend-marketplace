@@ -1,13 +1,13 @@
 /**
  * Re-export de enums por compatibilidad.
  * Los enums viven en cada módulo API:
- * - $api-activities/enums
- * - $api-attractions/enums
- * - $api-destinations/enums
+ * - $core/activities/enums
+ * - $core/attractions/enums
+ * - $core/destinations/enums
  *
  * Importar desde el módulo correspondiente en código nuevo.
  */
 
-export * from '$api-activities/enums';
-export * from '$api-attractions/enums';
-export * from '$api-destinations/enums';
+export * from '$core/activities/enums';
+export * from '$core/attractions/enums';
+export * from '$core/destinations/enums';

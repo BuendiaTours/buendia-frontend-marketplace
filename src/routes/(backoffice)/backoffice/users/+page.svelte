@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { User } from '$api-users/types';
+	import type { User } from '$core/users/types';
 	import type { Column } from '$lib/types';
 	import type { UsersFilters } from './filters.schema';
 
@@ -11,7 +11,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { usersFiltersSchema } from './filters.schema';
 
-	import { USER_ROUTES } from '$api-users/routes';
+	import { USER_ROUTES } from '$core/users/routes';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';

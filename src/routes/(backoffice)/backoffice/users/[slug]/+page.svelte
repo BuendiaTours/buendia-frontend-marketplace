@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { User } from '$api-users/types';
+	import type { User } from '$core/users/types';
 	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { USER_ROUTES } from '$api-users/routes';
+	import { USER_ROUTES } from '$core/users/routes';
 	let { data }: { data: { user: User } } = $props();
 	const user = $derived(data.user);
 </script>

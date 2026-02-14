@@ -1,5 +1,5 @@
-import type { Tag } from '$api-tags/types';
-import { get } from '$api-shared/helpers';
+import type { Tag } from '$core/tags/types';
+import { get } from '$core/_shared/helpers';
 
 const BASE = '/tags';
 

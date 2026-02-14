@@ -1,7 +1,7 @@
 // src/lib/types.ts
-import type { ActivityNotSuitableFor } from '$api-activities/enums';
-import type { DestinationKind } from '$api-destinations/enums';
-import type { AttractionStatus } from '$api-attractions/enums';
+import type { ActivityNotSuitableFor } from '$core/activities/enums';
+import type { DestinationKind } from '$core/destinations/enums';
+import type { AttractionStatus } from '$core/attractions/enums';
 
 export type ActivityListItem = {
 	id: string;
@@ -39,7 +39,7 @@ export type ActivityListItem = {
 };
 
 // Re-export from API shared types (canonical location)
-export type { CriteriaResult } from '$api-shared/types';
+export type { CriteriaResult } from '$core/_shared/types';
 
 export type ActivityDetail = ActivityListItem & {
 	cancellationPolicy: string;

@@ -1,6 +1,6 @@
-import type { CriteriaResult } from '$api-shared/types';
-import { get, getWithParams, post, patch, del } from '$api-shared/helpers';
-import type { User, UserCreateDto, UserUpdateDto, UserCriteria } from '$api-users/types';
+import type { CriteriaResult } from '$core/_shared/types';
+import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import type { User, UserCreateDto, UserUpdateDto, UserCriteria } from '$core/users/types';
 
 const BASE = '/users';
 
