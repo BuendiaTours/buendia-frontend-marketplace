@@ -33,3 +33,8 @@ export interface AuthProvider {
 	getToken(): Promise<string | null>;
 	formatHeaders(token: string): Record<string, string>;
 }
+
+export type CriteriaResult<T> = {
+	data: T[];
+	total: number;
+};

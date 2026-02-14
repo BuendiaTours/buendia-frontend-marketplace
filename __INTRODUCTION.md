@@ -769,13 +769,13 @@ export const getAttractionStatuses = query(async () => {
 
 **¿Cuándo usar Remote Functions vs Load Functions?**
 
-| Criterio | Remote Functions | Load Functions |
-|----------|------------------|----------------|
-| **Timing** | Después del render inicial | Antes del render (SSR) |
-| **Uso ideal** | Datos secundarios (dropdowns, filtros) | Datos principales de la página |
-| **SEO** | No indexable | Indexable por buscadores |
-| **Loading state** | Necesitas manejar loading | Ya cargado al renderizar |
-| **Ejemplo** | Lista de categorías para un select | Detalles de una actividad |
+| Criterio          | Remote Functions                       | Load Functions                 |
+| ----------------- | -------------------------------------- | ------------------------------ |
+| **Timing**        | Después del render inicial             | Antes del render (SSR)         |
+| **Uso ideal**     | Datos secundarios (dropdowns, filtros) | Datos principales de la página |
+| **SEO**           | No indexable                           | Indexable por buscadores       |
+| **Loading state** | Necesitas manejar loading              | Ya cargado al renderizar       |
+| **Ejemplo**       | Lista de categorías para un select     | Detalles de una actividad      |
 
 **Ventajas:**
 
@@ -1351,6 +1351,7 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 ```
 
 **Helpers disponibles:**
+
 - `createPageField()` - Campo de paginación
 - `createPageSizeField()` - Tamaño de página
 - `createBooleanField()` - Campos booleanos
@@ -1562,6 +1563,7 @@ export type ActivityUpdateData = Partial<ActivityDetail>; // Para actualizar
 ```
 
 **Relación con validación:**
+
 - Los tipos TypeScript definen la **estructura** de los datos
 - Los schemas Zod definen las **reglas de validación**
 - Superforms conecta ambos automáticamente
@@ -1616,30 +1618,31 @@ export type ActivityFormData = z.infer<typeof activityFormSchema>;
 ```
 
 **Tipos de validaciones útiles:**
+
 ```typescript
 // String con validaciones
-z.string().min(3).max(100).email() // Email
-z.string().url() // URL
-z.string().regex(/^[a-z-]+$/) // Slug
+z.string().min(3).max(100).email(); // Email
+z.string().url(); // URL
+z.string().regex(/^[a-z-]+$/); // Slug
 
 // Números
-z.number().min(0).max(100)
-z.number().positive()
-z.number().int()
+z.number().min(0).max(100);
+z.number().positive();
+z.number().int();
 
 // Opcionales
-z.string().optional() // undefined | string
-z.string().nullable() // null | string
+z.string().optional(); // undefined | string
+z.string().nullable(); // null | string
 
 // Arrays
-z.array(z.string()).min(1).max(10)
-z.array(z.object({ id: z.string() }))
+z.array(z.string()).min(1).max(10);
+z.array(z.object({ id: z.string() }));
 
 // Enums
-z.enum(['DRAFT', 'PUBLISHED'])
+z.enum(['DRAFT', 'PUBLISHED']);
 
 // Transformaciones
-z.string().transform((val) => val.trim().toLowerCase())
+z.string().transform((val) => val.trim().toLowerCase());
 ```
 
 ---
@@ -1740,11 +1743,13 @@ export const actions: Actions = {
 ```
 
 **Flujo de la Load Function:**
+
 1. **Fetch datos** desde la API externa
 2. **Inicializar Superforms** con datos existentes
 3. **Retornar datos** para renderizar el formulario
 
 **Flujo de la Action:**
+
 1. **Validar** datos del form con Zod
 2. **Llamar API** para actualizar
 3. **Flash message** + **Redirect** si OK
@@ -1880,9 +1885,7 @@ export const actions: Actions = {
 				{$submitting ? 'Guardando...' : 'Guardar Cambios'}
 			</button>
 
-			<a href="/backoffice/activities/{data.activity.slug}" class="btn btn-ghost">
-				Cancelar
-			</a>
+			<a href="/backoffice/activities/{data.activity.slug}" class="btn btn-ghost"> Cancelar </a>
 		</div>
 	</form>
 </div>
@@ -1895,14 +1898,11 @@ export const actions: Actions = {
 3. **Componentes muestran** errores si existen:
 
 ```svelte
-<FormInputText
-	id="title"
-	bind:value={$form.title}
-	error={$errors.title}  ← Error de Zod aquí
-/>
+<FormInputText id="title" bind:value={$form.title} error={$errors.title} ← Error de Zod aquí />
 ```
 
 Si Zod falla en `z.string().min(3)`, `$errors.title` contendrá:
+
 ```
 ['El título debe tener al menos 3 caracteres']
 ```

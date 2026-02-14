@@ -4,10 +4,12 @@ import { ROUTES } from '$lib/config/routes';
 // Mapeo de rutas a labels legibles
 const routeLabels: Record<string, string> = {
 	'': 'Inicio',
+	backoffice: 'Backoffice',
 	activities: 'Actividades',
 	attractions: 'Atracciones',
 	destinations: 'Destinos',
 	distributives: 'Distributivos',
+	users: 'Usuarios',
 	edit: 'Editar',
 	create: 'Crear',
 	new: 'Nuevo'
@@ -73,12 +75,25 @@ export function buildBreadcrumbs(
 	const segments = pathname.split('/').filter(Boolean);
 	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Inicio', href: ROUTES.backoffice.home }];
 
-	// Solo procesar el primer segmento (la sección principal)
-	if (segments.length > 0) {
-		const section = segments[0];
+	// Añadir segmentos de sección usando ROUTES para URLs canónicas (evita /backoffice//users)
+	const slugPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+	const sectionRoutes: Record<string, string> = {
+		backoffice: ROUTES.backoffice.home.replace(/\/$/, ''), // sin trailing slash
+		users: ROUTES.backoffice.users.list,
+		activities: ROUTES.backoffice.activities.list,
+		attractions: ROUTES.backoffice.attractions.list,
+		destinations: ROUTES.backoffice.destinations.list,
+		'api-catalog': ROUTES.backoffice.apiCatalog,
+		components: ROUTES.backoffice.components
+	};
+	for (const segment of segments) {
+		if (segment === 'edit' || segment === 'create') break;
+		if (slugPattern.test(segment) || (segment.includes('-') && segment.length > 10)) break;
+		const href =
+			sectionRoutes[segment] ?? `/${segments.slice(0, segments.indexOf(segment) + 1).join('/')}`;
 		breadcrumbs.push({
-			label: routeLabels[section] || section,
-			href: `/${section}`
+			label: routeLabels[segment] || segment,
+			href
 		});
 	}
 

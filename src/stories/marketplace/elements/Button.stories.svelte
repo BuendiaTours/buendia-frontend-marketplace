@@ -330,7 +330,7 @@
 					<li>--color-action-primary-text-disabled</li>
 				</ul>
 
-				<h3 class="text-h3 mb-4 mt-6">Secondary Variant</h3>
+				<h3 class="text-h3 mt-6 mb-4">Secondary Variant</h3>
 				<ul class="text-p-base space-y-2 font-mono text-sm">
 					<li>--color-action-secondary-bg</li>
 					<li>--color-action-secondary-bg-hover</li>
@@ -340,7 +340,7 @@
 					<li>--color-action-secondary-border-hover</li>
 				</ul>
 
-				<h3 class="text-h3 mb-4 mt-6">Tertiary Variant</h3>
+				<h3 class="text-h3 mt-6 mb-4">Tertiary Variant</h3>
 				<ul class="text-p-base space-y-2 font-mono text-sm">
 					<li>--color-action-tertiary-bg</li>
 					<li>--color-action-tertiary-bg-hover</li>
@@ -350,14 +350,14 @@
 					<li>--color-action-tertiary-border-hover</li>
 				</ul>
 
-				<h3 class="text-h3 mb-4 mt-6">Typography</h3>
+				<h3 class="text-h3 mt-6 mb-4">Typography</h3>
 				<ul class="text-p-base space-y-2 font-mono text-sm">
 					<li>--font-size-p-sm / --line-height-p-sm (small)</li>
 					<li>--font-size-p-base / --line-height-p-base (base)</li>
 					<li>--font-size-p-lg / --line-height-p-lg (large)</li>
 				</ul>
 
-				<h3 class="text-h3 mb-4 mt-6">Other</h3>
+				<h3 class="text-h3 mt-6 mb-4">Other</h3>
 				<ul class="text-p-base space-y-2 font-mono text-sm">
 					<li>--radius-lg (border radius)</li>
 				</ul>

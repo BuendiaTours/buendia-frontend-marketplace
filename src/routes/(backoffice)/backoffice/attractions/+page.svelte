@@ -20,7 +20,7 @@
 	import * as m from '$paraglide/messages';
 
 	// Routes
-	import { ROUTES } from '$lib/config/routes';
+	import { ATTRACTION_ROUTES } from '$api-attractions/routes';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';
@@ -261,7 +261,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href={ROUTES.backoffice.attractions.create} class="btn btn-outline btn-primary">
+	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nueva atracción
 	</a>
@@ -348,7 +348,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.attractions.detail(item.slug),
+												ATTRACTION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -368,7 +368,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.attractions.edit(item.slug),
+												ATTRACTION_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}
 										>

@@ -127,7 +127,7 @@
 
 <details
 	bind:this={detailsElement}
-	class="collapse-arrow collapse border border-base-content/9 bg-base-100 {className}"
+	class="collapse-arrow border-base-content/9 bg-base-100 collapse border {className}"
 	id={name}
 	{name}
 	{open}
@@ -140,7 +140,7 @@
 				{#if sortable && !isOpen}
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
-						class="cursor-move text-base-content/50 hover:text-base-content"
+						class="text-base-content/50 hover:text-base-content cursor-move"
 						draggable="true"
 						{ondragstart}
 						{ondragend}

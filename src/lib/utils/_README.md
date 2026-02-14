@@ -26,10 +26,10 @@ Ejemplo típico:
 
 ```ts
 export function forwardSearchParams(
-  source: URLSearchParams,
-  target: URLSearchParams,
-  allowed: readonly string[]
+	source: URLSearchParams,
+	target: URLSearchParams,
+	allowed: readonly string[]
 ) {
-  // ...
+	// ...
 }
 ```

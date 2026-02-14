@@ -1,6 +1,5 @@
 import { activityFormSchema } from '../../activity-form.schema';
 import { api, ApiError } from '$lib/api/index';
-import { apiConfig } from '$lib/api';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -20,7 +19,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			distributivesResponse
 		] = await Promise.all([
 			api.activities.getBySlug(fetch, params.slug),
-			fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
+			api.tags.getAll(fetch),
 			api.categories.getAll(fetch),
 			api.attractions.getAll(fetch),
 			api.destinations.getAll(fetch),

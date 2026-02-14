@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 // Enums used
 import {
@@ -11,7 +11,7 @@ import {
 	MEAL_ALLERGEN_VALUES,
 	MEAL_FORMAT_VALUES,
 	MEAL_KIND_VALUES
-} from '$lib/config/enums';
+} from '$api-activities/enums';
 
 /**
  * Schema de validación para el formulario de actividades

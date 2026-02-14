@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { getQueryCount, getQueryLog } from '$lib/api/index';
 
 /**
  * API Catalog - Load Function
@@ -10,7 +11,9 @@ import type { PageServerLoad } from './$types';
  * - src/lib/api/common.remote.ts
  */
 export const load: PageServerLoad = async () => {
-	// Ya no necesitamos escanear el directorio /api/
-	// Los proxies han sido reemplazados por Remote Functions
-	return {};
+	return {
+		// Debug throttling: queries realizadas en esta sesión del servidor
+		queryCount: getQueryCount(),
+		queryLog: getQueryLog()
+	};
 };

@@ -20,13 +20,13 @@
 	import { CalendarDate } from '@internationalized/date';
 
 	// Routes
-	import { ROUTES } from '$lib/config/routes';
+	import { ACTIVITY_ROUTES } from '$api-activities/routes';
 
 	// i18n
 	import * as m from '$paraglide/messages';
 
 	// Enums
-	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/config/enums';
+	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$api-activities/enums';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';
@@ -538,7 +538,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href={ROUTES.backoffice.activities.create} class="btn btn-outline btn-primary">
+	<a href={ACTIVITY_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
 		<span>{m.activities_newActivity()}</span>
 	</a>
@@ -600,7 +600,7 @@
 								<td>
 									<a
 										href={buildUrlWithFilters(
-											ROUTES.backoffice.activities.detail(item.slug),
+											ACTIVITY_ROUTES.detail(item.slug),
 											page.url.searchParams
 										)}
 									>
@@ -633,7 +633,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.activities.detail(item.slug),
+												ACTIVITY_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -653,7 +653,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.activities.edit(item.slug),
+												ACTIVITY_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -664,7 +664,7 @@
 										<form
 											method="POST"
 											action={buildUrlWithFilters(
-												ROUTES.backoffice.activities.delete(item.slug),
+												ACTIVITY_ROUTES.delete(item.slug),
 												page.url.searchParams
 											)}
 										>

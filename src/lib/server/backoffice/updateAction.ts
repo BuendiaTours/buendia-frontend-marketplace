@@ -1,4 +1,4 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$lib/api/index';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
@@ -15,7 +15,7 @@ export interface UpdateActionConfig {
 	schema: any;
 	/** Función que realiza la actualización en la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<any>;
+	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<void>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	transformData?: (formData: any) => any;
@@ -77,8 +77,8 @@ export function createUpdateAction(config: UpdateActionConfig) {
 			// Transformar datos si se proporciona función de transformación
 			const dataToSend = config.transformData ? config.transformData(form.data) : form.data;
 
-			const result = await config.updateFn(fetch, slug, dataToSend);
-			console.log('✅ [updateAction] API respondió exitosamente:', result);
+			await config.updateFn(fetch, slug, dataToSend);
+			console.log('✅ [updateAction] API respondió exitosamente');
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -93,14 +93,12 @@ export function createUpdateAction(config: UpdateActionConfig) {
 			console.log('💾 [updateAction] Redirigiendo a:', redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
-			console.error('❌ [updateAction] Error capturado:', err);
-			console.error('❌ [updateAction] Tipo de error:', err?.constructor?.name);
-
-			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
-			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				console.log('✅ [updateAction] Es un redirect, dejándolo pasar');
+			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje
+			if (isRedirect(err)) {
 				throw err;
 			}
+
+			console.error('❌ [updateAction] Error capturado:', err);
 
 			let errorMessage = 'Error al guardar los cambios.';
 

@@ -1,19 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 import { ApiError } from '$lib/api/index';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 /**
  * Configuración para crear una función load de creación
  */
-export interface CreateLoadConfig {
+export interface CreateLoadConfig<T extends Record<string, unknown> = Record<string, unknown>> {
 	/** Schema de validación (adaptador de Zod) */
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Valores iniciales del formulario (sin UUID, se genera automáticamente) */
-	initialValues: Record<string, any>;
+	initialValues: Partial<T>;
 	/** Función async que carga listas disponibles (tags, categories, etc.) - Opcional */
-	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<Record<string, any>>;
+	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<Record<string, unknown>>;
 	/** Label para breadcrumbs (ej: 'Nueva actividad', 'Nueva atracción') */
 	breadcrumbLabel: string;
 	/** Nombre de la entidad para mensajes de error (ej: 'actividad', 'atracción') */
@@ -55,7 +56,7 @@ export interface CreateLoadConfig {
  * });
  * ```
  */
-export function createCreateLoad(config: CreateLoadConfig) {
+export function createCreateLoad<T extends Record<string, unknown>>(config: CreateLoadConfig<T>) {
 	return async ({ fetch, url }: { fetch: typeof globalThis.fetch; url: URL }) => {
 		const { schema, initialValues, loadAvailableData, breadcrumbLabel, entityName } = config;
 
@@ -71,15 +72,15 @@ export function createCreateLoad(config: CreateLoadConfig) {
 			console.log(`📦 [createLoad] UUID generado:`, dataWithUuid.id);
 
 			// 2. Cargar listas disponibles (si se proporciona la función)
-			let availableData = {};
+			let availableData: Record<string, unknown> = {};
 			if (loadAvailableData) {
 				console.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
 				availableData = await loadAvailableData(fetch);
 				console.log(`✅ [createLoad] Datos cargados:`, Object.keys(availableData));
 			}
 
-			// 3. Inicializar formulario con valores por defecto + UUID
-			const form = await superValidate(dataWithUuid, schema);
+			// 3. Inicializar formulario con valores por defecto + UUID (sin errores iniciales)
+			const form = await superValidate(dataWithUuid, schema, { errors: false });
 			console.log(`📦 [createLoad] Formulario inicializado`);
 
 			// 4. Generar breadcrumbs

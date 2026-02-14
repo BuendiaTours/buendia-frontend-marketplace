@@ -20,10 +20,10 @@
 	import * as m from '$paraglide/messages';
 
 	// Enums
-	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+	import { DESTINATION_KIND_OPTIONS } from '$api-destinations/enums';
 
 	// Routes
-	import { ROUTES } from '$lib/config/routes';
+	import { DESTINATION_ROUTES } from '$api-destinations/routes';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';
@@ -223,7 +223,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href={ROUTES.backoffice.destinations.create} class="btn btn-outline btn-primary">
+	<a href={DESTINATION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nuevo destino
 	</a>
@@ -289,7 +289,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.detail(item.slug),
+												DESTINATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -319,7 +319,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.detail(item.slug),
+												DESTINATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -329,7 +329,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.edit(item.slug),
+												DESTINATION_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}>Editar</a
 										>

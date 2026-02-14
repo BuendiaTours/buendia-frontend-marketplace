@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { destinationsFiltersSchema } from './filters.schema';
 import { api, ApiError } from '$lib/api/index';
+import { buildPagination } from '$api-shared/params';
 import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
@@ -26,7 +27,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 		return {
 			items: response.data || [],
-			pagination: response.pagination || null,
+			pagination: buildPagination(response.total, filters.page, filters.pageSize),
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
 			breadcrumbs

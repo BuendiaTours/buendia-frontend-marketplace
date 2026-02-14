@@ -1,7 +1,7 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 // Enums used
-import { ATTRACTION_STATUS_VALUES } from '$lib/config/enums';
+import { ATTRACTION_STATUS_VALUES } from '$api-attractions/enums';
 
 /**
  * Schema de validación para el formulario de attractions

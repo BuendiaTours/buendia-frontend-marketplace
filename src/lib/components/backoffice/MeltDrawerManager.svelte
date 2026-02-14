@@ -115,11 +115,7 @@ VENTAJAS:
 
 	// Resolver el título: puede ser string o función
 	const resolvedTitle = $derived(
-		selectedItem
-			? typeof title === 'function'
-				? title(selectedItem)
-				: title
-			: ''
+		selectedItem ? (typeof title === 'function' ? title(selectedItem) : title) : ''
 	);
 </script>
 

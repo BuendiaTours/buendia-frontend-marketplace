@@ -12,7 +12,7 @@
 		MEAL_FORMAT_OPTIONS,
 		MEAL_ADDITIONAL_OPTIONS,
 		MEAL_ALLERGEN_OPTIONS
-	} from '$lib/config/enums';
+	} from '$api-activities/enums';
 
 	interface Meal {
 		id: string;
@@ -88,7 +88,7 @@
 		<span>Comidas</span>
 	{/snippet}
 	{#snippet titleBarActions()}
-		<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary" onclick={handleAddMeal}>
+		<button type="button" class="btn btn-outline btn-xs btn-primary ml-6" onclick={handleAddMeal}>
 			Añadir comida
 		</button>
 	{/snippet}
@@ -100,7 +100,7 @@
 			<FormAccordion name="form-meals-{index}" class="md:col-span-12">
 				{#snippet title()}
 					<div
-						class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
+						class="border-base-content/50 flex h-8 w-8 items-center justify-center rounded-full border-2"
 					>
 						{index + 1}
 					</div>
@@ -170,7 +170,7 @@
 					<div class="flex gap-2 md:col-span-12">
 						<button
 							type="button"
-							class="btn ml-auto btn-soft btn-xs btn-error"
+							class="btn btn-soft btn-xs btn-error ml-auto"
 							onclick={() => handleRemoveMeal(index)}
 						>
 							Eliminar esta comida

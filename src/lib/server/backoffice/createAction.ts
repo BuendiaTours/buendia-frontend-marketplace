@@ -15,7 +15,7 @@ export interface CreateActionConfig {
 	schema: any;
 	/** Función que realiza la creación en la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	createFn: (fetchFn: typeof globalThis.fetch, data: any) => Promise<any>;
+	createFn: (fetchFn: typeof globalThis.fetch, data: any) => Promise<void>;
 	/** Nombre de la entidad para mensajes (ej: 'actividad', 'atracción', 'destino') */
 	entityName: string;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
@@ -23,6 +23,10 @@ export interface CreateActionConfig {
 	transformData?: (formData: any) => any;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
+	/** Si true, redirige al listado (basePath) ignorando redirectToEdit y redirectField */
+	redirectToList?: boolean;
+	/** Campo del formulario a usar como identificador en la URL de redirección (default: 'slug') */
+	redirectField?: string;
 }
 
 /**
@@ -55,7 +59,16 @@ export interface CreateActionConfig {
  */
 export function createCreateAction(config: CreateActionConfig) {
 	return async ({ request, fetch, cookies }: RequestEvent) => {
-		const { basePath, schema, createFn, entityName, transformData, redirectToEdit = true } = config;
+		const {
+			basePath,
+			schema,
+			createFn,
+			entityName,
+			transformData,
+			redirectToEdit = true,
+			redirectToList = false,
+			redirectField = 'slug'
+		} = config;
 
 		console.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
 
@@ -92,8 +105,8 @@ export function createCreateAction(config: CreateActionConfig) {
 			const dataToSend = transformData ? transformData(form.data) : form.data;
 
 			// 3. Llamar a la API para crear el recurso
-			const result = await createFn(fetch, dataToSend);
-			console.log(`✅ [createAction] ${entityName} creado exitosamente:`, result);
+			await createFn(fetch, dataToSend);
+			console.log(`✅ [createAction] ${entityName} creado exitosamente`);
 
 			// 4. Flash message de éxito
 			const successMessage = `${entityName.charAt(0).toUpperCase() + entityName.slice(1)} ${entityName.endsWith('ión') ? 'creada' : 'creado'} correctamente.`;
@@ -102,10 +115,16 @@ export function createCreateAction(config: CreateActionConfig) {
 				message: successMessage
 			});
 
-			// 5. Redirigir a la página de edición o detalle
-			const redirectPath = redirectToEdit
-				? `${basePath}/${result.slug}/edit`
-				: `${basePath}/${result.slug}`;
+			// 5. Redirigir según configuración
+			let redirectPath: string;
+			if (redirectToList) {
+				redirectPath = basePath;
+			} else {
+				const identifier = form.data[redirectField];
+				redirectPath = redirectToEdit
+					? `${basePath}/${identifier}/edit`
+					: `${basePath}/${identifier}`;
+			}
 
 			console.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
 			throw redirect(303, redirectPath);

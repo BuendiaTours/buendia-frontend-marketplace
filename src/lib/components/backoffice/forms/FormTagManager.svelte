@@ -102,9 +102,19 @@
 		onTagsChange
 	}: Props = $props();
 
+	const safeAvailableTags = $derived.by(() => {
+		const resolved =
+			typeof availableTags === 'function' ? (availableTags as () => unknown)() : availableTags;
+		if (Array.isArray(resolved)) return resolved as AvailableTag[];
+		const obj = resolved as Record<string, unknown> | null | undefined;
+		if (obj && Array.isArray(obj.data)) return obj.data as AvailableTag[];
+		if (obj && Array.isArray(obj.items)) return obj.items as AvailableTag[];
+		return [];
+	});
+
 	const tagsForCombobox = $derived(
-		availableTags
-			?.filter((tag) => {
+		safeAvailableTags
+			.filter((tag) => {
 				if (valueType === 'string') {
 					return !(tags as string[]).includes(tag.id);
 				}
@@ -113,7 +123,7 @@
 			.map((tag) => ({
 				value: tag.id,
 				label: tag.name
-			})) || []
+			}))
 	);
 
 	let selectedTagId = $state<string | undefined>(undefined);
@@ -129,7 +139,7 @@
 			const tagExists = (tags as TagItem[]).some((t) => t.id === tagId);
 			if (tagExists) return;
 
-			const selectedTag = availableTags?.find((t) => t.id === tagId);
+			const selectedTag = safeAvailableTags.find((t) => t.id === tagId);
 			if (selectedTag) {
 				tags = [
 					...(tags as TagItem[]),
@@ -173,9 +183,9 @@
 			{#if tags.length === 0}
 				<span class="text-base-content/50 text-sm">{emptyMessage}</span>
 			{:else if valueType === 'string'}
-				{#each tags as tag, i}
+				{#each tags as tag, i (`${tag as string}-${i}`)}
 					{@const stringTag = tag as string}
-					{@const availableTag = availableTags?.find((t) => t.id === stringTag)}
+					{@const availableTag = safeAvailableTags.find((t) => t.id === stringTag)}
 					<TagComponent
 						name="{id}[{i}]"
 						value={stringTag}
@@ -187,7 +197,7 @@
 					</TagComponent>
 				{/each}
 			{:else}
-				{#each tags as tag, i}
+				{#each tags as tag, i ((tag as TagItem).id)}
 					{@const objectTag = tag as TagItem}
 					<TagComponent
 						name="{id}[{i}][id]"

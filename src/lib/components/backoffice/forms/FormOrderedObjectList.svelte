@@ -72,7 +72,7 @@
 		label: string;
 		items: Item[];
 		availableItems?: AvailableItem[];
-		error?: any;
+		error?: string | string[];
 		badge?: string;
 		placeholder?: string;
 		wrapperClass?: string;
@@ -102,11 +102,20 @@
 	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
 
 	let selectedItemId = $state<string>('');
-	let selectedItemIds = $state<Set<string>>(new Set());
 	let draggedIndex = $state<number | null>(null);
 
+	const safeAvailableItems = $derived.by(() => {
+		const resolved =
+			typeof availableItems === 'function' ? (availableItems as () => unknown)() : availableItems;
+		if (Array.isArray(resolved)) return resolved as AvailableItem[];
+		const obj = resolved as Record<string, unknown> | null | undefined;
+		if (obj && Array.isArray(obj.data)) return obj.data as AvailableItem[];
+		if (obj && Array.isArray(obj.items)) return obj.items as AvailableItem[];
+		return [];
+	});
+
 	const itemsForCombobox = $derived(
-		availableItems
+		safeAvailableItems
 			.filter((item) => !items.some((selectedItem) => selectedItem.id === item.id))
 			.map((item) => ({
 				value: item.id,
@@ -114,12 +123,10 @@
 			}))
 	);
 
-	const hasSelectedItems = $derived(selectedItemIds.size > 0);
-
 	function handleItemSelect(value: string | undefined) {
 		if (!value) return;
 
-		const item = availableItems.find((i) => i.id === value);
+		const item = safeAvailableItems.find((i) => i.id === value);
 		if (!item) return;
 
 		const alreadyExists = items.some((i) => i.id === item.id);
@@ -153,16 +160,6 @@
 		if (index === items.length - 1) return;
 		const item = items[index];
 		items = [...items.filter((_, i) => i !== index), item];
-	}
-
-	function toggleItemSelection(itemId: string) {
-		const newSelection = new Set(selectedItemIds);
-		if (newSelection.has(itemId)) {
-			newSelection.delete(itemId);
-		} else {
-			newSelection.add(itemId);
-		}
-		selectedItemIds = newSelection;
 	}
 
 	function removeItem(itemId: string) {
@@ -251,7 +248,7 @@
 						</tr>
 					</thead -->
 					<tbody>
-						{#each items as item, index}
+						{#each items as item, index (item.id)}
 							<tr
 								class:opacity-50={draggedIndex === index}
 								ondragover={cfg.useDragAndDrop ? handleDragOver : undefined}

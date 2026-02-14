@@ -5,6 +5,7 @@ Este documento describe el flujo completo de validación de formularios en la ap
 ## Arquitectura General
 
 El sistema de validación utiliza:
+
 - **Sveltekit-superforms**: Para manejo de formularios y validación
 - **Zod**: Para schemas de validación
 - **Flash Messages**: Para persistir mensajes entre redirecciones
@@ -25,7 +26,7 @@ Si hay errores (form.valid = false):
     → Toast aparece INMEDIATAMENTE ❌
     → Formulario NO se envía
     → Campos con errores se marcan
-    
+
 Si no hay errores (form.valid = true):
     → Formulario se envía al servidor
     ↓
@@ -65,10 +66,10 @@ Define las reglas de validación del formulario:
 
 ```typescript
 export const activityFormSchema = z.object({
-  title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
-  slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
-  descriptionShort: z.string().min(3, 'El campo debe tener al menos 3 caracteres'),
-  // ... más campos
+	title: z.string().min(3, 'El título debe tener al menos 3 caracteres').max(200),
+	slug: z.string().min(3, 'El slug debe tener al menos 3 caracteres').max(100),
+	descriptionShort: z.string().min(3, 'El campo debe tener al menos 3 caracteres')
+	// ... más campos
 });
 ```
 
@@ -80,43 +81,43 @@ export const activityFormSchema = z.object({
 
 ```svelte
 <script lang="ts">
-  import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
-  
-  let toastComponent: MsgMeltToast;
-  
-  const { form, errors, enhance, message } = superForm(data.form, {
-    dataType: 'json',
-    onUpdate({ form }) {
-      // Se ejecuta después de la validación pero antes del envío
-      if (!form.valid) {
-        // Mostrar toast inmediatamente cuando hay errores de validación
-        toastComponent?.addToast({
-          data: {
-            title: 'Errores en el formulario',
-            description: 'Por favor, corrige los errores marcados en el formulario.',
-            type: 'error'
-          }
-        });
-      }
-    },
-    onError({ result }) {
-      // Mostrar toast cuando hay errores de validación del servidor
-      if (result.type === 'failure' && result.status === 400) {
-        toastComponent?.addToast({
-          data: {
-            title: 'Errores en el formulario',
-            description: 'Por favor, corrige los errores marcados en el formulario.',
-            type: 'error'
-          }
-        });
-      }
-    }
-  });
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+
+	let toastComponent: MsgMeltToast;
+
+	const { form, errors, enhance, message } = superForm(data.form, {
+		dataType: 'json',
+		onUpdate({ form }) {
+			// Se ejecuta después de la validación pero antes del envío
+			if (!form.valid) {
+				// Mostrar toast inmediatamente cuando hay errores de validación
+				toastComponent?.addToast({
+					data: {
+						title: 'Errores en el formulario',
+						description: 'Por favor, corrige los errores marcados en el formulario.',
+						type: 'error'
+					}
+				});
+			}
+		},
+		onError({ result }) {
+			// Mostrar toast cuando hay errores de validación del servidor
+			if (result.type === 'failure' && result.status === 400) {
+				toastComponent?.addToast({
+					data: {
+						title: 'Errores en el formulario',
+						description: 'Por favor, corrige los errores marcados en el formulario.',
+						type: 'error'
+					}
+				});
+			}
+		}
+	});
 </script>
 
 <!-- Formulario -->
 <form id="edit-form" method="POST" use:enhance>
-  <!-- Campos del formulario -->
+	<!-- Campos del formulario -->
 </form>
 
 <!-- Componente Toast -->
@@ -124,6 +125,7 @@ export const activityFormSchema = z.object({
 ```
 
 **Callbacks importantes:**
+
 - **`onUpdate`**: Se ejecuta después de la validación cliente pero antes del envío. Si `form.valid = false`, muestra toast y previene el envío.
 - **`onError`**: Se ejecuta cuando el servidor responde con error (status 400).
 
@@ -135,66 +137,65 @@ export const activityFormSchema = z.object({
 import { setFlashMessage } from '$lib/server/flashMessages';
 
 export const actions: Actions = {
-  default: async ({ request, params, fetch, cookies }) => {
-    // 1. Validar formulario
-    const form = await superValidate(request, zod(activityFormSchema));
-    
-    if (!form.valid) {
-      // Errores de validación
-      setFlashMessage(cookies, {
-        type: 'error',
-        message: 'Por favor, corrige los errores del formulario.'
-      });
-      return fail(400, { form });
-    }
-    
-    try {
-      // 2. Llamar a la API
-      await api.activities.update(fetch, params.slug, form.data);
-      
-      // 3. Éxito - Flash message y redirect
-      setFlashMessage(cookies, {
-        type: 'success',
-        message: 'Los cambios se guardaron correctamente.'
-      });
-      
-      throw redirect(303, `/activities/${params.slug}/edit`);
-      
-    } catch (err) {
-      // 4. Manejar errores de API
-      if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-        throw err; // Dejar pasar el redirect
-      }
-      
-      let errorMessage = 'Error al guardar los cambios.';
-      
-      if (err instanceof ApiError && err.status) {
-        switch (err.status) {
-          case 400:
-            errorMessage = 'Los datos enviados no son válidos.';
-            break;
-          case 404:
-            errorMessage = 'El elemento no existe.';
-            break;
-          case 409:
-            errorMessage = 'Ya existe un elemento con estos datos.';
-            break;
-          case 500:
-            errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
-            break;
-          default:
-            errorMessage = `Error al guardar los cambios (código ${err.status}).`;
-        }
-      }
-      
-      setFlashMessage(cookies, {
-        type: 'error',
-        message: errorMessage
-      });
-      
-      return fail(err instanceof ApiError ? err.status || 500 : 503, { form });
-    }
-  }
+	default: async ({ request, params, fetch, cookies }) => {
+		// 1. Validar formulario
+		const form = await superValidate(request, zod(activityFormSchema));
+
+		if (!form.valid) {
+			// Errores de validación
+			setFlashMessage(cookies, {
+				type: 'error',
+				message: 'Por favor, corrige los errores del formulario.'
+			});
+			return fail(400, { form });
+		}
+
+		try {
+			// 2. Llamar a la API
+			await api.activities.update(fetch, params.slug, form.data);
+
+			// 3. Éxito - Flash message y redirect
+			setFlashMessage(cookies, {
+				type: 'success',
+				message: 'Los cambios se guardaron correctamente.'
+			});
+
+			throw redirect(303, `/activities/${params.slug}/edit`);
+		} catch (err) {
+			// 4. Manejar errores de API
+			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
+				throw err; // Dejar pasar el redirect
+			}
+
+			let errorMessage = 'Error al guardar los cambios.';
+
+			if (err instanceof ApiError && err.status) {
+				switch (err.status) {
+					case 400:
+						errorMessage = 'Los datos enviados no son válidos.';
+						break;
+					case 404:
+						errorMessage = 'El elemento no existe.';
+						break;
+					case 409:
+						errorMessage = 'Ya existe un elemento con estos datos.';
+						break;
+					case 500:
+						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
+						break;
+					default:
+						errorMessage = `Error al guardar los cambios (código ${err.status}).`;
+				}
+			}
+
+			setFlashMessage(cookies, {
+				type: 'error',
+				message: errorMessage
+			});
+
+			return fail(err instanceof ApiError ? err.status || 500 : 503, { form });
+		}
+	}
 };
 ```
 
@@ -206,22 +207,22 @@ Permite persistir mensajes entre redirecciones usando cookies:
 
 ```typescript
 export function setFlashMessage(cookies: Cookies, flash: FlashMessage): void {
-  cookies.set(FLASH_COOKIE_NAME, JSON.stringify(flash), {
-    path: '/',
-    httpOnly: true,
-    sameSite: 'lax',
-    maxAge: 60 // 60 segundos
-  });
+	cookies.set(FLASH_COOKIE_NAME, JSON.stringify(flash), {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'lax',
+		maxAge: 60 // 60 segundos
+	});
 }
 
 export function getFlashMessage(cookies: Cookies): FlashMessage | null {
-  const flashCookie = cookies.get(FLASH_COOKIE_NAME);
-  if (!flashCookie) return null;
-  
-  // Eliminar la cookie después de leerla
-  cookies.delete(FLASH_COOKIE_NAME, { path: '/' });
-  
-  return JSON.parse(flashCookie);
+	const flashCookie = cookies.get(FLASH_COOKIE_NAME);
+	if (!flashCookie) return null;
+
+	// Eliminar la cookie después de leerla
+	cookies.delete(FLASH_COOKIE_NAME, { path: '/' });
+
+	return JSON.parse(flashCookie);
 }
 ```
 
@@ -235,11 +236,11 @@ Lee el flash message y lo pasa al layout:
 import { getFlashMessage } from '$lib/server/flashMessages';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
-  const alert = getFlashMessage(cookies);
-  
-  return {
-    alert  // Disponible en $page.data.alert
-  };
+	const alert = getFlashMessage(cookies);
+
+	return {
+		alert // Disponible en $page.data.alert
+	};
 };
 ```
 
@@ -251,36 +252,36 @@ Muestra notificaciones toast usando Melt-UI:
 
 ```svelte
 <script lang="ts">
-  import { createToaster, melt } from '@melt-ui/svelte';
-  import { page } from '$app/stores';
-  
-  const {
-    elements: { content, title, description, close },
-    helpers: { addToast },
-    states: { toasts },
-    actions: { portal }
-  } = createToaster<ToastData>();
-  
-  // Integración automática con flash messages
-  const alert = $derived(
-    ($page.form?.alert as AlertMessage | undefined) ||
-    ($page.data?.alert as AlertMessage | undefined)
-  );
-  
-  $effect(() => {
-    if (alert) {
-      addToast({
-        data: {
-          title: alert.type,
-          description: alert.message,
-          type: alert.type
-        }
-      });
-    }
-  });
-  
-  // Exportar addToast para uso manual
-  export { addToast };
+	import { createToaster, melt } from '@melt-ui/svelte';
+	import { page } from '$app/stores';
+
+	const {
+		elements: { content, title, description, close },
+		helpers: { addToast },
+		states: { toasts },
+		actions: { portal }
+	} = createToaster<ToastData>();
+
+	// Integración automática con flash messages
+	const alert = $derived(
+		($page.form?.alert as AlertMessage | undefined) ||
+			($page.data?.alert as AlertMessage | undefined)
+	);
+
+	$effect(() => {
+		if (alert) {
+			addToast({
+				data: {
+					title: alert.type,
+					description: alert.message,
+					type: alert.type
+				}
+			});
+		}
+	});
+
+	// Exportar addToast para uso manual
+	export { addToast };
 </script>
 ```
 
@@ -288,11 +289,11 @@ Muestra notificaciones toast usando Melt-UI:
 
 ```svelte
 <script>
-  import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
 </script>
 
 <main>
-  {@render children()}
+	{@render children()}
 </main>
 
 <MsgMeltToast />

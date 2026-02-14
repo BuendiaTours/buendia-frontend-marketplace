@@ -6,7 +6,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
+	import { ATTRACTION_STATUS_OPTIONS } from '$api-attractions/enums';
 	import { DatabaseRestore } from 'svelte-iconoir';
 
 	// Components

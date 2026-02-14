@@ -2,7 +2,6 @@ import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { activityFormSchema } from '../activity-form.schema';
 import { api } from '$lib/api/index';
-import { apiConfig } from '$lib/api';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
@@ -50,7 +49,7 @@ export const load: PageServerLoad = createCreateLoad({
 		notSuitableFor: []
 	},
 	loadAvailableData: async (fetch) => ({
-		availableTags: await fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
+		availableTags: await api.tags.getAll(fetch),
 		availableCategories: await api.categories.getAll(fetch),
 		availableAttractions: (await api.attractions.getAll(fetch)).data || [],
 		availableDestinations: (await api.destinations.getAll(fetch)).data || [],

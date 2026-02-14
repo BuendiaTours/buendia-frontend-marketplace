@@ -2,7 +2,7 @@ import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
 
 // Enums
-import { DESTINATION_KIND_VALUES, type DestinationKind } from '$lib/config/enums';
+import { DESTINATION_KIND_VALUES, type DestinationKind } from '$api-destinations/enums';
 
 export type DestinationsFilters = {
 	// Paginación (opcional - solo si la API la provee)

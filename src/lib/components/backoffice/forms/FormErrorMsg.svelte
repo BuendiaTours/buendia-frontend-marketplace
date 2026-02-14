@@ -23,5 +23,5 @@
 </script>
 
 {#if errorMessage}
-	<span class="text-sm text-error">{errorMessage}</span>
+	<span class="text-error text-sm">{errorMessage}</span>
 {/if}

@@ -74,14 +74,13 @@
 
 <div class="inline-flex gap-2">
 	<span class="cursor-pointer" onclick={handleClick} class:text-success={isActive}>{title}</span>
-		{#if isActive}
-			{#if isDesc}
-				<NavArrowDown class="size-4 text-success" />
-			{:else}
-				<NavArrowUp class="size-4 text-success" />
-			{/if}
+	{#if isActive}
+		{#if isDesc}
+			<NavArrowDown class="text-success size-4" />
 		{:else}
-			<ArrowSeparateVertical class="size-4 text-base-content/30" />
+			<NavArrowUp class="text-success size-4" />
 		{/if}
+	{:else}
+		<ArrowSeparateVertical class="text-base-content/30 size-4" />
+	{/if}
 </div>
-

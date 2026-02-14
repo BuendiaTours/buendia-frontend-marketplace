@@ -55,7 +55,7 @@
 	<div role="alert" class="alert {config.class} mb-4">
 		<IconComponent class="size-6 shrink-0" />
 		<span class="flex-1">{alert.message}</span>
-		<button type="button" class="btn -mt-3 -mr-3 btn-square btn-outline btn-xs" onclick={dismiss}>
+		<button type="button" class="btn btn-square btn-outline btn-xs -mt-3 -mr-3" onclick={dismiss}>
 			<Cancel class="size-4" />
 		</button>
 	</div>

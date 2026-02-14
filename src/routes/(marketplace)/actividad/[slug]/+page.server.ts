@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
-import { error } from '@sveltejs/kit';
+import { handleApiError } from '$api-shared/errors';
 
 export const load: PageServerLoad = async ({ params, fetch }) => {
 	const { slug } = params;
@@ -12,7 +12,6 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			activity
 		};
 	} catch (err) {
-		console.error(`Error loading activity ${slug}:`, err);
-		throw error(404, 'Actividad no encontrada');
+		throw handleApiError(err, 'la actividad');
 	}
 };

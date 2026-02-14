@@ -2,7 +2,8 @@ import type { PageServerLoad } from './$types';
 import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
 import { categoriesEndpoints } from '$lib/api/marketplace/endpoints/categories';
-import { error } from '@sveltejs/kit';
+import { buildPagination } from '$api-shared/params';
+import { handleApiError } from '$api-shared/errors';
 
 export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const { slug } = params;
@@ -24,11 +25,10 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 		return {
 			destination,
 			activities: activitiesResult.data,
-			pagination: activitiesResult.pagination,
-			categories: categoriesResult.data
+			pagination: buildPagination(activitiesResult.total, page, pageSize),
+			categories: categoriesResult
 		};
 	} catch (err) {
-		console.error(`Error loading destination ${slug}:`, err);
-		throw error(404, 'Destino no encontrado');
+		throw handleApiError(err, 'el destino');
 	}
 };

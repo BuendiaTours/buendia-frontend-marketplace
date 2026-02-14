@@ -14,7 +14,7 @@
 		STAGE_KIND_OPTIONS,
 		STAGE_RELEVANCE_OPTIONS,
 		STAGE_REQUIREMENT_OPTIONS
-	} from '$lib/config/enums';
+	} from '$api-activities/enums';
 
 	interface Stage {
 		id: string;
@@ -143,7 +143,7 @@
 		<span>Itinerario y traslados</span>
 	{/snippet}
 	{#snippet titleBarActions()}
-		<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary" onclick={handleAddStage}>
+		<button type="button" class="btn btn-outline btn-xs btn-primary ml-6" onclick={handleAddStage}>
 			Añadir etapa
 		</button>
 	{/snippet}
@@ -163,7 +163,7 @@
 			>
 				{#snippet title()}
 					<div
-						class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
+						class="border-base-content/50 flex h-8 w-8 items-center justify-center rounded-full border-2"
 					>
 						{stage.order || index + 1}
 					</div>
@@ -302,7 +302,7 @@
 					<div class="flex gap-2 md:col-span-12">
 						<button
 							type="button"
-							class="btn ml-auto btn-soft btn-xs btn-error"
+							class="btn btn-soft btn-xs btn-error ml-auto"
 							onclick={() => handleRemoveStage(index)}
 						>
 							Eliminar esta etapa

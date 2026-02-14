@@ -14,7 +14,15 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$paraglide: './src/paraglide'
+			$paraglide: './src/paraglide',
+			'$api-shared': './src/lib/api/_shared',
+			'$api-users': './src/lib/api/users',
+			'$api-activities': './src/lib/api/activities',
+			'$api-attractions': './src/lib/api/attractions',
+			'$api-destinations': './src/lib/api/destinations',
+			'$api-categories': './src/lib/api/categories',
+			'$api-tags': './src/lib/api/tags',
+			'$api-distributives': './src/lib/api/distributives'
 		},
 		experimental: {
 			remoteFunctions: true

@@ -1,7 +1,7 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 // Enums used
-import { DESTINATION_KIND_VALUES } from '$lib/config/enums';
+import { DESTINATION_KIND_VALUES } from '$api-destinations/enums';
 
 /**
  * Schema de validación para el formulario de destinations

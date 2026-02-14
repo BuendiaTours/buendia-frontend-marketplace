@@ -1,4 +1,5 @@
-import type { ApiErrorDetails, ApiErrorType } from './types';
+import { error as httpError } from '@sveltejs/kit';
+import type { ApiErrorDetails, ApiErrorType } from '$api-shared/types';
 
 export class ApiError extends Error {
 	type: ApiErrorType;
@@ -98,4 +99,34 @@ export function createUnknownError(url: string, error: unknown): ApiError {
 		url,
 		data: error
 	});
+}
+
+/**
+ * Converts an unknown caught error into a SvelteKit HttpError.
+ * Distinguishes ApiError types to return appropriate status codes and messages.
+ *
+ * Usage in server load functions:
+ * ```ts
+ * catch (err) {
+ *   throw handleApiError(err, 'los datos');
+ * }
+ * ```
+ */
+export function handleApiError(err: unknown, resourceLabel: string): never {
+	if (err instanceof ApiError) {
+		const msg =
+			err.type === 'not_found'
+				? `No se encontró ${resourceLabel}`
+				: err.type === 'server_error'
+					? 'El servidor no está disponible. Por favor, inténtalo más tarde.'
+					: err.type === 'timeout'
+						? 'La solicitud tardó demasiado. Por favor, inténtalo de nuevo.'
+						: err.type === 'network'
+							? 'No se pudo conectar con el servidor.'
+							: `Error al cargar ${resourceLabel} (${err.status || 'desconocido'})`;
+
+		throw httpError(err.status || 500, msg);
+	}
+
+	throw httpError(503, 'No se pudo conectar con el servidor.');
 }

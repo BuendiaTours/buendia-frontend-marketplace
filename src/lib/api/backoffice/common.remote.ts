@@ -23,7 +23,7 @@
  */
 
 import { query } from '$app/server';
-import { apiClient } from '../shared/client';
+import { apiClient } from '$api-shared/client';
 
 /**
  * Tipo para las opciones de selección que devuelven estos endpoints

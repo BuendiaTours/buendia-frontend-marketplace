@@ -52,7 +52,7 @@ Props disponibles:
 	<header class="flex items-center justify-between">
 		<button
 			use:melt={$prevButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowLeft />
 		</button>
@@ -61,7 +61,7 @@ Props disponibles:
 		</div>
 		<button
 			use:melt={$nextButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowRight />
 		</button>
@@ -91,12 +91,12 @@ Props disponibles:
 											'hover:border-base-content',
 											'data-[disabled]:pointer-events-none data-[disabled]:opacity-30',
 											'data-[outside-month]:pointer-events-none',
-											'data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-content',
+											'data-[selected]:bg-primary data-[selected]:text-primary-content data-[selected]:font-medium',
 											'data-[unavailable]:line-through data-[unavailable]:opacity-50'
 										)}
 									>
 										<div
-											class="absolute top-[5px] hidden size-1 rounded-full bg-base-content group-data-[selected]:bg-primary-content group-data-[today]:block"
+											class="bg-base-content group-data-[selected]:bg-primary-content absolute top-[5px] hidden size-1 rounded-full group-data-[today]:block"
 										></div>
 										{date.day}
 									</button>

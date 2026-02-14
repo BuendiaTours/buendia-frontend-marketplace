@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { API_ENDPOINTS } from '$lib/api/shared/endpoints.config';
-	import { apiConfig } from '$lib/api/shared/config';
+	import { API_ENDPOINTS } from '$api-shared/endpoints.config';
+	import { apiConfig } from '$api-shared/config';
 	import { copyToClipboard } from '$lib/utils/misc';
 	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
 
@@ -71,6 +71,42 @@
 	<p class="mt-4">
 		Catálogo dinámico de endpoints - Se actualiza automáticamente al añadir nuevos endpoints
 	</p>
+
+	<!-- Debug: Contador de queries (throttling) -->
+	<div class="card border-warning/30 bg-warning/10 p-4">
+		<h3 class="text-md card-title">📊 Query Count (Debug Throttling)</h3>
+		<p class="text-sm opacity-90">
+			Queries realizadas hacia la API externa en esta sesión del servidor. El backend suele limitar
+			~100/hora por usuario.
+		</p>
+		<div class="mt-4 flex flex-wrap items-center gap-4">
+			<div class="flex items-baseline gap-2">
+				<span class="text-3xl font-bold">{data.queryCount ?? 0}</span>
+				<span class="text-sm">queries</span>
+			</div>
+			<button type="button" class="btn btn-outline btn-sm" onclick={() => location.reload()}>
+				Refrescar contador
+			</button>
+		</div>
+		{#if data.queryLog?.length}
+			<details class="mt-4">
+				<summary class="cursor-pointer text-sm font-medium"
+					>Ver últimas {data.queryLog.length} queries</summary
+				>
+				<div class="bg-base-200 mt-2 max-h-48 overflow-y-auto rounded p-2 font-mono text-xs">
+					{#each data.queryLog.slice().reverse() as entry}
+						<div class="flex gap-2 py-0.5">
+							<span class="text-base-content/60 shrink-0">#{entry.n}</span>
+							<span class="badge badge-ghost badge-sm">{entry.method}</span>
+							<span>{entry.path}</span>
+							<span class="text-base-content/50">{entry.ts.slice(11, 19)}</span>
+						</div>
+					{/each}
+				</div>
+			</details>
+		{/if}
+	</div>
+
 	<div class="bg-base-200 flex items-center gap-2 rounded-lg p-4">
 		<div>
 			<label class="label w-full text-sm">Base URL</label>

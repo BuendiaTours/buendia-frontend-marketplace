@@ -15,11 +15,11 @@ Este archivo se genera automáticamente desde la API y **NO debe editarse manual
 ```typescript
 // Array de valores (para validación Zod)
 export const NOT_SUITABLE_FOR = [
-  "ADULTS",
-  "CHILDREN",
-  "FAMILIES",
-  "GROUPS",
-  "INDIVIDUALS"
+	'ADULTS',
+	'CHILDREN',
+	'FAMILIES',
+	'GROUPS',
+	'INDIVIDUALS'
 ] as const;
 
 // Tipo TypeScript derivado
@@ -27,18 +27,18 @@ export type NotSuitableFor = (typeof NOT_SUITABLE_FOR)[number];
 
 // Opciones para selectores (id + name)
 export const NOT_SUITABLE_FOR_OPTIONS = [
-  { "id": "ADULTS", "name": "Adultos" },
-  { "id": "CHILDREN", "name": "Niños" },
-  { "id": "FAMILIES", "name": "Familias" },
-  { "id": "GROUPS", "name": "Grupos" },
-  { "id": "INDIVIDUALS", "name": "Individuales" }
+	{ id: 'ADULTS', name: 'Adultos' },
+	{ id: 'CHILDREN', name: 'Niños' },
+	{ id: 'FAMILIES', name: 'Familias' },
+	{ id: 'GROUPS', name: 'Grupos' },
+	{ id: 'INDIVIDUALS', name: 'Individuales' }
 ];
 
 // Mapa para acceso directo (con descripción)
 export const NOT_SUITABLE_FOR_MAP = {
-  ADULTS: { "id": "ADULTS", "name": "Adultos", "description": "No recomendado para adultos" },
-  CHILDREN: { "id": "CHILDREN", "name": "Niños", "description": "No recomendado para niños" },
-  // ...
+	ADULTS: { id: 'ADULTS', name: 'Adultos', description: 'No recomendado para adultos' },
+	CHILDREN: { id: 'CHILDREN', name: 'Niños', description: 'No recomendado para niños' }
+	// ...
 } as const;
 ```
 
@@ -49,6 +49,7 @@ export const NOT_SUITABLE_FOR_MAP = {
 **Comando:** `npm run generate:enums`
 
 Este script:
+
 1. Conecta con la API (usando `PUBLIC_API_BASE_URL` del `.env`)
 2. Obtiene todos los enums de los endpoints configurados
 3. Genera el archivo `src/lib/generated/enums.ts`
@@ -58,19 +59,19 @@ Este script:
 ```typescript
 // En scripts/generate-enums.ts
 const [
-  stageKinds,
-  stageRelevances,
-  stageRequirements,
-  activityStatuses,
-  notSuitableFor,
-  nuevoEnum  // ← Añadir aquí
+	stageKinds,
+	stageRelevances,
+	stageRequirements,
+	activityStatuses,
+	notSuitableFor,
+	nuevoEnum // ← Añadir aquí
 ] = await Promise.all([
-  fetchEnum('/stage-kinds'),
-  fetchEnum('/stage-relevances'),
-  fetchEnum('/stage-requirements'),
-  fetchEnum('/activity-status'),
-  fetchEnum('/not-suitable-for'),
-  fetchEnum('/nuevo-enum-endpoint')  // ← Endpoint de la API
+	fetchEnum('/stage-kinds'),
+	fetchEnum('/stage-relevances'),
+	fetchEnum('/stage-requirements'),
+	fetchEnum('/activity-status'),
+	fetchEnum('/not-suitable-for'),
+	fetchEnum('/nuevo-enum-endpoint') // ← Endpoint de la API
 ]);
 ```
 
@@ -84,13 +85,13 @@ Luego añadir la sección de generación en el template del contenido.
 import { z } from 'zod';
 
 export const activityFormSchema = z.object({
-  // Usar el array de valores para validación
-  notSuitableFor: z
-    .array(z.enum(['ADULTS', 'CHILDREN', 'FAMILIES', 'GROUPS', 'INDIVIDUALS']))
-    .default([]),
-  
-  // O importar desde el enum generado
-  status: z.enum(ACTIVITY_STATUSES)
+	// Usar el array de valores para validación
+	notSuitableFor: z
+		.array(z.enum(['ADULTS', 'CHILDREN', 'FAMILIES', 'GROUPS', 'INDIVIDUALS']))
+		.default([]),
+
+	// O importar desde el enum generado
+	status: z.enum(ACTIVITY_STATUSES)
 });
 ```
 
@@ -100,12 +101,12 @@ export const activityFormSchema = z.object({
 import type { NotSuitableFor } from '$lib/generated/enums';
 
 export type ActivityListItem = {
-  id: string;
-  title: string;
-  // Usar el tipo generado
-  notSuitableFor: NotSuitableFor[];
-  // O definir inline
-  notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
+	id: string;
+	title: string;
+	// Usar el tipo generado
+	notSuitableFor: NotSuitableFor[];
+	// O definir inline
+	notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
 };
 ```
 
@@ -115,18 +116,18 @@ export type ActivityListItem = {
 
 ```svelte
 <script lang="ts">
-  import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/generated/enums';
-  import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
-  
-  const { form, errors } = superForm(data.form);
+	import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/generated/enums';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+
+	const { form, errors } = superForm(data.form);
 </script>
 
 <FormCheckboxGroup
-  id="notSuitableFor"
-  label="No recomendado para"
-  bind:value={$form.notSuitableFor}
-  options={NOT_SUITABLE_FOR_OPTIONS}
-  error={$errors.notSuitableFor}
+	id="notSuitableFor"
+	label="No recomendado para"
+	bind:value={$form.notSuitableFor}
+	options={NOT_SUITABLE_FOR_OPTIONS}
+	error={$errors.notSuitableFor}
 />
 ```
 
@@ -134,16 +135,16 @@ export type ActivityListItem = {
 
 ```svelte
 <script lang="ts">
-  import { ACTIVITY_STATUSES_OPTIONS } from '$lib/generated/enums';
-  import FormSelect from '$lib/components/forms/FormSelect.svelte';
+	import { ACTIVITY_STATUSES_OPTIONS } from '$lib/generated/enums';
+	import FormSelect from '$lib/components/forms/FormSelect.svelte';
 </script>
 
 <FormSelect
-  id="status"
-  label="Estado"
-  bind:value={$form.status}
-  options={ACTIVITY_STATUSES_OPTIONS}
-  error={$errors.status}
+	id="status"
+	label="Estado"
+	bind:value={$form.status}
+	options={ACTIVITY_STATUSES_OPTIONS}
+	error={$errors.status}
 />
 ```
 
@@ -169,9 +170,7 @@ El sistema está preparado para internacionalización:
 ### Estructura Actual (Español)
 
 ```typescript
-export const NOT_SUITABLE_FOR_OPTIONS = [
-  { "id": "ADULTS", "name": "Adultos" }
-];
+export const NOT_SUITABLE_FOR_OPTIONS = [{ id: 'ADULTS', name: 'Adultos' }];
 ```
 
 ### Estructura Futura (Multi-idioma)
@@ -181,9 +180,7 @@ export const NOT_SUITABLE_FOR_OPTIONS = [
 ```typescript
 import { t } from '$lib/i18n';
 
-export const NOT_SUITABLE_FOR_OPTIONS = [
-  { "id": "ADULTS", "name": t('enums.notSuitableFor.adults') }
-];
+export const NOT_SUITABLE_FOR_OPTIONS = [{ id: 'ADULTS', name: t('enums.notSuitableFor.adults') }];
 ```
 
 **Opción B: Claves de traducción**
@@ -207,46 +204,51 @@ export const NOT_SUITABLE_FOR_OPTIONS = [
 ```typescript
 // src/lib/i18n/enums/es.ts
 export const enumTranslations = {
-  NOT_SUITABLE_FOR: {
-    ADULTS: "Adultos",
-    CHILDREN: "Niños",
-    // ...
-  }
+	NOT_SUITABLE_FOR: {
+		ADULTS: 'Adultos',
+		CHILDREN: 'Niños'
+		// ...
+	}
 };
 
 // src/lib/i18n/enums/en.ts
 export const enumTranslations = {
-  NOT_SUITABLE_FOR: {
-    ADULTS: "Adults",
-    CHILDREN: "Children",
-    // ...
-  }
+	NOT_SUITABLE_FOR: {
+		ADULTS: 'Adults',
+		CHILDREN: 'Children'
+		// ...
+	}
 };
 ```
 
 ## Enums Disponibles
 
 ### STAGE_KINDS
+
 - **Valores:** `TRANSFER`, `EXPERIENCE`
 - **Uso:** Tipo de etapa en una actividad
 - **Componente:** FormSelect
 
 ### STAGE_RELEVANCES
+
 - **Valores:** `HIGH`, `MEDIUM`, `LOW`, `NONE`
 - **Uso:** Relevancia de una etapa
 - **Componente:** FormSelect
 
 ### STAGE_REQUIREMENTS
+
 - **Valores:** `REQUIRED`, `OPTIONAL`, `SUGGESTED`, `NONE`
 - **Uso:** Requisito de una etapa
 - **Componente:** FormSelect
 
 ### ACTIVITY_STATUSES
+
 - **Valores:** `APPROVED`, `DELETED`, `DRAFT`, `PENDING_REVIEW`, `PUBLISHED`, `REJECTED`, `UNPUBLISHED`
 - **Uso:** Estado de una actividad
 - **Componente:** FormSelect
 
 ### NOT_SUITABLE_FOR
+
 - **Valores:** `ADULTS`, `CHILDREN`, `FAMILIES`, `GROUPS`, `INDIVIDUALS`
 - **Uso:** Tipos de público para los que NO es recomendada la actividad
 - **Componente:** FormCheckboxGroup (múltiple selección)
@@ -259,11 +261,11 @@ El endpoint debe devolver un array de objetos con esta estructura:
 
 ```json
 [
-  {
-    "id": "VALOR_1",
-    "name": "Nombre traducido",
-    "description": "Descripción opcional"
-  }
+	{
+		"id": "VALOR_1",
+		"name": "Nombre traducido",
+		"description": "Descripción opcional"
+	}
 ]
 ```
 
@@ -350,14 +352,20 @@ import { NUEVO_ENUM_OPTIONS } from '$lib/generated/enums';
 
 ```typescript
 // src/lib/generated/enums.ts (auto-generado)
-export const NOT_SUITABLE_FOR = ["ADULTS", "CHILDREN", "FAMILIES", "GROUPS", "INDIVIDUALS"] as const;
+export const NOT_SUITABLE_FOR = [
+	'ADULTS',
+	'CHILDREN',
+	'FAMILIES',
+	'GROUPS',
+	'INDIVIDUALS'
+] as const;
 export type NotSuitableFor = (typeof NOT_SUITABLE_FOR)[number];
 export const NOT_SUITABLE_FOR_OPTIONS = [
-  { "id": "ADULTS", "name": "Adultos" },
-  { "id": "CHILDREN", "name": "Niños" },
-  { "id": "FAMILIES", "name": "Familias" },
-  { "id": "GROUPS", "name": "Grupos" },
-  { "id": "INDIVIDUALS", "name": "Individuales" }
+	{ id: 'ADULTS', name: 'Adultos' },
+	{ id: 'CHILDREN', name: 'Niños' },
+	{ id: 'FAMILIES', name: 'Familias' },
+	{ id: 'GROUPS', name: 'Grupos' },
+	{ id: 'INDIVIDUALS', name: 'Individuales' }
 ];
 ```
 
@@ -366,9 +374,9 @@ export const NOT_SUITABLE_FOR_OPTIONS = [
 ```typescript
 // src/routes/(backoffice)/activities/activity-form.schema.ts
 export const activityFormSchema = z.object({
-  notSuitableFor: z
-    .array(z.enum(['ADULTS', 'CHILDREN', 'FAMILIES', 'GROUPS', 'INDIVIDUALS']))
-    .default([])
+	notSuitableFor: z
+		.array(z.enum(['ADULTS', 'CHILDREN', 'FAMILIES', 'GROUPS', 'INDIVIDUALS']))
+		.default([])
 });
 ```
 
@@ -377,7 +385,7 @@ export const activityFormSchema = z.object({
 ```typescript
 // src/lib/types.ts
 export type ActivityListItem = {
-  notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
+	notSuitableFor: Array<'ADULTS' | 'CHILDREN' | 'FAMILIES' | 'GROUPS' | 'INDIVIDUALS'>;
 };
 ```
 
@@ -386,17 +394,17 @@ export type ActivityListItem = {
 ```svelte
 <!-- src/routes/(backoffice)/activities/[slug]/edit/+page.svelte -->
 <script lang="ts">
-  import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/generated/enums';
-  import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/generated/enums';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 </script>
 
 <FormCheckboxGroup
-  id="notSuitableFor"
-  label="No recomendado para"
-  bind:value={$form.notSuitableFor}
-  options={NOT_SUITABLE_FOR_OPTIONS}
-  error={$errors.notSuitableFor}
-  badge="Selecciona los tipos de público para los que NO es recomendada esta actividad"
+	id="notSuitableFor"
+	label="No recomendado para"
+	bind:value={$form.notSuitableFor}
+	options={NOT_SUITABLE_FOR_OPTIONS}
+	error={$errors.notSuitableFor}
+	badge="Selecciona los tipos de público para los que NO es recomendada esta actividad"
 />
 ```
 

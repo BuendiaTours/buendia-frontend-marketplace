@@ -6,33 +6,42 @@
  */
 
 // Re-export shared (base común)
-export { apiClient } from '../shared/client';
-export { apiConfig } from '../shared/config';
-export * from '../shared/types';
-export * from '../shared/errors';
-export * from '../shared/endpoints.config';
+export {
+	apiClient,
+	getQueryCount,
+	getQueryLog,
+	resetQueryCount,
+	type QueryLogEntry
+} from '$api-shared/client';
+export { apiConfig } from '$api-shared/config';
+export * from '$api-shared/types';
+export * from '$api-shared/errors';
+export * from '$api-shared/endpoints.config';
+export { toSkipLimit, buildPagination, buildEndpointUrl } from '$api-shared/params';
 
-// Endpoints backoffice (CRUD completo)
-import { activitiesEndpoints } from './endpoints/activities';
-import { destinationsEndpoints } from './endpoints/destinations';
-import { categoriesEndpoints } from './endpoints/categories';
-import { tagsEndpoints } from './endpoints/tags';
-import { attractionsEndpoints } from './endpoints/attractions';
-import { distributivesEndpoints } from './endpoints/distributives';
+// Endpoints backoffice (CRUD completo) - estructura como $api-users
+import * as activities from '$api-activities/requests';
+import * as attractions from '$api-attractions/requests';
+import * as destinations from '$api-destinations/requests';
+import * as categories from '$api-categories/requests';
+import * as tags from '$api-tags/requests';
+import * as distributives from '$api-distributives/requests';
+import * as users from '$api-users/requests';
 
 export const api = {
-	activities: activitiesEndpoints,
-	destinations: destinationsEndpoints,
-	categories: categoriesEndpoints,
-	tags: tagsEndpoints,
-	attractions: attractionsEndpoints,
-	distributives: distributivesEndpoints
+	activities: { ...activities, delete: activities.deleteBySlug },
+	attractions: { ...attractions, delete: attractions.deleteBySlug },
+	destinations: { ...destinations, delete: destinations.deleteBySlug },
+	categories,
+	tags,
+	distributives,
+	users
 };
 
-// Export tipos específicos de parámetros
-export type { ActivitiesGetAllParams } from './endpoints/activities';
-export type { DestinationsSearchParams } from './endpoints/destinations';
-export type { Category } from './endpoints/categories';
-export type { Tag } from './endpoints/tags';
+// Export tipos específicos
+export type { ActivitiesGetAllParams } from '$api-activities/types';
+export type { DestinationsSearchParams } from '$api-destinations/types';
+export type { Category } from '$api-categories/types';
+export type { Tag } from '$api-tags/types';
 export type { Attraction } from '$lib/types';
-export type { Distributive } from './endpoints/distributives';
+export type { Distributive } from '$api-distributives/types';

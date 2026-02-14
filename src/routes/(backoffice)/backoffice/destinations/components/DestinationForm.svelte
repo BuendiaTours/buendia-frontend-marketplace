@@ -6,8 +6,8 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
-	import { ROUTES } from '$lib/config/routes';
+	import { DESTINATION_KIND_OPTIONS } from '$api-destinations/enums';
+	import { DESTINATION_ROUTES } from '$api-destinations/routes';
 	import { DatabaseRestore } from 'svelte-iconoir';
 
 	// Components
@@ -42,10 +42,7 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a
-		href={`${ROUTES.backoffice.destinations.list}?${$page.url.searchParams.toString()}`}
-		class="btn btn-ghost"
-	>
+	<a href={`${DESTINATION_ROUTES.list}?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
 
@@ -53,7 +50,7 @@
 		<form
 			method="POST"
 			action={buildUrlWithFilters(
-				ROUTES.backoffice.destinations.delete(destinationSlug),
+				DESTINATION_ROUTES.delete(destinationSlug),
 				$page.url.searchParams
 			)}
 			class="ml-auto"
