@@ -25,7 +25,6 @@
 		data: {
 			form: any;
 			availableDestinations: any[];
-			breadcrumbs: any[];
 			attraction?: any;
 		};
 		mode: 'create' | 'edit';

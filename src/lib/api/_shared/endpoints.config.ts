@@ -88,25 +88,7 @@ export const API_ENDPOINTS = {
 			method: 'DELETE',
 			description: 'Elimina una actividad por slug',
 			params: ['slug']
-		} satisfies EndpointWithParam,
-		statuses: {
-			path: () => '/activity-status',
-			method: 'GET',
-			description: 'Obtiene los estados disponibles para actividades',
-			params: []
-		} satisfies Endpoint,
-		kinds: {
-			path: () => '/activity-kind',
-			method: 'GET',
-			description: 'Obtiene los tipos para actividades (FREE_TOUR, PAID_TOUR...)',
-			params: []
-		} satisfies Endpoint,
-		guideKinds: {
-			path: () => '/activity-guide-kind',
-			method: 'GET',
-			description: 'Obtiene los tipos de guía para actividades',
-			params: []
-		} satisfies Endpoint
+		} satisfies EndpointWithParam
 	},
 	attractions: {
 		groupName: 'Attractions',
@@ -152,13 +134,7 @@ export const API_ENDPOINTS = {
 			method: 'PUT',
 			description: 'Actualiza una atracción por slug',
 			params: ['slug', 'body']
-		} satisfies EndpointWithParam,
-		statuses: {
-			path: () => '/attraction-status',
-			method: 'GET',
-			description: 'Obtiene los estados disponibles para atracciones',
-			params: []
-		} satisfies Endpoint
+		} satisfies EndpointWithParam
 	},
 	destinations: {
 		groupName: 'Destinations',

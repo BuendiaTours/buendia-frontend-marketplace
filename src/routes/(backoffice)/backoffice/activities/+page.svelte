@@ -18,6 +18,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './filters.schema';
 	import { CalendarDate } from '@internationalized/date';
+	import { SvelteDate } from 'svelte/reactivity';
 
 	// Routes
 	import { ACTIVITY_ROUTES } from '$api-activities/routes';
@@ -182,7 +183,7 @@
 	}
 
 	function setDateRangePreset(preset: 'today' | 'thisWeek' | 'next15Days') {
-		const today = new Date();
+		const today = new SvelteDate();
 		let start: Date;
 		let end: Date;
 
@@ -191,17 +192,18 @@
 				start = today;
 				end = today;
 				break;
-			case 'thisWeek':
+			case 'thisWeek': {
 				const dayOfWeek = today.getDay();
 				const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-				start = new Date(today);
+				start = new SvelteDate(today);
 				start.setDate(today.getDate() + diff);
-				end = new Date(start);
+				end = new SvelteDate(start);
 				end.setDate(start.getDate() + 6);
 				break;
+			}
 			case 'next15Days':
 				start = today;
-				end = new Date(today);
+				end = new SvelteDate(today);
 				end.setDate(today.getDate() + 14);
 				break;
 		}

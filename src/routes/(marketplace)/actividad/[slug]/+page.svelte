@@ -66,6 +66,7 @@
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Descripción completa</h2>
 			<div class="prose max-w-none text-gray-600">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
 				{@html activity.descriptionFull}
 			</div>
 		</div>

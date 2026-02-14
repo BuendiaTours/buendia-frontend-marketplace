@@ -45,7 +45,7 @@ USO:
 
 <button onclick={() => selectedItemId = item.id}>Ver detalles</button>
 
-<MeltDrawerManager 
+<MeltDrawerManager
   bind:selectedId={selectedItemId}
   items={items}
   title={(item) => `Detalles de ${item.name}`}
@@ -121,8 +121,6 @@ VENTAJAS:
 
 {#if mountedItemId && selectedItem}
 	<MeltDrawer bind:open={drawerOpen} title={resolvedTitle} {config}>
-		{#snippet children()}
-			{@render content(selectedItem)}
-		{/snippet}
+		{@render content(selectedItem)}
 	</MeltDrawer>
 {/if}

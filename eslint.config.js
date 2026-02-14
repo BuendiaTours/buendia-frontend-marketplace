@@ -1,3 +1,15 @@
+/**
+ * ESLint - Configuración
+ *
+ * Estructura:
+ * 1. Ignores (generados, builds, deps)
+ * 2. Reglas base (JS, TS, Svelte)
+ * 3. Overrides por tipo de archivo
+ *
+ * npm run lint   → Prettier + ESLint
+ * npx eslint . --fix → Auto-fix
+ */
+
 import prettier from 'eslint-config-prettier';
 import { fileURLToPath } from 'node:url';
 import { includeIgnoreFile } from '@eslint/compat';
@@ -10,38 +22,67 @@ import svelteConfig from './svelte.config.js';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
-export default defineConfig(
+export default defineConfig([
+	// Respetar .gitignore
 	includeIgnoreFile(gitignorePath),
+
+	// Ignorar explícitamente archivos generados y output
+	{
+		ignores: [
+			'.svelte-kit/**',
+			'build/**',
+			'storybook-static*/**',
+			'src/paraglide/**',
+			'*.config.js',
+			'*.config.ts'
+		]
+	},
+
+	// Base: JS + TS + Svelte + Prettier
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs.recommended,
 	prettier,
 	...svelte.configs.prettier,
-	{
-		languageOptions: { globals: { ...globals.browser, ...globals.node } },
 
+	// Reglas globales
+	{
+		languageOptions: {
+			globals: { ...globals.browser, ...globals.node },
+			parserOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module'
+			}
+		},
 		rules: {
-			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
+			// TypeScript maneja undef
 			'no-undef': 'off',
-			// Disabled: we use centralised ROUTES with buildUrlWithFilters.
+
+			// Navegación: usamos ROUTES centralizados + buildUrlWithFilters
 			'svelte/no-navigation-without-resolve': 'off',
-			// Downgrade to warn to unblock commits; fix incrementally
+
+			// Errores — deben corregirse
+			'no-console': ['warn', { allow: ['warn', 'error'] }],
+			'no-unused-vars': 'off', // Usamos @typescript-eslint/no-unused-vars
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					ignoreRestSiblings: true
+				}
+			],
+
+			// Calidad — warn para corregir incrementalmente
 			'@typescript-eslint/no-explicit-any': 'warn',
-			'@typescript-eslint/no-unused-vars': 'warn',
-			'@typescript-eslint/no-unsafe-function-type': 'warn',
 			'svelte/require-each-key': 'warn',
-			'svelte/prefer-writable-derived': 'warn',
-			'svelte/prefer-svelte-reactivity': 'warn',
-			'svelte/no-unused-props': 'warn',
-			'svelte/no-at-html-tags': 'warn',
-			'svelte/no-useless-children-snippet': 'warn',
-			'no-case-declarations': 'warn',
-			'no-useless-escape': 'warn'
+			'svelte/prefer-writable-derived': 'warn'
 		}
 	},
+
+	// Svelte: parser y opciones específicas
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
-
 		languageOptions: {
 			parserOptions: {
 				projectService: true,
@@ -50,5 +91,24 @@ export default defineConfig(
 				svelteConfig
 			}
 		}
+	},
+
+	// Stories: reglas más permisivas (son ejemplos/demos)
+	{
+		files: ['**/*.stories.svelte', '**/*.stories.ts'],
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-unused-vars': 'off',
+			'svelte/require-each-key': 'off',
+			'no-useless-escape': 'off'
+		}
+	},
+
+	// Tipos .d.ts: libs externas usan Function
+	{
+		files: ['**/*.d.ts'],
+		rules: {
+			'@typescript-eslint/no-unsafe-function-type': 'off'
+		}
 	}
-);
+]);

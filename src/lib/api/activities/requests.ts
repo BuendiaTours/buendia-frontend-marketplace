@@ -35,21 +35,3 @@ export async function update(
 export async function deleteBySlug(fetchFn: typeof fetch, slug: string): Promise<void> {
 	await del(fetchFn, SLUG(slug));
 }
-
-export async function getStatuses(
-	fetchFn: typeof fetch
-): Promise<Array<{ id: string; name: string }>> {
-	return get<Array<{ id: string; name: string }>>(fetchFn, '/activity-status');
-}
-
-export async function getKinds(
-	fetchFn: typeof fetch
-): Promise<Array<{ id: string; name: string }>> {
-	return get<Array<{ id: string; name: string }>>(fetchFn, '/activity-kind');
-}
-
-export async function getGuideKinds(
-	fetchFn: typeof fetch
-): Promise<Array<{ id: string; name: string }>> {
-	return get<Array<{ id: string; name: string }>>(fetchFn, '/activity-guide-kind');
-}

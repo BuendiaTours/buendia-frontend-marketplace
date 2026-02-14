@@ -596,7 +596,6 @@ src/lib/api/
 │   └── endpoints.config.ts      # Definición de todos los endpoints
 │
 ├── backoffice/                  # API del backoffice (admin)
-│   ├── common.remote.ts         # Remote Functions (dropdowns, catálogos)
 │   ├── endpoints/               # Módulos por recurso
 │   │   ├── activities.ts        # CRUD completo de activities
 │   │   ├── destinations.ts      # CRUD completo de destinations
@@ -712,7 +711,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 - Habilita caching y hydration correcta
 - **Siempre** pasa `fetch` a las funciones de API
 
-### 5.3 Remote Functions para datos asíncronos
+### 5.3 Enums y datos estáticos
 
 **¿Qué son?** Funciones que se ejecutan en el servidor pero se llaman desde el cliente (como si fueran locales).
 
@@ -1276,10 +1275,7 @@ npm install
 cp .env.example .env
 # Editar .env con la URL de la API
 
-# 4. Generar enums desde la API
-npm run generate:enums
-
-# 5. Iniciar servidor de desarrollo
+# 4. Iniciar servidor de desarrollo
 npm run dev -- --open
 # Se abre en http://localhost:5173
 ```
@@ -2012,9 +2008,6 @@ npm run check            # Verificar tipos TypeScript
 npm run check:watch      # Verificar tipos (watch mode)
 npm run format           # Auto-formatear código (Prettier)
 npm run lint             # Verificar estilo (ESLint)
-
-# Generación
-npm run generate:enums   # Generar enums desde API
 
 # Storybook (desarrollo de componentes)
 npm run storybook        # Servidor de Storybook (port 6006)

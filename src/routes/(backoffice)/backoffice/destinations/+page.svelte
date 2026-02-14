@@ -32,7 +32,6 @@
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import { getDestinationKinds } from '$lib/api/backoffice/common.remote';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
@@ -189,7 +188,7 @@
 	</div>
 
 	<FilterSelect
-		source={{ type: 'remote', queryFunction: getDestinationKinds }}
+		options={DESTINATION_KIND_OPTIONS}
 		filterKey="kind"
 		currentValue={filters.kind}
 		placeholder="Selecciona tipo"

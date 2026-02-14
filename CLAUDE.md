@@ -17,7 +17,6 @@ npm run check:watch      # Type-check in watch mode
 npm run lint             # Prettier check + ESLint
 npm run format           # Auto-format with Prettier
 npm run storybook        # Component dev (port 6006, marketplace config)
-npm run generate:enums   # Generate enums from API
 ```
 
 ## Architecture
@@ -146,4 +145,3 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 - `docs/architecture-server-factories.md` — Server factory pattern
 - `docs/form-validation-flow.md` — Form handling details
 - `docs/i18n-paraglide.md` — i18n setup
-- `docs/enums-system.md` — Enum generation system

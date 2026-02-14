@@ -10,7 +10,7 @@
 	let copiedEndpoint = $state<string | null>(null);
 
 	// Función para obtener el path con placeholders
-	function getPathWithPlaceholders(pathFn: Function): string {
+	function getPathWithPlaceholders(pathFn: (...args: string[]) => string): string {
 		const fnString = pathFn.toString();
 		const paramMatch = fnString.match(/\(([^)]*)\)/);
 
@@ -111,22 +111,6 @@
 		<div>
 			<label class="label w-full text-sm">Base URL</label>
 			<code class="text-md">{apiConfig.baseURL}</code>
-		</div>
-	</div>
-
-	<!-- Remote Functions Info -->
-	<div class="alert alert-success alert-soft">
-		<InfoEmpty class="size-4" />
-		<div class="flex flex-col gap-1">
-			<span class="text-sm font-semibold">Remote Functions Habilitadas</span>
-			<span class="text-sm">
-				Los antiguos endpoints proxy (<code>/api/*</code>) han sido reemplazados por
-				<strong>Remote Functions</strong> de SvelteKit. Estas permiten llamadas type-safe desde componentes
-				al servidor sin necesidad de crear endpoints HTTP manualmente.
-			</span>
-			<span class="text-base-content/70 mt-1 text-xs">
-				📁 Ver: <code>src/lib/api/common.remote.ts</code>
-			</span>
 		</div>
 	</div>
 

@@ -21,7 +21,6 @@
 	interface Props {
 		data: {
 			form: any;
-			breadcrumbs: any[];
 			destination?: any;
 		};
 		mode: 'create' | 'edit';

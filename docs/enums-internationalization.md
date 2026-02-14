@@ -326,4 +326,3 @@ setLanguageTag('en');
 
 - [Paraglide Documentation](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 - [Inlang Message Format](https://inlang.com/m/reootnfj/plugin-inlang-messageFormat)
-- Sistema de enums: `docs/enums-system.md`
