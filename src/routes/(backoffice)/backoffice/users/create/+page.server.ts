@@ -1,6 +1,6 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { userFormSchema } from '../user-form.schema';
+import { userFormSchema } from '../schemas/user-form.schema';
 import { USER_REQUEST } from '$core/users/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';

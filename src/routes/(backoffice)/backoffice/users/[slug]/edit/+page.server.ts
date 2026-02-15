@@ -1,7 +1,7 @@
 import { USER_REQUEST } from '$core/users/requests';
 import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
-import { userFormSchema } from '../../user-form.schema';
+import { userFormSchema } from '../../schemas/user-form.schema';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

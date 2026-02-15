@@ -15,6 +15,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
+	import type { Activity } from '$core/activities/types';
 	import type { ActivityListItem, BreadcrumbItem } from '$lib/types';
 
 	// Enums
@@ -59,7 +60,8 @@
 			availableDestinations: Array<{ id: string; name: string }>;
 			availableDistributives: Array<{ id: string; name: string }>;
 			breadcrumbs: BreadcrumbItem[];
-			activity?: ActivityListItem; // Solo en modo edit
+			/** Solo en modo edit. API devuelve Activity; ActivityListItem incluye tags para listados. */
+			activity?: Activity | ActivityListItem;
 		};
 		mode: 'create' | 'edit';
 		activitySlug?: string;

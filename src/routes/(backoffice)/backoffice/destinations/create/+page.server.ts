@@ -1,6 +1,6 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { destinationFormSchema } from '../destination-form.schema';
+import { destinationFormSchema } from '../schemas/destination-form.schema';
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';

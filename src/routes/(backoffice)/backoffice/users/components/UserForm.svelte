@@ -3,7 +3,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { resolveRoute } from '$app/paths';
 	import { DatabaseRestore } from 'svelte-iconoir';
-	import type { UserFormSchema } from '../user-form.schema';
+	import type { UserFormSchema } from '../schemas/user-form.schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';

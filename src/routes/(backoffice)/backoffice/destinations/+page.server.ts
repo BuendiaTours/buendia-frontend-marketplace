@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { destinationsFiltersSchema } from './filters.schema';
+import { destinationsFiltersSchema } from './schemas/filters.schema';
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import type { DestinationCriteria } from '$core/destinations/types';
 import { ApiError } from '$core/_shared/errors';

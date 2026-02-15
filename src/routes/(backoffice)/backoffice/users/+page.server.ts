@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { usersFiltersSchema } from './filters.schema';
+import { usersFiltersSchema } from './schemas/filters.schema';
 import { USER_REQUEST } from '$core/users/requests';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';

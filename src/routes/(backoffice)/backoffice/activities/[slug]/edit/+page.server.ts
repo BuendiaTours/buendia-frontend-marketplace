@@ -1,4 +1,4 @@
-import { activityFormSchema } from '../../activity-form.schema';
+import { activityFormSchema } from '../../schemas/activity-form.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { CATEGORY_REQUEST } from '$core/categories/requests';
@@ -34,34 +34,31 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
 		const apiData = activity as Record<string, any>;
-		const firstOption = apiData.options?.[0];
 
 		const form = await superValidate(
 			{
-				attractions: apiData.attractions || [],
-				categories: apiData.categories || [],
+				id: apiData.id || '',
+				title: apiData.title || '',
+				slug: apiData.slug || '',
 				codeRef: apiData.codeRef || '',
-				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
 				descriptionFull: apiData.descriptionFull || '',
 				descriptionShort: apiData.descriptionShort || '',
+				infoImportant: apiData.infoImportant || '',
+				phoneContact: apiData.phoneContact || '',
+				tags: apiData.tags || [],
+				categories: apiData.categories || [],
+				attractions: apiData.attractions || [],
 				destinations: apiData.destinations || [],
 				distributives: apiData.distributives || [],
-				excluded: apiData.excluded || [],
-				guideKind: apiData.guideKind || '',
-				id: apiData.id || '',
-				included: apiData.included || [],
-				infoImportant: apiData.infoImportant || '',
-				isFreeTour: false,
-				kind: apiData.kind || '',
-				location: apiData.location?.city || '',
-				meals: apiData.meals || [],
-				phoneContact: apiData.phoneContact || '',
-				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
-				slug: apiData.slug || '',
 				stages: apiData.stages || [],
-				status: apiData.status || 'DRAFT',
-				tags: apiData.tags || [],
-				title: apiData.title || ''
+				meals: apiData.meals || [],
+				excluded: apiData.excluded || [],
+				included: apiData.included || [],
+				itemsToBring: apiData.itemsToBring || [],
+				notSuitableFor: apiData.notSuitableFor || [],
+				kind: apiData.kind || '',
+				guideKind: apiData.guideKind || '',
+				status: apiData.status || 'DRAFT'
 			},
 			zod(activityFormSchema)
 		);

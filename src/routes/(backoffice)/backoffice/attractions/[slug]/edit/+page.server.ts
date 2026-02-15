@@ -1,4 +1,4 @@
-import { attractionFormSchema } from '../../attraction-form.schema';
+import { attractionFormSchema } from '../../schemas/attraction-form.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { ApiError } from '$core/_shared/errors';

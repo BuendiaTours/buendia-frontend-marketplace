@@ -6,7 +6,7 @@
 	// Types
 	import type { Attraction, Column } from '$lib/types';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
-	import type { AttractionsFilters } from './filters.schema';
+	import type { AttractionsFilters } from './schemas/filters.schema';
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
@@ -16,7 +16,7 @@
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { attractionsFiltersSchema } from './filters.schema';
+	import { attractionsFiltersSchema } from './schemas/filters.schema';
 
 	// Routes
 	import { ATTRACTION_ROUTES } from '$core/attractions/routes';

@@ -2,7 +2,7 @@
 	// Types
 	import type { ActivityListItem, Column, Destination } from '$lib/types';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
-	import type { ActivitiesFilters } from './filters.schema';
+	import type { ActivitiesFilters } from './schemas/filters.schema';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
 
@@ -18,7 +18,7 @@
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { activitiesFiltersSchema } from './filters.schema';
+	import { activitiesFiltersSchema } from './schemas/filters.schema';
 	import { CalendarDate } from '@internationalized/date';
 	import { SvelteDate } from 'svelte/reactivity';
 

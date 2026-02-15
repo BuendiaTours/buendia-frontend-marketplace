@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { attractionsFiltersSchema } from './filters.schema';
+import { attractionsFiltersSchema } from './schemas/filters.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import type { AttractionCriteria } from '$core/attractions/types';
 import { ApiError } from '$core/_shared/errors';

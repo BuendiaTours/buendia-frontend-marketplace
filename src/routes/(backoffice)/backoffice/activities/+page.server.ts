@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { parseFilters } from '$lib/utils/filters';
-import { activitiesFiltersSchema } from './filters.schema';
+import { activitiesFiltersSchema } from './schemas/filters.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import type { ActivityCriteria } from '$core/activities/types';
 import { ApiError } from '$core/_shared/errors';

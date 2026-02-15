@@ -67,7 +67,7 @@ const data = await api.activities.getAll(fetch, { page: 1 });
 SvelteKit Superforms + Zod. Adding a form field requires updating:
 
 1. `src/lib/types.ts` — Add to type definition
-2. `[resource]-form.schema.ts` — Zod schema (colocated with route)
+2. `schemas/[resource]-form.schema.ts` — Zod schema (colocated in resource's schemas/ folder)
 3. `+page.server.ts` — Map API data to/from form
 4. `+page.svelte` — Render with form components (`bind:value={$form.field}`, `error={$errors.field}`)
 
@@ -120,7 +120,7 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 
 - Components: `PascalCase.svelte`
 - Routes: kebab-case directories
-- Schemas: `[name]-form.schema.ts` (colocated with route)
+- Schemas: `schemas/[name]-form.schema.ts`, `schemas/filters.schema.ts` (in resource folder)
 - Utils: `camelCase.ts`
 
 ## Workflow Reference

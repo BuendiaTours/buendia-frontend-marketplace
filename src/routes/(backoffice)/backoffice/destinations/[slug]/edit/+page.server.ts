@@ -1,7 +1,7 @@
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
-import { destinationFormSchema } from '../../destination-form.schema';
+import { destinationFormSchema } from '../../schemas/destination-form.schema';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

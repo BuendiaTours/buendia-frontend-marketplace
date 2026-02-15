@@ -9,13 +9,16 @@ import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 /**
  * Configuración para crear una función load de creación
  */
-export type CreateLoadConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type CreateLoadConfig<
+	T extends Record<string, unknown> = Record<string, unknown>,
+	A extends Record<string, unknown> = Record<string, unknown>
+> = {
 	/** Schema de validación (adaptador de Zod) */
 	schema: ValidationAdapter<T>;
 	/** Valores iniciales del formulario (sin UUID, se genera automáticamente) */
 	initialValues: Partial<T>;
 	/** Función async que carga listas disponibles (tags, categories, etc.) - Opcional */
-	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<Record<string, unknown>>;
+	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<A>;
 	/** Label para breadcrumbs (ej: 'Nueva actividad', 'Nueva atracción') */
 	breadcrumbLabel: string;
 	/** Nombre de la entidad para mensajes de error (ej: 'actividad', 'atracción') */
@@ -57,8 +60,22 @@ export type CreateLoadConfig<T extends Record<string, unknown> = Record<string, 
  * });
  * ```
  */
-export function createCreateLoad<T extends Record<string, unknown>>(config: CreateLoadConfig<T>) {
-	return async ({ fetch, url }: { fetch: typeof globalThis.fetch; url: URL }) => {
+export function createCreateLoad<
+	T extends Record<string, unknown>,
+	A extends Record<string, unknown> = Record<string, unknown>
+>(config: CreateLoadConfig<T, A>) {
+	return async ({
+		fetch,
+		url
+	}: {
+		fetch: typeof globalThis.fetch;
+		url: URL;
+	}): Promise<
+		{
+			form: Awaited<ReturnType<typeof superValidate>>;
+			breadcrumbs: ReturnType<typeof buildBreadcrumbs>;
+		} & A
+	> => {
 		const { schema, initialValues, loadAvailableData, breadcrumbLabel, entityName } = config;
 
 		try {
@@ -73,7 +90,7 @@ export function createCreateLoad<T extends Record<string, unknown>>(config: Crea
 			logger.log(`📦 [createLoad] UUID generado:`, dataWithUuid.id);
 
 			// 2. Cargar listas disponibles (si se proporciona la función)
-			let availableData: Record<string, unknown> = {};
+			let availableData = {} as A;
 			if (loadAvailableData) {
 				logger.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
 				availableData = await loadAvailableData(fetch);

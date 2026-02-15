@@ -1,6 +1,6 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { attractionFormSchema } from '../attraction-form.schema';
+import { attractionFormSchema } from '../schemas/attraction-form.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { zod } from 'sveltekit-superforms/adapters';

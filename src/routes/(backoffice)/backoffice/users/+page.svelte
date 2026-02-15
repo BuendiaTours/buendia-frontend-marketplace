@@ -2,7 +2,7 @@
 	import type { User } from '$core/users/types';
 	import type { Column } from '$lib/types';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
-	import type { UsersFilters } from './filters.schema';
+	import type { UsersFilters } from './schemas/filters.schema';
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -10,7 +10,7 @@
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { usersFiltersSchema } from './filters.schema';
+	import { usersFiltersSchema } from './schemas/filters.schema';
 
 	import { USER_ROUTES } from '$core/users/routes';
 	import { UserKind, UserStatus, UserSortAttribute } from '$core/users/enums';
