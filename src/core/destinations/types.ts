@@ -1,8 +1,15 @@
+/**
+ * @module destinations/types
+ * @description TypeScript type definitions for the Destinations resource.
+ * Organised into Projections (read), DTOs (write), and Criteria (query).
+ */
+
 import type { DestinationKind, DestinationSortAttribute } from '$core/destinations/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
-// --- Projections (read models) ---
+// ── Projections (read models) ───────────────────
 
+/** Parent destination summary embedded within a child destination. */
 export type DestinationParent = {
 	id: string;
 	descriptionLong: string | null;
@@ -16,6 +23,7 @@ export type DestinationParent = {
 	slug: string;
 };
 
+/** Full destination projection as returned by the API. */
 export type Destination = {
 	id: string;
 	createdAt: string;
@@ -31,8 +39,9 @@ export type Destination = {
 	slug: string;
 };
 
-// --- DTOs (write models) ---
+// ── DTOs (write models) ─────────────────────────
 
+/** Payload for creating a new destination. */
 export type DestinationCreateDto = {
 	id: string;
 	kind: DestinationKind;
@@ -47,6 +56,7 @@ export type DestinationCreateDto = {
 	photoUrlHero?: string | null;
 };
 
+/** Payload for partially updating an existing destination. */
 export type DestinationUpdateDto = {
 	parentId?: string | null;
 	descriptionLong?: string | null;
@@ -60,8 +70,9 @@ export type DestinationUpdateDto = {
 	slug?: string;
 };
 
-// --- Criteria (query params) ---
+// ── Criteria (query params) ─────────────────────
 
+/** Query parameters for filtering, sorting, and paginating destination lists. */
 export type DestinationCriteria = {
 	page?: number;
 	pageSize?: number;

@@ -1,8 +1,15 @@
+/**
+ * @module categories/types
+ * @description TypeScript type definitions for the Categories resource.
+ * Organised into Projections (read), DTOs (write), and Criteria (query).
+ */
+
 import type { CategoryKind, CategorySortAttribute, CategoryStatus } from '$core/categories/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
-// --- Projection (read model) ---
+// ── Projection (read model) ─────────────────────
 
+/** Full category projection as returned by the API. */
 export type Category = {
 	id: string;
 	createdAt: string;
@@ -15,8 +22,9 @@ export type Category = {
 	updatedAt: string;
 };
 
-// --- DTOs (write models) ---
+// ── DTOs (write models) ─────────────────────────
 
+/** Payload for creating a new category. */
 export type CategoryCreateDto = {
 	id: string;
 	kind: CategoryKind;
@@ -27,6 +35,7 @@ export type CategoryCreateDto = {
 	label?: string | null;
 };
 
+/** Payload for partially updating an existing category. */
 export type CategoryUpdateDto = {
 	description?: string | null;
 	kind?: CategoryKind;
@@ -36,8 +45,9 @@ export type CategoryUpdateDto = {
 	status?: CategoryStatus;
 };
 
-// --- Criteria (query params) ---
+// ── Criteria (query params) ─────────────────────
 
+/** Query parameters for filtering, sorting, and paginating category lists. */
 export type CategoryCriteria = {
 	page?: number;
 	pageSize?: number;

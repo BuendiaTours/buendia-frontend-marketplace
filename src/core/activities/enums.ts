@@ -1,8 +1,10 @@
 /**
- * Enums de dominio de actividades
- * Espejo del backend — sin dependencias de UI ni traducciones
+ * @module activities/enums
+ * @description Domain enums for the Activities resource.
+ * These mirror the backend contract exactly and carry no UI or i18n dependencies.
  */
 
+/** Publication lifecycle status of an activity. */
 export enum ActivityStatus {
 	APPROVED = 'APPROVED',
 	DELETED = 'DELETED',
@@ -13,12 +15,14 @@ export enum ActivityStatus {
 	UNPUBLISHED = 'UNPUBLISHED'
 }
 
+/** Commercial classification of an activity. */
 export enum ActivityKind {
 	PAID_TOUR = 'PAID_TOUR',
 	FREE_TOUR = 'FREE_TOUR',
 	OTHER = 'OTHER'
 }
 
+/** Type of guide that leads the activity. */
 export enum ActivityGuideKind {
 	AUTO = 'AUTO',
 	CUSTOM_LANGUAGE = 'CUSTOM_LANGUAGE',
@@ -27,6 +31,7 @@ export enum ActivityGuideKind {
 	INSTRUCTOR = 'INSTRUCTOR'
 }
 
+/** Audience segments the activity is not suitable for. */
 export enum ActivityNotSuitableFor {
 	ADULTS = 'ADULTS',
 	CHILDREN = 'CHILDREN',
@@ -35,6 +40,7 @@ export enum ActivityNotSuitableFor {
 	INDIVIDUALS = 'INDIVIDUALS'
 }
 
+/** Known restrictions that apply during the activity. */
 export enum ActivityRestriction {
 	ALCOHOL = 'ALCOHOL',
 	SMOKING = 'SMOKING',
@@ -42,6 +48,7 @@ export enum ActivityRestriction {
 	OTHER = 'OTHER'
 }
 
+/** EU-regulated food allergens that may be present during the activity. */
 export enum ActivityAllergen {
 	CELERY = 'CELERY',
 	CRUSTACEANS = 'CRUSTACEANS',
@@ -59,6 +66,7 @@ export enum ActivityAllergen {
 	SULPHITES = 'SULPHITES'
 }
 
+/** Mode of transport used during the activity. */
 export enum ActivityTransportKind {
 	BUS = 'BUS',
 	CAR = 'CAR',
@@ -70,29 +78,34 @@ export enum ActivityTransportKind {
 	NONE = 'NONE'
 }
 
+/** Whether the activity starts and ends at the same location. */
 export enum ActivityTransportLocation {
 	SAME_PLACE = 'SAME_PLACE',
 	DIFFERENT_PLACE = 'DIFFERENT_PLACE'
 }
 
+/** Pet policy for the activity. */
 export enum ActivityPetsAllowed {
 	YES = 'YES',
 	NO = 'NO',
 	NOT_APPLY = 'NOT_APPLY'
 }
 
+/** Type of multimedia asset attached to an activity. */
 export enum MultimediaKind {
 	IMAGE = 'IMAGE',
 	VIDEO = 'VIDEO'
 }
 
-// Stages
+// ── Stages ──────────────────────────────────────
 
+/** Nature of a stage within an activity itinerary. */
 export enum StageKind {
 	TRANSFER = 'TRANSFER',
 	EXPERIENCE = 'EXPERIENCE'
 }
 
+/** Importance level of a stage. */
 export enum StageRelevance {
 	HIGH = 'HIGH',
 	MEDIUM = 'MEDIUM',
@@ -100,6 +113,7 @@ export enum StageRelevance {
 	NONE = 'NONE'
 }
 
+/** Participation requirement for a stage. */
 export enum StageRequirement {
 	OPTIONAL = 'OPTIONAL',
 	REQUIRED = 'REQUIRED',
@@ -107,15 +121,17 @@ export enum StageRequirement {
 	NONE = 'NONE'
 }
 
-// Sort
+// ── Sort ────────────────────────────────────────
 
+/** Attributes available for sorting activity lists. */
 export enum ActivitySortAttribute {
 	CODE_REF = 'CODE_REF',
 	TITLE = 'title'
 }
 
-// Meals
+// ── Meals ───────────────────────────────────────
 
+/** Presentation format of a meal. */
 export enum MealFormat {
 	BARBECUE = 'BARBECUE',
 	BUFFET = 'BUFFET',
@@ -127,6 +143,7 @@ export enum MealFormat {
 	TASTING = 'TASTING'
 }
 
+/** Time-of-day classification for a meal. */
 export enum MealKind {
 	BREAKFAST = 'BREAKFAST',
 	BRUNCH = 'BRUNCH',
@@ -136,6 +153,7 @@ export enum MealKind {
 	OTHER = 'OTHER'
 }
 
+/** Dietary and sourcing labels applicable to a meal. */
 export enum MealAdditional {
 	VEGETARIAN = 'VEGETARIAN',
 	VEGAN = 'VEGAN',
