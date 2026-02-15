@@ -3,7 +3,7 @@ import { createBooleanField, createOrderField, createSortField } from '$lib/util
 import type { CriteriaSortOption } from '$core/_shared/enums';
 
 // Enums
-import { ATTRACTION_STATUS_VALUES, type AttractionStatus } from '$core/attractions/enums';
+import { AttractionStatus } from '$core/attractions/enums';
 
 export type AttractionsFilters = {
 	// Paginación (opcional - solo si la API la provee)
@@ -70,7 +70,7 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 		},
 		status: {
 			parse: (raw) => {
-				if (ATTRACTION_STATUS_VALUES.includes(raw as AttractionStatus)) {
+				if (Object.values(AttractionStatus).includes(raw as AttractionStatus)) {
 					return raw as AttractionStatus;
 				}
 				return undefined;

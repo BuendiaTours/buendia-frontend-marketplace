@@ -1,4 +1,5 @@
-import { api, ApiError } from '$lib/api/index';
+import { USER_REQUEST } from '$core/users/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { userFormSchema } from '../../user-form.schema';
 import { error } from '@sveltejs/kit';
@@ -10,7 +11,7 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const user = await api.users.findById(fetch, params.slug);
+		const user = await USER_REQUEST.findById(fetch, params.slug);
 
 		const form = await superValidate(
 			{
@@ -51,7 +52,7 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/users`,
 		schema: zod(userFormSchema),
-		updateFn: api.users.update,
+		updateFn: USER_REQUEST.update,
 		redirectToEdit: true,
 		transformData: (formData) =>
 			Object.fromEntries(Object.entries(formData).filter(([key]) => key !== 'id'))

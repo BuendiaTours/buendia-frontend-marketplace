@@ -1,6 +1,6 @@
 import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
@@ -15,11 +15,8 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
 	/** Schema de validación (adaptador de Zod) */
 	schema: ValidationAdapter<T>;
 	/** Función que realiza la actualización en la API */
-	updateFn: (
-		fetchFn: typeof globalThis.fetch,
-		slug: string,
-		data: T | Record<string, unknown>
-	) => Promise<void>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<void>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
 	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
@@ -32,7 +29,7 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
  * @example
  * ```typescript
  * import { createUpdateAction } from '$lib/server/updateAction';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  * import { activityFormSchema } from './activity-form.schema';
  * import { zod } from 'sveltekit-superforms/adapters';
  *

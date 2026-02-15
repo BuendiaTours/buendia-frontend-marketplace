@@ -1,8 +1,10 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { attractionFormSchema } from '../attraction-form.schema';
-import { api } from '$lib/api/index';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { zod } from 'sveltekit-superforms/adapters';
+import { AttractionStatus } from '$core/attractions/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -21,7 +23,7 @@ export const load: PageServerLoad = createCreateLoad({
 		// Campos básicos
 		name: '',
 		slug: '',
-		status: 'DRAFT',
+		status: AttractionStatus.DRAFT,
 
 		// Descripciones
 		description: '',
@@ -39,7 +41,7 @@ export const load: PageServerLoad = createCreateLoad({
 		destinations: []
 	},
 	loadAvailableData: async (fetch) => ({
-		availableDestinations: (await api.destinations.getAll(fetch)).data || []
+		availableDestinations: (await DESTINATION_REQUEST.findByCriteria(fetch)).data || []
 	}),
 	breadcrumbLabel: 'Nueva atracción',
 	entityName: 'atracción'
@@ -59,7 +61,7 @@ export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/attractions`,
 		schema: zod(attractionFormSchema),
-		createFn: api.attractions.create,
+		createFn: ATTRACTION_REQUEST.create,
 		entityName: 'atracción',
 		redirectToEdit: true
 	})

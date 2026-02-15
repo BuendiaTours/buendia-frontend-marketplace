@@ -1,7 +1,8 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { usersFiltersSchema } from './filters.schema';
-import { api, ApiError } from '$lib/api/index';
+import { USER_REQUEST } from '$core/users/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 
 import { parseFilters } from '$lib/utils/filters';
@@ -13,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const response = await api.users.findByCriteria(fetch, {
+		const response = await USER_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
 			sort: filters.sort,

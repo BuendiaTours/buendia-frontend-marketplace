@@ -1,5 +1,7 @@
 import { attractionFormSchema } from '../../attraction-form.schema';
-import { api, ApiError } from '$lib/api/index';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -11,8 +13,8 @@ import type { PageServerLoad, Actions } from './$types';
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const [attraction, destinationsResponse] = await Promise.all([
-			api.attractions.getBySlug(fetch, params.slug),
-			api.destinations.getAll(fetch)
+			ATTRACTION_REQUEST.findBySlug(fetch, params.slug),
+			DESTINATION_REQUEST.findByCriteria(fetch)
 		]);
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
@@ -61,7 +63,7 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/attractions`,
 		schema: zod(attractionFormSchema),
-		updateFn: api.attractions.update,
+		updateFn: ATTRACTION_REQUEST.update,
 		redirectToEdit: true
 	})
 };

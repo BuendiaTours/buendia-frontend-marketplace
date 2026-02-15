@@ -1,7 +1,7 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { userFormSchema } from '../user-form.schema';
-import { api } from '$lib/api/index';
+import { USER_REQUEST } from '$core/users/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import { UserStatus } from '$core/users/enums';
@@ -25,7 +25,7 @@ export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/users`,
 		schema: zod(userFormSchema),
-		createFn: api.users.create,
+		createFn: USER_REQUEST.create,
 		entityName: 'usuario',
 		redirectToList: true
 	})

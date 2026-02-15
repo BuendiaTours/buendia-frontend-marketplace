@@ -1,5 +1,11 @@
 import { activityFormSchema } from '../../activity-form.schema';
-import { api, ApiError } from '$lib/api/index';
+import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import { CATEGORY_REQUEST } from '$core/categories/requests';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
+import { TAG_REQUEST } from '$core/tags/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -18,12 +24,12 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			destinationsResponse,
 			distributivesResponse
 		] = await Promise.all([
-			api.activities.getBySlug(fetch, params.slug),
-			api.tags.getAll(fetch),
-			api.categories.getAll(fetch),
-			api.attractions.getAll(fetch),
-			api.destinations.getAll(fetch),
-			api.distributives.getAll(fetch)
+			ACTIVITY_REQUEST.findBySlug(fetch, params.slug),
+			TAG_REQUEST.findByCriteria(fetch),
+			CATEGORY_REQUEST.findByCriteria(fetch),
+			ATTRACTION_REQUEST.findByCriteria(fetch),
+			DESTINATION_REQUEST.findByCriteria(fetch),
+			DISTRIBUTIVE_REQUEST.findByCriteria(fetch)
 		]);
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
@@ -67,11 +73,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		return {
 			activity,
 			form,
-			availableTags: tagsResponse,
-			availableCategories: categoriesResponse,
+			availableTags: tagsResponse.data || [],
+			availableCategories: categoriesResponse.data || [],
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
-			availableDistributives: distributivesResponse || [],
+			availableDistributives: distributivesResponse.data || [],
 			breadcrumbs
 		};
 	} catch (err) {
@@ -90,7 +96,7 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityFormSchema),
-		updateFn: api.activities.update,
+		updateFn: ACTIVITY_REQUEST.update,
 		redirectToEdit: true
 	})
 };

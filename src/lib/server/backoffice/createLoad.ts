@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { logger } from '$lib/utils/logger';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 
@@ -35,7 +35,7 @@ export type CreateLoadConfig<T extends Record<string, unknown> = Record<string, 
  * @example
  * ```typescript
  * import { createCreateLoad } from '$lib/server/createLoad';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  * import { activityFormSchema } from './activity-form.schema';
  * import { zod } from 'sveltekit-superforms/adapters';
  *

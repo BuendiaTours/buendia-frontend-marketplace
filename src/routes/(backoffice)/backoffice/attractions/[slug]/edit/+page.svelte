@@ -7,7 +7,7 @@
 	import { ATTRACTION_ROUTES } from '$core/attractions/routes';
 
 	// Enums
-	import { ATTRACTION_STATUS_OPTIONS } from '$core/attractions/enums';
+	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 
 	// Components
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';

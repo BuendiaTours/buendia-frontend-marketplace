@@ -38,3 +38,8 @@ export type CriteriaResult<T> = {
 	data: T[];
 	total: number;
 };
+
+export type Coords = {
+	latitude: number;
+	longitude: number;
+};

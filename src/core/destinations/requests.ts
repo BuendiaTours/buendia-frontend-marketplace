@@ -1,45 +1,32 @@
-import type { CriteriaResult, Destination } from '$lib/types';
-import type { DestinationsGetAllParams, DestinationsSearchParams } from '$core/destinations/types';
-import { get, getWithParams, post, put, del } from '$core/_shared/helpers';
-import { toSkipLimit } from '$core/_shared/params';
+import type { CriteriaResult } from '$core/_shared/types';
+import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import type {
+	Destination,
+	DestinationCreateDto,
+	DestinationCriteria,
+	DestinationUpdateDto
+} from '$core/destinations/types';
 
 const BASE = '/destinations';
-const SLUG = (slug: string) => `${BASE}/slug/${slug}`;
 
-export async function getAll(
-	fetchFn: typeof fetch,
-	params?: DestinationsGetAllParams
-): Promise<CriteriaResult<Destination>> {
-	return getWithParams<CriteriaResult<Destination>>(fetchFn, BASE, toSkipLimit(params));
-}
+export const DESTINATION_REQUEST = {
+	create: (fetchFn: typeof fetch, data: DestinationCreateDto): Promise<void> =>
+		post(fetchFn, BASE, data),
 
-export async function getById(fetchFn: typeof fetch, id: string): Promise<Destination> {
-	return get<Destination>(fetchFn, `${BASE}/${id}`);
-}
+	update: (fetchFn: typeof fetch, id: string, data: DestinationUpdateDto): Promise<void> =>
+		patch(fetchFn, `${BASE}/${id}`, data),
 
-export async function getBySlug(fetchFn: typeof fetch, slug: string): Promise<Destination> {
-	return get<Destination>(fetchFn, SLUG(slug));
-}
+	delete: (fetchFn: typeof fetch, id: string): Promise<void> => del(fetchFn, `${BASE}/${id}`),
 
-export async function search(
-	fetchFn: typeof fetch,
-	params?: DestinationsSearchParams
-): Promise<CriteriaResult<Destination>> {
-	return getWithParams<CriteriaResult<Destination>>(fetchFn, `${BASE}/search`, params);
-}
+	findById: (fetchFn: typeof fetch, id: string): Promise<Destination> =>
+		get<Destination>(fetchFn, `${BASE}/${id}`),
 
-export async function create(fetchFn: typeof fetch, data: Partial<Destination>): Promise<void> {
-	await post(fetchFn, BASE, data);
-}
+	findBySlug: (fetchFn: typeof fetch, slug: string): Promise<Destination> =>
+		get<Destination>(fetchFn, `${BASE}/slug/${slug}`),
 
-export async function update(
-	fetchFn: typeof fetch,
-	slug: string,
-	data: Partial<Destination>
-): Promise<void> {
-	await put(fetchFn, SLUG(slug), data);
-}
-
-export async function deleteBySlug(fetchFn: typeof fetch, slug: string): Promise<void> {
-	await del(fetchFn, SLUG(slug));
-}
+	findByCriteria: (
+		fetchFn: typeof fetch,
+		criteria?: DestinationCriteria
+	): Promise<CriteriaResult<Destination>> =>
+		getWithParams<CriteriaResult<Destination>>(fetchFn, BASE, criteria)
+};

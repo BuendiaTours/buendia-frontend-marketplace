@@ -71,7 +71,8 @@
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
 
-	const { availableTags, availableCategories, availableAttractions, availableDistributives } = data;
+	const { availableTags, availableCategories, availableAttractions, availableDistributives } =
+		$derived.by(() => data);
 
 	// En modo edit tenemos activity, en create no
 	const activity = $derived(isEditMode ? data.activity : null);
@@ -79,6 +80,7 @@
 	// Referencia al componente toast para mostrar notificaciones
 	let toastComponent: MsgMeltToast;
 
+	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json',
 		onUpdate({ form }) {

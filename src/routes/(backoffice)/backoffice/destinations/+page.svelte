@@ -19,7 +19,7 @@
 	import { destinationsFiltersSchema } from './filters.schema';
 
 	// Enums
-	import { DESTINATION_KIND_OPTIONS } from '$core/destinations/enums';
+	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 
 	// Routes
 	import { DESTINATION_ROUTES } from '$core/destinations/routes';

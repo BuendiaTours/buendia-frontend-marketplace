@@ -1,7 +1,5 @@
 import { z } from 'zod/v3';
-
-// Enums used
-import { ATTRACTION_STATUS_VALUES } from '$core/attractions/enums';
+import { AttractionStatus } from '$core/attractions/enums';
 
 /**
  * Schema de validación para el formulario de attractions
@@ -11,7 +9,7 @@ export const attractionFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
 	slug: z.string().min(2, 'El slug debe tener al menos 2 caracteres').max(100),
-	status: z.enum(ATTRACTION_STATUS_VALUES, {
+	status: z.nativeEnum(AttractionStatus, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
 	description: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),

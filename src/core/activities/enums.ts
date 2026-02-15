@@ -107,6 +107,13 @@ export enum StageRequirement {
 	NONE = 'NONE'
 }
 
+// Sort
+
+export enum ActivitySortAttribute {
+	CODE_REF = 'CODE_REF',
+	TITLE = 'title'
+}
+
 // Meals
 
 export enum MealFormat {

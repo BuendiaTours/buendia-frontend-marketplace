@@ -1,11 +1,4 @@
-import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+// TODO: Backend does not have a DELETE /users endpoint. This route is non-functional.
 import type { Actions } from './$types';
-import { createDeleteAction } from '$lib/server/backoffice/deleteAction';
-import { api } from '$lib/api/index';
 
-export const actions: Actions = {
-	default: createDeleteAction({
-		basePath: `${BACKOFFICE_PREFIX}/users`,
-		deleteFn: api.users.remove
-	})
-};
+export const actions: Actions = {};

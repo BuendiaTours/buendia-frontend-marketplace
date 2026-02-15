@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 import { logger } from '$lib/utils/logger';
 
@@ -20,12 +20,12 @@ export type DeleteActionConfig = {
  * @example
  * ```typescript
  * import { createDeleteAction } from '$lib/server/deleteAction';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  *
  * export const actions = {
  *   default: createDeleteAction({
  *     basePath: '/activities',
- *     deleteFn: api.activities.delete
+ *     deleteFn: ACTIVITY_REQUEST.delete
  *   })
  * };
  * ```

@@ -1,7 +1,9 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { destinationsFiltersSchema } from './filters.schema';
-import { api, ApiError } from '$lib/api/index';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import type { DestinationCriteria } from '$core/destinations/types';
+import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
@@ -13,17 +15,14 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const response = await api.destinations.getAll(fetch, {
+		const response = await DESTINATION_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			q: filters.q,
-			kind: filters.kind,
-			wheelchairAccessible: filters.wheelchairAccessible,
-			breakfastIncluded: filters.breakfastIncluded,
-			kidsFreeTour: filters.kidsFreeTour
-		});
+			query: filters.q,
+			kind: filters.kind
+		} as DestinationCriteria);
 
 		return {
 			items: response.data || [],

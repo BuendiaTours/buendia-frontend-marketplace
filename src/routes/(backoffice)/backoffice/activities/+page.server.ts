@@ -2,7 +2,9 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { parseFilters } from '$lib/utils/filters';
 import { activitiesFiltersSchema } from './filters.schema';
-import { api, ApiError } from '$lib/api/index';
+import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import type { ActivityCriteria } from '$core/activities/types';
+import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
@@ -12,21 +14,14 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const response = await api.activities.getAll(fetch, {
+		const response = await ACTIVITY_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			from: filters.from,
-			to: filters.to,
-			destination: filters.destination,
 			kind: filters.kind,
-			status: filters.status,
-			isFreeTour: filters.isFreeTour,
-			freeForKids: filters.kidsFreeTour,
-			breakfast: filters.breakfastIncluded,
-			wheelchairAccessible: filters.wheelchairAccessible
-		});
+			status: filters.status
+		} as ActivityCriteria);
 
 		return {
 			items: response.data || [],

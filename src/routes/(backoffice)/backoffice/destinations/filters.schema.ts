@@ -3,7 +3,7 @@ import { createBooleanField, createOrderField, createSortField } from '$lib/util
 import type { CriteriaSortOption } from '$core/_shared/enums';
 
 // Enums
-import { DESTINATION_KIND_VALUES, type DestinationKind } from '$core/destinations/enums';
+import { DestinationKind } from '$core/destinations/enums';
 
 export type DestinationsFilters = {
 	// Paginación (opcional - solo si la API la provee)
@@ -70,7 +70,7 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 		},
 		kind: {
 			parse: (raw) => {
-				if (DESTINATION_KIND_VALUES.includes(raw as DestinationKind)) {
+				if (Object.values(DestinationKind).includes(raw as DestinationKind)) {
 					return raw as DestinationKind;
 				}
 				return undefined;

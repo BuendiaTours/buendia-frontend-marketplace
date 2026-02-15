@@ -1,10 +1,11 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { api, ApiError } from '$lib/api/index';
+import { USER_REQUEST } from '$core/users/requests';
+import { ApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const user = await api.users.findById(fetch, params.slug);
+		const user = await USER_REQUEST.findById(fetch, params.slug);
 		return { user };
 	} catch (err) {
 		if (err instanceof ApiError) {

@@ -1,37 +1,96 @@
-import type { CriteriaResult, ActivityListItem } from '$lib/types';
-import type { ActivitiesGetAllParams } from '$core/activities/types';
-import { get, getWithParams, post, put, del } from '$core/_shared/helpers';
-import { toSkipLimit } from '$core/_shared/params';
+import type { CriteriaResult } from '$core/_shared/types';
+import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import type {
+	Activity,
+	ActivityCreateDto,
+	ActivityCriteria,
+	ActivityMealAddDto,
+	ActivityMultimediaAddDto,
+	ActivityStageAddDto,
+	ActivityUpdateDto
+} from '$core/activities/types';
 
 const BASE = '/activities';
-const SLUG = (slug: string) => `${BASE}/slug/${slug}`;
 
-export async function getAll(
-	fetchFn: typeof fetch,
-	params?: ActivitiesGetAllParams
-): Promise<CriteriaResult<ActivityListItem>> {
-	return getWithParams<CriteriaResult<ActivityListItem>>(fetchFn, BASE, toSkipLimit(params));
-}
+export const ACTIVITY_REQUEST = {
+	// --- CRUD ---
 
-export async function getBySlug(fetchFn: typeof fetch, slug: string): Promise<ActivityListItem> {
-	return get<ActivityListItem>(fetchFn, SLUG(slug));
-}
+	create: (fetchFn: typeof fetch, data: ActivityCreateDto): Promise<void> =>
+		post(fetchFn, BASE, data),
 
-export async function create(
-	fetchFn: typeof fetch,
-	data: Partial<ActivityListItem>
-): Promise<void> {
-	await post(fetchFn, BASE, data);
-}
+	update: (fetchFn: typeof fetch, id: string, data: ActivityUpdateDto): Promise<void> =>
+		patch(fetchFn, `${BASE}/${id}`, data),
 
-export async function update(
-	fetchFn: typeof fetch,
-	slug: string,
-	data: Partial<ActivityListItem>
-): Promise<void> {
-	await put(fetchFn, SLUG(slug), data);
-}
+	delete: (fetchFn: typeof fetch, id: string): Promise<void> => del(fetchFn, `${BASE}/${id}`),
 
-export async function deleteBySlug(fetchFn: typeof fetch, slug: string): Promise<void> {
-	await del(fetchFn, SLUG(slug));
-}
+	findById: (fetchFn: typeof fetch, id: string): Promise<Activity> =>
+		get<Activity>(fetchFn, `${BASE}/${id}`),
+
+	findBySlug: (fetchFn: typeof fetch, slug: string): Promise<Activity> =>
+		get<Activity>(fetchFn, `${BASE}/slug/${slug}`),
+
+	findByCriteria: (
+		fetchFn: typeof fetch,
+		criteria?: ActivityCriteria
+	): Promise<CriteriaResult<Activity>> =>
+		getWithParams<CriteriaResult<Activity>>(fetchFn, BASE, criteria),
+
+	// --- Attractions ---
+
+	addAttraction: (fetchFn: typeof fetch, id: string, attractionId: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/attractions/${attractionId}`, {}),
+
+	removeAttraction: (fetchFn: typeof fetch, id: string, attractionId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/attractions/${attractionId}`),
+
+	// --- Categories ---
+
+	addCategory: (fetchFn: typeof fetch, id: string, categoryId: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/categories/${categoryId}`, {}),
+
+	removeCategory: (fetchFn: typeof fetch, id: string, categoryId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/categories/${categoryId}`),
+
+	// --- Destinations ---
+
+	addDestination: (fetchFn: typeof fetch, id: string, destinationId: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/destinations/${destinationId}`, {}),
+
+	removeDestination: (fetchFn: typeof fetch, id: string, destinationId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/destinations/${destinationId}`),
+
+	// --- Distributives ---
+
+	addDistributive: (fetchFn: typeof fetch, id: string, distributiveId: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/distributives/${distributiveId}`, {}),
+
+	removeDistributive: (fetchFn: typeof fetch, id: string, distributiveId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/distributives/${distributiveId}`),
+
+	// --- Meals ---
+
+	addMeal: (fetchFn: typeof fetch, id: string, data: ActivityMealAddDto): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/meals/${data.id}`, data),
+
+	removeMeal: (fetchFn: typeof fetch, id: string, mealId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/meals/${mealId}`),
+
+	// --- Multimedias ---
+
+	addMultimedia: (
+		fetchFn: typeof fetch,
+		id: string,
+		data: ActivityMultimediaAddDto
+	): Promise<void> => post(fetchFn, `${BASE}/${id}/multimedias/${data.id}`, data),
+
+	removeMultimedia: (fetchFn: typeof fetch, id: string, multimediaId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/multimedias/${multimediaId}`),
+
+	// --- Stages ---
+
+	addStage: (fetchFn: typeof fetch, id: string, data: ActivityStageAddDto): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/stages/${data.id}`, data),
+
+	removeStage: (fetchFn: typeof fetch, id: string, stageId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/stages/${stageId}`)
+};

@@ -47,7 +47,7 @@
 	```svelte
 	<script>
 	  import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	  import { ATTRACTION_STATUS_OPTIONS } from '$core/attractions/enums';
+	  import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 	</script>
 
 	<FilterSelect

@@ -129,5 +129,11 @@
 	"enum_userRole_content": "Contenido",
 	"enum_userStatus_active": "Activo",
 	"enum_userStatus_inactive": "Inactivo",
-	"enum_userStatus_suspended": "Suspendido"
+	"enum_userStatus_suspended": "Suspendido",
+	"enum_attractionStatus_active": "Activo",
+	"enum_attractionStatus_draft": "Borrador",
+	"enum_attractionStatus_inactive": "Inactivo",
+	"enum_destinationKind_city": "Ciudad",
+	"enum_destinationKind_region": "Región",
+	"enum_destinationKind_country": "País"
 }

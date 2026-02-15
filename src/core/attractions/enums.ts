@@ -1,15 +1,14 @@
 /**
  * Enums del dominio de atracciones
+ * Espejo del backend — sin dependencias de UI ni traducciones
  */
 
-export const ATTRACTION_STATUS_OPTIONS = [
-	{ id: 'ACTIVE', name: 'Activo' },
-	{ id: 'DRAFT', name: 'Borrador' },
-	{ id: 'INACTIVE', name: 'Inactivo' }
-] as const;
+export enum AttractionStatus {
+	ACTIVE = 'ACTIVE',
+	DRAFT = 'DRAFT',
+	INACTIVE = 'INACTIVE'
+}
 
-export type AttractionStatus = (typeof ATTRACTION_STATUS_OPTIONS)[number]['id'];
-export const ATTRACTION_STATUS_VALUES = ATTRACTION_STATUS_OPTIONS.map((opt) => opt.id) as [
-	string,
-	...string[]
-];
+export enum AttractionSortAttribute {
+	NAME = 'NAME'
+}

@@ -1,7 +1,7 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { destinationFormSchema } from '../destination-form.schema';
-import { api } from '$lib/api/index';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
@@ -20,7 +20,7 @@ export const load: PageServerLoad = createCreateLoad({
 		// Campos básicos
 		name: '',
 		slug: '',
-		kind: '',
+		kind: undefined,
 
 		// Descripciones
 		descriptionShort: '',
@@ -46,7 +46,7 @@ export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/destinations`,
 		schema: zod(destinationFormSchema),
-		createFn: api.destinations.create,
+		createFn: DESTINATION_REQUEST.create,
 		entityName: 'destino',
 		redirectToEdit: true
 	})

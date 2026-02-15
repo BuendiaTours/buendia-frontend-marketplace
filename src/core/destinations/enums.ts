@@ -1,15 +1,14 @@
 /**
  * Enums del dominio de destinos
+ * Espejo del backend — sin dependencias de UI ni traducciones
  */
 
-export const DESTINATION_KIND_OPTIONS = [
-	{ id: 'CITY', name: 'Ciudad' },
-	{ id: 'REGION', name: 'Región' },
-	{ id: 'COUNTRY', name: 'País' }
-] as const;
+export enum DestinationKind {
+	CITY = 'CITY',
+	COUNTRY = 'COUNTRY',
+	REGION = 'REGION'
+}
 
-export type DestinationKind = (typeof DESTINATION_KIND_OPTIONS)[number]['id'];
-export const DESTINATION_KIND_VALUES = DESTINATION_KIND_OPTIONS.map((opt) => opt.id) as [
-	string,
-	...string[]
-];
+export enum DestinationSortAttribute {
+	NAME = 'NAME'
+}

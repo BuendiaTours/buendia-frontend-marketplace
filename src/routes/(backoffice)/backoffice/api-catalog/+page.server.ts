@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { getQueryCount, getQueryLog } from '$lib/api/index';
+import { getQueryCount, getQueryLog } from '$core/_shared/client';
 
 /**
  * API Catalog - Load Function
