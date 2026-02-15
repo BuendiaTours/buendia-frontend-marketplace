@@ -13,10 +13,11 @@
 	import { usersFiltersSchema } from './schemas/filters.schema';
 
 	import { USER_ROUTES } from '$lib/config/routes/backoffice/users';
-	import { UserKind, UserStatus, UserSortAttribute } from '$core/users/enums';
+	import { UserStatus, UserSortAttribute } from '$core/users/enums';
 	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
+	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
@@ -48,46 +49,45 @@
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
-	let searchQuery = $state('');
-	let emailFilter = $state('');
-	let phoneFilter = $state('');
-	let kindFilter = $state('');
-	let statusFilter = $state('');
-
+	// Necesitamos $state + $effect: los inputs requieren estado mutable local que se sincronice desde la URL.
+	// $derived no permite bind:value porque sus propiedades no son reactivas para escritura.
+	// eslint-disable-next-line svelte/prefer-writable-derived
+	let filterValues = $state<UsersFilters>({});
 	$effect(() => {
-		searchQuery = filters.q || '';
-		emailFilter = filters.email || '';
-		phoneFilter = filters.phone || '';
-		kindFilter = filters.kind || '';
-		statusFilter = filters.status || '';
+		filterValues = filters;
 	});
 
-	async function applyFilterPatch(patch: {
+	function applyFilterPatch(patch: {
 		[K in keyof UsersFilters]?: PatchValue<UsersFilters[K]>;
 	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(usersFiltersSchema, currentParams, patch);
-		const url = `${page.url.pathname}?${newParams.toString()}`;
-		await goto(url, { keepFocus: true, noScroll: true, replaceState: true });
+		goto(`?${newParams.toString()}`, {
+			replaceState: true,
+			noScroll: true,
+			keepFocus: true
+		});
 	}
 
 	function handleClearFilters() {
 		clearAllFilters(page.url.pathname, page.url.searchParams, goto);
-		searchQuery = '';
-		emailFilter = '';
-		phoneFilter = '';
-		kindFilter = '';
-		statusFilter = '';
+		filterValues = {};
 	}
 
 	function handleSearch() {
 		applyFilterPatch({
-			q: searchQuery || null,
-			email: emailFilter || null,
-			phone: phoneFilter || null,
-			kind: kindFilter || null,
-			status: statusFilter || null
+			q: filterValues.q ?? undefined,
+			email: filterValues.email ?? undefined,
+			phone: filterValues.phone ?? undefined,
+			kind: filterValues.kind,
+			status: filterValues.status
 		});
+	}
+
+	function handleFilterChange(filterKey: string, value: string | null) {
+		applyFilterPatch({
+			[filterKey]: value
+		} as { [K in keyof UsersFilters]?: PatchValue<UsersFilters[K]> });
 	}
 
 	const columns: Column<User>[] = [
@@ -116,45 +116,41 @@
 			type="text"
 			placeholder="Buscar (q)..."
 			class="input-bordered input input-sm w-48"
-			bind:value={searchQuery}
+			bind:value={filterValues.q}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<input
 			type="text"
 			placeholder="Email"
 			class="input-bordered input input-sm w-48"
-			bind:value={emailFilter}
-			onkeydown={(e) => e.key === 'Enter' && applyFilterPatch({ email: emailFilter || null })}
+			bind:value={filterValues.email}
+			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<input
 			type="text"
 			placeholder="Teléfono"
 			class="input-bordered input input-sm w-40"
-			bind:value={phoneFilter}
-			onkeydown={(e) => e.key === 'Enter' && applyFilterPatch({ phone: phoneFilter || null })}
+			bind:value={filterValues.phone}
+			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
-		<select
-			class="select select-bordered select-sm w-32"
-			aria-label="Tipo"
-			bind:value={kindFilter}
-			onchange={() => applyFilterPatch({ kind: kindFilter || null })}
-		>
-			<option value="">Tipo</option>
-			{#each USER_KIND_OPTIONS as opt (opt.id)}
-				<option value={opt.id}>{opt.name}</option>
-			{/each}
-		</select>
-		<select
-			class="select select-bordered select-sm w-36"
-			aria-label="Estado"
-			bind:value={statusFilter}
-			onchange={() => applyFilterPatch({ status: statusFilter || null })}
-		>
-			<option value="">Estado</option>
-			{#each USER_STATUS_OPTIONS as opt (opt.id)}
-				<option value={opt.id}>{opt.name}</option>
-			{/each}
-		</select>
+		<FilterSelect
+			options={USER_KIND_OPTIONS}
+			filterKey="kind"
+			currentValue={filters.kind}
+			placeholder="Tipo"
+			clearTooltip="Limpiar tipo"
+			width="w-32"
+			onFilterChange={handleFilterChange}
+		/>
+		<FilterSelect
+			options={USER_STATUS_OPTIONS}
+			filterKey="status"
+			currentValue={filters.status}
+			placeholder="Estado"
+			clearTooltip="Limpiar estado"
+			width="w-36"
+			onFilterChange={handleFilterChange}
+		/>
 		<button class="btn btn-square btn-outline btn-primary btn-sm" onclick={handleSearch}>
 			<Search />
 		</button>
@@ -193,8 +189,16 @@
 								title={col.title}
 								field={col.sortField ?? String(col.key)}
 								currentSort={sort}
-								onSortChange={(newSort) =>
-									applyFilterPatch({ sort: newSort.field, order: newSort.order })}
+								onSortChange={(newSort) => {
+									if (newSort.field && newSort.order) {
+										applyFilterPatch({
+											sort: newSort.field as UserSortAttribute,
+											order: newSort.order
+										});
+									} else {
+										applyFilterPatch({ sort: null, order: null });
+									}
+								}}
 							/>
 						{:else}
 							<span>{col.title}</span>
