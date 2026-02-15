@@ -4,7 +4,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
-	import { DESTINATION_ROUTES } from '$core/destinations/routes';
+	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
 
 	export let data: { destination: Destination };
 	const { destination } = data;

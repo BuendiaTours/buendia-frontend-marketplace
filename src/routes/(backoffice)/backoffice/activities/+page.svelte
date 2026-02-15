@@ -23,7 +23,7 @@
 	import { SvelteDate } from 'svelte/reactivity';
 
 	// Routes
-	import { ACTIVITY_ROUTES } from '$core/activities/routes';
+	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 
 	// i18n
 	import * as m from '$paraglide/messages';

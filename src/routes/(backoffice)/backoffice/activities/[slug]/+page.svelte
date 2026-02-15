@@ -4,7 +4,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
-	import { ACTIVITY_ROUTES } from '$core/activities/routes';
+	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 
 	export let data: { activity: ActivityDetail };
 	const { activity } = data;

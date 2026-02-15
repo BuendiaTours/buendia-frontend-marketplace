@@ -1,13 +1,14 @@
 /**
- * Rutas del backoffice
- * Re-exporta desde los módulos API para mantener una única fuente de verdad
+ * @module routes/backoffice
+ * @description Aggregated backoffice route definitions.
+ * Each resource defines its own route file in this directory.
  */
 
 import { backoffice } from '../core';
-import { USER_ROUTES } from '$core/users/routes';
-import { ACTIVITY_ROUTES } from '$core/activities/routes';
-import { ATTRACTION_ROUTES } from '$core/attractions/routes';
-import { DESTINATION_ROUTES } from '$core/destinations/routes';
+import { USER_ROUTES } from './users';
+import { ACTIVITY_ROUTES } from './activities';
+import { ATTRACTION_ROUTES } from './attractions';
+import { DESTINATION_ROUTES } from './destinations';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {

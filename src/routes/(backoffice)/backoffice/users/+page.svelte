@@ -12,7 +12,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { usersFiltersSchema } from './schemas/filters.schema';
 
-	import { USER_ROUTES } from '$core/users/routes';
+	import { USER_ROUTES } from '$lib/config/routes/backoffice/users';
 	import { UserKind, UserStatus, UserSortAttribute } from '$core/users/enums';
 	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
 

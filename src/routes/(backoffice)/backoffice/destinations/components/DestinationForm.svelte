@@ -7,7 +7,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
-	import { DESTINATION_ROUTES } from '$core/destinations/routes';
+	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
 	import { DatabaseRestore } from 'svelte-iconoir';
 	import type { Destination } from '$lib/types';
 

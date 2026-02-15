@@ -1,10 +1,9 @@
 /**
- * @module users/routes
+ * @module routes/backoffice/users
  * @description Backoffice route definitions for the Users resource.
- * Co-located with the API module to keep navigation and data-access context together.
  */
 
-import { backoffice } from '$lib/config/routes/core';
+import { backoffice } from '../core';
 
 /** Backoffice URL helpers for user pages. */
 export const USER_ROUTES = {

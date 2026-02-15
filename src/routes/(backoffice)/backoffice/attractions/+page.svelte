@@ -19,7 +19,7 @@
 	import { attractionsFiltersSchema } from './schemas/filters.schema';
 
 	// Routes
-	import { ATTRACTION_ROUTES } from '$core/attractions/routes';
+	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';

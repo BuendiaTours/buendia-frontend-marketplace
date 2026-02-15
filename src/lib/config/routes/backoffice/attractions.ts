@@ -1,10 +1,9 @@
 /**
- * @module attractions/routes
+ * @module routes/backoffice/attractions
  * @description Backoffice route definitions for the Attractions resource.
- * Co-located with the API module to keep navigation and data-access context together.
  */
 
-import { backoffice } from '$lib/config/routes/core';
+import { backoffice } from '../core';
 
 /** Backoffice URL helpers for attraction pages. */
 export const ATTRACTION_ROUTES = {

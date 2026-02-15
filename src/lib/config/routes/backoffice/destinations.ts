@@ -1,10 +1,9 @@
 /**
- * @module destinations/routes
+ * @module routes/backoffice/destinations
  * @description Backoffice route definitions for the Destinations resource.
- * Co-located with the API module to keep navigation and data-access context together.
  */
 
-import { backoffice } from '$lib/config/routes/core';
+import { backoffice } from '../core';
 
 /** Backoffice URL helpers for destination pages. */
 export const DESTINATION_ROUTES = {

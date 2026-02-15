@@ -22,7 +22,7 @@
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 
 	// Routes
-	import { DESTINATION_ROUTES } from '$core/destinations/routes';
+	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';

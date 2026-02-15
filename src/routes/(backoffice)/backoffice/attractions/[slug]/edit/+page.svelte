@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { ATTRACTION_ROUTES } from '$core/attractions/routes';
+	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
 
 	// Enums
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
