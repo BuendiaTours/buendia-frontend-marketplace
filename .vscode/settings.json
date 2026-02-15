@@ -3,5 +3,5 @@
 		"*.css": "css"
 	},
 	"css.lint.unknownAtRules": "ignore",
-	"cSpell.words": ["distributives"]
+	"cSpell.words": ["distributives", "multimedias"]
 }

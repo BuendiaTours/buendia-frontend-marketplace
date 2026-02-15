@@ -1,7 +1,7 @@
 /**
  * @module activities/types
  * @description TypeScript type definitions for the Activities resource.
- * Organised into three sections:
+ * Organized into three sections:
  * - **Projections** (read models returned by the API)
  * - **DTOs** (write models sent to the API)
  * - **Criteria** (query parameters for filtering and pagination)
