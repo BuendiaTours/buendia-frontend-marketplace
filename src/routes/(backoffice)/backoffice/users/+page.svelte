@@ -24,6 +24,7 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	import { Cancel, Plus, Search } from 'svelte-iconoir';
+	import * as m from '$paraglide/messages';
 
 	let {
 		data
@@ -91,10 +92,10 @@
 	}
 
 	const columns: Column<User>[] = [
-		{ key: 'name', title: 'Nombre', sortable: true, sortField: UserSortAttribute.NAME },
-		{ key: 'email', title: 'Email', sortable: false },
-		{ key: 'kind', title: 'Tipo', sortable: false },
-		{ key: 'status', title: 'Estado', sortable: false }
+		{ key: 'name', title: m.users_name(), sortable: true, sortField: UserSortAttribute.NAME },
+		{ key: 'email', title: m.users_email(), sortable: false },
+		{ key: 'kind', title: m.users_kind(), sortable: false },
+		{ key: 'status', title: m.users_status(), sortable: false }
 	];
 
 	function handlePageChange(newPage: number) {
@@ -105,30 +106,30 @@
 </script>
 
 <svelte:head>
-	<title>Usuarios - Backoffice</title>
+	<title>{m.users_listPageTitle()}</title>
 </svelte:head>
 
-<LocationBar title="Listado de usuarios" breadcrumbs={data.breadcrumbs} />
+<LocationBar title={m.users_listLabel()} breadcrumbs={data.breadcrumbs} />
 
 <div class="bnd-filter-bar card flex-row flex-wrap items-center gap-4 p-4">
 	<div class="flex flex-1 items-center gap-2">
 		<input
 			type="text"
-			placeholder="Buscar (q)..."
+			placeholder={m.users_searchPlaceholder()}
 			class="input-bordered input input-sm w-48"
 			bind:value={filterValues.q}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<input
 			type="text"
-			placeholder="Email"
+			placeholder={m.users_placeholderEmail()}
 			class="input-bordered input input-sm w-48"
 			bind:value={filterValues.email}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<input
 			type="text"
-			placeholder="Teléfono"
+			placeholder={m.users_placeholderPhone()}
 			class="input-bordered input input-sm w-40"
 			bind:value={filterValues.phone}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
@@ -137,8 +138,8 @@
 			options={USER_KIND_OPTIONS}
 			filterKey="kind"
 			currentValue={filters.kind}
-			placeholder="Tipo"
-			clearTooltip="Limpiar tipo"
+			placeholder={m.users_placeholderKind()}
+			clearTooltip={m.users_clearKind()}
 			width="w-32"
 			onFilterChange={handleFilterChange}
 		/>
@@ -146,8 +147,8 @@
 			options={USER_STATUS_OPTIONS}
 			filterKey="status"
 			currentValue={filters.status}
-			placeholder="Estado"
-			clearTooltip="Limpiar estado"
+			placeholder={m.users_placeholderStatus()}
+			clearTooltip={m.users_clearStatus()}
 			width="w-36"
 			onFilterChange={handleFilterChange}
 		/>
@@ -157,7 +158,7 @@
 	</div>
 
 	<div class="flex items-center gap-2">
-		<div class="tooltip" data-tip="Limpiar todos los filtros">
+		<div class="tooltip" data-tip={m.users_clearAllFilters()}>
 			<button
 				class="btn btn-square btn-soft btn-error"
 				onclick={handleClearFilters}
@@ -174,7 +175,7 @@
 
 	<a href={USER_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
-		Nuevo usuario
+		{m.users_newUser()}
 	</a>
 </div>
 
@@ -215,7 +216,7 @@
 				<tr>
 					<td colspan={columns.length + 1} class="text-center">
 						<div class="py-8">
-							<p class="text-base-content/50">No se encontraron usuarios</p>
+							<p class="text-base-content/50">{m.users_noUsers()}</p>
 						</div>
 					</td>
 				</tr>
@@ -249,12 +250,12 @@
 										<a
 											href={buildUrlWithFilters(USER_ROUTES.detail(item.id), page.url.searchParams)}
 										>
-											Ver
+											{m.users_view()}
 										</a>
 									</li>
 									<li>
 										<a href={buildUrlWithFilters(USER_ROUTES.edit(item.id), page.url.searchParams)}
-											>Editar</a
+											>{m.common_edit()}</a
 										>
 									</li>
 								</ul>

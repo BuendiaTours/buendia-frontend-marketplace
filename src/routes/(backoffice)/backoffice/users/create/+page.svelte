@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
 	import type { PageData } from './$types';
 	import UserForm from '../components/UserForm.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
@@ -7,9 +8,9 @@
 </script>
 
 <svelte:head>
-	<title>Nuevo Usuario - Backoffice</title>
+	<title>{m.users_newUserPageTitle()}</title>
 </svelte:head>
 
-<LocationBar title="Nuevo Usuario" breadcrumbs={data.breadcrumbs} />
+<LocationBar title={m.users_newUser()} breadcrumbs={data.breadcrumbs} />
 
 <UserForm {data} mode="create" />

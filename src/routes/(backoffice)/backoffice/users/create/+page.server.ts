@@ -6,6 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import { UserStatus } from '$core/users/enums';
 import type { PageServerLoad, Actions } from './$types';
+import * as m from '$paraglide/messages';
 
 export const load: PageServerLoad = createCreateLoad({
 	schema: zod(userFormSchema),
@@ -17,7 +18,7 @@ export const load: PageServerLoad = createCreateLoad({
 		status: UserStatus.ACTIVE,
 		roles: []
 	},
-	breadcrumbLabel: 'Nuevo usuario',
+	breadcrumbLabel: m.users_newUser(),
 	entityName: 'usuario'
 });
 

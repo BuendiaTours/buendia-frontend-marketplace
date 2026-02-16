@@ -1,8 +1,8 @@
+import * as m from '$paraglide/messages';
 import { USER_REQUEST } from '$core/users/requests';
-import { ApiError } from '$core/_shared/errors';
+import { handleApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { userFormSchema } from '../../schemas/user-form.schema';
-import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		);
 
 		const breadcrumbs = buildBreadcrumbs(url.pathname, {
-			label: user.name || 'Usuario'
+			label: user.name || m.users_breadcrumbUser()
 		});
 
 		return {
@@ -37,14 +37,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			breadcrumbs
 		};
 	} catch (err) {
-		if (err instanceof ApiError) {
-			if (err.type === 'not_found') {
-				throw error(404, 'Usuario no encontrado');
-			}
-			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
-		}
-
-		throw error(503, 'No se pudo conectar con el servidor');
+		throw handleApiError(err, 'el usuario');
 	}
 };
 

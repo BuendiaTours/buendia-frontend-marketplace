@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
+import type { SuperValidated } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 import { ApiError } from '$core/_shared/errors';
 import { logger } from '$lib/utils/logger';
@@ -72,7 +73,7 @@ export function createCreateLoad<
 		url: URL;
 	}): Promise<
 		{
-			form: Awaited<ReturnType<typeof superValidate>>;
+			form: SuperValidated<T>;
 			breadcrumbs: ReturnType<typeof buildBreadcrumbs>;
 		} & A
 	> => {

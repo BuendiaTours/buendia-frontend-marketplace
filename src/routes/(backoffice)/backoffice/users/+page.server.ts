@@ -1,8 +1,7 @@
-import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { usersFiltersSchema } from './schemas/filters.schema';
 import { USER_REQUEST } from '$core/users/requests';
-import { ApiError } from '$core/_shared/errors';
+import { handleApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 
 import { parseFilters } from '$lib/utils/filters';
@@ -34,17 +33,6 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			breadcrumbs
 		};
 	} catch (err) {
-		if (err instanceof ApiError) {
-			const errorMessage =
-				err.type === 'not_found'
-					? 'No se encontró el recurso solicitado'
-					: err.type === 'server_error'
-						? 'El servidor no está disponible. Por favor, verifica que la API esté funcionando.'
-						: `Error al cargar usuarios (${err.status || 'desconocido'})`;
-
-			throw error(err.status || 500, errorMessage);
-		}
-
-		throw error(503, 'No se pudo conectar con el servidor. Verifica que la API esté funcionando.');
+		throw handleApiError(err, 'los usuarios');
 	}
 };

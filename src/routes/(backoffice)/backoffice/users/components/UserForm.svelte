@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
+	import * as m from '$paraglide/messages';
 	import { resolveRoute } from '$app/paths';
 	import { DatabaseRestore } from 'svelte-iconoir';
 	import type { UserFormSchema } from '../schemas/user-form.schema';
@@ -35,12 +36,12 @@
 		href={`${resolveRoute('/(backoffice)/backoffice/users')}?${page.url.searchParams.toString()}`}
 		class="link"
 	>
-		&larr; Volver al listado
+		&larr; {m.users_backToList()}
 	</a>
 
 	<div class="flex gap-2">
 		<button type="submit" form="user-form" class="btn btn-primary">
-			{isEditMode ? 'Guardar cambios' : 'Crear usuario'}
+			{isEditMode ? m.users_saveChanges() : m.users_createUser()}
 		</button>
 	</div>
 </div>
@@ -49,23 +50,38 @@
 	<FormAccordion name="form-user-data" open>
 		{#snippet title()}
 			<DatabaseRestore class="size-6" />
-			<span>Datos del usuario</span>
+			<span>{m.users_userData()}</span>
 		{/snippet}
 		{#snippet content()}
 			<input type="hidden" name="id" bind:value={$form.id} />
-			<FormInputText id="name" label="Nombre" bind:value={$form.name} error={$errors.name} />
-			<FormInputText id="email" label="Email" bind:value={$form.email} error={$errors.email} />
-			<FormInputText id="phone" label="Teléfono" bind:value={$form.phone} error={$errors.phone} />
+			<FormInputText
+				id="name"
+				label={m.users_name()}
+				bind:value={$form.name}
+				error={$errors.name}
+			/>
+			<FormInputText
+				id="email"
+				label={m.users_email()}
+				bind:value={$form.email}
+				error={$errors.email}
+			/>
+			<FormInputText
+				id="phone"
+				label={m.users_phone()}
+				bind:value={$form.phone}
+				error={$errors.phone}
+			/>
 			<FormSelect
 				id="kind"
-				label="Tipo"
+				label={m.users_kind()}
 				bind:value={$form.kind}
 				error={$errors.kind}
 				options={USER_KIND_OPTIONS}
 			/>
 			<FormSelect
 				id="status"
-				label="Estado"
+				label={m.users_status()}
 				bind:value={$form.status}
 				error={$errors.status}
 				options={USER_STATUS_OPTIONS}

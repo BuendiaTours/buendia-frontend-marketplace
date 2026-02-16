@@ -3,5 +3,5 @@
 		"*.css": "css"
 	},
 	"css.lint.unknownAtRules": "ignore",
-	"cSpell.words": ["distributives", "multimedias"]
+	"cSpell.words": ["backoffice", "distributives", "multimedias", "paraglide", "superforms"]
 }

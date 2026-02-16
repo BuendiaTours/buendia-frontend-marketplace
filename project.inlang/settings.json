@@ -10,7 +10,8 @@
 		"pathPattern": [
 			"./messages/{locale}/common.json",
 			"./messages/{locale}/activities.json",
-			"./messages/{locale}/enums.json"
+			"./messages/{locale}/enums.json",
+			"./messages/{locale}/users.json"
 		]
 	}
 }
