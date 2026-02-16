@@ -47,7 +47,7 @@ npm install
 
 Al ejecutar `npm install`, Husky se configura automaticamente gracias al script `prepare` del `package.json`. Los git hooks quedaran activos sin pasos adicionales.
 
-### Git hooks automaticos
+### Git hooks automáticos
 
 El proyecto usa **Husky** + **lint-staged** + **commitlint** para garantizar la calidad del codigo en cada commit.
 
