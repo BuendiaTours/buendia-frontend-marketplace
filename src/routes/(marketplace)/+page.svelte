@@ -16,33 +16,33 @@
 
 		<div>
 			<div class="e-button">Button</div>
-			<div class="e-button a-button-sm a-button-primary">Button</div>
-			<div class="e-button a-button-lg">Button</div>
+			<div class="e-button e-button-sm e-button-primary">Button</div>
+			<div class="e-button e-button-lg">Button</div>
 		</div>
 		<div>
 			<div class="e-button" disabled>Button</div>
-			<div class="e-button a-button-sm a-button-primary" disabled>Button</div>
-			<div class="e-button a-button-lg" disabled>Button</div>
+			<div class="e-button e-button-sm e-button-primary" disabled>Button</div>
+			<div class="e-button e-button-lg" disabled>Button</div>
 		</div>
 		<div>
-			<div class="e-button a-button-secondary">Button</div>
-			<div class="e-button a-button-secondary a-button-sm a-button-primary">Button</div>
-			<div class="e-button a-button-secondary a-button-lg">Button</div>
+			<div class="e-button e-button-secondary">Button</div>
+			<div class="e-button e-button-secondary e-button-sm e-button-primary">Button</div>
+			<div class="e-button e-button-secondary e-button-lg">Button</div>
 		</div>
 		<div>
-			<div class="e-button a-button-secondary" disabled>Button</div>
-			<div class="e-button a-button-secondary a-button-sm a-button-primary" disabled>Button</div>
-			<div class="e-button a-button-secondary a-button-lg" disabled>Button</div>
+			<div class="e-button e-button-secondary" disabled>Button</div>
+			<div class="e-button e-button-secondary e-button-sm e-button-primary" disabled>Button</div>
+			<div class="e-button e-button-secondary e-button-lg" disabled>Button</div>
 		</div>
 		<div>
-			<div class="e-button a-button-tertiary">Button</div>
-			<div class="e-button a-button-tertiary a-button-sm a-button-primary">Button</div>
-			<div class="e-button a-button-tertiary a-button-lg">Button</div>
+			<div class="e-button e-button-tertiary">Button</div>
+			<div class="e-button e-button-tertiary e-button-sm e-button-primary">Button</div>
+			<div class="e-button e-button-tertiary e-button-lg">Button</div>
 		</div>
 		<div>
-			<div class="e-button a-button-tertiary" disabled>Button</div>
-			<div class="e-button a-button-tertiary a-button-sm a-button-primary" disabled>Button</div>
-			<div class="e-button a-button-tertiary a-button-lg" disabled>Button</div>
+			<div class="e-button e-button-tertiary" disabled>Button</div>
+			<div class="e-button e-button-tertiary e-button-sm e-button-primary" disabled>Button</div>
+			<div class="e-button e-button-tertiary e-button-lg" disabled>Button</div>
 		</div>
 	</div>
 
