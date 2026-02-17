@@ -2,6 +2,7 @@
 	// Components
 	import { openLightbox } from '$lib/components/backoffice/PhotoSwipe';
 	import SwiperElement from '$lib/components/backoffice/Swiper.svelte';
+	import { logger } from '$lib/utils/logger';
 
 	// Actions
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
@@ -14,8 +15,8 @@
 	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
 	let value = $state(today(getLocalTimeZone()));
 
-	function handleCalendarChange(newValue: any) {
-		console.log('Calendar value changed:', newValue);
+	function handleCalendarChange(newValue: typeof value) {
+		logger.log('Calendar value changed:', newValue);
 		value = newValue;
 	}
 
@@ -76,12 +77,12 @@
 	});
 
 	function handleRangeCalendarChange(newRange: DateRange | undefined) {
-		console.log('📆 RangeCalendar - Rango seleccionado:', newRange);
+		logger.log('📆 RangeCalendar - Rango seleccionado:', newRange);
 		if (newRange?.start && newRange?.end) {
-			console.log('📆 RangeCalendar - Inicio:', newRange.start.toString());
-			console.log('📆 RangeCalendar - Fin:', newRange.end.toString());
+			logger.log('📆 RangeCalendar - Inicio:', newRange.start.toString());
+			logger.log('📆 RangeCalendar - Fin:', newRange.end.toString());
 			const days = newRange.end.compare(newRange.start);
-			console.log('📆 RangeCalendar - Días seleccionados:', days);
+			logger.log('📆 RangeCalendar - Días seleccionados:', days);
 		}
 	}
 
@@ -91,9 +92,9 @@
 	let formSelect = $state<string | undefined>(undefined);
 	let formSlugSource = $state('Mi Título de Ejemplo');
 	let formSlug = $state('');
-	let formCheckboxItems = $state<any[]>([]);
-	let formTags = $state<any[]>([]);
-	let formOrderedItems = $state<any[]>([]);
+	let formCheckboxItems = $state<Array<{ id: string; name: string }>>([]);
+	let formTags = $state<Array<{ id: string; name: string }>>([]);
+	let formOrderedItems = $state<Array<{ id: string; name: string }>>([]);
 	let formMarkdown = $state('# Título\n\nEscribe tu contenido en **Markdown** aquí...');
 
 	// Mock data for form examples
@@ -160,6 +161,7 @@
 	más complejos normalmente requiere más estilado y muchos usan JS
 </p>
 
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
 	<div class="md:col-span-4">
 		<p>Navegación</p>
@@ -179,9 +181,9 @@
 				value="1"
 				class="badge-outline badge-secondary"
 				removable
-				onremove={() => console.log('removed')}>Form Tag</Tag
+				onremove={() => logger.log('removed')}>Form Tag</Tag
 			>
-			<Tag class="badge-primary" removable onremove={() => console.log('removed')}>Removable</Tag>
+			<Tag class="badge-primary" removable onremove={() => logger.log('removed')}>Removable</Tag>
 		</div>
 
 		<label class="label mt-4">Accordion sencillo de DaisyUI</label>
@@ -258,13 +260,13 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
 					class="block h-48 w-48 object-cover"
 					src="https://picsum.photos/id/237/200/200.jpg"
-					alt="Photo 1"
+					alt="Sample 1"
 				/>
 			</a>
 			<a
@@ -272,13 +274,13 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
 					class="block h-48 w-48 object-cover"
 					src="https://picsum.photos/id/238/200/200.jpg"
-					alt="Photo 1"
+					alt="Sample 2"
 				/>
 			</a>
 			<a
@@ -286,7 +288,7 @@
 				data-pswp-width="800"
 				data-pswp-height="600"
 				target="_blank"
-				rel="noreferrer"
+				rel="noopener noreferrer"
 				class="block overflow-hidden rounded-lg"
 			>
 				<img
@@ -583,7 +585,7 @@
 				de sincronización y delay de animación.
 			</p>
 			<div class="grid grid-cols-1 gap-2 md:grid-cols-2">
-				{#each mockItems as item}
+				{#each mockItems as item (item.id)}
 					<button
 						class="btn btn-outline btn-sm"
 						onclick={() => {

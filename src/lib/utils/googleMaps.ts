@@ -3,6 +3,8 @@
  * Evita cargar el script múltiples veces cuando hay varios mapas en la misma página
  */
 
+type GoogleMapsWindow = Window & typeof globalThis & { google?: { maps?: unknown } };
+
 type LoadingState = 'idle' | 'loading' | 'loaded' | 'error';
 
 let loadingState: LoadingState = 'idle';
@@ -15,7 +17,7 @@ let apiKey: string | null = null;
  */
 export async function loadGoogleMapsAPI(key: string): Promise<void> {
 	// Si ya está cargada, retornar inmediatamente
-	if (loadingState === 'loaded' && (window as any).google?.maps) {
+	if (loadingState === 'loaded' && (window as GoogleMapsWindow).google?.maps) {
 		return Promise.resolve();
 	}
 
@@ -41,7 +43,7 @@ export async function loadGoogleMapsAPI(key: string): Promise<void> {
 
 	loadPromise = new Promise<void>((resolve, reject) => {
 		// Verificar si ya está cargado (puede haber sido cargado externamente)
-		if ((window as any).google?.maps) {
+		if ((window as GoogleMapsWindow).google?.maps) {
 			loadingState = 'loaded';
 			resolve();
 			return;
@@ -56,7 +58,7 @@ export async function loadGoogleMapsAPI(key: string): Promise<void> {
 		script.onload = () => {
 			// Esperar un poco para asegurar que google.maps esté disponible
 			setTimeout(() => {
-				if ((window as any).google?.maps) {
+				if ((window as GoogleMapsWindow).google?.maps) {
 					loadingState = 'loaded';
 					resolve();
 				} else {
@@ -81,7 +83,7 @@ export async function loadGoogleMapsAPI(key: string): Promise<void> {
  * Verifica si Google Maps API ya está cargada
  */
 export function isGoogleMapsLoaded(): boolean {
-	return loadingState === 'loaded' && !!(window as any).google?.maps;
+	return loadingState === 'loaded' && !!(window as GoogleMapsWindow).google?.maps;
 }
 
 /**

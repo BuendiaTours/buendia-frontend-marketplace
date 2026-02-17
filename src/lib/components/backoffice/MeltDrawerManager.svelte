@@ -38,14 +38,14 @@ CASOS DE USO:
 
 USO:
 ```svelte
-<script>
+<script lang="ts">
   let selectedItemId = $state<string | null>(null);
   const items = [...]; // Array de items
 </script>
 
 <button onclick={() => selectedItemId = item.id}>Ver detalles</button>
 
-<MeltDrawerManager 
+<MeltDrawerManager
   bind:selectedId={selectedItemId}
   items={items}
   title={(item) => `Detalles de ${item.name}`}
@@ -67,14 +67,15 @@ VENTAJAS:
 <script lang="ts">
 	import MeltDrawer from './MeltDrawer.svelte';
 	import type { MeltDrawerManagerConfig } from './MeltDrawerManager';
+	import type { Snippet } from 'svelte';
 
-	interface Props<T = any> {
+	type Props<T extends { id: string } = { id: string; [key: string]: unknown }> = {
 		selectedId?: string | null;
 		items: T[];
 		title?: string | ((item: T) => string);
 		config?: MeltDrawerManagerConfig;
-		content: any;
-	}
+		content: Snippet<[T]>;
+	};
 
 	let {
 		selectedId = $bindable<string | null>(null),
@@ -110,23 +111,17 @@ VENTAJAS:
 
 	// Encontrar el item seleccionado basado en mountedItemId
 	const selectedItem = $derived(
-		mountedItemId ? items.find((item: any) => item.id === mountedItemId) : null
+		mountedItemId ? items.find((item) => item.id === mountedItemId) : null
 	);
 
 	// Resolver el título: puede ser string o función
 	const resolvedTitle = $derived(
-		selectedItem
-			? typeof title === 'function'
-				? title(selectedItem)
-				: title
-			: ''
+		selectedItem ? (typeof title === 'function' ? title(selectedItem) : title) : ''
 	);
 </script>
 
 {#if mountedItemId && selectedItem}
 	<MeltDrawer bind:open={drawerOpen} title={resolvedTitle} {config}>
-		{#snippet children()}
-			{@render content(selectedItem)}
-		{/snippet}
+		{@render content(selectedItem)}
 	</MeltDrawer>
 {/if}

@@ -1,6 +1,7 @@
-import { api, ApiError } from '$lib/api/index';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
-import { destinationFormSchema } from '../../destination-form.schema';
+import { destinationFormSchema } from '../../schemas/destination-form.schema';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -10,9 +11,10 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const destination = await api.destinations.getBySlug(fetch, params.slug);
+		const destination = await DESTINATION_REQUEST.findBySlug(fetch, params.slug);
 
-		const apiData = destination as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
+		const apiData = destination as Record<string, any>;
 
 		const form = await superValidate(
 			{
@@ -51,7 +53,7 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/destinations`,
 		schema: zod(destinationFormSchema),
-		updateFn: api.destinations.update,
+		updateFn: DESTINATION_REQUEST.update,
 		redirectToEdit: true
 	})
 };

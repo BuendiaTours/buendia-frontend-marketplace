@@ -5,22 +5,21 @@
 
 	// Types
 	import type { Attraction, Column } from '$lib/types';
-	import type { AttractionsFilters } from './filters.schema';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
+	import type { AttractionsFilters } from './schemas/filters.schema';
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
 	// Utils
-	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
+	import type { PatchValue } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { attractionsFiltersSchema } from './filters.schema';
-
-	// i18n
-	import * as m from '$paraglide/messages';
+	import { attractionsFiltersSchema } from './schemas/filters.schema';
 
 	// Routes
-	import { ROUTES } from '$lib/config/routes';
+	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';
@@ -29,7 +28,7 @@
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import { getAttractionStatuses } from '$lib/api/backoffice/common.remote';
+	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
@@ -40,7 +39,7 @@
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 
 	// Icons
-	import { Cancel, Check, Plus, Search, WarningTriangle } from 'svelte-iconoir';
+	import { Cancel, Plus, Search } from 'svelte-iconoir';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -58,7 +57,7 @@
 				totalPages: number;
 			} | null;
 			filters: AttractionsFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
@@ -75,7 +74,7 @@
 	// ============================================================================
 
 	let selectedAttractionId = $state<string | null>(null);
-	let attractionData = $state<any>(null);
+	let attractionData = $state<Record<string, unknown> | null>(null);
 	let isLoadingData = $state(false);
 	let dataError = $state<string | null>(null);
 
@@ -111,11 +110,7 @@
 	// SEARCH STATE
 	// ============================================================================
 
-	let searchQuery = $state('');
-
-	$effect(() => {
-		searchQuery = filters.q || '';
-	});
+	let searchQuery = $derived(filters.q || '');
 
 	// ============================================================================
 	// ADVANCED FILTERS STATE
@@ -129,14 +124,16 @@
 
 	// Crear objeto con los valores actuales de los filtros avanzados
 	const currentAdvancedFilters = $derived(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, filters[f.key] ?? false]))
 	);
 
 	// ============================================================================
 	// FILTER FUNCTIONS
 	// ============================================================================
 
-	function applyFilterPatch(patch: Record<string, any>) {
+	function applyFilterPatch(patch: {
+		[K in keyof AttractionsFilters]?: PatchValue<AttractionsFilters[K]>;
+	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(attractionsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
@@ -148,17 +145,17 @@
 	}
 
 	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof AttractionsFilters]?: PatchValue<AttractionsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = appliedFilters[filter.key] || (null as any);
+			patch[filter.key] = appliedFilters[filter.key] || null;
 		});
 		applyFilterPatch(patch);
 	}
 
 	function handleClearAdvancedFilters() {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof AttractionsFilters]?: PatchValue<AttractionsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = null as any;
+			patch[filter.key] = null;
 		});
 		applyFilterPatch(patch);
 	}
@@ -173,8 +170,8 @@
 
 	function handleStatusFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
-			[filterKey]: value === null ? (null as any) : value
-		});
+			[filterKey]: value
+		} as { [K in keyof AttractionsFilters]?: PatchValue<AttractionsFilters[K]> });
 	}
 
 	// ============================================================================
@@ -227,7 +224,7 @@
 	</div>
 
 	<FilterSelect
-		source={{ type: 'remote', queryFunction: getAttractionStatuses }}
+		options={ATTRACTION_STATUS_OPTIONS}
 		filterKey="status"
 		currentValue={filters.status}
 		placeholder="Selecciona estado"
@@ -261,7 +258,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href={ROUTES.backoffice.attractions.create} class="btn btn-outline btn-primary">
+	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nueva atracción
 	</a>
@@ -275,7 +272,7 @@
 				<th class="w-12">
 					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
 				</th>
-				{#each columns as col}
+				{#each columns as col (col.key)}
 					<th>
 						{#if col.sortable}
 							<TableSortableHeader
@@ -305,7 +302,7 @@
 					</td>
 				</tr>
 			{:else}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<tr>
 						<td>
 							<input
@@ -315,7 +312,7 @@
 								class="checkbox checkbox-sm"
 							/>
 						</td>
-						{#each columns as col}
+						{#each columns as col (col.key)}
 							{#if col.key === 'id'}
 								<td>
 									<div class="tooltip" data-tip={item.id}>
@@ -348,7 +345,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.attractions.detail(item.slug),
+												ATTRACTION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -368,7 +365,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.attractions.edit(item.slug),
+												ATTRACTION_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}
 										>

@@ -10,6 +10,17 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	let { data }: { data: PageData } = $props();
+
+	// createCreateLoad retorna form, available*, breadcrumbs; PageData los une con alert del layout
+	const formData = $derived({
+		form: data.form,
+		availableTags: data.availableTags ?? [],
+		availableCategories: data.availableCategories ?? [],
+		availableAttractions: data.availableAttractions ?? [],
+		availableDestinations: data.availableDestinations ?? [],
+		availableDistributives: data.availableDistributives ?? [],
+		breadcrumbs: data.breadcrumbs
+	});
 </script>
 
 <svelte:head>
@@ -18,4 +29,4 @@
 
 <LocationBar title="Nueva Actividad" breadcrumbs={data.breadcrumbs} />
 
-<ActivityForm {data} mode="create" />
+<ActivityForm data={formData} mode="create" />

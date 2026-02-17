@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import { ROUTES } from '$lib/config/routes';
-
 	type Props = {
 		title?: string;
 	};

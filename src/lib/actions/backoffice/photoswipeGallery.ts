@@ -26,13 +26,13 @@ import { browser } from '$app/environment';
 import type PhotoSwipeLightbox from 'photoswipe/lightbox';
 import { photoSwipeDefaults } from '$lib/config/components';
 
-export interface PhotoswipeGalleryOptions {
+export type PhotoswipeGalleryOptions = {
 	children?: string;
 	showHideAnimationType?: 'fade' | 'zoom' | 'none';
 	bgOpacity?: number;
 	wheelToZoom?: boolean;
 	[key: string]: unknown;
-}
+};
 
 export function photoswipeGallery(node: HTMLElement, options?: PhotoswipeGalleryOptions) {
 	if (!browser) {

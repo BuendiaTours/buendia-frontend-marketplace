@@ -2,10 +2,10 @@ import type { Cookies } from '@sveltejs/kit';
 
 export type FlashMessageType = 'info' | 'warning' | 'error' | 'success';
 
-export interface FlashMessage {
+export type FlashMessage = {
 	type: FlashMessageType;
 	message: string;
-}
+};
 
 const FLASH_COOKIE_NAME = 'flash_message';
 const COOKIE_OPTIONS = {

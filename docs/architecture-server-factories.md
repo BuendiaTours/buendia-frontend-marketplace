@@ -19,6 +19,7 @@ El proyecto implementa un patrón de **factory functions** para las operaciones 
 **Ubicación:** `src/lib/server/createLoad.ts`
 
 **Responsabilidades:**
+
 - Generar UUID único en servidor (seguridad)
 - Cargar listas disponibles (tags, categories, destinations, etc.)
 - Inicializar formulario con valores por defecto
@@ -35,20 +36,20 @@ import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = createCreateLoad({
-  schema: zod(activityFormSchema),
-  initialValues: {
-    title: '',
-    slug: '',
-    status: 'DRAFT',
-    categories: [],
-    tags: []
-  },
-  loadAvailableData: async (fetch) => ({
-    availableTags: await fetch(`${apiConfig.baseURL}/tags`).then(r => r.json()),
-    availableCategories: await api.categories.getAll(fetch)
-  }),
-  breadcrumbLabel: 'Nueva actividad',
-  entityName: 'actividad'
+	schema: zod(activityFormSchema),
+	initialValues: {
+		title: '',
+		slug: '',
+		status: 'DRAFT',
+		categories: [],
+		tags: []
+	},
+	loadAvailableData: async (fetch) => ({
+		availableTags: await fetch(`${apiConfig.baseURL}/tags`).then((r) => r.json()),
+		availableCategories: await api.categories.getAll(fetch)
+	}),
+	breadcrumbLabel: 'Nueva actividad',
+	entityName: 'actividad'
 });
 ```
 
@@ -56,11 +57,11 @@ export const load: PageServerLoad = createCreateLoad({
 
 ```typescript
 interface CreateLoadConfig {
-  schema: any;                    // Schema de validación (Zod)
-  initialValues: Record<string, any>;  // Valores iniciales (sin UUID)
-  loadAvailableData?: (fetch) => Promise<Record<string, any>>;  // Opcional
-  breadcrumbLabel: string;        // Para breadcrumbs
-  entityName: string;             // Para mensajes de error
+	schema: any; // Schema de validación (Zod)
+	initialValues: Record<string, any>; // Valores iniciales (sin UUID)
+	loadAvailableData?: (fetch) => Promise<Record<string, any>>; // Opcional
+	breadcrumbLabel: string; // Para breadcrumbs
+	entityName: string; // Para mensajes de error
 }
 ```
 
@@ -81,6 +82,7 @@ interface CreateLoadConfig {
 **Ubicación:** `src/lib/server/createAction.ts`
 
 **Responsabilidades:**
+
 - Validar formulario con schema
 - Llamar a la API para crear el recurso
 - Manejo de errores con mensajes personalizados por código HTTP
@@ -94,13 +96,13 @@ interface CreateLoadConfig {
 import { createCreateAction } from '$lib/server/createAction';
 
 export const actions: Actions = {
-  default: createCreateAction({
-    basePath: '/activities',
-    schema: zod(activityFormSchema),
-    createFn: api.activities.create,
-    entityName: 'actividad',
-    redirectToEdit: true
-  })
+	default: createCreateAction({
+		basePath: '/activities',
+		schema: zod(activityFormSchema),
+		createFn: api.activities.create,
+		entityName: 'actividad',
+		redirectToEdit: true
+	})
 };
 ```
 
@@ -108,39 +110,40 @@ export const actions: Actions = {
 
 ```typescript
 interface CreateActionConfig {
-  basePath: string;               // Ruta base (ej: '/activities')
-  schema: any;                    // Schema de validación (Zod)
-  createFn: (fetch, data) => Promise<any>;  // Función de creación
-  entityName: string;             // Para mensajes (ej: 'actividad')
-  transformData?: (data) => any;  // Transformación opcional
-  redirectToEdit?: boolean;       // true = /edit, false = /detalle
+	basePath: string; // Ruta base (ej: '/activities')
+	schema: any; // Schema de validación (Zod)
+	createFn: (fetch, data) => Promise<any>; // Función de creación
+	entityName: string; // Para mensajes (ej: 'actividad')
+	transformData?: (data) => any; // Transformación opcional
+	redirectToEdit?: boolean; // true = /edit, false = /detalle
 }
 ```
 
 **Manejo de errores HTTP:**
 
-| Código | Mensaje |
-|--------|---------|
-| 400 | Los datos enviados no son válidos |
-| 401 | Debes iniciar sesión para crear {entityName}s |
-| 403 | No tienes permisos para crear {entityName}s |
-| 404 | Endpoint de creación no encontrado en la API |
-| 409 | Ya existe un/una {entityName} con este slug |
-| 422 | Los datos no cumplen con los requisitos del servidor |
-| 500 | Error del servidor. Por favor, inténtalo más tarde |
-| 503 | El servicio no está disponible |
+| Código | Mensaje                                              |
+| ------ | ---------------------------------------------------- |
+| 400    | Los datos enviados no son válidos                    |
+| 401    | Debes iniciar sesión para crear {entityName}s        |
+| 403    | No tienes permisos para crear {entityName}s          |
+| 404    | Endpoint de creación no encontrado en la API         |
+| 409    | Ya existe un/una {entityName} con este slug          |
+| 422    | Los datos no cumplen con los requisitos del servidor |
+| 500    | Error del servidor. Por favor, inténtalo más tarde   |
+| 503    | El servicio no está disponible                       |
 
 **Flash messages:**
+
 - **Cookies:** Para mostrar después de redirect
 - **Alert inmediato:** Incluido en `fail()` para mostrar sin recargar
 
 ```typescript
 return fail(400, {
-  form,
-  alert: {
-    type: 'error',
-    message: errorMessage
-  }
+	form,
+	alert: {
+		type: 'error',
+		message: errorMessage
+	}
 });
 ```
 
@@ -151,6 +154,7 @@ return fail(400, {
 **Ubicación:** `src/lib/server/updateAction.ts`
 
 **Responsabilidades:**
+
 - Validar formulario
 - Actualizar recurso en la API
 - Manejo de errores consistente
@@ -164,12 +168,12 @@ return fail(400, {
 import { createUpdateAction } from '$lib/server/updateAction';
 
 export const actions: Actions = {
-  default: createUpdateAction({
-    basePath: '/activities',
-    schema: zod(activityFormSchema),
-    updateFn: api.activities.update,
-    redirectToEdit: true
-  })
+	default: createUpdateAction({
+		basePath: '/activities',
+		schema: zod(activityFormSchema),
+		updateFn: api.activities.update,
+		redirectToEdit: true
+	})
 };
 ```
 
@@ -177,11 +181,11 @@ export const actions: Actions = {
 
 ```typescript
 interface UpdateActionConfig {
-  basePath: string;               // Ruta base
-  schema: any;                    // Schema de validación
-  updateFn: (fetch, slug, data) => Promise<any>;  // Función de actualización
-  transformData?: (data) => any;  // Transformación opcional
-  redirectToEdit?: boolean;       // true = /edit, false = /detalle
+	basePath: string; // Ruta base
+	schema: any; // Schema de validación
+	updateFn: (fetch, slug, data) => Promise<any>; // Función de actualización
+	transformData?: (data) => any; // Transformación opcional
+	redirectToEdit?: boolean; // true = /edit, false = /detalle
 }
 ```
 
@@ -192,6 +196,7 @@ interface UpdateActionConfig {
 **Ubicación:** `src/lib/server/deleteAction.ts`
 
 **Responsabilidades:**
+
 - Eliminar recurso en la API
 - Manejo de errores (incluyendo 409 para dependencias)
 - Flash messages
@@ -204,10 +209,10 @@ interface UpdateActionConfig {
 import { createDeleteAction } from '$lib/server/deleteAction';
 
 export const actions: Actions = {
-  default: createDeleteAction({
-    basePath: '/activities',
-    deleteFn: api.activities.delete
-  })
+	default: createDeleteAction({
+		basePath: '/activities',
+		deleteFn: api.activities.delete
+	})
 };
 ```
 
@@ -215,12 +220,13 @@ export const actions: Actions = {
 
 ```typescript
 interface DeleteActionConfig {
-  basePath: string;               // Ruta base para redirección
-  deleteFn: (fetch, slug) => Promise<void>;  // Función de eliminación
+	basePath: string; // Ruta base para redirección
+	deleteFn: (fetch, slug) => Promise<void>; // Función de eliminación
 }
 ```
 
 **Características especiales:**
+
 - Preserva query params al redirigir al listado
 - Maneja error 409 (elemento con dependencias)
 - Redirección al referer si falla
@@ -237,8 +243,8 @@ El sistema implementa **dos mecanismos complementarios** para mostrar mensajes:
 
 ```typescript
 setFlashMessage(cookies, {
-  type: 'success',
-  message: 'Actividad creada correctamente.'
+	type: 'success',
+	message: 'Actividad creada correctamente.'
 });
 ```
 
@@ -251,11 +257,11 @@ setFlashMessage(cookies, {
 
 ```typescript
 return fail(400, {
-  form,
-  alert: {
-    type: 'error',
-    message: 'Por favor, corrige los errores del formulario.'
-  }
+	form,
+	alert: {
+		type: 'error',
+		message: 'Por favor, corrige los errores del formulario.'
+	}
 });
 ```
 
@@ -271,7 +277,7 @@ Lee de ambas fuentes automáticamente:
 
 ```svelte
 const alert = $derived(
-  (page.form?.alert as AlertMessage | undefined) || 
+  (page.form?.alert as AlertMessage | undefined) ||
   (page.data?.alert as AlertMessage | undefined)
 );
 
@@ -325,34 +331,36 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 ```svelte
 <!-- ActivityForm.svelte -->
 <script lang="ts">
-  interface Props {
-    data: PageData;
-    mode: 'create' | 'edit';
-  }
-  
-  let { data, mode }: Props = $props();
-  
-  const isEditMode = $derived(mode === 'edit');
-  const activitySlug = $derived(isEditMode ? data.activity?.slug : undefined);
+	interface Props {
+		data: PageData;
+		mode: 'create' | 'edit';
+	}
+
+	let { data, mode }: Props = $props();
+
+	const isEditMode = $derived(mode === 'edit');
+	const activitySlug = $derived(isEditMode ? data.activity?.slug : undefined);
 </script>
 
 <!-- Botón de borrar solo en modo edición -->
 {#if isEditMode && activitySlug}
-  <form method="POST" action="/activities/{activitySlug}/delete">
-    <button type="submit">Borrar</button>
-  </form>
+	<form method="POST" action="/activities/{activitySlug}/delete">
+		<button type="submit">Borrar</button>
+	</form>
 {/if}
 ```
 
 ### Uso en páginas
 
 **Página de creación:**
+
 ```svelte
 <!-- create/+page.svelte -->
 <ActivityForm {data} mode="create" />
 ```
 
 **Página de edición:**
+
 ```svelte
 <!-- [slug]/edit/+page.svelte -->
 <ActivityForm {data} mode="edit" />
@@ -365,11 +373,13 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 ### 1. Activities (Actividades)
 
 **Rutas:**
+
 - `/activities/create` - Crear nueva actividad
 - `/activities/[slug]/edit` - Editar actividad
 - `/activities/[slug]/delete` - Eliminar actividad
 
 **Datos disponibles cargados:**
+
 - `availableTags`
 - `availableCategories`
 - `availableAttractions`
@@ -377,6 +387,7 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 - `availableDistributives`
 
 **Valores iniciales:**
+
 ```typescript
 {
   title: '',
@@ -405,11 +416,13 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 ### 2. Destinations (Destinos)
 
 **Rutas:**
+
 - `/destinations/create` - Crear nuevo destino
 - `/destinations/[slug]/edit` - Editar destino
 - `/destinations/[slug]/delete` - Eliminar destino
 
 **Valores iniciales:**
+
 ```typescript
 {
   name: '',
@@ -423,14 +436,17 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 ### 3. Attractions (Atracciones)
 
 **Rutas:**
+
 - `/attractions/create` - Crear nueva atracción
 - `/attractions/[slug]/edit` - Editar atracción
 - `/attractions/[slug]/delete` - Eliminar atracción
 
 **Datos disponibles cargados:**
+
 - `availableDestinations`
 
 **Valores iniciales:**
+
 ```typescript
 {
   name: '',
@@ -451,26 +467,31 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 ## Ventajas del sistema
 
 ### 1. DRY (Don't Repeat Yourself)
+
 - Código de creación reducido de ~200 líneas a ~80 líneas
 - Lógica de manejo de errores centralizada
 - Validación consistente en todas las entidades
 
 ### 2. Mantenibilidad
+
 - Cambios en manejo de errores se aplican a todas las entidades
 - Fácil añadir nuevas entidades (copiar y adaptar config)
 - Código más legible y autodocumentado
 
 ### 3. Consistencia
+
 - Mensajes de error estandarizados
 - Flash messages funcionan igual en todas partes
 - Mismo flujo de usuario en todas las entidades
 
 ### 4. Seguridad
+
 - UUID generado en servidor (no en cliente)
 - Validación centralizada con Zod
 - Manejo consistente de errores de autenticación/autorización
 
 ### 5. UX mejorada
+
 - Mensajes flash aparecen inmediatamente (sin recargar)
 - Mensajes de error claros y específicos por código HTTP
 - Redirección automática después de crear/actualizar
@@ -486,11 +507,11 @@ Los formularios se reutilizan entre creación y edición mediante una prop `mode
 import { z } from 'zod';
 
 export const productFormSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1, 'El nombre es obligatorio'),
-  slug: z.string().min(1, 'El slug es obligatorio'),
-  price: z.number().min(0),
-  categories: z.array(z.string())
+	id: z.string().uuid(),
+	name: z.string().min(1, 'El nombre es obligatorio'),
+	slug: z.string().min(1, 'El slug es obligatorio'),
+	price: z.number().min(0),
+	categories: z.array(z.string())
 });
 ```
 
@@ -505,43 +526,43 @@ import { api } from '$lib/api/index';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load = createCreateLoad({
-  schema: zod(productFormSchema),
-  initialValues: {
-    name: '',
-    slug: '',
-    price: 0,
-    categories: []
-  },
-  loadAvailableData: async (fetch) => ({
-    availableCategories: await api.categories.getAll(fetch)
-  }),
-  breadcrumbLabel: 'Nuevo producto',
-  entityName: 'producto'
+	schema: zod(productFormSchema),
+	initialValues: {
+		name: '',
+		slug: '',
+		price: 0,
+		categories: []
+	},
+	loadAvailableData: async (fetch) => ({
+		availableCategories: await api.categories.getAll(fetch)
+	}),
+	breadcrumbLabel: 'Nuevo producto',
+	entityName: 'producto'
 });
 
 export const actions = {
-  default: createCreateAction({
-    basePath: '/products',
-    schema: zod(productFormSchema),
-    createFn: api.products.create,
-    entityName: 'producto',
-    redirectToEdit: true
-  })
+	default: createCreateAction({
+		basePath: '/products',
+		schema: zod(productFormSchema),
+		createFn: api.products.create,
+		entityName: 'producto',
+		redirectToEdit: true
+	})
 };
 ```
 
 ```svelte
 <!-- src/routes/(backoffice)/products/create/+page.svelte -->
 <script lang="ts">
-  import type { PageData } from './$types';
-  import ProductForm from '../components/ProductForm.svelte';
-  import LocationBar from '$lib/layout/partials/LocationBar.svelte';
+	import type { PageData } from './$types';
+	import ProductForm from '../components/ProductForm.svelte';
+	import LocationBar from '$lib/layout/partials/LocationBar.svelte';
 
-  let { data }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 </script>
 
 <svelte:head>
-  <title>Nuevo Producto - Backoffice</title>
+	<title>Nuevo Producto - Backoffice</title>
 </svelte:head>
 
 <LocationBar title="Nuevo Producto" breadcrumbs={data.breadcrumbs} />
@@ -554,34 +575,34 @@ export const actions = {
 ```svelte
 <!-- src/routes/(backoffice)/products/components/ProductForm.svelte -->
 <script lang="ts">
-  import type { PageData } from '../$types';
-  import { superForm } from 'sveltekit-superforms';
-  import { zodClient } from 'sveltekit-superforms/adapters';
-  import { productFormSchema } from '../product-form.schema';
-  
-  interface Props {
-    data: PageData;
-    mode: 'create' | 'edit';
-  }
-  
-  let { data, mode }: Props = $props();
-  
-  const isEditMode = $derived(mode === 'edit');
-  const productSlug = $derived(isEditMode ? data.product?.slug : undefined);
-  
-  const { form, errors, enhance } = superForm(data.form, {
-    validators: zodClient(productFormSchema)
-  });
+	import type { PageData } from '../$types';
+	import { superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { productFormSchema } from '../product-form.schema';
+
+	interface Props {
+		data: PageData;
+		mode: 'create' | 'edit';
+	}
+
+	let { data, mode }: Props = $props();
+
+	const isEditMode = $derived(mode === 'edit');
+	const productSlug = $derived(isEditMode ? data.product?.slug : undefined);
+
+	const { form, errors, enhance } = superForm(data.form, {
+		validators: zodClient(productFormSchema)
+	});
 </script>
 
 <form method="POST" use:enhance>
-  <!-- Campos del formulario -->
-  
-  {#if isEditMode && productSlug}
-    <form method="POST" action="/products/{productSlug}/delete">
-      <button type="submit">Borrar</button>
-    </form>
-  {/if}
+	<!-- Campos del formulario -->
+
+	{#if isEditMode && productSlug}
+		<form method="POST" action="/products/{productSlug}/delete">
+			<button type="submit">Borrar</button>
+		</form>
+	{/if}
 </form>
 ```
 
@@ -592,12 +613,12 @@ export const actions = {
 import { createUpdateAction } from '$lib/server/updateAction';
 
 export const actions = {
-  default: createUpdateAction({
-    basePath: '/products',
-    schema: zod(productFormSchema),
-    updateFn: api.products.update,
-    redirectToEdit: true
-  })
+	default: createUpdateAction({
+		basePath: '/products',
+		schema: zod(productFormSchema),
+		updateFn: api.products.update,
+		redirectToEdit: true
+	})
 };
 ```
 
@@ -606,10 +627,10 @@ export const actions = {
 import { createDeleteAction } from '$lib/server/deleteAction';
 
 export const actions = {
-  default: createDeleteAction({
-    basePath: '/products',
-    deleteFn: api.products.delete
-  })
+	default: createDeleteAction({
+		basePath: '/products',
+		deleteFn: api.products.delete
+	})
 };
 ```
 
@@ -618,22 +639,27 @@ export const actions = {
 ## Mejoras futuras
 
 ### 1. Tipado más estricto
+
 - Usar generics para tipar mejor los factories
 - Inferir tipos de retorno automáticamente
 
 ### 2. Validación en servidor
+
 - Añadir validación adicional en factories
 - Sanitización de datos antes de enviar a API
 
 ### 3. Optimistic UI
+
 - Actualizar UI antes de confirmar con servidor
 - Revertir cambios si falla
 
 ### 4. Batch operations
+
 - Crear/actualizar múltiples recursos a la vez
 - Manejo de errores parciales
 
 ### 5. Audit log
+
 - Registrar todas las operaciones CRUD
 - Tracking de cambios para auditoría
 

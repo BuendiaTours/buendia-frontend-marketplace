@@ -1,4 +1,4 @@
-<!-- 
+<!--
 AlertDialog global con Melt-UI
 https://melt-ui.com/docs/builders/dialog
 
@@ -33,7 +33,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 	});
 
 	const {
-		elements: { trigger, overlay, content, title, description, close, portalled },
+		elements: { overlay, content, title, description, close, portalled },
 		states: { open }
 	} = createDialog({
 		role: 'alertdialog',
@@ -100,7 +100,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 	<div use:melt={$portalled}>
 		<div
 			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
+			class="fixed inset-0 z-50 bg-(--default-overlay-bg)"
 			transition:fade={{ duration: 150 }}
 		></div>
 		<div

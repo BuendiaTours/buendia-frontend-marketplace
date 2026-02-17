@@ -272,11 +272,11 @@
 				<div>
 					<h3 class="text-h3 mb-3">With Custom Colors</h3>
 					<pre class="rounded-lg bg-neutral-900 p-4 text-white"><code
-							>{`<StarRating 
-  value={4.2} 
+							>{`<StarRating
+  value={4.2}
   size="md"
-  filledClass="text-red-500" 
-  emptyClass="text-red-100" 
+  filledClass="text-red-500"
+  emptyClass="text-red-100"
 />`}</code
 						></pre>
 				</div>

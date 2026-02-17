@@ -14,9 +14,9 @@
 		STAGE_KIND_OPTIONS,
 		STAGE_RELEVANCE_OPTIONS,
 		STAGE_REQUIREMENT_OPTIONS
-	} from '$lib/config/enums';
+	} from '$lib/labels/activities';
 
-	interface Stage {
+	type Stage = {
 		id: string;
 		activityId: string;
 		order: number;
@@ -30,14 +30,15 @@
 		kind: string | null;
 		relevance: string | null;
 		requirement: string | null;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		stages: Stage[];
 		activityId: string;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
 		locationBackups: Record<number, { type: 'Point'; coordinates: [number, number] } | null>;
-	}
+	};
 
 	let { stages = $bindable(), activityId, errors, locationBackups = $bindable() }: Props = $props();
 
@@ -46,12 +47,12 @@
 
 	function handleStageDragStart(event: DragEvent, index: number) {
 		draggedStageIndex = index;
-		event.dataTransfer!.effectAllowed = 'move';
+		if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
 	}
 
 	function handleStageDragOver(event: DragEvent) {
 		event.preventDefault();
-		event.dataTransfer!.dropEffect = 'move';
+		if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
 	}
 
 	function handleStageDrop(event: DragEvent, targetIndex: number) {
@@ -143,7 +144,7 @@
 		<span>Itinerario y traslados</span>
 	{/snippet}
 	{#snippet titleBarActions()}
-		<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary" onclick={handleAddStage}>
+		<button type="button" class="btn btn-outline btn-xs btn-primary ml-6" onclick={handleAddStage}>
 			Añadir etapa
 		</button>
 	{/snippet}
@@ -151,7 +152,7 @@
 		<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 	{/snippet}
 	{#snippet content()}
-		{#each stages as stage, index}
+		{#each stages as stage, index (stage.id)}
 			<FormAccordion
 				name="form-stages-{index}"
 				class="md:col-span-12"
@@ -163,7 +164,7 @@
 			>
 				{#snippet title()}
 					<div
-						class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
+						class="border-base-content/50 flex h-8 w-8 items-center justify-center rounded-full border-2"
 					>
 						{stage.order || index + 1}
 					</div>
@@ -302,7 +303,7 @@
 					<div class="flex gap-2 md:col-span-12">
 						<button
 							type="button"
-							class="btn ml-auto btn-soft btn-xs btn-error"
+							class="btn btn-soft btn-xs btn-error ml-auto"
 							onclick={() => handleRemoveStage(index)}
 						>
 							Eliminar esta etapa

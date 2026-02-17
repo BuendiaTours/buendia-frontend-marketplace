@@ -24,6 +24,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 -->
 
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { Cancel } from 'svelte-iconoir';
 
 	let {
@@ -39,7 +40,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 		class?: string;
 		removable?: boolean;
 		onremove?: () => void;
-		children?: import('svelte').Snippet;
+		children?: Snippet;
 	} = $props();
 
 	function handleRemove(e: MouseEvent) {
@@ -62,7 +63,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 		<button
 			type="button"
 			onclick={handleRemove}
-			class="btn -mr-2 btn-square h-4 min-h-4 w-4 p-0 btn-ghost btn-xs"
+			class="btn btn-square btn-ghost btn-xs -mr-2 h-4 min-h-4 w-4 p-0"
 			aria-label="Remove tag"
 		>
 			<Cancel class="h-3 w-3" />

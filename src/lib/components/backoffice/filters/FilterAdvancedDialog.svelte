@@ -30,12 +30,9 @@
 	// Verificar si hay filtros activos
 	const hasActiveFilters = $derived(Object.values(localFilters).some((value) => value));
 
-	// Contar filtros activos
-	const activeFiltersCount = $derived(Object.values(localFilters).filter((value) => value).length);
-
 	// Dialog de Melt UI
 	const {
-		elements: { trigger, overlay, content, title, description, close, portalled },
+		elements: { trigger, overlay, content, title, close, portalled },
 		states: { open }
 	} = createDialog({
 		forceVisible: true
@@ -72,7 +69,7 @@
 	<div use:melt={$portalled}>
 		<div
 			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
+			class="fixed inset-0 z-50 bg-(--default-overlay-bg)"
 			transition:fade={{ duration: 150 }}
 		></div>
 		<div
@@ -83,7 +80,7 @@
 			<h2 use:melt={$title} class="mb-4 text-lg font-semibold">Filtros avanzados</h2>
 
 			<div class="mb-6 flex flex-col gap-3">
-				{#each filters as filter}
+				{#each filters as filter (filter.key)}
 					<label class="flex cursor-pointer items-center gap-3">
 						<input type="checkbox" class="checkbox" bind:checked={localFilters[filter.key]} />
 						<span class="text-sm select-none">{filter.label}</span>

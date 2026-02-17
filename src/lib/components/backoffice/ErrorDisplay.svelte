@@ -39,21 +39,22 @@ USO COMPLETO:
 
 <script lang="ts">
 	import { WarningTriangle } from 'svelte-iconoir';
+	import type { Snippet } from 'svelte';
 
-	interface Props {
-		icon?: any;
+	type Props = {
+		icon?: Snippet;
 		title: string;
 		message: string;
-		technicalDetails?: any;
+		technicalDetails?: Record<string, unknown>;
 		showTechnicalDetails?: boolean;
-		actions?: any;
-	}
+		actions?: Snippet;
+	};
 
 	let {
 		icon,
 		title,
 		message,
-		technicalDetails = null,
+		technicalDetails,
 		showTechnicalDetails = true,
 		actions
 	}: Props = $props();
@@ -91,12 +92,8 @@ USO COMPLETO:
 	<!-- Detalles técnicos -->
 	{#if showTechnicalDetails && technicalDetails}
 		<details class="max-w-2xl text-left">
-			<summary class="cursor-pointer text-sm text-base-content/50">Detalles técnicos</summary>
-			<pre class="rounded bg-base-200 p-4 text-xs">{JSON.stringify(
-					technicalDetails,
-					null,
-					2
-				)}</pre>
+			<summary class="text-base-content/50 cursor-pointer text-sm">Detalles técnicos</summary>
+			<pre class="bg-base-200 rounded p-4 text-xs">{JSON.stringify(technicalDetails, null, 2)}</pre>
 		</details>
 	{/if}
 </div>

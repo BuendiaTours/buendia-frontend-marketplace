@@ -6,9 +6,10 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
-	import { ROUTES } from '$lib/config/routes';
+	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
+	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
 	import { DatabaseRestore } from 'svelte-iconoir';
+	import type { Destination } from '$lib/types';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
@@ -18,15 +19,15 @@
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			breadcrumbs: any[];
-			destination?: any;
+			destination?: Destination;
 		};
 		mode: 'create' | 'edit';
 		destinationSlug?: string;
-	}
+	};
 
 	let { data, mode, destinationSlug }: Props = $props();
 
@@ -42,10 +43,7 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a
-		href={`${ROUTES.backoffice.destinations.list}?${$page.url.searchParams.toString()}`}
-		class="btn btn-ghost"
-	>
+	<a href={`${DESTINATION_ROUTES.list}?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
 
@@ -53,7 +51,7 @@
 		<form
 			method="POST"
 			action={buildUrlWithFilters(
-				ROUTES.backoffice.destinations.delete(destinationSlug),
+				DESTINATION_ROUTES.delete(destinationSlug),
 				$page.url.searchParams
 			)}
 			class="ml-auto"
@@ -146,7 +144,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank">
+						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrlHero} alt="" />
 						</a>
 					{/if}

@@ -1,5 +1,7 @@
 {
 	"files.associations": {
 		"*.css": "css"
-	}
+	},
+	"css.lint.unknownAtRules": "ignore",
+	"cSpell.words": ["backoffice", "distributives", "multimedias", "paraglide", "superforms"]
 }

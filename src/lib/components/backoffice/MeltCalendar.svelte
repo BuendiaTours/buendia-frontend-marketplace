@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Componente MeltCalendar con Melt-UI y estilos DaisyUI
 https://melt-ui.com/docs/builders/calendar
 
@@ -26,7 +26,7 @@ Props disponibles:
 	let { value = $bindable(), onValueChange, class: className = '' }: Props = $props();
 
 	const {
-		elements: { calendar, heading, grid, cell, prevButton, nextButton },
+		elements: { calendar, grid, cell, prevButton, nextButton },
 		states: { months, headingValue, weekdays, value: calendarValue }
 	} = createCalendar({
 		...(value && { defaultValue: value }),
@@ -42,8 +42,8 @@ Props disponibles:
 
 	// Sincronizar value externo con el calendario
 	$effect(() => {
-		if (value !== $calendarValue) {
-			calendarValue.set(value as any);
+		if (value?.toString() !== $calendarValue?.toString()) {
+			calendarValue.set(value);
 		}
 	});
 </script>
@@ -52,7 +52,7 @@ Props disponibles:
 	<header class="flex items-center justify-between">
 		<button
 			use:melt={$prevButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowLeft />
 		</button>
@@ -61,18 +61,18 @@ Props disponibles:
 		</div>
 		<button
 			use:melt={$nextButton}
-			class="btn inline-flex size-10 items-center justify-center btn-ghost btn-sm"
+			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
 			<NavArrowRight />
 		</button>
 	</header>
 
 	<div class="flex flex-col space-y-4 pt-4">
-		{#each $months as month}
+		{#each $months as month, i (i)}
 			<table use:melt={$grid} class="border-collapse space-y-1 select-none">
 				<thead>
 					<tr class="mb-1 inline-flex justify-between">
-						{#each $weekdays as day}
+						{#each $weekdays as day, j (j)}
 							<th class="w-10 rounded-md text-xs font-normal opacity-60">
 								<div>{day.slice(0, 2)}</div>
 							</th>
@@ -80,23 +80,23 @@ Props disponibles:
 					</tr>
 				</thead>
 				<tbody>
-					{#each month.weeks as weekDates}
+					{#each month.weeks as weekDates, wi (wi)}
 						<tr class="flex w-full">
-							{#each weekDates as date}
+							{#each weekDates as date, di (di)}
 								<td class="relative size-10 p-0 text-center text-sm">
 									<button
 										use:melt={$cell(date, month.value)}
 										class={cn(
 											'group relative inline-flex size-10 cursor-pointer items-center justify-center rounded-lg border border-transparent bg-transparent p-0 text-sm font-normal whitespace-nowrap',
 											'hover:border-base-content',
-											'data-[disabled]:pointer-events-none data-[disabled]:opacity-30',
-											'data-[outside-month]:pointer-events-none',
-											'data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-content',
-											'data-[unavailable]:line-through data-[unavailable]:opacity-50'
+											'data-disabled:pointer-events-none data-disabled:opacity-30',
+											'data-outside-month:pointer-events-none',
+											'data-selected:bg-primary data-selected:text-primary-content data-selected:font-medium',
+											'data-unavailable:line-through data-unavailable:opacity-50'
 										)}
 									>
 										<div
-											class="absolute top-[5px] hidden size-1 rounded-full bg-base-content group-data-[selected]:bg-primary-content group-data-[today]:block"
+											class="bg-base-content group-data-selected:bg-primary-content absolute top-1.25 hidden size-1 rounded-full group-data-today:block"
 										></div>
 										{date.day}
 									</button>

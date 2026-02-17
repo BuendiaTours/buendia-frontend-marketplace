@@ -4,10 +4,10 @@
 	import type { PageData } from './$types';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { ROUTES } from '$lib/config/routes';
+	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
 
 	// Enums
-	import { ATTRACTION_STATUS_OPTIONS } from '$lib/config/enums';
+	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 
 	// Components
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
@@ -28,7 +28,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const { form, errors, enhance, message } = superForm(data.form, {
+	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json'
 	});
 </script>
@@ -38,17 +38,14 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a
-		href={`${ROUTES.backoffice.attractions.list}?${$page.url.searchParams.toString()}`}
-		class="link"
-	>
+	<a href={`${ATTRACTION_ROUTES.list}?${$page.url.searchParams.toString()}`} class="link">
 		← Volver al listado
 	</a>
 
 	<form
 		method="POST"
 		action={buildUrlWithFilters(
-			ROUTES.backoffice.attractions.delete(data.attraction.slug),
+			ATTRACTION_ROUTES.delete(data.attraction.slug),
 			$page.url.searchParams
 		)}
 		class="ml-auto"
@@ -138,7 +135,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrl}
-						<a href={$form.photoUrl} target="_blank">
+						<a href={$form.photoUrl} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrl} alt="" />
 						</a>
 					{/if}
@@ -158,7 +155,7 @@
 			<div class="md:col-span-4">
 				<div class="card p-4">
 					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank">
+						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
 							<img src={$form.photoUrlHero} alt="" />
 						</a>
 					{/if}

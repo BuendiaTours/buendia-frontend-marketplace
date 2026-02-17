@@ -1,27 +1,27 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de actualización/guardado
  */
-export interface UpdateActionConfig {
+export type UpdateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
 	/** Ruta base para redirección después de guardar (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Función que realiza la actualización en la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<any>;
+	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<void>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	transformData?: (formData: any) => any;
+	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
-}
+};
 
 /**
  * Crea un action handler genérico para actualizar/guardar recursos.
@@ -29,7 +29,7 @@ export interface UpdateActionConfig {
  * @example
  * ```typescript
  * import { createUpdateAction } from '$lib/server/updateAction';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  * import { activityFormSchema } from './activity-form.schema';
  * import { zod } from 'sveltekit-superforms/adapters';
  *
@@ -43,17 +43,19 @@ export interface UpdateActionConfig {
  * };
  * ```
  */
-export function createUpdateAction(config: UpdateActionConfig) {
+export function createUpdateAction<T extends Record<string, unknown>>(
+	config: UpdateActionConfig<T>
+) {
 	return async ({ request, params, fetch, cookies }: RequestEvent) => {
 		const slug = params.slug;
 		if (!slug) {
 			throw new Error('Slug parameter is required');
 		}
 
-		console.log('💾 [updateAction] Procesando guardado para:', slug);
+		logger.log('💾 [updateAction] Procesando guardado para:', slug);
 
 		const form = await superValidate(request, config.schema);
-		console.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
+		logger.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
 			console.error('💾 [updateAction] Errores de validación:', form.errors);
@@ -72,13 +74,13 @@ export function createUpdateAction(config: UpdateActionConfig) {
 		}
 
 		try {
-			console.log('💾 [updateAction] Llamando a API para actualizar...');
+			logger.log('💾 [updateAction] Llamando a API para actualizar...');
 
 			// Transformar datos si se proporciona función de transformación
 			const dataToSend = config.transformData ? config.transformData(form.data) : form.data;
 
-			const result = await config.updateFn(fetch, slug, dataToSend);
-			console.log('✅ [updateAction] API respondió exitosamente:', result);
+			await config.updateFn(fetch, slug, dataToSend);
+			logger.log('✅ [updateAction] API respondió exitosamente');
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -90,17 +92,15 @@ export function createUpdateAction(config: UpdateActionConfig) {
 				? `${config.basePath}/${slug}/edit`
 				: `${config.basePath}/${slug}`;
 
-			console.log('💾 [updateAction] Redirigiendo a:', redirectPath);
+			logger.log('💾 [updateAction] Redirigiendo a:', redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
-			console.error('❌ [updateAction] Error capturado:', err);
-			console.error('❌ [updateAction] Tipo de error:', err?.constructor?.name);
-
-			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
-			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				console.log('✅ [updateAction] Es un redirect, dejándolo pasar');
+			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje
+			if (isRedirect(err)) {
 				throw err;
 			}
+
+			console.error('❌ [updateAction] Error capturado:', err);
 
 			let errorMessage = 'Error al guardar los cambios.';
 

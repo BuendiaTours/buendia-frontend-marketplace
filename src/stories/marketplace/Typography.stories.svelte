@@ -146,7 +146,7 @@
 							<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 								<!-- Class Name -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold uppercase text-neutral-500">Class</dt>
+									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">Class</dt>
 									<dd class="font-mono text-neutral-900">
 										<code
 											class="rounded bg-neutral-100 px-2 py-1 text-sm"
@@ -161,7 +161,7 @@
 
 								<!-- Font Family -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold uppercase text-neutral-500">
+									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
 										Font Family
 									</dt>
 									<dd class="text-neutral-900">{item.fontFamily}</dd>
@@ -169,7 +169,7 @@
 
 								<!-- Font Weight -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold uppercase text-neutral-500">
+									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
 										Font Weight
 									</dt>
 									<dd class="text-neutral-900">
@@ -190,7 +190,7 @@
 
 								<!-- Font Size -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold uppercase text-neutral-500">Font Size</dt>
+									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">Font Size</dt>
 									<dd class="text-neutral-900">
 										{item.fontSize}
 										<span class="text-neutral-500">({item.fontSizePx})</span>
@@ -199,7 +199,7 @@
 
 								<!-- Line Height -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold uppercase text-neutral-500">
+									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
 										Line Height
 									</dt>
 									<dd class="text-neutral-900">

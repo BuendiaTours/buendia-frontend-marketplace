@@ -25,16 +25,16 @@ src/paraglide/messages/           # Generado automáticamente por Paraglide
 import * as m from '$paraglide/messages';
 
 export const STAGE_KINDS_OPTIONS = [
-  {
-    id: 'TRANSFER',
-    name: m.enums_stageKinds_transfer_name(),
-    description: m.enums_stageKinds_transfer_description()
-  },
-  {
-    id: 'EXPERIENCE',
-    name: m.enums_stageKinds_experience_name(),
-    description: m.enums_stageKinds_experience_description()
-  }
+	{
+		id: 'TRANSFER',
+		name: m.enums_stageKinds_transfer_name(),
+		description: m.enums_stageKinds_transfer_description()
+	},
+	{
+		id: 'EXPERIENCE',
+		name: m.enums_stageKinds_experience_name(),
+		description: m.enums_stageKinds_experience_description()
+	}
 ];
 ```
 
@@ -44,10 +44,10 @@ export const STAGE_KINDS_OPTIONS = [
 
 ```json
 {
-  "enums_stageKinds_transfer_name": "Transfer",
-  "enums_stageKinds_transfer_description": "Movimiento entre puntos (bus, tren, coche, barco, etc.)",
-  "enums_stageKinds_experience_name": "Experiencia",
-  "enums_stageKinds_experience_description": "Experiencia (visita, comida, show, concierto, etc.)"
+	"enums_stageKinds_transfer_name": "Transfer",
+	"enums_stageKinds_transfer_description": "Movimiento entre puntos (bus, tren, coche, barco, etc.)",
+	"enums_stageKinds_experience_name": "Experiencia",
+	"enums_stageKinds_experience_description": "Experiencia (visita, comida, show, concierto, etc.)"
 }
 ```
 
@@ -55,10 +55,10 @@ export const STAGE_KINDS_OPTIONS = [
 
 ```json
 {
-  "enums_stageKinds_transfer_name": "Transfer",
-  "enums_stageKinds_transfer_description": "Movement between points (bus, train, car, boat, etc.)",
-  "enums_stageKinds_experience_name": "Experience",
-  "enums_stageKinds_experience_description": "Experience (visit, meal, show, concert, etc.)"
+	"enums_stageKinds_transfer_name": "Transfer",
+	"enums_stageKinds_transfer_description": "Movement between points (bus, train, car, boat, etc.)",
+	"enums_stageKinds_experience_name": "Experience",
+	"enums_stageKinds_experience_description": "Experience (visit, meal, show, concert, etc.)"
 }
 ```
 
@@ -95,31 +95,31 @@ enums_{enumName}_{value}_{field}
 import * as m from '$paraglide/messages';
 
 export const NOT_SUITABLE_FOR_OPTIONS = [
-  {
-    id: 'ADULTS',
-    name: m.enums_notSuitableFor_adults_name(),
-    description: m.enums_notSuitableFor_adults_description()
-  },
-  {
-    id: 'CHILDREN',
-    name: m.enums_notSuitableFor_children_name(),
-    description: m.enums_notSuitableFor_children_description()
-  },
-  {
-    id: 'FAMILIES',
-    name: m.enums_notSuitableFor_families_name(),
-    description: m.enums_notSuitableFor_families_description()
-  },
-  {
-    id: 'GROUPS',
-    name: m.enums_notSuitableFor_groups_name(),
-    description: m.enums_notSuitableFor_groups_description()
-  },
-  {
-    id: 'INDIVIDUALS',
-    name: m.enums_notSuitableFor_individuals_name(),
-    description: m.enums_notSuitableFor_individuals_description()
-  }
+	{
+		id: 'ADULTS',
+		name: m.enums_notSuitableFor_adults_name(),
+		description: m.enums_notSuitableFor_adults_description()
+	},
+	{
+		id: 'CHILDREN',
+		name: m.enums_notSuitableFor_children_name(),
+		description: m.enums_notSuitableFor_children_description()
+	},
+	{
+		id: 'FAMILIES',
+		name: m.enums_notSuitableFor_families_name(),
+		description: m.enums_notSuitableFor_families_description()
+	},
+	{
+		id: 'GROUPS',
+		name: m.enums_notSuitableFor_groups_name(),
+		description: m.enums_notSuitableFor_groups_description()
+	},
+	{
+		id: 'INDIVIDUALS',
+		name: m.enums_notSuitableFor_individuals_name(),
+		description: m.enums_notSuitableFor_individuals_description()
+	}
 ];
 ```
 
@@ -127,16 +127,16 @@ export const NOT_SUITABLE_FOR_OPTIONS = [
 
 ```json
 {
-  "enums_notSuitableFor_adults_name": "Adultos",
-  "enums_notSuitableFor_adults_description": "No recomendado para adultos",
-  "enums_notSuitableFor_children_name": "Niños",
-  "enums_notSuitableFor_children_description": "No recomendado para niños",
-  "enums_notSuitableFor_families_name": "Familias",
-  "enums_notSuitableFor_families_description": "No recomendado para familias",
-  "enums_notSuitableFor_groups_name": "Grupos",
-  "enums_notSuitableFor_groups_description": "No recomendado para grupos",
-  "enums_notSuitableFor_individuals_name": "Individuales",
-  "enums_notSuitableFor_individuals_description": "No recomendado para personas individuales"
+	"enums_notSuitableFor_adults_name": "Adultos",
+	"enums_notSuitableFor_adults_description": "No recomendado para adultos",
+	"enums_notSuitableFor_children_name": "Niños",
+	"enums_notSuitableFor_children_description": "No recomendado para niños",
+	"enums_notSuitableFor_families_name": "Familias",
+	"enums_notSuitableFor_families_description": "No recomendado para familias",
+	"enums_notSuitableFor_groups_name": "Grupos",
+	"enums_notSuitableFor_groups_description": "No recomendado para grupos",
+	"enums_notSuitableFor_individuals_name": "Individuales",
+	"enums_notSuitableFor_individuals_description": "No recomendado para personas individuales"
 }
 ```
 
@@ -144,16 +144,16 @@ export const NOT_SUITABLE_FOR_OPTIONS = [
 
 ```json
 {
-  "enums_notSuitableFor_adults_name": "Adults",
-  "enums_notSuitableFor_adults_description": "Not recommended for adults",
-  "enums_notSuitableFor_children_name": "Children",
-  "enums_notSuitableFor_children_description": "Not recommended for children",
-  "enums_notSuitableFor_families_name": "Families",
-  "enums_notSuitableFor_families_description": "Not recommended for families",
-  "enums_notSuitableFor_groups_name": "Groups",
-  "enums_notSuitableFor_groups_description": "Not recommended for groups",
-  "enums_notSuitableFor_individuals_name": "Individuals",
-  "enums_notSuitableFor_individuals_description": "Not recommended for individuals"
+	"enums_notSuitableFor_adults_name": "Adults",
+	"enums_notSuitableFor_adults_description": "Not recommended for adults",
+	"enums_notSuitableFor_children_name": "Children",
+	"enums_notSuitableFor_children_description": "Not recommended for children",
+	"enums_notSuitableFor_families_name": "Families",
+	"enums_notSuitableFor_families_description": "Not recommended for families",
+	"enums_notSuitableFor_groups_name": "Groups",
+	"enums_notSuitableFor_groups_description": "Not recommended for groups",
+	"enums_notSuitableFor_individuals_name": "Individuals",
+	"enums_notSuitableFor_individuals_description": "Not recommended for individuals"
 }
 ```
 
@@ -163,16 +163,16 @@ Los enums internacionalizados se usan exactamente igual que antes:
 
 ```svelte
 <script lang="ts">
-  import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/config/enums';
-  import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
+	import { NOT_SUITABLE_FOR_OPTIONS } from '$lib/config/enums';
+	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
 </script>
 
 <FormCheckboxGroup
-  id="notSuitableFor"
-  label="No recomendado para"
-  bind:value={$form.notSuitableFor}
-  options={NOT_SUITABLE_FOR_OPTIONS}
-  error={$errors.notSuitableFor?._errors}
+	id="notSuitableFor"
+	label="No recomendado para"
+	bind:value={$form.notSuitableFor}
+	options={NOT_SUITABLE_FOR_OPTIONS}
+	error={$errors.notSuitableFor?._errors}
 />
 ```
 
@@ -206,11 +206,13 @@ console.log(NOT_SUITABLE_FOR_OPTIONS[0].name); // "Adults" en lugar de "Adultos"
 ### Enums desde API (`src/lib/generated/enums.ts`)
 
 **Pros:**
+
 - Sincronizados con el backend
 - Generados automáticamente
 - Incluyen descripciones del servidor
 
 **Contras:**
+
 - Las traducciones vienen del backend
 - Requiere que el backend soporte i18n
 - Menos control sobre las traducciones
@@ -218,12 +220,14 @@ console.log(NOT_SUITABLE_FOR_OPTIONS[0].name); // "Adults" en lugar de "Adultos"
 ### Enums Locales con Paraglide (`src/lib/config/enums.ts`)
 
 **Pros:**
+
 - Control total sobre las traducciones
 - No depende del backend para i18n
 - Integración nativa con Paraglide
 - Traducciones reactivas
 
 **Contras:**
+
 - Requiere mantenimiento manual
 - Posible desincronización con el backend
 
@@ -239,11 +243,11 @@ import * as m from '$paraglide/messages';
 import { STAGE_KINDS } from '$lib/generated/enums';
 
 export function getStageKindOptions() {
-  return STAGE_KINDS.map(kind => ({
-    id: kind,
-    name: m[`enums_stageKinds_${kind.toLowerCase()}_name`](),
-    description: m[`enums_stageKinds_${kind.toLowerCase()}_description`]()
-  }));
+	return STAGE_KINDS.map((kind) => ({
+		id: kind,
+		name: m[`enums_stageKinds_${kind.toLowerCase()}_name`](),
+		description: m[`enums_stageKinds_${kind.toLowerCase()}_description`]()
+	}));
 }
 ```
 
@@ -265,9 +269,9 @@ Los tipos se generan en `src/paraglide/messages/` automáticamente.
 
 ```json
 {
-  "baseLocale": "es",
-  "locales": ["es", "en"],
-  // ...
+	"baseLocale": "es",
+	"locales": ["es", "en"]
+	// ...
 }
 ```
 
@@ -277,10 +281,10 @@ Los tipos se generan en `src/paraglide/messages/` automáticamente.
 
 ```json
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "enums_stageKinds_transfer_name": "Transfer",
-  "enums_stageKinds_transfer_description": "Movement between points (bus, train, car, boat, etc.)",
-  // ... resto de traducciones
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"enums_stageKinds_transfer_name": "Transfer",
+	"enums_stageKinds_transfer_description": "Movement between points (bus, train, car, boat, etc.)"
+	// ... resto de traducciones
 }
 ```
 
@@ -293,6 +297,7 @@ Los tipos se generan en `src/paraglide/messages/` automáticamente.
 **Causa:** Paraglide aún no ha regenerado los tipos.
 
 **Solución:**
+
 1. Guardar `messages/es.json`
 2. Reiniciar el dev server: `npm run dev`
 3. Los tipos se generarán automáticamente
@@ -302,6 +307,7 @@ Los tipos se generan en `src/paraglide/messages/` automáticamente.
 **Causa:** El idioma activo no ha cambiado.
 
 **Solución:**
+
 ```typescript
 import { setLanguageTag } from '$paraglide/runtime';
 setLanguageTag('en');
@@ -312,6 +318,7 @@ setLanguageTag('en');
 **Causa:** La clave no existe en el archivo de mensajes del idioma activo.
 
 **Solución:**
+
 1. Añadir la clave a `messages/{locale}.json`
 2. Guardar y esperar a que Paraglide regenere los tipos
 
@@ -319,4 +326,3 @@ setLanguageTag('en');
 
 - [Paraglide Documentation](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 - [Inlang Message Format](https://inlang.com/m/reootnfj/plugin-inlang-messageFormat)
-- Sistema de enums: `docs/enums-system.md`

@@ -2,16 +2,16 @@
 	import type { BreadcrumbItem } from '$lib/types';
 	import { Home } from 'svelte-iconoir';
 
-	interface Props {
+	type Props = {
 		items: BreadcrumbItem[];
-	}
+	};
 
 	let { items }: Props = $props();
 </script>
 
 <div class="breadcrumbs text-sm">
 	<ul>
-		{#each items as item, index}
+		{#each items as item, index (index)}
 			<li>
 				{#if index === items.length - 1}
 					<span class="font-semibold">

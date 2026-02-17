@@ -1,0 +1,33 @@
+import { createCreateLoad } from '$lib/server/backoffice/createLoad';
+import { createCreateAction } from '$lib/server/backoffice/createAction';
+import { userFormSchema } from '../schemas/user-form.schema';
+import { USER_REQUEST } from '$core/users/requests';
+import { zod } from 'sveltekit-superforms/adapters';
+import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+import { UserStatus } from '$core/users/enums';
+import type { PageServerLoad, Actions } from './$types';
+import * as m from '$paraglide/messages';
+
+export const load: PageServerLoad = createCreateLoad({
+	schema: zod(userFormSchema),
+	initialValues: {
+		name: '',
+		email: '',
+		phone: '',
+		kind: undefined,
+		status: UserStatus.ACTIVE,
+		roles: []
+	},
+	breadcrumbLabel: m.users_newUser(),
+	entityName: 'usuario'
+});
+
+export const actions: Actions = {
+	default: createCreateAction({
+		basePath: `${BACKOFFICE_PREFIX}/users`,
+		schema: zod(userFormSchema),
+		createFn: USER_REQUEST.create,
+		entityName: 'usuario',
+		redirectToList: true
+	})
+};

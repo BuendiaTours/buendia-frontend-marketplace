@@ -14,8 +14,9 @@
 	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction, showConfirmDialog } from '$lib/actions/confirmAction';
-	import type { ActivityListItem } from '$lib/types';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
+	import type { Activity } from '$core/activities/types';
+	import type { ActivityListItem, BreadcrumbItem } from '$lib/types';
 
 	// Enums
 	import {
@@ -23,46 +24,48 @@
 		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS,
 		ACTIVITY_STATUS_OPTIONS,
 		ACTIVITY_KIND_OPTIONS
-	} from '$lib/config/enums';
+	} from '$lib/labels/activities';
 
 	import { DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
 
 	// Components
-	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
-	import MsgMeltToast from '$lib/components/msg/MsgMeltToast.svelte';
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
 
 	// Form layout
-	import FormAccordion from '$lib/components/forms/layout/FormAccordion.svelte';
+	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 
 	// Form
-	import FormCheckboxGroup from '$lib/components/forms/FormCheckboxGroup.svelte';
-	import FormInputSlug from '$lib/components/forms/FormInputSlug.svelte';
-	import FormInputText from '$lib/components/forms/FormInputText.svelte';
-	import FormOrderedObjectList from '$lib/components/forms/FormOrderedObjectList.svelte';
-	import FormSelect from '$lib/components/forms/FormSelect.svelte';
-	import FormTagManager from '$lib/components/forms/FormTagManager.svelte';
-	import FormTextarea from '$lib/components/forms/FormTextarea.svelte';
-	import FormTextareaMarkdown from '$lib/components/forms/FormTextareaMarkdown.svelte';
-	import FormOrderedStringList from '$lib/components/forms/FormOrderedStringList.svelte';
+	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
+	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormTagManager from '$lib/components/backoffice/forms/FormTagManager.svelte';
+	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
+	import FormOrderedStringList from '$lib/components/backoffice/forms/FormOrderedStringList.svelte';
 
 	// Section components
 	import FormActivityMealsAccordion from '../[slug]/edit/components/FormActivityMealsAccordion.svelte';
 	import FormActivityStagesAccordion from '../[slug]/edit/components/FormActivityStagesAccordion.svelte';
 
-	interface Props {
+	type Props = {
 		data: {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			availableTags: any[];
-			availableCategories: any[];
-			availableAttractions: any[];
-			availableDestinations: any[];
-			availableDistributives: any[];
-			breadcrumbs: any[];
-			activity?: ActivityListItem; // Solo en modo edit
+			availableTags: Array<{ id: string; name: string }>;
+			availableCategories: Array<{ id: string; name: string }>;
+			availableAttractions: Array<{ id: string; name: string }>;
+			availableDestinations: Array<{ id: string; name: string }>;
+			availableDistributives: Array<{ id: string; name: string }>;
+			breadcrumbs: BreadcrumbItem[];
+			/** Solo en modo edit. API devuelve Activity; ActivityListItem incluye tags para listados. */
+			activity?: Activity | ActivityListItem;
 		};
 		mode: 'create' | 'edit';
 		activitySlug?: string;
-	}
+	};
 
 	let { data, mode, activitySlug }: Props = $props();
 
@@ -70,21 +73,17 @@
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
 
-	const {
-		availableTags,
-		availableCategories,
-		availableAttractions,
-		availableDistributives,
-		breadcrumbs
-	} = data;
+	const { availableTags, availableCategories, availableAttractions, availableDistributives } =
+		$derived.by(() => data);
 
 	// En modo edit tenemos activity, en create no
-	const activity = $derived(isEditMode ? (data as any).activity : null);
+	const activity = $derived(isEditMode ? data.activity : null);
 
 	// Referencia al componente toast para mostrar notificaciones
 	let toastComponent: MsgMeltToast;
 
-	const { form, errors, enhance, message } = superForm(data.form, {
+	// svelte-ignore state_referenced_locally
+	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json',
 		onUpdate({ form }) {
 			// Se ejecuta después de la validación pero antes del envío

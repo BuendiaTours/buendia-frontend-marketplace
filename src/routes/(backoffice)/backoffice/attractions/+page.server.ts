@@ -1,7 +1,10 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { attractionsFiltersSchema } from './filters.schema';
-import { api, ApiError } from '$lib/api/index';
+import { attractionsFiltersSchema } from './schemas/filters.schema';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import type { AttractionCriteria } from '$core/attractions/types';
+import { ApiError } from '$core/_shared/errors';
+import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
 
@@ -12,21 +15,18 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const response = await api.attractions.getAll(fetch, {
+		const response = await ATTRACTION_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			q: filters.q,
-			status: filters.status,
-			wheelchairAccessible: filters.wheelchairAccessible,
-			breakfastIncluded: filters.breakfastIncluded,
-			kidsFreeTour: filters.kidsFreeTour
-		});
+			query: filters.q,
+			status: filters.status
+		} as AttractionCriteria);
 
 		return {
 			items: response.data || [],
-			pagination: response.pagination || null,
+			pagination: buildPagination(response.total, filters.page, filters.pageSize),
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
 			breadcrumbs

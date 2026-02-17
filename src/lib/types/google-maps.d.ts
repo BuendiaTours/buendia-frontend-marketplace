@@ -27,30 +27,30 @@ declare namespace google.maps {
 		lng(): number;
 	}
 
-	export interface LatLngLiteral {
+	export type LatLngLiteral = {
 		lat: number;
 		lng: number;
-	}
+	};
 
-	export interface MapOptions {
+	export type MapOptions = {
 		center?: LatLng | LatLngLiteral;
 		zoom?: number;
 		mapTypeControl?: boolean;
 		streetViewControl?: boolean;
 		fullscreenControl?: boolean;
 		mapId?: string;
-	}
+	};
 
-	export interface MarkerOptions {
+	export type MarkerOptions = {
 		position?: LatLng | LatLngLiteral;
 		map?: Map;
 		draggable?: boolean;
 		title?: string;
-	}
+	};
 
-	export interface MapMouseEvent {
+	export type MapMouseEvent = {
 		latLng: LatLng | null;
-	}
+	};
 
 	export namespace marker {
 		export class AdvancedMarkerElement {
@@ -60,11 +60,11 @@ declare namespace google.maps {
 			addListener(eventName: string, handler: Function): void;
 		}
 
-		export interface AdvancedMarkerElementOptions {
+		export type AdvancedMarkerElementOptions = {
 			map?: Map;
 			position?: LatLng | LatLngLiteral;
 			title?: string;
-		}
+		};
 	}
 
 	export namespace places {
@@ -75,24 +75,24 @@ declare namespace google.maps {
 			): Promise<GeocoderResponse>;
 		}
 
-		export interface GeocoderRequest {
+		export type GeocoderRequest = {
 			address?: string;
 			location?: LatLng | LatLngLiteral;
 			placeId?: string;
 			region?: string;
-		}
+		};
 
-		export interface GeocoderResponse {
+		export type GeocoderResponse = {
 			results: GeocoderResult[];
-		}
+		};
 
-		export interface GeocoderResult {
+		export type GeocoderResult = {
 			geometry: {
 				location: LatLng;
 			};
 			formatted_address: string;
 			place_id: string;
-		}
+		};
 
 		export enum GeocoderStatus {
 			OK = 'OK',

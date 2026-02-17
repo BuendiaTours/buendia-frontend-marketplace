@@ -14,17 +14,17 @@
 
 <!--
 	PhotoGallery - Marketplace
-	
+
 	Componente de galería de imágenes con lightbox PhotoSwipe
 	para la parte pública del marketplace.
-	
+
 	@param images - Array de imágenes con src, thumb, alt, width, height
-	
+
 	@example
 	```svelte
 	<script>
 	  import PhotoGallery from '$lib/components/marketplace/PhotoGallery.svelte';
-	  
+
 	  const images = [
 	    {
 	      src: '/images/activity-1-large.jpg',
@@ -35,19 +35,19 @@
 	    }
 	  ];
 	</script>
-	
+
 	<PhotoGallery {images} />
 	```
 -->
 
 <div class="gallery-grid" use:photoswipeGallery>
-	{#each images as image}
+	{#each images as image (image.src)}
 		<a
 			href={image.src}
 			data-pswp-width={image.width}
 			data-pswp-height={image.height}
 			target="_blank"
-			rel="noreferrer"
+			rel="noopener noreferrer"
 			class="gallery-item"
 		>
 			<img src={image.thumb} alt={image.alt} class="gallery-image" />

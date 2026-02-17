@@ -1,5 +1,14 @@
 // src/lib/types.ts
-import type { ActivityNotSuitableFor, DestinationKind, AttractionStatus } from '$lib/config/enums';
+import type {
+	ActivityNotSuitableFor,
+	ActivityStatus,
+	ActivityKind,
+	ActivityGuideKind,
+	ActivityTransportKind,
+	ActivityTransportLocation
+} from '$core/activities/enums';
+import type { DestinationKind } from '$core/destinations/enums';
+import type { AttractionStatus } from '$core/attractions/enums';
 
 export type ActivityListItem = {
 	id: string;
@@ -13,11 +22,11 @@ export type ActivityListItem = {
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
-	guideKind: string;
+	guideKind: ActivityGuideKind;
 	included: string[];
 	infoImportant: string | null;
 	itemsToBring: string[];
-	kind: string;
+	kind: ActivityKind;
 	meals: string[];
 	multimedias: string[];
 	notSuitableFor: Array<ActivityNotSuitableFor>;
@@ -28,18 +37,16 @@ export type ActivityListItem = {
 	phoneContact: string | null;
 	restrictions: string[];
 	stages: string[];
-	status: string;
+	status: ActivityStatus;
 	tags: Array<{ id: string; name: string }>;
-	transportKind: string;
-	transportLocation: string;
+	transportKind: ActivityTransportKind;
+	transportLocation: ActivityTransportLocation;
 	voucherInfo: string | null;
 	willDoing: string[];
 };
 
-export type ActivityListResponse = {
-	data: ActivityListItem[];
-	pagination: Pagination;
-};
+// Re-export from API shared types (canonical location)
+export type { CriteriaResult } from '$core/_shared/types';
 
 export type ActivityDetail = ActivityListItem & {
 	cancellationPolicy: string;
@@ -55,6 +62,7 @@ export type Column<T> = {
 	key: keyof T;
 	title?: string;
 	sortable?: boolean;
+	sortField?: string;
 };
 
 export type Destination = {
@@ -94,9 +102,9 @@ export type Pagination = {
 	totalPages: number;
 };
 
-export interface BreadcrumbItem {
+export type BreadcrumbItem = {
 	label: string;
 	href?: string;
-}
+};
 
 export type BreadcrumbConfig = BreadcrumbItem[];

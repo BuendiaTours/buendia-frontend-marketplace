@@ -1,24 +1,30 @@
 import { v4 as uuidv4 } from 'uuid';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
-import { ApiError } from '$lib/api/index';
+import type { SuperValidated } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
+import { ApiError } from '$core/_shared/errors';
+import { logger } from '$lib/utils/logger';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 /**
  * Configuración para crear una función load de creación
  */
-export interface CreateLoadConfig {
+export type CreateLoadConfig<
+	T extends Record<string, unknown> = Record<string, unknown>,
+	A extends Record<string, unknown> = Record<string, unknown>
+> = {
 	/** Schema de validación (adaptador de Zod) */
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Valores iniciales del formulario (sin UUID, se genera automáticamente) */
-	initialValues: Record<string, any>;
+	initialValues: Partial<T>;
 	/** Función async que carga listas disponibles (tags, categories, etc.) - Opcional */
-	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<Record<string, any>>;
+	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<A>;
 	/** Label para breadcrumbs (ej: 'Nueva actividad', 'Nueva atracción') */
 	breadcrumbLabel: string;
 	/** Nombre de la entidad para mensajes de error (ej: 'actividad', 'atracción') */
 	entityName: string;
-}
+};
 
 /**
  * Crea una función load genérica para páginas de creación.
@@ -33,7 +39,7 @@ export interface CreateLoadConfig {
  * @example
  * ```typescript
  * import { createCreateLoad } from '$lib/server/createLoad';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  * import { activityFormSchema } from './activity-form.schema';
  * import { zod } from 'sveltekit-superforms/adapters';
  *
@@ -55,12 +61,26 @@ export interface CreateLoadConfig {
  * });
  * ```
  */
-export function createCreateLoad(config: CreateLoadConfig) {
-	return async ({ fetch, url }: { fetch: typeof globalThis.fetch; url: URL }) => {
+export function createCreateLoad<
+	T extends Record<string, unknown>,
+	A extends Record<string, unknown> = Record<string, unknown>
+>(config: CreateLoadConfig<T, A>) {
+	return async ({
+		fetch,
+		url
+	}: {
+		fetch: typeof globalThis.fetch;
+		url: URL;
+	}): Promise<
+		{
+			form: SuperValidated<T>;
+			breadcrumbs: ReturnType<typeof buildBreadcrumbs>;
+		} & A
+	> => {
 		const { schema, initialValues, loadAvailableData, breadcrumbLabel, entityName } = config;
 
 		try {
-			console.log(`📦 [createLoad] Iniciando load para crear [${entityName}]`);
+			logger.log(`📦 [createLoad] Iniciando load para crear [${entityName}]`);
 
 			// 1. Generar UUID único (server-side por seguridad)
 			const dataWithUuid = {
@@ -68,19 +88,19 @@ export function createCreateLoad(config: CreateLoadConfig) {
 				...initialValues
 			};
 
-			console.log(`📦 [createLoad] UUID generado:`, dataWithUuid.id);
+			logger.log(`📦 [createLoad] UUID generado:`, dataWithUuid.id);
 
 			// 2. Cargar listas disponibles (si se proporciona la función)
-			let availableData = {};
+			let availableData = {} as A;
 			if (loadAvailableData) {
-				console.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
+				logger.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
 				availableData = await loadAvailableData(fetch);
-				console.log(`✅ [createLoad] Datos cargados:`, Object.keys(availableData));
+				logger.log(`✅ [createLoad] Datos cargados:`, Object.keys(availableData));
 			}
 
-			// 3. Inicializar formulario con valores por defecto + UUID
-			const form = await superValidate(dataWithUuid, schema);
-			console.log(`📦 [createLoad] Formulario inicializado`);
+			// 3. Inicializar formulario con valores por defecto + UUID (sin errores iniciales)
+			const form = await superValidate(dataWithUuid, schema, { errors: false });
+			logger.log(`📦 [createLoad] Formulario inicializado`);
 
 			// 4. Generar breadcrumbs
 			const breadcrumbs = buildBreadcrumbs(url.pathname, {

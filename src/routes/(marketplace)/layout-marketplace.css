@@ -1,6 +1,6 @@
 /**
  * MARKETPLACE STYLES
- * 
+ *
  * Solo Tailwind CSS - Sin DaisyUI, sin themes, sin personalizaciones del backoffice.
  * Todos los componentes del marketplace serán custom y totalmente independientes.
  */
@@ -39,8 +39,8 @@
    para forzar el uso de nuestras clases personalizadas
    ============================================ */
 
-/* Deshabilitamos estas clases en el marketplace (pero NO en Storybook) */
-html:not(.storybook) {
+/* Deshabilitamos estas clases en el marketplace (pero NO en Storybook ni en Backoffice) */
+html:not(.storybook):not(.bnd-backoffice) {
 	.text-xs,
 	.text-sm,
 	.text-base,
@@ -59,8 +59,8 @@ html:not(.storybook) {
 	}
 }
 
-/* Mensaje de advertencia en consola para desarrollo (pero NO en Storybook) */
-html:not(.storybook) {
+/* Mensaje de advertencia en consola para desarrollo (pero NO en Storybook ni en Backoffice) */
+html:not(.storybook):not(.bnd-backoffice) {
 	.text-xs::before,
 	.text-sm::before,
 	.text-base::before,

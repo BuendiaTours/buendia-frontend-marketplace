@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { NavArrowDown, NavArrowUp, ArrowSeparateVertical } from 'svelte-iconoir';
+	import { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**
 	 * Componente reutilizable para cabeceras de tabla ordenables
@@ -26,22 +27,22 @@
 	 * ```
 	 */
 
-	interface SortState {
+	type SortState = {
 		field: string | null;
-		order: 'asc' | 'desc' | null;
-	}
+		order: CriteriaSortOption | null;
+	};
 
-	interface TableSortableHeaderConfig {
+	type TableSortableHeaderConfig = {
 		allowNull: boolean;
-	}
+	};
 
-	interface Props {
+	type Props = {
 		title: string | undefined;
 		field: string;
-		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
+		currentSort?: { field: string | null; order: CriteriaSortOption | null } | null;
 		onSortChange: (newSort: SortState) => void;
 		config?: Partial<TableSortableHeaderConfig>;
-	}
+	};
 
 	const DEFAULT_CONFIG: TableSortableHeaderConfig = {
 		allowNull: true
@@ -53,16 +54,22 @@
 	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
 
 	const isActive = $derived(currentSort?.field === field);
-	const isDesc = $derived(currentSort?.order === 'desc');
+	const isDesc = $derived(currentSort?.order === CriteriaSortOption.DESC);
 
 	function handleClick() {
 		const currentOrder = currentSort?.field === field ? currentSort.order : null;
-		let newOrder: 'asc' | 'desc' | null;
+		let newOrder: CriteriaSortOption | null;
 
 		if (cfg.allowNull) {
-			newOrder = currentOrder === 'asc' ? 'desc' : currentOrder === 'desc' ? null : 'asc';
+			newOrder =
+				currentOrder === CriteriaSortOption.ASC
+					? CriteriaSortOption.DESC
+					: currentOrder === CriteriaSortOption.DESC
+						? null
+						: CriteriaSortOption.ASC;
 		} else {
-			newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+			newOrder =
+				currentOrder === CriteriaSortOption.ASC ? CriteriaSortOption.DESC : CriteriaSortOption.ASC;
 		}
 
 		onSortChange({
@@ -73,15 +80,16 @@
 </script>
 
 <div class="inline-flex gap-2">
-	<span class="cursor-pointer" onclick={handleClick} class:text-success={isActive}>{title}</span>
-		{#if isActive}
-			{#if isDesc}
-				<NavArrowDown class="size-4 text-success" />
-			{:else}
-				<NavArrowUp class="size-4 text-success" />
-			{/if}
+	<button type="button" class="cursor-pointer" onclick={handleClick} class:text-success={isActive}
+		>{title}</button
+	>
+	{#if isActive}
+		{#if isDesc}
+			<NavArrowDown class="text-success size-4" />
 		{:else}
-			<ArrowSeparateVertical class="size-4 text-base-content/30" />
+			<NavArrowUp class="text-success size-4" />
 		{/if}
+	{:else}
+		<ArrowSeparateVertical class="text-base-content/30 size-4" />
+	{/if}
 </div>
-

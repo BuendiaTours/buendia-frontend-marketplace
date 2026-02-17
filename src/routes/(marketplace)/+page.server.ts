@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
-import { error } from '@sveltejs/kit';
+import { handleApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	try {
@@ -21,7 +21,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			otherTours: otherToursResult.data
 		};
 	} catch (err) {
-		console.error('Error loading data for marketplace home:', err);
-		throw error(500, 'No se pudieron cargar los datos');
+		throw handleApiError(err, 'los datos');
 	}
 };

@@ -4,8 +4,8 @@
  * Solo métodos de LECTURA para la parte pública.
  */
 
-import { apiClient } from '../../shared/client';
-import { API_ENDPOINTS } from '../../shared/endpoints.config';
+import { apiClient } from '$core/_shared/client';
+import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 
 export type Category = {
 	id: string;

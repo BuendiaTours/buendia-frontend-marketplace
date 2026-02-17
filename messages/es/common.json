@@ -1,0 +1,17 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"common_apply": "Aplicar",
+	"common_cancel": "Cancelar",
+	"common_clear": "Limpiar",
+	"common_close": "Cerrar",
+	"common_confirm": "Confirmar",
+	"common_delete": "Eliminar",
+	"common_edit": "Editar",
+	"common_error": "Error",
+	"common_filter": "Filtrar",
+	"common_loading": "Cargando...",
+	"common_noResults": "No hay resultados",
+	"common_save": "Guardar",
+	"common_search": "Buscar",
+	"common_success": "Éxito"
+}

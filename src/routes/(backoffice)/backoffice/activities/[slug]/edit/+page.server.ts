@@ -1,6 +1,11 @@
-import { activityFormSchema } from '../../activity-form.schema';
-import { api, ApiError } from '$lib/api/index';
-import { apiConfig } from '$lib/api';
+import { activityFormSchema } from '../../schemas/activity-form.schema';
+import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import { CATEGORY_REQUEST } from '$core/categories/requests';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
+import { TAG_REQUEST } from '$core/tags/requests';
+import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -19,43 +24,41 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			destinationsResponse,
 			distributivesResponse
 		] = await Promise.all([
-			api.activities.getBySlug(fetch, params.slug),
-			fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
-			api.categories.getAll(fetch),
-			api.attractions.getAll(fetch),
-			api.destinations.getAll(fetch),
-			api.distributives.getAll(fetch)
+			ACTIVITY_REQUEST.findBySlug(fetch, params.slug),
+			TAG_REQUEST.findByCriteria(fetch),
+			CATEGORY_REQUEST.findByCriteria(fetch),
+			ATTRACTION_REQUEST.findByCriteria(fetch),
+			DESTINATION_REQUEST.findByCriteria(fetch),
+			DISTRIBUTIVE_REQUEST.findByCriteria(fetch)
 		]);
 
-		const apiData = activity as any;
-		const firstOption = apiData.options?.[0];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
+		const apiData = activity as Record<string, any>;
 
 		const form = await superValidate(
 			{
-				attractions: apiData.attractions || [],
-				categories: apiData.categories || [],
+				id: apiData.id || '',
+				title: apiData.title || '',
+				slug: apiData.slug || '',
 				codeRef: apiData.codeRef || '',
-				currency: firstOption?.pricing?.defaultPricing?.currency || 'EUR',
 				descriptionFull: apiData.descriptionFull || '',
 				descriptionShort: apiData.descriptionShort || '',
+				infoImportant: apiData.infoImportant || '',
+				phoneContact: apiData.phoneContact || '',
+				tags: apiData.tags || [],
+				categories: apiData.categories || [],
+				attractions: apiData.attractions || [],
 				destinations: apiData.destinations || [],
 				distributives: apiData.distributives || [],
-				excluded: apiData.excluded || [],
-				guideKind: apiData.guideKind || '',
-				id: apiData.id || '',
-				included: apiData.included || [],
-				infoImportant: apiData.infoImportant || '',
-				isFreeTour: false,
-				kind: apiData.kind || '',
-				location: apiData.location?.city || '',
-				meals: apiData.meals || [],
-				phoneContact: apiData.phoneContact || '',
-				priceFrom: firstOption?.pricing?.defaultPricing?.from || 0,
-				slug: apiData.slug || '',
 				stages: apiData.stages || [],
-				status: apiData.status || 'DRAFT',
-				tags: apiData.tags || [],
-				title: apiData.title || ''
+				meals: apiData.meals || [],
+				excluded: apiData.excluded || [],
+				included: apiData.included || [],
+				itemsToBring: apiData.itemsToBring || [],
+				notSuitableFor: apiData.notSuitableFor || [],
+				kind: apiData.kind || '',
+				guideKind: apiData.guideKind || '',
+				status: apiData.status || 'DRAFT'
 			},
 			zod(activityFormSchema)
 		);
@@ -67,11 +70,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		return {
 			activity,
 			form,
-			availableTags: tagsResponse,
-			availableCategories: categoriesResponse,
+			availableTags: tagsResponse.data || [],
+			availableCategories: categoriesResponse.data || [],
 			availableAttractions: attractionsResponse.data || [],
 			availableDestinations: destinationsResponse.data || [],
-			availableDistributives: distributivesResponse || [],
+			availableDistributives: distributivesResponse.data || [],
 			breadcrumbs
 		};
 	} catch (err) {
@@ -90,7 +93,7 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityFormSchema),
-		updateFn: api.activities.update,
+		updateFn: ACTIVITY_REQUEST.update,
 		redirectToEdit: true
 	})
 };

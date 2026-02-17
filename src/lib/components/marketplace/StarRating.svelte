@@ -18,12 +18,12 @@
 	 * <StarRating value={4.5} filledClass="c-star-filled" emptyClass="c-star-empty" />
 	 */
 
-	interface Props {
+	type Props = {
 		value: number | null;
 		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		filledClass?: string;
 		emptyClass?: string;
-	}
+	};
 
 	let {
 		value,
@@ -74,7 +74,7 @@
 
 {#if value !== null}
 	<div class="c-star-rating {sizeClass()}">
-		{#each stars() as star, index}
+		{#each stars() as star, index (index)}
 			{#if star === 'full'}
 				<div
 					class="c-mask c-mask-star c-mask-half-1 {filledClass}"

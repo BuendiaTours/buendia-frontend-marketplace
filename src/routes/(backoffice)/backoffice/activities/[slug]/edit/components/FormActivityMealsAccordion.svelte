@@ -11,21 +11,22 @@
 		MEAL_KIND_OPTIONS,
 		MEAL_FORMAT_OPTIONS,
 		MEAL_ADDITIONAL_OPTIONS,
-		MEAL_ALLERGEN_OPTIONS
-	} from '$lib/config/enums';
+		ACTIVITY_ALLERGEN_OPTIONS
+	} from '$lib/labels/activities';
 
-	interface Meal {
+	type Meal = {
 		id: string;
 		additionalOptions: string[];
 		allergens: string[];
-		format: string | null;
-		kind: string | null;
-	}
+		format: string;
+		kind: string;
+	};
 
-	interface Props {
+	type Props = {
 		meals: Meal[];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms nested array error type is deeply recursive
 		errors?: any;
-	}
+	};
 
 	let { meals = $bindable(), errors }: Props = $props();
 
@@ -51,12 +52,12 @@
 		});
 
 		// Crear nueva comida
-		const newMeal = {
+		const newMeal: Meal = {
 			id: uuidv4(),
-			additionalOptions: [] as string[],
-			allergens: [] as string[],
-			format: null,
-			kind: null
+			additionalOptions: [],
+			allergens: [],
+			format: '',
+			kind: ''
 		};
 
 		meals = [...meals, newMeal];
@@ -88,7 +89,7 @@
 		<span>Comidas</span>
 	{/snippet}
 	{#snippet titleBarActions()}
-		<button type="button" class="btn ml-6 btn-outline btn-xs btn-primary" onclick={handleAddMeal}>
+		<button type="button" class="btn btn-outline btn-xs btn-primary ml-6" onclick={handleAddMeal}>
 			Añadir comida
 		</button>
 	{/snippet}
@@ -96,11 +97,11 @@
 		<p class="text-xs">Ayuda, descripcción... enlaces...</p>
 	{/snippet}
 	{#snippet content()}
-		{#each meals as meal, index}
+		{#each meals as meal, index (meal.id)}
 			<FormAccordion name="form-meals-{index}" class="md:col-span-12">
 				{#snippet title()}
 					<div
-						class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-base-content/50"
+						class="border-base-content/50 flex h-8 w-8 items-center justify-center rounded-full border-2"
 					>
 						{index + 1}
 					</div>
@@ -157,7 +158,7 @@
 						id="allergens-{index}"
 						label="Alérgenos"
 						bind:tags={meals[index].allergens}
-						availableTags={MEAL_ALLERGEN_OPTIONS}
+						availableTags={ACTIVITY_ALLERGEN_OPTIONS}
 						valueType="string"
 						error={errors?.[index]?.allergens?._errors}
 						wrapperClass="md:col-span-12"
@@ -170,7 +171,7 @@
 					<div class="flex gap-2 md:col-span-12">
 						<button
 							type="button"
-							class="btn ml-auto btn-soft btn-xs btn-error"
+							class="btn btn-soft btn-xs btn-error ml-auto"
 							onclick={() => handleRemoveMeal(index)}
 						>
 							Eliminar esta comida

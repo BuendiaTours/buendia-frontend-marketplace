@@ -2,10 +2,10 @@
 	import type { BreadcrumbItem } from '$lib/types';
 	import Breadcrumb from '$lib/components/backoffice/Breadcrumb.svelte';
 
-	interface Props {
+	type Props = {
 		title: string;
 		breadcrumbs: BreadcrumbItem[];
-	}
+	};
 
 	let { title, breadcrumbs }: Props = $props();
 </script>

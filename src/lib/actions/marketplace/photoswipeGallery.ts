@@ -29,7 +29,7 @@
 import { browser } from '$app/environment';
 import type PhotoSwipeLightbox from 'photoswipe/lightbox';
 
-export interface PhotoswipeGalleryOptions {
+export type PhotoswipeGalleryOptions = {
 	/** Selector CSS de los elementos clickeables (default: 'a') */
 	children?: string;
 
@@ -44,7 +44,7 @@ export interface PhotoswipeGalleryOptions {
 
 	/** Opciones adicionales de PhotoSwipe */
 	[key: string]: unknown;
-}
+};
 
 /**
  * Configuración por defecto para PhotoSwipe en marketplace

@@ -5,9 +5,11 @@
  * SIN create, update, delete.
  */
 
-import { apiClient } from '../../shared/client';
-import { API_ENDPOINTS, buildEndpointUrl } from '../../shared/endpoints.config';
-import type { Destination, Pagination } from '$lib/types';
+import { apiClient } from '$core/_shared/client';
+import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
+import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
+import type { CriteriaSortOption } from '$core/_shared/enums';
+import type { CriteriaResult, Destination } from '$lib/types';
 
 export type DestinationsPublicParams = {
 	page?: number;
@@ -17,7 +19,7 @@ export type DestinationsPublicParams = {
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 	// SIN: kind (interno)
 };
 
@@ -28,16 +30,12 @@ export const destinationsEndpoints = {
 	async getAll(
 		fetchFn: typeof fetch,
 		params?: DestinationsPublicParams
-	): Promise<{ data: Destination[]; pagination: Pagination }> {
-		const path = buildEndpointUrl(API_ENDPOINTS.destinations.list.path(), params);
+	): Promise<CriteriaResult<Destination>> {
+		const path = buildEndpointUrl(API_ENDPOINTS.destinations.list.path(), toSkipLimit(params));
 
-		const response = await apiClient.request<{ data: Destination[]; pagination: Pagination }>(
-			fetchFn,
-			path,
-			{
-				method: 'GET'
-			}
-		);
+		const response = await apiClient.request<CriteriaResult<Destination>>(fetchFn, path, {
+			method: 'GET'
+		});
 
 		return response.data;
 	},
@@ -46,7 +44,7 @@ export const destinationsEndpoints = {
 	 * Obtener detalle público de un destino
 	 */
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<Destination> {
-		const path = API_ENDPOINTS.destinations.detail.path(slug);
+		const path = API_ENDPOINTS.destinations.detailBySlug.path(slug);
 
 		const response = await apiClient.request<Destination>(fetchFn, path, {
 			method: 'GET'

@@ -1,10 +1,15 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { activityFormSchema } from '../activity-form.schema';
-import { api } from '$lib/api/index';
-import { apiConfig } from '$lib/api';
+import { activityFormSchema } from '../schemas/activity-form.schema';
+import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import { ATTRACTION_REQUEST } from '$core/attractions/requests';
+import { CATEGORY_REQUEST } from '$core/categories/requests';
+import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
+import { TAG_REQUEST } from '$core/tags/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+import { ActivityStatus } from '$core/activities/enums';
 import type { PageServerLoad, Actions } from './$types';
 
 /**
@@ -30,7 +35,7 @@ export const load: PageServerLoad = createCreateLoad({
 		infoImportant: '',
 
 		// Estado y tipos
-		status: 'DRAFT',
+		status: ActivityStatus.DRAFT,
 		kind: '',
 		guideKind: '',
 
@@ -49,12 +54,20 @@ export const load: PageServerLoad = createCreateLoad({
 		itemsToBring: [],
 		notSuitableFor: []
 	},
-	loadAvailableData: async (fetch) => ({
-		availableTags: await fetch(`${apiConfig.baseURL}/tags`).then((res) => res.json()),
-		availableCategories: await api.categories.getAll(fetch),
-		availableAttractions: (await api.attractions.getAll(fetch)).data || [],
-		availableDestinations: (await api.destinations.getAll(fetch)).data || [],
-		availableDistributives: await api.distributives.getAll(fetch)
+	loadAvailableData: async (
+		fetch
+	): Promise<{
+		availableTags: Array<{ id: string; name: string }>;
+		availableCategories: Array<{ id: string; name: string }>;
+		availableAttractions: Array<{ id: string; name: string }>;
+		availableDestinations: Array<{ id: string; name: string }>;
+		availableDistributives: Array<{ id: string; name: string }>;
+	}> => ({
+		availableTags: (await TAG_REQUEST.findByCriteria(fetch)).data || [],
+		availableCategories: (await CATEGORY_REQUEST.findByCriteria(fetch)).data || [],
+		availableAttractions: (await ATTRACTION_REQUEST.findByCriteria(fetch)).data || [],
+		availableDestinations: (await DESTINATION_REQUEST.findByCriteria(fetch)).data || [],
+		availableDistributives: (await DISTRIBUTIVE_REQUEST.findByCriteria(fetch)).data || []
 	}),
 	breadcrumbLabel: 'Nueva actividad',
 	entityName: 'actividad'
@@ -74,7 +87,7 @@ export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityFormSchema),
-		createFn: (fetch, data) => api.activities.create(fetch, data as any),
+		createFn: ACTIVITY_REQUEST.create,
 		entityName: 'actividad',
 		redirectToEdit: true
 	})

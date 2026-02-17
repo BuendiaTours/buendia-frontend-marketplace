@@ -161,5 +161,5 @@ table.table {
 }
 
 .dropdown-content {
-	@apply bg-base-100 z-1 min-w-52 rounded-md border border-[var(--color-card-border)] p-2 shadow-sm;
+	@apply bg-base-100 z-1 min-w-52 rounded-md border border-(--color-card-border) p-2 shadow-sm;
 }

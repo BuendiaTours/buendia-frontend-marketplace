@@ -1,17 +1,18 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { logger } from '$lib/utils/logger';
 
 /**
  * Configuración para crear un action handler de eliminación
  */
-export interface DeleteActionConfig {
+export type DeleteActionConfig = {
 	/** Ruta base para redirección (ej: '/activities', '/destinations') */
 	basePath: string;
 	/** Función que realiza la eliminación en la API */
 	deleteFn: (fetchFn: typeof globalThis.fetch, slug: string) => Promise<void>;
-}
+};
 
 /**
  * Crea un action handler genérico para eliminar recursos.
@@ -19,12 +20,12 @@ export interface DeleteActionConfig {
  * @example
  * ```typescript
  * import { createDeleteAction } from '$lib/server/deleteAction';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  *
  * export const actions = {
  *   default: createDeleteAction({
  *     basePath: '/activities',
- *     deleteFn: api.activities.delete
+ *     deleteFn: ACTIVITY_REQUEST.delete
  *   })
  * };
  * ```
@@ -40,9 +41,9 @@ export function createDeleteAction(config: DeleteActionConfig) {
 		const fromPath = refererUrl.pathname;
 
 		try {
-			console.log('🗑️ [deleteAction] Intentando eliminar:', slug);
+			logger.log('🗑️ [deleteAction] Intentando eliminar:', slug);
 			const result = await config.deleteFn(fetch, slug);
-			console.log('✅ [deleteAction] Eliminación exitosa:', result);
+			logger.log('✅ [deleteAction] Eliminación exitosa:', result);
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -60,7 +61,7 @@ export function createDeleteAction(config: DeleteActionConfig) {
 
 			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				console.log(' [deleteAction] Es un redirect, dejándolo pasar');
+				logger.log(' [deleteAction] Es un redirect, dejándolo pasar');
 				throw err;
 			}
 

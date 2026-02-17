@@ -31,7 +31,7 @@
 	 * ```
 	 */
 
-	interface Props {
+	type Props = {
 		id: string;
 		label: string;
 		value: string;
@@ -41,8 +41,8 @@
 		generateTooltip?: string;
 		disabled?: boolean;
 		wrapperClass?: string;
-		[key: string]: any;
-	}
+		[key: string]: unknown;
+	};
 
 	let {
 		id,

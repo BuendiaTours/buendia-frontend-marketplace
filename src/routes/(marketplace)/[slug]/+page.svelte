@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { resolveRoute } from '$app/paths';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -32,9 +33,13 @@
 
 		{#if data.categories && data.categories.length > 0}
 			<ul class="space-y-3">
-				{#each data.categories as category}
+				{#each data.categories as category (category.slug)}
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- /categoria/[slug] route not yet created -->
 					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a href="/categoria/{category.slug}" class="block hover:text-blue-600 hover:underline">
+						<a
+							href={`/categoria/${category.slug}`}
+							class="block hover:text-blue-600 hover:underline"
+						>
 							{category.name}
 						</a>
 					</li>
@@ -53,9 +58,12 @@
 
 		{#if data.activities && data.activities.length > 0}
 			<ul class="space-y-3">
-				{#each data.activities as activity}
+				{#each data.activities as activity (activity.id)}
 					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a href="/actividad/{activity.slug}" class="block hover:text-blue-600 hover:underline">
+						<a
+							href={resolveRoute('/(marketplace)/actividad/[slug]', { slug: activity.slug })}
+							class="block hover:text-blue-600 hover:underline"
+						>
 							<h3 class="font-medium text-gray-800">{activity.title}</h3>
 							{#if activity.descriptionShort}
 								<p class="mt-1 text-gray-600">{activity.descriptionShort}</p>

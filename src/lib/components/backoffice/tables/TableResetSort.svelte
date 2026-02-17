@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**
 	 * Componente reutilizable para botón de reset de ordenación en tablas
@@ -19,15 +21,15 @@
 	 * ```
 	 */
 
-	interface TableResetSortConfig {
+	type TableResetSortConfig = {
 		buttonText: string;
 		buttonClass: string;
-	}
+	};
 
-	interface Props {
-		currentSort?: { field: string | null; order: 'asc' | 'desc' | null } | null;
+	type Props = {
+		currentSort?: { field: string | null; order: CriteriaSortOption | null } | null;
 		config?: Partial<TableResetSortConfig>;
-	}
+	};
 
 	const DEFAULT_CONFIG: TableResetSortConfig = {
 		buttonText: 'Reset sort',
@@ -45,7 +47,7 @@
 	async function handleResetSort() {
 		const currentParams = page.url.searchParams;
 		const pathname = page.url.pathname;
-		const newParams = new URLSearchParams(currentParams.toString());
+		const newParams = new SvelteURLSearchParams(currentParams.toString());
 
 		// Eliminar parámetros de ordenación
 		newParams.delete('sort');

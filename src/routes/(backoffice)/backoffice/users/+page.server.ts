@@ -1,0 +1,38 @@
+import type { PageServerLoad } from './$types';
+import { usersFiltersSchema } from './schemas/filters.schema';
+import { USER_REQUEST } from '$core/users/requests';
+import { handleApiError } from '$core/_shared/errors';
+import { buildPagination } from '$core/_shared/params';
+
+import { parseFilters } from '$lib/utils/filters';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
+
+export const load: PageServerLoad = async ({ fetch, url }) => {
+	const filters = parseFilters(usersFiltersSchema, url.searchParams);
+
+	try {
+		const breadcrumbs = generateBreadcrumbs(url.pathname);
+
+		const response = await USER_REQUEST.findByCriteria(fetch, {
+			page: filters.page,
+			pageSize: filters.pageSize,
+			sort: filters.sort,
+			order: filters.order,
+			q: filters.q,
+			email: filters.email,
+			phone: filters.phone,
+			kind: filters.kind,
+			status: filters.status
+		});
+
+		return {
+			items: response.data || [],
+			pagination: buildPagination(response.total, filters.page, filters.pageSize),
+			filters,
+			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
+			breadcrumbs
+		};
+	} catch (err) {
+		throw handleApiError(err, 'los usuarios');
+	}
+};

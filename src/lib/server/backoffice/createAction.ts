@@ -1,29 +1,33 @@
 import { redirect, fail } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { ApiError } from '$lib/api/index';
+import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
+import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
 /**
  * Configuración para crear un action handler de creación
  */
-export interface CreateActionConfig {
+export type CreateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
 	/** Ruta base para redirección después de crear (ej: '/activities', '/attractions') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	schema: any;
+	schema: ValidationAdapter<T>;
 	/** Función que realiza la creación en la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	createFn: (fetchFn: typeof globalThis.fetch, data: any) => Promise<any>;
+	createFn: (fetchFn: typeof globalThis.fetch, data: any) => Promise<void>;
 	/** Nombre de la entidad para mensajes (ej: 'actividad', 'atracción', 'destino') */
 	entityName: string;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	transformData?: (formData: any) => any;
+	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
-}
+	/** Si true, redirige al listado (basePath) ignorando redirectToEdit y redirectField */
+	redirectToList?: boolean;
+	/** Campo del formulario a usar como identificador en la URL de redirección (default: 'slug') */
+	redirectField?: string;
+};
 
 /**
  * Crea un action handler genérico para crear recursos.
@@ -38,7 +42,7 @@ export interface CreateActionConfig {
  * @example
  * ```typescript
  * import { createCreateAction } from '$lib/server/createAction';
- * import { api } from '$lib/api/index';
+ * import { ACTIVITY_REQUEST } from '$core/activities/requests';
  * import { activityFormSchema } from './activity-form.schema';
  * import { zod } from 'sveltekit-superforms/adapters';
  *
@@ -53,15 +57,26 @@ export interface CreateActionConfig {
  * };
  * ```
  */
-export function createCreateAction(config: CreateActionConfig) {
+export function createCreateAction<T extends Record<string, unknown>>(
+	config: CreateActionConfig<T>
+) {
 	return async ({ request, fetch, cookies }: RequestEvent) => {
-		const { basePath, schema, createFn, entityName, transformData, redirectToEdit = true } = config;
+		const {
+			basePath,
+			schema,
+			createFn,
+			entityName,
+			transformData,
+			redirectToEdit = true,
+			redirectToList = false,
+			redirectField = 'slug'
+		} = config;
 
-		console.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
+		logger.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
 
 		// 1. Validar formulario
 		const form = await superValidate(request, schema);
-		console.log(`🆕 [createAction] Validación:`, form.valid ? '✅ Válido' : '❌ Inválido');
+		logger.log(`🆕 [createAction] Validación:`, form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
 			console.error(`🆕 [createAction] Errores de validación:`, form.errors);
@@ -80,8 +95,8 @@ export function createCreateAction(config: CreateActionConfig) {
 		}
 
 		try {
-			console.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
-			console.log(`🆕 [createAction] Datos a enviar:`, {
+			logger.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
+			logger.log(`🆕 [createAction] Datos a enviar:`, {
 				id: form.data.id,
 				...(form.data.title ? { title: form.data.title } : {}),
 				...(form.data.name ? { name: form.data.name } : {}),
@@ -92,8 +107,8 @@ export function createCreateAction(config: CreateActionConfig) {
 			const dataToSend = transformData ? transformData(form.data) : form.data;
 
 			// 3. Llamar a la API para crear el recurso
-			const result = await createFn(fetch, dataToSend);
-			console.log(`✅ [createAction] ${entityName} creado exitosamente:`, result);
+			await createFn(fetch, dataToSend);
+			logger.log(`✅ [createAction] ${entityName} creado exitosamente`);
 
 			// 4. Flash message de éxito
 			const successMessage = `${entityName.charAt(0).toUpperCase() + entityName.slice(1)} ${entityName.endsWith('ión') ? 'creada' : 'creado'} correctamente.`;
@@ -102,12 +117,18 @@ export function createCreateAction(config: CreateActionConfig) {
 				message: successMessage
 			});
 
-			// 5. Redirigir a la página de edición o detalle
-			const redirectPath = redirectToEdit
-				? `${basePath}/${result.slug}/edit`
-				: `${basePath}/${result.slug}`;
+			// 5. Redirigir según configuración
+			let redirectPath: string;
+			if (redirectToList) {
+				redirectPath = basePath;
+			} else {
+				const identifier = form.data[redirectField];
+				redirectPath = redirectToEdit
+					? `${basePath}/${identifier}/edit`
+					: `${basePath}/${identifier}`;
+			}
 
-			console.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
+			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			console.error(`❌ [createAction] Error capturado:`, err);
@@ -115,7 +136,7 @@ export function createCreateAction(config: CreateActionConfig) {
 
 			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				console.log(`✅ [createAction] Es un redirect, dejándolo pasar`);
+				logger.log(`✅ [createAction] Es un redirect, dejándolo pasar`);
 				throw err;
 			}
 

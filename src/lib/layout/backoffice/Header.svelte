@@ -60,6 +60,14 @@
 				</li>
 				<li>
 					<a
+						href={ROUTES.backoffice.users.list}
+						class:menu-active={isActive(ROUTES.backoffice.users.list)}
+					>
+						Usuarios
+					</a>
+				</li>
+				<li>
+					<a
 						href={ROUTES.backoffice.components}
 						class:menu-active={isActive(ROUTES.backoffice.components)}
 					>
@@ -96,6 +104,14 @@
 					class:menu-active={isActive(ROUTES.backoffice.attractions.list)}
 				>
 					Atracciones
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.users.list}
+					class:menu-active={isActive(ROUTES.backoffice.users.list)}
+				>
+					Usuarios
 				</a>
 			</li>
 			<li>

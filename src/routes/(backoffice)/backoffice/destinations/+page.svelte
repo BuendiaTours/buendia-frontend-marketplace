@@ -5,25 +5,24 @@
 
 	// Types
 	import type { Destination, Column } from '$lib/types';
-	import type { DestinationsFilters } from './filters.schema';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
+	import type { DestinationsFilters } from './schemas/filters.schema';
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
 	// Utils
-	import { patchFilters, clearAllFilters, resetSort, hasActiveFilters } from '$lib/utils/filters';
+	import type { PatchValue } from '$lib/utils/filters';
+	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { destinationsFiltersSchema } from './filters.schema';
-
-	// i18n
-	import * as m from '$paraglide/messages';
+	import { destinationsFiltersSchema } from './schemas/filters.schema';
 
 	// Enums
-	import { DESTINATION_KIND_OPTIONS } from '$lib/config/enums';
+	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 
 	// Routes
-	import { ROUTES } from '$lib/config/routes';
+	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
 
 	// Actions
 	import { checkAll } from '$lib/actions/backoffice/checkAll';
@@ -32,7 +31,6 @@
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import { getDestinationKinds } from '$lib/api/backoffice/common.remote';
 	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
@@ -57,7 +55,7 @@
 				totalPages: number;
 			} | null;
 			filters: DestinationsFilters;
-			sort: { field: string; order: 'asc' | 'desc' } | null;
+			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
 	} = $props();
@@ -73,11 +71,7 @@
 	// SEARCH STATE
 	// ============================================================================
 
-	let searchQuery = $state('');
-
-	$effect(() => {
-		searchQuery = filters.q || '';
-	});
+	let searchQuery = $derived(filters.q || '');
 
 	// ============================================================================
 	// FILTRO: KIND
@@ -85,8 +79,8 @@
 
 	function handleKindFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
-			[filterKey]: value === null ? (null as any) : value
-		});
+			[filterKey]: value
+		} as { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> });
 	}
 
 	// ============================================================================
@@ -101,14 +95,16 @@
 
 	// Crear objeto con los valores actuales de los filtros avanzados
 	const currentAdvancedFilters = $derived(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, (filters as any)[f.key] ?? false]))
+		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, filters[f.key] ?? false]))
 	);
 
 	// ============================================================================
 	// FILTER FUNCTIONS
 	// ============================================================================
 
-	function applyFilterPatch(patch: Record<string, any>) {
+	function applyFilterPatch(patch: {
+		[K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]>;
+	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
@@ -120,17 +116,17 @@
 	}
 
 	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = appliedFilters[filter.key] || (null as any);
+			patch[filter.key] = appliedFilters[filter.key] || null;
 		});
 		applyFilterPatch(patch);
 	}
 
 	function handleClearAdvancedFilters() {
-		const patch: Record<string, any> = {};
+		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = null as any;
+			patch[filter.key] = null;
 		});
 		applyFilterPatch(patch);
 	}
@@ -189,7 +185,7 @@
 	</div>
 
 	<FilterSelect
-		source={{ type: 'remote', queryFunction: getDestinationKinds }}
+		options={DESTINATION_KIND_OPTIONS}
 		filterKey="kind"
 		currentValue={filters.kind}
 		placeholder="Selecciona tipo"
@@ -223,7 +219,7 @@
 <div class="mt-6 flex items-center justify-between">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
-	<a href={ROUTES.backoffice.destinations.create} class="btn btn-outline btn-primary">
+	<a href={DESTINATION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Plus />
 		Nuevo destino
 	</a>
@@ -237,7 +233,7 @@
 				<th class="w-12">
 					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
 				</th>
-				{#each columns as col}
+				{#each columns as col (col.key)}
 					<th>
 						{#if col.sortable}
 							<TableSortableHeader
@@ -267,7 +263,7 @@
 					</td>
 				</tr>
 			{:else}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<tr>
 						<td>
 							<input
@@ -277,7 +273,7 @@
 								class="checkbox checkbox-sm"
 							/>
 						</td>
-						{#each columns as col}
+						{#each columns as col (col.key)}
 							{#if col.key === 'id'}
 								<td>
 									<div class="tooltip" data-tip={item.id}>
@@ -289,7 +285,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.detail(item.slug),
+												DESTINATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -319,7 +315,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.detail(item.slug),
+												DESTINATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -329,7 +325,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												ROUTES.backoffice.destinations.edit(item.slug),
+												DESTINATION_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}>Editar</a
 										>

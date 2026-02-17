@@ -7,18 +7,18 @@
 	 * @param title - (Opcional) Título del bloque de debug
 	 */
 
-	interface Props {
-		data: any;
+	type Props = {
+		data: unknown;
 		title?: string;
-	}
+	};
 
 	let { data, title = 'JSON de la API' }: Props = $props();
 </script>
 
-<details class="collapse bg-base-100" name="my-accordion-det-1">
+<details class="bg-base-100 collapse" name="my-accordion-det-1">
 	<summary class="collapse-title text-xs font-semibold">{title}</summary>
 	<div class="collapse-content text-sm">
-		<pre class="overflow-x-auto rounded-box bg-base-200 p-4 text-xs">{JSON.stringify(
+		<pre class="rounded-box bg-base-200 overflow-x-auto p-4 text-xs">{JSON.stringify(
 				data,
 				null,
 				2

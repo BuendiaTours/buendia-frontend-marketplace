@@ -11,13 +11,13 @@
 
 import { confirm } from '$lib/components/backoffice/MeltAlertDialog';
 
-export interface ConfirmOptions {
+export type ConfirmOptions = {
 	title?: string;
 	message?: string;
 	confirmText?: string;
 	cancelText?: string;
 	danger?: boolean;
-}
+};
 
 /**
  * Muestra un diálogo de confirmación y retorna la elección del usuario

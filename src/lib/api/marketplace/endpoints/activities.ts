@@ -16,9 +16,11 @@
  * - kind (interno)
  */
 
-import { apiClient } from '../../shared/client';
-import { API_ENDPOINTS, buildEndpointUrl } from '../../shared/endpoints.config';
-import type { ActivityListResponse, ActivityListItem } from '$lib/types';
+import { apiClient } from '$core/_shared/client';
+import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
+import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
+import type { CriteriaSortOption } from '$core/_shared/enums';
+import type { CriteriaResult, ActivityListItem } from '$lib/types';
 
 /**
  * Parámetros públicos para listar actividades
@@ -39,7 +41,7 @@ export type ActivitiesPublicParams = {
 	freeForKids?: boolean;
 	breakfast?: boolean;
 	sort?: string;
-	order?: 'asc' | 'desc';
+	order?: CriteriaSortOption;
 };
 
 export const activitiesEndpoints = {
@@ -50,10 +52,10 @@ export const activitiesEndpoints = {
 	async getAll(
 		fetchFn: typeof fetch,
 		params?: ActivitiesPublicParams
-	): Promise<ActivityListResponse> {
-		const path = buildEndpointUrl(API_ENDPOINTS.activities.list.path(), params);
+	): Promise<CriteriaResult<ActivityListItem>> {
+		const path = buildEndpointUrl(API_ENDPOINTS.activities.list.path(), toSkipLimit(params));
 
-		const response = await apiClient.request<ActivityListResponse>(fetchFn, path, {
+		const response = await apiClient.request<CriteriaResult<ActivityListItem>>(fetchFn, path, {
 			method: 'GET'
 		});
 
@@ -65,7 +67,7 @@ export const activitiesEndpoints = {
 	 * Solo devuelve si está PUBLISHED
 	 */
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<ActivityListItem> {
-		const path = API_ENDPOINTS.activities.detail.path(slug);
+		const path = API_ENDPOINTS.activities.detailBySlug.path(slug);
 
 		const response = await apiClient.request<ActivityListItem>(fetchFn, path, {
 			method: 'GET'

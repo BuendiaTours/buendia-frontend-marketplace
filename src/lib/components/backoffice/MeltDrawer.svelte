@@ -2,14 +2,16 @@
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { Cancel } from 'svelte-iconoir';
+	import { untrack } from 'svelte';
 	import type { MeltDrawerConfig } from './MeltDrawer';
+	import type { Snippet } from 'svelte';
 
-	interface Props {
+	type Props = {
 		open?: boolean;
 		title?: string;
 		config?: MeltDrawerConfig;
-		children?: any;
-	}
+		children?: Snippet;
+	};
 
 	let { open = $bindable(false), title = '', config = {}, children }: Props = $props();
 
@@ -23,16 +25,18 @@
 	const mergedConfig = $derived({ ...defaultConfig, ...config });
 
 	const {
-		elements: { trigger, overlay, content, title: titleEl, description, close, portalled },
+		elements: { overlay, content, title: titleEl, close, portalled },
 		states: { open: dialogOpen }
-	} = createDialog({
-		forceVisible: true,
-		closeOnOutsideClick: mergedConfig.closeOnOutsideClick,
-		onOpenChange: ({ next }) => {
-			open = next;
-			return next;
-		}
-	});
+	} = untrack(() =>
+		createDialog({
+			forceVisible: true,
+			closeOnOutsideClick: mergedConfig.closeOnOutsideClick,
+			onOpenChange: ({ next }) => {
+				open = next;
+				return next;
+			}
+		})
+	);
 
 	$effect(() => {
 		if (open !== $dialogOpen) {
@@ -51,7 +55,7 @@
 						'left-0 bottom-0 right-0 border-b border-base-content/9'
 	);
 
-	const width = $derived(mergedConfig.width ?? defaultConfig.width!);
+	const width = $derived(mergedConfig.width ?? 350);
 
 	const flyConfig = $derived(
 		mergedConfig.side === 'left'
@@ -79,9 +83,9 @@
 		{#if mergedConfig.showOverlay}
 			<div
 				use:melt={$overlay}
-				class="fixed inset-0 z-50 bg-[var(--default-overlay-bg)]"
+				class="fixed inset-0 z-50 bg-(--default-overlay-bg)"
 				transition:fade={{ duration: 150 }}
-			/>
+			></div>
 		{/if}
 		<div
 			use:melt={$content}
