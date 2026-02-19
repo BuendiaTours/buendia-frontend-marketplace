@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
-	import { Reorder } from '@solar-icons/svelte/Linear';
+	import { Reorder } from '$lib/icons/Linear';
 
 	/**
 	 * Componente reutilizable para acordeones en formularios

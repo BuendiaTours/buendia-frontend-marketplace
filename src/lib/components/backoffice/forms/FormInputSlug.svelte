@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
-	import { Refresh } from '@solar-icons/svelte/Linear';
+	import { Refresh } from '$lib/icons/Linear';
 	import { slugify } from '$lib/utils/strings';
 
 	/**

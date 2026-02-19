@@ -179,7 +179,7 @@ Abre un editor web donde puedes:
 ```svelte
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { AddSquare } from '@solar-icons/svelte/Linear';
+	import { AddSquare } from '$lib/icons/Linear';
 
 	let items = $state([]);
 </script>

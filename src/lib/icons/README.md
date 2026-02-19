@@ -116,7 +116,7 @@ export { default as IconName } from './Linear/IconName.svelte';
 
 ```svelte
 <script>
-	import { CloseSquare } from '@solar-icons/svelte/Linear';
+	import { CloseSquare } from '$lib/icons/Linear';
 	import { CustomLogo } from '$lib/icons';
 </script>
 

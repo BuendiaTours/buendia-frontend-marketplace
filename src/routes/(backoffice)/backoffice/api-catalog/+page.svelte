@@ -3,7 +3,7 @@
 	import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 	import { apiConfig } from '$core/_shared/config';
 	import { copyToClipboard } from '$lib/utils/misc';
-	import { InfoCircle, Copy, CheckCircle } from '@solar-icons/svelte/Linear';
+	import { InfoCircle, Copy, CheckCircle } from '$lib/icons/Linear';
 
 	let { data }: { data: PageData } = $props();
 

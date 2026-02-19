@@ -10,7 +10,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { Sun, Moon } from '@solar-icons/svelte/Linear';
+	import { Sun, Moon } from '$lib/icons/Linear';
 
 	// Estado reactivo del tema actual
 	let currentTheme = $state<string>('dark');

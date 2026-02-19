@@ -10,6 +10,7 @@
 		children?: Snippet;
 		class?: string;
 		style?: string;
+		iconName?: string;
 		[key: string]: unknown;
 	};
 
@@ -22,6 +23,7 @@
 		children,
 		class: className,
 		style,
+		iconName,
 		...restProps
 	}: Props = $props();
 
@@ -40,6 +42,7 @@
 	transform={mirrored ? 'scale(-1, 1)' : undefined}
 	class={className}
 	style={combinedStyle}
+	data-icon-name={iconName}
 	{...restProps}
 >
 	{#if alt}<title>{alt}</title>{/if}

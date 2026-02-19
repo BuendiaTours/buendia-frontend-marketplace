@@ -26,7 +26,7 @@
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 
 	// Icons
-	import { Database } from '@solar-icons/svelte/Linear';
+	import { Database } from '$lib/icons/Linear';
 
 	let { data }: { data: PageData } = $props();
 

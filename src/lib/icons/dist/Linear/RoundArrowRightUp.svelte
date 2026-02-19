@@ -3,13 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon {...props}>
-	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" />
-	<path
-		d="M9 15L15 9M15 9H10.5M15 9V13.5"
-		stroke="currentColor"
-		stroke-width="var(--icon-stroke-width)"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-	/>
+<Icon iconName="RoundArrowRightUp" {...props}>
+	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
+<path d="M9 15L15 9M15 9H10.5M15 9V13.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 </Icon>

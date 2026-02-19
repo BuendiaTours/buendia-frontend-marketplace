@@ -16,7 +16,7 @@ Soporta modo single y multiple.
 
 <script lang="ts">
 	import { createCombobox, melt } from '@melt-ui/svelte';
-	import { SortVertical, CheckSquare } from '@solar-icons/svelte/Linear';
+	import { SortVertical, CheckSquare } from '$lib/icons/Linear';
 	import type { Component } from 'svelte';
 	import { untrack } from 'svelte';
 	import { fly } from 'svelte/transition';

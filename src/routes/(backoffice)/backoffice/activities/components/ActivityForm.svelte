@@ -26,7 +26,7 @@
 		ACTIVITY_KIND_OPTIONS
 	} from '$lib/labels/activities';
 
-	import { Database, FolderCheck, Link, ChecklistMinimalistic } from '@solar-icons/svelte/Linear';
+	import { Database, FolderCheck, Link, ChecklistMinimalistic } from '$lib/icons/Linear';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';

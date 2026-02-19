@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { CloseSquare } from '@solar-icons/svelte/Linear';
+	import { CloseSquare } from '$lib/icons/Linear';
 	import { untrack } from 'svelte';
 	import type { MeltDrawerConfig } from './MeltDrawer';
 	import type { Snippet } from 'svelte';

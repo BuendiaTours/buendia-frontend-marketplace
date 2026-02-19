@@ -10,7 +10,7 @@
 	import type { Attraction } from '$lib/types';
 
 	// Icons
-	import { Database } from '@solar-icons/svelte/Linear';
+	import { Database } from '$lib/icons/Linear';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';

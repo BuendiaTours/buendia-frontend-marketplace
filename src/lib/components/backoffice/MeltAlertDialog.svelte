@@ -11,7 +11,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 	import { setConfirmFunction } from './MeltAlertDialog';
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CloseSquare } from '@solar-icons/svelte/Linear';
+	import { CloseSquare } from '$lib/icons/Linear';
 
 	type ConfirmState = {
 		open: boolean;

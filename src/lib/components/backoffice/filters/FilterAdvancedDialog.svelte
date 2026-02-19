@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CloseSquare, Filter } from '@solar-icons/svelte/Linear';
+	import { CloseSquare, Filter } from '$lib/icons/Linear';
 
 	type FilterConfig = {
 		readonly key: string;

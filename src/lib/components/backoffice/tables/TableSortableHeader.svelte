@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		SortFromTopToBottom,
-		SortFromBottomToTop,
-		SortVertical
-	} from '@solar-icons/svelte/Linear';
+	import { SortFromTopToBottom, SortFromBottomToTop, SortVertical } from '$lib/icons/Linear';
 	import { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
-	import { Reorder, CloseSquare, AddSquare } from '@solar-icons/svelte/Linear';
+	import { Reorder, CloseSquare, AddSquare } from '$lib/icons/Linear';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { tick } from 'svelte';
 

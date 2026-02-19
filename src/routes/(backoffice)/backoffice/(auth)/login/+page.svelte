@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Letter, Lock } from '@solar-icons/svelte/Linear';
+	import { Letter, Lock } from '$lib/icons/Linear';
 </script>
 
 <div class="flex min-h-screen items-center justify-center">

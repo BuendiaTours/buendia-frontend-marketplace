@@ -83,7 +83,7 @@ function generateComponent(iconName: string, svgContent: string): string {
 	let props = $props();
 </script>
 
-<Icon {...props}>
+<Icon iconName="${iconName}" {...props}>
 	${svgContent}
 </Icon>
 `;
