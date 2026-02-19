@@ -3,7 +3,7 @@
 	 * Component to showcase all custom icons
 	 * This is a demo/test component to verify icons work correctly
 	 */
-	import { ExampleIcon } from './index';
+	import { Accessibility } from './Linear';
 </script>
 
 <div class="icon-showcase">
@@ -12,49 +12,49 @@
 	<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
 		<!-- Default size -->
 		<div class="icon-item">
-			<ExampleIcon />
+			<Accessibility />
 			<span class="text-sm">Default (1em)</span>
 		</div>
 
 		<!-- With Tailwind class -->
 		<div class="icon-item">
-			<ExampleIcon class="size-6 text-blue-500" />
+			<Accessibility class="size-6 text-blue-500" />
 			<span class="text-sm">size-6 + blue</span>
 		</div>
 
 		<!-- With numeric size -->
 		<div class="icon-item">
-			<ExampleIcon size={32} color="#10b981" />
+			<Accessibility size={32} color="#10b981" />
 			<span class="text-sm">32px + green</span>
 		</div>
 
 		<!-- Mirrored -->
 		<div class="icon-item">
-			<ExampleIcon class="size-8 text-red-500" mirrored={true} />
+			<Accessibility class="size-8 text-red-500" mirrored={true} />
 			<span class="text-sm">Mirrored</span>
 		</div>
 
 		<!-- Large -->
 		<div class="icon-item">
-			<ExampleIcon class="size-12 text-purple-500" />
+			<Accessibility class="size-12 text-purple-500" />
 			<span class="text-sm">Large (size-12)</span>
 		</div>
 
 		<!-- Extra large with custom color -->
 		<div class="icon-item">
-			<ExampleIcon size="4rem" color="#f59e0b" />
+			<Accessibility size="4rem" color="#f59e0b" />
 			<span class="text-sm">4rem + orange</span>
 		</div>
 
 		<!-- With accessibility -->
 		<div class="icon-item">
-			<ExampleIcon class="size-6" alt="Example icon for demo" />
+			<Accessibility class="size-6" alt="Accessibility icon for demo" />
 			<span class="text-sm">With alt text</span>
 		</div>
 
 		<!-- Responsive size -->
 		<div class="icon-item">
-			<ExampleIcon class="size-6 text-gray-400 hover:text-gray-900 md:size-8" />
+			<Accessibility class="size-6 text-gray-400 hover:text-gray-900 md:size-8" />
 			<span class="text-sm">Responsive + hover</span>
 		</div>
 	</div>

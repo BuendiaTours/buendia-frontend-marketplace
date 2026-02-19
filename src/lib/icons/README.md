@@ -1,12 +1,12 @@
 # Custom Icons
 
-Sistema de iconos custom compatible con `@solar-icons/svelte`.
+Sistema de iconos custom a partir de `@solar-icons/svelte`.
 
 ## Uso
 
 ```svelte
 <script>
-	import { ExampleIcon } from '$lib/icons';
+	import { ExampleIcon } from '$lib/icons/Linear';
 </script>
 
 <!-- Básico -->
@@ -23,6 +23,27 @@ Sistema de iconos custom compatible con `@solar-icons/svelte`.
 
 - `strokeWidth`: Grosor del trazo (por defecto: `2`)
 
+## Formas de importar
+
+```svelte
+<!-- Opción 1: Import explícito por variante (recomendado) -->
+<script>
+	import { ArrowLeft, ArrowRight } from '$lib/icons/Linear';
+	import { Home } from '$lib/icons/Outline';
+</script>
+
+<ArrowLeft />
+<Home />
+
+<!-- Opción 2: Import con namespace -->
+<script>
+	import { Linear, Outline } from '$lib/icons';
+</script>
+
+<Linear.ArrowLeft />
+<Outline.Home />
+```
+
 ## Añadir iconos
 
 ### Automático (recomendado)
@@ -36,12 +57,12 @@ npm run generate:icons
 El script genera componentes Svelte y actualiza exports automáticamente.
 
 - Nombres: `custom-logo.svg` → `CustomLogo`
-- Respeta estructura de carpetas: `src/Linear/icon.svg` → `custom/Linear/Icon.svelte`
+- Respeta estructura de carpetas: `src/Linear/icon.svg` → `dist/Linear/Icon.svelte`
 - Convierte colores a `currentColor` y stroke-width a variable CSS
 
 ### Manual
 
-1. Crear `src/lib/icons/custom/Linear/IconName.svelte`:
+1. Crear `src/lib/icons/dist/Linear/IconName.svelte`:
 
 ```svelte
 <script lang="ts">
@@ -54,7 +75,7 @@ El script genera componentes Svelte y actualiza exports automáticamente.
 </Icon>
 ```
 
-2. Exportar en `src/lib/icons/custom/Linear.ts`:
+2. Exportar en `src/lib/icons/dist/Linear.ts`:
 
 ```ts
 export { default as IconName } from './Linear/IconName.svelte';
@@ -108,15 +129,16 @@ export { default as IconName } from './Linear/IconName.svelte';
 ### Múltiples estilos (Bold, Linear, etc.)
 
 ```bash
-# 1. Crear directorios
-mkdir -p src/lib/icons/custom/{Bold,Linear}
-mkdir -p static/icons/custom/{bold,linear}
+# 1. Crear directorios de origen
+mkdir -p src/lib/icons/src/{Bold,Linear,Outline}
 
-# 2. Actualizar exports en src/lib/icons/custom/index.ts
-export * as Outline from './Linear';
-export * as Bold from './Bold';
+# 2. El script generará automáticamente:
+#    - src/lib/icons/dist/Linear/, dist/Outline/, etc.
+#    - Archivos barrel: Linear.ts, Outline.ts en src/lib/icons/
 
-# 3. Modificar script para soportar múltiples estilos
+# 3. Imports disponibles:
+#    import { Icon } from '$lib/icons/Linear'
+#    import { Icon } from '$lib/icons/Outline'
 ```
 
 ### IconBase personalizable
@@ -206,12 +228,14 @@ src/lib/icons/
 │   ├── Linear/
 │   ├── Outline/
 │   └── Bold/
-├── custom/                  # Componentes Svelte generados
+├── dist/                    # Componentes Svelte generados
 │   ├── Linear/
 │   │   └── IconName.svelte
-│   ├── Linear.ts            # Exports
+│   ├── Linear.ts            # Exports de Linear
 │   ├── Outline/
-│   ├── Outline.ts
+│   ├── Outline.ts           # Exports de Outline
 │   └── index.ts
-└── index.ts
+├── Linear.ts                # Barrel file para imports explícitos
+├── Outline.ts               # Barrel file para imports explícitos
+└── index.ts                 # Exports principales (namespaces)
 ```

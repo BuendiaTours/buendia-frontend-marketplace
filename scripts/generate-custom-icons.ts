@@ -5,7 +5,7 @@
  * Usage:
  *   1. Place SVG files in src/lib/icons/src/ organized in folders (e.g., Linear/, Outline/)
  *   2. Run: npm run generate:icons
- *   3. Icons will be generated in src/lib/icons/custom/ preserving folder structure
+ *   3. Icons will be generated in src/lib/icons/dist/ preserving folder structure
  *   4. Export files will be created for each folder (e.g., Linear.ts, Outline.ts)
  */
 
@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ICONS_SOURCE_DIR = path.join(__dirname, '../src/lib/icons/src');
-const ICONS_OUTPUT_DIR = path.join(__dirname, '../src/lib/icons/custom');
+const ICONS_OUTPUT_DIR = path.join(__dirname, '../src/lib/icons/dist');
 
 // Colors
 const colors = {
