@@ -52,7 +52,7 @@
 	let selectedActivityId = $state<string | null>(null);
 
 	// Icons
-	import { Calendar, CloseSquare, Map, AddSquare } from '@solar-icons/svelte/Outline';
+	import { Calendar, CloseSquare, Map, AddSquare } from '@solar-icons/svelte/Linear';
 
 	// ============================================================================
 	// PROPS & DATA

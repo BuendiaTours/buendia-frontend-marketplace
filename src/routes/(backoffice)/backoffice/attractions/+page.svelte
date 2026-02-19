@@ -39,7 +39,7 @@
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 
 	// Icons
-	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Outline';
+	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Linear';
 
 	// ============================================================================
 	// PROPS & DATA

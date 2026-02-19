@@ -2,7 +2,7 @@
 	import { tick } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
-	import { ChefHat } from '@solar-icons/svelte/Outline';
+	import { ChefHat } from '@solar-icons/svelte/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';

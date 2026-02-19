@@ -8,7 +8,7 @@
 	 * @component
 	 */
 
-	import * as Icons from '@solar-icons/svelte/Outline';
+	import * as Icons from '@solar-icons/svelte/Linear';
 	import type { ComponentType } from 'svelte';
 
 	type Badge = {

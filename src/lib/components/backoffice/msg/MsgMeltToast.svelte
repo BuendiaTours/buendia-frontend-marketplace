@@ -2,12 +2,7 @@
 	import { createToaster, melt } from '@melt-ui/svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
-	import {
-		CloseSquare,
-		InfoCircle,
-		DangerTriangle,
-		CheckCircle
-	} from '@solar-icons/svelte/Outline';
+	import { CloseSquare, InfoCircle, DangerTriangle, CheckCircle } from '@solar-icons/svelte/Linear';
 	import { page } from '$app/state';
 
 	/**

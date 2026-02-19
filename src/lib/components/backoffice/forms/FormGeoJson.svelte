@@ -2,7 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
-	import { InfoCircle, Magnifier } from '@solar-icons/svelte/Outline';
+	import { InfoCircle, Magnifier } from '@solar-icons/svelte/Linear';
 	import { loadGoogleMapsAPI, isGoogleMapsLoaded } from '$lib/utils/googleMaps';
 
 	/**

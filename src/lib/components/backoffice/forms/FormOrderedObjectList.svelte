@@ -8,7 +8,7 @@
 		Download,
 		CloseSquare,
 		Reorder
-	} from '@solar-icons/svelte/Outline';
+	} from '@solar-icons/svelte/Linear';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 
 	/**

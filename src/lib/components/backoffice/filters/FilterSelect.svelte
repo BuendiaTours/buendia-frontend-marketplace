@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CloseSquare } from '@solar-icons/svelte/Outline';
+	import { CloseSquare } from '@solar-icons/svelte/Linear';
 
 	type Option = {
 		id: string;

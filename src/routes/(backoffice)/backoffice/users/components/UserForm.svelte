@@ -7,7 +7,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	// Icons
-	import { Database } from '@solar-icons/svelte/Outline';
+	import { Database } from '@solar-icons/svelte/Linear';
 
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';

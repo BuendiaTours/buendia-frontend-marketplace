@@ -38,7 +38,7 @@ USO COMPLETO:
 -->
 
 <script lang="ts">
-	import { DangerTriangle } from '@solar-icons/svelte/Outline';
+	import { DangerTriangle } from '@solar-icons/svelte/Linear';
 	import type { Snippet } from 'svelte';
 
 	type Props = {

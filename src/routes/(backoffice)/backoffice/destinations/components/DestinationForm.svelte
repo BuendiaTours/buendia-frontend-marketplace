@@ -11,7 +11,7 @@
 	import type { Destination } from '$lib/types';
 
 	// Database
-	import { Database } from '@solar-icons/svelte/Outline';
+	import { Database } from '@solar-icons/svelte/Linear';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';

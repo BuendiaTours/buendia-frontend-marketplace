@@ -13,7 +13,7 @@ Props disponibles:
 
 <script lang="ts">
 	import { createCalendar, melt } from '@melt-ui/svelte';
-	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Outline';
+	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Linear';
 	import cn from 'clsx';
 	import type { DateValue } from '@internationalized/date';
 

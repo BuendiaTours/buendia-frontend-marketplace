@@ -14,7 +14,7 @@ Props disponibles:
 
 <script lang="ts">
 	import { createPagination, melt } from '@melt-ui/svelte';
-	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Outline';
+	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Linear';
 
 	type Props = {
 		count: number;

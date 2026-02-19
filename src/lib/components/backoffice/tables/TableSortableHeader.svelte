@@ -3,7 +3,7 @@
 		SortFromTopToBottom,
 		SortFromBottomToTop,
 		SortVertical
-	} from '@solar-icons/svelte/Outline';
+	} from '@solar-icons/svelte/Linear';
 	import { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**

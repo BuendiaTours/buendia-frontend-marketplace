@@ -14,7 +14,7 @@ Props disponibles:
 
 <script lang="ts">
 	import { createRangeCalendar, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
-	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Outline';
+	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Linear';
 	import { untrack } from 'svelte';
 	import cn from 'clsx';
 

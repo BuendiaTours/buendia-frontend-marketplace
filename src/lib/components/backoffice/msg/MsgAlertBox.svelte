@@ -1,10 +1,5 @@
 <script lang="ts">
-	import {
-		InfoCircle,
-		DangerTriangle,
-		CloseSquare,
-		CheckCircle
-	} from '@solar-icons/svelte/Outline';
+	import { InfoCircle, DangerTriangle, CloseSquare, CheckCircle } from '@solar-icons/svelte/Linear';
 	import { page } from '$app/state';
 
 	type AlertType = 'info' | 'warning' | 'error' | 'success';

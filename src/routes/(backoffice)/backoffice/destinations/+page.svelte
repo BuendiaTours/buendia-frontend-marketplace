@@ -37,7 +37,7 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Icons
-	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Outline';
+	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Linear';
 
 	// ============================================================================
 	// PROPS & DATA

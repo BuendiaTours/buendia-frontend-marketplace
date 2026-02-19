@@ -23,7 +23,7 @@
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Outline';
+	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Linear';
 	import * as m from '$paraglide/messages';
 
 	let {

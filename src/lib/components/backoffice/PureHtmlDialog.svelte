@@ -53,7 +53,7 @@ USO CON FORMULARIO:
 -->
 
 <script lang="ts">
-	import { CloseSquare } from '@solar-icons/svelte/Outline';
+	import { CloseSquare } from '@solar-icons/svelte/Linear';
 	import type { PureHtmlDialogConfig } from './PureHtmlDialog';
 	import type { Snippet } from 'svelte';
 

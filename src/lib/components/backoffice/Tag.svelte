@@ -25,7 +25,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { CloseSquare } from '@solar-icons/svelte/Outline';
+	import { CloseSquare } from '@solar-icons/svelte/Linear';
 
 	let {
 		name = '',

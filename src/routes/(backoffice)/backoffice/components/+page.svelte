@@ -9,7 +9,7 @@
 	import { photoswipeGallery } from '$lib/actions/backoffice/photoswipeGallery';
 
 	import { getLocalTimeZone, today } from '@internationalized/date';
-	import { Hiking, Stars2, Camera } from '@solar-icons/svelte/Outline';
+	import { Hiking, Stars2, Camera } from '@solar-icons/svelte/Linear';
 
 	// Calendar - Probando versión Melt-UI
 	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
