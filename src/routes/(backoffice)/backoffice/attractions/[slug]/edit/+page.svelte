@@ -22,9 +22,11 @@
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 
+	// Other componets
+	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+
 	// Icons
 	import { Database } from '@solar-icons/svelte/Outline';
-	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -71,7 +73,7 @@
 <form name="edit-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-stages" open>
 		{#snippet title()}
-			<DatabaseRestore class="size-6" />
+			<Database class="size-6" />
 			<span>Datos principales</span>
 		{/snippet}
 		{#snippet asideContent()}

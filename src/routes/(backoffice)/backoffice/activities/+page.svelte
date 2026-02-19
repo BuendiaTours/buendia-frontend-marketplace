@@ -502,6 +502,7 @@
 	<div class="ml-auto flex items-center gap-2">
 		<FilterAdvancedDialog
 			filters={advancedFiltersConfig}
+			size={32}
 			currentFilters={currentAdvancedFilters}
 			onApply={handleAdvancedFiltersApply}
 			onClear={handleClearAdvancedFilters}

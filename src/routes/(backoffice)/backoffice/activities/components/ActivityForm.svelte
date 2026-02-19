@@ -162,7 +162,7 @@
 <form id="activity-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-base-data" open>
 		{#snippet title()}
-			<DatabaseRestore class="size-6" />
+			<Database class="size-6" />
 			<span>Datos base</span>
 		{/snippet}
 		{#snippet asideContent()}

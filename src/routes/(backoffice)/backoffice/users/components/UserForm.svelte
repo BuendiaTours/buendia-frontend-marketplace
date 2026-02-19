@@ -3,9 +3,11 @@
 	import { superForm } from 'sveltekit-superforms';
 	import * as m from '$paraglide/messages';
 	import { resolveRoute } from '$app/paths';
-	import { Restore } from '@solar-icons/svelte/Outline';
 	import type { UserFormSchema } from '../schemas/user-form.schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
+
+	// Icons
+	import { Database } from '@solar-icons/svelte/Outline';
 
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
@@ -49,7 +51,7 @@
 <form id="user-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-user-data" open>
 		{#snippet title()}
-			<DatabaseRestore class="size-6" />
+			<Database class="size-6" />
 			<span>{m.users_userData()}</span>
 		{/snippet}
 		{#snippet content()}

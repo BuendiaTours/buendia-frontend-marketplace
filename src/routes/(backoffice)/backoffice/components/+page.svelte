@@ -222,9 +222,15 @@
 		</div>
 		<label class="label mt-4">Ejemplo de importación de iconos de @solar-icons</label>
 		<div class="card flex flex-row gap-4 p-4">
-			<Hiking />
-			<Stars2 />
-			<Camera />
+			<Hiking class="size-1" />
+			<Stars2 class="size-2" />
+			<Camera class="size-3" />
+			<Hiking class="size-4" />
+			<Stars2 class="size-5" />
+			<Camera class="size-6" />
+			<Hiking class="size-7" />
+			<Stars2 class="size-8" />
+			<Camera class="size-9" />
 		</div>
 
 		<label class="label mt-4">Ejemplo de form submit con confirmDialog</label>

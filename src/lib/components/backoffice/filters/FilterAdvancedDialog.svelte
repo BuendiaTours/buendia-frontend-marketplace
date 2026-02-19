@@ -60,7 +60,7 @@
 		class="btn btn-square btn-soft"
 		class:!border-success={hasActiveFilters}
 	>
-		<Filter class={hasActiveFilters ? 'text-success' : 'text-base'} />
+		<Filter class={`size-5 ${hasActiveFilters ? 'text-success' : 'text-base'}`} />
 	</button>
 </div>
 

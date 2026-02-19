@@ -7,8 +7,10 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
-	import { Database } from '@solar-icons/svelte/Outline';
 	import type { Attraction } from '$lib/types';
+
+	// Icons
+	import { Database } from '@solar-icons/svelte/Outline';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
@@ -85,7 +87,7 @@
 <form id="attraction-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-attraction-data" open>
 		{#snippet title()}
-			<DatabaseRestore class="size-6" />
+			<Database class="size-6" />
 			<span>Datos principales</span>
 		{/snippet}
 		{#snippet asideContent()}

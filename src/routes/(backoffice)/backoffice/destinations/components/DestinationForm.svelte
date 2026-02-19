@@ -8,8 +8,10 @@
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
-	import { Database } from '@solar-icons/svelte/Outline';
 	import type { Destination } from '$lib/types';
+
+	// Database
+	import { Database } from '@solar-icons/svelte/Outline';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
@@ -85,7 +87,7 @@
 <form id="destination-form" method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-destination-data" open>
 		{#snippet title()}
-			<DatabaseRestore class="size-6" />
+			<Database class="size-6" />
 			<span>Datos principales</span>
 		{/snippet}
 		{#snippet asideContent()}

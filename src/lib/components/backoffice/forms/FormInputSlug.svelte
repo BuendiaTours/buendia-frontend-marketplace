@@ -85,7 +85,7 @@
 
 		<div class="tooltip" data-tip={generateTooltip}>
 			<button type="button" class="btn btn-square btn-soft" onclick={generateSlug} {disabled}>
-				<Refresh />
+				<Refresh class="size-5" />
 			</button>
 		</div>
 	</div>
