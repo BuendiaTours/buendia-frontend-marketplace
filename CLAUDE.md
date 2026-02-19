@@ -97,6 +97,7 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 
 - `$state()`, `$props()`, `$derived()`, `$effect()` — no legacy `export let` or `$:` syntax
 - `$bindable()` for two-way binding props
+- No legacy `on:...` events, use Svelte 5 event standards
 - No writable stores unless global state is strictly required
 
 ### Styling
