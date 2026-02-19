@@ -367,7 +367,7 @@
 						{#if isSearching}
 							<span class="loading loading-xs loading-spinner"></span>
 						{:else}
-							<Magnifier class="size-4" />
+							<Magnifier class="size-5" />
 						{/if}
 					</button>
 				</div>

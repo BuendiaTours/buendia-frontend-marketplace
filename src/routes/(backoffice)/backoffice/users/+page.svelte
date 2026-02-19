@@ -153,7 +153,7 @@
 			onFilterChange={handleFilterChange}
 		/>
 		<button class="btn btn-square btn-outline btn-primary btn-sm" onclick={handleSearch}>
-			<Magnifier />
+			<Magnifier class="size-5" />
 		</button>
 	</div>
 

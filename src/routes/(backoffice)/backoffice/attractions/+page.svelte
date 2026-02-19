@@ -219,7 +219,7 @@
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
-			<Magnifier />
+			<Magnifier class="size-5" />
 		</button>
 	</div>
 
