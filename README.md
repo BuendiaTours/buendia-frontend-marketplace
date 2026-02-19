@@ -1,10 +1,23 @@
-# Sveltekit PoC
+# Buendia Frontend Core
 
-Prueba de concepto de Sveltekit con Typescript, Tailwind y DaisyUI de cara a desarrollar un front para una API REST.
+Aplicación **SvelteKit 5** que sirve dos dominios desde un único codebase:
 
-Arrancar el server: `npm run dev -- --open`
+- **🏢 Backoffice** — Panel CRUD de administración (DaisyUI)
+- **🛒 Marketplace** — Sitio público de cara al cliente
 
-## Tech stack
+Ambos consumen una **API REST externa** con cliente HTTP centralizado (retry, timeout, error handling tipado).
+
+## 🚀 Quick Start
+
+```bash
+npm install          # Instalar dependencias
+npm run dev          # Servidor de desarrollo (http://localhost:5173)
+npm run build        # Build de producción
+npm run check        # Type-check
+npm run lint         # Verificar formato y lint
+```
+
+## 🛠️ Tech Stack
 
 - **Framework**: SvelteKit (v5, runes)
 - **Language**: TypeScript
