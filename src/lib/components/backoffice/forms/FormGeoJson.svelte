@@ -2,7 +2,7 @@
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
-	import { InfoEmpty, Search } from 'svelte-iconoir';
+	import { InfoCircle, Magnifier } from '@solar-icons/svelte/Outline';
 	import { loadGoogleMapsAPI, isGoogleMapsLoaded } from '$lib/utils/googleMaps';
 
 	/**
@@ -367,14 +367,14 @@
 						{#if isSearching}
 							<span class="loading loading-xs loading-spinner"></span>
 						{:else}
-							<Search class="size-4" />
+							<Magnifier class="size-4" />
 						{/if}
 					</button>
 				</div>
 
 				<!-- Mensaje de advertencia -->
 				<div class="text-warning mt-2 flex items-center gap-2 text-xs">
-					<InfoEmpty class="size-4" />
+					<InfoCircle class="size-4" />
 					<span
 						>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
 						información.</span

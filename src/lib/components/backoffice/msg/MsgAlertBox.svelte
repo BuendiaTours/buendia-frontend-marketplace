@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { InfoEmpty, WarningTriangle, Cancel, CheckCircle } from 'svelte-iconoir';
+	import {
+		InfoCircle,
+		DangerTriangle,
+		CloseSquare,
+		CheckCircle
+	} from '@solar-icons/svelte/Outline';
 	import { page } from '$app/state';
 
 	type AlertType = 'info' | 'warning' | 'error' | 'success';
@@ -18,15 +23,15 @@
 	const alertConfig = {
 		info: {
 			class: 'alert-info',
-			Icon: InfoEmpty
+			Icon: InfoCircle
 		},
 		warning: {
 			class: 'alert-warning',
-			Icon: WarningTriangle
+			Icon: DangerTriangle
 		},
 		error: {
 			class: 'alert-error',
-			Icon: Cancel
+			Icon: CloseSquare
 		},
 		success: {
 			class: 'alert-success',
@@ -56,7 +61,7 @@
 		<IconComponent class="size-6 shrink-0" />
 		<span class="flex-1">{alert.message}</span>
 		<button type="button" class="btn btn-square btn-outline btn-xs -mt-3 -mr-3" onclick={dismiss}>
-			<Cancel class="size-4" />
+			<CloseSquare class="size-4" />
 		</button>
 	</div>
 {/if}

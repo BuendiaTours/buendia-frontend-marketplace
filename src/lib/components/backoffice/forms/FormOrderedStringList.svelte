@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
-	import { Menu, Cancel, Plus } from 'svelte-iconoir';
+	import { Reorder, CloseSquare, AddSquare } from '@solar-icons/svelte/Outline';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { tick } from 'svelte';
 
@@ -142,7 +142,7 @@
 							ondragstart={(e) => handleDragStart(e, index)}
 							ondragend={handleDragEnd}
 						>
-							<Menu class="size-5" />
+							<Reorder class="size-5" />
 						</div>
 
 						<!-- Textarea auto-expandible -->
@@ -163,7 +163,7 @@
 								class="btn btn-square btn-soft btn-xs btn-error"
 								onclick={() => removeItem(index)}
 							>
-								<Cancel class="size-4" />
+								<CloseSquare class="size-4" />
 							</button>
 						</div>
 					</div>
@@ -181,7 +181,7 @@
 			{/if}
 
 			<button type="button" class="btn btn-soft btn-xs ml-auto" onclick={addItem}>
-				<Plus class="size-4" />
+				<AddSquare class="size-4" />
 				Añadir elemento
 			</button>
 		</div>

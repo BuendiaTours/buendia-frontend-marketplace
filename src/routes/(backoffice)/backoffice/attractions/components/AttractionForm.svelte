@@ -7,7 +7,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
-	import { DatabaseRestore } from 'svelte-iconoir';
+	import { Database } from '@solar-icons/svelte/Outline';
 	import type { Attraction } from '$lib/types';
 
 	// Components

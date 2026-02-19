@@ -13,7 +13,7 @@ Props disponibles:
 
 <script lang="ts">
 	import { createCalendar, melt } from '@melt-ui/svelte';
-	import { NavArrowLeft, NavArrowRight } from 'svelte-iconoir';
+	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Outline';
 	import cn from 'clsx';
 	import type { DateValue } from '@internationalized/date';
 
@@ -54,7 +54,7 @@ Props disponibles:
 			use:melt={$prevButton}
 			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
-			<NavArrowLeft />
+			<AltArrowLeft />
 		</button>
 		<div class="text-sm font-medium">
 			{$headingValue}
@@ -63,7 +63,7 @@ Props disponibles:
 			use:melt={$nextButton}
 			class="btn btn-ghost btn-sm inline-flex size-10 items-center justify-center"
 		>
-			<NavArrowRight />
+			<AltArrowRight />
 		</button>
 	</header>
 

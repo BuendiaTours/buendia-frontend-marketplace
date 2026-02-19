@@ -1,7 +1,14 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
-	import { Upload, NavArrowDown, NavArrowUp, Download, Cancel, Menu } from 'svelte-iconoir';
+	import {
+		Upload,
+		AltArrowDown,
+		AltArrowUp,
+		Download,
+		CloseSquare,
+		Reorder
+	} from '@solar-icons/svelte/Outline';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 
 	/**
@@ -263,7 +270,7 @@
 											ondragstart={(e) => handleDragStart(e, index)}
 											ondragend={handleDragEnd}
 										>
-											<Menu class="size-5" />
+											<Reorder class="size-5" />
 										</div>
 									{:else}
 										<div class="inline-flex gap-1">
@@ -284,7 +291,7 @@
 													onclick={() => moveItemUp(index)}
 													disabled={index === 0}
 												>
-													<NavArrowUp class="size-5" />
+													<AltArrowUp class="size-5" />
 												</button>
 											</div>
 											<div class="tooltip" data-tip="Mover abajo">
@@ -294,7 +301,7 @@
 													onclick={() => moveItemDown(index)}
 													disabled={index === items.length - 1}
 												>
-													<NavArrowDown class="size-5" />
+													<AltArrowDown class="size-5" />
 												</button>
 											</div>
 											<div class="tooltip" data-tip="Mover al final">
@@ -321,7 +328,7 @@
 											class="btn btn-square btn-soft btn-xs btn-error"
 											onclick={() => removeItem(item.id)}
 										>
-											<Cancel class="size-4" />
+											<CloseSquare class="size-4" />
 										</button>
 									</div>
 								</td>

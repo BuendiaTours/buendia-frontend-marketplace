@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Cancel } from 'svelte-iconoir';
+	import { CloseSquare } from '@solar-icons/svelte/Outline';
 
 	type Option = {
 		id: string;
@@ -81,7 +81,7 @@
 			onclick={handleClear}
 			disabled={!selectedValue}
 		>
-			<Cancel />
+			<CloseSquare />
 		</button>
 	</div>
 </div>

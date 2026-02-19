@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { Cancel } from 'svelte-iconoir';
+	import { CloseSquare } from '@solar-icons/svelte/Outline';
 	import { untrack } from 'svelte';
 	import type { MeltDrawerConfig } from './MeltDrawer';
 	import type { Snippet } from 'svelte';
@@ -98,7 +98,7 @@
 				aria-label="Cerrar"
 				class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
 			>
-				<Cancel class="size-4" />
+				<CloseSquare class="size-4" />
 			</button>
 
 			{#if title}

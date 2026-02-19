@@ -137,7 +137,7 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 - Study similar components in `src/lib/components/backoffice/` or `marketplace/`
 - Use `$props()` for props, `$bindable()` for two-way binding
 - Melt UI for headless components (Calendar, ComboBox, Drawer, etc.)
-- Icons from `svelte-iconoir`
+- Icons from `@solar-icons/svelte`
 
 ## Additional Documentation
 

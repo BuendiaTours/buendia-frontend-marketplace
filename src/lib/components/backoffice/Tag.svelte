@@ -25,7 +25,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Cancel } from 'svelte-iconoir';
+	import { CloseSquare } from '@solar-icons/svelte/Outline';
 
 	let {
 		name = '',
@@ -66,7 +66,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 			class="btn btn-square btn-ghost btn-xs -mr-2 h-4 min-h-4 w-4 p-0"
 			aria-label="Remove tag"
 		>
-			<Cancel class="h-3 w-3" />
+			<CloseSquare class="h-3 w-3" />
 		</button>
 	{/if}
 </div>

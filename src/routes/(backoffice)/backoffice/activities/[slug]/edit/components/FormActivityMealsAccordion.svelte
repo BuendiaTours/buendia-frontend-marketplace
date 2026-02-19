@@ -2,7 +2,7 @@
 	import { tick } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
-	import { OrangeSlice } from 'svelte-iconoir';
+	import { ChefHat } from '@solar-icons/svelte/Outline';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
@@ -85,7 +85,7 @@
 
 <FormAccordion name="form-meals">
 	{#snippet title()}
-		<OrangeSlice class="size-6" />
+		<ChefHat class="size-6" />
 		<span>Comidas</span>
 	{/snippet}
 	{#snippet titleBarActions()}

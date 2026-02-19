@@ -3,7 +3,7 @@
 	import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 	import { apiConfig } from '$core/_shared/config';
 	import { copyToClipboard } from '$lib/utils/misc';
-	import { InfoEmpty, Copy, CheckCircle } from 'svelte-iconoir';
+	import { InfoCircle, Copy, CheckCircle } from '@solar-icons/svelte/Outline';
 
 	let { data }: { data: PageData } = $props();
 
@@ -129,7 +129,7 @@
 	</div>
 
 	<div class="alert alert-soft">
-		<InfoEmpty class="size-4" />
+		<InfoCircle class="size-4" />
 		<span class="text-sm"
 			>Los endpoints a continuación se generan automáticamente desde <code
 				>src/lib/api/endpoints.config.ts</code

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { Cancel, FilterAlt } from 'svelte-iconoir';
+	import { CloseSquare, Filter } from '@solar-icons/svelte/Outline';
 
 	type FilterConfig = {
 		readonly key: string;
@@ -60,7 +60,7 @@
 		class="btn btn-square btn-soft"
 		class:!border-success={hasActiveFilters}
 	>
-		<FilterAlt class={hasActiveFilters ? 'text-success' : 'text-base'} />
+		<Filter class={hasActiveFilters ? 'text-success' : 'text-base'} />
 	</button>
 </div>
 
@@ -94,7 +94,7 @@
 			</div>
 
 			<button use:melt={$close} class="btn btn-circle btn-ghost btn-sm absolute top-4 right-4">
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>

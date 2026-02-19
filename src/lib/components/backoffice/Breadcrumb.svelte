@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BreadcrumbItem } from '$lib/types';
-	import { Home } from 'svelte-iconoir';
+	import { Home } from '@solar-icons/svelte/Outline';
 
 	type Props = {
 		items: BreadcrumbItem[];

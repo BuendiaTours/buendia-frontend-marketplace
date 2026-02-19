@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { NavArrowDown, NavArrowUp, ArrowSeparateVertical } from 'svelte-iconoir';
+	import {
+		SortFromTopToBottom,
+		SortFromBottomToTop,
+		SortVertical
+	} from '@solar-icons/svelte/Outline';
 	import { CriteriaSortOption } from '$core/_shared/enums';
 
 	/**
@@ -85,11 +89,11 @@
 	>
 	{#if isActive}
 		{#if isDesc}
-			<NavArrowDown class="text-success size-4" />
+			<SortFromTopToBottom class="text-success size-4" />
 		{:else}
-			<NavArrowUp class="text-success size-4" />
+			<SortFromBottomToTop class="text-success size-4" />
 		{/if}
 	{:else}
-		<ArrowSeparateVertical class="text-base-content/30 size-4" />
+		<SortVertical class="text-base-content/30 size-4" />
 	{/if}
 </div>

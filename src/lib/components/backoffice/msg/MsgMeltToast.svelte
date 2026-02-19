@@ -2,7 +2,12 @@
 	import { createToaster, melt } from '@melt-ui/svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
-	import { Cancel, InfoEmpty, WarningTriangle, CheckCircle } from 'svelte-iconoir';
+	import {
+		CloseSquare,
+		InfoCircle,
+		DangerTriangle,
+		CheckCircle
+	} from '@solar-icons/svelte/Outline';
 	import { page } from '$app/state';
 
 	/**
@@ -35,15 +40,15 @@
 	const toastConfig = {
 		info: {
 			bgClass: 'bg-info text-info-content',
-			Icon: InfoEmpty
+			Icon: InfoCircle
 		},
 		warning: {
 			bgClass: 'bg-warning text-warning-content',
-			Icon: WarningTriangle
+			Icon: DangerTriangle
 		},
 		error: {
 			bgClass: 'bg-error text-error-content',
-			Icon: Cancel
+			Icon: CloseSquare
 		},
 		success: {
 			bgClass: 'bg-success text-success-content',
@@ -105,7 +110,7 @@
 					use:melt={$close(id)}
 					class="absolute top-2 right-2 grid size-6 cursor-pointer place-items-center rounded-full hover:bg-black/10"
 				>
-					<Cancel class="size-4" />
+					<CloseSquare class="size-4" />
 				</button>
 			</div>
 		</div>

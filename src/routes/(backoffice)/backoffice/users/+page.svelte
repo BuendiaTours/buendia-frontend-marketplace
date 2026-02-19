@@ -23,7 +23,7 @@
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	import { Cancel, Plus, Search } from 'svelte-iconoir';
+	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Outline';
 	import * as m from '$paraglide/messages';
 
 	let {
@@ -153,7 +153,7 @@
 			onFilterChange={handleFilterChange}
 		/>
 		<button class="btn btn-square btn-outline btn-primary btn-sm" onclick={handleSearch}>
-			<Search />
+			<Magnifier />
 		</button>
 	</div>
 
@@ -164,7 +164,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -174,7 +174,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={USER_ROUTES.create} class="btn btn-outline btn-primary">
-		<Plus />
+		<AddSquare />
 		{m.users_newUser()}
 	</a>
 </div>

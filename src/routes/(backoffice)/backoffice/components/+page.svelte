@@ -9,7 +9,7 @@
 	import { photoswipeGallery } from '$lib/actions/backoffice/photoswipeGallery';
 
 	import { getLocalTimeZone, today } from '@internationalized/date';
-	import { Activity, BubbleStar, Camera } from 'svelte-iconoir';
+	import { Hiking, Stars2, Camera } from '@solar-icons/svelte/Outline';
 
 	// Calendar - Probando versión Melt-UI
 	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
@@ -220,10 +220,10 @@
 				</div>
 			</details>
 		</div>
-		<label class="label mt-4">Ejemplo de importación de iconos de iconoir</label>
+		<label class="label mt-4">Ejemplo de importación de iconos de @solar-icons</label>
 		<div class="card flex flex-row gap-4 p-4">
-			<Activity />
-			<BubbleStar />
+			<Hiking />
+			<Stars2 />
 			<Camera />
 		</div>
 

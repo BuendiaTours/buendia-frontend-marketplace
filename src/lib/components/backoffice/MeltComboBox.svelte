@@ -16,7 +16,7 @@ Soporta modo single y multiple.
 
 <script lang="ts">
 	import { createCombobox, melt } from '@melt-ui/svelte';
-	import { ArrowSeparateVertical, Check } from 'svelte-iconoir';
+	import { SortVertical, CheckSquare } from '@solar-icons/svelte/Outline';
 	import type { Component } from 'svelte';
 	import { untrack } from 'svelte';
 	import { fly } from 'svelte/transition';
@@ -134,7 +134,7 @@ Soporta modo single y multiple.
 		{name}
 	/>
 	<div class="absolute end-3 top-1/2 size-5 -translate-y-1/2 opacity-60">
-		<ArrowSeparateVertical class="size-5" />
+		<SortVertical class="size-5" />
 	</div>
 </div>
 
@@ -156,7 +156,7 @@ Soporta modo single y multiple.
 				>
 					{#if $isSelected(item.value)}
 						<div class="check">
-							<Check class="size-4" />
+							<CheckSquare class="size-4" />
 						</div>
 					{/if}
 					<div class="pl-4">

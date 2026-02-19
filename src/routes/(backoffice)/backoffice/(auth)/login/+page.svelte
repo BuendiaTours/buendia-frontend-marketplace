@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Mail, Lock } from 'svelte-iconoir';
+	import { Letter, Lock } from '@solar-icons/svelte/Outline';
 </script>
 
 <div class="flex min-h-screen items-center justify-center">
@@ -13,7 +13,7 @@
 					<span class="label-text">Email</span>
 				</label>
 				<label class="validator input flex w-full items-center gap-2">
-					<Mail class="h-[1em] opacity-50" />
+					<Letter class="h-[1em] opacity-50" />
 					<input type="email" name="email" placeholder="mail@site.com" class="grow" required />
 				</label>
 				<div class="validator-hint text-error hidden text-sm">

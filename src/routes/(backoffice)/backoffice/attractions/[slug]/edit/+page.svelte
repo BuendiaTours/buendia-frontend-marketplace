@@ -23,7 +23,7 @@
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 
 	// Icons
-	import { DatabaseRestore } from 'svelte-iconoir';
+	import { Database } from '@solar-icons/svelte/Outline';
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 
 	let { data }: { data: PageData } = $props();

@@ -2,13 +2,13 @@
 	/**
 	 * Badge - Tag con o sin icono
 	 *
-	 * Muestra un badge con texto y opcionalmente un icono de Iconoir.
-	 * El icono se pasa como string con el nombre del componente de Iconoir.
+	 * Muestra un badge con texto y opcionalmente un icono de @solar-icons.
+	 * El icono se pasa como string con el nombre del componente de @solar-icons.
 	 *
 	 * @component
 	 */
 
-	import * as Icons from 'svelte-iconoir';
+	import * as Icons from '@solar-icons/svelte/Outline';
 	import type { ComponentType } from 'svelte';
 
 	type Badge = {

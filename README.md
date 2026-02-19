@@ -23,7 +23,7 @@ Arrancar el server: `npm run dev -- --open`
   - Zod (schema validation)
 - **UI Components**:
   - Melt UI (headless components)
-  - Svelte Iconoir (icons)
+  - Svelte Solar-icons (icons)
 - **Other libraries**:
   - PhotoSwipe (image gallery)
   - Swiper (carousels)
@@ -574,7 +574,7 @@ Estos archivos se importan en `src/routes/+layout.svelte` para estar disponibles
 
 ### 4. Iconos
 
-https://github.com/metonym/svelte-iconoir
+https://www.npmjs.com/package/@solar-icons/svelte
 
 ## Sistema de Filtros URL-Driven
 

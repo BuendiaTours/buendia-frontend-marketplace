@@ -3,7 +3,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import * as m from '$paraglide/messages';
 	import { resolveRoute } from '$app/paths';
-	import { DatabaseRestore } from 'svelte-iconoir';
+	import { Restore } from '@solar-icons/svelte/Outline';
 	import type { UserFormSchema } from '../schemas/user-form.schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
 

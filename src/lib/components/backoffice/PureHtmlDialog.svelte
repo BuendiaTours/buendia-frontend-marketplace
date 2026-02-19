@@ -53,7 +53,7 @@ USO CON FORMULARIO:
 -->
 
 <script lang="ts">
-	import { Cancel } from 'svelte-iconoir';
+	import { CloseSquare } from '@solar-icons/svelte/Outline';
 	import type { PureHtmlDialogConfig } from './PureHtmlDialog';
 	import type { Snippet } from 'svelte';
 
@@ -132,7 +132,7 @@ USO CON FORMULARIO:
 					onclick={() => close()}
 					aria-label="Cerrar"
 				>
-					<Cancel class="size-4" />
+					<CloseSquare class="size-4" />
 				</button>
 			</div>
 		</div>

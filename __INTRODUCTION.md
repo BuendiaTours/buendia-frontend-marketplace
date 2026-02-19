@@ -1218,17 +1218,7 @@ export const actions: Actions = {
 
 ```svelte
 <script lang="ts">
-	import {
-		Calendar,
-		Cancel,
-		Plus,
-		Map,
-		Search,
-		Edit,
-		Trash,
-		Check,
-		InfoEmpty
-	} from 'svelte-iconoir';
+	import { Calendar, CloseSquare, AddSquare, Map, Magnifier } from 'svelte-iconoir';
 </script>
 
 <!-- Iconos simples -->

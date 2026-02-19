@@ -6,7 +6,7 @@ Componente genérico para mostrar mensajes de error con un diseño consistente
 en toda la aplicación.
 
 CARACTERÍSTICAS:
-- Icono por defecto (WarningTriangle 64x64) - personalizable mediante snippet
+- Icono por defecto (DangerTriangle 64x64) - personalizable mediante snippet
 - Título y mensaje configurables
 - Snippet opcional para acciones (botones)
 - Detalles técnicos opcionales en JSON
@@ -38,7 +38,7 @@ USO COMPLETO:
 -->
 
 <script lang="ts">
-	import { WarningTriangle } from 'svelte-iconoir';
+	import { DangerTriangle } from '@solar-icons/svelte/Outline';
 	import type { Snippet } from 'svelte';
 
 	type Props = {
@@ -67,7 +67,7 @@ USO COMPLETO:
 			{@render icon()}
 		{:else}
 			<!-- Icono por defecto -->
-			<WarningTriangle width={64} height={64} />
+			<DangerTriangle width={64} height={64} />
 		{/if}
 	</div>
 

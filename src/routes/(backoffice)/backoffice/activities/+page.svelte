@@ -52,7 +52,7 @@
 	let selectedActivityId = $state<string | null>(null);
 
 	// Icons
-	import { Calendar, Cancel, Map, Plus } from 'svelte-iconoir';
+	import { Calendar, CloseSquare, Map, AddSquare } from '@solar-icons/svelte/Outline';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -449,7 +449,7 @@
 				onclick={handleClearLocation}
 				disabled={!selectedDestination}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -471,7 +471,7 @@
 				disabled={!selectedKind}
 				onclick={handleClearKind}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -494,7 +494,7 @@
 				disabled={!selectedStatus}
 				onclick={handleClearStatus}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -513,7 +513,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -524,7 +524,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={ACTIVITY_ROUTES.create} class="btn btn-outline btn-primary">
-		<Plus />
+		<AddSquare />
 		<span>{m.activities_newActivity()}</span>
 	</a>
 </div>
@@ -660,7 +660,7 @@
 													title: 'Eliminar',
 													message: '¿Estás seguro de que quieres eliminar este elemento?',
 													confirmText: 'Eliminar',
-													cancelText: 'Cancelar',
+													cancelText: 'CloseSquarear',
 													danger: true
 												}}
 											>

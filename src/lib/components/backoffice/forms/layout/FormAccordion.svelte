@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
-	import { Menu } from 'svelte-iconoir';
+	import { Reorder } from '@solar-icons/svelte/Outline';
 
 	/**
 	 * Componente reutilizable para acordeones en formularios
@@ -149,7 +149,7 @@
 						{ondragstart}
 						{ondragend}
 					>
-						<Menu class="size-5" />
+						<Reorder class="size-5" />
 					</div>
 				{/if}
 				{@render title()}

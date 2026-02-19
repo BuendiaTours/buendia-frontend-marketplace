@@ -39,7 +39,7 @@
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 
 	// Icons
-	import { Cancel, Plus, Search } from 'svelte-iconoir';
+	import { CloseSquare, AddSquare, Magnifier } from '@solar-icons/svelte/Outline';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -219,7 +219,7 @@
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
 		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
-			<Search />
+			<Magnifier />
 		</button>
 	</div>
 
@@ -248,7 +248,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<Cancel />
+				<CloseSquare />
 			</button>
 		</div>
 	</div>
@@ -259,7 +259,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary">
-		<Plus />
+		<AddSquare />
 		Nueva atracción
 	</a>
 </div>

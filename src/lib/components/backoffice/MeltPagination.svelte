@@ -14,7 +14,7 @@ Props disponibles:
 
 <script lang="ts">
 	import { createPagination, melt } from '@melt-ui/svelte';
-	import { NavArrowLeft, NavArrowRight } from 'svelte-iconoir';
+	import { AltArrowLeft, AltArrowRight } from '@solar-icons/svelte/Outline';
 
 	type Props = {
 		count: number;
@@ -53,7 +53,7 @@ Props disponibles:
 		use:melt={$prevButton}
 		class="btn btn-square btn-ghost btn-sm data-disabled:btn-disabled mr-2"
 	>
-		<NavArrowLeft class="size-5" />
+		<AltArrowLeft class="size-5" />
 	</button>
 
 	<div class="join">
@@ -75,7 +75,7 @@ Props disponibles:
 		use:melt={$nextButton}
 		class="btn btn-square btn-ghost btn-sm data-disabled:btn-disabled ml-2"
 	>
-		<NavArrowRight class="size-5" />
+		<AltArrowRight class="size-5" />
 	</button>
 </nav>
 

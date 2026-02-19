@@ -8,7 +8,7 @@
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
-	import { DatabaseRestore } from 'svelte-iconoir';
+	import { Database } from '@solar-icons/svelte/Outline';
 	import type { Destination } from '$lib/types';
 
 	// Components

@@ -26,7 +26,7 @@
 		ACTIVITY_KIND_OPTIONS
 	} from '$lib/labels/activities';
 
-	import { DatabaseRestore, FolderSettings, Link, TaskList } from 'svelte-iconoir';
+	import { Database, FolderCheck, Link, ChecklistMinimalistic } from '@solar-icons/svelte/Outline';
 
 	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
@@ -266,7 +266,7 @@
 
 	<FormAccordion name="form-cats-tags">
 		{#snippet title()}
-			<FolderSettings class="size-6" />
+			<FolderCheck class="size-6" />
 			<span>Categorización</span>
 		{/snippet}
 		{#snippet asideContent()}
@@ -338,7 +338,7 @@
 
 	<FormAccordion name="form-includes">
 		{#snippet title()}
-			<TaskList class="size-6" />
+			<ChecklistMinimalistic class="size-6" />
 			<span>Elementos incluídos, excluídos y necesarios</span>
 		{/snippet}
 		{#snippet asideContent()}

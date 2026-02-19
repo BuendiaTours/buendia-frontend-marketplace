@@ -4,13 +4,13 @@
 	 *
 	 * Características:
 	 * - Usa theme-change para persistencia en localStorage
-	 * - Iconos de svelte-iconoir (SunLight, HalfMoon)
+	 * - Iconos de @solar-icons/svelte (Sun, Moon)
 	 * - Swap animado de DaisyUI
 	 * - Estado reactivo con MutationObserver
 	 */
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { SunLight, HalfMoon } from 'svelte-iconoir';
+	import { Sun, Moon } from '@solar-icons/svelte/Outline';
 
 	// Estado reactivo del tema actual
 	let currentTheme = $state<string>('dark');
@@ -53,7 +53,7 @@
 		checked={isDark}
 	/>
 	<!-- Icono Sol (aparece cuando está en LIGHT) -->
-	<SunLight class="swap-on size-6" />
+	<Sun class="swap-on size-6" />
 	<!-- Icono Luna (aparece cuando está en DARK) -->
-	<HalfMoon class="swap-off size-6" />
+	<Moon class="swap-off size-6" />
 </label>
