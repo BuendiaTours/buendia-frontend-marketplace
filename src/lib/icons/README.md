@@ -16,23 +16,28 @@ Sistema de iconos custom compatible con `@solar-icons/svelte`.
 <ExampleIcon class="size-6 text-blue-500" />
 
 <!-- Con props -->
-<ExampleIcon size={32} color="red" mirrored={true} alt="Descripción" />
+<ExampleIcon size={32} strokeWidth={3} color="red" mirrored={true} alt="Descripción" />
 ```
 
-**Props disponibles:** `class`, `size`, `color`, `mirrored`, `alt`, `style`
+**Props disponibles:** `class`, `size`, `strokeWidth`, `color`, `mirrored`, `alt`, `style`
+
+- `strokeWidth`: Grosor del trazo (por defecto: `2`)
 
 ## Añadir iconos
 
 ### Automático (recomendado)
 
 ```bash
-# 1. Colocar SVG en static/icons/custom/
+# 1. Colocar SVG en src/lib/icons/src/ organizados en carpetas (Linear/, Outline/, etc.)
 # 2. Ejecutar
 npm run generate:icons
 ```
 
 El script genera componentes Svelte y actualiza exports automáticamente.
-Nombres: `custom-logo.svg` → `CustomLogo`
+
+- Nombres: `custom-logo.svg` → `CustomLogo`
+- Respeta estructura de carpetas: `src/Linear/icon.svg` → `custom/Linear/Icon.svelte`
+- Convierte colores a `currentColor` y stroke-width a variable CSS
 
 ### Manual
 
@@ -57,10 +62,10 @@ export { default as IconName } from './Linear/IconName.svelte';
 
 ## Preparar SVG
 
-- Usar `currentColor` en `stroke` y `fill`
 - ViewBox: `0 0 24 24`
 - Sin `width`/`height`
 - Optimizar con [SVGOMG](https://jakearchibald.github.io/svgomg/)
+- **Nota:** El script automáticamente convierte `fill`/`stroke` a `currentColor` y `stroke-width` a variable CSS
 
 ## Ejemplos
 
@@ -197,11 +202,16 @@ function optimizeSvg(svgContent: string): string {
 ```
 src/lib/icons/
 ├── IconBase.svelte          # Wrapper reutilizable
-├── custom/
-│   ├── Outline/             # Componentes generados
-│   ├── Outline.ts           # Exports
+├── src/                     # SVG fuente (organizados por carpetas)
+│   ├── Linear/
+│   ├── Outline/
+│   └── Bold/
+├── custom/                  # Componentes Svelte generados
+│   ├── Linear/
+│   │   └── IconName.svelte
+│   ├── Linear.ts            # Exports
+│   ├── Outline/
+│   ├── Outline.ts
 │   └── index.ts
 └── index.ts
-
-static/icons/custom/         # SVG fuente
 ```

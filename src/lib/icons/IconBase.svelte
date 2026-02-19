@@ -5,6 +5,7 @@
 		alt?: string;
 		color?: string;
 		size?: string | number;
+		strokeWidth?: string | number;
 		mirrored?: boolean;
 		children?: Snippet;
 		class?: string;
@@ -16,6 +17,7 @@
 		alt,
 		color = 'currentColor',
 		size = '1em',
+		strokeWidth = 2,
 		mirrored = false,
 		children,
 		class: className,
@@ -25,6 +27,7 @@
 
 	const width = $derived(typeof size === 'number' ? `${size}px` : size);
 	const height = $derived(typeof size === 'number' ? `${size}px` : size);
+	const combinedStyle = $derived(`--icon-stroke-width: ${strokeWidth};${style ? ` ${style}` : ''}`);
 </script>
 
 <svg
@@ -36,7 +39,7 @@
 	viewBox="0 0 24 24"
 	transform={mirrored ? 'scale(-1, 1)' : undefined}
 	class={className}
-	{style}
+	style={combinedStyle}
 	{...restProps}
 >
 	{#if alt}<title>{alt}</title>{/if}

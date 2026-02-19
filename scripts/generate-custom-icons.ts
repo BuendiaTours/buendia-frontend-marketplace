@@ -3,9 +3,10 @@
  * Script to generate custom Svelte icon components from SVG files
  *
  * Usage:
- *   1. Place SVG files in static/icons/custom/
+ *   1. Place SVG files in src/lib/icons/src/ organized in folders (e.g., Linear/, Outline/)
  *   2. Run: npm run generate:icons
- *   3. Icons will be generated in src/lib/icons/custom/Linear/
+ *   3. Icons will be generated in src/lib/icons/custom/ preserving folder structure
+ *   4. Export files will be created for each folder (e.g., Linear.ts, Outline.ts)
  */
 
 import fs from 'fs';
@@ -15,9 +16,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ICONS_SOURCE_DIR = path.join(__dirname, '../static/icons/custom');
-const ICONS_OUTPUT_DIR = path.join(__dirname, '../src/lib/icons/custom/Linear');
-const EXPORTS_FILE = path.join(__dirname, '../src/lib/icons/custom/Linear.ts');
+const ICONS_SOURCE_DIR = path.join(__dirname, '../src/lib/icons/src');
+const ICONS_OUTPUT_DIR = path.join(__dirname, '../src/lib/icons/custom');
 
 // Colors
 const colors = {
@@ -45,6 +45,19 @@ function toPascalCase(filename: string): string {
 }
 
 /**
+ * Replace color attributes with currentColor and stroke-width with CSS variable
+ */
+function replaceColorsWithCurrentColor(svgContent: string): string {
+	return svgContent
+		.replace(/\bfill="[^"]*"/g, 'fill="currentColor"')
+		.replace(/\bstroke="[^"]*"/g, 'stroke="currentColor"')
+		.replace(/\bfill='[^']*'/g, "fill='currentColor'")
+		.replace(/\bstroke='[^']*'/g, "stroke='currentColor'")
+		.replace(/\bstroke-width="[^"]*"/g, 'stroke-width="var(--icon-stroke-width)"')
+		.replace(/\bstroke-width='[^']*'/g, "stroke-width='var(--icon-stroke-width)'");
+}
+
+/**
  * Extract SVG content (everything inside <svg> tags)
  */
 function extractSvgContent(svgContent: string): string {
@@ -57,7 +70,8 @@ function extractSvgContent(svgContent: string): string {
 		throw new Error('Invalid SVG format');
 	}
 
-	return match[1].trim();
+	// Replace color attributes with currentColor
+	return replaceColorsWithCurrentColor(match[1].trim());
 }
 
 /**
@@ -78,8 +92,8 @@ function generateComponent(iconName: string, svgContent: string): string {
 /**
  * Generate TypeScript export statement
  */
-function generateExport(iconName: string): string {
-	return `export { default as ${iconName} } from './Linear/${iconName}.svelte';`;
+function generateExport(iconName: string, folderName: string): string {
+	return `export { default as ${iconName} } from './${folderName}/${iconName}.svelte';`;
 }
 
 /**
@@ -88,73 +102,116 @@ function generateExport(iconName: string): string {
 async function generateIcons() {
 	log('\n🎨 Generating custom icons...\n', colors.blue);
 
-	// Ensure directories exist
+	// Ensure source directory exists
 	if (!fs.existsSync(ICONS_SOURCE_DIR)) {
 		log(`❌ Source directory not found: ${ICONS_SOURCE_DIR}`, colors.red);
 		log('📁 Creating directory...', colors.yellow);
 		fs.mkdirSync(ICONS_SOURCE_DIR, { recursive: true });
-		log('✅ Please add SVG files to static/icons/custom/', colors.green);
+		log('✅ Please add SVG files to src/lib/icons/src/', colors.green);
 		return;
 	}
 
+	// Ensure output directory exists
 	if (!fs.existsSync(ICONS_OUTPUT_DIR)) {
 		fs.mkdirSync(ICONS_OUTPUT_DIR, { recursive: true });
 	}
 
-	// Read SVG files
-	const files = fs.readdirSync(ICONS_SOURCE_DIR).filter((file) => file.endsWith('.svg'));
+	// Get all subdirectories in the source directory
+	const folders = fs
+		.readdirSync(ICONS_SOURCE_DIR, { withFileTypes: true })
+		.filter((dirent) => dirent.isDirectory())
+		.map((dirent) => dirent.name);
 
-	if (files.length === 0) {
-		log('⚠️  No SVG files found in static/icons/custom/', colors.yellow);
-		log('📝 Add SVG files and run this script again.', colors.yellow);
+	if (folders.length === 0) {
+		log('⚠️  No folders found in src/lib/icons/src/', colors.yellow);
+		log('📝 Add folders with SVG files and run this script again.', colors.yellow);
 		return;
 	}
 
-	const exports: string[] = [];
-	let generatedCount = 0;
-	let errorCount = 0;
+	let totalGeneratedCount = 0;
+	let totalErrorCount = 0;
 
-	for (const file of files) {
-		try {
-			const iconName = toPascalCase(file);
-			const svgPath = path.join(ICONS_SOURCE_DIR, file);
-			const outputPath = path.join(ICONS_OUTPUT_DIR, `${iconName}.svelte`);
+	// Process each folder
+	for (const folder of folders) {
+		log(`\n📁 Processing folder: ${folder}`, colors.blue);
 
-			// Read SVG file
-			const svgContent = fs.readFileSync(svgPath, 'utf-8');
+		const folderSourcePath = path.join(ICONS_SOURCE_DIR, folder);
+		const folderOutputPath = path.join(ICONS_OUTPUT_DIR, folder);
+		const exportsFile = path.join(ICONS_OUTPUT_DIR, `${folder}.ts`);
 
-			// Extract content
-			const innerContent = extractSvgContent(svgContent);
-
-			// Generate component
-			const component = generateComponent(iconName, innerContent);
-
-			// Write component file
-			fs.writeFileSync(outputPath, component, 'utf-8');
-
-			// Add to exports
-			exports.push(generateExport(iconName));
-
-			log(`  ✓ ${file} → ${iconName}.svelte`, colors.green);
-			generatedCount++;
-		} catch (error) {
-			log(`  ✗ ${file} - ${error instanceof Error ? error.message : 'Unknown error'}`, colors.red);
-			errorCount++;
+		// Ensure output folder exists
+		if (!fs.existsSync(folderOutputPath)) {
+			fs.mkdirSync(folderOutputPath, { recursive: true });
 		}
+
+		// Read SVG files from this folder
+		const files = fs.readdirSync(folderSourcePath).filter((file) => file.endsWith('.svg'));
+
+		if (files.length === 0) {
+			log(`  ⚠️  No SVG files found in ${folder}/`, colors.yellow);
+			continue;
+		}
+
+		const exports: string[] = [];
+		let generatedCount = 0;
+		let errorCount = 0;
+
+		// Process each SVG file
+		for (const file of files) {
+			try {
+				const iconName = toPascalCase(file);
+				const svgPath = path.join(folderSourcePath, file);
+				const outputPath = path.join(folderOutputPath, `${iconName}.svelte`);
+
+				// Read SVG file
+				const svgContent = fs.readFileSync(svgPath, 'utf-8');
+
+				// Extract content
+				const innerContent = extractSvgContent(svgContent);
+
+				// Generate component
+				const component = generateComponent(iconName, innerContent);
+
+				// Write component file
+				fs.writeFileSync(outputPath, component, 'utf-8');
+
+				// Add to exports
+				exports.push(generateExport(iconName, folder));
+
+				log(`  ✓ ${file} → ${iconName}.svelte`, colors.green);
+				generatedCount++;
+			} catch (error) {
+				log(
+					`  ✗ ${file} - ${error instanceof Error ? error.message : 'Unknown error'}`,
+					colors.red
+				);
+				errorCount++;
+			}
+		}
+
+		// Generate exports file for this folder
+		if (exports.length > 0) {
+			const exportsContent = exports.sort().join('\n') + '\n';
+			fs.writeFileSync(exportsFile, exportsContent, 'utf-8');
+			log(`\n  📦 Updated ${folder}.ts (${exports.length} exports)`, colors.blue);
+		}
+
+		// Folder summary
+		log(`  ✨ ${folder}: ${generatedCount} icons generated`, colors.green);
+		if (errorCount > 0) {
+			log(`  ⚠️  ${folder}: ${errorCount} errors`, colors.red);
+		}
+
+		totalGeneratedCount += generatedCount;
+		totalErrorCount += errorCount;
 	}
 
-	// Generate exports file
-	if (exports.length > 0) {
-		const exportsContent = exports.sort().join('\n') + '\n';
-		fs.writeFileSync(EXPORTS_FILE, exportsContent, 'utf-8');
-		log(`\n📦 Updated ${EXPORTS_FILE}`, colors.blue);
-	}
-
-	// Summary
+	// Overall summary
 	log(`\n✨ Done!`, colors.green);
-	log(`   Generated: ${generatedCount} icons`, colors.green);
-	if (errorCount > 0) {
-		log(`   Errors: ${errorCount} files`, colors.red);
+	log(`   Total folders processed: ${folders.length}`, colors.blue);
+	log(`   Total icons generated: ${totalGeneratedCount}`, colors.green);
+	if (totalErrorCount > 0) {
+		log(`   Total errors: ${totalErrorCount}`, colors.red);
 	}
 	log('');
 }

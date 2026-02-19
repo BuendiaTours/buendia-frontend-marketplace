@@ -1,0 +1,14 @@
+<script lang="ts">
+	import Icon from '../../IconBase.svelte';
+	let props = $props();
+</script>
+
+<Icon {...props}>
+	<path
+		d="M9 5L15 12L9 19"
+		stroke="currentColor"
+		stroke-width="1.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	/>
+</Icon>
