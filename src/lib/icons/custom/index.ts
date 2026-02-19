@@ -1,2 +1,2 @@
 // Export all custom icon styles
-export * as Outline from './Outline';
+export * as Linear from './Linear';

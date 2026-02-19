@@ -36,7 +36,7 @@ Nombres: `custom-logo.svg` → `CustomLogo`
 
 ### Manual
 
-1. Crear `src/lib/icons/custom/Outline/IconName.svelte`:
+1. Crear `src/lib/icons/custom/Linear/IconName.svelte`:
 
 ```svelte
 <script lang="ts">
@@ -49,10 +49,10 @@ Nombres: `custom-logo.svg` → `CustomLogo`
 </Icon>
 ```
 
-2. Exportar en `src/lib/icons/custom/Outline.ts`:
+2. Exportar en `src/lib/icons/custom/Linear.ts`:
 
 ```ts
-export { default as IconName } from './Outline/IconName.svelte';
+export { default as IconName } from './Linear/IconName.svelte';
 ```
 
 ## Preparar SVG
@@ -108,7 +108,7 @@ mkdir -p src/lib/icons/custom/{Bold,Linear}
 mkdir -p static/icons/custom/{bold,linear}
 
 # 2. Actualizar exports en src/lib/icons/custom/index.ts
-export * as Outline from './Outline';
+export * as Outline from './Linear';
 export * as Bold from './Bold';
 
 # 3. Modificar script para soportar múltiples estilos
