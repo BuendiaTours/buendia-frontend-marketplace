@@ -79,6 +79,49 @@
 	--color-feedback-error-700: #b01e32;
 	--color-feedback-error-900: #5a0f1a;
 
+	--color-alpha-ink-0: rgba(15, 17, 21, 0);
+	--color-alpha-ink-48: rgba(15, 17, 21, 0.48);
+	--color-alpha-ink-72: rgba(15, 17, 21, 0.72);
+	--color-alpha-ink-84: rgba(15, 17, 21, 0.84);
+	--color-alpha-ink-92: rgba(15, 17, 21, 0.92);
+	--color-alpha-ink-99: rgba(15, 17, 21, 0.99);
+	--color-alpha-brand-primary-24: rgba(64, 42, 148, 0.24);
+	--color-alpha-brand-primary-40: rgba(64, 42, 148, 0.4);
+
+	--color-surface-canvas: #ffffff;
+	--color-surface-default: #ffffff;
+	--color-surface-subtle: #f2f3f5;
+	--color-surface-muted: #e4e6ea;
+	--color-surface-raised: #ffffff;
+	--color-surface-sunken: #f9fafb;
+	--color-surface-inverse: #2e3138;
+	--color-surface-inverse-soft: #545864;
+	--color-surface-footer: #0f1115;
+
+	--color-text-primary: var(--color-neutral-800);
+	--color-text-secondary: var(--color-neutral-700);
+	--color-text-tertiary: var(--color-neutral-600);
+	--color-text-disabled: var(--color-neutral-500);
+	--color-text-inverse: #ffffff;
+	--color-text-link: var(--color-brand-accent-700);
+	--color-text-link-hover: var(--color-brand-accent-500);
+	--color-text-link-visited: var(--color-brand-accent-700);
+
+	/* ---------- */
+	/* Estos son para light / dark UI */
+
+	--color-text-fixed-on-dark-primary: #ffffff;
+	--color-text-fixed-on-dark-secondary: var(--color-neutral-200);
+	--color-text-fixed-on-dark-tertiary: var(--color-neutral-300);
+	--color-text-fixed-on-dark-disabled: var(--color-neutral-400);
+
+	--color-text-fixed-on-light-primary: var(--color-neutral-800);
+	--color-text-fixed-on-light-secondary: var(--color-neutral-700);
+	--color-text-fixed-on-light-tertiary: var(--color-neutral-600);
+	--color-text-fixed-on-light-disabled: var(--color-neutral-500);
+
+	/* ---------- */
+
 	--color-action-primary-bg: #4a33b3;
 	--color-action-primary-bg-hover: #3a2687;
 	--color-action-primary-bg-active: #3a2687;
@@ -145,15 +188,6 @@
 	--color-status-info-border: #373dd2;
 	--color-status-info-text: #2327a8;
 	--color-status-info-icon: #2327a8;
-
-	--color-bg-surface-default: #ffffff;
-	--color-bg-surface-subtle: #f2f3f5;
-	--color-bg-surface-muted: #e4e6ea;
-	--color-bg-surface-raised: #ffffff;
-	--color-bg-surface-sunken: #f9fafb;
-	--color-bg-surface-inverse: #2e3138;
-	--color-bg-surface-inverse-soft: #545864;
-	--color-bg-surface-footer: #0f1115;
 
 	--color-decorative-accent-softer: #eae6f5;
 	--color-decorative-accent-soft: #8a78d9;
