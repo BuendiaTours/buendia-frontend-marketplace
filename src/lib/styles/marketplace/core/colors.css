@@ -122,16 +122,50 @@
 
 	/* ---------- */
 
-	--color-action-primary-bg: #4a33b3;
-	--color-action-primary-bg-hover: #3a2687;
-	--color-action-primary-bg-active: #3a2687;
-	--color-action-primary-bg-disabled: #e4e6ea;
+	--color-border-subtle: var(--color-neutral-200);
+	--color-border-default: var(--color-neutral-300);
+	--color-border-strong: var(--color-neutral-400);
+	--color-border-inverse: var(--color-neutral-700);
+	--color-border-focus: var(--color-brand-accent-500);
+	--color-border-focus-subtle: var(--color-brand-accent-300);
+
+	--color-border-fixed-on-dark-subtle: var(--color-neutral-700);
+	--color-border-fixed-on-dark-default: var(--color-neutral-600);
+	--color-border-fixed-on-dark-strong: var(--color-neutral-300);
+	--color-border-fixed-on-light-subtle: var(--color-neutral-200);
+	--color-border-fixed-on-light-default: var(--color-neutral-300);
+	--color-border-fixed-on-light-strong: var(--color-neutral-400);
+
+	--color-icon-primary: var(--color-neutral-800);
+	--color-icon-secondary: var(--color-neutral-700);
+	--color-icon-tertiary: var(--color-neutral-600);
+	--color-icon-subtle: var(--color-neutral-200);
+	--color-icon-disabled: var(--color-neutral-500);
+	--color-icon-inverse: #fff;
+
+	--color-icon-fixed-on-dark-primary: #ffffff;
+	--color-icon-fixed-on-dark-secondary: var(--color-neutral-200);
+	--color-icon-fixed-on-dark-tertiary: var(--color-neutral-300);
+	--color-icon-fixed-on-dark-disabled: var(--color-neutral-400);
+	--color-icon-fixed-on-light-primary: var(--color-neutral-800);
+	--color-icon-fixed-on-light-secondary: var(--color-neutral-700);
+	--color-icon-fixed-on-light-tertiary: var(--color-neutral-600);
+	--color-icon-fixed-on-light-disabled: var(--color-neutral-500);
+
+	--color-action-primary-bg: var(--color-brand-accent-500);
+	--color-action-primary-bg-hover: var(--color-brand-accent-700);
+	--color-action-primary-bg-active: var(--color-brand-accent-700);
+	--color-action-primary-bg-disabled: var(--color-neutral-200);
 	--color-action-primary-text: #ffffff;
-	--color-action-primary-text-disabled: #969ba6;
+	--color-action-primary-text-disabled: var(--color-neutral-500);
 	--color-action-primary-icon: #ffffff;
-	--color-action-primary-icon-disabled: #969ba6;
-	--color-action-primary-border: #4a33b3;
-	--color-action-primary-border-disabled: #cfd3da;
+	--color-action-primary-icon-disabled: var(--color-neutral-500);
+	--color-action-primary-border: var(--color-brand-accent-500);
+	--color-action-primary-border-disabled: var(--color-neutral-300);
+
+	/* ---------- */
+	/* ---------- */
+	/* ---------- */
 
 	--color-action-secondary-bg: #ffffff;
 	--color-action-secondary-bg-hover: #ffffff;
