@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="FerrisWheel" {...props}>
+<Icon iconName="Linear.FerrisWheel" {...props}>
 	<circle cx="12" cy="11" r="2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M20.5 7.5C20.5 8.05228 20.0523 8.5 19.5 8.5C18.9477 8.5 18.5 8.05228 18.5 7.5C18.5 6.94772 18.9477 6.5 19.5 6.5C20.0523 6.5 20.5 6.94772 20.5 7.5Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M20.5 16C20.5 16.5523 20.0523 17 19.5 17C18.9477 17 18.5 16.5523 18.5 16C18.5 15.4477 18.9477 15 19.5 15C20.0523 15 20.5 15.4477 20.5 16Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

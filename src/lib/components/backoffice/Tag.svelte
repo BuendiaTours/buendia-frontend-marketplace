@@ -25,7 +25,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { CloseSquare } from '$lib/icons/Linear';
+	import { Close } from '$lib/icons/Linear';
 
 	let {
 		name = '',
@@ -66,7 +66,7 @@ Ver clases disponibles: https://daisyui.com/components/badge/
 			class="btn btn-square btn-ghost btn-xs -mr-2 h-4 min-h-4 w-4 p-0"
 			aria-label="Remove tag"
 		>
-			<CloseSquare class="h-3 w-3" />
+			<Close class="size-5" />
 		</button>
 	{/if}
 </div>

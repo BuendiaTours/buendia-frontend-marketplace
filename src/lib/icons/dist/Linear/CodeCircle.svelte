@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="CodeCircle" {...props}>
+<Icon iconName="Linear.CodeCircle" {...props}>
 	<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M15.5 9L15.6716 9.17157C17.0049 10.5049 17.6716 11.1716 17.6716 12C17.6716 12.8284 17.0049 13.4951 15.6716 14.8284L15.5 15" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M13.2939 7.17041L11.9998 12L10.7058 16.8297" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

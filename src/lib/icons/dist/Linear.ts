@@ -250,6 +250,7 @@ export { default as ClipboardRemove } from './Linear/ClipboardRemove.svelte';
 export { default as ClipboardText } from './Linear/ClipboardText.svelte';
 export { default as ClockCircle } from './Linear/ClockCircle.svelte';
 export { default as ClockSquare } from './Linear/ClockSquare.svelte';
+export { default as Close } from './Linear/Close.svelte';
 export { default as CloseCircle } from './Linear/CloseCircle.svelte';
 export { default as CloseSquare } from './Linear/CloseSquare.svelte';
 export { default as Closet } from './Linear/Closet.svelte';

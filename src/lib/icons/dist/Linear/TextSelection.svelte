@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="TextSelection" {...props}>
+<Icon iconName="Linear.TextSelection" {...props}>
 	<path d="M9 9H15" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12 15L12 9" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M6 4C6 5.10457 5.10457 6 4 6C2.89543 6 2 5.10457 2 4C2 2.89543 2.89543 2 4 2C5.10457 2 6 2.89543 6 4Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

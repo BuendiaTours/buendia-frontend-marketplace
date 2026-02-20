@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="UploadTwiceSquare" {...props}>
+<Icon iconName="Linear.UploadTwiceSquare" {...props}>
 	<path d="M8.5 17L8.5 10M8.5 10L11 13M8.5 10L6 13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M15.5 17L15.5 10M15.5 10L18 13M15.5 10L13 13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18 7H12H6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

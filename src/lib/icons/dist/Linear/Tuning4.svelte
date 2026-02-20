@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Tuning4" {...props}>
+<Icon iconName="Linear.Tuning4" {...props}>
 	<circle cx="12" cy="12" r="2" transform="rotate(-90 12 12)" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="10" cy="20" r="2" transform="rotate(-90 10 20)" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="2" cy="2" r="2" transform="matrix(-4.37114e-08 -1 -1 4.37114e-08 16 6)" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

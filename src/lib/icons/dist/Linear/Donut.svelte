@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Donut" {...props}>
+<Icon iconName="Linear.Donut" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M2 13C2 13 4.20085 15 6 15C7.21199 15 8.60628 14.0924 9.38725 13.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

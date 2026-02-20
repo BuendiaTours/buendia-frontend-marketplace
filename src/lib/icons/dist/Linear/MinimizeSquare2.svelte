@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="MinimizeSquare2" {...props}>
+<Icon iconName="Linear.MinimizeSquare2" {...props}>
 	<path d="M10.5 13.5H7.5M10.5 13.5V16.5M10.5 13.5L7 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M13.5 10.5H16.5M13.5 10.5V7.5M13.5 10.5L17 7" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M10.5 10.5H7.5M10.5 10.5V7.5M10.5 10.5L7 7" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

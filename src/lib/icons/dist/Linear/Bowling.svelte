@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Bowling" {...props}>
+<Icon iconName="Linear.Bowling" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="12" cy="7" r="1.5" transform="rotate(-90 12 7)" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="12" cy="12" r="1.5" transform="rotate(-90 12 12)" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

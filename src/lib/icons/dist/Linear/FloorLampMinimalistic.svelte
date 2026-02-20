@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="FloorLampMinimalistic" {...props}>
+<Icon iconName="Linear.FloorLampMinimalistic" {...props}>
 	<path d="M9 22H15" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12 22V8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12.0001 8C14.3369 8 16.2992 6.71758 16.8475 4.98449C17.0141 4.45792 16.5524 4 16.0001 4H8.00009C7.4478 4 6.98608 4.45792 7.15266 4.98449C7.70094 6.71758 9.66331 8 12.0001 8Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

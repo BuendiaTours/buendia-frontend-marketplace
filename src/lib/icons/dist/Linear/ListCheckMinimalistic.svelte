@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="ListCheckMinimalistic" {...props}>
+<Icon iconName="Linear.ListCheckMinimalistic" {...props}>
 	<path d="M20 6L3 6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10 11L3 11" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10 16H3" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

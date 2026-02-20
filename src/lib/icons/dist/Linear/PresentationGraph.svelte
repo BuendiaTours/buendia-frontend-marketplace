@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="PresentationGraph" {...props}>
+<Icon iconName="Linear.PresentationGraph" {...props}>
 	<path d="M2 2H22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M9 10.5L10.2929 9.20711C10.6262 8.87377 10.7929 8.70711 11 8.70711C11.2071 8.70711 11.3738 8.87377 11.7071 9.20711L12.2929 9.79289C12.6262 10.1262 12.7929 10.2929 13 10.2929C13.2071 10.2929 13.3738 10.1262 13.7071 9.79289L15 8.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12 21L12 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

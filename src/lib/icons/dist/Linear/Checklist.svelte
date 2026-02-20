@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Checklist" {...props}>
+<Icon iconName="Linear.Checklist" {...props}>
 	<path d="M2 5.5L3.21429 7L7.5 3" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M2 12.5L3.21429 14L7.5 10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M2 19.5L3.21429 21L7.5 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Share" {...props}>
+<Icon iconName="Linear.Share" {...props}>
 	<path d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M14 6.5L9 10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M14 17.5L9 14" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

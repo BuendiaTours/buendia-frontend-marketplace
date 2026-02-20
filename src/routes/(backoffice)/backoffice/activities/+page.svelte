@@ -52,7 +52,7 @@
 	let selectedActivityId = $state<string | null>(null);
 
 	// Icons
-	import { Calendar, CloseSquare, Map, AddSquare } from '$lib/icons/Linear';
+	import { Calendar, Close, Map, AddSquare } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -369,7 +369,7 @@
 			class="btn btn-square btn-soft"
 			class:!border-success={hasDateRange}
 		>
-			<Calendar class={hasDateRange ? 'text-success' : 'text-base'} />
+			<Calendar class={`size-5 ${hasDateRange ? 'text-success' : 'text-base'}`} />
 		</button>
 	</div>
 
@@ -449,7 +449,7 @@
 				onclick={handleClearLocation}
 				disabled={!selectedDestination}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>
@@ -471,7 +471,7 @@
 				disabled={!selectedKind}
 				onclick={handleClearKind}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>
@@ -494,7 +494,7 @@
 				disabled={!selectedStatus}
 				onclick={handleClearStatus}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>
@@ -514,7 +514,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>
@@ -661,7 +661,7 @@
 													title: 'Eliminar',
 													message: '¿Estás seguro de que quieres eliminar este elemento?',
 													confirmText: 'Eliminar',
-													cancelText: 'CloseSquarear',
+													cancelText: 'Close',
 													danger: true
 												}}
 											>

@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Bacteria" {...props}>
+<Icon iconName="Linear.Bacteria" {...props}>
 	<path d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M6 15C6 13.3431 7.34315 12 9 12C10.6569 12 12 13.3431 12 15C12 16.6569 10.6569 18 9 18C7.34315 18 6 16.6569 6 15Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M4.5 11.5L4.91406 10.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

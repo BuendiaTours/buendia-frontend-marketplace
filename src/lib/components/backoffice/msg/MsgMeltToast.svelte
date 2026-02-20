@@ -2,8 +2,9 @@
 	import { createToaster, melt } from '@melt-ui/svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
-	import { CloseSquare, InfoCircle, DangerTriangle, CheckCircle } from '$lib/icons/Linear';
 	import { page } from '$app/state';
+
+	import { Close, InfoCircle, DangerTriangle, CheckCircle } from '$lib/icons/Linear';
 
 	/**
 	 * Componente de Toast usando Melt-UI
@@ -43,7 +44,7 @@
 		},
 		error: {
 			bgClass: 'bg-error text-error-content',
-			Icon: CloseSquare
+			Icon: Close
 		},
 		success: {
 			bgClass: 'bg-success text-success-content',
@@ -105,7 +106,7 @@
 					use:melt={$close(id)}
 					class="absolute top-2 right-2 grid size-6 cursor-pointer place-items-center rounded-full hover:bg-black/10"
 				>
-					<CloseSquare class="size-4" />
+					<Close class="size-5" />
 				</button>
 			</div>
 		</div>

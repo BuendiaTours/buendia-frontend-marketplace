@@ -11,7 +11,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 	import { setConfirmFunction } from './MeltAlertDialog';
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CloseSquare } from '$lib/icons/Linear';
+	import { Close } from '$lib/icons/Linear';
 
 	type ConfirmState = {
 		open: boolean;
@@ -134,7 +134,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 				aria-label="Cerrar"
 				class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
 			>
-				<CloseSquare class="size-4" />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>

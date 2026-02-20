@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="EmojiFunnyCircle" {...props}>
+<Icon iconName="Linear.EmojiFunnyCircle" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M8.9126 15.9336C10.1709 16.249 11.5985 16.2492 13.0351 15.8642C14.4717 15.4793 15.7079 14.7653 16.64 13.863" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <ellipse cx="14.5094" cy="9.77405" rx="1" ry="1.5" transform="rotate(-15 14.5094 9.77405)" fill="currentColor"/>

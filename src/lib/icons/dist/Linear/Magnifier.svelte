@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Magnifier" {...props}>
+<Icon iconName="Linear.Magnifier" {...props}>
 	<circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 </Icon>

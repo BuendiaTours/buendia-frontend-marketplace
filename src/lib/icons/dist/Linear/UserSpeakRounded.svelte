@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="UserSpeakRounded" {...props}>
+<Icon iconName="Linear.UserSpeakRounded" {...props}>
 	<circle cx="10" cy="6" r="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <ellipse cx="10" cy="17" rx="7" ry="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M19 2C19 2 21 3.2 21 6C21 8.8 19 10 19 10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

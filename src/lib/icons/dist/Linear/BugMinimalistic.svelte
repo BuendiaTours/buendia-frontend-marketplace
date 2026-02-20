@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="BugMinimalistic" {...props}>
+<Icon iconName="Linear.BugMinimalistic" {...props}>
 	<path d="M5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V10Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M19 13H22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M5 13H2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

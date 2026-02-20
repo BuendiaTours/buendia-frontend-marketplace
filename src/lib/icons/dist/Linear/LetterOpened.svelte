@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="LetterOpened" {...props}>
+<Icon iconName="Linear.LetterOpened" {...props}>
 	<path d="M18 6.10156C19.3001 6.22944 20.1752 6.51846 20.8284 7.17164C22 8.34322 22 10.2288 22 14.0001C22 17.7713 22 19.6569 20.8284 20.8285C19.6569 22.0001 17.7712 22.0001 14 22.0001H10C6.22876 22.0001 4.34315 22.0001 3.17157 20.8285C2 19.6569 2 17.7713 2 14.0001C2 10.2288 2 8.34322 3.17157 7.17164C3.82475 6.51846 4.69989 6.22944 6 6.10156" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M10 6H14" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M11 9H13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

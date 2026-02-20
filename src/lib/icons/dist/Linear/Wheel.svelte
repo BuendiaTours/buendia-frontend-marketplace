@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Wheel" {...props}>
+<Icon iconName="Linear.Wheel" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

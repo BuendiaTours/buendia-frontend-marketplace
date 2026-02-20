@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="SortByAlphabet" {...props}>
+<Icon iconName="Linear.SortByAlphabet" {...props}>
 	<path d="M13 7L3 7" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10 12H3" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M8 17H3" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

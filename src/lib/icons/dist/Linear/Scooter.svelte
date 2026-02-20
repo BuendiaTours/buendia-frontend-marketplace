@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Scooter" {...props}>
+<Icon iconName="Linear.Scooter" {...props}>
 	<rect x="16" y="13" width="6" height="6" rx="3" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M11 16V14.5C11 12.6144 11 11.6716 10.4142 11.0858C9.82843 10.5 8.88562 10.5 7 10.5H6.4C6.02856 10.5 5.84284 10.5 5.68616 10.5123C3.72466 10.6667 2.1667 12.2247 2.01233 14.1862C2 14.3428 2 14.5286 2 14.9C2 14.9929 2 15.0393 2.00308 15.0785C2.04168 15.5688 2.43116 15.9583 2.92154 15.9969C2.96071 16 3.00714 16 3.1 16H11ZM11 16H16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M9.5 16C9.5 17.6569 8.15685 19 6.5 19C4.84315 19 3.5 17.6569 3.5 16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

@@ -23,7 +23,8 @@
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	import { CloseSquare, AddSquare, Magnifier } from '$lib/icons/Linear';
+	import { Close, AddSquare, Magnifier } from '$lib/icons/Linear';
+
 	import * as m from '$paraglide/messages';
 
 	let {
@@ -164,7 +165,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>

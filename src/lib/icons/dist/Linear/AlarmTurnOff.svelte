@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="AlarmTurnOff" {...props}>
+<Icon iconName="Linear.AlarmTurnOff" {...props}>
 	<circle cx="12" cy="13" r="9" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M14.1215 15.1216L12.0002 13.0002M12.0002 13.0002L9.87891 10.8789M12.0002 13.0002L14.1216 10.8789M12.0002 13.0002L9.87892 15.1215" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M3.5 4.5L7.50002 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

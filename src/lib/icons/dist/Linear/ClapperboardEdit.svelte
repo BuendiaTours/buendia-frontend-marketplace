@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="ClapperboardEdit" {...props}>
+<Icon iconName="Linear.ClapperboardEdit" {...props}>
 	<path d="M21.9979 10.5C21.9816 6.7682 21.8357 4.7646 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.70529 21.7764 6.58687 21.9658 10 21.9948" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M21.5 8H2.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10.5 2.5L7 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

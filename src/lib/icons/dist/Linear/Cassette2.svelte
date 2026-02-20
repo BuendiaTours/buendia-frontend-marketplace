@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Cassette2" {...props}>
+<Icon iconName="Linear.Cassette2" {...props}>
 	<path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M13.5 13.75C13.5 12.5074 14.5074 11.5 15.75 11.5C16.9926 11.5 18 12.5074 18 13.75C18 14.9926 16.9926 16 15.75 16C14.5074 16 13.5 14.9926 13.5 13.75Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M6 13.75C6 12.5074 7.00736 11.5 8.25 11.5C9.49264 11.5 10.5 12.5074 10.5 13.75C10.5 14.9926 9.49264 16 8.25 16C7.00736 16 6 14.9926 6 13.75Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

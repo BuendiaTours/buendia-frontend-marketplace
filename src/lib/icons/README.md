@@ -116,12 +116,10 @@ export { default as IconName } from './Linear/IconName.svelte';
 
 ```svelte
 <script>
-	import { CloseSquare } from '$lib/icons/Linear';
-	import { CustomLogo } from '$lib/icons';
+	import { Close } from '$lib/icons/Linear';
 </script>
 
-<CloseSquare class="size-6" />
-<CustomLogo class="size-6" />
+<Close class="size-5" />
 ```
 
 ## Avanzado

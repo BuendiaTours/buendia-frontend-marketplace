@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="WirelessCharge" {...props}>
+<Icon iconName="Linear.WirelessCharge" {...props}>
 	<path d="M12.0646 17.9997C16.4827 18.0354 20.0354 14.4827 19.9997 10.0646C19.9641 5.64642 16.3536 2.03592 11.9354 2.00027C7.51731 1.96461 3.96461 5.51731 4.00027 9.93545C4.03592 14.3536 7.64642 17.9641 12.0646 17.9997Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M11.25 22C11.25 22.4142 11.5858 22.75 12 22.75C12.4142 22.75 12.75 22.4142 12.75 22H11.25ZM11.25 21V22H12.75V21H11.25Z" fill="currentColor"/>
 <path d="M12.8569 7L9.99972 10H13.9997L11.1426 13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

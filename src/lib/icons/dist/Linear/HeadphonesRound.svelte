@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="HeadphonesRound" {...props}>
+<Icon iconName="Linear.HeadphonesRound" {...props}>
 	<path d="M21 17V12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12V17" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M22 15.5V17.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M2 15.5V17.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

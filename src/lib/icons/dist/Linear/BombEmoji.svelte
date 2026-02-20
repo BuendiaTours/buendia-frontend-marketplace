@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="BombEmoji" {...props}>
+<Icon iconName="Linear.BombEmoji" {...props}>
 	<circle cx="9.5" cy="14.5" r="7.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M10 16L12 16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M14 12.5C14 13.3284 13.5523 14 13 14C12.4477 14 12 13.3284 12 12.5C12 11.6716 12.4477 11 13 11C13.5523 11 14 11.6716 14 12.5Z" fill="currentColor"/>

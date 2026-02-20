@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="WheelAngle" {...props}>
+<Icon iconName="Linear.WheelAngle" {...props}>
 	<path d="M16.5 22C18.9853 22 21 17.5228 21 12C21 6.47715 18.9853 2 16.5 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M12 12C12 17.5228 9.98528 22 7.5 22C5.01472 22 3 17.5228 3 12C3 6.47715 5.01472 2 7.5 2C9.98528 2 12 6.47715 12 12Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M7.5 22C9.98528 22 12 17.5228 12 12C12 6.47715 9.98528 2 7.5 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { InfoCircle, DangerTriangle, CloseSquare, CheckCircle } from '$lib/icons/Linear';
 	import { page } from '$app/state';
+
+	import { InfoCircle, DangerTriangle, Close, CheckCircle } from '$lib/icons/Linear';
 
 	type AlertType = 'info' | 'warning' | 'error' | 'success';
 
@@ -26,7 +27,7 @@
 		},
 		error: {
 			class: 'alert-error',
-			Icon: CloseSquare
+			Icon: Close
 		},
 		success: {
 			class: 'alert-success',
@@ -56,7 +57,7 @@
 		<IconComponent class="size-6 shrink-0" />
 		<span class="flex-1">{alert.message}</span>
 		<button type="button" class="btn btn-square btn-outline btn-xs -mt-3 -mr-3" onclick={dismiss}>
-			<CloseSquare class="size-4" />
+			<Close class="size-5" />
 		</button>
 	</div>
 {/if}

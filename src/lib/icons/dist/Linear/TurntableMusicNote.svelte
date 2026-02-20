@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="TurntableMusicNote" {...props}>
+<Icon iconName="Linear.TurntableMusicNote" {...props}>
 	<path d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.7764 4.70529 21.9658 6.58687 21.9948 10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M19 20V16V12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <circle cx="17" cy="20" r="2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

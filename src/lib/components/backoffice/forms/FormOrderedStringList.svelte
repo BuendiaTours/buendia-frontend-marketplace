@@ -1,8 +1,9 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
-	import { Reorder, CloseSquare, AddSquare } from '$lib/icons/Linear';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { tick } from 'svelte';
+
+	import { Reorder, Close, AddSquare } from '$lib/icons/Linear';
 
 	/**
 	 * Componente reutilizable para gestión de listas de strings ordenables con drag & drop
@@ -163,7 +164,7 @@
 								class="btn btn-square btn-soft btn-xs btn-error"
 								onclick={() => removeItem(index)}
 							>
-								<CloseSquare class="size-4" />
+								<Close class="size-5" />
 							</button>
 						</div>
 					</div>

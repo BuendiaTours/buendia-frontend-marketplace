@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="ConfoundedCircle" {...props}>
+<Icon iconName="Linear.ConfoundedCircle" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M8 12L10 10.5L8 9" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M16 12L14 10.5L16 9" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

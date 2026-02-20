@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Gift" {...props}>
+<Icon iconName="Linear.Gift" {...props}>
 	<path d="M22 12H2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12 2V22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M13 12C13 14.2091 14.7909 16 17 16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="BlackHole" {...props}>
+<Icon iconName="Linear.BlackHole" {...props}>
 	<circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M12 10C17 10 16.6 22 9 22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12.3115 14C7.31152 14 7.71152 2 15.3115 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

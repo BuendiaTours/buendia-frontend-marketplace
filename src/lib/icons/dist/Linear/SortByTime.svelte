@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="SortByTime" {...props}>
+<Icon iconName="Linear.SortByTime" {...props}>
 	<path d="M10 7L2 7" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M8 12H2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10 17H2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

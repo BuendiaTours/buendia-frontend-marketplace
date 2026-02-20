@@ -37,7 +37,7 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Icons
-	import { CloseSquare, AddSquare, Magnifier } from '$lib/icons/Linear';
+	import { Close, AddSquare, Magnifier } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -209,7 +209,7 @@
 				onclick={handleClearFilters}
 				disabled={!hasFilters}
 			>
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>

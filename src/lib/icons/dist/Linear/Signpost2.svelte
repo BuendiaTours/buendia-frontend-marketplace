@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Signpost2" {...props}>
+<Icon iconName="Linear.Signpost2" {...props}>
 	<path d="M12.75 2C12.75 1.58579 12.4142 1.25 12 1.25C11.5858 1.25 11.25 1.58579 11.25 2H12.75ZM11.25 2V3H12.75V2H11.25Z" fill="currentColor"/>
 <path d="M12.75 11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11H12.75ZM11.25 11V12H12.75V11H11.25Z" fill="currentColor"/>
 <path d="M12.75 20C12.75 19.5858 12.4142 19.25 12 19.25C11.5858 19.25 11.25 19.5858 11.25 20H12.75ZM11.25 20V22H12.75V20H11.25Z" fill="currentColor"/>

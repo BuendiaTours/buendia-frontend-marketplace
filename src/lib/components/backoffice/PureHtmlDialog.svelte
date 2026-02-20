@@ -53,9 +53,9 @@ USO CON FORMULARIO:
 -->
 
 <script lang="ts">
-	import { CloseSquare } from '$lib/icons/Linear';
 	import type { PureHtmlDialogConfig } from './PureHtmlDialog';
 	import type { Snippet } from 'svelte';
+	import { Close } from '$lib/icons/Linear';
 
 	type Props = {
 		title?: string;
@@ -132,7 +132,7 @@ USO CON FORMULARIO:
 					onclick={() => close()}
 					aria-label="Cerrar"
 				>
-					<CloseSquare class="size-4" />
+					<Close class="size-5" />
 				</button>
 			</div>
 		</div>

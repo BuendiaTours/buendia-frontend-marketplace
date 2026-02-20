@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="VolumeKnob" {...props}>
+<Icon iconName="Linear.VolumeKnob" {...props}>
 	<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M12 7V11" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M13 3.5C13 4.05228 12.5523 4.5 12 4.5C11.4477 4.5 11 4.05228 11 3.5C11 2.94772 11.4477 2.5 12 2.5C12.5523 2.5 13 2.94772 13 3.5Z" fill="currentColor"/>

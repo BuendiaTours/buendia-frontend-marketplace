@@ -77,13 +77,13 @@ function extractSvgContent(svgContent: string): string {
 /**
  * Generate Svelte component from SVG content
  */
-function generateComponent(iconName: string, svgContent: string): string {
+function generateComponent(iconName: string, folderName: string, svgContent: string): string {
 	return `<script lang="ts">
 	import Icon from '../../IconBase.svelte';
 	let props = $props();
 </script>
 
-<Icon iconName="${iconName}" {...props}>
+<Icon iconName="${folderName}.${iconName}" {...props}>
 	${svgContent}
 </Icon>
 `;
@@ -170,7 +170,7 @@ async function generateIcons() {
 				const innerContent = extractSvgContent(svgContent);
 
 				// Generate component
-				const component = generateComponent(iconName, innerContent);
+				const component = generateComponent(iconName, folder, innerContent);
 
 				// Write component file
 				fs.writeFileSync(outputPath, component, 'utf-8');

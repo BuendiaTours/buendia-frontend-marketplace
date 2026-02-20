@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="BedsideTable" {...props}>
+<Icon iconName="Linear.BedsideTable" {...props}>
 	<path d="M19 22V20.5M5 22V20.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M13 11C13 11.5523 12.5523 12 12 12C11.4477 12 11 11.5523 11 11C11 10.4477 11.4477 10 12 10C12.5523 10 13 10.4477 13 11Z" fill="currentColor"/>
 <path d="M13 5C13 5.55228 12.5523 6 12 6C11.4477 6 11 5.55228 11 5C11 4.44772 11.4477 4 12 4C12.5523 4 13 4.44772 13 5Z" fill="currentColor"/>

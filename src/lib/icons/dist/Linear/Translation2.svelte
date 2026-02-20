@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Translation2" {...props}>
+<Icon iconName="Linear.Translation2" {...props}>
 	<path d="M16.2426 16.2426C17.3284 15.1569 18 13.6569 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 13.6569 6.67157 15.1569 7.75736 16.2426" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M19.0711 19.0711C20.8807 17.2614 22 14.7614 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7614 3.11929 17.2614 4.92893 19.0711" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

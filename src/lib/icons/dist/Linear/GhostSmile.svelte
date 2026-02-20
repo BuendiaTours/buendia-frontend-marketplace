@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="GhostSmile" {...props}>
+<Icon iconName="Linear.GhostSmile" {...props}>
 	<path d="M9 15C9.85038 15.6303 10.8846 16 12 16C13.1154 16 14.1496 15.6303 15 15" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <ellipse cx="15" cy="9.5" rx="1" ry="1.5" fill="currentColor"/>
 <ellipse cx="9" cy="9.5" rx="1" ry="1.5" fill="currentColor"/>

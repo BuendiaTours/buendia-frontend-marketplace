@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CloseSquare, Filter } from '$lib/icons/Linear';
+	import { Close, Filter } from '$lib/icons/Linear';
 
 	type FilterConfig = {
 		readonly key: string;
@@ -94,7 +94,7 @@
 			</div>
 
 			<button use:melt={$close} class="btn btn-circle btn-ghost btn-sm absolute top-4 right-4">
-				<CloseSquare />
+				<Close class="size-5" />
 			</button>
 		</div>
 	</div>

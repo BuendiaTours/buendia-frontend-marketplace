@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="ListDown" {...props}>
+<Icon iconName="Linear.ListDown" {...props}>
 	<path d="M21 6L3 6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M21 10L3 10" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M10 14H3" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

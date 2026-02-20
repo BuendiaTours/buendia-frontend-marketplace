@@ -1,14 +1,7 @@
 <script lang="ts">
 	import FormErrorMsg from './FormErrorMsg.svelte';
 	import MeltComboBox from '../MeltComboBox.svelte';
-	import {
-		Upload,
-		AltArrowDown,
-		AltArrowUp,
-		Download,
-		CloseSquare,
-		Reorder
-	} from '$lib/icons/Linear';
+	import { AltArrowDown, AltArrowUp, Close, Download, Reorder, Upload } from '$lib/icons/Linear';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 
 	/**
@@ -328,7 +321,7 @@
 											class="btn btn-square btn-soft btn-xs btn-error"
 											onclick={() => removeItem(item.id)}
 										>
-											<CloseSquare class="size-4" />
+											<Close class="size-5" />
 										</button>
 									</div>
 								</td>

@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="MusicNotes" {...props}>
+<Icon iconName="Linear.MusicNotes" {...props}>
 	<path d="M12 19.5C12 20.8807 10.8807 22 9.5 22C8.11929 22 7 20.8807 7 19.5C7 18.1193 8.11929 17 9.5 17C10.8807 17 12 18.1193 12 19.5Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M22 17.5C22 18.8807 20.8807 20 19.5 20C18.1193 20 17 18.8807 17 17.5C17 16.1193 18.1193 15 19.5 15C20.8807 15 22 16.1193 22 17.5Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M22 8L12 12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

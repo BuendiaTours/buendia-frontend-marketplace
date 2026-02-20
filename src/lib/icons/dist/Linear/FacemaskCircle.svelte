@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="FacemaskCircle" {...props}>
+<Icon iconName="Linear.FacemaskCircle" {...props}>
 	<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M16.5 20.4996L17 14.9996L13.857 13.7424C12.6649 13.2656 11.3351 13.2656 10.143 13.7424L7 14.9996L7.5 20.4996" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M7 15L2.5 13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

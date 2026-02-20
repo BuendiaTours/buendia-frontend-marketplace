@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="ExpressionlessSquare" {...props}>
+<Icon iconName="Linear.ExpressionlessSquare" {...props}>
 	<path d="M9 16C10 16 10.8846 16 12 16C13.1154 16 14 16 15 16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <ellipse cx="15" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
 <ellipse cx="9" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>

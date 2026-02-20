@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="Incognito" {...props}>
+<Icon iconName="Linear.Incognito" {...props}>
 	<path d="M21 17.5C21 19.433 19.433 21 17.5 21C15.567 21 14 19.433 14 17.5C14 15.567 15.567 14 17.5 14C19.433 14 21 15.567 21 17.5Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M2 11H22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M4 11L4.6138 8.54479C5.15947 6.36211 5.43231 5.27077 6.24609 4.63538C7.05988 4 8.1848 4 10.4347 4H13.5653C15.8152 4 16.9401 4 17.7539 4.63538C18.5677 5.27077 18.8405 6.36211 19.3862 8.54479L20 11" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

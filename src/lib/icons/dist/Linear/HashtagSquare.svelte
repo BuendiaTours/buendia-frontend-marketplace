@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="HashtagSquare" {...props}>
+<Icon iconName="Linear.HashtagSquare" {...props}>
 	<path d="M11 7L8 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M16 7L13 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18 10H7" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CloseSquare } from '$lib/icons/Linear';
+	import { Close } from '$lib/icons/Linear';
 
 	type Option = {
 		id: string;
@@ -81,7 +81,7 @@
 			onclick={handleClear}
 			disabled={!selectedValue}
 		>
-			<CloseSquare />
+			<Close class="size-5" />
 		</button>
 	</div>
 </div>

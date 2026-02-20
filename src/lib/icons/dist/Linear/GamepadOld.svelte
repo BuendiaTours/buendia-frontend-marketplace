@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="GamepadOld" {...props}>
+<Icon iconName="Linear.GamepadOld" {...props}>
 	<g clip-path="url(#clip0_1276_6209)">
 <path d="M8 10V14M6 12L10 12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M16 10.5C16 11.0523 15.5523 11.5 15 11.5C14.4477 11.5 14 11.0523 14 10.5C14 9.94772 14.4477 9.5 15 9.5C15.5523 9.5 16 9.94772 16 10.5Z" fill="currentColor"/>

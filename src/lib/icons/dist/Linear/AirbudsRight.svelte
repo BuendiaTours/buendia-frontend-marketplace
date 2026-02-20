@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="AirbudsRight" {...props}>
+<Icon iconName="Linear.AirbudsRight" {...props}>
 	<path d="M21 18.6667V19.5C21 19.6393 21 19.7089 20.997 19.7678C20.9366 20.973 19.973 21.9366 18.7678 21.997C18.7089 22 18.6393 22 18.5 22C18.3607 22 18.2911 22 18.2322 21.997C17.027 21.9366 16.0634 20.973 16.003 19.7678C16 19.7089 16 19.6393 16 19.5V18.6667M21 18.6667V7.625L20.9999 7.55936C20.9841 4.49563 18.5044 2.01591 15.4406 2.00007L15.375 2L15.3356 2.00004C13.4974 2.00954 12.0095 3.49738 12 5.33562L12 5.375V8C12 9.65685 13.3431 11 15 11C15.5523 11 16 11.4477 16 12V18.6667M21 18.6667H16" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M15 5V8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <circle cx="7.5" cy="16.5" r="5.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>

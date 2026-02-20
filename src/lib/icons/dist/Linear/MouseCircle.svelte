@@ -3,7 +3,7 @@
 	let props = $props();
 </script>
 
-<Icon iconName="MouseCircle" {...props}>
+<Icon iconName="Linear.MouseCircle" {...props}>
 	<path d="M8 10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10V14C16 16.2091 14.2091 18 12 18C9.79086 18 8 16.2091 8 14V10Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
 <path d="M8.5 10H15.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
 <path d="M12 10V6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>

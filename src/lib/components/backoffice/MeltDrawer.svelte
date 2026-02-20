@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { CloseSquare } from '$lib/icons/Linear';
 	import { untrack } from 'svelte';
 	import type { MeltDrawerConfig } from './MeltDrawer';
 	import type { Snippet } from 'svelte';
+	import { Close } from '$lib/icons/Linear';
 
 	type Props = {
 		open?: boolean;
@@ -98,7 +98,7 @@
 				aria-label="Cerrar"
 				class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
 			>
-				<CloseSquare class="size-4" />
+				<Close class="size-5" />
 			</button>
 
 			{#if title}
