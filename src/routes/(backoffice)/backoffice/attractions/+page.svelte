@@ -39,7 +39,7 @@
 	import ErrorDisplay from '$lib/components/backoffice/ErrorDisplay.svelte';
 
 	// Icons
-	import { Close, AddSquare, Magnifier } from '$lib/icons/Linear';
+	import { Add, Close, Magnifier } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -259,7 +259,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary">
-		<AddSquare />
+		<Add class="size-5" />
 		Nueva atracción
 	</a>
 </div>

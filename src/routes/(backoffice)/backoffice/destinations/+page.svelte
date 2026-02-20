@@ -37,7 +37,7 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Icons
-	import { Close, AddSquare, Magnifier } from '$lib/icons/Linear';
+	import { Add, Close, Magnifier } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -220,7 +220,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={DESTINATION_ROUTES.create} class="btn btn-outline btn-primary">
-		<AddSquare />
+		<Add class="size-5" />
 		Nuevo destino
 	</a>
 </div>

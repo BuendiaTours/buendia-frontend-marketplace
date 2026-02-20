@@ -23,7 +23,7 @@
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	import { Close, AddSquare, Magnifier } from '$lib/icons/Linear';
+	import { Add, Close, Magnifier } from '$lib/icons/Linear';
 
 	import * as m from '$paraglide/messages';
 
@@ -175,7 +175,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={USER_ROUTES.create} class="btn btn-outline btn-primary">
-		<AddSquare />
+		<Add class="size-5" />
 		{m.users_newUser()}
 	</a>
 </div>

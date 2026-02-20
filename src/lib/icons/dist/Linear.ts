@@ -1,5 +1,6 @@
 export { default as Accessibility } from './Linear/Accessibility.svelte';
 export { default as Accumulator } from './Linear/Accumulator.svelte';
+export { default as Add } from './Linear/Add.svelte';
 export { default as AddCircle } from './Linear/AddCircle.svelte';
 export { default as AddFolder } from './Linear/AddFolder.svelte';
 export { default as AddSquare } from './Linear/AddSquare.svelte';

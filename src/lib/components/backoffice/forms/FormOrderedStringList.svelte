@@ -3,7 +3,7 @@
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import { tick } from 'svelte';
 
-	import { Reorder, Close, AddSquare } from '$lib/icons/Linear';
+	import { Reorder, Close, Add } from '$lib/icons/Linear';
 
 	/**
 	 * Componente reutilizable para gestión de listas de strings ordenables con drag & drop
@@ -182,7 +182,7 @@
 			{/if}
 
 			<button type="button" class="btn btn-soft btn-xs ml-auto" onclick={addItem}>
-				<AddSquare class="size-4" />
+				<Add class="size-5" />
 				Añadir elemento
 			</button>
 		</div>

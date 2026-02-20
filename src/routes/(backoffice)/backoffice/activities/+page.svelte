@@ -52,7 +52,7 @@
 	let selectedActivityId = $state<string | null>(null);
 
 	// Icons
-	import { Calendar, Close, Map, AddSquare } from '$lib/icons/Linear';
+	import { Calendar, Close, Map, Add } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
@@ -525,7 +525,7 @@
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
 
 	<a href={ACTIVITY_ROUTES.create} class="btn btn-outline btn-primary">
-		<AddSquare />
+		<Add class="size-5" />
 		<span>{m.activities_newActivity()}</span>
 	</a>
 </div>
