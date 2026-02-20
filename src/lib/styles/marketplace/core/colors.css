@@ -13,6 +13,72 @@
 	--color-neutral-800: #2e3138;
 	--color-neutral-900: #0f1115;
 
+	--color-brand-accent-100: var(--color-violet-100);
+	--color-brand-accent-300: var(--color-violet-300);
+	--color-brand-accent-500: var(--color-violet-500);
+	--color-brand-accent-700: var(--color-violet-700);
+	--color-brand-accent-900: var(--color-violet-900);
+
+	--color-violet-100: #eae6f5;
+	--color-violet-300: #8a78d9;
+	--color-violet-500: #4a33b3;
+	--color-violet-700: #3a2687;
+	--color-violet-900: #1d1346;
+
+	--color-blue-100: #eff6fd;
+	--color-blue-300: #d6e9fa;
+	--color-blue-500: #7fa9d6;
+	--color-blue-700: #357dd1;
+	--color-blue-900: #264f7f;
+
+	--color-green-100: #eef6f1;
+	--color-green-300: #d7ebdd;
+	--color-green-500: #6fb49a;
+	--color-green-700: #359976;
+	--color-green-900: #21624b;
+
+	--color-ochre-100: #ffeed6;
+	--color-ochre-300: #fbd9ac;
+	--color-ochre-500: #e3a45c;
+	--color-ochre-700: #c47a24;
+	--color-ochre-900: #764c1d;
+
+	--color-yellow-100: #fff4d6;
+	--color-yellow-300: #ffe7a6;
+	--color-yellow-500: #f6c94e;
+	--color-yellow-700: #d5a923;
+	--color-yellow-900: #80671d;
+
+	--color-salmon-100: #ffe5db;
+	--color-salmon-300: #ffd3c6;
+	--color-salmon-500: #f5a489;
+	--color-salmon-700: #db5f3d;
+	--color-salmon-900: #9c4026;
+
+	--color-feedback-info-100: #eff0fb;
+	--color-feedback-info-300: #c9ceff;
+	--color-feedback-info-500: #373dd2;
+	--color-feedback-info-700: #2327a8;
+	--color-feedback-info-900: #13146b;
+
+	--color-feedback-success-100: #ecf8f2;
+	--color-feedback-success-300: #bfebd7;
+	--color-feedback-success-500: #2fae7b;
+	--color-feedback-success-700: #15865c;
+	--color-feedback-success-900: #0f3f2e;
+
+	--color-feedback-warning-100: #fff4da;
+	--color-feedback-warning-300: #ffe2a6;
+	--color-feedback-warning-500: #f5b21b;
+	--color-feedback-warning-700: #b27c0a;
+	--color-feedback-warning-900: #5a3d05;
+
+	--color-feedback-error-100: #ffe7ea;
+	--color-feedback-error-300: #ffc0c8;
+	--color-feedback-error-500: #e23b4f;
+	--color-feedback-error-700: #b01e32;
+	--color-feedback-error-900: #5a0f1a;
+
 	--color-action-primary-bg: #4a33b3;
 	--color-action-primary-bg-hover: #3a2687;
 	--color-action-primary-bg-active: #3a2687;
@@ -51,72 +117,6 @@
 	--color-action-tertiary-border: #2e3138;
 	--color-action-tertiary-border-hover: #1d1346;
 	--color-action-tertiary-border-disabled: #969ba6;
-
-	--color-brand-accent-100: #eae6f5;
-	--color-brand-accent-300: #8a78d9;
-	--color-brand-accent-500: #4a33b3;
-	--color-brand-accent-700: #3a2687;
-	--color-brand-accent-900: #1d1346;
-
-	--color-violet-100: #eae6f5;
-	--color-violet-300: #8a78d9;
-	--color-violet-500: #4a33b3;
-	--color-violet-700: #3a2687;
-	--color-violet-900: #1d1346;
-
-	--color-blue-100: #eff6fd;
-	--color-blue-300: #d6e9fa;
-	--color-blue-500: #7fa9d6;
-	--color-blue-700: #357dd1;
-	--color-blue-900: #264f7f;
-
-	--color-green-100: #eef6f1;
-	--color-green-300: #d7ebdd;
-	--color-green-500: #6fb49a;
-	--color-green-700: #359976;
-	--color-green-900: #21624b;
-
-	--color-ochre-100: #ffeed6;
-	--color-ochre-300: #fbd9ac;
-	--color-ochre-500: #e3a45c;
-	--color-ochre-700: #c47a24;
-	--color-ochre-900: #764c1d;
-
-	--color-yellow-100: #fff4d6;
-	--color-yellow-300: #ffe7a6;
-	--color-yellow-500: #f6c94e;
-	--color-yellow-700: #d5a923;
-	--color-yellow-900: #80671d;
-
-	--color-salmon-100: #ffe5db;
-	--color-salmon-300: #ffd3c6;
-	--color-salmon-500: #f5a489;
-	--color-salmon-700: #db5f3d;
-	--color-salmon-900: #9c4026;
-
-	--color-info-100: #eff0fb;
-	--color-info-300: #c9ceff;
-	--color-info-500: #373dd2;
-	--color-info-700: #2327a8;
-	--color-info-900: #13146b;
-
-	--color-success-100: #ecf8f2;
-	--color-success-300: #bfebd7;
-	--color-success-500: #2fae7b;
-	--color-success-700: #15865c;
-	--color-success-900: #0f3f2e;
-
-	--color-warning-100: #fff4da;
-	--color-warning-300: #ffe2a6;
-	--color-warning-500: #f5b21b;
-	--color-warning-700: #b27c0a;
-	--color-warning-900: #5a3d05;
-
-	--color-error-100: #ffe7ea;
-	--color-error-300: #ffc0c8;
-	--color-error-500: #e23b4f;
-	--color-error-700: #b01e32;
-	--color-error-900: #5a0f1a;
 
 	--color-status-success-bg-subtle: #ecf8f2;
 	--color-status-success-bg: #2fae7b;
