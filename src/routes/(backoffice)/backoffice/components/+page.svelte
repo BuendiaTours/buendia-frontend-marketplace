@@ -11,7 +11,7 @@
 	import { getLocalTimeZone, today } from '@internationalized/date';
 
 	// Icons
-	import { Hiking, Stars2, Camera } from '$lib/icons/Linear';
+	import { Hiking, Stars2, Camera, MoneyBack } from '$lib/icons/Linear';
 
 	// Calendar - Probando versión Melt-UI
 	import MeltCalendar from '$lib/components/backoffice/MeltCalendar.svelte';
@@ -233,6 +233,11 @@
 			<Hiking class="size-7" />
 			<Stars2 class="size-8" />
 			<Camera class="size-9" />
+			<MoneyBack class="size-4" />
+			<MoneyBack class="size-5" />
+			<MoneyBack class="size-6" />
+			<MoneyBack class="size-10" />
+			<MoneyBack class="size-12" />
 		</div>
 
 		<label class="label mt-4">Ejemplo de form submit con confirmDialog</label>

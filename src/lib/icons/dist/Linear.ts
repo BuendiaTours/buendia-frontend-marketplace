@@ -673,6 +673,7 @@ export { default as Mirror } from './Linear/Mirror.svelte';
 export { default as Mirror2 } from './Linear/Mirror2.svelte';
 export { default as MirrorLeft } from './Linear/MirrorLeft.svelte';
 export { default as MirrorRight } from './Linear/MirrorRight.svelte';
+export { default as MoneyBack } from './Linear/MoneyBack.svelte';
 export { default as MoneyBag } from './Linear/MoneyBag.svelte';
 export { default as Monitor } from './Linear/Monitor.svelte';
 export { default as MonitorCamera } from './Linear/MonitorCamera.svelte';
