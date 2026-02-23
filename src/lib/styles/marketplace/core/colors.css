@@ -144,7 +144,6 @@
 	--color-text-link-hover: var(--color-accent-500);
 	--color-text-link-visited: var(--color-accent-700);
 
-	/* ---------- */
 	/* Estos son para light / dark UI */
 
 	--color-text-fixed-on-dark-primary: var(--color-white);
