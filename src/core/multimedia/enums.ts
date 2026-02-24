@@ -38,3 +38,16 @@ export enum MediaSortAttribute {
 	TITLE = 'title',
 	CREATED_AT = 'createdAt'
 }
+
+/** Types of entities that can be associated with a media through a relationship. */
+export enum MediaRelationshipEntityType {
+	ACTIVITY = 'ACTIVITY',
+	ATTRACTION = 'ATTRACTION',
+	DESTINATION = 'DESTINATION'
+}
+
+/** Attributes available for sorting media relationship lists. */
+export enum MediaRelationshipSortAttribute {
+	ORDER = 'order',
+	CREATED_AT = 'createdAt'
+}

@@ -6,6 +6,8 @@
 
 import type {
 	MediaKind,
+	MediaRelationshipEntityType,
+	MediaRelationshipSortAttribute,
 	MediaSortAttribute,
 	MediaStatus,
 	MediaVariantFormat,
@@ -19,6 +21,7 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 export type MediaPresetFocalPoint = {
 	id: string;
 	preset: MediaVariantPreset;
+	scale: number;
 	x: number;
 	y: number;
 };
@@ -71,7 +74,7 @@ export type MediaCreateDto = {
 export type MediaUpdateDto = {
 	altText?: string;
 	title?: string;
-	focalPoints?: Record<string, { x: number; y: number } | null>;
+	focalPoints?: Record<string, { x: number; y: number; scale: number } | null>;
 };
 
 /** Payload for requesting a presigned S3 upload URL. */
@@ -98,6 +101,56 @@ export type MediaCriteria = {
 	kind?: MediaKind;
 	status?: MediaStatus;
 	sort?: MediaSortAttribute;
+	operator?: CriteriaOperator;
+	order?: CriteriaSortOption;
+};
+
+// ── Media Relationship ──────────────────────────
+
+// ── Projections (read models) ───────────────────
+
+/** Media relationship projection as returned by the API. */
+export type MediaRelationship = {
+	id: string;
+	entityId: string;
+	mediaId: string;
+	entityType: MediaRelationshipEntityType;
+	order: number;
+	createdAt: string;
+	updatedAt: string;
+};
+
+// ── DTOs (write models) ─────────────────────────
+
+/** Payload for creating a new media relationship. */
+export type MediaRelationshipCreateDto = {
+	id: string;
+	entityId: string;
+	mediaId: string;
+	entityType: MediaRelationshipEntityType;
+};
+
+/** Single item in a reorder request. */
+export type MediaRelationshipReorderItem = {
+	id: string;
+	order: number;
+};
+
+/** Payload for reordering media relationships. */
+export type MediaRelationshipReorderDto = {
+	items: MediaRelationshipReorderItem[];
+};
+
+// ── Criteria (query params) ─────────────────────
+
+/** Query parameters for filtering, sorting, and paginating media relationship lists. */
+export type MediaRelationshipCriteria = {
+	page?: number;
+	pageSize?: number;
+	entityId?: string;
+	entityType?: MediaRelationshipEntityType;
+	mediaId?: string;
+	sort?: MediaRelationshipSortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;
 };
