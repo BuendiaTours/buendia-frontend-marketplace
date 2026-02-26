@@ -9,6 +9,8 @@
  * - (marketplace)/layout-marketplace.css → Solo Tailwind + custom marketplace
  */
 
+@import '$lib/styles/marketplace/core/colors.css';
+
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';

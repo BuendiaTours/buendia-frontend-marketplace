@@ -1,0 +1,63 @@
+/**
+ * ACCORDION ON MOBILE
+ * En desktop se comporta como un div normal (contenido siempre visible, sin cursor pulsable, sin flecha).
+ * En mobile actúa como un acordeón nativo usando <details>/<summary>.
+ */
+
+/* ── Desktop: se comporta como un div normal ── */
+
+.c-accordion-on-mobile {
+	> summary {
+		list-style: none;
+		cursor: default;
+		display: block;
+		pointer-events: none;
+		::-webkit-details-marker {
+			display: none;
+		}
+	}
+	/* Forzar contenido siempre visible (override del UA stylesheet que oculta hijos de <details> cerrado) */
+	> .c-accordion-on-mobile__content {
+		display: block;
+	}
+}
+
+/* ── Mobile (< 768px): acordeón normal ── */
+
+@media (width < theme(--breakpoint-md)) {
+	.c-accordion-on-mobile {
+		> summary {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			pointer-events: all;
+
+			&::after {
+				content: '';
+				display: inline-block;
+				width: 0.5rem;
+				height: 0.5rem;
+				border-right: 2px solid currentColor;
+				border-bottom: 2px solid currentColor;
+				transform: rotate(45deg);
+				transition: transform 0.2s ease;
+				flex-shrink: 0;
+			}
+		}
+
+		&[open] {
+			> summary::after {
+				transform: rotate(-135deg);
+			}
+
+			> .c-accordion-on-mobile__content {
+				display: block;
+			}
+		}
+
+		> .c-accordion-on-mobile__content {
+			display: none;
+		}
+	}
+}

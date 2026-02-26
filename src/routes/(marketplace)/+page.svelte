@@ -1,5 +1,8 @@
 <script lang="ts">
+	// Componets
+	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -7,12 +10,17 @@
 
 <div class="wrapper mt-6">
 	<div class="e-card mb-2 p-2 text-center">
-		<h1 class="bg:var(--color-status-success-bg) mb-4 font-serif font-semibold text-gray-900">
-			Home del Marketplace
-		</h1>
+		<h1 class="bg-success-500 mb-4 font-serif font-semibold text-gray-900">Home del Marketplace</h1>
 		<p class="text-neutral-700">Página pública - Solo Tailwind CSS (sin DaisyUI)</p>
 
 		<StarRating value={3.5} size="md" filledClass="text-blue-500" emptyClass="text-blue-100" />
+
+		<AccordionOnMobile open={false}>
+			{#snippet summary()}
+				<p class="h1">Información del producto</p>
+			{/snippet}
+			<p>Contenido visible siempre en desktop, colapsable en mobile.</p>
+		</AccordionOnMobile>
 
 		<div>
 			<div class="e-button">Button</div>
