@@ -15,7 +15,7 @@
 
 		<StarRating value={3.5} size="md" filledClass="text-blue-500" emptyClass="text-blue-100" />
 
-		<AccordionOnMobile open={false}>
+		<AccordionOnMobile open={true}>
 			{#snippet summary()}
 				<p class="h1">Información del producto</p>
 			{/snippet}

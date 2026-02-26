@@ -17,8 +17,9 @@
 		}
 	}
 	/* Forzar contenido siempre visible (override del UA stylesheet que oculta hijos de <details> cerrado) */
-	> .c-accordion-on-mobile__content {
-		display: block;
+	&::details-content {
+		content-visibility: visible;
+		background-color: aqua;
 	}
 }
 
