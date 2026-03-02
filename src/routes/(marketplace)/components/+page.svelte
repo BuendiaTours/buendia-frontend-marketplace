@@ -8,6 +8,10 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<div class="wrapper mt-6">Calendar</div>
+
+<div class="wrapper mt-6">Calendar</div>
+
 <div class="wrapper mt-6">
 	<StarRating value={3.5} size="md" filledClass="text-blue-500" emptyClass="text-blue-100" />
 </div>
