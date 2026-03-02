@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Components
 	import { openLightbox } from '$lib/components/backoffice/PhotoSwipe';
-	import SwiperElement from '$lib/components/backoffice/Swiper.svelte';
+	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import { logger } from '$lib/utils/logger';
 
 	// Actions

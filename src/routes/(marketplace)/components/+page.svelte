@@ -7,6 +7,7 @@
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 	import PhotoGallery from '$lib/components/marketplace/PhotoGallery.svelte';
+	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
@@ -257,6 +258,72 @@
 		<code>height</code>.
 	</p>
 	<PhotoGallery images={galleryImages} />
+</div>
+
+<!-- ============================================================ -->
+<!-- Swiper -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Swiper — slides de texto</h2>
+	<p class="mb-6 text-gray-500">
+		Carrusel basado en Swiper Element (web component). Soporta navegación, paginación y loop.
+	</p>
+	<SwiperElement
+		className="rounded-lg bg-gray-100 h-[200px] max-w-[640px]"
+		options={{
+			slidesPerView: 1,
+			spaceBetween: 16,
+			navigation: true,
+			pagination: { clickable: true },
+			loop: true
+		}}
+	>
+		<swiper-slide class="flex items-center justify-center font-medium text-gray-600"
+			>Slide 1</swiper-slide
+		>
+		<swiper-slide class="flex items-center justify-center font-medium text-gray-600"
+			>Slide 2</swiper-slide
+		>
+		<swiper-slide class="flex items-center justify-center font-medium text-gray-600"
+			>Slide 3</swiper-slide
+		>
+	</SwiperElement>
+</div>
+
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Swiper — slides con imágenes</h2>
+	<SwiperElement
+		className="rounded-lg overflow-hidden h-[320px] max-w-[640px]"
+		options={{
+			slidesPerView: 1,
+			spaceBetween: 16,
+			navigation: true,
+			pagination: { clickable: true },
+			loop: true
+		}}
+	>
+		<swiper-slide class="h-full">
+			<img
+				src="https://picsum.photos/id/238/800/600.jpg"
+				alt="Slide 1"
+				class="h-full w-full object-cover"
+			/>
+		</swiper-slide>
+		<swiper-slide class="h-full">
+			<img
+				src="https://picsum.photos/id/239/800/600.jpg"
+				alt="Slide 2"
+				class="h-full w-full object-cover"
+			/>
+		</swiper-slide>
+		<swiper-slide class="h-full">
+			<img
+				src="https://picsum.photos/id/240/800/600.jpg"
+				alt="Slide 3"
+				class="h-full w-full object-cover"
+			/>
+		</swiper-slide>
+	</SwiperElement>
 </div>
 
 <!-- ============================================================ -->

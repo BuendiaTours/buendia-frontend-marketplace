@@ -21,7 +21,7 @@ Ejemplo de uso:
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { registerSwiperElements } from '$lib/components/backoffice/Swiper';
+	import { registerSwiperElements } from '$lib/components/shared/Swiper';
 
 	export let options: Record<string, unknown> = {};
 	export let className = '';
