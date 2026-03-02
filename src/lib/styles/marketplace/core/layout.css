@@ -12,8 +12,24 @@
 
 .wrapper {
 	width: 100%;
-	max-width: var(--breakpoint-xl);
+	max-width: 87.5rem;
+	/* Mobile (base): más pequeño */
+	padding-left: 1rem;
+	padding-right: 1rem;
 	margin-inline: auto;
+	background-color: aliceblue;
+}
 
-	background-color: cyan;
+@media (width >= theme(--breakpoint-sm)) {
+	.wrapper {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+}
+
+@media (width >= theme(--breakpoint-md)) {
+	.wrapper {
+		padding-left: 6rem;
+		padding-right: 6rem;
+	}
 }
