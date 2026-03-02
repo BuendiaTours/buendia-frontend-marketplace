@@ -33,6 +33,8 @@
 @import '$lib/styles/marketplace/components/c-star-rating.css';
 @import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
 @import '$lib/styles/marketplace/components/c-tooltip.css';
+@import '$lib/styles/marketplace/components/c-melt-calendar.css';
+@import '$lib/styles/marketplace/components/c-range-calendar.css';
 
 /* ============================================
    DISABLE TAILWIND DEFAULT TEXT CLASSES

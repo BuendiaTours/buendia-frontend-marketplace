@@ -1,0 +1,169 @@
+/*
+ * c-range-calendar.css
+ * Estilos para el componente MeltRangeCalendar (marketplace)
+ * Independiente de DaisyUI — personaliza con variables CSS.
+ *
+ * Variables disponibles:
+ *   --c-range-calendar-bg                    Fondo del contenedor (default: #fff)
+ *   --c-range-calendar-border-color          Color del borde del contenedor (default: #e5e7eb)
+ *   --c-range-calendar-radius                Border-radius del contenedor (default: 0.5rem)
+ *   --c-range-calendar-padding               Padding interno (default: 1.5rem)
+ *   --c-range-calendar-cell-size             Tamaño de celdas/botones (default: 2.5rem)
+ *   --c-range-calendar-hover-bg              Fondo en hover (default: rgba(0,0,0,0.06))
+ *   --c-range-calendar-selected-bg           Fondo de días en rango (default: rgba(59,130,246,0.15))
+ *   --c-range-calendar-selection-start-bg    Fondo del primer día (default: #3b82f6)
+ *   --c-range-calendar-selection-start-color Color del primer día (default: #fff)
+ *   --c-range-calendar-selection-end-bg      Fondo del último día (default: #3b82f6)
+ *   --c-range-calendar-selection-end-color   Color del último día (default: #fff)
+ *   --c-range-calendar-today-dot-color       Color del punto "hoy" (default: #3b82f6)
+ *   --c-range-calendar-outside-opacity       Opacidad días fuera del mes (default: 0.4)
+ *   --c-range-calendar-disabled-opacity      Opacidad días deshabilitados (default: 0.3)
+ */
+
+:root {
+	--c-range-calendar-bg: #fff;
+	--c-range-calendar-border-color: #e5e7eb;
+	--c-range-calendar-radius: 0.5rem;
+	--c-range-calendar-padding: 1.5rem;
+	--c-range-calendar-cell-size: 2.5rem;
+	--c-range-calendar-hover-bg: rgba(0, 0, 0, 0.06);
+	--c-range-calendar-selected-bg: rgba(59, 130, 246, 0.15);
+	--c-range-calendar-selection-start-bg: #3b82f6;
+	--c-range-calendar-selection-start-color: #fff;
+	--c-range-calendar-selection-end-bg: #3b82f6;
+	--c-range-calendar-selection-end-color: #fff;
+	--c-range-calendar-today-dot-color: #3b82f6;
+	--c-range-calendar-outside-opacity: 0.4;
+	--c-range-calendar-disabled-opacity: 0.3;
+}
+
+/* Container */
+.c-range-calendar {
+	background: var(--c-range-calendar-bg);
+	border: 1px solid var(--c-range-calendar-border-color);
+	border-radius: var(--c-range-calendar-radius);
+	padding: var(--c-range-calendar-padding);
+	display: inline-block;
+}
+
+/* Navigation buttons */
+.c-range-calendar__nav-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--c-range-calendar-cell-size);
+	height: var(--c-range-calendar-cell-size);
+	background: transparent;
+	border: none;
+	border-radius: 0.375rem;
+	cursor: pointer;
+	color: inherit;
+	transition: background 0.15s ease;
+}
+
+.c-range-calendar__nav-btn:hover:not(:disabled) {
+	background: var(--c-range-calendar-hover-bg);
+}
+
+.c-range-calendar__nav-btn:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+/* Day cell button */
+.c-range-calendar__cell {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--c-range-calendar-cell-size);
+	height: var(--c-range-calendar-cell-size);
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 0.375rem;
+	cursor: pointer;
+	font-size: 0.875rem;
+	font-weight: normal;
+	color: inherit;
+	transition:
+		background 0.1s ease,
+		border-radius 0.05s ease;
+}
+
+.c-range-calendar__cell:hover:not([data-disabled]):not([data-outside-month]) {
+	background: var(--c-range-calendar-hover-bg);
+}
+
+/* Days within the selected range (middle days) */
+.c-range-calendar__cell[data-selected]:not([data-selection-start]):not([data-selection-end]) {
+	background: var(--c-range-calendar-selected-bg);
+	font-weight: 600;
+	border-radius: 0;
+}
+
+/* Range start day */
+.c-range-calendar__cell[data-selection-start] {
+	background: var(--c-range-calendar-selection-start-bg);
+	color: var(--c-range-calendar-selection-start-color);
+	font-weight: 700;
+	border-radius: 0.375rem 0 0 0.375rem;
+}
+
+/* Range end day */
+.c-range-calendar__cell[data-selection-end] {
+	background: var(--c-range-calendar-selection-end-bg);
+	color: var(--c-range-calendar-selection-end-color);
+	font-weight: 700;
+	border-radius: 0 0.375rem 0.375rem 0;
+}
+
+/* When start and end are the same day */
+.c-range-calendar__cell[data-selection-start][data-selection-end] {
+	border-radius: 0.375rem;
+}
+
+/* Today indicator dot */
+.c-range-calendar__today-dot {
+	position: absolute;
+	top: 0.25rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: none;
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 9999px;
+	background: var(--c-range-calendar-today-dot-color);
+}
+
+.c-range-calendar__cell[data-today] .c-range-calendar__today-dot {
+	display: block;
+}
+
+/* When today is in the selected range, dot adapts */
+.c-range-calendar__cell[data-selected][data-today] .c-range-calendar__today-dot {
+	background: var(--c-range-calendar-selection-start-bg);
+}
+
+.c-range-calendar__cell[data-selection-start][data-today] .c-range-calendar__today-dot,
+.c-range-calendar__cell[data-selection-end][data-today] .c-range-calendar__today-dot {
+	background: var(--c-range-calendar-selection-start-color);
+}
+
+/* Outside current month */
+.c-range-calendar__cell[data-outside-month] {
+	pointer-events: none;
+	opacity: var(--c-range-calendar-outside-opacity);
+}
+
+/* Disabled days */
+.c-range-calendar__cell[data-disabled] {
+	pointer-events: none;
+	opacity: var(--c-range-calendar-disabled-opacity);
+}
+
+/* Unavailable days */
+.c-range-calendar__cell[data-unavailable] {
+	text-decoration: line-through;
+}

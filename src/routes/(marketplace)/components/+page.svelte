@@ -6,7 +6,13 @@
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
+	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
+	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
+	import { fade } from 'svelte/transition';
+	import { Calendar } from '$lib/icons/Linear';
+	import type { DateValue } from '@internationalized/date';
 
 	import type { PageData } from './$types';
 
@@ -41,6 +47,24 @@
 
 	// Confirm dialog
 	let confirmResult = $state<boolean | null>(null);
+
+	// MeltCalendar
+	let calendarValue = $state<DateValue | undefined>();
+
+	// MeltRangeCalendar + Popover
+	type DateRange = CreateRangeCalendarProps['defaultValue'];
+	let rangeValue = $state<DateRange | undefined>();
+
+	const {
+		elements: { trigger: rangeTrigger, content: rangeContent },
+		states: { open: rangePopoverOpen }
+	} = createPopover({
+		forceVisible: true,
+		positioning: {
+			placement: 'bottom-start',
+			gutter: 4
+		}
+	});
 
 	async function handleConfirm() {
 		confirmResult = null;
@@ -199,9 +223,49 @@
 <!-- ============================================================ -->
 <!-- Resto de componentes existentes -->
 <!-- ============================================================ -->
-<div class="wrapper mt-6">Calendar</div>
+<!-- ============================================================ -->
+<!-- MeltCalendar -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">MeltCalendar</h2>
+	<p class="mb-6 text-gray-500">
+		Calendario inline. Personaliza con <code>--c-melt-calendar-selected-bg</code>,
+		<code>--c-melt-calendar-cell-size</code>, etc.
+	</p>
+	<MeltCalendar bind:value={calendarValue} />
+	{#if calendarValue}
+		<p class="mt-4 text-gray-500">Seleccionado: <strong>{calendarValue.toString()}</strong></p>
+	{/if}
+</div>
 
-<div class="wrapper mt-6">Range Calendar</div>
+<!-- ============================================================ -->
+<!-- MeltRangeCalendar en Popover -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">MeltRangeCalendar — en Popover</h2>
+	<p class="mb-6 text-gray-500">
+		Calendario de rango abierto desde un botón mediante un Popover de Melt-UI.
+	</p>
+
+	<button use:melt={$rangeTrigger} class="e-button e-button-secondary">
+		<Calendar class="size-4" />
+		{#if rangeValue?.start && rangeValue?.end}
+			{rangeValue.start.toString()} → {rangeValue.end.toString()}
+		{:else}
+			Seleccionar rango de fechas
+		{/if}
+	</button>
+
+	{#if $rangePopoverOpen}
+		<div
+			use:melt={$rangeContent}
+			transition:fade={{ duration: 100 }}
+			class="z-50 rounded-lg border border-gray-200 bg-white shadow-lg"
+		>
+			<MeltRangeCalendar bind:value={rangeValue} numberOfMonths={2} />
+		</div>
+	{/if}
+</div>
 
 <div class="wrapper mt-6">
 	<StarRating value={3.5} size="md" filledClass="text-blue-500" emptyClass="text-blue-100" />

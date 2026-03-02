@@ -1,0 +1,207 @@
+/**
+ * TOOLTIP COMPONENT (c-tooltip)
+ *
+ * Mecánica idéntica a DaisyUI pero completamente independiente de su sistema de diseño.
+ * NO incluye colores, tipografía ni radios por defecto — defínelos con variables CSS.
+ *
+ * VARIABLES DISPONIBLES (sobreescribibles donde uses el componente):
+ *
+ *   --c-tooltip-bg          Color de fondo del bubble
+ *   --c-tooltip-color       Color del texto
+ *   --c-tooltip-radius      Border-radius del bubble
+ *   --c-tooltip-padding-x   Padding horizontal (default: 0.5rem)
+ *   --c-tooltip-padding-y   Padding vertical (default: 0.25rem)
+ *   --c-tooltip-font-size   Tamaño de fuente (default: 0.875rem)
+ *   --c-tooltip-max-width   Ancho máximo del bubble (default: 20rem)
+ *   --c-tooltip-z-index     Z-index (default: 10)
+ *   --c-tooltip-offset      Distancia entre trigger y bubble (default: calc(100% + 0.5rem))
+ *
+ * USO:
+ *   <Tooltip tip="Texto" position="top">...</Tooltip>
+ *
+ * PERSONALIZACIÓN:
+ *   .mi-contexto {
+ *     --c-tooltip-bg: #1e293b;
+ *     --c-tooltip-color: #fff;
+ *     --c-tooltip-radius: 4px;
+ *   }
+ */
+
+/* ============================================
+   VARIABLES INTERNAS (derivadas de las del usuario)
+   ============================================ */
+
+.c-tooltip {
+	/* Offset entre trigger y bubble */
+	--_tt-off: var(--c-tooltip-offset, calc(100% + 0.5rem));
+	/* Posición de la flechita (un poquito más cerca que el bubble) */
+	--_tt-tail: calc(var(--_tt-off) + 1px + 0.25rem);
+	/* Posición de animación de entrada */
+	--_tt-anim-pos: 0.5rem;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+
+.c-tooltip {
+	display: inline-block;
+	position: relative;
+}
+
+/* ── Bubble (::before) ── */
+
+.c-tooltip::before {
+	/* Contenido desde data-tip */
+	content: attr(data-tip);
+
+	/* Posicionamiento */
+	position: absolute;
+	z-index: var(--c-tooltip-z-index, 10);
+	pointer-events: none;
+
+	/* Dimensiones */
+	width: max-content;
+	max-width: var(--c-tooltip-max-width, 20rem);
+
+	/* Tipografía */
+	font-size: var(--c-tooltip-font-size, 0.875rem);
+	line-height: 1.25;
+	text-align: center;
+	white-space: normal;
+
+	/* Visual */
+	background-color: var(--c-tooltip-bg);
+	color: var(--c-tooltip-color);
+	border-radius: var(--c-tooltip-radius);
+	padding-block: var(--c-tooltip-padding-y, 0.25rem);
+	padding-inline: var(--c-tooltip-padding-x, 0.5rem);
+
+	/* Oculto por defecto */
+	opacity: 0;
+}
+
+/* ── Flechita (::after) — SVG mask idéntica a DaisyUI ── */
+
+.c-tooltip::after {
+	content: '';
+	position: absolute;
+	pointer-events: none;
+	z-index: var(--c-tooltip-z-index, 10);
+
+	/* Forma de flechita */
+	width: 0.625rem;
+	height: 0.25rem;
+	background-color: var(--c-tooltip-bg);
+	mask-image: url("data:image/svg+xml,%3Csvg width='10' height='4' viewBox='0 0 8 4' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.500009 1C3.5 1 3.00001 4 5.00001 4C7 4 6.5 1 9.5 1C10 1 10 0.499897 10 0H0C-1.99338e-08 0.5 0 1 0.500009 1Z' fill='black'/%3E%3C/svg%3E");
+	mask-position: -1px 0;
+	mask-repeat: no-repeat;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg width='10' height='4' viewBox='0 0 8 4' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.500009 1C3.5 1 3.00001 4 5.00001 4C7 4 6.5 1 9.5 1C10 1 10 0.499897 10 0H0C-1.99338e-08 0.5 0 1 0.500009 1Z' fill='black'/%3E%3C/svg%3E");
+	-webkit-mask-position: -1px 0;
+	-webkit-mask-repeat: no-repeat;
+	display: block;
+
+	/* Oculto por defecto */
+	opacity: 0;
+}
+
+/* ── Transición (solo si no hay preferencia de movimiento reducido) ── */
+
+@media (prefers-reduced-motion: no-preference) {
+	.c-tooltip::before,
+	.c-tooltip::after {
+		transition:
+			opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) 75ms,
+			transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) 75ms;
+	}
+}
+
+/* ── Visible: hover, focus-visible dentro, o --open forzado ── */
+
+.c-tooltip:hover::before,
+.c-tooltip:hover::after,
+.c-tooltip:has(:focus-visible)::before,
+.c-tooltip:has(:focus-visible)::after,
+.c-tooltip--open::before,
+.c-tooltip--open::after {
+	opacity: 1;
+	--_tt-anim-pos: 0rem;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+			transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+}
+
+/* ============================================
+   POSICIÓN — TOP (default)
+   ============================================ */
+
+.c-tooltip,
+.c-tooltip--top {
+	&::before {
+		transform: translateX(-50%) translateY(var(--_tt-anim-pos, 0.5rem));
+		inset: auto auto var(--_tt-off) 50%;
+	}
+
+	&::after {
+		transform: translateX(-50%) translateY(calc(0.5rem + var(--_tt-anim-pos)));
+		inset: auto auto var(--_tt-tail) 50%;
+	}
+}
+
+/* ============================================
+   POSICIÓN — BOTTOM
+   ============================================ */
+
+.c-tooltip--bottom {
+	&::before {
+		transform: translateX(-50%) translateY(calc(var(--_tt-anim-pos, 0.25rem) * -1));
+		inset: var(--_tt-off) auto auto 50%;
+	}
+
+	&::after {
+		transform: translateX(-50%) translateY(calc(-0.5rem - var(--_tt-anim-pos))) rotate(180deg);
+		inset: var(--_tt-tail) auto auto 50%;
+	}
+}
+
+/* ============================================
+   POSICIÓN — LEFT
+   ============================================ */
+
+.c-tooltip--left {
+	&::before {
+		transform: translateX(calc(var(--_tt-anim-pos, 0.25rem) - 0.25rem)) translateY(-50%);
+		inset: 50% var(--_tt-off) auto auto;
+	}
+
+	&::after {
+		transform: translateX(calc(0.5rem + var(--_tt-anim-pos))) translateY(-50%) rotate(-90deg);
+		inset: 50% calc(var(--_tt-tail) + 1px) auto auto;
+	}
+}
+
+/* ============================================
+   POSICIÓN — RIGHT
+   ============================================ */
+
+.c-tooltip--right {
+	&::before {
+		transform: translateX(calc(var(--_tt-anim-pos, -0.25rem) + 0.25rem)) translateY(-50%);
+		inset: 50% auto auto var(--_tt-off);
+	}
+
+	&::after {
+		transform: translateX(calc(-0.5rem + var(--_tt-anim-pos))) translateY(-50%) rotate(90deg);
+		inset: 50% auto auto calc(var(--_tt-tail) + 1px);
+	}
+}
+
+/* ── No mostrar si data-tip está vacío ── */
+
+.c-tooltip[data-tip='']::before,
+.c-tooltip[data-tip='']::after {
+	display: none;
+}
