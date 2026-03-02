@@ -5,6 +5,7 @@
 	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
+	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 
 	import type { PageData } from './$types';
@@ -53,6 +54,47 @@
 		});
 	}
 </script>
+
+<!-- ============================================================ -->
+<!-- Tooltip -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Tooltip</h2>
+	<p class="mb-6 text-gray-500">
+		Sin estilos por defecto — personaliza con <code>--c-tooltip-bg</code>,
+		<code>--c-tooltip-color</code> y <code>--c-tooltip-radius</code>.
+	</p>
+
+	<!-- Ejemplo con estilos inline para demostración -->
+	<div
+		class="flex flex-wrap items-center gap-8 p-8"
+		style="--c-tooltip-bg: #1e293b; --c-tooltip-color: #f8fafc; --c-tooltip-radius: 6px;"
+	>
+		<Tooltip tip="Tooltip arriba (default)">
+			<button class="e-button e-button-secondary">Top</button>
+		</Tooltip>
+
+		<Tooltip tip="Tooltip abajo" position="bottom">
+			<button class="e-button e-button-secondary">Bottom</button>
+		</Tooltip>
+
+		<Tooltip tip="Tooltip a la izquierda" position="left">
+			<button class="e-button e-button-secondary">Left</button>
+		</Tooltip>
+
+		<Tooltip tip="Tooltip a la derecha" position="right">
+			<button class="e-button e-button-secondary">Right</button>
+		</Tooltip>
+
+		<Tooltip tip="Siempre visible" open={true}>
+			<button class="e-button e-button-secondary">Open</button>
+		</Tooltip>
+
+		<Tooltip tip="">
+			<button class="e-button e-button-secondary">Sin tip (no aparece)</button>
+		</Tooltip>
+	</div>
+</div>
 
 <!-- ============================================================ -->
 <!-- MeltAlertDialog (confirm) -->
