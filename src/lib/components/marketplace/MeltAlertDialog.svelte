@@ -138,7 +138,7 @@ Usa la función confirm() desde MeltAlertDialog.ts para mostrar diálogos de con
 			<button
 				use:melt={$close}
 				aria-label="Cerrar"
-				class="melt-alert-dialog-close absolute top-3 right-3 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+				class="melt-alert-dialog-close absolute top-3 right-3 cursor-pointer rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
 			>
 				<Close class="size-5" />
 			</button>

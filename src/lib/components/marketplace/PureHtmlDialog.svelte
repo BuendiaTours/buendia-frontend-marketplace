@@ -108,7 +108,7 @@ USO BÁSICO:
 				<h3 class="pure-html-dialog-title font-semibold text-gray-900">{title}</h3>
 				<button
 					type="button"
-					class="pure-html-dialog-close rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+					class="pure-html-dialog-close -mr-2 cursor-pointer rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
 					onclick={() => close()}
 					aria-label="Cerrar"
 				>
