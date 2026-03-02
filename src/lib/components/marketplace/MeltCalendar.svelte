@@ -8,7 +8,7 @@ Ejemplo de uso:
 Props disponibles:
 - value: DateValue | undefined (bindable)
 - onValueChange: (value: DateValue | undefined) => void
-- class: string (clases adicionales)
+- wrapperClass: string (clases adicionales)
 
 Estilos en: src/lib/styles/marketplace/components/c-melt-calendar.css
 Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-bg, etc.
@@ -22,10 +22,10 @@ Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-
 	type Props = {
 		value?: DateValue;
 		onValueChange?: (value: DateValue | undefined) => void;
-		class?: string;
+		wrapperClass?: string;
 	};
 
-	let { value = $bindable(), onValueChange, class: className = '' }: Props = $props();
+	let { value = $bindable(), onValueChange, wrapperClass = '' }: Props = $props();
 
 	const {
 		elements: { calendar, grid, cell, prevButton, nextButton },
@@ -50,7 +50,7 @@ Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-
 	});
 </script>
 
-<div use:melt={$calendar} class="c-melt-calendar {className}">
+<div use:melt={$calendar} class="c-melt-calendar {wrapperClass}">
 	<header class="flex items-center justify-between">
 		<button use:melt={$prevButton} class="c-melt-calendar__nav-btn">
 			<AltArrowLeft />

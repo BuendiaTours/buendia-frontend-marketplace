@@ -98,7 +98,7 @@
 	{/snippet}
 	{#snippet content()}
 		{#each meals as meal, index (meal.id)}
-			<FormAccordion name="form-meals-{index}" class="md:col-span-12">
+			<FormAccordion name="form-meals-{index}" wrapperClass="md:col-span-12">
 				{#snippet title()}
 					<div
 						class="border-base-content/50 flex h-8 w-8 items-center justify-center rounded-full border-2"

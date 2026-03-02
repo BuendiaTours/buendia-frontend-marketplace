@@ -43,7 +43,7 @@ Soporta modo single y multiple.
 		placeholder?: string;
 		name?: string;
 		icon?: Component;
-		class?: string;
+		wrapperClass?: string;
 	};
 
 	type Props = BaseProps & (SingleProps | MultipleProps);
@@ -53,7 +53,7 @@ Soporta modo single y multiple.
 		placeholder = 'Search...',
 		name,
 		icon: Icon,
-		class: className = 'w-full',
+		wrapperClass = 'w-full',
 		type = 'multiple' as 'multiple' | 'single',
 		value = $bindable(),
 		onValueChange
@@ -120,7 +120,7 @@ Soporta modo single y multiple.
 	const hasValue = $derived(type === 'single' ? !!value : Array.isArray(value) && value.length > 0);
 </script>
 
-<div class="relative {className}">
+<div class="relative {wrapperClass}">
 	{#if Icon}
 		<Icon
 			class={`absolute start-3 top-1/2 size-5 -translate-y-1/2 ${hasValue ? 'text-success opacity-100' : 'opacity-60'}`}
@@ -141,7 +141,7 @@ Soporta modo single y multiple.
 {#if $open}
 	<ul
 		use:melt={$menu}
-		class="melt-combobox-menu rounded-box bg-base-100 z-50 flex max-h-75 flex-col overflow-hidden border shadow-lg {className}"
+		class="melt-combobox-menu rounded-box bg-base-100 z-50 flex max-h-75 flex-col overflow-hidden border shadow-lg {wrapperClass}"
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->

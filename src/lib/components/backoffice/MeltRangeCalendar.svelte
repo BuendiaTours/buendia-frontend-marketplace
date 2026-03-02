@@ -9,7 +9,7 @@ Props disponibles:
 - value: DateRange | undefined (bindable)
 - onValueChange: (value: DateRange | undefined) => void
 - numberOfMonths: number (default: 2)
-- class: string (clases adicionales)
+- wrapperClass: string (clases adicionales)
 -->
 
 <script lang="ts">
@@ -24,14 +24,14 @@ Props disponibles:
 		value?: DateRange;
 		onValueChange?: (value: DateRange | undefined) => void;
 		numberOfMonths?: number;
-		class?: string;
+		wrapperClass?: string;
 	};
 
 	let {
 		value = $bindable(),
 		onValueChange,
 		numberOfMonths = 2,
-		class: className = ''
+		wrapperClass = ''
 	}: Props = $props();
 
 	const {
@@ -63,7 +63,7 @@ Props disponibles:
 	});
 </script>
 
-<div use:melt={$calendar} class="melt-calendar-container bg-base-100 border p-6 {className}">
+<div use:melt={$calendar} class="melt-calendar-container bg-base-100 border p-6 {wrapperClass}">
 	<header class="flex items-center justify-between">
 		<button
 			use:melt={$prevButton}

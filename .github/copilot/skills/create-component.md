@@ -133,7 +133,7 @@ src/lib/components/
 	}
 
 	// Desestructurar props con defaults
-	let { prop1, prop2 = 10, prop3 = 'a', class: className = '', ...restProps }: Props = $props();
+	let { prop1, prop2 = 10, prop3 = 'a', class: wrapperClass = '', ...restProps }: Props = $props();
 
 	// Estado interno (si es necesario)
 	let internalState = $state(initialValue);
@@ -150,7 +150,7 @@ src/lib/components/
 </script>
 
 <!-- Markup con Tailwind -->
-<div class="base-classes {className}" {...restProps}>
+<div class="base-classes {wrapperClass}" {...restProps}>
 	<!-- Contenido del componente -->
 </div>
 ````
@@ -240,7 +240,7 @@ src/lib/components/
 		class?: string;
 	}
 
-	let { items, initialSelected, onSelect, class: className = '' }: Props = $props();
+	let { items, initialSelected, onSelect, class: wrapperClass = '' }: Props = $props();
 
 	// Estado interno
 	let selected = $state(initialSelected);
@@ -257,7 +257,7 @@ src/lib/components/
 	}
 </script>
 
-<div class="component-container {className}">
+<div class="component-container {wrapperClass}">
 	{#each items as item}
 		<button onclick={() => handleSelect(item)} class:selected={selected === item.id}>
 			{item.name}
@@ -287,7 +287,7 @@ src/lib/components/
 		class?: string;
 	}
 
-	let { value, type = 'success', size = 'md', class: className = '' }: Props = $props();
+	let { value, type = 'success', size = 'md', class: wrapperClass = '' }: Props = $props();
 
 	const typeClasses = $derived(() => {
 		switch (type) {
@@ -316,7 +316,7 @@ src/lib/components/
 	});
 </script>
 
-<span class="inline-flex items-center rounded {typeClasses()} {sizeClasses()} {className}">
+<span class="inline-flex items-center rounded {typeClasses()} {sizeClasses()} {wrapperClass}">
 	{value}
 </span>
 ```
@@ -450,7 +450,7 @@ Antes de terminar:
 		class?: string;
 	}
 
-	let { status, class: className = '' }: Props = $props();
+	let { status, class: wrapperClass = '' }: Props = $props();
 
 	const statusConfig = $derived(() => {
 		switch (status) {
@@ -464,7 +464,7 @@ Antes de terminar:
 	});
 </script>
 
-<span class="badge {statusConfig().class} {className}">
+<span class="badge {statusConfig().class} {wrapperClass}">
 	{statusConfig().text}
 </span>
 ```
@@ -517,7 +517,7 @@ Antes de terminar:
 		class?: string;
 	}
 
-	let { value, type = 'text', align = 'left', class: className = '' }: Props = $props();
+	let { value, type = 'text', align = 'left', class: wrapperClass = '' }: Props = $props();
 
 	const alignClass = $derived(() => {
 		switch (align) {
@@ -531,7 +531,7 @@ Antes de terminar:
 	});
 </script>
 
-<td class="{alignClass()} {className}">
+<td class="{alignClass()} {wrapperClass}">
 	{#if value === null}
 		<span class="text-base-content/50">—</span>
 	{:else if type === 'badge'}

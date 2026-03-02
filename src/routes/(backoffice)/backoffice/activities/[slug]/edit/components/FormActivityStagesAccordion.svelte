@@ -155,7 +155,7 @@
 		{#each stages as stage, index (stage.id)}
 			<FormAccordion
 				name="form-stages-{index}"
-				class="md:col-span-12"
+				wrapperClass="md:col-span-12"
 				sortable
 				ondragstart={(e) => handleStageDragStart(e, index)}
 				ondragover={handleStageDragOver}

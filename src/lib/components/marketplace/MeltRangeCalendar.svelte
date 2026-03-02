@@ -9,7 +9,7 @@ Props disponibles:
 - value: DateRange | undefined (bindable)
 - onValueChange: (value: DateRange | undefined) => void
 - numberOfMonths: number (default: 2)
-- class: string (clases adicionales)
+- wrapperClass: string (clases adicionales)
 
 Estilos en: src/lib/styles/marketplace/components/c-melt-range-calendar.css
 Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calendar-selection-start-bg, etc.
@@ -26,14 +26,14 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 		value?: DateRange;
 		onValueChange?: (value: DateRange | undefined) => void;
 		numberOfMonths?: number;
-		class?: string;
+		wrapperClass?: string;
 	};
 
 	let {
 		value = $bindable(),
 		onValueChange,
 		numberOfMonths = 2,
-		class: className = ''
+		wrapperClass = ''
 	}: Props = $props();
 
 	const {
@@ -65,7 +65,7 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 	});
 </script>
 
-<div use:melt={$calendar} class="c-melt-range-calendar {className}">
+<div use:melt={$calendar} class="c-melt-range-calendar {wrapperClass}">
 	<header class="flex items-center justify-between">
 		<button use:melt={$prevButton} class="c-melt-range-calendar__nav-btn">
 			<AltArrowLeft />

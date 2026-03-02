@@ -53,7 +53,7 @@
 	type Props = {
 		open?: boolean;
 		name?: string;
-		class?: string;
+		wrapperClass?: string;
 		sortable?: boolean;
 		title: Snippet;
 		content: Snippet;
@@ -68,7 +68,7 @@
 	let {
 		open = false,
 		name,
-		class: className,
+		wrapperClass,
 		sortable = false,
 		asideContent,
 		content,
@@ -131,7 +131,7 @@
 
 <details
 	bind:this={detailsElement}
-	class="collapse-arrow border-base-content/9 bg-base-100 collapse border {className}"
+	class="collapse-arrow border-base-content/9 bg-base-100 collapse border {wrapperClass}"
 	id={name}
 	{name}
 	{open}
