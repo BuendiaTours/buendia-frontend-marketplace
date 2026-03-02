@@ -5,7 +5,7 @@ import { handleApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 
 import { parseFilters } from '$lib/utils/filters';
-import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(usersFiltersSchema, url.searchParams);

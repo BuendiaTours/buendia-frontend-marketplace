@@ -1,6 +1,6 @@
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { ApiError } from '$core/_shared/errors';
-import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 import { destinationFormSchema } from '../../schemas/destination-form.schema';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';

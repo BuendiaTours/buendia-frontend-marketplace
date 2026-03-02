@@ -2,7 +2,7 @@ import { attractionFormSchema } from '../../schemas/attraction-form.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { ApiError } from '$core/_shared/errors';
-import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

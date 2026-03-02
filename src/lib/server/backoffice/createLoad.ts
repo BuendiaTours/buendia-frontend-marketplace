@@ -5,7 +5,7 @@ import type { SuperValidated } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 import { ApiError } from '$core/_shared/errors';
 import { logger } from '$lib/utils/logger';
-import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 /**
  * Configuración para crear una función load de creación

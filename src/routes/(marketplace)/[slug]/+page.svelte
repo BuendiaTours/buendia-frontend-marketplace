@@ -1,13 +1,14 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { resolveRoute } from '$app/paths';
+	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
 <div class="wrapper">
 	<div class="my-6">
-		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
+		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
 	<!-- Destination Info -->

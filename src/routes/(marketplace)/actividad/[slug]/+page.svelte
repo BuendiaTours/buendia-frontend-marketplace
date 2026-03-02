@@ -1,15 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Badge from '$lib/components/marketplace/Badge.svelte';
+	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
 </script>
 
-<!-- Back to home link -->
 <div class="wrapper">
 	<div class="mt-8">
-		<a href="/" class="text-blue-600 hover:underline">← Volver al inicio</a>
+		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 </div>
 

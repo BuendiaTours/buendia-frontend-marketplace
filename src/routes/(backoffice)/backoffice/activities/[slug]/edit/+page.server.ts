@@ -6,7 +6,7 @@ import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
 import { TAG_REQUEST } from '$core/tags/requests';
 import { ApiError } from '$core/_shared/errors';
-import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

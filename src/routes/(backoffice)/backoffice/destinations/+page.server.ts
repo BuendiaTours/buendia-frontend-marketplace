@@ -6,7 +6,7 @@ import type { DestinationCriteria } from '$core/destinations/types';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
-import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema

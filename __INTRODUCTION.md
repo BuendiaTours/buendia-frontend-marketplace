@@ -1007,7 +1007,7 @@ export const actions: Actions = {
 
 ```svelte
 <script lang="ts">
-	import Breadcrumb from '$lib/components/backoffice/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/backoffice/Breadcrumbs.svelte';
 	import Tag from '$lib/components/backoffice/Tag.svelte';
 	import StarRating from '$lib/components/backoffice/StarRating.svelte';
 	import ThemeSwitcher from '$lib/components/backoffice/ThemeSwitcher.svelte';

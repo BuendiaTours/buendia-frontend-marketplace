@@ -6,7 +6,7 @@ import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import type { ActivityCriteria } from '$core/activities/types';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
-import { generateBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(activitiesFiltersSchema, url.searchParams);

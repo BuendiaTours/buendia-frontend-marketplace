@@ -1,7 +1,7 @@
 import * as m from '$paraglide/messages';
 import { USER_REQUEST } from '$core/users/requests';
 import { handleApiError } from '$core/_shared/errors';
-import { buildBreadcrumbs } from '$lib/utils/breadcrumbs';
+import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 import { userFormSchema } from '../../schemas/user-form.schema';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

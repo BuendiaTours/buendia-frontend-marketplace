@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BreadcrumbItem } from '$lib/types';
-	import Breadcrumb from '$lib/components/backoffice/Breadcrumb.svelte';
+	import Breadcrumb from '$lib/components/backoffice/Breadcrumbs.svelte';
 
 	type Props = {
 		title: string;
