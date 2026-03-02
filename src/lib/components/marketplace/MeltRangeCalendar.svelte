@@ -11,8 +11,8 @@ Props disponibles:
 - numberOfMonths: number (default: 2)
 - class: string (clases adicionales)
 
-Estilos en: src/lib/styles/marketplace/components/c-range-calendar.css
-Personaliza con variables CSS: --c-range-calendar-bg, --c-range-calendar-selection-start-bg, etc.
+Estilos en: src/lib/styles/marketplace/components/c-melt-range-calendar.css
+Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calendar-selection-start-bg, etc.
 -->
 
 <script lang="ts">
@@ -65,15 +65,15 @@ Personaliza con variables CSS: --c-range-calendar-bg, --c-range-calendar-selecti
 	});
 </script>
 
-<div use:melt={$calendar} class="c-range-calendar {className}">
+<div use:melt={$calendar} class="c-melt-range-calendar {className}">
 	<header class="flex items-center justify-between">
-		<button use:melt={$prevButton} class="c-range-calendar__nav-btn">
+		<button use:melt={$prevButton} class="c-melt-range-calendar__nav-btn">
 			<AltArrowLeft />
 		</button>
 		<div class="p-sm font-medium">
 			{$headingValue}
 		</div>
-		<button use:melt={$nextButton} class="c-range-calendar__nav-btn">
+		<button use:melt={$nextButton} class="c-melt-range-calendar__nav-btn">
 			<AltArrowRight />
 		</button>
 	</header>
@@ -95,8 +95,8 @@ Personaliza con variables CSS: --c-range-calendar-bg, --c-range-calendar-selecti
 						<tr class="flex w-full">
 							{#each weekDates as date, di (di)}
 								<td class="p-sm relative m-0 size-10 p-0 text-center focus-within:z-20">
-									<button use:melt={$cell(date, month.value)} class="c-range-calendar__cell">
-										<div class="c-range-calendar__today-dot"></div>
+									<button use:melt={$cell(date, month.value)} class="c-melt-range-calendar__cell">
+										<div class="c-melt-range-calendar__today-dot"></div>
 										{date.day}
 									</button>
 								</td>
