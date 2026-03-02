@@ -8,6 +8,7 @@
 	// Layout marketplace
 	import Header from '$lib/layout/marketplace/Header.svelte';
 	import Footer from '$lib/layout/marketplace/Footer.svelte';
+	import MeltAlertDialog from '$lib/components/marketplace/MeltAlertDialog.svelte';
 
 	let { children } = $props();
 
@@ -33,4 +34,5 @@
 	</main>
 
 	<Footer />
+	<MeltAlertDialog />
 </div>
