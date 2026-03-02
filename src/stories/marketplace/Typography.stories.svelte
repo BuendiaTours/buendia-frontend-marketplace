@@ -24,27 +24,27 @@
 		// Clases de tipografía que buscamos
 		const typographyClasses = [
 			// Headings UI
-			'text-h1',
-			'text-h2',
-			'text-h3',
-			'text-h4',
+			'h1',
+			'h2',
+			'h3',
+			'h4',
 			// Paragraphs UI
-			'text-p-lg',
-			'text-p-base',
-			'text-p-sm',
-			'text-p-xs',
+			'p-lg',
+			'p-base',
+			'p-sm',
+			'p-xs',
 			// Special
 			'text-price',
 			'text-metric',
 			// Editorial Headings
-			'text-editorial-h1',
-			'text-editorial-h2',
-			'text-editorial-h3',
-			'text-editorial-h4',
+			'h1-editorial',
+			'h2-editorial',
+			'h3-editorial',
+			'h4-editorial',
 			// Editorial Paragraphs
-			'text-editorial-p-lg',
-			'text-editorial-p-base',
-			'text-editorial-p-sm'
+			'p-lg-editorial',
+			'p-base-editorial',
+			'p-sm-editorial'
 		];
 
 		// Crear un elemento temporal para obtener estilos computados
@@ -74,10 +74,12 @@
 
 			// Categorizar
 			let category = 'Other';
-			if (className.includes('editorial-h')) category = 'Editorial Headings';
-			else if (className.includes('editorial-p')) category = 'Editorial Paragraphs';
-			else if (className.startsWith('text-h')) category = 'UI Headings';
-			else if (className.startsWith('text-p')) category = 'UI Paragraphs';
+			if (className.endsWith('-editorial') && className.startsWith('h'))
+				category = 'Editorial Headings';
+			else if (className.endsWith('-editorial') && className.startsWith('p'))
+				category = 'Editorial Paragraphs';
+			else if (className.startsWith('h')) category = 'UI Headings';
+			else if (className.startsWith('p')) category = 'UI Paragraphs';
 			else if (className.includes('price') || className.includes('metric')) category = 'Special';
 
 			typography.push({
@@ -124,15 +126,15 @@
 
 <Story name="All Typography">
 	<div class="p-8">
-		<h1 class="text-h1 mb-8">Marketplace Typography System</h1>
-		<p class="text-p-lg mb-12 max-w-3xl">
+		<h1 class="h1 mb-8">Marketplace Typography System</h1>
+		<p class="p-lg mb-12 max-w-3xl">
 			Sistema de tipografía del marketplace basado en las especificaciones de Figma. Todas las
 			clases son responsive y se adaptan automáticamente a tablet (≤1024px) y mobile (≤640px).
 		</p>
 
 		{#each Object.entries(typographyGroups) as [category, items]}
 			<section class="mb-16">
-				<h2 class="text-h2 mb-8 border-b-2 border-neutral-200 pb-2">{category}</h2>
+				<h2 class="h2 mb-8 border-b-2 border-neutral-200 pb-2">{category}</h2>
 
 				<div class="space-y-8">
 					{#each items as item}
@@ -146,7 +148,7 @@
 							<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 								<!-- Class Name -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">Class</dt>
+									<dt class="p-xs mb-1 font-semibold text-neutral-500 uppercase">Class</dt>
 									<dd class="font-mono text-neutral-900">
 										<code
 											class="rounded bg-neutral-100 px-2 py-1 text-sm"
@@ -161,17 +163,13 @@
 
 								<!-- Font Family -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
-										Font Family
-									</dt>
+									<dt class="p-xs mb-1 font-semibold text-neutral-500 uppercase">Font Family</dt>
 									<dd class="text-neutral-900">{item.fontFamily}</dd>
 								</div>
 
 								<!-- Font Weight -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
-										Font Weight
-									</dt>
+									<dt class="p-xs mb-1 font-semibold text-neutral-500 uppercase">Font Weight</dt>
 									<dd class="text-neutral-900">
 										{item.fontWeight}
 										{#if item.fontWeight === '400'}
@@ -190,7 +188,7 @@
 
 								<!-- Font Size -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">Font Size</dt>
+									<dt class="p-xs mb-1 font-semibold text-neutral-500 uppercase">Font Size</dt>
 									<dd class="text-neutral-900">
 										{item.fontSize}
 										<span class="text-neutral-500">({item.fontSizePx})</span>
@@ -199,9 +197,7 @@
 
 								<!-- Line Height -->
 								<div>
-									<dt class="text-p-xs mb-1 font-semibold text-neutral-500 uppercase">
-										Line Height
-									</dt>
+									<dt class="p-xs mb-1 font-semibold text-neutral-500 uppercase">Line Height</dt>
 									<dd class="text-neutral-900">
 										{item.lineHeight}
 										<span class="text-neutral-500">({item.lineHeightPx})</span>
@@ -218,57 +214,57 @@
 
 <Story name="Size Comparison">
 	<div class="p-8">
-		<h1 class="text-h1 mb-8">Typography Scale Comparison</h1>
-		<p class="text-p-lg mb-12 max-w-3xl">
+		<h1 class="h1 mb-8">Typography Scale Comparison</h1>
+		<p class="p-lg mb-12 max-w-3xl">
 			Comparación visual de todos los tamaños de tipografía disponibles.
 		</p>
 
 		<!-- UI Headings -->
 		<section class="mb-12">
-			<h2 class="text-h2 mb-6">UI Headings</h2>
+			<h2 class="h2 mb-6">UI Headings</h2>
 			<div class="space-y-4">
-				<div class="text-h1">H1 - {sampleText}</div>
-				<div class="text-h2">H2 - {sampleText}</div>
-				<div class="text-h3">H3 - {sampleText}</div>
-				<div class="text-h4">H4 - {sampleText}</div>
+				<div class="h1">H1 - {sampleText}</div>
+				<div class="h2">H2 - {sampleText}</div>
+				<div class="h3">H3 - {sampleText}</div>
+				<div class="h4">H4 - {sampleText}</div>
 			</div>
 		</section>
 
 		<!-- UI Paragraphs -->
 		<section class="mb-12">
-			<h2 class="text-h2 mb-6">UI Paragraphs</h2>
+			<h2 class="h2 mb-6">UI Paragraphs</h2>
 			<div class="space-y-4">
-				<p class="text-p-lg">{sampleTextLong}</p>
-				<p class="text-p-base">{sampleTextLong}</p>
-				<p class="text-p-sm">{sampleTextLong}</p>
-				<p class="text-p-xs">{sampleTextLong}</p>
+				<p class="p-lg">{sampleTextLong}</p>
+				<p class="p-base">{sampleTextLong}</p>
+				<p class="p-sm">{sampleTextLong}</p>
+				<p class="p-xs">{sampleTextLong}</p>
 			</div>
 		</section>
 
 		<!-- Editorial Headings -->
 		<section class="mb-12">
-			<h2 class="text-h2 mb-6">Editorial Headings</h2>
+			<h2 class="h2 mb-6">Editorial Headings</h2>
 			<div class="space-y-4">
-				<div class="text-editorial-h1">Editorial H1 - {sampleText}</div>
-				<div class="text-editorial-h2">Editorial H2 - {sampleText}</div>
-				<div class="text-editorial-h3">Editorial H3 - {sampleText}</div>
-				<div class="text-editorial-h4">Editorial H4 - {sampleText}</div>
+				<div class="h1-editorial">Editorial H1 - {sampleText}</div>
+				<div class="h2-editorial">Editorial H2 - {sampleText}</div>
+				<div class="h3-editorial">Editorial H3 - {sampleText}</div>
+				<div class="h4-editorial">Editorial H4 - {sampleText}</div>
 			</div>
 		</section>
 
 		<!-- Editorial Paragraphs -->
 		<section class="mb-12">
-			<h2 class="text-h2 mb-6">Editorial Paragraphs</h2>
+			<h2 class="h2 mb-6">Editorial Paragraphs</h2>
 			<div class="space-y-4">
-				<p class="text-editorial-p-lg">{sampleTextLong}</p>
-				<p class="text-editorial-p-base">{sampleTextLong}</p>
-				<p class="text-editorial-p-sm">{sampleTextLong}</p>
+				<p class="p-lg-editorial">{sampleTextLong}</p>
+				<p class="p-base-editorial">{sampleTextLong}</p>
+				<p class="p-sm-editorial">{sampleTextLong}</p>
 			</div>
 		</section>
 
 		<!-- Special -->
 		<section class="mb-12">
-			<h2 class="text-h2 mb-6">Special</h2>
+			<h2 class="h2 mb-6">Special</h2>
 			<div class="space-y-4">
 				<div class="text-price">€149.00</div>
 				<div class="text-metric">4.8★ (245 reviews)</div>
@@ -279,23 +275,23 @@
 
 <Story name="Usage Examples">
 	<div class="p-8">
-		<h1 class="text-h1 mb-8">Typography Usage Examples</h1>
+		<h1 class="h1 mb-8">Typography Usage Examples</h1>
 
 		<section class="mb-12">
-			<h2 class="text-h2 mb-4">Basic Usage</h2>
-			<p class="text-p-base mb-4">Aplica las clases directamente a tus elementos HTML:</p>
+			<h2 class="h2 mb-4">Basic Usage</h2>
+			<p class="p-base mb-4">Aplica las clases directamente a tus elementos HTML:</p>
 			<pre class="rounded-lg bg-neutral-900 p-4 text-white"><code
 					>{`<!-- Headings -->
-<h1 class="text-h1">Main Title</h1>
-<h2 class="text-h2">Section Title</h2>
+<h1 class="h1">Main Title</h1>
+<h2 class="h2">Section Title</h2>
 
 <!-- Paragraphs -->
-<p class="text-p-lg">Large paragraph text</p>
-<p class="text-p-base">Regular paragraph text</p>
+<p class="p-lg">Large paragraph text</p>
+<p class="p-base">Regular paragraph text</p>
 
 <!-- Editorial -->
-<h1 class="text-editorial-h1">Hero Title</h1>
-<p class="text-editorial-p-lg">Featured content</p>
+<h1 class="h1-editorial">Hero Title</h1>
+<p class="p-lg-editorial">Featured content</p>
 
 <!-- Special -->
 <span class="text-price">€99.00</span>
@@ -304,12 +300,12 @@
 		</section>
 
 		<section class="mb-12">
-			<h2 class="text-h2 mb-4">Responsive Behavior</h2>
-			<p class="text-p-base mb-4">
+			<h2 class="h2 mb-4">Responsive Behavior</h2>
+			<p class="p-base mb-4">
 				Todas las clases son automáticamente responsive. No necesitas añadir breakpoints:
 			</p>
 			<div class="rounded-lg bg-blue-50 p-6">
-				<ul class="text-p-base space-y-2">
+				<ul class="p-base space-y-2">
 					<li>✅ <strong>Desktop</strong> - Tamaño completo</li>
 					<li>✅ <strong>Tablet (≤1024px)</strong> - Tamaño medio</li>
 					<li>✅ <strong>Mobile (≤640px)</strong> - Tamaño reducido</li>
@@ -318,17 +314,17 @@
 		</section>
 
 		<section class="mb-12">
-			<h2 class="text-h2 mb-4">Live Example</h2>
+			<h2 class="h2 mb-4">Live Example</h2>
 			<div class="rounded-lg border border-neutral-200 bg-white p-8">
-				<h1 class="text-h1 mb-4">Welcome to Our Marketplace</h1>
-				<p class="text-p-lg mb-6">
+				<h1 class="h1 mb-4">Welcome to Our Marketplace</h1>
+				<p class="p-lg mb-6">
 					Discover unique experiences in incredible destinations around the world.
 				</p>
 				<div class="mb-4 flex items-center gap-4">
 					<span class="text-price">€149.00</span>
 					<span class="text-metric">4.8★</span>
 				</div>
-				<p class="text-p-base text-neutral-600">
+				<p class="p-base text-neutral-600">
 					Join thousands of travelers who have already booked their next adventure with us.
 				</p>
 			</div>

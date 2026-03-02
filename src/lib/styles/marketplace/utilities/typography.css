@@ -13,28 +13,28 @@
    HEADINGS - UI
    ============================================ */
 
-.text-h1 {
+.h1 {
 	font-family: var(--font-serif);
 	font-weight: 600; /* semibold */
 	font-size: var(--font-size-h1);
 	line-height: var(--line-height-h1);
 }
 
-.text-h2 {
+.h2 {
 	font-family: var(--font-sans);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-h2);
 	line-height: var(--line-height-h2);
 }
 
-.text-h3 {
+.h3 {
 	font-family: var(--font-sans);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-h3);
 	line-height: var(--line-height-h3);
 }
 
-.text-h4 {
+.h4 {
 	font-family: var(--font-sans);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-h4);
@@ -45,28 +45,29 @@
    PARAGRAPHS - UI
    ============================================ */
 
-.text-p-lg {
+.p-lg {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-p-lg);
 	line-height: var(--line-height-p-lg);
 }
 
-.text-p-base {
+.p-,
+.p-base {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-p-base);
 	line-height: var(--line-height-p-base);
 }
 
-.text-p-sm {
+.p-sm {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-p-sm);
 	line-height: var(--line-height-p-sm);
 }
 
-.text-p-xs {
+.p-xs {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-p-xs);
@@ -95,28 +96,28 @@
    EDITORIAL - Headings
    ============================================ */
 
-.text-editorial-h1 {
+.h1-editorial {
 	font-family: var(--font-serif);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-editorial-h1);
 	line-height: var(--line-height-editorial-h1);
 }
 
-.text-editorial-h2 {
+.h2-editorial {
 	font-family: var(--font-serif);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-editorial-h2);
 	line-height: var(--line-height-editorial-h2);
 }
 
-.text-editorial-h3 {
+.h3-editorial {
 	font-family: var(--font-serif);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-editorial-h3);
 	line-height: var(--line-height-editorial-h3);
 }
 
-.text-editorial-h4 {
+.h4-editorial {
 	font-family: var(--font-serif);
 	font-weight: 700; /* bold */
 	font-size: var(--font-size-editorial-h4);
@@ -127,21 +128,23 @@
    EDITORIAL - Paragraphs
    ============================================ */
 
-.text-editorial-p-lg {
+.p-lg-editorial {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-editorial-p-lg);
 	line-height: var(--line-height-editorial-p-lg);
 }
 
-.text-editorial-p-base {
+.p-editorial,
+.p-md-editorial,
+.p-base-editorial {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-editorial-p-base);
 	line-height: var(--line-height-editorial-p-base);
 }
 
-.text-editorial-p-sm {
+.p-sm-editorial {
 	font-family: var(--font-sans);
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-editorial-p-sm);
@@ -153,42 +156,43 @@
    ============================================ */
 
 @media (max-width: 1024px) {
-	.text-h1 {
+	.h1 {
 		font-size: var(--font-size-h1-tablet);
 		line-height: var(--line-height-h1-tablet);
 	}
 
-	.text-h2 {
+	.h2 {
 		font-size: var(--font-size-h2-tablet);
 		line-height: var(--line-height-h2-tablet);
 	}
 
-	.text-h3 {
+	.h3 {
 		font-size: var(--font-size-h3-tablet);
 		line-height: var(--line-height-h3-tablet);
 	}
 
-	.text-h4 {
+	.h4 {
 		font-size: var(--font-size-h4-tablet);
 		line-height: var(--line-height-h4-tablet);
 	}
 
-	.text-p-lg {
+	.p-lg {
 		font-size: var(--font-size-p-lg-tablet);
 		line-height: var(--line-height-p-lg-tablet);
 	}
 
-	.text-p-base {
+	.p,
+	.p-base {
 		font-size: var(--font-size-p-base-tablet);
 		line-height: var(--line-height-p-base-tablet);
 	}
 
-	.text-p-sm {
+	.p-sm {
 		font-size: var(--font-size-p-sm-tablet);
 		line-height: var(--line-height-p-sm-tablet);
 	}
 
-	.text-p-xs {
+	.p-xs {
 		font-size: var(--font-size-p-xs-tablet);
 		line-height: var(--line-height-p-xs-tablet);
 	}
@@ -203,37 +207,39 @@
 		line-height: var(--line-height-metric-tablet);
 	}
 
-	.text-editorial-h1 {
+	.h1-editorial {
 		font-size: var(--font-size-editorial-h1-tablet);
 		line-height: var(--line-height-editorial-h1-tablet);
 	}
 
-	.text-editorial-h2 {
+	.h2-editorial {
 		font-size: var(--font-size-editorial-h2-tablet);
 		line-height: var(--line-height-editorial-h2-tablet);
 	}
 
-	.text-editorial-h3 {
+	.h3-editorial {
 		font-size: var(--font-size-editorial-h3-tablet);
 		line-height: var(--line-height-editorial-h3-tablet);
 	}
 
-	.text-editorial-h4 {
+	.h4-editorial {
 		font-size: var(--font-size-editorial-h4-tablet);
 		line-height: var(--line-height-editorial-h4-tablet);
 	}
 
-	.text-editorial-p-lg {
+	.p-lg-editorial {
 		font-size: var(--font-size-editorial-p-lg-tablet);
 		line-height: var(--line-height-editorial-p-lg-tablet);
 	}
 
-	.text-editorial-p-base {
+	.p-editorial,
+	.p-md-editorial,
+	.p-base-editorial {
 		font-size: var(--font-size-editorial-p-base-tablet);
 		line-height: var(--line-height-editorial-p-base-tablet);
 	}
 
-	.text-editorial-p-sm {
+	.p-sm-editorial {
 		font-size: var(--font-size-editorial-p-sm-tablet);
 		line-height: var(--line-height-editorial-p-sm-tablet);
 	}
@@ -244,42 +250,43 @@
    ============================================ */
 
 @media (max-width: 640px) {
-	.text-h1 {
+	.h1 {
 		font-size: var(--font-size-h1-mobile);
 		line-height: var(--line-height-h1-mobile);
 	}
 
-	.text-h2 {
+	.h2 {
 		font-size: var(--font-size-h2-mobile);
 		line-height: var(--line-height-h2-mobile);
 	}
 
-	.text-h3 {
+	.h3 {
 		font-size: var(--font-size-h3-mobile);
 		line-height: var(--line-height-h3-mobile);
 	}
 
-	.text-h4 {
+	.h4 {
 		font-size: var(--font-size-h4-mobile);
 		line-height: var(--line-height-h4-mobile);
 	}
 
-	.text-p-lg {
+	.p-lg {
 		font-size: var(--font-size-p-lg-mobile);
 		line-height: var(--line-height-p-lg-mobile);
 	}
 
-	.text-p-base {
+	.p,
+	.p-base {
 		font-size: var(--font-size-p-base-mobile);
 		line-height: var(--line-height-p-base-mobile);
 	}
 
-	.text-p-sm {
+	.p-sm {
 		font-size: var(--font-size-p-sm-mobile);
 		line-height: var(--line-height-p-sm-mobile);
 	}
 
-	.text-p-xs {
+	.p-xs {
 		font-size: var(--font-size-p-xs-mobile);
 		line-height: var(--line-height-p-xs-mobile);
 	}
@@ -294,37 +301,39 @@
 		line-height: var(--line-height-metric-mobile);
 	}
 
-	.text-editorial-h1 {
+	.h1-editorial {
 		font-size: var(--font-size-editorial-h1-mobile);
 		line-height: var(--line-height-editorial-h1-mobile);
 	}
 
-	.text-editorial-h2 {
+	.h2-editorial {
 		font-size: var(--font-size-editorial-h2-mobile);
 		line-height: var(--line-height-editorial-h2-mobile);
 	}
 
-	.text-editorial-h3 {
+	.h3-editorial {
 		font-size: var(--font-size-editorial-h3-mobile);
 		line-height: var(--line-height-editorial-h3-mobile);
 	}
 
-	.text-editorial-h4 {
+	.h4-editorial {
 		font-size: var(--font-size-editorial-h4-mobile);
 		line-height: var(--line-height-editorial-h4-mobile);
 	}
 
-	.text-editorial-p-lg {
+	.p-lg-editorial {
 		font-size: var(--font-size-editorial-p-lg-mobile);
 		line-height: var(--line-height-editorial-p-lg-mobile);
 	}
 
-	.text-editorial-p-base {
+	.p-editorial,
+	.p-base-editorial,
+	.p-md-editorial {
 		font-size: var(--font-size-editorial-p-base-mobile);
 		line-height: var(--line-height-editorial-p-base-mobile);
 	}
 
-	.text-editorial-p-sm {
+	.p-sm-editorial {
 		font-size: var(--font-size-editorial-p-sm-mobile);
 		line-height: var(--line-height-editorial-p-sm-mobile);
 	}
