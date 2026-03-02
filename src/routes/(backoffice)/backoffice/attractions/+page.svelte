@@ -17,12 +17,10 @@
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { attractionsFiltersSchema } from './schemas/filters.schema';
+	import { TableSelection } from '$lib/utils/tableSelection.svelte';
 
 	// Routes
 	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
-
-	// Actions
-	import { checkAll } from '$lib/actions/backoffice/checkAll';
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -68,6 +66,12 @@
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
+
+	const selection = new TableSelection(() => items);
+
+	function handleBatchAction() {
+		// console.log('Selected IDs:', selection.selectedIds);
+	}
 
 	// ============================================================================
 	// DRAWER STATE & ASYNC DATA
@@ -255,8 +259,16 @@
 </div>
 
 <!-- Results Info -->
-<div class="mt-6 flex items-center justify-between">
+<div class="mt-6 flex items-center gap-2">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
+
+	<button
+		class="btn btn-secondary btn-ghost ml-auto"
+		disabled={!selection.hasSelection}
+		onclick={handleBatchAction}
+	>
+		Batch action
+	</button>
 
 	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Add class="size-5" />
@@ -270,7 +282,12 @@
 		<thead>
 			<tr>
 				<th class="w-12">
-					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
+					<input
+						type="checkbox"
+						class="checkbox checkbox-sm"
+						checked={selection.allSelected}
+						onchange={() => selection.toggleAll()}
+					/>
 				</th>
 				{#each columns as col (col.key)}
 					<th>
@@ -307,7 +324,7 @@
 						<td>
 							<input
 								type="checkbox"
-								name="attractions_selected[]"
+								bind:group={selection.selectedIds}
 								value={item.id}
 								class="checkbox checkbox-sm"
 							/>

@@ -17,15 +17,13 @@
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { destinationsFiltersSchema } from './schemas/filters.schema';
+	import { TableSelection } from '$lib/utils/tableSelection.svelte';
 
 	// Enums
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 
 	// Routes
 	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
-
-	// Actions
-	import { checkAll } from '$lib/actions/backoffice/checkAll';
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -160,6 +158,16 @@
 	// ============================================================================
 
 	const hasFilters = $derived(hasActiveFilters(filters));
+
+	// ============================================================================
+	// SELECTION STATE
+	// ============================================================================
+
+	const selection = new TableSelection(() => items);
+
+	function handleBatchAction() {
+		// console.log('Selected IDs:', selection.selectedIds);
+	}
 </script>
 
 <svelte:head>
@@ -216,8 +224,16 @@
 </div>
 
 <!-- Results Info -->
-<div class="mt-6 flex items-center justify-between">
+<div class="mt-6 flex items-center gap-2">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
+
+	<button
+		class="btn btn-secondary btn-ghost ml-auto"
+		disabled={!selection.hasSelection}
+		onclick={handleBatchAction}
+	>
+		Batch action
+	</button>
 
 	<a href={DESTINATION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Add class="size-5" />
@@ -231,7 +247,12 @@
 		<thead>
 			<tr>
 				<th class="w-12">
-					<input type="checkbox" class="checkbox checkbox-sm" use:checkAll />
+					<input
+						type="checkbox"
+						class="checkbox checkbox-sm"
+						checked={selection.allSelected}
+						onchange={() => selection.toggleAll()}
+					/>
 				</th>
 				{#each columns as col (col.key)}
 					<th>
@@ -268,7 +289,7 @@
 						<td>
 							<input
 								type="checkbox"
-								name="destinations_selected[]"
+								bind:group={selection.selectedIds}
 								value={item.id}
 								class="checkbox checkbox-sm"
 							/>

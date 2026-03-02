@@ -19,6 +19,7 @@
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './schemas/filters.schema';
+	import { TableSelection } from '$lib/utils/tableSelection.svelte';
 	import { CalendarDate } from '@internationalized/date';
 	import { SvelteDate } from 'svelte/reactivity';
 
@@ -32,7 +33,6 @@
 	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/labels/activities';
 
 	// Actions
-	import { checkAll } from '$lib/actions/backoffice/checkAll';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 
 	// Components
@@ -81,6 +81,12 @@
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
+
+	const selection = new TableSelection(() => items);
+
+	function handleBatchAction() {
+		// console.log('Selected IDs:', selection.selectedIds);
+	}
 
 	// ============================================================================
 	// DESTINATIONS (cargadas desde API en cliente)
@@ -521,8 +527,16 @@
 </div>
 
 <!-- Results Info -->
-<div class="mt-6 flex items-center justify-between">
+<div class="mt-6 flex items-center gap-2">
 	<PagecountAboveTable itemsLength={items.length} {pagination} />
+
+	<button
+		class="btn btn-secondary btn-ghost ml-auto"
+		disabled={!selection.hasSelection}
+		onclick={handleBatchAction}
+	>
+		Batch action
+	</button>
 
 	<a href={ACTIVITY_ROUTES.create} class="btn btn-outline btn-primary">
 		<Add class="size-5" />
@@ -535,7 +549,14 @@
 		<table class="table-zebra table-sm table">
 			<thead>
 				<tr>
-					<th><input type="checkbox" class="checkbox checkbox-sm" use:checkAll /></th>
+					<th>
+						<input
+							type="checkbox"
+							class="checkbox checkbox-sm"
+							checked={selection.allSelected}
+							onchange={() => selection.toggleAll()}
+						/>
+					</th>
 					{#each columns as col (col.key)}
 						<th>
 							{#if col.sortable}
@@ -569,9 +590,8 @@
 						<td>
 							<input
 								type="checkbox"
-								name="activities_selected[]"
+								bind:group={selection.selectedIds}
 								value={item.id}
-								id={item.id}
 								class="checkbox checkbox-sm"
 							/>
 						</td>

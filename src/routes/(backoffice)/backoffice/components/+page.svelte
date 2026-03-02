@@ -165,10 +165,6 @@
 
 <!-- svelte-ignore a11y_label_has_associated_control -->
 <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
-	<div class="md:col-span-4">
-		<p>Navegación</p>
-	</div>
-
 	<div class="mt-6 md:col-span-8">
 		<p>Componentes</p>
 
