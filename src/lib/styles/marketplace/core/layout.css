@@ -1,5 +1,5 @@
 .layout-content-area {
-	background-color: blue;
+	/* background-color: blue; */
 }
 
 .layout-header-area {
@@ -18,18 +18,18 @@
 	padding-right: 1rem;
 	margin-inline: auto;
 	background-color: aliceblue;
-}
 
-@media (width >= theme(--breakpoint-sm)) {
-	.wrapper {
-		padding-left: 2rem;
-		padding-right: 2rem;
+	@media (width >= theme(--breakpoint-sm)) {
+		& {
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
 	}
-}
 
-@media (width >= theme(--breakpoint-md)) {
-	.wrapper {
-		padding-left: 6rem;
-		padding-right: 6rem;
+	@media (width >= theme(--breakpoint-md)) {
+		& {
+			padding-left: 6rem;
+			padding-right: 6rem;
+		}
 	}
 }

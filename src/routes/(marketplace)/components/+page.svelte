@@ -53,8 +53,8 @@
 	// PhotoGallery
 	const galleryImages = [
 		{
-			src: 'https://images.unsplash.com/photo-1555881673-514222b14fb3?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-1555881673-514222b14fb3?w=400&q=80',
+			src: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=1200&q=80',
+			thumb: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=400&q=80',
 			alt: 'Lisbon Traditional Food',
 			width: 1200,
 			height: 800
