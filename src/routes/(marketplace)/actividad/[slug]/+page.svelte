@@ -4,7 +4,7 @@
 	// Components
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/PdpHeadGallery.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -20,7 +20,7 @@
 
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
-	<PdpHeadGallery />
+	<PdpHeadGallery items={data.multimedias} />
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">

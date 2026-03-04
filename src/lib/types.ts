@@ -28,7 +28,7 @@ export type ActivityListItem = {
 	itemsToBring: string[];
 	kind: ActivityKind;
 	meals: string[];
-	multimedias: string[];
+	multimedias: MultimediaItem[];
 	notSuitableFor: Array<ActivityNotSuitableFor>;
 	petsAllowed: {
 		allowed: string;
@@ -107,4 +107,28 @@ export type BreadcrumbItem = {
 	href?: string;
 };
 
-export type BreadcrumbConfig = BreadcrumbItem[];
+export type MultimediaItem = {
+	id: string;
+	title: string;
+	altText: string;
+	mimeType: string;
+	originalUrl: string;
+	originalWidth: number;
+	originalHeight: number;
+	modifications: {
+		rotation: number;
+		flipH: boolean;
+		flipV: boolean;
+	};
+	variants: Array<{
+		id: string;
+		preset: string;
+		format: string;
+		width: number;
+		height: number;
+		url: string;
+		sizeBytes: number;
+	}>;
+	createdAt: string;
+	updatedAt: string;
+};

@@ -3,6 +3,14 @@
 	const totalImages = mobileSlides.length;
 	const desktopVisible = 3;
 	const hiddenCount = totalImages - desktopVisible;
+
+	import type { MultimediaItem } from '$lib/types';
+
+	type Props = {
+		items: MultimediaItem[];
+	};
+
+	let { items }: Props = $props();
 </script>
 
 <!-- Desktop / Tablet gallery -->
