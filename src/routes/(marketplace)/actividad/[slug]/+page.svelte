@@ -20,7 +20,7 @@
 
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
-	<PdpHeadGallery items={data.multimedias} />
+	<PdpHeadGallery items={activity.multimedias} />
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
