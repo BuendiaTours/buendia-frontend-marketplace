@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+
+	// Components
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/PdpHeadGallery.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -16,6 +19,9 @@
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
 
 <div class="wrapper">
+	<!-- pdp-head-gallery -->
+	<PdpHeadGallery />
+
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
 		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>
