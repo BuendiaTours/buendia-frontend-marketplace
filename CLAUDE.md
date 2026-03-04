@@ -105,6 +105,7 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 - Tailwind CSS v4 everywhere, no inline styles, no CSS modules, no CSS-in-JS
 - DaisyUI for backoffice components
 - Scoped `<style>` blocks for component-specific CSS
+- Always use nested CSS when possible
 
 ### TypeScript
 
