@@ -58,6 +58,27 @@ export type ActivityDetail = ActivityListItem & {
 	meetingPoint: string;
 };
 
+type ReviewAttachment = {
+	url: { value: string };
+	mimeType: string | null;
+};
+
+type ReviewAttributeRating = {
+	attributeKey: string;
+	rating: number;
+};
+
+export type ActivityReview = {
+	id: string;
+	activityId: string;
+	attachments: ReviewAttachment[];
+	attributeRatings: ReviewAttributeRating[];
+	averageRating: number;
+	content: string;
+	createdAt: string;
+	userName?: string;
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
