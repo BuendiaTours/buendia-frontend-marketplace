@@ -15,6 +15,7 @@ export const BASE_PATHS = {
 	attractions: '/attractions',
 	destinations: '/destinations',
 	distributives: '/distributives',
+	reviews: '/reviews',
 	auth: '/auth'
 } as const;
 
@@ -329,6 +330,21 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Reviews
+	// ──────────────────────────────────────────────
+	reviews: {
+		groupName: 'Reviews',
+		groupDescription: 'Reseñas de actividades',
+		/** @description Retrieves all reviews for a given activity ID. */
+		byActivity: {
+			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}`,
+			method: 'GET',
+			description: 'Obtiene reviews de una actividad por ID',
+			params: ['activityId']
 		} satisfies EndpointWithParam
 	},
 

@@ -282,4 +282,25 @@
 			</ul>
 		</div>
 	{/if}
+
+	<!-- Reviews -->
+	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+		<h2 class="mb-4 font-semibold text-gray-800">Reviews ({data.reviews.length})</h2>
+		<ul class="space-y-4">
+			{#if data.reviews && data.reviews.length > 0}
+				{#each data.reviews as review (review.id)}
+					<li class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+						<div class="mb-1 flex items-center gap-2">
+							<span class="font-medium text-gray-800">{review.userName || 'Anónimo'}</span>
+							<span class="text-gray-500">·</span>
+							<span class="text-gray-500">{review.averageRating}/5</span>
+						</div>
+						<p class="text-gray-600">{review.content}</p>
+					</li>
+				{/each}
+			{:else}
+				<li class="text-gray-600">No hay reviews para esta actividad.</li>
+			{/if}
+		</ul>
+	</div>
 </div>
