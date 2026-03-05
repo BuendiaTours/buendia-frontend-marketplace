@@ -68,6 +68,13 @@ type ReviewAttributeRating = {
 	rating: number;
 };
 
+export type ReviewReply = {
+	id: string;
+	author: string;
+	content: string;
+	createdAt: string;
+};
+
 export type ActivityReview = {
 	id: string;
 	activityId: string;
@@ -76,7 +83,8 @@ export type ActivityReview = {
 	averageRating: number;
 	content: string;
 	createdAt: string;
-	userName?: string;
+	user: string;
+	replies: ReviewReply[];
 };
 
 export type Column<T> = {

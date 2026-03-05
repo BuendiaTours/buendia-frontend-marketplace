@@ -285,11 +285,22 @@
 				{#each data.reviews as review (review.id)}
 					<li class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
 						<div class="mb-1 flex items-center gap-2">
-							<span class="font-medium text-gray-800">{review.userName || 'Anónimo'}</span>
+							<span class="font-medium text-gray-800">{review.user || 'Anónimo'}</span>
 							<span class="text-gray-500">·</span>
 							<span class="text-gray-500">{review.averageRating}/5</span>
 						</div>
 						<p class="text-gray-600">{review.content}</p>
+
+						{#if review.replies && review.replies.length > 0}
+							<div class="mt-4 space-y-2">
+								{#each review.replies as reply (reply.id)}
+									<div class="border-l-4 border-blue-500 pl-4">
+										<p class="p-sm text-gray-500">{reply.author} · {reply.createdAt}</p>
+										<p class="text-gray-600">{reply.content}</p>
+									</div>
+								{/each}
+							</div>
+						{/if}
 					</li>
 				{/each}
 			{:else}
