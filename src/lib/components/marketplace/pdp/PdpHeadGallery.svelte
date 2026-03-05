@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { MultimediaItem } from '$lib/types';
+	// Hicimos una prueba con Swiper para comparar rendimiento y experiencia de usuario contra la implementación nativa con scroll-timeline. Por ahora, dejamos el código comentado para referencia futura.
 	// import SwiperElement from '$lib/components/shared/Swiper.svelte';
 
 	type Props = {
@@ -73,8 +74,9 @@
 			</div>
 		{/each}
 	</div>
+
 	<!-- Bullets -->
-	<div class="flex -translate-y-5 items-center justify-center">
+	<div class="absolute bottom-3 flex w-full items-center justify-center">
 		<div
 			class="pdp-head-gallery-bullets-inner flex items-center gap-1.5"
 			style="--n: {items.length}; --ni: {items.length - 1}; animation-timeline: --slider-timeline;"
@@ -85,6 +87,12 @@
 			{/each}
 			<span class="pdp-head-gallery-bullets-dot pdp-head-gallery-bullets-dot--phantom"></span>
 		</div>
+	</div>
+
+	<div
+		class="bg-alpha-ink-84 pointer-events-none absolute right-3 bottom-3 rounded-lg border border-neutral-300 p-3 font-bold text-white"
+	>
+		+{totalImages}
 	</div>
 </div>
 
