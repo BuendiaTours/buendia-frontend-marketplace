@@ -1,7 +1,7 @@
 .e-button {
 	display: inline-flex;
 	min-height: 3rem; /* 48 */
-	padding: 0.5rem 1rem;
+	@apply px-3 py-2;
 	border-radius: var(--radius-lg);
 	align-items: center;
 	justify-content: center;

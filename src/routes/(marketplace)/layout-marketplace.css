@@ -5,6 +5,9 @@
  * Todos los componentes del marketplace serán custom y totalmente independientes.
  */
 
+/* Allow to use utilities in every component */
+@reference 'tailwindcss';
+
 /* Layout marketplace */
 @import '$lib/styles/marketplace/core/colors.css';
 @import '$lib/styles/marketplace/core/theme.css';
@@ -87,4 +90,8 @@ html:not(.storybook):not(.bnd-backoffice) {
 		padding: 4px;
 		margin-bottom: 4px;
 	}
+}
+
+.pswp__button.pswp__button--zoom {
+	display: none !important;
 }

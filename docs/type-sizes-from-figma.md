@@ -248,7 +248,7 @@ mobile
 editorial-h4
 
 font-serif
-font-bold
+font-semibold
 
 desktop
 20px font-size

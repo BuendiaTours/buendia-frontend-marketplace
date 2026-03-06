@@ -112,7 +112,7 @@
 
 .h3-editorial {
 	font-family: var(--font-serif);
-	font-weight: 700; /* bold */
+	font-weight: 600; /* semibold */
 	font-size: var(--font-size-editorial-h3);
 	line-height: var(--line-height-editorial-h3);
 }

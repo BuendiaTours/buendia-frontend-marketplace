@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { MultimediaItem } from '$lib/types';
+	import { photoswipeGallery } from '$lib/actions/marketplace/photoswipeGallery';
+
 	// Hicimos una prueba con Swiper para comparar rendimiento y experiencia de usuario contra la implementación nativa con scroll-timeline. Por ahora, dejamos el código comentado para referencia futura.
 	// import SwiperElement from '$lib/components/shared/Swiper.svelte';
 
@@ -16,26 +18,49 @@
 
 <!-- Desktop / Tablet gallery -->
 <div
+	use:photoswipeGallery={{
+		dataSource: items.map((item) => {
+			const v = item.variants?.find((v) => v.preset === 'MAX');
+			return {
+				src: v?.url ?? item.originalUrl,
+				width: v?.width ?? item.originalWidth,
+				height: v?.height ?? item.originalHeight,
+				alt: item.altText
+			};
+		})
+	}}
 	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr]"
 >
-	<div class="aspect-[472/354] overflow-hidden rounded-lg lg:aspect-[502/314]">
+	<a
+		href={items[0].variants?.find((v) => v.preset === 'MAX')?.url}
+		data-gallery-index="0"
+		class="aspect-[472/354] overflow-hidden rounded-lg lg:aspect-[502/314]"
+	>
 		<img
 			src={items[0].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
 			alt={items[0].altText}
 			class="h-full w-full object-cover"
 			loading="lazy"
 		/>
-	</div>
+	</a>
 	<div class="flex flex-col gap-4 lg:contents">
-		<div class="flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]">
+		<a
+			href={items[1].variants?.find((v) => v.preset === 'MAX')?.url}
+			data-gallery-index="1"
+			class="flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]"
+		>
 			<img
 				src={items[1].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
 				alt={items[1].altText}
 				class="h-full w-full object-cover"
 				loading="lazy"
 			/>
-		</div>
-		<div class="relative flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]">
+		</a>
+		<a
+			href={items[2].variants?.find((v) => v.preset === 'MAX')?.url}
+			data-gallery-index="2"
+			class="relative flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]"
+		>
 			<img
 				src={items[2].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
 				alt={items[2].altText}
@@ -47,7 +72,7 @@
 			>
 				+{hiddenCount}
 			</span>
-		</div>
+		</a>
 	</div>
 </div>
 
@@ -57,11 +82,13 @@
 	style="timeline-scope: --slider-timeline, {items.map((_, i) => `--slide-${i}`).join(', ')};"
 >
 	<div
+		use:photoswipeGallery
 		class="pdp-head-gallery-mobile-slider flex snap-x snap-mandatory gap-3 overflow-x-auto"
 		style="scroll-timeline-name: --slider-timeline; scroll-timeline-axis: inline;"
 	>
 		{#each items as item, i (item.id)}
-			<div
+			<a
+				href={item.variants?.find((v) => v.preset === 'MAX')?.url}
 				class="aspect-square w-full flex-none snap-start snap-always overflow-hidden rounded-lg"
 				style="view-timeline-name: --slide-{i}; view-timeline-axis: inline;"
 			>
@@ -71,7 +98,7 @@
 					class="h-full w-full object-cover"
 					loading="lazy"
 				/>
-			</div>
+			</a>
 		{/each}
 	</div>
 
