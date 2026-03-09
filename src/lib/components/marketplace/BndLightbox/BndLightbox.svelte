@@ -200,7 +200,7 @@
 		<!-- Dialog content — flex column: top-bar / tabs / content / cta -->
 		<div
 			use:melt={$content}
-			class="bnd-lightbox__content fixed inset-0 flex flex-col focus:outline-none"
+			class="bnd-lightbox__content fixed inset-0 flex flex-col bg-white focus:outline-none"
 			transition:fade={{ duration: 200 }}
 			ontouchstart={onTouchStart}
 			ontouchend={onTouchEnd}
@@ -208,30 +208,34 @@
 			<!-- Visually hidden title for screen readers -->
 			<h2 use:melt={$titleEl} class="sr-only">Galería de imágenes</h2>
 
-			<!-- Top bar: counter (left) + close button (right) -->
-			<div class="bnd-lightbox__top-bar flex shrink-0 items-center justify-between px-4 py-3">
+			<!-- Top bar: counter (left) + tabs (center) + close button (right) -->
+			<div class="bnd-lightbox__top-bar flex shrink-0 items-stretch justify-between p-3">
 				{#if !isSingle}
-					<span role="status" aria-live="polite" class="bnd-lightbox__counter p-sm">
-						{currentIndex + 1} de {total}
+					<span
+						role="status"
+						aria-live="polite"
+						class="p-sm flex w-24 items-center text-neutral-500"
+					>
+						{currentIndex + 1} / {total}
 					</span>
 				{:else}
-					<span></span>
+					<span class="w-24"></span>
 				{/if}
 
 				<!-- Tabs (center, visible only when there are multiple categories) -->
 				{#if !isSingleCategory}
-					<div class="bnd-lightbox__tabs flex items-center gap-1">
+					<div class="bnd-lightbox__tabs flex items-stretch align-middle">
 						<!-- Desktop: tab buttons -->
-						<div class="hidden gap-1 sm:flex">
+						<div class="hidden inline-flex items-center gap-4">
 							{#each config.categories as cat (cat.id)}
 								<button
 									type="button"
 									onclick={() => switchCategory(cat.id)}
 									aria-current={cat.id === activeCategoryId ? 'true' : undefined}
-									class="bnd-lightbox__tab cursor-pointer rounded-full px-4 py-1.5 font-medium transition-colors
+									class="bnd-lightbox__tab p-base h-6 cursor-pointer border-b-1 px-0 font-semibold transition-colors
 										{cat.id === activeCategoryId
-										? 'bnd-lightbox__tab--active bg-white text-black'
-										: 'text-white/70 hover:bg-white/20 hover:text-white'}"
+										? 'bnd-lightbox__tab--active border-neutral-900 text-neutral-900'
+										: 'border-transparent text-neutral-400 hover:text-neutral-700'}"
 								>
 									{cat.label}
 								</button>
@@ -239,12 +243,12 @@
 						</div>
 						<!-- Mobile: native select -->
 						<select
-							class="bnd-lightbox__tab-select p-sm rounded-lg bg-white/20 px-3 py-1.5 text-white outline-none sm:hidden"
+							class="p-sm my-3 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-neutral-800 outline-none sm:hidden"
 							value={activeCategoryId}
 							onchange={(e) => switchCategory(e.currentTarget.value)}
 						>
 							{#each config.categories as cat (cat.id)}
-								<option value={cat.id} class="text-black">{cat.label}</option>
+								<option value={cat.id}>{cat.label}</option>
 							{/each}
 						</select>
 					</div>
@@ -252,13 +256,15 @@
 					<span></span>
 				{/if}
 
-				<button
-					use:melt={$closeEl}
-					aria-label="Cerrar lightbox"
-					class="bnd-lightbox__close cursor-pointer rounded-full p-2 transition-colors hover:bg-white/20"
-				>
-					<Close class="size-6" />
-				</button>
+				<div class="flex w-24 items-center justify-end">
+					<button
+						use:melt={$closeEl}
+						aria-label="Cerrar lightbox"
+						class="cursor-pointer rounded-full border border-neutral-300 p-2.75 text-neutral-700 transition-colors hover:bg-neutral-100"
+					>
+						<Close class="size-5" />
+					</button>
+				</div>
 			</div>
 
 			<!-- Content area: navigation + image (default) or custom layout -->
@@ -266,14 +272,14 @@
 				{#if hasCustomLayout}
 					<!-- Custom layout: arrows + snippet/component (manages its own transitions) -->
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 justify-center">
+						<div class="flex shrink-0 justify-center px-3">
 							<button
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
 								onclick={goPrev}
-								class="bnd-lightbox__nav cursor-pointer rounded-full p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
-								<AltArrowLeft class="size-8" />
+								<AltArrowLeft class="size-5" />
 							</button>
 						</div>
 					{/if}
@@ -286,14 +292,14 @@
 						{/if}
 					</div>
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 justify-center">
+						<div class="flex shrink-0 justify-center px-3">
 							<button
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
 								onclick={goNext}
-								class="bnd-lightbox__nav cursor-pointer rounded-full p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
-								<AltArrowRight class="size-8" />
+								<AltArrowRight class="size-5" />
 							</button>
 						</div>
 					{/if}
@@ -307,9 +313,9 @@
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
 								onclick={goPrev}
-								class="bnd-lightbox__nav cursor-pointer rounded-full p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
-								<AltArrowLeft class="size-8" />
+								<AltArrowLeft class="size-5" />
 							</button>
 						</div>
 					{/if}
@@ -323,15 +329,13 @@
 								transition:fade={{ duration: 150 }}
 							>
 								<div
-									class="size-10 animate-spin rounded-full border-4 border-white/30 border-t-white"
+									class="size-10 animate-spin rounded-full border-4 border-neutral-200 border-t-neutral-600"
 								></div>
 							</div>
 						{/if}
 
 						{#if imageError}
-							<div
-								class="bnd-lightbox__error p-sm absolute inset-0 flex items-center justify-center"
-							>
+							<div class="p-sm absolute inset-0 flex items-center justify-center text-neutral-500">
 								No se pudo cargar la imagen
 							</div>
 						{:else}
@@ -350,7 +354,7 @@
 											onerror={onImageError}
 										/>
 										{#if showTitleBar}
-											<div class="bnd-lightbox__title p-sm shrink-0 px-4 py-2 text-center">
+											<div class="p-sm shrink-0 px-4 py-2 text-center text-neutral-700">
 												{currentItem?.title}
 											</div>
 										{/if}
@@ -367,9 +371,9 @@
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
 								onclick={goNext}
-								class="bnd-lightbox__nav cursor-pointer rounded-full p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
-								<AltArrowRight class="size-8" />
+								<AltArrowRight class="size-5" />
 							</button>
 						</div>
 					{/if}
@@ -377,7 +381,7 @@
 			</div>
 
 			<!-- CTA bar (optional, always visible at the bottom) -->
-			<div class="bnd-lightbox__cta min-h-16 shrink-0">
+			<div class="bnd-lightbox__cta min-h-16 shrink-0 border-t border-neutral-200">
 				{#if cta}
 					{@render cta()}
 				{/if}
@@ -399,24 +403,10 @@
 <style>
 	.bnd-lightbox__overlay {
 		z-index: var(--bnd-lb-z, 999);
-		background: var(--bnd-lb-overlay-bg, rgba(0, 0, 0, 0.9));
+		background: var(--bnd-lb-overlay-bg, rgba(255, 255, 255, 0.95));
 	}
 
 	.bnd-lightbox__content {
 		z-index: var(--bnd-lb-z, 999);
-		color: var(--bnd-lb-controls-color, #fff);
-	}
-
-	.bnd-lightbox__counter {
-		font-size: var(--bnd-lb-counter-font-size, 0.875rem);
-	}
-
-	.bnd-lightbox__title {
-		font-size: var(--bnd-lb-title-font-size, 0.875rem);
-		color: var(--bnd-lb-title-color, #fff);
-	}
-
-	.bnd-lightbox__error {
-		color: var(--bnd-lb-controls-color, #fff);
 	}
 </style>
