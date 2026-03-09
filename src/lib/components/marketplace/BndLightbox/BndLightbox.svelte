@@ -225,9 +225,10 @@
 						<div class="hidden gap-1 sm:flex">
 							{#each config.categories as cat (cat.id)}
 								<button
+									type="button"
 									onclick={() => switchCategory(cat.id)}
 									aria-current={cat.id === activeCategoryId ? 'true' : undefined}
-									class="bnd-lightbox__tab p-sm rounded-full px-4 py-1.5 font-medium transition-colors
+									class="bnd-lightbox__tab cursor-pointer rounded-full px-4 py-1.5 font-medium transition-colors
 										{cat.id === activeCategoryId
 										? 'bnd-lightbox__tab--active bg-white text-black'
 										: 'text-white/70 hover:bg-white/20 hover:text-white'}"
@@ -376,11 +377,11 @@
 			</div>
 
 			<!-- CTA bar (optional, always visible at the bottom) -->
-			{#if cta}
-				<div class="bnd-lightbox__cta shrink-0">
+			<div class="bnd-lightbox__cta min-h-16 shrink-0">
+				{#if cta}
 					{@render cta()}
-				</div>
-			{/if}
+				{/if}
+			</div>
 		</div>
 
 		<!-- Preload adjacent images (hidden from users and a11y) -->
