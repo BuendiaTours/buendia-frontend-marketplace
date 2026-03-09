@@ -1,5 +1,5 @@
 // src/lib/types.ts
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type {
 	ActivityNotSuitableFor,
 	ActivityStatus,
@@ -158,7 +158,10 @@ export type BndLightboxCategory = {
 	id: string;
 	label: string;
 	items: BndLightboxItem[];
+	/** Inline one-off layout defined with {#snippet} in the consuming page */
 	layout?: Snippet<[BndLightboxItemContext]>;
+	/** Reusable layout component imported from BndLightbox/layouts/ */
+	layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
 };
 
 export type BndLightboxConfig = {

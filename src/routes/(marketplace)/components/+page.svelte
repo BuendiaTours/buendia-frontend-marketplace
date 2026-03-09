@@ -6,7 +6,7 @@
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import BndLightbox from '$lib/components/marketplace/BndLightbox.svelte';
+	import { BndLightbox, ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxConfig, BndLightboxItemContext } from '$lib/types';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
@@ -51,7 +51,26 @@
 	// Confirm dialog
 	let confirmResult = $state<boolean | null>(null);
 
-	// BndLightbox — demo Fase 2
+	// BndLightbox — demos
+
+	// Fotos compartidas (usadas en ejemplos A, B y D)
+	const photoItems = [
+		{
+			src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
+			alt: 'Porto Wine Cellars',
+			title: 'Bodegas de Oporto'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
+			alt: 'Algarve Beach',
+			title: 'Playa del Algarve'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&q=80',
+			alt: 'Cosmetics',
+			title: 'Selección de cosméticos'
+		}
+	];
 
 	// Raw reviews data (estructura real de la API)
 	type RawReview = {
@@ -75,9 +94,6 @@
 				},
 				{
 					url: { value: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1200&q=80' }
-				},
-				{
-					url: { value: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&q=80' }
 				}
 			]
 		},
@@ -92,8 +108,7 @@
 		}
 	];
 
-	// Normalización flat: cada attachment se convierte en un BndLightboxItem,
-	// con los datos de la review en meta (+ reviewIndex para la key del bloque de review)
+	// Normalización flat: cada attachment → BndLightboxItem con datos de review en meta
 	const reviewItems = demoReviews.flatMap((review, reviewIdx) =>
 		review.attachments.map((att) => ({
 			src: att.url.value,
@@ -108,46 +123,48 @@
 		}))
 	);
 
-	let lbOpen = $state(false);
-	let lbConfig = $state<BndLightboxConfig>({
+	// A — Botón → default layout, sin tabs
+	let lbA_open = $state(false);
+	const lbA_config: BndLightboxConfig = {
+		wrapAround: true,
+		categories: [{ id: 'fotos', label: 'Fotos', items: photoItems }]
+	};
+
+	// B — Thumbnails → default layout, sin tabs
+	let lbB_open = $state(false);
+	let lbB_startIndex = $state(0);
+
+	// C — Botón → ReviewsLayout (componente), sin tabs
+	let lbC_open = $state(false);
+	const lbC_config: BndLightboxConfig = {
 		wrapAround: true,
 		categories: [
-			{
-				id: 'fotos',
-				label: 'Fotos',
-				items: [
-					{
-						src: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=1200&q=80',
-						alt: 'Lisbon Traditional Food',
-						title: 'Comida tradicional de Lisboa'
-					},
-					{
-						src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
-						alt: 'Porto Wine Cellars',
-						title: 'Bodegas de Oporto'
-					},
-					{
-						src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
-						alt: 'Algarve Beach',
-						title: 'Playa del Algarve'
-					}
-				]
-			},
-			{
-				id: 'reviews',
-				label: 'Reviews',
-				items: reviewItems
-			}
+			{ id: 'reviews', label: 'Reviews', items: reviewItems, layoutComponent: ReviewsLayout }
 		]
-	});
+	};
 
-	let lbReviewsOpen = $state(false);
+	// D — Thumbnails de reviews → ReviewsLayout + tabs (fotos + reviews)
+	let lbD_open = $state(false);
+	let lbD_startIndex = $state(0);
+	const lbD_config: BndLightboxConfig = {
+		wrapAround: true,
+		categories: [
+			{ id: 'fotos', label: 'Fotos', items: photoItems },
+			{ id: 'reviews', label: 'Reviews', items: reviewItems, layoutComponent: ReviewsLayout }
+		]
+	};
 
-	function openLightbox(categoryId: string, index: number) {
-		lbConfig.startCategory = categoryId;
-		lbConfig.startIndex = index;
-		lbOpen = true;
+	function openLbD(index: number) {
+		lbD_startIndex = index;
+		lbD_open = true;
 	}
+
+	// E — Snippet custom inline (one-off)
+	let lbE_open = $state(false);
+	const lbE_config: BndLightboxConfig = {
+		wrapAround: true,
+		categories: [{ id: 'custom', label: 'Custom', items: photoItems }]
+	};
 
 	// MeltCalendar
 	let calendarValue = $state<DateValue | undefined>();
@@ -322,28 +339,34 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- BndLightbox — tabs (default layout) -->
+<!-- BndLightbox — A. Botón → default layout, sin tabs -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6">
-	<h2 class="mb-4 font-semibold">BndLightbox — pestañas</h2>
+	<h2 class="mb-4 font-semibold">BndLightbox A — default layout, desde botón</h2>
 	<p class="mb-6 text-gray-500">
-		Lightbox con varias categorías. En desktop se muestran como pestañas; en mobile, como dropdown.
-		Recuerda la posición al volver a una pestaña.
+		Layout por defecto (imagen + pie de foto). Una sola categoría, sin tabs. Se abre desde un botón.
 	</p>
+	<button class="e-button e-button-primary" onclick={() => (lbA_open = true)}>
+		Abrir galería
+	</button>
+	<BndLightbox bind:open={lbA_open} config={lbA_config} />
+</div>
 
-	<div class="mb-6 flex flex-wrap gap-3">
-		<button class="e-button e-button-primary" onclick={() => openLightbox('fotos', 0)}>
-			Abrir — Fotos
-		</button>
-		<button class="e-button e-button-secondary" onclick={() => openLightbox('reviews', 0)}>
-			Abrir — Reviews
-		</button>
-	</div>
-
+<!-- ============================================================ -->
+<!-- BndLightbox — B. Thumbnails → default layout, sin tabs -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox B — default layout, desde miniaturas</h2>
+	<p class="mb-6 text-gray-500">
+		Igual que A pero con grid de miniaturas. Click en una imagen abre el lightbox en ese índice.
+	</p>
 	<div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
-		{#each lbConfig.categories[0].items as item, i (item.src)}
+		{#each photoItems as item, i (item.src)}
 			<button
-				onclick={() => openLightbox('fotos', i)}
+				onclick={() => {
+					lbB_startIndex = i;
+					lbB_open = true;
+				}}
 				aria-label={item.alt}
 				class="relative block aspect-[4/3] cursor-pointer overflow-hidden rounded-lg border-none bg-none p-0 transition-transform duration-200 ease-in-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
 			>
@@ -355,72 +378,40 @@
 			</button>
 		{/each}
 	</div>
-
-	<BndLightbox bind:open={lbOpen} config={lbConfig} />
+	<BndLightbox bind:open={lbB_open} config={{ ...lbA_config, startIndex: lbB_startIndex }} />
 </div>
 
 <!-- ============================================================ -->
-<!-- BndLightbox — layout custom (Reviews) -->
+<!-- BndLightbox — C. Botón → ReviewsLayout (componente), sin tabs -->
 <!-- ============================================================ -->
-
-<!-- Snippet definido antes del componente para poder pasarlo como prop -->
-{#snippet reviewLayout(ctx: BndLightboxItemContext)}
-	<div class="flex h-full flex-col sm:flex-row">
-		<!-- Imagen: cross-fade en cada cambio de imagen -->
-		<div class="relative min-h-0 flex-1">
-			{#key ctx.item.src}
-				<div
-					class="absolute inset-0 flex items-center justify-center bg-black/20 p-4 sm:p-8"
-					transition:fade={{ duration: 300 }}
-				>
-					<img
-						src={ctx.item.src}
-						alt={ctx.item.alt ?? ''}
-						class="max-h-full max-w-full object-contain"
-					/>
-				</div>
-			{/key}
-		</div>
-
-		<!-- Datos de la review: cross-fade solo cuando cambia de review (reviewIndex) -->
-		{#key ctx.item.meta?.reviewIndex}
-			<div
-				class="flex w-full shrink-0 flex-col justify-center gap-3 bg-white/5 p-6 sm:w-72"
-				transition:fade={{ duration: 200 }}
-			>
-				{#if ctx.item.meta}
-					<p class="font-semibold text-white">{ctx.item.meta.user}</p>
-					<div class="flex gap-0.5">
-						{#each { length: 5 } as _, s (s)}
-							<span class={s < Number(ctx.item.meta.rating) ? 'text-yellow-400' : 'text-white/20'}>
-								★
-							</span>
-						{/each}
-					</div>
-					<p class="p-sm leading-relaxed text-white/80">{ctx.item.meta.content}</p>
-					<p class="p-xs text-white/50">{ctx.item.meta.date}</p>
-				{/if}
-			</div>
-		{/key}
-	</div>
-{/snippet}
-
 <div class="wrapper mt-6">
-	<h2 class="mb-4 font-semibold">BndLightbox — layout custom (Reviews)</h2>
+	<h2 class="mb-4 font-semibold">BndLightbox C — ReviewsLayout, desde botón</h2>
 	<p class="mb-6 text-gray-500">
-		Layout personalizado via snippet: imagen a la izquierda, datos de la review a la derecha en
-		desktop; apilado en mobile.
+		Layout de reviews importado como componente reutilizable (<code>ReviewsLayout</code>). Sin tabs.
+		Se abre desde un botón.
 	</p>
+	<button class="e-button e-button-primary" onclick={() => (lbC_open = true)}>
+		Abrir reviews
+	</button>
+	<BndLightbox bind:open={lbC_open} config={lbC_config} />
+</div>
 
+<!-- ============================================================ -->
+<!-- BndLightbox — D. Thumbnails reviews → ReviewsLayout + tabs (fotos + reviews) -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox D — ReviewsLayout + tabs, desde miniaturas</h2>
+	<p class="mb-6 text-gray-500">
+		Dos categorías con tabs: "Fotos" (default layout) y "Reviews" (ReviewsLayout). Click en
+		miniatura abre en la tab reviews en el índice correcto. En desktop: botones; mobile: select.
+	</p>
 	<div class="flex flex-wrap gap-3">
 		{#each reviewItems as item, i (item.src)}
 			<button
-				onclick={() => {
-					lbReviewsOpen = true;
-					lbConfig.startIndex = i;
-				}}
+				type="button"
+				onclick={() => openLbD(i)}
 				aria-label={String(item.meta?.user ?? '')}
-				class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-lg border-none bg-none p-0 transition-transform hover:scale-105"
+				class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-md border-none bg-none p-0 transition-transform hover:scale-105"
 			>
 				<img
 					src={item.src.replace('w=1200', 'w=200')}
@@ -430,14 +421,48 @@
 			</button>
 		{/each}
 	</div>
-
 	<BndLightbox
-		bind:open={lbReviewsOpen}
-		config={{
-			wrapAround: true,
-			startIndex: lbConfig.startIndex ?? 0,
-			categories: [{ id: 'reviews', label: 'Reviews', items: reviewItems, layout: reviewLayout }]
-		}}
+		bind:open={lbD_open}
+		config={{ ...lbD_config, startCategory: 'reviews', startIndex: lbD_startIndex }}
+	/>
+</div>
+
+<!-- ============================================================ -->
+<!-- BndLightbox — E. Snippet custom inline (one-off) -->
+<!-- ============================================================ -->
+
+<!-- Snippet definido antes del componente para poder pasarlo como prop -->
+{#snippet customLayout(ctx: BndLightboxItemContext)}
+	<div class="flex h-full flex-col items-center justify-center gap-6 p-8 text-center">
+		{#key ctx.item.src}
+			<img
+				src={ctx.item.src}
+				alt={ctx.item.alt ?? ''}
+				class="max-h-[50vh] max-w-full rounded-2xl object-contain shadow-2xl"
+				transition:fade={{ duration: 300 }}
+			/>
+		{/key}
+		{#if ctx.item.title}
+			<div class="space-y-1">
+				<p class="text-2xl font-bold text-white">{ctx.item.title}</p>
+				<p class="text-sm text-white/50">{ctx.index + 1} / {ctx.total}</p>
+			</div>
+		{/if}
+	</div>
+{/snippet}
+
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox E — snippet custom inline (one-off)</h2>
+	<p class="mb-6 text-gray-500">
+		Layout completamente personalizado definido con <code>{'{#snippet}'}</code> en la propia página y
+		pasado como prop. Demuestra el poder del API de snippets para casos únicos.
+	</p>
+	<button class="e-button e-button-primary" onclick={() => (lbE_open = true)}>
+		Abrir layout custom
+	</button>
+	<BndLightbox
+		bind:open={lbE_open}
+		config={{ ...lbE_config, categories: [{ ...lbE_config.categories[0], layout: customLayout }] }}
 	/>
 </div>
 

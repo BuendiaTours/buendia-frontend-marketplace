@@ -49,8 +49,9 @@
 	const currentItem = $derived(items[currentIndex]);
 	const total = $derived(items.length);
 	const isSingle = $derived(total <= 1);
+	const hasCustomLayout = $derived(!!(activeCategory?.layout || activeCategory?.layoutComponent));
 	const showTitleBar = $derived(
-		!activeCategory?.layout && (config.showTitle ?? true) && !!currentItem?.title
+		!hasCustomLayout && (config.showTitle ?? true) && !!currentItem?.title
 	);
 	const canPrev = $derived(config.wrapAround === true ? total > 1 : currentIndex > 0);
 	const canNext = $derived(config.wrapAround === true ? total > 1 : currentIndex < total - 1);
@@ -178,7 +179,7 @@
 		imageError = true;
 	}
 
-	// Type helper — context passed to layout snippets
+	// Type helper — context passed to layout snippets/components
 	function itemContext(): BndLightboxItemContext {
 		return { item: currentItem, index: currentIndex, total };
 	}
@@ -256,8 +257,8 @@
 
 			<!-- Content area: navigation + image (default) or custom layout -->
 			<div class="flex min-h-0 flex-1 items-center justify-center">
-				{#if activeCategory?.layout}
-					<!-- Custom layout: arrows + snippet (snippet manages its own transitions) -->
+				{#if hasCustomLayout}
+					<!-- Custom layout: arrows + snippet/component (manages its own transitions) -->
 					{#if !isSingle}
 						<div class="flex w-16 shrink-0 justify-center">
 							<button
@@ -271,7 +272,12 @@
 						</div>
 					{/if}
 					<div class="h-full min-w-0 flex-1 overflow-auto">
-						{@render activeCategory.layout(itemContext())}
+						{#if activeCategory?.layoutComponent}
+							{@const Layout = activeCategory.layoutComponent}
+							<Layout ctx={itemContext()} />
+						{:else if activeCategory?.layout}
+							{@render activeCategory.layout(itemContext())}
+						{/if}
 					</div>
 					{#if !isSingle}
 						<div class="flex w-16 shrink-0 justify-center">
@@ -362,7 +368,7 @@
 		</div>
 
 		<!-- Preload adjacent images (hidden from users and a11y) -->
-		{#if !isSingle && !activeCategory?.layout}
+		{#if !isSingle && !hasCustomLayout}
 			{#if prevSrc && prevSrc !== currentItem?.src}
 				<img src={prevSrc} alt="" aria-hidden="true" class="hidden" />
 			{/if}
