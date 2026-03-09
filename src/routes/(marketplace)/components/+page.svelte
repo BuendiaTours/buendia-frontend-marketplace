@@ -349,7 +349,13 @@
 	<button class="e-button e-button-primary" onclick={() => (lbA_open = true)}>
 		Abrir galería
 	</button>
-	<BndLightbox bind:open={lbA_open} config={lbA_config} />
+	<BndLightbox bind:open={lbA_open} config={lbA_config}>
+		{#snippet cta()}
+			<div class="justify-center p-4 text-center">
+				<a href="/producto" class="e-button e-button-primary e-button-sm">Ver producto</a>
+			</div>
+		{/snippet}
+	</BndLightbox>
 </div>
 
 <!-- ============================================================ -->

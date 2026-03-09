@@ -5,12 +5,14 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { browser } from '$app/environment';
 	import { AltArrowLeft, AltArrowRight, Close } from '$lib/icons/Linear';
+	import type { Snippet } from 'svelte';
 	import type { BndLightboxConfig, BndLightboxItem, BndLightboxItemContext } from '$lib/types';
 
 	type Props = {
 		id?: string;
 		open?: boolean;
 		config: BndLightboxConfig;
+		cta?: Snippet;
 		onopen?: (p: { categoryId: string; index: number }) => void;
 		onclose?: (p: { categoryId: string; index: number }) => void;
 		onchange?: (p: {
@@ -26,6 +28,7 @@
 		id: _id,
 		open = $bindable(false),
 		config,
+		cta,
 		onopen,
 		onclose,
 		onchange,
@@ -194,7 +197,7 @@
 			transition:fade={{ duration: 200 }}
 		></div>
 
-		<!-- Dialog content — flex column: top-bar / tabs / content / title-bar -->
+		<!-- Dialog content — flex column: top-bar / tabs / content / cta -->
 		<div
 			use:melt={$content}
 			class="bnd-lightbox__content fixed inset-0 flex flex-col focus:outline-none"
@@ -292,11 +295,11 @@
 						</div>
 					{/if}
 				{:else}
-					<!-- Default layout: prev arrow + image area + next arrow -->
+					<!-- Default layout: prev arrow + [image + title column] + next arrow -->
 
 					<!-- Prev arrow -->
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 justify-center">
+						<div class="flex w-16 shrink-0 items-center justify-center self-stretch">
 							<button
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
@@ -308,7 +311,7 @@
 						</div>
 					{/if}
 
-					<!-- Image area — explicit height so absolute images have a sized container -->
+					<!-- Image area -->
 					<div class="relative min-h-0 flex-1 self-stretch">
 						<!-- Spinner (outside key block so it doesn't participate in cross-fade) -->
 						{#if imageLoading && !imageError}
@@ -329,23 +332,34 @@
 								No se pudo cargar la imagen
 							</div>
 						{:else}
-							<!-- {#key} ensures cross-fade when switching image or category -->
+							<!-- {#key} fades image+title as a unit so title stays glued below the image -->
 							{#key `${activeCategoryId}:${currentIndex}`}
-								<img
-									src={currentItem?.src}
-									alt={currentItem?.alt ?? ''}
-									class="absolute inset-0 m-auto block max-h-full max-w-full object-contain"
+								<div
+									class="absolute inset-0 flex items-center justify-center p-4 sm:p-8"
 									transition:fade={{ duration: 300 }}
-									onload={onImageLoad}
-									onerror={onImageError}
-								/>
+								>
+									<div class="flex max-h-full max-w-full flex-col items-center">
+										<img
+											src={currentItem?.src}
+											alt={currentItem?.alt ?? ''}
+											class="max-h-full min-h-0 max-w-full object-contain"
+											onload={onImageLoad}
+											onerror={onImageError}
+										/>
+										{#if showTitleBar}
+											<div class="bnd-lightbox__title p-sm shrink-0 px-4 py-2 text-center">
+												{currentItem?.title}
+											</div>
+										{/if}
+									</div>
+								</div>
 							{/key}
 						{/if}
 					</div>
 
 					<!-- Next arrow -->
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 justify-center">
+						<div class="flex w-16 shrink-0 items-center justify-center self-stretch">
 							<button
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
@@ -359,10 +373,10 @@
 				{/if}
 			</div>
 
-			<!-- Title bar (default layout only, when item has title) -->
-			{#if showTitleBar}
-				<div class="bnd-lightbox__title p-sm shrink-0 px-4 py-3 text-center">
-					{currentItem?.title}
+			<!-- CTA bar (optional, always visible at the bottom) -->
+			{#if cta}
+				<div class="bnd-lightbox__cta shrink-0">
+					{@render cta()}
 				</div>
 			{/if}
 		</div>
