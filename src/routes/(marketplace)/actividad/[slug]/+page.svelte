@@ -2,16 +2,17 @@
 	import type { PageData } from './$types';
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
 </script>
 
-<div class="wrapper">
-	<div class="mt-8">
-		<Breadcrumb items={data.breadcrumbs} />
-	</div>
-</div>
+<PdpHeader
+	dataBreadcrumbs={data.breadcrumbs}
+	title="Excursión a Brujas y Gante desde Bruselas"
+	wrapperClass="wrapper"
+/>
 
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
 
