@@ -13,7 +13,7 @@
 :root {
 	/* Colores */
 	--star-rating-filled: var(--color-status-success-icon);
-	--star-rating-empty: #d1d5db; /* neutral-300 */
+	--star-rating-empty: var(--color-neutral-200);
 
 	/* Tamaños (altura de las estrellas) */
 	--star-rating-size-xs: 1rem; /* 16px */
