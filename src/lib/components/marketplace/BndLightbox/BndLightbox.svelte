@@ -226,7 +226,7 @@
 				{#if !isSingleCategory}
 					<div class="bnd-lightbox__tabs flex items-stretch align-middle">
 						<!-- Desktop: tab buttons -->
-						<div class="hidden inline-flex items-center gap-4">
+						<div class="hidden items-center gap-4 md:inline-flex">
 							{#each config.categories as cat (cat.id)}
 								<button
 									type="button"

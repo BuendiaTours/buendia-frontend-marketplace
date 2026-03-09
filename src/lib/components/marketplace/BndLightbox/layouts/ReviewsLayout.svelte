@@ -36,11 +36,7 @@
 				{#if ctx.item.meta}
 					<!-- Stars + rating number -->
 					<div class="flex items-center gap-2">
-						<StarRating
-							value={Number(ctx.item.meta.rating)}
-							size="sm"
-							filledClass="c-star-filled-green"
-						/>
+						<StarRating value={Number(ctx.item.meta.rating)} size="sm" />
 						<span class="h4 text-neutral-900">{ctx.item.meta.rating}</span>
 					</div>
 
