@@ -209,11 +209,44 @@
 			<h2 use:melt={$titleEl} class="sr-only">Galería de imágenes</h2>
 
 			<!-- Top bar: counter (left) + close button (right) -->
-			<div class="flex shrink-0 items-center justify-between px-4 py-3">
+			<div class="bnd-lightbox__top-bar flex shrink-0 items-center justify-between px-4 py-3">
 				{#if !isSingle}
 					<span role="status" aria-live="polite" class="bnd-lightbox__counter p-sm">
 						{currentIndex + 1} de {total}
 					</span>
+				{:else}
+					<span></span>
+				{/if}
+
+				<!-- Tabs (center, visible only when there are multiple categories) -->
+				{#if !isSingleCategory}
+					<div class="bnd-lightbox__tabs flex items-center gap-1">
+						<!-- Desktop: tab buttons -->
+						<div class="hidden gap-1 sm:flex">
+							{#each config.categories as cat (cat.id)}
+								<button
+									onclick={() => switchCategory(cat.id)}
+									aria-current={cat.id === activeCategoryId ? 'true' : undefined}
+									class="bnd-lightbox__tab p-sm rounded-full px-4 py-1.5 font-medium transition-colors
+										{cat.id === activeCategoryId
+										? 'bnd-lightbox__tab--active bg-white text-black'
+										: 'text-white/70 hover:bg-white/20 hover:text-white'}"
+								>
+									{cat.label}
+								</button>
+							{/each}
+						</div>
+						<!-- Mobile: native select -->
+						<select
+							class="bnd-lightbox__tab-select p-sm rounded-lg bg-white/20 px-3 py-1.5 text-white outline-none sm:hidden"
+							value={activeCategoryId}
+							onchange={(e) => switchCategory(e.currentTarget.value)}
+						>
+							{#each config.categories as cat (cat.id)}
+								<option value={cat.id} class="text-black">{cat.label}</option>
+							{/each}
+						</select>
+					</div>
 				{:else}
 					<span></span>
 				{/if}
@@ -226,37 +259,6 @@
 					<Close class="size-6" />
 				</button>
 			</div>
-
-			<!-- Tabs (visible only when there are multiple categories) -->
-			{#if !isSingleCategory}
-				<div class="bnd-lightbox__tabs flex shrink-0 items-center gap-1 px-4 pb-2">
-					<!-- Desktop: tab buttons -->
-					<div class="hidden gap-1 sm:flex">
-						{#each config.categories as cat (cat.id)}
-							<button
-								onclick={() => switchCategory(cat.id)}
-								aria-current={cat.id === activeCategoryId ? 'true' : undefined}
-								class="bnd-lightbox__tab p-sm rounded-full px-4 py-1.5 font-medium transition-colors
-									{cat.id === activeCategoryId
-									? 'bnd-lightbox__tab--active bg-white text-black'
-									: 'text-white/70 hover:bg-white/20 hover:text-white'}"
-							>
-								{cat.label}
-							</button>
-						{/each}
-					</div>
-					<!-- Mobile: native select -->
-					<select
-						class="bnd-lightbox__tab-select p-sm rounded-lg bg-white/20 px-3 py-1.5 text-white outline-none sm:hidden"
-						value={activeCategoryId}
-						onchange={(e) => switchCategory(e.currentTarget.value)}
-					>
-						{#each config.categories as cat (cat.id)}
-							<option value={cat.id} class="text-black">{cat.label}</option>
-						{/each}
-					</select>
-				</div>
-			{/if}
 
 			<!-- Content area: navigation + image (default) or custom layout -->
 			<div class="flex min-h-0 flex-1 items-center justify-center">
