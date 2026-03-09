@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import type { BndLightboxItemContext } from '$lib/types';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 </script>
@@ -31,15 +32,9 @@
 			>
 				{#if ctx.item.meta}
 					<p class="font-semibold text-white">{ctx.item.meta.user}</p>
-					<div class="flex gap-0.5">
-						{#each { length: 5 } as _, s (s)}
-							<span class={s < Number(ctx.item.meta.rating) ? 'text-yellow-400' : 'text-white/20'}>
-								★
-							</span>
-						{/each}
-					</div>
-					<p class="p-sm leading-relaxed text-white/80">{ctx.item.meta.content}</p>
 					<p class="p-xs text-white/50">{ctx.item.meta.date}</p>
+					<StarRating value={Number(ctx.item.meta.rating)} />
+					<p class="p-sm leading-relaxed text-white/80">{ctx.item.meta.content}</p>
 				{/if}
 			</div>
 		{/key}
