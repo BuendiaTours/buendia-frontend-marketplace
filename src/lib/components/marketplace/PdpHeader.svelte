@@ -24,8 +24,8 @@
 		<div class="mb-4 flex w-full flex-none gap-2 sm:mb-0 sm:w-auto sm:flex-auto">
 			<StarRating value={4.5} size="md" />
 			<span class="p-lg font-bold text-neutral-800">4.5</span>
-			<button class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
-				>333 opiniones</button
+			<a href="#reviews" class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
+				>333 opiniones</a
 			>
 		</div>
 		<Badge
