@@ -367,18 +367,20 @@
 {#snippet reviewLayout(ctx: BndLightboxItemContext)}
 	<div class="flex h-full flex-col sm:flex-row">
 		<!-- Imagen: cross-fade en cada cambio de imagen -->
-		{#key ctx.item.src}
-			<div
-				class="flex min-h-0 flex-1 items-center justify-center bg-black/20 p-4 sm:p-8"
-				transition:fade={{ duration: 300 }}
-			>
-				<img
-					src={ctx.item.src}
-					alt={ctx.item.alt ?? ''}
-					class="max-h-full max-w-full object-contain"
-				/>
-			</div>
-		{/key}
+		<div class="relative min-h-0 flex-1">
+			{#key ctx.item.src}
+				<div
+					class="absolute inset-0 flex items-center justify-center bg-black/20 p-4 sm:p-8"
+					transition:fade={{ duration: 300 }}
+				>
+					<img
+						src={ctx.item.src}
+						alt={ctx.item.alt ?? ''}
+						class="max-h-full max-w-full object-contain"
+					/>
+				</div>
+			{/key}
+		</div>
 
 		<!-- Datos de la review: cross-fade solo cuando cambia de review (reviewIndex) -->
 		{#key ctx.item.meta?.reviewIndex}

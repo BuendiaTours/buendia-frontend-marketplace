@@ -197,6 +197,7 @@
 		<div
 			use:melt={$content}
 			class="bnd-lightbox__content fixed inset-0 flex flex-col focus:outline-none"
+			transition:fade={{ duration: 200 }}
 			ontouchstart={onTouchStart}
 			ontouchend={onTouchEnd}
 		>
