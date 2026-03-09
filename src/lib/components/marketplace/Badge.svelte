@@ -25,9 +25,12 @@
 	);
 </script>
 
-<div class="bnd-badge inline-flex items-center gap-2 rounded-sm uppercase {data.color || ''}">
+<div
+	class="e-badge p-xs inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold uppercase {data.color ||
+		''}"
+>
 	{#if iconComponent}
-		<svelte:component this={iconComponent} class="size-4" />
+		<svelte:component this={iconComponent} class="size-5" />
 	{/if}
 	{data.title}
 </div>
