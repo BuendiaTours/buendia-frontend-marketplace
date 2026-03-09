@@ -3,5 +3,15 @@
 		"*.css": "css"
 	},
 	"css.lint.unknownAtRules": "ignore",
-	"cSpell.words": ["backoffice", "distributives", "multimedias", "paraglide", "superforms"]
+	"cSpell.language": "en,es",
+	"cSpell.words": [
+		"backoffice",
+		"bnd",
+		"distributives",
+		"multimedias",
+		"ontabchange",
+		"paraglide",
+		"siguiente",
+		"superforms"
+	]
 }

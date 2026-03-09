@@ -6,7 +6,8 @@
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import PhotoGallery from '$lib/components/marketplace/PhotoGallery.svelte';
+	import BndLightbox from '$lib/components/marketplace/BndLightbox.svelte';
+	import type { BndLightboxConfig, BndLightboxItemContext } from '$lib/types';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
@@ -50,30 +51,103 @@
 	// Confirm dialog
 	let confirmResult = $state<boolean | null>(null);
 
-	// PhotoGallery
-	const galleryImages = [
+	// BndLightbox — demo Fase 2
+
+	// Raw reviews data (estructura real de la API)
+	type RawReview = {
+		user: string;
+		averageRating: number;
+		content: string;
+		date?: string;
+		createdAt?: string;
+		attachments: Array<{ url: { value: string }; mimeType?: string | null }>;
+	};
+
+	const demoReviews: RawReview[] = [
 		{
-			src: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=400&q=80',
-			alt: 'Lisbon Traditional Food',
-			width: 1200,
-			height: 800
+			user: 'María García',
+			averageRating: 5,
+			content: 'Una experiencia increíble. La comida estaba deliciosa y el guía fue muy ameno.',
+			date: '2025-11-15',
+			attachments: [
+				{
+					url: { value: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80' }
+				},
+				{
+					url: { value: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1200&q=80' }
+				},
+				{
+					url: { value: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&q=80' }
+				}
+			]
 		},
 		{
-			src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
-			alt: 'Porto Wine Cellars',
-			width: 1200,
-			height: 800
-		},
-		{
-			src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=80',
-			alt: 'Algarve Beach',
-			width: 1200,
-			height: 800
+			user: 'JSmith Buyer',
+			averageRating: 4,
+			content: 'Great product overall. Minor issue with the instructions, they could be clearer.',
+			createdAt: '2026-01-25T18:22:30.000Z',
+			attachments: [
+				{ url: { value: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=1200&q=80' } }
+			]
 		}
 	];
+
+	// Normalización flat: cada attachment se convierte en un BndLightboxItem,
+	// con los datos de la review en meta (+ reviewIndex para la key del bloque de review)
+	const reviewItems = demoReviews.flatMap((review, reviewIdx) =>
+		review.attachments.map((att) => ({
+			src: att.url.value,
+			alt: `Foto de ${review.user}`,
+			meta: {
+				user: review.user,
+				rating: review.averageRating,
+				content: review.content,
+				date: review.date ?? review.createdAt?.split('T')[0] ?? '',
+				reviewIndex: reviewIdx
+			}
+		}))
+	);
+
+	let lbOpen = $state(false);
+	let lbConfig = $state<BndLightboxConfig>({
+		wrapAround: true,
+		categories: [
+			{
+				id: 'fotos',
+				label: 'Fotos',
+				items: [
+					{
+						src: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=1200&q=80',
+						alt: 'Lisbon Traditional Food',
+						title: 'Comida tradicional de Lisboa'
+					},
+					{
+						src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
+						alt: 'Porto Wine Cellars',
+						title: 'Bodegas de Oporto'
+					},
+					{
+						src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
+						alt: 'Algarve Beach',
+						title: 'Playa del Algarve'
+					}
+				]
+			},
+			{
+				id: 'reviews',
+				label: 'Reviews',
+				items: reviewItems
+			}
+		]
+	});
+
+	let lbReviewsOpen = $state(false);
+
+	function openLightbox(categoryId: string, index: number) {
+		lbConfig.startCategory = categoryId;
+		lbConfig.startIndex = index;
+		lbOpen = true;
+	}
 
 	// MeltCalendar
 	let calendarValue = $state<DateValue | undefined>();
@@ -248,16 +322,121 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- PhotoGallery -->
+<!-- BndLightbox — tabs (default layout) -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6">
-	<h2 class="mb-4 font-semibold">PhotoGallery</h2>
+	<h2 class="mb-4 font-semibold">BndLightbox — pestañas</h2>
 	<p class="mb-6 text-gray-500">
-		Galería de imágenes con lightbox PhotoSwipe. Acepta un array de objetos con
-		<code>src</code>, <code>thumb</code>, <code>alt</code>, <code>width</code> y
-		<code>height</code>.
+		Lightbox con varias categorías. En desktop se muestran como pestañas; en mobile, como dropdown.
+		Recuerda la posición al volver a una pestaña.
 	</p>
-	<PhotoGallery images={galleryImages} />
+
+	<div class="mb-6 flex flex-wrap gap-3">
+		<button class="e-button e-button-primary" onclick={() => openLightbox('fotos', 0)}>
+			Abrir — Fotos
+		</button>
+		<button class="e-button e-button-secondary" onclick={() => openLightbox('reviews', 0)}>
+			Abrir — Reviews
+		</button>
+	</div>
+
+	<div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+		{#each lbConfig.categories[0].items as item, i (item.src)}
+			<button
+				onclick={() => openLightbox('fotos', i)}
+				aria-label={item.alt}
+				class="relative block aspect-[4/3] cursor-pointer overflow-hidden rounded-lg border-none bg-none p-0 transition-transform duration-200 ease-in-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+			>
+				<img
+					src={item.src.replace('w=1200', 'w=400')}
+					alt={item.alt}
+					class="h-full w-full object-cover"
+				/>
+			</button>
+		{/each}
+	</div>
+
+	<BndLightbox bind:open={lbOpen} config={lbConfig} />
+</div>
+
+<!-- ============================================================ -->
+<!-- BndLightbox — layout custom (Reviews) -->
+<!-- ============================================================ -->
+
+<!-- Snippet definido antes del componente para poder pasarlo como prop -->
+{#snippet reviewLayout(ctx: BndLightboxItemContext)}
+	<div class="flex h-full flex-col sm:flex-row">
+		<!-- Imagen: cross-fade en cada cambio de imagen -->
+		{#key ctx.item.src}
+			<div
+				class="flex min-h-0 flex-1 items-center justify-center bg-black/20 p-4 sm:p-8"
+				transition:fade={{ duration: 300 }}
+			>
+				<img
+					src={ctx.item.src}
+					alt={ctx.item.alt ?? ''}
+					class="max-h-full max-w-full object-contain"
+				/>
+			</div>
+		{/key}
+
+		<!-- Datos de la review: cross-fade solo cuando cambia de review (reviewIndex) -->
+		{#key ctx.item.meta?.reviewIndex}
+			<div
+				class="flex w-full shrink-0 flex-col justify-center gap-3 bg-white/5 p-6 sm:w-72"
+				transition:fade={{ duration: 200 }}
+			>
+				{#if ctx.item.meta}
+					<p class="font-semibold text-white">{ctx.item.meta.user}</p>
+					<div class="flex gap-0.5">
+						{#each { length: 5 } as _, s (s)}
+							<span class={s < Number(ctx.item.meta.rating) ? 'text-yellow-400' : 'text-white/20'}>
+								★
+							</span>
+						{/each}
+					</div>
+					<p class="p-sm leading-relaxed text-white/80">{ctx.item.meta.content}</p>
+					<p class="p-xs text-white/50">{ctx.item.meta.date}</p>
+				{/if}
+			</div>
+		{/key}
+	</div>
+{/snippet}
+
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox — layout custom (Reviews)</h2>
+	<p class="mb-6 text-gray-500">
+		Layout personalizado via snippet: imagen a la izquierda, datos de la review a la derecha en
+		desktop; apilado en mobile.
+	</p>
+
+	<div class="flex flex-wrap gap-3">
+		{#each reviewItems as item, i (item.src)}
+			<button
+				onclick={() => {
+					lbReviewsOpen = true;
+					lbConfig.startIndex = i;
+				}}
+				aria-label={String(item.meta?.user ?? '')}
+				class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-lg border-none bg-none p-0 transition-transform hover:scale-105"
+			>
+				<img
+					src={item.src.replace('w=1200', 'w=200')}
+					alt={item.alt}
+					class="h-full w-full object-cover"
+				/>
+			</button>
+		{/each}
+	</div>
+
+	<BndLightbox
+		bind:open={lbReviewsOpen}
+		config={{
+			wrapAround: true,
+			startIndex: lbConfig.startIndex ?? 0,
+			categories: [{ id: 'reviews', label: 'Reviews', items: reviewItems, layout: reviewLayout }]
+		}}
+	/>
 </div>
 
 <!-- ============================================================ -->
