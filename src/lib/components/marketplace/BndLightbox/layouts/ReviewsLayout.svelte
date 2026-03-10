@@ -68,7 +68,7 @@
 			<img
 				src={displayedSrc}
 				alt={displayedAlt ?? ''}
-				class="max-h-[65dvh] w-full object-contain transition-opacity duration-200 sm:max-h-[45dvh] lg:max-h-[calc(100dvh-24rem)]"
+				class="w-full object-contain transition-opacity duration-200 sm:max-h-[85dvh] lg:max-h-[calc(100dvh-12rem)] 2xl:max-h-[calc(100dvh-24rem)]"
 				class:opacity-0={!contentVisible}
 			/>
 		</div>
