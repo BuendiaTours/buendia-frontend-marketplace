@@ -27,8 +27,8 @@
 		<!-- Datos de la review: absolute al fondo en mobile, inline en desktop -->
 		<div class="absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] sm:static sm:w-80">
 			{#key ctx.item.meta?.reviewIndex}
-				<div class="flex flex-col gap-4 overflow-auto pt-4" transition:fade={{ duration: 200 }}>
-					{#if ctx.item.meta}
+				{#if ctx.item.meta}
+					<div class="flex flex-col gap-4 overflow-auto pt-4" transition:fade={{ duration: 200 }}>
 						<!-- Stars + rating number -->
 						<div class="flex items-center gap-2">
 							<StarRating value={Number(ctx.item.meta.rating)} size="sm" />
@@ -50,8 +50,8 @@
 
 						<!-- Review text -->
 						<p class="p-sm leading-relaxed text-neutral-700">{ctx.item.meta.content}</p>
-					{/if}
-				</div>
+					</div>
+				{/if}
 			{/key}
 		</div>
 	</div>
