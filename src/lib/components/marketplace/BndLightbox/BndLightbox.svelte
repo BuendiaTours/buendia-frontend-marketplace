@@ -232,12 +232,12 @@
 									type="button"
 									onclick={() => switchCategory(cat.id)}
 									aria-current={cat.id === activeCategoryId ? 'true' : undefined}
-									class="bnd-lightbox__tab p-base h-6 cursor-pointer border-b-1 px-0 font-semibold transition-colors
+									class="bnd-lightbox__tab p-base flex h-6 cursor-pointer items-center gap-1.5 border-b-1 px-0 font-semibold transition-colors
 										{cat.id === activeCategoryId
 										? 'bnd-lightbox__tab--active border-neutral-900 text-neutral-900'
 										: 'border-transparent text-neutral-400 hover:text-neutral-700'}"
 								>
-									{cat.label}
+									{cat.label} ({cat.items.length})
 								</button>
 							{/each}
 						</div>
@@ -248,7 +248,7 @@
 							onchange={(e) => switchCategory(e.currentTarget.value)}
 						>
 							{#each config.categories as cat (cat.id)}
-								<option value={cat.id}>{cat.label}</option>
+								<option value={cat.id}>{cat.label} ({cat.items.length})</option>
 							{/each}
 						</select>
 					</div>
@@ -381,7 +381,7 @@
 			</div>
 
 			<!-- CTA bar (optional, always visible at the bottom) -->
-			<div class="bnd-lightbox__cta min-h-16 shrink-0 border-t border-neutral-200">
+			<div class="bnd-lightbox__cta min-h-16 shrink-0">
 				{#if cta}
 					{@render cta()}
 				{/if}
