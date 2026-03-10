@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { BndLightbox, ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+	import {
+		BndLightbox,
+		ReviewsLayout,
+		bndLightboxAction
+	} from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxConfig, BndLightboxItemContext } from '$lib/types';
 	import { fade } from 'svelte/transition';
 
@@ -99,8 +103,13 @@
 	const lbD_config: BndLightboxConfig = {
 		wrapAround: true,
 		categories: [
-			{ id: 'fotos', label: 'Fotos', items: photoItems },
-			{ id: 'reviews', label: 'Reviews', items: reviewItems, layoutComponent: ReviewsLayout }
+			{ id: 'fotos', label: 'Fotos de la actividad', items: photoItems },
+			{
+				id: 'reviews',
+				label: 'Reviews de los clientes',
+				items: reviewItems,
+				layoutComponent: ReviewsLayout
+			}
 		]
 	};
 
@@ -249,4 +258,77 @@
 		bind:open={lbE_open}
 		config={{ ...lbE_config, categories: [{ ...lbE_config.categories[0], layout: customLayout }] }}
 	/>
+</div>
+
+<!-- ============================================================ -->
+<!-- BndLightbox — F. use:bndLightboxAction (sin config manual) -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox F — <code>use:bndLightboxAction</code></h2>
+	<p class="mb-6 text-gray-500">
+		Sin <code>&lt;BndLightbox&gt;</code> en el template. La action escanea el contenedor, construye
+		el config automáticamente a partir de <code>data-bndlb-*</code> y monta el lightbox al hacer
+		click. Las imágenes con la misma <code>data-bndlb-category</code> generan tabs.
+	</p>
+
+	<div
+		use:bndLightboxAction={{ wrapAround: true, showTitle: true }}
+		class="grid gap-3"
+		style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));"
+	>
+		<img
+			src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80"
+			alt="Porto Wine Cellars"
+			data-bndlb-src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80"
+			data-bndlb-title="Bodegas de Oporto"
+			data-bndlb-category="exterior"
+			data-bndlb-category-label="Exterior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+		<img
+			src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=80"
+			alt="Algarve Beach"
+			data-bndlb-src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80"
+			data-bndlb-title="Playa del Algarve"
+			data-bndlb-category="exterior"
+			data-bndlb-category-label="Exterior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+		<img
+			src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&q=80"
+			alt="Cosmetics"
+			data-bndlb-src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&q=80"
+			data-bndlb-title="Selección de cosméticos"
+			data-bndlb-category="interior"
+			data-bndlb-category-label="Interior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+		<img
+			src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80"
+			alt="Watch"
+			data-bndlb-src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80"
+			data-bndlb-title="Reloj de pared"
+			data-bndlb-category="interior"
+			data-bndlb-category-label="Interior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+		<img
+			src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80"
+			alt="Polaroid"
+			data-bndlb-src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1200&q=80"
+			data-bndlb-title="Fotografía polaroid"
+			data-bndlb-category="interior"
+			data-bndlb-category-label="Interior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+		<img
+			src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&q=80"
+			alt="Sneakers"
+			data-bndlb-src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=1200&q=80"
+			data-bndlb-title="Zapatillas de colección"
+			data-bndlb-category="exterior"
+			data-bndlb-category-label="Exterior"
+			class="aspect-[4/3] w-full rounded-lg object-cover"
+		/>
+	</div>
 </div>

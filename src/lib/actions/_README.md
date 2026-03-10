@@ -18,7 +18,8 @@ Ejemplos:
 
 - `checkAll.ts` → marcar/desmarcar checkboxes
 - `confirmAction.ts` → confirmar acciones antes de navegar
-- `photoswipeGallery.ts` → inicializar librerías JS sobre nodos HTML
+- `photoswipeGallery.ts` → inicializar librerías JS sobre nodos HTML (backoffice)
+- `bndLightboxAction.ts` → galería lightbox desde data-attrs, sin config manual (marketplace)
 
 Ejemplo de uso:
 
