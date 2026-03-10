@@ -8,24 +8,29 @@
 	const initial = $derived(ctx.item.meta?.user?.[0]?.toUpperCase() ?? '?');
 </script>
 
-<div class="flex h-full items-center justify-center p-4 sm:p-8">
-	<div class="flex max-h-full flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+<!-- Mobile: relative container, imagen llena el ancho, review fija al fondo -->
+<!-- Desktop: flex centrado, imagen + review lado a lado -->
+<div class="relative h-full content-center sm:flex sm:items-center sm:justify-center sm:p-8">
+	<div class="sm:flex sm:max-h-full sm:items-start sm:gap-6">
 		<!-- Imagen: cross-fade en cada cambio de imagen (grid stacking, no absolute) -->
 		<div class="grid [&>*]:[grid-area:1/1]">
 			{#key ctx.item.src}
 				<img
 					src={ctx.item.src}
 					alt={ctx.item.alt ?? ''}
-					class="max-h-[calc(100dvh-24rem)] max-w-full object-contain"
+					class="max-h-[65dvh] w-full object-contain sm:max-h-[calc(100dvh-24rem)] sm:w-auto"
 					transition:fade={{ duration: 300 }}
 				/>
 			{/key}
 		</div>
 
-		<!-- Datos de la review: cross-fade solo cuando cambia de review (reviewIndex) -->
-		<div class="w-full shrink-0 sm:w-80">
+		<!-- Datos de la review: absolute al fondo en mobile, inline en desktop -->
+		<div class="absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] sm:static sm:w-80">
 			{#key ctx.item.meta?.reviewIndex}
-				<div class="flex flex-col gap-4 overflow-auto pt-6" transition:fade={{ duration: 200 }}>
+				<div
+					class="flex max-h-48 flex-col gap-4 overflow-auto p-6 sm:max-h-none"
+					transition:fade={{ duration: 200 }}
+				>
 					{#if ctx.item.meta}
 						<!-- Stars + rating number -->
 						<div class="flex items-center gap-2">

@@ -243,7 +243,7 @@
 						</div>
 						<!-- Mobile: native select -->
 						<select
-							class="p-sm my-3 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-neutral-800 outline-none sm:hidden"
+							class="p-sm my-auto rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-neutral-800 outline-none sm:hidden"
 							value={activeCategoryId}
 							onchange={(e) => switchCategory(e.currentTarget.value)}
 						>
@@ -272,7 +272,7 @@
 				{#if hasCustomLayout}
 					<!-- Custom layout: arrows + snippet/component (manages its own transitions) -->
 					{#if !isSingle}
-						<div class="flex shrink-0 justify-center px-3">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex">
 							<button
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
@@ -292,7 +292,7 @@
 						{/if}
 					</div>
 					{#if !isSingle}
-						<div class="flex shrink-0 justify-center px-3">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex">
 							<button
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
