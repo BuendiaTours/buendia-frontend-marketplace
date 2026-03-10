@@ -60,20 +60,22 @@
 <div
 	class="bnd-lightbox__review-wrapper relative h-full content-center sm:flex sm:items-center sm:justify-center sm:p-8"
 >
-	<div class="bnd-lightbox__review-container sm:flex sm:max-h-full sm:items-start sm:gap-6">
+	<div
+		class="bnd-lightbox__review-container sm:flex sm:max-h-full sm:flex-col sm:gap-4 lg:flex-row lg:items-start lg:gap-6"
+	>
 		<!-- Imagen: opacity controlada por contentVisible, sin {#key} ni transition -->
-		<div class="bnd-lightbox__review-image sm:min-w-0 sm:flex-1">
+		<div class="bnd-lightbox__review-image sm:min-w-0 lg:flex-1">
 			<img
 				src={displayedSrc}
 				alt={displayedAlt ?? ''}
-				class="max-h-[65dvh] w-full object-contain transition-opacity duration-200 sm:max-h-[calc(100dvh-24rem)]"
+				class="max-h-[65dvh] w-full object-contain transition-opacity duration-200 sm:max-h-[45dvh] lg:max-h-[calc(100dvh-24rem)]"
 				class:opacity-0={!contentVisible}
 			/>
 		</div>
 
-		<!-- Datos de la review: absolute al fondo en mobile, inline en desktop -->
+		<!-- Datos de la review: absolute al fondo en mobile, columna en tablet, fila en desktop -->
 		<div
-			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-80 sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0"
+			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-full sm:bg-transparent sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0 lg:w-80"
 		>
 			{#if displayedMeta}
 				<div
