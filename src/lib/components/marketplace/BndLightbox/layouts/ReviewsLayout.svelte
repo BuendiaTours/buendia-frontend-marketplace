@@ -62,7 +62,7 @@
 >
 	<div class="bnd-lightbox__review-container sm:flex sm:max-h-full sm:items-start sm:gap-6">
 		<!-- Imagen: opacity controlada por contentVisible, sin {#key} ni transition -->
-		<div class="sm:min-w-0 sm:flex-1">
+		<div class="bnd-lightbox__review-image sm:min-w-0 sm:flex-1">
 			<img
 				src={displayedSrc}
 				alt={displayedAlt ?? ''}
@@ -73,7 +73,7 @@
 
 		<!-- Datos de la review: absolute al fondo en mobile, inline en desktop -->
 		<div
-			class="bnd-lightbox__review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] sm:static sm:w-80"
+			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-80 sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0"
 		>
 			{#if displayedMeta}
 				<div
