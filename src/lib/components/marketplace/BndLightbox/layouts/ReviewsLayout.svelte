@@ -1,58 +1,108 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { untrack } from 'svelte';
 	import type { BndLightboxItemContext } from '$lib/types';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 
-	const initial = $derived(ctx.item.meta?.user?.[0]?.toUpperCase() ?? '?');
+	// Copias locales que se muestran — se actualizan solo cuando el contenido está invisible
+	let displayedSrc = $state(ctx.item.src);
+	let displayedAlt = $state(ctx.item.alt);
+	let displayedMeta: typeof ctx.item.meta = $state(ctx.item.meta);
+
+	// Un solo booleano controla opacity de imagen y review conjuntamente
+	let contentVisible = $state(true);
+
+	const initial = $derived(displayedMeta?.user?.[0]?.toUpperCase() ?? '?');
+
+	$effect(() => {
+		const newSrc = ctx.item.src; // dependencia reactiva
+		const newMeta = ctx.item.meta; // dependencia reactiva
+		const newAlt = ctx.item.alt;
+
+		let aborted = false;
+
+		untrack(() => {
+			// Skip en el primer render (valores iguales a los iniciales)
+			if (newSrc === displayedSrc && newMeta === displayedMeta) return;
+
+			// Fase 1: fade-out
+			contentVisible = false;
+
+			// Fase 2: esperar fade-out Y preload de imagen (lo que tarde más)
+			const fadeOutDone = new Promise<void>((r) => setTimeout(r, 210)); // 200ms + buffer
+			const imageLoaded = new Promise<void>((r) => {
+				const img = new Image();
+				img.onload = () => r();
+				img.onerror = () => r(); // no bloqueamos si falla
+				img.src = newSrc;
+			});
+
+			Promise.all([fadeOutDone, imageLoaded]).then(() => {
+				if (aborted) return;
+				// Fase 3: swap de contenido + fade-in
+				displayedSrc = newSrc;
+				displayedAlt = newAlt;
+				displayedMeta = newMeta;
+				contentVisible = true;
+			});
+		});
+
+		// Cleanup: si el usuario navega rápido, cancelamos la promesa pendiente
+		return () => {
+			aborted = true;
+		};
+	});
 </script>
 
 <!-- Mobile: relative container, imagen llena el ancho, review fija al fondo -->
 <!-- Desktop: flex centrado, imagen + review lado a lado -->
-<div class="relative h-full content-center sm:flex sm:items-center sm:justify-center sm:p-8">
-	<div class="sm:flex sm:max-h-full sm:items-start sm:gap-6">
-		<!-- Imagen: cross-fade en cada cambio de imagen (grid stacking, no absolute) -->
-		<div class="grid [&>*]:[grid-area:1/1]">
-			{#key ctx.item.src}
-				<img
-					src={ctx.item.src}
-					alt={ctx.item.alt ?? ''}
-					class="max-h-[65dvh] w-full object-contain sm:max-h-[calc(100dvh-24rem)] sm:w-auto"
-					transition:fade={{ duration: 300 }}
-				/>
-			{/key}
+<div
+	class="bnd-lightbox__review-wrapper relative h-full content-center sm:flex sm:items-center sm:justify-center sm:p-8"
+>
+	<div class="bnd-lightbox__review-container sm:flex sm:max-h-full sm:items-start sm:gap-6">
+		<!-- Imagen: opacity controlada por contentVisible, sin {#key} ni transition -->
+		<div class="sm:min-w-0 sm:flex-1">
+			<img
+				src={displayedSrc}
+				alt={displayedAlt ?? ''}
+				class="max-h-[65dvh] w-full object-contain transition-opacity duration-200 sm:max-h-[calc(100dvh-24rem)]"
+				class:opacity-0={!contentVisible}
+			/>
 		</div>
 
 		<!-- Datos de la review: absolute al fondo en mobile, inline en desktop -->
-		<div class="absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] sm:static sm:w-80">
-			{#key ctx.item.meta?.reviewIndex}
-				{#if ctx.item.meta}
-					<div class="flex flex-col gap-4 overflow-auto pt-4" transition:fade={{ duration: 200 }}>
-						<!-- Stars + rating number -->
-						<div class="flex items-center gap-2">
-							<StarRating value={Number(ctx.item.meta.rating)} size="sm" />
-							<span class="h4 text-neutral-900">{ctx.item.meta.rating}</span>
-						</div>
-
-						<!-- Avatar + name + date -->
-						<div class="flex items-center gap-3">
-							<div
-								class="flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-neutral-100"
-							>
-								<span class="p-sm font-semibold text-neutral-700">{initial}</span>
-							</div>
-							<div class="flex flex-col">
-								<span class="p-sm font-semibold text-neutral-900">{ctx.item.meta.user}</span>
-								<span class="p-xs text-neutral-400">{ctx.item.meta.date}</span>
-							</div>
-						</div>
-
-						<!-- Review text -->
-						<p class="p-sm leading-relaxed text-neutral-700">{ctx.item.meta.content}</p>
+		<div
+			class="bnd-lightbox__review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] sm:static sm:w-80"
+		>
+			{#if displayedMeta}
+				<div
+					class="flex flex-col gap-4 overflow-auto pt-4 transition-opacity duration-200"
+					class:opacity-0={!contentVisible}
+				>
+					<!-- Stars + rating number -->
+					<div class="flex items-center gap-2">
+						<StarRating value={Number(displayedMeta.rating)} size="sm" />
+						<span class="h4 text-neutral-900">{displayedMeta.rating}</span>
 					</div>
-				{/if}
-			{/key}
+
+					<!-- Avatar + name + date -->
+					<div class="flex items-center gap-3">
+						<div
+							class="flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-neutral-100"
+						>
+							<span class="p-sm font-semibold text-neutral-700">{initial}</span>
+						</div>
+						<div class="flex flex-col">
+							<span class="p-sm font-semibold text-neutral-900">{displayedMeta.user}</span>
+							<span class="p-xs text-neutral-400">{displayedMeta.date}</span>
+						</div>
+					</div>
+
+					<!-- Review text -->
+					<p class="p-sm leading-relaxed text-neutral-700">{displayedMeta.content}</p>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>
