@@ -9,6 +9,7 @@
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
+	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
@@ -84,13 +85,25 @@
 <!-- Index -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6">
-	<h1 class="mb-6 text-xl font-bold">Demos de componentes</h1>
+	<h1 class="mb-6 font-semibold">Demos de componentes</h1>
 	<ul class="flex flex-col gap-2">
 		<li>
 			<a href="/components/BndLightbox" class="text-blue-600 hover:underline">BndLightbox</a>
 			— Galería lightbox con layouts personalizables y soporte de reviews
 		</li>
 	</ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- AuthorMeta -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6 !bg-red-500">
+	<h2 class="mb-4 font-semibold">AuthorMeta</h2>
+	<div class="flex max-w-sm flex-col gap-4">
+		<AuthorMeta name="Carlos Sabo" desc="Instructor · 12 mar 2025" />
+		<AuthorMeta name="María García" />
+		<AuthorMeta name="Alejandro Martínez de la Torre Rodríguez" desc="Guía certificado · Madrid" />
+	</div>
 </div>
 
 <!-- ============================================================ -->
