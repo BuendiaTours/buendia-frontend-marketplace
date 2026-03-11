@@ -17,7 +17,7 @@
 	<PdpHeadGallery items={activity.multimedias} />
 
 	<!-- pdp-header -->
-	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title="Excursión a Brujas y Gante desde Bruselas" />
+	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
