@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MultimediaItem } from '$lib/types';
-	import { bndLightboxAction } from '$lib/actions/marketplace/bndLightboxAction';
+	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 
 	// Hicimos una prueba con Swiper para comparar rendimiento y experiencia de usuario contra la implementación nativa con scroll-timeline. Por ahora, dejamos el código comentado para referencia futura.
 	// import SwiperElement from '$lib/components/shared/Swiper.svelte';
@@ -14,22 +14,34 @@
 	const desktopVisible = 3;
 	const totalImages = $derived(items.length);
 	const hiddenCount = $derived(totalImages - desktopVisible);
+
+	let lbOpen = $state(false);
+	let lbStartIndex = $state(0);
+	const lbItems = $derived(
+		items.map((item) => ({
+			src: item.variants?.find((v) => v.preset === 'MAX')?.url ?? item.originalUrl ?? '',
+			alt: item.altText ?? ''
+		}))
+	);
+
+	function openAt(index: number, e: MouseEvent) {
+		e.preventDefault();
+		lbStartIndex = index;
+		lbOpen = true;
+	}
 </script>
 
 <!-- Desktop / Tablet gallery -->
 <div
-	use:bndLightboxAction
 	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr]"
 >
 	<a
 		href={items[0].variants?.find((v) => v.preset === 'MAX')?.url}
+		onclick={(e) => openAt(0, e)}
 		class="aspect-[472/354] overflow-hidden rounded-lg lg:aspect-[502/314]"
 	>
 		<img
 			src={items[0].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
-			data-bndlb-src={items[0].variants?.find((v) => v.preset === 'MAX')?.url ??
-				items[0].originalUrl}
-			data-bndlb-alt={items[0].altText}
 			alt={items[0].altText}
 			class="h-full w-full object-cover"
 			loading="lazy"
@@ -38,13 +50,11 @@
 	<div class="flex flex-col gap-4 lg:contents">
 		<a
 			href={items[1].variants?.find((v) => v.preset === 'MAX')?.url}
+			onclick={(e) => openAt(1, e)}
 			class="flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]"
 		>
 			<img
 				src={items[1].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
-				data-bndlb-src={items[1].variants?.find((v) => v.preset === 'MAX')?.url ??
-					items[1].originalUrl}
-				data-bndlb-alt={items[1].altText}
 				alt={items[1].altText}
 				class="h-full w-full object-cover"
 				loading="lazy"
@@ -52,13 +62,11 @@
 		</a>
 		<a
 			href={items[2].variants?.find((v) => v.preset === 'MAX')?.url}
+			onclick={(e) => openAt(2, e)}
 			class="relative flex-1 overflow-hidden rounded-lg lg:aspect-[337/314]"
 		>
 			<img
 				src={items[2].variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_1')?.url}
-				data-bndlb-src={items[2].variants?.find((v) => v.preset === 'MAX')?.url ??
-					items[2].originalUrl}
-				data-bndlb-alt={items[2].altText}
 				alt={items[2].altText}
 				class="h-full w-full object-cover"
 				loading="lazy"
@@ -78,20 +86,18 @@
 	style="timeline-scope: --slider-timeline, {items.map((_, i) => `--slide-${i}`).join(', ')};"
 >
 	<div
-		use:bndLightboxAction
 		class="pdp-head-gallery-mobile-slider flex snap-x snap-mandatory gap-3 overflow-x-auto"
 		style="scroll-timeline-name: --slider-timeline; scroll-timeline-axis: inline;"
 	>
 		{#each items as item, i (item.id)}
 			<a
 				href={item.variants?.find((v) => v.preset === 'MAX')?.url}
+				onclick={(e) => openAt(i, e)}
 				class="aspect-square w-full flex-none snap-start snap-always overflow-hidden rounded-lg"
 				style="view-timeline-name: --slide-{i}; view-timeline-axis: inline;"
 			>
 				<img
 					src={item.variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_MOBILE')?.url}
-					data-bndlb-src={item.variants?.find((v) => v.preset === 'MAX')?.url ?? item.originalUrl}
-					data-bndlb-alt={item.altText}
 					alt={item.altText}
 					class="h-full w-full object-cover"
 					loading="lazy"
@@ -121,29 +127,14 @@
 	</div>
 </div>
 
-<!-- Mobile gallery slider — Swiper (test comparativo) -->
-<!-- div class="overflow-hidden rounded-lg md:hidden">
-	<SwiperElement
-		className="pdp-head-gallery-swiper aspect-square rounded-lg"
-		options={{
-			slidesPerView: 1,
-			spaceBetween: 12,
-			pagination: { clickable: false },
-			loop: false
-		}}
-	>
-		{#each items as item (item.id)}
-			<swiper-slide>
-				<img
-					src={item.variants?.find((v) => v.preset === 'PDP_HEAD_GALLERY_MOBILE')?.url}
-					alt={item.altText}
-					class="h-full w-full object-cover"
-					loading="lazy"
-				/>
-			</swiper-slide>
-		{/each}
-	</SwiperElement>
-</div -->
+<BndLightbox
+	bind:open={lbOpen}
+	config={{
+		wrapAround: true,
+		categories: [{ id: 'fotos', label: 'Fotos', items: lbItems }],
+		startIndex: lbStartIndex
+	}}
+/>
 
 <style>
 	.pdp-head-gallery-mobile-slider {

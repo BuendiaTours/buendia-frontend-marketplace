@@ -120,6 +120,74 @@
 
 	// E — Snippet custom inline (one-off)
 	let lbE_open = $state(false);
+
+	// G — 3 thumbnails → galería de 12 items (solo los 3 primeros tienen miniatura en página)
+	let lbG_open = $state(false);
+	let lbG_startIndex = $state(0);
+	const lbG_items = [
+		// Los 3 primeros tienen miniatura visible en página
+		{
+			src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
+			alt: 'Porto Wine Cellars',
+			title: 'Bodegas de Oporto'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
+			alt: 'Algarve Beach',
+			title: 'Playa del Algarve'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&q=80',
+			alt: 'Cosmetics',
+			title: 'Selección de cosméticos'
+		},
+		// Items 4–12: solo visibles en la lightbox
+		{
+			src: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80',
+			alt: 'Watch',
+			title: 'Reloj de pared'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1200&q=80',
+			alt: 'Polaroid',
+			title: 'Fotografía polaroid'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=1200&q=80',
+			alt: 'Sneakers',
+			title: 'Zapatillas de colección'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
+			alt: 'Mountain',
+			title: 'Cumbre nevada'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80',
+			alt: 'Forest',
+			title: 'Bosque en otoño'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80',
+			alt: 'Forest path',
+			title: 'Sendero del bosque'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=1200&q=80',
+			alt: 'Sunrise',
+			title: 'Amanecer en la costa'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80',
+			alt: 'Aerial view',
+			title: 'Vista aérea'
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80',
+			alt: 'Travel',
+			title: 'En camino'
+		}
+	];
 	const lbE_config: BndLightboxConfig = {
 		wrapAround: true,
 		categories: [{ id: 'custom', label: 'Custom', items: photoItems }]
@@ -331,4 +399,45 @@
 			class="aspect-[4/3] w-full rounded-lg object-cover"
 		/>
 	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BndLightbox — G. 3 thumbnails → galería de 12 items -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">BndLightbox G — 3 miniaturas, galería de 12 items</h2>
+	<p class="mb-6 text-gray-500">
+		Solo los 3 primeros items tienen miniatura visible. Click en cualquiera abre el lightbox con los
+		12 items. Los restantes 9 son accesibles navegando dentro de la galería.
+	</p>
+	<div class="grid gap-4" style="grid-template-columns: repeat(3, 1fr);">
+		{#each lbG_items.slice(0, 3) as item, i (item.src)}
+			<button
+				type="button"
+				onclick={() => {
+					lbG_startIndex = i;
+					lbG_open = true;
+				}}
+				aria-label={item.alt}
+				class="relative block aspect-[4/3] cursor-pointer overflow-hidden rounded-lg border-none bg-none p-0 transition-transform duration-200 ease-in-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+			>
+				<img
+					src={item.src.replace('w=1200', 'w=400')}
+					alt={item.alt}
+					class="h-full w-full object-cover"
+				/>
+				<span class="p-xs absolute right-2 bottom-2 rounded bg-black/60 px-2 py-0.5 text-white">
+					{i + 1} / {lbG_items.length}
+				</span>
+			</button>
+		{/each}
+	</div>
+	<BndLightbox
+		bind:open={lbG_open}
+		config={{
+			wrapAround: true,
+			categories: [{ id: 'galeria', label: 'Galería', items: lbG_items }],
+			startIndex: lbG_startIndex
+		}}
+	/>
 </div>
