@@ -10,17 +10,14 @@
 	const { activity } = data;
 </script>
 
-<PdpHeader
-	dataBreadcrumbs={data.breadcrumbs}
-	title="Excursión a Brujas y Gante desde Bruselas"
-	wrapperClass="wrapper"
-/>
-
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
 
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
 	<PdpHeadGallery items={activity.multimedias} />
+
+	<!-- pdp-header -->
+	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title="Excursión a Brujas y Gante desde Bruselas" />
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
