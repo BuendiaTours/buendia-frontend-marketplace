@@ -1,4 +1,5 @@
 // src/lib/types.ts
+import type { Component, Snippet } from 'svelte';
 import type {
 	ActivityNotSuitableFor,
 	ActivityStatus,
@@ -160,4 +161,39 @@ export type MultimediaItem = {
 	}>;
 	createdAt: string;
 	updatedAt: string;
+};
+
+export type BreadcrumbConfig = BreadcrumbItem[];
+
+// --- BndLightbox ---
+
+export type BndLightboxItem = {
+	src: string;
+	alt?: string;
+	title?: string;
+	meta?: Record<string, unknown>;
+};
+
+export type BndLightboxItemContext = {
+	item: BndLightboxItem;
+	index: number;
+	total: number;
+};
+
+export type BndLightboxCategory = {
+	id: string;
+	label: string;
+	items: BndLightboxItem[];
+	/** Inline one-off layout defined with {#snippet} in the consuming page */
+	layout?: Snippet<[BndLightboxItemContext]>;
+	/** Reusable layout component imported from BndLightbox/layouts/ */
+	layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
+};
+
+export type BndLightboxConfig = {
+	categories: BndLightboxCategory[];
+	wrapAround?: boolean;
+	showTitle?: boolean;
+	startCategory?: string;
+	startIndex?: number;
 };

@@ -14,7 +14,7 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
 	server: {
-		allowedHosts: true
+		allowedHosts: ['.trycloudflare.com']
 	},
 	define: {
 		__APP_VERSION__: JSON.stringify(process.env.npm_package_version)

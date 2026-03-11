@@ -6,7 +6,6 @@
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import PhotoGallery from '$lib/components/marketplace/PhotoGallery.svelte';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
@@ -50,31 +49,6 @@
 	// Confirm dialog
 	let confirmResult = $state<boolean | null>(null);
 
-	// PhotoGallery
-	const galleryImages = [
-		{
-			src: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-FyvkGu6WcmA?w=400&q=80',
-			alt: 'Lisbon Traditional Food',
-			width: 1200,
-			height: 800
-		},
-		{
-			src: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
-			alt: 'Porto Wine Cellars',
-			width: 1200,
-			height: 800
-		},
-		{
-			src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80',
-			thumb: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=80',
-			alt: 'Algarve Beach',
-			width: 1200,
-			height: 800
-		}
-	];
-
 	// MeltCalendar
 	let calendarValue = $state<DateValue | undefined>();
 
@@ -105,6 +79,19 @@
 		});
 	}
 </script>
+
+<!-- ============================================================ -->
+<!-- Index -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h1 class="mb-6 text-xl font-bold">Demos de componentes</h1>
+	<ul class="flex flex-col gap-2">
+		<li>
+			<a href="/components/BndLightbox" class="text-blue-600 hover:underline">BndLightbox</a>
+			— Galería lightbox con layouts personalizables y soporte de reviews
+		</li>
+	</ul>
+</div>
 
 <!-- ============================================================ -->
 <!-- Tooltip -->
@@ -245,19 +232,6 @@
 			<button class="e-button e-button-primary mt-6 w-full">Reservar — {item.name}</button>
 		{/snippet}
 	</MeltDrawerManager>
-</div>
-
-<!-- ============================================================ -->
-<!-- PhotoGallery -->
-<!-- ============================================================ -->
-<div class="wrapper mt-6">
-	<h2 class="mb-4 font-semibold">PhotoGallery</h2>
-	<p class="mb-6 text-gray-500">
-		Galería de imágenes con lightbox PhotoSwipe. Acepta un array de objetos con
-		<code>src</code>, <code>thumb</code>, <code>alt</code>, <code>width</code> y
-		<code>height</code>.
-	</p>
-	<PhotoGallery images={galleryImages} />
 </div>
 
 <!-- ============================================================ -->
