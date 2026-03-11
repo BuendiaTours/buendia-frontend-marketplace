@@ -48,18 +48,19 @@ Ejemplo de items:
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html scriptTag}
 </svelte:head>
-
 <nav aria-label="Breadcrumb">
-	<ol class="p-sm flex flex-wrap items-center gap-1 text-gray-500">
+	<ol class="p-base flex flex-wrap items-center gap-2 font-medium text-neutral-500">
 		{#each items as item, index (index)}
 			{#if index > 0}
-				<li aria-hidden="true" class="opacity-40 select-none">›</li>
+				<li aria-hidden="true" class="select-none">/</li>
 			{/if}
 			<li>
 				{#if item.href && index < items.length - 1}
-					<a href={item.href} class="hover:text-gray-900 hover:underline">{item.label}</a>
+					<a href={item.href} class="text-neutral-700 hover:text-gray-900 hover:underline"
+						>{item.label}</a
+					>
 				{:else if index === items.length - 1}
-					<span class="font-medium text-gray-900" aria-current="page">{item.label}</span>
+					<span class="font-medium" aria-current="page">{item.label}</span>
 				{:else}
 					<span>{item.label}</span>
 				{/if}
