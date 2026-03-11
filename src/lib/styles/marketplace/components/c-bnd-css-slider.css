@@ -1,0 +1,122 @@
+/* --bnd-slider-tl is set by the component as a CSS custom property on the outer wrapper,
+   containing the instance-unique scroll timeline name (e.g. --bnd-slider-k3xf2-tl).
+   This indirection allows the same global CSS to work for multiple slider instances. */
+
+@supports (animation-timeline: scroll()) {
+	/* Container shift */
+	.bnd-css-slider-bullets {
+		animation-name: bnd-slider-bullet-shift;
+		animation-timing-function: linear;
+		animation-fill-mode: none;
+		animation-iteration-count: var(--ni);
+		animation-timeline: var(--bnd-slider-tl);
+	}
+
+	/* LEFT: base 1 → shrinks to 0.5 → snaps back to 1 */
+	.bnd-css-slider-bullets .bnd-css-slider-dot:nth-child(4) {
+		animation-name: bnd-slider-bullet-exit-half;
+		animation-timing-function: linear;
+		animation-fill-mode: none;
+		animation-iteration-count: var(--ni);
+		animation-timeline: var(--bnd-slider-tl);
+	}
+
+	/* LEFT: base 0.5 → shrinks to 0 → snaps back to 0.5 */
+	.bnd-css-slider-bullets .bnd-css-slider-dot:nth-child(3) {
+		animation-name: bnd-slider-bullet-exit-full;
+		animation-timing-function: linear;
+		animation-fill-mode: none;
+		animation-iteration-count: var(--ni);
+		animation-timeline: var(--bnd-slider-tl);
+	}
+
+	/* RIGHT: base 0 → grows to 0.5 → snaps back to 0 */
+	.bnd-css-slider-bullets .bnd-css-slider-dot:nth-last-child(2) {
+		animation-name: bnd-slider-bullet-enter-small;
+		animation-timing-function: linear;
+		animation-fill-mode: none;
+		animation-iteration-count: var(--ni);
+		animation-timeline: var(--bnd-slider-tl);
+	}
+
+	/* RIGHT: base 0.5 → grows to 1 → snaps back to 0.5 */
+	.bnd-css-slider-bullets .bnd-css-slider-dot:nth-last-child(3) {
+		animation-name: bnd-slider-bullet-enter-full;
+		animation-timing-function: linear;
+		animation-fill-mode: none;
+		animation-iteration-count: var(--ni);
+		animation-timeline: var(--bnd-slider-tl);
+	}
+}
+
+.bnd-css-slider-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 9999px;
+	background: #000;
+	flex-shrink: 0;
+	opacity: 0.5;
+
+	&.bnd-css-slider-dot--phantom {
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+
+.bnd-css-slider-bullets {
+	/* scale(0) is sufficient for invisibility — no opacity:0 needed */
+	.bnd-css-slider-dot:nth-child(2),
+	.bnd-css-slider-dot:nth-last-child(2) {
+		transform: scale(0);
+	}
+
+	.bnd-css-slider-dot:nth-child(3),
+	.bnd-css-slider-dot:nth-last-child(3) {
+		transform: scale(0.5);
+	}
+}
+
+@keyframes bnd-slider-bullet-enter-small {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(0.5);
+	}
+}
+
+@keyframes bnd-slider-bullet-enter-full {
+	from {
+		transform: scale(0.5);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+@keyframes bnd-slider-bullet-exit-half {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0.5);
+	}
+}
+
+@keyframes bnd-slider-bullet-exit-full {
+	from {
+		transform: scale(0.5);
+	}
+	to {
+		transform: scale(0);
+	}
+}
+
+@keyframes bnd-slider-bullet-shift {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-14px);
+	}
+}
