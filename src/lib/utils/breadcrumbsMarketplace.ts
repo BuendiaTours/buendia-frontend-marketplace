@@ -18,12 +18,12 @@ export function buildDestinationBreadcrumbs(destination: { name: string }): Brea
  */
 export function buildActivityBreadcrumbs(activity: {
 	title: string;
-	destinations: Array<{ id: string; name: string }>;
+	destinations: Array<{ id: string; name: string; href: string }>;
 }): BreadcrumbItem[] {
 	const destination = activity.destinations[0];
 	const items: BreadcrumbItem[] = [{ label: 'Inicio', href: '/' }];
 	if (destination) {
-		items.push({ label: destination.name });
+		items.push({ label: destination.name, href: destination.href });
 	}
 	items.push({ label: activity.title });
 	return items;
