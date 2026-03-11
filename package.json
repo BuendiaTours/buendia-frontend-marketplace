@@ -69,6 +69,8 @@
 		"@melt-ui/svelte": "^0.86.6",
 		"@solar-icons/svelte": "^1.1.0",
 		"bytemd": "^1.21.0",
+		"date-fns": "^4.1.0",
+		"date-fns-tz": "^3.2.0",
 		"photoswipe": "^5.4.4",
 		"sveltekit-superforms": "^2.27.4",
 		"swiper": "^12.0.3",
