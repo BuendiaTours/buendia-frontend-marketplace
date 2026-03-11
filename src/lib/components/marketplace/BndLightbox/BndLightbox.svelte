@@ -209,7 +209,7 @@
 			<h2 use:melt={$titleEl} class="sr-only">Galería de imágenes</h2>
 
 			<!-- Top bar: counter (left) + tabs (center) + close button (right) -->
-			<div class="bnd-lightbox__top-bar flex shrink-0 items-stretch justify-between p-3">
+			<div class="bnd-lightbox__top-bar flex shrink-0 items-stretch justify-between p-3 sm:p-6">
 				{#if !isSingle}
 					<span
 						role="status"
@@ -232,10 +232,10 @@
 									type="button"
 									onclick={() => switchCategory(cat.id)}
 									aria-current={cat.id === activeCategoryId ? 'true' : undefined}
-									class="bnd-lightbox__tab p-base flex h-6 cursor-pointer items-center gap-1.5 border-b-1 px-0 font-semibold transition-colors
+									class="bnd-lightbox__tab p-base flex h-6 cursor-pointer items-center gap-1.5 border-b-1 px-0 font-bold transition-colors
 										{cat.id === activeCategoryId
 										? 'bnd-lightbox__tab--active border-neutral-900 text-neutral-900'
-										: 'border-transparent text-neutral-400 hover:text-neutral-700'}"
+										: 'border-transparent text-neutral-600 hover:text-neutral-700'}"
 								>
 									{cat.label} ({cat.items.length})
 								</button>
@@ -260,7 +260,7 @@
 					<button
 						use:melt={$closeEl}
 						aria-label="Cerrar lightbox"
-						class="cursor-pointer rounded-full border border-neutral-300 p-2.75 text-neutral-700 transition-colors hover:bg-neutral-100"
+						class="bnd-lightbox__close cursor-pointer rounded-full border border-neutral-300 p-2.75 text-neutral-700 transition-colors hover:bg-neutral-100"
 					>
 						<Close class="size-5" />
 					</button>
@@ -272,12 +272,12 @@
 				{#if hasCustomLayout}
 					<!-- Custom layout: arrows + snippet/component (manages its own transitions) -->
 					{#if !isSingle}
-						<div class="hidden shrink-0 justify-center px-3 sm:flex">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex sm:px-6">
 							<button
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
 								onclick={goPrev}
-								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav bnd-lightbox__prev cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
 								<AltArrowLeft class="size-5" />
 							</button>
@@ -292,12 +292,12 @@
 						{/if}
 					</div>
 					{#if !isSingle}
-						<div class="hidden shrink-0 justify-center px-3 sm:flex">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex sm:px-6">
 							<button
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
 								onclick={goNext}
-								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav bnd-lightbox__next cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
 								<AltArrowRight class="size-5" />
 							</button>
@@ -308,12 +308,12 @@
 
 					<!-- Prev arrow -->
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 items-center justify-center self-stretch">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex sm:px-6">
 							<button
 								aria-label="Imagen anterior"
 								disabled={!canPrev}
 								onclick={goPrev}
-								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav bnd-lightbox__prev cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
 								<AltArrowLeft class="size-5" />
 							</button>
@@ -366,12 +366,12 @@
 
 					<!-- Next arrow -->
 					{#if !isSingle}
-						<div class="flex w-16 shrink-0 items-center justify-center self-stretch">
+						<div class="hidden shrink-0 justify-center px-3 sm:flex sm:px-6">
 							<button
 								aria-label="Imagen siguiente"
 								disabled={!canNext}
 								onclick={goNext}
-								class="bnd-lightbox__nav cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
+								class="bnd-lightbox__nav bnd-lightbox__next cursor-pointer rounded-full border border-neutral-300 bg-white p-2.75 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-30"
 							>
 								<AltArrowRight class="size-5" />
 							</button>
