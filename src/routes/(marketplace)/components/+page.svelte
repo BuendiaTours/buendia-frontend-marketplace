@@ -10,6 +10,7 @@
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
@@ -103,6 +104,36 @@
 		<AuthorMeta name="Carlos Sabo" desc="Instructor · 12 mar 2025" />
 		<AuthorMeta name="María García" />
 		<AuthorMeta name="Alejandro Martínez de la Torre Rodríguez" desc="Guía certificado · Madrid" />
+	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ReviewCard -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6 !bg-pink-500">
+	<h2 class="mb-4 font-semibold">ReviewCard</h2>
+	<div class="flex max-w-xl flex-col gap-8">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Layout A — StarRating a la derecha</p>
+			<ReviewCard
+				name="Jorge"
+				desc="13/01/2026"
+				rating={5}
+				text="Hicimos esta excursión en familia con Giomar que nos explicó todo perfectamente, nos aconsejo en varias cuestiones y me parece una forma divertida de conocer la ciudad. Muy recomendable para familias con niños."
+				layout="a"
+			/>
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Layout B — StarRating encima</p>
+			<ReviewCard
+				name="Luke"
+				desc="04/01/2023"
+				rating={5}
+				text="Me encantó el guía que nos tocó en esta excursión (Juan A); empezó la excursión desde que nos montamos en el bus haciéndonos una introducción de los barrios por donde pasábamos y la historia. En el destino la excursión fue muy amena y nos dió muchas opciones para comer como para visitar. De vuelta para Bruxelas expuso que podíamos visitar, donde comer los platos típicos, etc... En resumen, UN PROFESIONAL."
+				layout="b"
+				lines={4}
+			/>
+		</div>
 	</div>
 </div>
 
