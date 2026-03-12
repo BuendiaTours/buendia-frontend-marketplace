@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { BndLightboxItemContext } from '$lib/types';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 
@@ -12,8 +12,6 @@
 
 	// Un solo booleano controla opacity de imagen y review conjuntamente
 	let contentVisible = $state(true);
-
-	const initial = $derived(displayedMeta?.user?.[0]?.toUpperCase() ?? '?');
 
 	$effect(() => {
 		const newSrc = ctx.item.src; // dependencia reactiva
@@ -79,38 +77,17 @@
 		>
 			{#if displayedMeta}
 				<div
-					class="flex flex-col gap-4 overflow-auto pt-4 transition-opacity duration-200"
+					class="overflow-auto pt-4 transition-opacity duration-200"
 					class:opacity-0={!contentVisible}
 				>
-					<!-- Stars + rating number -->
-					<div class="flex items-center gap-2">
-						<StarRating value={Number(displayedMeta.rating)} size="sm" />
-						<span class="h4 text-neutral-900">{displayedMeta.rating}</span>
-					</div>
-
-					<!-- Avatar + name + date -->
-					<div class="flex items-center gap-3">
-						<div
-							class="flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-neutral-100"
-						>
-							<span class="p-sm font-semibold text-neutral-700">{initial}</span>
-						</div>
-						<div class="flex flex-col">
-							<span class="p-sm font-semibold text-neutral-900">{displayedMeta.user}</span>
-							<span class="p-xs text-neutral-400">{displayedMeta.date}</span>
-						</div>
-					</div>
-
-					<!-- Review text -->
-					<p class="p-sm leading-relaxed text-neutral-700">{displayedMeta.content}</p>
+					<ReviewCard
+						name={String(displayedMeta.user ?? '')}
+						desc={String(displayedMeta.date ?? '')}
+						rating={Number(displayedMeta.rating)}
+						text={String(displayedMeta.content ?? '')}
+					/>
 				</div>
 			{/if}
 		</div>
 	</div>
 </div>
-
-<style>
-	:global(.c-star-filled-green) {
-		background-color: var(--color-success-700);
-	}
-</style>

@@ -45,7 +45,7 @@
 	});
 </script>
 
-<div class="flex flex-wrap gap-3 {wrapperClass}">
+<div class="c-gallery-square-thumbs flex flex-wrap gap-3 {wrapperClass}">
 	{#each visibleItems as item, i (item.src)}
 		<button
 			type="button"
