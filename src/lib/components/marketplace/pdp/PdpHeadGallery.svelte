@@ -3,9 +3,6 @@
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 	import { BndCssSlider } from '$lib/components/marketplace/BndCssSlider';
 
-	// Hicimos una prueba con Swiper para comparar rendimiento y experiencia de usuario contra la implementación nativa con scroll-timeline. Por ahora, dejamos el código comentado para referencia futura.
-	// import SwiperElement from '$lib/components/shared/Swiper.svelte';
-
 	type Props = {
 		items: MultimediaItem[];
 	};
