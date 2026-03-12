@@ -11,6 +11,7 @@
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
@@ -134,6 +135,24 @@
 			/>
 		</div>
 	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Progressbar -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Progressbar</h2>
+	<p class="mb-6 text-gray-500">
+		<b>Se le puede pasar:</b><br />
+		<code>fgColor</code> para representar el color principal, que por defecto es
+		<code>bg-success-700</code><br />
+		<code>bgColor</code> para representar el color del fondo, que por defecto es
+		<code>bg-neutral-100</code><br />
+		<code>percentage</code> para representar que porcentaje del 100% va ocupar la barra de color<br
+		/>
+		<code>wrapperClass</code> para poder pasar clases al contenedor por si lo necesitamos
+	</p>
+	<Progressbar percentage="80" />
 </div>
 
 <!-- ============================================================ -->
