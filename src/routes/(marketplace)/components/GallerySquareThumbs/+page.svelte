@@ -165,6 +165,7 @@
 		categoryLabel="Galería completa"
 		thumbClass="w-48"
 		wrapperClass="gap-4 @max-[400px]:flex-wrap"
+		showCount={true}
 	/>
 </div>
 

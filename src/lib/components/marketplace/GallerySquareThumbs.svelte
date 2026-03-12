@@ -1,30 +1,33 @@
 <script lang="ts">
 	import type { Component, Snippet } from 'svelte';
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
+	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
 	import type { BndLightboxItem, BndLightboxItemContext } from '$lib/types';
 
 	type Props = {
-		items: BndLightboxItem[];
-		visibleCount?: number;
 		categoryId?: string;
 		categoryLabel?: string;
-		layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
+		items: BndLightboxItem[];
 		layout?: Snippet<[BndLightboxItemContext]>;
+		layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
+		showCount?: boolean;
+		thumbClass?: string;
+		visibleCount?: number;
 		wrapAround?: boolean;
 		wrapperClass?: string;
-		thumbClass?: string;
 	};
 
 	let {
-		items,
-		visibleCount,
 		categoryId,
 		categoryLabel,
-		layoutComponent,
+		items,
 		layout,
+		layoutComponent,
+		showCount = false,
+		thumbClass = 'w-24',
+		visibleCount,
 		wrapAround = true,
-		wrapperClass = 'gap-3 flex-wrap',
-		thumbClass = 'w-24'
+		wrapperClass = 'gap-3 flex-wrap'
 	}: Props = $props();
 
 	let open = $state(false);
@@ -64,6 +67,9 @@
 					alt={item.alt ?? ''}
 					class="h-full w-full object-cover"
 				/>
+				{#if showCount && i === visibleItems.length - 1}
+					<GalleryCount count="+{items.length}" />
+				{/if}
 			</button>
 		{/each}
 	</div>
