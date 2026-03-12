@@ -9,7 +9,7 @@
 	 */
 
 	import * as Icons from '$lib/icons/Linear';
-	import type { ComponentType } from 'svelte';
+	import type { Component } from 'svelte';
 
 	type Badge = {
 		icon?: string;
@@ -19,9 +19,8 @@
 
 	let { data }: { data: Badge } = $props();
 
-	// Mapeo dinámico del nombre del icono al componente
-	const iconComponent = $derived(
-		data.icon ? (Icons[data.icon as keyof typeof Icons] as ComponentType) : null
+	const IconComponent = $derived(
+		data.icon ? (Icons[data.icon as keyof typeof Icons] as Component) : null
 	);
 </script>
 
@@ -29,8 +28,8 @@
 	class="e-badge p-xs inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold uppercase {data.color ||
 		''}"
 >
-	{#if iconComponent}
-		<svelte:component this={iconComponent} class="size-5" />
+	{#if IconComponent}
+		<IconComponent class="size-5" />
 	{/if}
 	{data.title}
 </div>
