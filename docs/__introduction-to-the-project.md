@@ -1030,7 +1030,7 @@ export const actions: Actions = {
 
 **Contenido dinámico: Slots (clásico) vs Snippets (Svelte 5)**
 
-#### Opción 1: Slots (Funciona en Svelte 4 y 5)
+#### Opción 1: Slots (patrón legacy, evitar en código nuevo)
 
 ```svelte
 <!-- Card.svelte -->
@@ -1123,8 +1123,8 @@ export const actions: Actions = {
 
 **¿Cuál usar?**
 
-- **Slots:** Para casos simples, compatibilidad con Svelte 4
-- **Snippets:** Para casos avanzados, mejor type-safety, código nuevo
+- **Slots:** Patrón legacy — evitar en código nuevo (el proyecto es Svelte 5 only)
+- **Snippets:** Patrón actual — usar siempre, mejor type-safety
 
 ### 6.3 Sistema de estilos
 
@@ -1214,29 +1214,30 @@ export const actions: Actions = {
 
 ### 6.4 Iconos
 
-**svelte-iconoir library:**
+El proyecto usa un sistema de iconos custom (`$lib/icons`) basado en `@solar-icons/svelte`. Los iconos se importan desde los barrel files por variante:
 
 ```svelte
 <script lang="ts">
-	import { Calendar, Close, AddSquare, Map, Magnifier } from 'svelte-iconoir';
+	import { Close, ArrowLeft } from '$lib/icons/Linear';
+	import { Home } from '$lib/icons/Outline';
 </script>
 
 <!-- Iconos simples -->
-<Plus />
-<Calendar />
+<Close />
+<Home />
 
-<!-- Con clases CSS -->
-<Search class="text-primary" />
-<Trash class="text-error" />
+<!-- Con clases Tailwind -->
+<Close class="text-primary size-5" />
+<ArrowLeft class="text-error size-6" />
 
 <!-- En botones -->
 <button class="btn btn-primary">
-	<Plus />
-	Add New
+	<ArrowLeft class="size-5" />
+	Volver
 </button>
 
 <button class="btn btn-square btn-error">
-	<Trash />
+	<Close class="size-5" />
 </button>
 ```
 
