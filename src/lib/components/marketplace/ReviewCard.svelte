@@ -35,7 +35,7 @@
 	});
 </script>
 
-<div class="w-full {wrapperClass}" style="--rc-lines: {lines}">
+<div class="c-review-card w-full {wrapperClass}" style="--rc-lines: {lines}">
 	{#if layout === 'a'}
 		<!-- Layout A: AuthorMeta left, StarRating right -->
 		<div class="flex items-center justify-between gap-4">
