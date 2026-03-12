@@ -163,6 +163,8 @@
 		visibleCount={3}
 		categoryId="galeria"
 		categoryLabel="Galería completa"
+		thumbClass="w-48"
+		wrapperClass="gap-4"
 	/>
 </div>
 

@@ -1,3 +1,19 @@
+<!--
+	ReviewsLayout — layout for BndLightbox that shows an image alongside a review card.
+
+	Receives `ctx: BndLightboxItemContext` where each item must follow this shape:
+
+	{
+	  src: string          // URL of the review image
+	  alt?: string         // Accessible description of the image
+	  meta: {
+	    user:    string    // Reviewer name
+	    date:    string    // Display date, e.g. "12 marzo 2026"
+	    rating:  number    // Score 1–5
+	    content: string    // Review body text
+	  }
+	}
+-->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { BndLightboxItemContext } from '$lib/types';

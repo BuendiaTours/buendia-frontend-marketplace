@@ -12,6 +12,7 @@
 		layout?: Snippet<[BndLightboxItemContext]>;
 		wrapAround?: boolean;
 		wrapperClass?: string;
+		thumbClass?: string;
 	};
 
 	let {
@@ -22,7 +23,8 @@
 		layoutComponent,
 		layout,
 		wrapAround = true,
-		wrapperClass = ''
+		wrapperClass = 'gap-3 flex-wrap',
+		thumbClass = 'w-24'
 	}: Props = $props();
 
 	let open = $state(false);
@@ -45,11 +47,11 @@
 	});
 </script>
 
-<div class="c-gallery-square-thumbs flex flex-wrap gap-3 {wrapperClass}">
+<div class="c-gallery-square-thumbs relative flex {wrapperClass}">
 	{#each visibleItems as item, i (item.src)}
 		<button
 			type="button"
-			class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
+			class="relative block aspect-square {thumbClass} cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
 			aria-label={String(item.meta?.user ?? item.alt ?? '')}
 			onclick={() => {
 				startIndex = i;
