@@ -6,9 +6,10 @@
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { activity } = data;
+	const activity = $derived(data.activity);
 </script>
 
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
@@ -297,12 +298,13 @@
 			{#if data.reviews && data.reviews.length > 0}
 				{#each data.reviews as review (review.id)}
 					<li class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-						<div class="mb-1 flex items-center gap-2">
-							<span class="font-medium text-gray-800">{review.user || 'Anónimo'}</span>
-							<span class="text-gray-500">·</span>
-							<span class="text-gray-500">{review.averageRating}/5</span>
-						</div>
-						<p class="text-gray-600">{review.content}</p>
+						<ReviewCard
+							name={review.user || 'Anónimo'}
+							text={review.content}
+							rating={review.averageRating}
+							lines={4}
+							{...review}
+						/>
 
 						{#if review.replies && review.replies.length > 0}
 							<div class="mt-4 space-y-2">
@@ -310,6 +312,16 @@
 									<div class="border-l-4 border-blue-500 pl-4">
 										<p class="p-sm text-gray-500">{reply.author} · {reply.createdAt}</p>
 										<p class="text-gray-600">{reply.content}</p>
+									</div>
+								{/each}
+							</div>
+						{/if}
+
+						{#if review.attachments && review.attachments.length > 0}
+							<div class="mt-4 space-y-2">
+								{#each review.attachments as attachment, i (i)}
+									<div class="border-l-4 border-blue-500 pl-4">
+										<p class="p-sm text-gray-500">{attachment.url}</p>
 									</div>
 								{/each}
 							</div>
