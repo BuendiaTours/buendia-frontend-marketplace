@@ -5,6 +5,7 @@
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -18,6 +19,15 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- pdp-brand-banner -->
+	<PdpBrandBanner
+		title="¿Sabías qué?"
+		description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
+		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+		imageAlt="Imagén de prueba"
+		wrapperClass="my-12"
+	/>
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
