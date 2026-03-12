@@ -60,6 +60,7 @@
 -->
 <script lang="ts" generics="T extends { id: string | number }">
 	import type { Snippet } from 'svelte';
+	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
 
 	type Props = {
 		/** Array de items a mostrar. `T` se infiere del tipo pasado. */
@@ -120,11 +121,7 @@
 
 	<!-- Optional count badge -->
 	{#if showCount}
-		<div
-			class="bg-alpha-ink-84 pointer-events-none absolute right-3 bottom-3 rounded-lg border border-neutral-300 p-3 font-bold text-white"
-		>
-			+{items.length}
-		</div>
+		<GalleryCount count="+{items.length}" />
 	{/if}
 </div>
 

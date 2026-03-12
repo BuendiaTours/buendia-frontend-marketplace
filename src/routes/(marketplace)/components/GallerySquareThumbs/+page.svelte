@@ -164,7 +164,7 @@
 		categoryId="galeria"
 		categoryLabel="Galería completa"
 		thumbClass="w-48"
-		wrapperClass="gap-4"
+		wrapperClass="gap-4 @max-[400px]:flex-wrap"
 	/>
 </div>
 

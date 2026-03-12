@@ -2,6 +2,7 @@
 	import type { MultimediaItem } from '$lib/types';
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 	import { BndCssSlider } from '$lib/components/marketplace/BndCssSlider';
+	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
 
 	type Props = {
 		items: MultimediaItem[];
@@ -69,11 +70,7 @@
 				class="h-full w-full object-cover"
 				loading="lazy"
 			/>
-			<span
-				class="bg-alpha-ink-84 pointer-events-none absolute right-3 bottom-3 rounded-lg border border-neutral-300 p-3 font-bold text-white"
-			>
-				+{hiddenCount}
-			</span>
+			<GalleryCount count="+{hiddenCount}" />
 		</a>
 	</div>
 </div>

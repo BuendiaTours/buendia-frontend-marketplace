@@ -47,24 +47,26 @@
 	});
 </script>
 
-<div class="c-gallery-square-thumbs relative flex {wrapperClass}">
-	{#each visibleItems as item, i (item.src)}
-		<button
-			type="button"
-			class="relative block aspect-square {thumbClass} cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
-			aria-label={String(item.meta?.user ?? item.alt ?? '')}
-			onclick={() => {
-				startIndex = i;
-				open = true;
-			}}
-		>
-			<img
-				src={item.src.replace('w=1200', 'w=200')}
-				alt={item.alt ?? ''}
-				class="h-full w-full object-cover"
-			/>
-		</button>
-	{/each}
+<div class="c-gallery-square-thumbs @container">
+	<div class="relative flex {wrapperClass}">
+		{#each visibleItems as item, i (item.src)}
+			<button
+				type="button"
+				class="relative block aspect-square {thumbClass} cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
+				aria-label={String(item.meta?.user ?? item.alt ?? '')}
+				onclick={() => {
+					startIndex = i;
+					open = true;
+				}}
+			>
+				<img
+					src={item.src.replace('w=1200', 'w=200')}
+					alt={item.alt ?? ''}
+					class="h-full w-full object-cover"
+				/>
+			</button>
+		{/each}
+	</div>
 </div>
 
 <BndLightbox bind:open config={lbConfig} />
