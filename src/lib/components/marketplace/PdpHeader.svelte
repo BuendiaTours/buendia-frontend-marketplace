@@ -13,7 +13,7 @@
 	let { dataBreadcrumbs, title, wrapperClass }: Props = $props();
 </script>
 
-<div class="pdp-header pt-5 {wrapperClass}">
+<div class="pdp-header mb-2 pt-5 {wrapperClass}">
 	<Breadcrumbs items={dataBreadcrumbs} />
 	<h1 class="h1 pt-2 pb-4">
 		{title}
