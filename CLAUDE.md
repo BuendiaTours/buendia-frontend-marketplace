@@ -64,7 +64,7 @@ const data = await api.activities.getAll(fetch, { page: 1 });
 
 ### Forms
 
-SvelteKit Superforms + Zod. Adding a form field requires updating:
+SvelteKit Superforms + Zod. Use `use:enhance` for progressive enhancement. Adding a form field requires updating:
 
 1. `src/lib/types.ts` — Add to type definition
 2. `schemas/[resource]-form.schema.ts` — Zod schema (colocated in resource's schemas/ folder)
@@ -113,6 +113,10 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 - Use `import type { ... }` for type-only imports
 - Zod schemas are the source of truth for form types (not Valibot — it's installed but unused)
 
+### Comments
+
+- No comments unless explicitly requested
+
 ### Formatting
 
 - Tabs for indentation, single quotes, no trailing commas, 100 char print width
@@ -142,7 +146,6 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 
 ## Additional Documentation
 
-- `AI.md` — Extended AI context with patterns, decision trees, and code examples
 - `docs/api.md` — API client system guide
 - `docs/architecture-server-factories.md` — Server factory pattern
 - `docs/form-validation-flow.md` — Form handling details
