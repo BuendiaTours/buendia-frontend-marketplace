@@ -23,13 +23,15 @@
 		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		filledClass?: string;
 		emptyClass?: string;
+		wrapperClass?: string;
 	};
 
 	let {
 		value,
 		size = 'xs',
 		filledClass = 'c-star-filled',
-		emptyClass = 'c-star-empty'
+		emptyClass = 'c-star-empty',
+		wrapperClass = ''
 	}: Props = $props();
 
 	const roundedRating = $derived(() => {
@@ -73,7 +75,7 @@
 </script>
 
 {#if value !== null}
-	<div class="c-star-rating {sizeClass()}">
+	<div class="c-star-rating {sizeClass()} {wrapperClass}">
 		{#each stars() as star, index (index)}
 			{#if star === 'full'}
 				<div

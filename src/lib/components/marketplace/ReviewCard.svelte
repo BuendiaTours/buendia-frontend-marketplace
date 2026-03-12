@@ -38,9 +38,9 @@
 <div class="c-review-card w-full {wrapperClass}" style="--rc-lines: {lines}">
 	{#if layout === 'a'}
 		<!-- Layout A: AuthorMeta left, StarRating right -->
-		<div class="flex items-center justify-between gap-4">
+		<div class="flex items-start justify-between gap-4">
 			<AuthorMeta {name} {desc} />
-			<div class="flex shrink-0 items-center gap-2">
+			<div class="mt-1 flex shrink-0 items-center gap-2">
 				<StarRating value={rating} size="sm" />
 				{#if showRatingValue && rating !== null}
 					<span class="p-lg font-bold">{rating}</span>
