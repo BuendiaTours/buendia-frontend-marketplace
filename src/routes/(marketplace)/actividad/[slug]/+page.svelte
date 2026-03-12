@@ -17,19 +17,19 @@
 	wrapperClass="wrapper"
 />
 
-<PdpBrandBanner
-	title="¿Sabías qué?"
-	description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
-	image="https://dummyimage.com/372x372/ffffff/000000.jpg"
-	imageAlt="Imagén de prueba"
-	wrapperClass="wrapper"
-/>
-
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
 
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
 	<PdpHeadGallery items={activity.multimedias} />
+
+	<PdpBrandBanner
+		title="¿Sabías qué?"
+		description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
+		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+		imageAlt="Imagén de prueba"
+		wrapperClass="my-12"
+	/>
 
 	<!-- Activity Header -->
 	<div class="e-card mb-8">
