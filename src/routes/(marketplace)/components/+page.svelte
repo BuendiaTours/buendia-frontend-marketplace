@@ -120,7 +120,6 @@
 				desc="13/01/2026"
 				rating={5}
 				text="Hicimos esta excursión en familia con Giomar que nos explicó todo perfectamente, nos aconsejo en varias cuestiones y me parece una forma divertida de conocer la ciudad. Muy recomendable para familias con niños."
-				layout="a"
 			/>
 		</div>
 		<div>
@@ -130,8 +129,8 @@
 				desc="04/01/2023"
 				rating={5}
 				text="Me encantó el guía que nos tocó en esta excursión (Juan A); empezó la excursión desde que nos montamos en el bus haciéndonos una introducción de los barrios por donde pasábamos y la historia. En el destino la excursión fue muy amena y nos dió muchas opciones para comer como para visitar. De vuelta para Bruxelas expuso que podíamos visitar, donde comer los platos típicos, etc... En resumen, UN PROFESIONAL."
-				layout="b"
-				lines={4}
+				wrapperClass="is-variant-vertical"
+				lines={2}
 			/>
 		</div>
 	</div>

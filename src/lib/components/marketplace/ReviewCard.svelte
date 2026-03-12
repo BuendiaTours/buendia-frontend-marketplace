@@ -1,3 +1,7 @@
+<!--
+	ReviewCard
+	Variantes: wrapperClass="is-variant-vertical"
+-->
 <script lang="ts">
 	import AuthorMeta from './AuthorMeta.svelte';
 	import StarRating from './StarRating.svelte';
@@ -5,10 +9,9 @@
 	type Props = {
 		name: string;
 		desc?: string;
-		rating: number | null;
+		rating?: number | null;
 		text: string;
 		lines?: number;
-		layout?: 'a' | 'b';
 		showRatingValue?: boolean;
 		wrapperClass?: string;
 	};
@@ -19,7 +22,6 @@
 		rating,
 		text,
 		lines = 3,
-		layout = 'a',
 		showRatingValue = true,
 		wrapperClass = ''
 	}: Props = $props();
@@ -35,30 +37,22 @@
 	});
 </script>
 
-<div class="c-review-card w-full {wrapperClass}" style="--rc-lines: {lines}">
-	{#if layout === 'a'}
-		<!-- Layout A: AuthorMeta left, StarRating right -->
-		<div class="flex items-start justify-between gap-4">
-			<AuthorMeta {name} {desc} />
-			<div class="mt-1 flex shrink-0 items-center gap-2">
+<div class="c-review-card group w-full {wrapperClass}" style="--rc-lines: {lines}">
+	<div
+		class="c-review-card__head flex items-start justify-between gap-3 group-[.is-variant-vertical]:flex-col"
+	>
+		<AuthorMeta {name} {desc} />
+		{#if rating != null}
+			<div
+				class="mt-1 flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0"
+			>
 				<StarRating value={rating} size="sm" />
-				{#if showRatingValue && rating !== null}
+				{#if showRatingValue}
 					<span class="p-lg font-bold">{rating}</span>
 				{/if}
 			</div>
-		</div>
-	{:else}
-		<!-- Layout B: StarRating above, AuthorMeta below -->
-		<div class="mb-2 flex items-center gap-2">
-			<StarRating value={rating} size="sm" />
-			{#if showRatingValue && rating !== null}
-				<span class="p-lg font-bold">{rating}</span>
-			{/if}
-		</div>
-		<div>
-			<AuthorMeta {name} {desc} />
-		</div>
-	{/if}
+		{/if}
+	</div>
 
 	<p bind:this={textEl} class="c-review-card__text p-base mt-3" class:is-expanded={expanded}>
 		{text}
@@ -66,7 +60,7 @@
 
 	{#if isClamped || expanded}
 		<button
-			class="p-sm mt-2 cursor-pointer border-b border-current leading-none font-medium"
+			class="c-review-card__read-more p-sm mt-2 cursor-pointer border-b border-current leading-none font-medium"
 			onclick={() => (expanded = !expanded)}
 		>
 			{expanded ? 'Leer menos' : 'Leer más'}
