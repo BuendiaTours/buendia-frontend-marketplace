@@ -321,7 +321,7 @@
 							<div class="mt-4 space-y-2">
 								{#each review.attachments as attachment, i (i)}
 									<div class="border-l-4 border-blue-500 pl-4">
-										<p class="p-sm text-gray-500">{attachment.url}</p>
+										<p class="p-sm text-gray-500">{attachment.url.value}</p>
 									</div>
 								{/each}
 							</div>
