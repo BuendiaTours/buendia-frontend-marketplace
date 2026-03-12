@@ -14,7 +14,7 @@
 	class="pdp-brand-banner bg-ochre-softer flex flex-col gap-4 rounded-xl p-5 sm:flex-row lg:p-6 {wrapperClass}"
 >
 	<div
-		class="pdp-brand-banner__img mb-4 aspect-square w-full shrink-1 overflow-hidden rounded-lg sm:mb-0 sm:shrink-0 md:max-w-[300px] md:sm:self-center lg:order-1 lg:max-w-[372px]"
+		class="pdp-brand-banner__img mb-4 aspect-square w-full shrink-1 overflow-hidden rounded-lg sm:mb-0 sm:max-w-[200px] sm:shrink-0 sm:self-center md:max-w-[300px] lg:order-1 lg:max-w-[372px]"
 	>
 		<img class="h-full w-full object-cover" src={image} alt={imageAlt} loading="lazy" />
 	</div>
