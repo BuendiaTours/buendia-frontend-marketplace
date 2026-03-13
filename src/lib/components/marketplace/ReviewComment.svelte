@@ -24,7 +24,7 @@
 		</div>
 		<div>
 			{#if reply.author}
-				<p class="c-review-comment__author p-base font-bold">{reply.author}</p>
+				<p class="c-review-comment__author p-base font-bold">Respuesta de: {reply.author}</p>
 			{/if}
 			<p class="review-comment__content p-base">{reply.content}</p>
 		</div>
