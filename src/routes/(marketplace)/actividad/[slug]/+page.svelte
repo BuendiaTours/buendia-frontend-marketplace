@@ -10,6 +10,7 @@
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
+	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -345,10 +346,7 @@
 						{#if review.replies && review.replies.length > 0}
 							<div class="mt-4 space-y-2">
 								{#each review.replies as reply (reply.id)}
-									<div class="border-l-4 border-blue-500 pl-4">
-										<p class="p-sm text-gray-500">{reply.author} · {reply.createdAt}</p>
-										<p class="text-gray-600">{reply.content}</p>
-									</div>
+									<ReviewComment {reply} />
 								{/each}
 							</div>
 						{/if}
