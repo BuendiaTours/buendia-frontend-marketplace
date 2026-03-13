@@ -6,6 +6,7 @@
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
+	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { activity } = data;
@@ -19,6 +20,9 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- faqs -->
+	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
