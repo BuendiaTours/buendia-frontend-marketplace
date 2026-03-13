@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		const form = await superValidate(
 			{
 				id: location.id,
+				parentId: location.parent?.id,
 				name: location.name,
 				kind: location.kind,
 				descriptionShort: location.descriptionShort ?? ''
@@ -30,6 +31,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		return {
 			location,
 			form,
+			parentName: location.parent?.name ?? null,
 			breadcrumbs
 		};
 	} catch (err) {

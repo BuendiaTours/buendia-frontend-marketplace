@@ -186,7 +186,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												LOCATION_ROUTES.detail(item.id),
+												LOCATION_ROUTES.edit(item.id),
 												page.url.searchParams
 											)}
 										>
@@ -196,6 +196,11 @@
 									<p class="text-base-content/50 text-xs">
 										{item['descriptionShort']}
 									</p>
+									{#if item.parent?.name}
+										<p class="text-base-content/40 text-xs">
+											Pertenece a "{item.parent.name}"
+										</p>
+									{/if}
 								</td>
 							{:else if col.key === 'kind'}
 								<td>
@@ -213,16 +218,6 @@
 							<div class="dropdown dropdown-end dropdown-bottom">
 								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
 								<ul tabindex="-1" class="dropdown-content menu">
-									<li>
-										<a
-											href={buildUrlWithFilters(
-												LOCATION_ROUTES.detail(item.id),
-												page.url.searchParams
-											)}
-										>
-											Ver
-										</a>
-									</li>
 									<li>
 										<a
 											href={buildUrlWithFilters(

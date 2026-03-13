@@ -10,6 +10,8 @@
 	"locations_detailPageTitle": "Ubicación - Backoffice",
 	"locations_sectionMainData": "Datos principales",
 	"locations_sectionMainDataDescription": "Información principal de la ubicación",
+	"locations_labelParent": "Ubicación padre",
+	"locations_placeholderParent": "Buscar ubicación padre...",
 	"locations_labelName": "Nombre",
 	"locations_labelKind": "Tipo",
 	"locations_labelDescriptionShort": "Descripción corta",

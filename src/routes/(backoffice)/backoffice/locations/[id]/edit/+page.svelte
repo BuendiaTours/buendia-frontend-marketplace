@@ -15,4 +15,9 @@
 
 <LocationBar title="Editar Ubicación" breadcrumbs={data.breadcrumbs} />
 
-<LocationForm data={{ form: data.form }} mode="edit" locationId={data.location.id} />
+<LocationForm
+	data={{ form: data.form }}
+	mode="edit"
+	locationId={data.location.id}
+	parentName={data.parentName}
+/>
