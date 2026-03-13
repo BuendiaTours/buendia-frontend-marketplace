@@ -11,13 +11,15 @@ import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema
 	const filters = parseFilters(locationsFiltersSchema, url.searchParams);
+	const page = filters.page ?? 1;
+	const pageSize = filters.pageSize ?? 10;
 
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
 		const response = await LOCATION_REQUEST.findByCriteria(fetch, {
-			page: filters.page,
-			pageSize: filters.pageSize,
+			page,
+			pageSize,
 			sort: filters.sort,
 			order: filters.order,
 			query: filters.q,
@@ -26,7 +28,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 		return {
 			items: response.data || [],
-			pagination: buildPagination(response.total, filters.page, filters.pageSize),
+			pagination: buildPagination(response.total, page, pageSize),
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
 			breadcrumbs

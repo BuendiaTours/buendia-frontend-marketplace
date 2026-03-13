@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
+	import * as m from '$paraglide/messages';
 
 	/**
 	 * Componente reutilizable para botón de reset de ordenación en tablas
@@ -32,7 +33,7 @@
 	};
 
 	const DEFAULT_CONFIG: TableResetSortConfig = {
-		buttonText: 'Reset sort',
+		buttonText: m.common_resetSort(),
 		buttonClass: 'btn btn-soft btn-xs btn-error'
 	};
 

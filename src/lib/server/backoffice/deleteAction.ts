@@ -11,7 +11,9 @@ export type DeleteActionConfig = {
 	/** Ruta base para redirección (ej: '/activities', '/locations') */
 	basePath: string;
 	/** Función que realiza la eliminación en la API */
-	deleteFn: (fetchFn: typeof globalThis.fetch, slug: string) => Promise<void>;
+	deleteFn: (fetchFn: typeof globalThis.fetch, identifier: string) => Promise<void>;
+	/** Nombre del parámetro de ruta que identifica el recurso (default: 'slug') */
+	paramName?: string;
 };
 
 /**
@@ -32,17 +34,17 @@ export type DeleteActionConfig = {
  */
 export function createDeleteAction(config: DeleteActionConfig) {
 	return async ({ params, fetch, url, cookies, request }: RequestEvent) => {
-		const slug = params.slug;
-		if (!slug) {
-			throw new Error('Slug parameter is required');
+		const identifier = params[config.paramName ?? 'slug'];
+		if (!identifier) {
+			throw new Error(`Route parameter '${config.paramName ?? 'slug'}' is required`);
 		}
 		const referer = request.headers.get('referer') || config.basePath;
 		const refererUrl = new URL(referer);
 		const fromPath = refererUrl.pathname;
 
 		try {
-			logger.log('🗑️ [deleteAction] Intentando eliminar:', slug);
-			const result = await config.deleteFn(fetch, slug);
+			logger.log('🗑️ [deleteAction] Intentando eliminar:', identifier);
+			const result = await config.deleteFn(fetch, identifier);
 			logger.log('✅ [deleteAction] Eliminación exitosa:', result);
 
 			setFlashMessage(cookies, {

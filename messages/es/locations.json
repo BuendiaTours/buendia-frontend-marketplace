@@ -1,0 +1,18 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"locations_backToList": "Volver al listado",
+	"locations_createLocation": "Crear ubicación",
+	"locations_confirmDeleteTitle": "Eliminar elemento",
+	"locations_confirmDeleteMessage": "¿Estás seguro de que quieres eliminar este elemento?",
+	"locations_deleteButton": "Borrar",
+	"locations_editButton": "Editar",
+	"locations_saveChanges": "Guardar cambios",
+	"locations_detailPageTitle": "Ubicación - Backoffice",
+	"locations_sectionMainData": "Datos principales",
+	"locations_sectionMainDataDescription": "Información principal de la ubicación",
+	"locations_labelName": "Nombre",
+	"locations_labelKind": "Tipo",
+	"locations_labelDescriptionShort": "Descripción corta",
+	"locations_placeholderKind": "Selecciona un tipo",
+	"locations_badgeReadOnly": "read only"
+}

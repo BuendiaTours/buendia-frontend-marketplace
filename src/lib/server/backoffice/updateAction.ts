@@ -16,11 +16,15 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
 	schema: ValidationAdapter<T>;
 	/** Función que realiza la actualización en la API */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	updateFn: (fetchFn: typeof globalThis.fetch, slug: string, data: any) => Promise<void>;
+	updateFn: (fetchFn: typeof globalThis.fetch, identifier: string, data: any) => Promise<void>;
 	/** Función opcional para transformar los datos del formulario antes de enviarlos a la API */
 	transformData?: (formData: T) => Record<string, unknown>;
 	/** Si true, redirige a la página de edición; si false, redirige a la página de detalle */
 	redirectToEdit?: boolean;
+	/** Si true, redirige al listado (basePath) en lugar de detalle/edición */
+	redirectToList?: boolean;
+	/** Nombre del parámetro de ruta que identifica el recurso (default: 'slug') */
+	paramName?: string;
 };
 
 /**
@@ -46,13 +50,13 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
 export function createUpdateAction<T extends Record<string, unknown>>(
 	config: UpdateActionConfig<T>
 ) {
-	return async ({ request, params, fetch, cookies }: RequestEvent) => {
-		const slug = params.slug;
-		if (!slug) {
-			throw new Error('Slug parameter is required');
+	return async ({ request, params, fetch, cookies, url }: RequestEvent) => {
+		const identifier = params[config.paramName ?? 'slug'];
+		if (!identifier) {
+			throw new Error(`Route parameter '${config.paramName ?? 'slug'}' is required`);
 		}
 
-		logger.log('💾 [updateAction] Procesando guardado para:', slug);
+		logger.log('💾 [updateAction] Procesando guardado para:', identifier);
 
 		const form = await superValidate(request, config.schema);
 		logger.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
@@ -79,7 +83,7 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			// Transformar datos si se proporciona función de transformación
 			const dataToSend = config.transformData ? config.transformData(form.data) : form.data;
 
-			await config.updateFn(fetch, slug, dataToSend);
+			await config.updateFn(fetch, identifier, dataToSend);
 			logger.log('✅ [updateAction] API respondió exitosamente');
 
 			setFlashMessage(cookies, {
@@ -87,10 +91,14 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 				message: 'Los cambios se guardaron correctamente.'
 			});
 
-			// Redirigir a edición o detalle según configuración
-			const redirectPath = config.redirectToEdit
-				? `${config.basePath}/${slug}/edit`
-				: `${config.basePath}/${slug}`;
+			// Redirigir según configuración: listado, edición o detalle
+			const queryString = url.searchParams.toString();
+			const suffix = queryString ? `?${queryString}` : '';
+			const redirectPath = config.redirectToList
+				? `${config.basePath}${suffix}`
+				: config.redirectToEdit
+					? `${config.basePath}/${identifier}/edit${suffix}`
+					: `${config.basePath}/${identifier}${suffix}`;
 
 			logger.log('💾 [updateAction] Redirigiendo a:', redirectPath);
 			throw redirect(303, redirectPath);

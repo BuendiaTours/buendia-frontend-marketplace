@@ -9,7 +9,7 @@ import { backoffice } from '../core';
 export const LOCATION_ROUTES = {
 	list: backoffice('locations'),
 	create: backoffice('locations/create'),
-	detail: (slug: string) => backoffice('locations', slug),
-	edit: (slug: string) => backoffice('locations', slug, 'edit'),
-	delete: (slug: string) => backoffice('locations', slug, 'delete')
+	detail: (id: string) => backoffice('locations', id),
+	edit: (id: string) => backoffice('locations', id, 'edit'),
+	delete: (id: string) => backoffice('locations', id, 'delete')
 } as const;

@@ -43,7 +43,7 @@ export function buildEndpointUrl(
 
 /**
  * Converts UI pagination params (`page` / `pageSize`) to the backend's
- * `skip` / `limit` format. Also normalises `order` to uppercase.
+ * `skip` / `limit` format. Also normalises `sort` and `order` to uppercase.
  * All other parameters are passed through untouched.
  *
  * @template T - Shape of the incoming params object.
@@ -55,7 +55,7 @@ export function toSkipLimit<T extends Record<string, unknown>>(
 ): Omit<T, 'page' | 'pageSize'> & { skip?: number; limit?: number } {
 	if (!params) return {} as Omit<T, 'page' | 'pageSize'>;
 
-	const { page, pageSize, order, ...rest } = params as Record<string, unknown>;
+	const { page, pageSize, order, sort, ...rest } = params as Record<string, unknown>;
 
 	const result: Record<string, unknown> = { ...rest };
 
@@ -65,6 +65,10 @@ export function toSkipLimit<T extends Record<string, unknown>>(
 
 	if (typeof page === 'number' && typeof pageSize === 'number') {
 		result.skip = (page - 1) * pageSize;
+	}
+
+	if (typeof sort === 'string') {
+		result.sort = sort.toUpperCase();
 	}
 
 	if (typeof order === 'string') {

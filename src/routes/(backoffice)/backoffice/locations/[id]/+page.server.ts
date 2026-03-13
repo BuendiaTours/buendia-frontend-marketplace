@@ -3,12 +3,10 @@ import type { PageServerLoad } from './$types';
 import { LOCATION_REQUEST } from '$core/locations/requests';
 import { ApiError } from '$core/_shared/errors';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load = (async ({ fetch, params }) => {
 	try {
-		const location = await LOCATION_REQUEST.findBySlug(fetch, params.slug);
-		return {
-			location: { ...location, slug: (location as { slug?: string }).slug ?? params.slug }
-		};
+		const location = await LOCATION_REQUEST.findById(fetch, params.id);
+		return { location };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {
@@ -19,4 +17,4 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 		throw error(503, 'No se pudo conectar con el servidor');
 	}
-};
+}) satisfies PageServerLoad;

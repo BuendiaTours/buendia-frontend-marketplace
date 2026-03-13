@@ -4,12 +4,10 @@ import { LocationKind } from '$core/locations/enums';
 export const locationFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
-	slug: z.string().min(2, 'El slug debe tener al menos 2 caracteres').max(100),
 	kind: z.nativeEnum(LocationKind, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
-	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
-	photoUrlHero: z.string().url('Debe ser una URL válida')
+	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500)
 });
 
 export type LocationFormSchema = z.infer<typeof locationFormSchema>;

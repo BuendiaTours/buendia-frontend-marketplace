@@ -6,7 +6,7 @@ import { LocationKind } from '$core/locations/enums';
 export type LocationsFilters = {
 	page?: number;
 	pageSize?: number;
-	sort?: 'id' | 'name' | 'slug' | 'kind';
+	sort?: 'id' | 'name' | 'kind';
 	order?: CriteriaSortOption;
 	q?: string;
 	kind?: LocationKind;
@@ -47,7 +47,7 @@ export const locationsFiltersSchema: FiltersSchema<LocationsFilters> = {
 			},
 			resetPageOnChange: false
 		},
-		sort: createSortField(['id', 'name', 'slug', 'kind'] as const),
+		sort: createSortField(['id', 'name', 'kind'] as const),
 		order: createOrderField(),
 		q: {
 			parse: (raw) => {

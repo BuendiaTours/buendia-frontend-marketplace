@@ -11,25 +11,20 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const location = await LOCATION_REQUEST.findBySlug(fetch, params.slug);
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const apiData = location as Record<string, any>;
+		const location = await LOCATION_REQUEST.findById(fetch, params.id);
 
 		const form = await superValidate(
 			{
-				id: apiData.id,
-				name: apiData.name,
-				slug: apiData.slug,
-				kind: apiData.kind,
-				descriptionShort: apiData.descriptionShort,
-				photoUrlHero: apiData.photoUrlHero
+				id: location.id,
+				name: location.name,
+				kind: location.kind,
+				descriptionShort: location.descriptionShort ?? ''
 			},
 			zod(locationFormSchema)
 		);
 
 		const breadcrumbs = buildBreadcrumbs(url.pathname, {
-			label: apiData.name || 'Ubicación'
+			label: location.name || 'Ubicación'
 		});
 
 		return {
@@ -53,7 +48,9 @@ export const actions: Actions = {
 	default: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/locations`,
 		schema: zod(locationFormSchema),
-		updateFn: LOCATION_REQUEST.updateBySlug,
-		redirectToEdit: true
+		updateFn: LOCATION_REQUEST.update,
+		redirectToList: true,
+		paramName: 'id',
+		transformData: ({ id, ...rest }) => rest
 	})
 };

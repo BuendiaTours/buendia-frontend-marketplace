@@ -15,4 +15,4 @@
 
 <LocationBar title="Editar Ubicación" breadcrumbs={data.breadcrumbs} />
 
-<LocationForm {data} mode="edit" locationSlug={data.location.slug} />
+<LocationForm {data} mode="edit" locationId={data.location.id} />

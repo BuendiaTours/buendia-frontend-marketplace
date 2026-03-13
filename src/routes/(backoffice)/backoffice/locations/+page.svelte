@@ -4,8 +4,8 @@
 	// ============================================================================
 
 	// Types
+	import type { PageData } from './$types';
 	import type { Location, Column } from '$lib/types';
-	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { LocationsFilters } from './schemas/filters.schema';
 
 	// SvelteKit
@@ -14,10 +14,9 @@
 
 	// Utils
 	import type { PatchValue } from '$lib/utils/filters';
-	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { locationsFiltersSchema } from './schemas/filters.schema';
-	import { TableSelection } from '$lib/utils/tableSelection.svelte';
 
 	// Enums
 	import { LOCATION_KIND_OPTIONS } from '$lib/labels/locations';
@@ -27,40 +26,23 @@
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
-	import FilterAdvancedDialog from '$lib/components/backoffice/filters/FilterAdvancedDialog.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	// Icons
-	import { Add, Close, Magnifier } from '$lib/icons/Linear';
+	import { Add, Magnifier } from '$lib/icons/Linear';
 
 	// ============================================================================
 	// PROPS & DATA
 	// ============================================================================
 
-	let {
-		data
-	}: {
-		data: {
-			items: Location[];
-			pagination: {
-				page: number;
-				pageSize: number;
-				total: number;
-				totalPages: number;
-			} | null;
-			filters: LocationsFilters;
-			sort: { field: string; order: CriteriaSortOption } | null;
-			breadcrumbs: Array<{ label: string; href?: string }>;
-		};
-	} = $props();
+	let { data }: { data: PageData } = $props();
 
 	const items = $derived(data.items);
 	const pagination = $derived(data.pagination);
-	const filters = $derived(data.filters);
+	const filters = $derived(data.filters as LocationsFilters);
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
@@ -69,7 +51,7 @@
 	// SEARCH STATE
 	// ============================================================================
 
-	let searchQuery = $derived(filters.q || '');
+	let searchQuery = $derived.by(() => filters.q || '');
 
 	// ============================================================================
 	// FILTRO: KIND
@@ -82,51 +64,15 @@
 	}
 
 	// ============================================================================
-	// ADVANCED FILTERS STATE
-	// ============================================================================
-
-	const advancedFiltersConfig = [
-		{ key: 'wheelchairAccessible', label: 'Accesible silla de ruedas' },
-		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
-		{ key: 'kidsFreeTour', label: 'Gratis para niños' }
-	] as const;
-
-	// Crear objeto con los valores actuales de los filtros avanzados
-	const currentAdvancedFilters = $derived(
-		Object.fromEntries(advancedFiltersConfig.map((f) => [f.key, filters[f.key] ?? false]))
-	);
-
-	// ============================================================================
 	// FILTER FUNCTIONS
 	// ============================================================================
 
 	function applyFilterPatch(patch: {
-		[K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]>;
+		[K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]>;
 	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(locationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
-	}
-
-	function handleClearFilters() {
-		clearAllFilters(page.url.pathname, page.url.searchParams, goto);
-		searchQuery = '';
-	}
-
-	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> } = {};
-		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = appliedFilters[filter.key] || null;
-		});
-		applyFilterPatch(patch);
-	}
-
-	function handleClearAdvancedFilters() {
-		const patch: { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> } = {};
-		advancedFiltersConfig.forEach((filter) => {
-			patch[filter.key] = null;
-		});
-		applyFilterPatch(patch);
 	}
 
 	function handleSearch() {
@@ -144,7 +90,6 @@
 	// ============================================================================
 
 	const columns: Column<Location>[] = [
-		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'name', title: 'Nombre', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
 	];
@@ -156,18 +101,6 @@
 	// ============================================================================
 	// COMPUTED
 	// ============================================================================
-
-	const hasFilters = $derived(hasActiveFilters(filters));
-
-	// ============================================================================
-	// SELECTION STATE
-	// ============================================================================
-
-	const selection = new TableSelection(() => items);
-
-	function handleBatchAction() {
-		// console.log('Selected IDs:', selection.selectedIds);
-	}
 </script>
 
 <svelte:head>
@@ -201,41 +134,7 @@
 		onFilterChange={handleKindFilterChange}
 	/>
 
-	<div class="ml-auto flex items-center gap-2">
-		<!-- Advanced Filters -->
-		<FilterAdvancedDialog
-			filters={advancedFiltersConfig}
-			currentFilters={currentAdvancedFilters}
-			onApply={handleAdvancedFiltersApply}
-			onClear={handleClearAdvancedFilters}
-		/>
-
-		<!-- Clear Filters -->
-		<div class="tooltip" data-tip="Limpiar todos los filtros">
-			<button
-				class="btn btn-square btn-soft btn-error"
-				onclick={handleClearFilters}
-				disabled={!hasFilters}
-			>
-				<Close class="size-5" />
-			</button>
-		</div>
-	</div>
-</div>
-
-<!-- Results Info -->
-<div class="mt-6 flex items-center gap-2">
-	<PagecountAboveTable itemsLength={items.length} {pagination} />
-
-	<button
-		class="btn btn-secondary btn-ghost ml-auto"
-		disabled={!selection.hasSelection}
-		onclick={handleBatchAction}
-	>
-		Batch action
-	</button>
-
-	<a href={LOCATION_ROUTES.create} class="btn btn-outline btn-primary">
+	<a href={LOCATION_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
 		<Add class="size-5" />
 		Nueva ubicación
 	</a>
@@ -246,14 +145,6 @@
 	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
-				<th class="w-12">
-					<input
-						type="checkbox"
-						class="checkbox checkbox-sm"
-						checked={selection.allSelected}
-						onchange={() => selection.toggleAll()}
-					/>
-				</th>
 				{#each columns as col (col.key)}
 					<th>
 						{#if col.sortable}
@@ -262,7 +153,10 @@
 								field={col.key}
 								currentSort={sort}
 								onSortChange={(newSort) =>
-									applyFilterPatch({ sort: newSort.field, order: newSort.order })}
+									applyFilterPatch({
+										sort: newSort.field as LocationsFilters['sort'],
+										order: newSort.order
+									})}
 							/>
 						{:else}
 							<span>{col.title}</span>
@@ -277,7 +171,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan={columns.length + 2} class="text-center">
+					<td colspan={columns.length + 1} class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">No se encontraron elementos</p>
 						</div>
@@ -286,27 +180,13 @@
 			{:else}
 				{#each items as item (item.id)}
 					<tr>
-						<td>
-							<input
-								type="checkbox"
-								bind:group={selection.selectedIds}
-								value={item.id}
-								class="checkbox checkbox-sm"
-							/>
-						</td>
 						{#each columns as col (col.key)}
-							{#if col.key === 'id'}
-								<td>
-									<div class="tooltip" data-tip={item.id}>
-										<span class="block max-w-[48px] truncate">{item.id}</span>
-									</div>
-								</td>
-							{:else if col.key === 'name'}
+							{#if col.key === 'name'}
 								<td>
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												LOCATION_ROUTES.detail(item.slug),
+												LOCATION_ROUTES.detail(item.id),
 												page.url.searchParams
 											)}
 										>
@@ -336,7 +216,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												LOCATION_ROUTES.detail(item.slug),
+												LOCATION_ROUTES.detail(item.id),
 												page.url.searchParams
 											)}
 										>
@@ -346,7 +226,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												LOCATION_ROUTES.edit(item.slug),
+												LOCATION_ROUTES.edit(item.id),
 												page.url.searchParams
 											)}>Editar</a
 										>
@@ -364,6 +244,11 @@
 <!-- Pagination -->
 {#if data.pagination}
 	<div class="mt-4">
-		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
+		<Pagination
+			count={total}
+			currentPage={pagination?.page ?? 1}
+			perPage={pageSize}
+			onPageChange={handlePageChange}
+		/>
 	</div>
 {/if}

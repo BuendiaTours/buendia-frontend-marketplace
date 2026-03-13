@@ -18,16 +18,17 @@ Props disponibles:
 
 	type Props = {
 		count: number;
+		currentPage?: number;
 		perPage?: number;
 		siblingCount?: number;
 		onPageChange?: (page: number) => void;
 	};
 
-	let { count, perPage = 10, siblingCount = 1, onPageChange }: Props = $props();
+	let { count, currentPage = 1, perPage = 10, siblingCount = 1, onPageChange }: Props = $props();
 
 	const {
 		elements: { root, pageTrigger, prevButton, nextButton },
-		states: { pages },
+		states: { pages, page: pageState },
 		options
 	} = createPagination({
 		count: 0,
@@ -40,11 +41,16 @@ Props disponibles:
 		}
 	});
 
-	// Actualizar opciones cuando cambien los props
 	$effect(() => {
 		options.count.set(count);
 		options.perPage.set(perPage);
 		options.siblingCount.set(siblingCount);
+	});
+
+	$effect(() => {
+		if (pageState.get() !== currentPage) {
+			pageState.set(currentPage);
+		}
 	});
 </script>
 
