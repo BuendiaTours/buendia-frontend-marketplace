@@ -4,7 +4,6 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
-	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { LOCATION_ROUTES } from '$lib/config/routes/backoffice/locations';
 
@@ -28,11 +27,7 @@
 	</a>
 
 	{#if isEditMode && locationId}
-		<form
-			method="POST"
-			action={buildUrlWithFilters(LOCATION_ROUTES.delete(locationId), page.url.searchParams)}
-			class="ml-auto"
-		>
+		<form method="POST" action={`${LOCATION_ROUTES.detail(locationId)}?/delete`} class="ml-auto">
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"

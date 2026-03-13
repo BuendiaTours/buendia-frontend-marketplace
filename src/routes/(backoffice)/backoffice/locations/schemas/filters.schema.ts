@@ -1,5 +1,5 @@
 import type { FiltersSchema } from '$lib/utils/filters';
-import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+import { createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
 import { LocationKind } from '$core/locations/enums';
 
@@ -10,9 +10,6 @@ export type LocationsFilters = {
 	order?: CriteriaSortOption;
 	q?: string;
 	kind?: LocationKind;
-	wheelchairAccessible?: boolean;
-	breakfastIncluded?: boolean;
-	kidsFreeTour?: boolean;
 };
 
 export const locationsFiltersSchema: FiltersSchema<LocationsFilters> = {
@@ -77,9 +74,6 @@ export const locationsFiltersSchema: FiltersSchema<LocationsFilters> = {
 				}
 			},
 			resetPageOnChange: true
-		},
-		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
-		breakfastIncluded: createBooleanField('breakfastIncluded'),
-		kidsFreeTour: createBooleanField('kidsFreeTour')
+		}
 	}
 };

@@ -15,4 +15,4 @@
 
 <LocationBar title="Nueva Ubicación" breadcrumbs={data.breadcrumbs} />
 
-<LocationForm {data} mode="create" />
+<LocationForm data={{ form: data.form }} mode="create" />

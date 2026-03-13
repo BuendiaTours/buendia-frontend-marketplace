@@ -5,12 +5,10 @@
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import { LOCATION_KIND_OPTIONS } from '$lib/labels/locations';
-	import type { Location } from '$lib/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { LocationFormSchema } from '../schemas/location-form.schema';
 
 	import { Database } from '$lib/icons/Linear';
-	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
@@ -20,7 +18,6 @@
 	type Props = {
 		data: {
 			form: SuperValidated<LocationFormSchema>;
-			location?: Location;
 		};
 		mode: 'create' | 'edit';
 		locationId?: string;
@@ -29,8 +26,8 @@
 	let { data, mode, locationId }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
-	const location = $derived(isEditMode ? data.location : null);
 
+	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json'
 	});
@@ -83,5 +80,3 @@
 		{/snippet}
 	</FormAccordion>
 </form>
-
-<DebugApiJson data={isEditMode ? location : $form} />

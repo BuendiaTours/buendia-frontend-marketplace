@@ -10,6 +10,5 @@ export const LOCATION_ROUTES = {
 	list: backoffice('locations'),
 	create: backoffice('locations/create'),
 	detail: (id: string) => backoffice('locations', id),
-	edit: (id: string) => backoffice('locations', id, 'edit'),
-	delete: (id: string) => backoffice('locations', id, 'delete')
+	edit: (id: string) => backoffice('locations', id, 'edit')
 } as const;

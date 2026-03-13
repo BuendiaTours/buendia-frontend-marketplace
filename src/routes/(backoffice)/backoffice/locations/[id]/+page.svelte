@@ -30,10 +30,7 @@
 			{m.locations_editButton()}
 		</a>
 
-		<form
-			method="POST"
-			action={buildUrlWithFilters(LOCATION_ROUTES.delete(location.id), page.url.searchParams)}
-		>
+		<form method="POST" action="?/delete">
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"

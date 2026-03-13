@@ -34,13 +34,9 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {
-			if (err.type === 'not_found') {
-				throw error(404, 'Ubicación no encontrada');
-			}
-			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
+			throw error(err.status || 500);
 		}
-
-		throw error(503, 'No se pudo conectar con el servidor');
+		throw error(503);
 	}
 };
 
