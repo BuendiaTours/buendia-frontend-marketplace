@@ -331,10 +331,10 @@
 	<!-- Reviews -->
 	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 		<h2 class="mb-4 font-semibold text-gray-800">Reviews ({data.reviews.length})</h2>
-		<ul class="space-y-4">
+		<ul class="space-y-6">
 			{#if data.reviews && data.reviews.length > 0}
 				{#each data.reviews as review (review.id)}
-					<li class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+					<li class="border-b border-[var(--color-border-default)] pb-6 last:border-0 last:pb-0">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
 							text={review.content}
@@ -342,14 +342,6 @@
 							lines={4}
 							{...review}
 						/>
-
-						{#if review.replies && review.replies.length > 0}
-							<div class="mt-4 space-y-2">
-								{#each review.replies as reply (reply.id)}
-									<ReviewComment {reply} />
-								{/each}
-							</div>
-						{/if}
 
 						{#if review.attachments && review.attachments.length > 0}
 							<GallerySquareThumbs
@@ -359,6 +351,14 @@
 								wrapperClass="mt-4 gap-2"
 								thumbClass="w-34"
 							/>
+						{/if}
+
+						{#if review.replies && review.replies.length > 0}
+							<div class="mt-6 space-y-2">
+								{#each review.replies as reply (reply.id)}
+									<ReviewComment {reply} />
+								{/each}
+							</div>
 						{/if}
 					</li>
 				{/each}
