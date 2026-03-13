@@ -13,7 +13,7 @@
 	let { reply }: { reply: Reply } = $props();
 </script>
 
-<article class="c-review-comment rounded-md bg-[var(--color-surface-subtle)] p-6">
+<article class="c-review-comment rounded-md bg-[var(--color-surface-subtle)] p-5 md:p-6">
 	<div class="flex gap-2">
 		<div class="c-review-comment__avatar w-6 shrink-0">
 			<img
