@@ -7,9 +7,28 @@
 	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+	import type { BndLightboxItem } from '$lib/types';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
+
+	const reviewItems = $derived<BndLightboxItem[]>(
+		data.reviews.flatMap((review, reviewIdx) =>
+			(review.attachments ?? []).map((att) => ({
+				src: att.url.value,
+				alt: `Foto de ${review.user ?? 'Anónimo'}`,
+				meta: {
+					user: review.user ?? 'Anónimo',
+					rating: review.averageRating,
+					content: review.content,
+					date: review.createdAt?.split('T')[0] ?? '',
+					reviewIndex: reviewIdx
+				}
+			}))
+		)
+	);
 </script>
 
 <div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
@@ -290,6 +309,23 @@
 			</ul>
 		</div>
 	{/if}
+
+	<div class="pdp-review-gallery">
+		<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
+
+		<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
+
+		<GallerySquareThumbs
+			items={reviewItems}
+			visibleCount={3}
+			thumbClass="w-[245px]"
+			wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
+			showCount={true}
+			categoryId="reviews"
+			categoryLabel="Fotos de viajeros"
+			layoutComponent={ReviewsLayout}
+		/>
+	</div>
 
 	<!-- Reviews -->
 	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">

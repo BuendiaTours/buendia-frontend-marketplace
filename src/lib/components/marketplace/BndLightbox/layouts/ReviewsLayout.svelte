@@ -92,12 +92,9 @@
 			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-full sm:bg-transparent sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0 lg:w-80"
 		>
 			{#if displayedMeta}
-				<div
-					class="overflow-auto pt-4 transition-opacity duration-200"
-					class:opacity-0={!contentVisible}
-				>
+				<div class="pt-4 transition-opacity duration-200" class:opacity-0={!contentVisible}>
 					<ReviewCard
-						name={String(displayedMeta.user ?? '')}
+						name={displayedMeta.user || 'Anónimo'}
 						desc={String(displayedMeta.date ?? '')}
 						rating={Number(displayedMeta.rating)}
 						text={String(displayedMeta.content ?? '')}
