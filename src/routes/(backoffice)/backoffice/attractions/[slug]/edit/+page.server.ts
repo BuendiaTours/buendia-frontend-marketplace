@@ -1,6 +1,6 @@
 import { attractionFormSchema } from '../../schemas/attraction-form.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 import { error } from '@sveltejs/kit';
@@ -12,9 +12,9 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const [attraction, destinationsResponse] = await Promise.all([
+		const [attraction, locationsResponse] = await Promise.all([
 			ATTRACTION_REQUEST.findBySlug(fetch, params.slug),
-			DESTINATION_REQUEST.findByCriteria(fetch)
+			LOCATION_REQUEST.findByCriteria(fetch)
 		]);
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
@@ -44,13 +44,13 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		return {
 			attraction,
 			form,
-			availableDestinations: destinationsResponse.data || [],
+			availableLocations: locationsResponse.data || [],
 			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {
-				throw error(404, 'Destino no encontrado');
+				throw error(404, 'Atracción no encontrada');
 			}
 			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
 		}

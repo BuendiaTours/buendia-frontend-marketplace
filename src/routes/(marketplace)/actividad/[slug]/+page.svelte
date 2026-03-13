@@ -93,13 +93,13 @@
 		</div>
 	{/if}
 
-	<!-- Destinations -->
-	{#if activity.destinations && activity.destinations.length > 0}
+	<!-- Locations -->
+	{#if (activity.locations ?? activity.destinations)?.length > 0}
 		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-gray-800">Destinos</h2>
+			<h2 class="mb-4 font-semibold text-gray-800">Ubicaciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.destinations as destination (destination.name)}
-					<li>{destination.name}</li>
+				{#each activity.locations ?? activity.destinations as loc (loc.name)}
+					<li>{loc.name}</li>
 				{/each}
 			</ul>
 		</div>

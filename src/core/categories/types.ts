@@ -4,7 +4,7 @@
  * Organised into Projections (read), DTOs (write), and Criteria (query).
  */
 
-import type { CategoryKind, CategorySortAttribute, CategoryStatus } from '$core/categories/enums';
+import type { CategorySortAttribute, CategoryStatus } from '$core/categories/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
 // ── Projection (read model) ─────────────────────
@@ -14,10 +14,7 @@ export type Category = {
 	id: string;
 	createdAt: string;
 	description: string | null;
-	kind: CategoryKind;
-	label: string | null;
 	name: string;
-	slug: string;
 	status: CategoryStatus;
 	updatedAt: string;
 };
@@ -27,21 +24,15 @@ export type Category = {
 /** Payload for creating a new category. */
 export type CategoryCreateDto = {
 	id: string;
-	kind: CategoryKind;
 	name: string;
-	slug: string;
 	status: CategoryStatus;
-	description?: string | null;
-	label?: string | null;
+	description?: string;
 };
 
 /** Payload for partially updating an existing category. */
 export type CategoryUpdateDto = {
-	description?: string | null;
-	kind?: CategoryKind;
-	label?: string | null;
+	description?: string;
 	name?: string;
-	slug?: string;
 	status?: CategoryStatus;
 };
 
@@ -49,11 +40,10 @@ export type CategoryUpdateDto = {
 
 /** Query parameters for filtering, sorting, and paginating category lists. */
 export type CategoryCriteria = {
-	page?: number;
-	pageSize?: number;
+	skip?: number;
+	limit?: number;
 	name?: string;
 	query?: string;
-	slug?: string;
 	status?: CategoryStatus;
 	sort?: CategorySortAttribute;
 	operator?: CriteriaOperator;

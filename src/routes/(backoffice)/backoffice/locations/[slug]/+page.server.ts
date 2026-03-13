@@ -1,12 +1,14 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { ApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const destination = await DESTINATION_REQUEST.findBySlug(fetch, params.slug);
-		return { destination };
+		const location = await LOCATION_REQUEST.findBySlug(fetch, params.slug);
+		return {
+			location: { ...location, slug: (location as { slug?: string }).slug ?? params.slug }
+		};
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {

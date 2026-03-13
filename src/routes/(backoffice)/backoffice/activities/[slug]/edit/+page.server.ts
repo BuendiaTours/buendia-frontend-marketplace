@@ -2,7 +2,7 @@ import { activityFormSchema } from '../../schemas/activity-form.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { CATEGORY_REQUEST } from '$core/categories/requests';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
 import { TAG_REQUEST } from '$core/tags/requests';
 import { ApiError } from '$core/_shared/errors';
@@ -21,14 +21,14 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			tagsResponse,
 			categoriesResponse,
 			attractionsResponse,
-			destinationsResponse,
+			locationsResponse,
 			distributivesResponse
 		] = await Promise.all([
 			ACTIVITY_REQUEST.findBySlug(fetch, params.slug),
 			TAG_REQUEST.findByCriteria(fetch),
 			CATEGORY_REQUEST.findByCriteria(fetch),
 			ATTRACTION_REQUEST.findByCriteria(fetch),
-			DESTINATION_REQUEST.findByCriteria(fetch),
+			LOCATION_REQUEST.findByCriteria(fetch),
 			DISTRIBUTIVE_REQUEST.findByCriteria(fetch)
 		]);
 
@@ -73,7 +73,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			availableTags: tagsResponse.data || [],
 			availableCategories: categoriesResponse.data || [],
 			availableAttractions: attractionsResponse.data || [],
-			availableDestinations: destinationsResponse.data || [],
+			availableLocations: locationsResponse.data || [],
 			availableDistributives: distributivesResponse.data || [],
 			breadcrumbs
 		};

@@ -4,9 +4,9 @@
 	// ============================================================================
 
 	// Types
-	import type { Destination, Column } from '$lib/types';
+	import type { Location, Column } from '$lib/types';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
-	import type { DestinationsFilters } from './schemas/filters.schema';
+	import type { LocationsFilters } from './schemas/filters.schema';
 
 	// SvelteKit
 	import { goto } from '$app/navigation';
@@ -16,14 +16,14 @@
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { destinationsFiltersSchema } from './schemas/filters.schema';
+	import { locationsFiltersSchema } from './schemas/filters.schema';
 	import { TableSelection } from '$lib/utils/tableSelection.svelte';
 
 	// Enums
-	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
+	import { LOCATION_KIND_OPTIONS } from '$lib/labels/locations';
 
 	// Routes
-	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
+	import { LOCATION_ROUTES } from '$lib/config/routes/backoffice/locations';
 
 	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -45,14 +45,14 @@
 		data
 	}: {
 		data: {
-			items: Destination[];
+			items: Location[];
 			pagination: {
 				page: number;
 				pageSize: number;
 				total: number;
 				totalPages: number;
 			} | null;
-			filters: DestinationsFilters;
+			filters: LocationsFilters;
 			sort: { field: string; order: CriteriaSortOption } | null;
 			breadcrumbs: Array<{ label: string; href?: string }>;
 		};
@@ -78,7 +78,7 @@
 	function handleKindFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
 			[filterKey]: value
-		} as { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> });
+		} as { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> });
 	}
 
 	// ============================================================================
@@ -104,7 +104,7 @@
 		[K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]>;
 	}) {
 		const currentParams = page.url.searchParams;
-		const newParams = patchFilters(destinationsFiltersSchema, currentParams, patch);
+		const newParams = patchFilters(locationsFiltersSchema, currentParams, patch);
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
@@ -114,7 +114,7 @@
 	}
 
 	function handleAdvancedFiltersApply(appliedFilters: Record<string, boolean>) {
-		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
+		const patch: { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = appliedFilters[filter.key] || null;
 		});
@@ -122,7 +122,7 @@
 	}
 
 	function handleClearAdvancedFilters() {
-		const patch: { [K in keyof DestinationsFilters]?: PatchValue<DestinationsFilters[K]> } = {};
+		const patch: { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> } = {};
 		advancedFiltersConfig.forEach((filter) => {
 			patch[filter.key] = null;
 		});
@@ -143,7 +143,7 @@
 	// TABLA Y PAGINACIÓN
 	// ============================================================================
 
-	const columns: Column<Destination>[] = [
+	const columns: Column<Location>[] = [
 		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'name', title: 'Nombre', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
@@ -171,10 +171,10 @@
 </script>
 
 <svelte:head>
-	<title>Destinos - Backoffice</title>
+	<title>Ubicaciones - Backoffice</title>
 </svelte:head>
 
-<LocationBar title="Listado de destinos" breadcrumbs={data.breadcrumbs} />
+<LocationBar title="Listado de ubicaciones" breadcrumbs={data.breadcrumbs} />
 
 <!-- Filters Bar -->
 <div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
@@ -182,7 +182,7 @@
 	<div class="flex w-full items-center gap-2">
 		<input
 			type="text"
-			placeholder="Buscar destinos..."
+			placeholder="Buscar ubicaciones..."
 			class="input-bordered input w-full"
 			bind:value={searchQuery}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
@@ -193,7 +193,7 @@
 	</div>
 
 	<FilterSelect
-		options={DESTINATION_KIND_OPTIONS}
+		options={LOCATION_KIND_OPTIONS}
 		filterKey="kind"
 		currentValue={filters.kind}
 		placeholder="Selecciona tipo"
@@ -235,9 +235,9 @@
 		Batch action
 	</button>
 
-	<a href={DESTINATION_ROUTES.create} class="btn btn-outline btn-primary">
+	<a href={LOCATION_ROUTES.create} class="btn btn-outline btn-primary">
 		<Add class="size-5" />
-		Nuevo destino
+		Nueva ubicación
 	</a>
 </div>
 
@@ -306,7 +306,7 @@
 									<p>
 										<a
 											href={buildUrlWithFilters(
-												DESTINATION_ROUTES.detail(item.slug),
+												LOCATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -320,7 +320,7 @@
 							{:else if col.key === 'kind'}
 								<td>
 									<span>
-										{DESTINATION_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
+										{LOCATION_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
 									</span>
 								</td>
 							{:else}
@@ -336,7 +336,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												DESTINATION_ROUTES.detail(item.slug),
+												LOCATION_ROUTES.detail(item.slug),
 												page.url.searchParams
 											)}
 										>
@@ -346,7 +346,7 @@
 									<li>
 										<a
 											href={buildUrlWithFilters(
-												DESTINATION_ROUTES.edit(item.slug),
+												LOCATION_ROUTES.edit(item.slug),
 												page.url.searchParams
 											)}>Editar</a
 										>

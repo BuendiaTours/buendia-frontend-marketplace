@@ -13,7 +13,6 @@ export const BASE_PATHS = {
 	categories: '/categories',
 	tags: '/tags',
 	attractions: '/attractions',
-	destinations: '/destinations',
 	distributives: '/distributives',
 	reviews: '/reviews',
 	auth: '/auth'
@@ -182,63 +181,6 @@ export const API_ENDPOINTS = {
 	},
 
 	// ──────────────────────────────────────────────
-	// Destinations
-	// ──────────────────────────────────────────────
-	destinations: {
-		groupName: 'Destinations',
-		groupDescription: 'Gestión de destinos turísticos',
-		/** @description Retrieves a paginated list of destinations. */
-		list: {
-			path: () => BASE_PATHS.destinations,
-			method: 'GET',
-			description: 'Obtiene listado de destinos con paginación',
-			params: ['skip', 'limit']
-		} satisfies Endpoint,
-		/** @description Retrieves a single destination by its ID. */
-		detail: {
-			path: (id: string) => `${BASE_PATHS.destinations}/${id}`,
-			method: 'GET',
-			description: 'Obtiene detalles de un destino por ID',
-			params: ['id']
-		} satisfies EndpointWithParam,
-		/** @description Retrieves a single destination by its URL slug. */
-		detailBySlug: {
-			path: (slug: string) => `${BASE_PATHS.destinations}/slug/${slug}`,
-			method: 'GET',
-			description: 'Obtiene detalles de un destino por slug',
-			params: ['slug']
-		} satisfies EndpointWithParam,
-		/** @description Searches destinations by query and filter criteria. */
-		search: {
-			path: () => `${BASE_PATHS.destinations}/search`,
-			method: 'GET',
-			description: 'Busca destinos por criterios',
-			params: ['q', 'filters']
-		} satisfies Endpoint,
-		/** @description Deletes a destination identified by ID. */
-		delete: {
-			path: (id: string) => `${BASE_PATHS.destinations}/${id}`,
-			method: 'DELETE',
-			description: 'Elimina un destino por ID',
-			params: ['id']
-		} satisfies EndpointWithParam,
-		/** @description Deletes a destination identified by slug. */
-		deleteBySlug: {
-			path: (slug: string) => `${BASE_PATHS.destinations}/slug/${slug}`,
-			method: 'DELETE',
-			description: 'Elimina un destino por slug',
-			params: ['slug']
-		} satisfies EndpointWithParam,
-		/** @description Fully replaces a destination identified by slug. */
-		updateBySlug: {
-			path: (slug: string) => `${BASE_PATHS.destinations}/slug/${slug}`,
-			method: 'PUT',
-			description: 'Actualiza un destino por slug',
-			params: ['slug', 'body']
-		} satisfies EndpointWithParam
-	},
-
-	// ──────────────────────────────────────────────
 	// Locations
 	// ──────────────────────────────────────────────
 	locations: {
@@ -258,13 +200,41 @@ export const API_ENDPOINTS = {
 			description: 'Obtiene detalles de una ubicación específica',
 			params: ['id']
 		} satisfies EndpointWithParam,
+		/** @description Retrieves a single location by its URL slug. */
+		detailBySlug: {
+			path: (slug: string) => `${BASE_PATHS.locations}/slug/${slug}`,
+			method: 'GET',
+			description: 'Obtiene detalles de una ubicación por slug',
+			params: ['slug']
+		} satisfies EndpointWithParam,
 		/** @description Searches locations by query and filter criteria. */
 		search: {
 			path: () => `${BASE_PATHS.locations}/search`,
 			method: 'GET',
 			description: 'Busca ubicaciones por criterios',
 			params: ['q', 'filters']
-		} satisfies Endpoint
+		} satisfies Endpoint,
+		/** @description Deletes a location identified by ID. */
+		delete: {
+			path: (id: string) => `${BASE_PATHS.locations}/${id}`,
+			method: 'DELETE',
+			description: 'Elimina una ubicación por ID',
+			params: ['id']
+		} satisfies EndpointWithParam,
+		/** @description Deletes a location identified by slug. */
+		deleteBySlug: {
+			path: (slug: string) => `${BASE_PATHS.locations}/slug/${slug}`,
+			method: 'DELETE',
+			description: 'Elimina una ubicación por slug',
+			params: ['slug']
+		} satisfies EndpointWithParam,
+		/** @description Partially updates a location identified by slug. */
+		patchBySlug: {
+			path: (slug: string) => `${BASE_PATHS.locations}/slug/${slug}`,
+			method: 'PATCH',
+			description: 'Actualiza parcialmente una ubicación por slug',
+			params: ['slug', 'body']
+		} satisfies EndpointWithParam
 	},
 
 	// ──────────────────────────────────────────────

@@ -54,14 +54,6 @@ export const CATEGORY_REQUEST = {
 		get<Category>(fetchFn, `${BASE}/${id}`),
 
 	/**
-	 * Retrieves a single category by its URL slug.
-	 * @param fetchFn - SvelteKit `fetch`.
-	 * @param slug - URL-friendly identifier.
-	 */
-	findBySlug: (fetchFn: typeof fetch, slug: string): Promise<Category> =>
-		get<Category>(fetchFn, `${BASE}/slug/${slug}`),
-
-	/**
 	 * Queries categories using criteria-based filtering and pagination.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param criteria - Optional filter, sort, and pagination parameters.

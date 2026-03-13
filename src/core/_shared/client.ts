@@ -6,7 +6,6 @@
  * is exported and consumed by the helper functions in `helpers.ts`.
  */
 
-import { dev } from '$app/environment';
 import { logger } from '$lib/utils/logger';
 import { apiConfig } from '$core/_shared/config';
 import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$core/_shared/types';
@@ -261,10 +260,6 @@ export class ApiClient {
 		const method = options?.method || 'GET';
 		const pathForLog = url.replace(this.config.baseURL, '') || '/';
 
-		if (!options?.silent) {
-			this.log('info', `${method} ${url}`);
-		}
-
 		this.queryCount++;
 		if (this.config.debug) {
 			const entry: QueryLogEntry = {
@@ -275,7 +270,6 @@ export class ApiClient {
 			};
 			queryLog.push(entry);
 			if (queryLog.length > QUERY_LOG_MAX) queryLog.shift();
-			logger.log(`[API] Query #${this.queryCount} ${method} ${pathForLog}`);
 		}
 
 		try {
@@ -299,17 +293,6 @@ export class ApiClient {
 				data = undefined as T;
 			} else {
 				data = (await response.text()) as T;
-			}
-
-			if (!options?.silent) {
-				this.log('info', `Success: ${url}`, { status: response.status });
-			}
-
-			if (dev) {
-				logger.log(
-					`[API] Backend response ${method} ${pathForLog}:`,
-					JSON.stringify(data, null, 2)
-				);
 			}
 
 			return {

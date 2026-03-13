@@ -17,7 +17,7 @@
 		availableTags: data.availableTags ?? [],
 		availableCategories: data.availableCategories ?? [],
 		availableAttractions: data.availableAttractions ?? [],
-		availableDestinations: data.availableDestinations ?? [],
+		availableLocations: data.availableLocations ?? [],
 		availableDistributives: data.availableDistributives ?? [],
 		breadcrumbs: data.breadcrumbs
 	});

@@ -10,7 +10,7 @@ import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
  * Configuración para crear un action handler de actualización/guardado
  */
 export type UpdateActionConfig<T extends Record<string, unknown> = Record<string, unknown>> = {
-	/** Ruta base para redirección después de guardar (ej: '/activities', '/destinations') */
+	/** Ruta base para redirección después de guardar (ej: '/activities', '/locations') */
 	basePath: string;
 	/** Schema de validación (adaptador de Zod) */
 	schema: ValidationAdapter<T>;

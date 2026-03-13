@@ -8,7 +8,7 @@ import type {
 	ActivityTransportKind,
 	ActivityTransportLocation
 } from '$core/activities/enums';
-import type { DestinationKind } from '$core/destinations/enums';
+import type { LocationKind } from '$core/locations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
 
 export type ActivityListItem = {
@@ -20,7 +20,9 @@ export type ActivityListItem = {
 	codeRef: string;
 	descriptionFull: string;
 	descriptionShort: string;
-	destinations: Array<{ id: string; name: string }>;
+	locations: Array<{ id: string; name: string }>;
+	/** @deprecated API may return destinations - use locations */
+	destinations?: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
 	guideKind: ActivityGuideKind;
@@ -95,13 +97,14 @@ export type Column<T> = {
 	sortField?: string;
 };
 
-export type Destination = {
+export type Location = {
 	id: string;
 	name: string;
 	slug: string;
-	kind: DestinationKind;
+	kind: LocationKind;
 	descriptionShort: string;
-	photoUrlHero: string;
+	descriptionLong?: string | null;
+	photoUrlHero?: string;
 };
 
 export type Attraction = {
@@ -114,7 +117,7 @@ export type Attraction = {
 	photoUrl?: string;
 	photoUrlHero?: string;
 	postalAddress?: string;
-	destinations?: Array<{
+	locations?: Array<{
 		id: string;
 		name: string;
 	}>;

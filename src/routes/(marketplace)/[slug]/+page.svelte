@@ -11,17 +11,17 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<!-- Destination Info -->
+	<!-- Location Info -->
 	<div class="e-card mb-8">
-		<h1 class="mb-4 font-bold text-gray-900">{data.destination.name}</h1>
-		{#if data.destination.descriptionShort}
-			<p class="text-gray-600">{data.destination.descriptionShort}</p>
+		<h1 class="mb-4 font-bold text-gray-900">{data.location.name}</h1>
+		{#if data.location.descriptionShort}
+			<p class="text-gray-600">{data.location.descriptionShort}</p>
 		{/if}
-		{#if data.destination.photoUrlHero}
+		{#if data.location.photoUrlHero}
 			<div class="mt-4">
 				<img
-					src={data.destination.photoUrlHero}
-					alt={data.destination.name}
+					src={data.location.photoUrlHero}
+					alt={data.location.name}
 					class="h-64 w-full rounded-lg object-cover"
 				/>
 			</div>
@@ -47,14 +47,14 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="text-gray-500">No hay categorías disponibles en este destino.</p>
+			<p class="text-gray-500">No hay categorías disponibles en esta ubicación.</p>
 		{/if}
 	</div>
 
 	<!-- Activities List -->
 	<div class="e-card mb-8">
 		<h2 class="mb-4 font-semibold text-gray-800">
-			Actividades en {data.destination.name}
+			Actividades en {data.location.name}
 		</h2>
 
 		{#if data.activities && data.activities.length > 0}
@@ -83,7 +83,7 @@
 				</div>
 			{/if}
 		{:else}
-			<p class="text-gray-500">No hay actividades disponibles en este destino.</p>
+			<p class="text-gray-500">No hay actividades disponibles en esta ubicación.</p>
 		{/if}
 	</div>
 

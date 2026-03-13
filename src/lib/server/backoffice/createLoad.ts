@@ -31,7 +31,7 @@ export type CreateLoadConfig<
  *
  * Este factory maneja:
  * - Generación automática de UUID único (server-side)
- * - Carga de listas disponibles (tags, categories, destinations, etc.)
+ * - Carga de listas disponibles (tags, categories, locations, etc.)
  * - Inicialización del formulario con valores por defecto
  * - Generación de breadcrumbs
  * - Manejo consistente de errores

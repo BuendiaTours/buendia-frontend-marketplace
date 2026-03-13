@@ -1,19 +1,16 @@
 <script lang="ts">
 	/**
-	 * DestinationForm - Componente reutilizable para crear y editar destinos
+	 * LocationForm - Componente reutilizable para crear y editar ubicaciones
 	 */
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
-	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
-	import type { Destination } from '$lib/types';
+	import { LOCATION_KIND_OPTIONS } from '$lib/labels/locations';
+	import { LOCATION_ROUTES } from '$lib/config/routes/backoffice/locations';
+	import type { Location } from '$lib/types';
 
-	// Database
 	import { Database } from '$lib/icons/Linear';
-
-	// Components
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
@@ -23,19 +20,19 @@
 
 	type Props = {
 		data: {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			form: any;
-			destination?: Destination;
+			location?: Location;
 		};
 		mode: 'create' | 'edit';
-		destinationSlug?: string;
+		locationSlug?: string;
 	};
 
-	let { data, mode, destinationSlug }: Props = $props();
+	let { data, mode, locationSlug }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
-	const destination = $derived(isEditMode ? data.destination : null);
+	const location = $derived(isEditMode ? data.location : null);
 
 	const { form, errors, enhance } = superForm(data.form, {
 		dataType: 'json'
@@ -45,17 +42,14 @@
 <div
 	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
 >
-	<a href={`${DESTINATION_ROUTES.list}?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
+	<a href={`${LOCATION_ROUTES.list}?${$page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← Volver al listado
 	</a>
 
-	{#if isEditMode && destinationSlug}
+	{#if isEditMode && locationSlug}
 		<form
 			method="POST"
-			action={buildUrlWithFilters(
-				DESTINATION_ROUTES.delete(destinationSlug),
-				$page.url.searchParams
-			)}
+			action={buildUrlWithFilters(LOCATION_ROUTES.delete(locationSlug), $page.url.searchParams)}
 			class="ml-auto"
 		>
 			<button
@@ -75,23 +69,23 @@
 	{/if}
 
 	<button
-		form="destination-form"
+		form="location-form"
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
 	>
-		{isCreateMode ? 'Crear destino' : 'Guardar cambios'}
+		{isCreateMode ? 'Crear ubicación' : 'Guardar cambios'}
 	</button>
 </div>
 
-<form id="destination-form" method="POST" use:enhance class="space-y-4">
-	<FormAccordion name="form-destination-data" open>
+<form id="location-form" method="POST" use:enhance class="space-y-4">
+	<FormAccordion name="form-location-data" open>
 		{#snippet title()}
 			<Database class="size-6" />
 			<span>Datos principales</span>
 		{/snippet}
 		{#snippet asideContent()}
-			<p class="text-xs">Información principal del destino</p>
+			<p class="text-xs">Información principal de la ubicación</p>
 		{/snippet}
 		{#snippet content()}
 			<FormInputText
@@ -129,7 +123,7 @@
 				label="Tipo"
 				bind:value={$form.kind}
 				error={$errors.kind}
-				options={DESTINATION_KIND_OPTIONS}
+				options={LOCATION_KIND_OPTIONS}
 				placeholder="Selecciona un tipo"
 				wrapperClass="md:col-span-12"
 			/>
@@ -166,4 +160,4 @@
 	</FormAccordion>
 </form>
 
-<DebugApiJson data={isEditMode ? destination : $form} />
+<DebugApiJson data={isEditMode ? location : $form} />

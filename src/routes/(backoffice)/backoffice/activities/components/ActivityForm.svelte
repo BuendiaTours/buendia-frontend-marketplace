@@ -57,7 +57,7 @@
 			availableTags: Array<{ id: string; name: string }>;
 			availableCategories: Array<{ id: string; name: string }>;
 			availableAttractions: Array<{ id: string; name: string }>;
-			availableDestinations: Array<{ id: string; name: string }>;
+			availableLocations: Array<{ id: string; name: string }>;
 			availableDistributives: Array<{ id: string; name: string }>;
 			breadcrumbs: BreadcrumbItem[];
 			/** Solo en modo edit. API devuelve Activity; ActivityListItem incluye tags para listados. */
@@ -314,12 +314,12 @@
 			/>
 
 			<FormOrderedObjectList
-				id="destinations"
-				label="Destinos"
+				id="locations"
+				label="Ubicaciones"
 				bind:items={$form.destinations}
-				availableItems={data.availableDestinations}
-				placeholder="Selecciona un destino..."
-				emptyMessage="No hay destinos asociados"
+				availableItems={data.availableLocations}
+				placeholder="Selecciona una ubicación..."
+				emptyMessage="No hay ubicaciones asociadas"
 				config={{ useDragAndDrop: true, showRemoveAll: true }}
 				error={$errors.destinations?._errors}
 			/>

@@ -2,7 +2,7 @@ import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { attractionFormSchema } from '../schemas/attraction-form.schema';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { AttractionStatus } from '$core/attractions/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
@@ -13,7 +13,7 @@ import type { PageServerLoad, Actions } from './$types';
  *
  * Usa createCreateLoad() factory que maneja:
  * - Generación de UUID único
- * - Carga de listas disponibles (destinations)
+ * - Carga de listas disponibles (locations)
  * - Inicialización del formulario con valores por defecto
  * - Generación de breadcrumbs
  */
@@ -41,7 +41,7 @@ export const load: PageServerLoad = createCreateLoad({
 		destinations: []
 	},
 	loadAvailableData: async (fetch) => ({
-		availableDestinations: (await DESTINATION_REQUEST.findByCriteria(fetch)).data || []
+		availableLocations: (await LOCATION_REQUEST.findByCriteria(fetch)).data || []
 	}),
 	breadcrumbLabel: 'Nueva atracción',
 	entityName: 'atracción'

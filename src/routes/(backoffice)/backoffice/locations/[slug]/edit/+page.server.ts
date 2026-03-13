@@ -1,7 +1,7 @@
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { ApiError } from '$core/_shared/errors';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
-import { destinationFormSchema } from '../../schemas/destination-form.schema';
+import { locationFormSchema } from '../../schemas/location-form.schema';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -11,10 +11,10 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
-		const destination = await DESTINATION_REQUEST.findBySlug(fetch, params.slug);
+		const location = await LOCATION_REQUEST.findBySlug(fetch, params.slug);
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
-		const apiData = destination as Record<string, any>;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const apiData = location as Record<string, any>;
 
 		const form = await superValidate(
 			{
@@ -25,22 +25,22 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 				descriptionShort: apiData.descriptionShort,
 				photoUrlHero: apiData.photoUrlHero
 			},
-			zod(destinationFormSchema)
+			zod(locationFormSchema)
 		);
 
 		const breadcrumbs = buildBreadcrumbs(url.pathname, {
-			label: apiData.name || 'Destino'
+			label: apiData.name || 'Ubicación'
 		});
 
 		return {
-			destination,
+			location,
 			form,
 			breadcrumbs
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {
 			if (err.type === 'not_found') {
-				throw error(404, 'Destino no encontrado');
+				throw error(404, 'Ubicación no encontrada');
 			}
 			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
 		}
@@ -51,9 +51,9 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 export const actions: Actions = {
 	default: createUpdateAction({
-		basePath: `${BACKOFFICE_PREFIX}/destinations`,
-		schema: zod(destinationFormSchema),
-		updateFn: DESTINATION_REQUEST.update,
+		basePath: `${BACKOFFICE_PREFIX}/locations`,
+		schema: zod(locationFormSchema),
+		updateFn: LOCATION_REQUEST.updateBySlug,
 		redirectToEdit: true
 	})
 };

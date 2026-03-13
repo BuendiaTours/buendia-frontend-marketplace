@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types
-	import type { ActivityListItem, Column, Destination } from '$lib/types';
+	import type { ActivityListItem, Column, Location } from '$lib/types';
 	import type { CriteriaSortOption } from '$core/_shared/enums';
 	import type { ActivitiesFilters } from './schemas/filters.schema';
 	import type { CreateRangeCalendarProps } from '@melt-ui/svelte';
@@ -89,25 +89,24 @@
 	}
 
 	// ============================================================================
-	// DESTINATIONS (cargadas desde API en cliente)
+	// LOCATIONS (cargadas desde API en cliente)
 	// ============================================================================
 
-	let destinations = $state<{ value: string; label: string }[]>([]);
+	let locations = $state<{ value: string; label: string }[]>([]);
 
 	onMount(async () => {
 		try {
-			// Cargar destinations
-			const destResponse = await fetch(`${PUBLIC_API_BASE_URL}/destinations`);
-			if (destResponse.ok) {
-				const json = await destResponse.json();
-				const data: Destination[] = json.data || json;
-				destinations = data.map((loc) => ({
+			const locResponse = await fetch(`${PUBLIC_API_BASE_URL}/locations`);
+			if (locResponse.ok) {
+				const json = await locResponse.json();
+				const data: Location[] = json.data || json;
+				locations = data.map((loc) => ({
 					value: loc.slug,
 					label: loc.name
 				}));
 			}
 		} catch (error) {
-			console.error('Error cargando destinations desde API:', error);
+			console.error('Error cargando ubicaciones desde API:', error);
 		}
 	});
 
@@ -240,21 +239,19 @@
 	}
 
 	// ============================================================================
-	// FILTRO: DESTINATION
+	// FILTRO: LOCATION
 	// ============================================================================
 
-	let selectedDestination = $derived(filters.destination);
+	let selectedLocation = $derived(filters.location ?? filters.destination);
 
-	// Key para forzar recreación del ComboBox cuando se cargan las locations
-	// Esto asegura que el inputDefaultValue se calcule correctamente
-	const locationComboKey = $derived(`${selectedDestination}-${destinations.length}`);
+	const locationComboKey = $derived(`${selectedLocation}-${locations.length}`);
 
 	function handleLocationChange(value: string | string[] | undefined) {
 		const locationValue = Array.isArray(value) ? value[0] : value;
-		selectedDestination = locationValue;
+		selectedLocation = locationValue;
 
 		applyFilterPatch({
-			destination: locationValue ? locationValue : null
+			location: locationValue ? locationValue : null
 		});
 	}
 
@@ -348,7 +345,7 @@
 		{ key: 'id', title: 'Id', sortable: false },
 		{ key: 'codeRef', title: 'Código', sortable: false },
 		{ key: 'title', title: 'Título', sortable: true },
-		{ key: 'destinations', title: 'Destinos', sortable: false },
+		{ key: 'locations', title: 'Ubicaciones', sortable: false },
 		{ key: 'status', title: 'Estado', sortable: true },
 		{ key: 'kind', title: 'Tipo', sortable: true }
 	];
@@ -440,12 +437,12 @@
 	<div class="flex gap-2">
 		{#key locationComboKey}
 			<MeltComboBox
-				items={destinations}
-				placeholder="Filter by destinations"
-				name="filterDestination"
+				items={locations}
+				placeholder="Filtrar por ubicación"
+				name="filterLocation"
 				icon={Map}
 				type="single"
-				bind:value={selectedDestination}
+				bind:value={selectedLocation}
 				onValueChange={handleLocationChange}
 			/>
 		{/key}
@@ -453,7 +450,7 @@
 			<button
 				class="btn btn-square btn-soft btn-md btn-error"
 				onclick={handleClearLocation}
-				disabled={!selectedDestination}
+				disabled={!selectedLocation}
 			>
 				<Close class="size-5" />
 			</button>
@@ -508,7 +505,6 @@
 	<div class="ml-auto flex items-center gap-2">
 		<FilterAdvancedDialog
 			filters={advancedFiltersConfig}
-			size={32}
 			currentFilters={currentAdvancedFilters}
 			onApply={handleAdvancedFiltersApply}
 			onClear={handleClearAdvancedFilters}
@@ -613,9 +609,11 @@
 										{item[col.key]}
 									</a>
 								</td>
-							{:else if col.key === 'destinations'}
+							{:else if col.key === 'locations'}
 								<td>
-									{item[col.key].map((d: { id: string; name: string }) => d.name).join(', ')}
+									{(item.locations ?? item.destinations ?? [])
+										.map((d: { id: string; name: string }) => d.name)
+										.join(', ')}
 								</td>
 							{:else if col.key === 'kind'}
 								<td>

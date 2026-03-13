@@ -45,7 +45,8 @@ export type ActivitiesFilters = {
 	from?: string;
 	to?: string;
 	// Búsqueda
-	destination?: string;
+	location?: string;
+	destination?: string; // @deprecated Use location
 	kind?: string;
 	status?: string;
 	// Booleanos, todos se inicializan igual
@@ -96,15 +97,15 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 			},
 			resetPageOnChange: true
 		},
-		destination: {
+		location: {
 			parse: (raw) => {
 				return raw || undefined;
 			},
 			serialize: (value, out) => {
 				if (value) {
-					out.set('destination', value);
+					out.set('location', value);
 				} else {
-					out.delete('destination');
+					out.delete('location');
 				}
 			},
 			resetPageOnChange: true

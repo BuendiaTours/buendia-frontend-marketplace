@@ -8,7 +8,7 @@ import { logger } from '$lib/utils/logger';
  * Configuración para crear un action handler de eliminación
  */
 export type DeleteActionConfig = {
-	/** Ruta base para redirección (ej: '/activities', '/destinations') */
+	/** Ruta base para redirección (ej: '/activities', '/locations') */
 	basePath: string;
 	/** Función que realiza la eliminación en la API */
 	deleteFn: (fetchFn: typeof globalThis.fetch, slug: string) => Promise<void>;

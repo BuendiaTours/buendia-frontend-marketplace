@@ -438,20 +438,20 @@
 
 <div class="wrapper mt-6">
 	<div class="e-card mb-8">
-		<h2 class="mb-3 font-semibold text-gray-800">Destinos</h2>
+		<h2 class="mb-3 font-semibold text-gray-800">Ubicaciones</h2>
 
-		{#if data.destinations && data.destinations.length > 0}
+		{#if data.locations && data.locations.length > 0}
 			<ul class="mt-4 space-y-2">
-				{#each data.destinations as destination (destination.slug)}
+				{#each data.locations as location (location.slug)}
 					<li class="text-gray-700">
-						<a href="/{destination.slug}" class="hover:text-blue-600 hover:underline">
-							{destination.name}
+						<a href="/{location.slug}" class="hover:text-blue-600 hover:underline">
+							{location.name}
 						</a>
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<p class="mt-4 text-gray-500">No hay destinos disponibles en este momento.</p>
+			<p class="mt-4 text-gray-500">No hay ubicaciones disponibles en este momento.</p>
 		{/if}
 	</div>
 

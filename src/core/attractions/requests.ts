@@ -53,11 +53,6 @@ export const ATTRACTION_REQUEST = {
 	findById: (fetchFn: typeof fetch, id: string): Promise<Attraction> =>
 		get<Attraction>(fetchFn, `${BASE}/${id}`),
 
-	/**
-	 * Retrieves a single attraction by its URL slug.
-	 * @param fetchFn - SvelteKit `fetch`.
-	 * @param slug - URL-friendly identifier.
-	 */
 	findBySlug: (fetchFn: typeof fetch, slug: string): Promise<Attraction> =>
 		get<Attraction>(fetchFn, `${BASE}/slug/${slug}`),
 

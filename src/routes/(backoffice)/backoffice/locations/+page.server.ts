@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { destinationsFiltersSchema } from './schemas/filters.schema';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
-import type { DestinationCriteria } from '$core/destinations/types';
+import { locationsFiltersSchema } from './schemas/filters.schema';
+import { LOCATION_REQUEST } from '$core/locations/requests';
+import type { LocationCriteria } from '$core/locations/types';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
@@ -10,19 +10,19 @@ import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	// Parsear filtros desde URL usando el schema
-	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
+	const filters = parseFilters(locationsFiltersSchema, url.searchParams);
 
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const response = await DESTINATION_REQUEST.findByCriteria(fetch, {
+		const response = await LOCATION_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
 			query: filters.q,
 			kind: filters.kind
-		} as DestinationCriteria);
+		} as LocationCriteria);
 
 		return {
 			items: response.data || [],

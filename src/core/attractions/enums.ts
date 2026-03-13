@@ -11,6 +11,13 @@ export enum AttractionStatus {
 	INACTIVE = 'INACTIVE'
 }
 
+/** Kind of location associated with an attraction. */
+export enum AttractionLocationKind {
+	CITY = 'CITY',
+	COUNTRY = 'COUNTRY',
+	REGION = 'REGION'
+}
+
 /** Attributes available for sorting attraction lists. */
 export enum AttractionSortAttribute {
 	NAME = 'NAME'

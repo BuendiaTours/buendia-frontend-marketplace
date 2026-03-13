@@ -8,7 +8,7 @@ import { backoffice } from '../core';
 import { USER_ROUTES } from './users';
 import { ACTIVITY_ROUTES } from './activities';
 import { ATTRACTION_ROUTES } from './attractions';
-import { DESTINATION_ROUTES } from './destinations';
+import { LOCATION_ROUTES } from './locations';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {
@@ -18,6 +18,6 @@ export const backofficeRoutes = {
 	users: USER_ROUTES,
 	activities: ACTIVITY_ROUTES,
 	attractions: ATTRACTION_ROUTES,
-	destinations: DESTINATION_ROUTES,
+	locations: LOCATION_ROUTES,
 	...toolsRoutes
 } as const;

@@ -4,7 +4,7 @@ import { activityFormSchema } from '../schemas/activity-form.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { CATEGORY_REQUEST } from '$core/categories/requests';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
+import { LOCATION_REQUEST } from '$core/locations/requests';
 import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
 import { TAG_REQUEST } from '$core/tags/requests';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -43,7 +43,7 @@ export const load: PageServerLoad = createCreateLoad({
 		categories: [],
 		tags: [],
 		attractions: [],
-		destinations: [],
+		destinations: [], // API field name - maps to locations in UI
 		distributives: [],
 
 		// Listas de elementos
@@ -60,13 +60,13 @@ export const load: PageServerLoad = createCreateLoad({
 		availableTags: Array<{ id: string; name: string }>;
 		availableCategories: Array<{ id: string; name: string }>;
 		availableAttractions: Array<{ id: string; name: string }>;
-		availableDestinations: Array<{ id: string; name: string }>;
+		availableLocations: Array<{ id: string; name: string }>;
 		availableDistributives: Array<{ id: string; name: string }>;
 	}> => ({
 		availableTags: (await TAG_REQUEST.findByCriteria(fetch)).data || [],
 		availableCategories: (await CATEGORY_REQUEST.findByCriteria(fetch)).data || [],
 		availableAttractions: (await ATTRACTION_REQUEST.findByCriteria(fetch)).data || [],
-		availableDestinations: (await DESTINATION_REQUEST.findByCriteria(fetch)).data || [],
+		availableLocations: (await LOCATION_REQUEST.findByCriteria(fetch)).data || [],
 		availableDistributives: (await DISTRIBUTIVE_REQUEST.findByCriteria(fetch)).data || []
 	}),
 	breadcrumbLabel: 'Nueva actividad',

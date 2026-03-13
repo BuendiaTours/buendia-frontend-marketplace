@@ -9,8 +9,10 @@
 
 import type {
 	ActivityAllergen,
+	ActivityDateMode,
 	ActivityGuideKind,
 	ActivityKind,
+	ActivityLocationRole,
 	ActivityNotSuitableFor,
 	ActivityPetsAllowed,
 	ActivityRestriction,
@@ -21,7 +23,6 @@ import type {
 	MealAdditional,
 	MealFormat,
 	MealKind,
-	MultimediaKind,
 	StageKind,
 	StageRelevance,
 	StageRequirement
@@ -43,10 +44,12 @@ export type ActivityCategory = {
 	name: string;
 };
 
-/** Lightweight destination reference embedded in an activity. */
-export type ActivityDestination = {
+/** Location reference with role embedded in an activity. */
+export type ActivityLocation = {
 	id: string;
+	locationId: string;
 	name: string;
+	role: ActivityLocationRole;
 };
 
 /** Lightweight distributive reference embedded in an activity. */
@@ -55,12 +58,11 @@ export type ActivityDistributive = {
 	name: string;
 };
 
-/** Multimedia asset (image or video) attached to an activity. */
-export type ActivityMultimedia = {
-	id: string;
-	fileName: string;
-	kind: MultimediaKind;
-	url: string;
+/** Image asset attached to an activity via media-relationship. */
+export type ActivityImage = {
+	mediaId: string;
+	order: number;
+	variants: Record<string, string>;
 };
 
 /** Pet policy details for an activity. */
@@ -97,18 +99,19 @@ export type Activity = {
 	attractions: ActivityAttraction[];
 	categories: ActivityCategory[];
 	codeRef: string | null;
+	dateMode: ActivityDateMode;
 	descriptionFull: string;
 	descriptionShort: string;
-	destinations: ActivityDestination[];
 	distributives: ActivityDistributive[];
 	excluded: string[];
 	guideKind: ActivityGuideKind;
+	images: ActivityImage[];
 	included: string[];
 	infoImportant: string | null;
 	itemsToBring: string[];
 	kind: ActivityKind;
+	locations: ActivityLocation[];
 	meals: ActivityMeal[];
-	multimedias: ActivityMultimedia[];
 	notSuitableFor: ActivityNotSuitableFor[];
 	petsAllowed: ActivityPetsAllowedInfo;
 	phoneContact: string | null;
@@ -130,20 +133,22 @@ export type Activity = {
 export type ActivityCreateDto = {
 	id: string;
 	supplierId: string;
-	descriptionShort: string;
+	codeRef?: string;
+	dateMode?: ActivityDateMode;
 	descriptionFull: string;
+	descriptionShort: string;
 	guideKind: ActivityGuideKind;
+	infoImportant?: string;
 	kind: ActivityKind;
+	phoneContact?: string;
 	slug: string;
 	title: string;
-	codeRef?: string;
-	infoImportant?: string;
-	phoneContact?: string;
 };
 
 /** Payload for partially updating an existing activity. */
 export type ActivityUpdateDto = {
 	codeRef?: string;
+	dateMode?: ActivityDateMode;
 	descriptionFull?: string;
 	descriptionShort?: string;
 	excluded?: string[];
@@ -154,33 +159,47 @@ export type ActivityUpdateDto = {
 	kind?: ActivityKind;
 	notSuitableFor?: string[];
 	petsAllowed?: ActivityPetsAllowed;
-	petsAllowedDescription?: string | null;
-	phoneContact?: string | null;
+	petsAllowedDescription?: string;
+	phoneContact?: string;
 	restrictions?: ActivityRestriction[];
 	slug?: string;
 	status?: ActivityStatus;
 	title?: string;
 	transportKind?: ActivityTransportKind;
 	transportLocation?: ActivityTransportLocation;
-	voucherInfo?: string | null;
+	voucherInfo?: string;
 	willDoing?: string[];
+};
+
+/** Payload for adding an attraction to an activity. */
+export type ActivityAttractionAddDto = {
+	attractionId: string;
+};
+
+/** Payload for adding a category to an activity. */
+export type ActivityCategoryAddDto = {
+	categoryId: string;
+};
+
+/** Payload for adding a distributive to an activity. */
+export type ActivityDistributiveAddDto = {
+	distributiveId: string;
+};
+
+/** Payload for adding a location to an activity. */
+export type ActivityLocationAddDto = {
+	id: string;
+	locationId: string;
+	role: ActivityLocationRole;
 };
 
 /** Payload for adding a meal to an activity. */
 export type ActivityMealAddDto = {
 	id: string;
-	kind: MealKind;
-	format: MealFormat;
-	allergens: ActivityAllergen[];
 	additionalOptions: MealAdditional[];
-};
-
-/** Payload for adding a multimedia asset to an activity. */
-export type ActivityMultimediaAddDto = {
-	id: string;
-	kind: MultimediaKind;
-	fileName: string;
-	url: string;
+	allergens: ActivityAllergen[];
+	format: MealFormat;
+	kind: MealKind;
 };
 
 /** Payload for adding a stage to an activity itinerary. */
@@ -200,8 +219,8 @@ export type ActivityStageAddDto = {
 
 /** Query parameters for filtering, sorting, and paginating activity lists. */
 export type ActivityCriteria = {
-	page?: number;
-	pageSize?: number;
+	skip?: number;
+	limit?: number;
 	id?: string;
 	codeRef?: string;
 	kind?: ActivityKind;

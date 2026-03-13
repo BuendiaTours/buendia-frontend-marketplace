@@ -27,7 +27,7 @@
 		data: {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Superforms SuperValidated generic is complex with multiple type params
 			form: any;
-			availableDestinations: Array<{ id: string; name: string }>;
+			availableLocations: Array<{ id: string; name: string }>;
 			attraction?: Attraction;
 		};
 		mode: 'create' | 'edit';
@@ -191,13 +191,13 @@
 			/>
 
 			<FormOrderedObjectList
-				id="destinations"
-				label="Destinos"
+				id="locations"
+				label="Ubicaciones"
 				bind:items={$form.destinations}
-				availableItems={data.availableDestinations}
+				availableItems={data.availableLocations}
 				error={$errors.destinations?._errors}
-				placeholder="Selecciona un destino..."
-				emptyMessage="No hay destinos asociados"
+				placeholder="Selecciona una ubicación..."
+				emptyMessage="No hay ubicaciones asociadas"
 			/>
 
 			<FormTextarea

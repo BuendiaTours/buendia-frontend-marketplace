@@ -22,6 +22,12 @@ export enum ActivityKind {
 	OTHER = 'OTHER'
 }
 
+/** How date/time information is displayed for an activity. */
+export enum ActivityDateMode {
+	DATE_AND_TIME = 'DATE_AND_TIME',
+	DATE = 'DATE'
+}
+
 /** Type of guide that leads the activity. */
 export enum ActivityGuideKind {
 	AUTO = 'AUTO',
@@ -29,6 +35,13 @@ export enum ActivityGuideKind {
 	DRIVER = 'DRIVER',
 	GUEST = 'GUEST',
 	INSTRUCTOR = 'INSTRUCTOR'
+}
+
+/** Role of a location within an activity itinerary. */
+export enum ActivityLocationRole {
+	DESTINATION = 'DESTINATION',
+	ORIGIN = 'ORIGIN',
+	WAYPOINT = 'WAYPOINT'
 }
 
 /** Audience segments the activity is not suitable for. */
@@ -89,12 +102,6 @@ export enum ActivityPetsAllowed {
 	YES = 'YES',
 	NO = 'NO',
 	NOT_APPLY = 'NOT_APPLY'
-}
-
-/** Type of multimedia asset attached to an activity. */
-export enum MultimediaKind {
-	IMAGE = 'IMAGE',
-	VIDEO = 'VIDEO'
 }
 
 // ── Stages ──────────────────────────────────────

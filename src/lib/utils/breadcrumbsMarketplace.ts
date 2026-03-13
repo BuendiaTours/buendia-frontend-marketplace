@@ -1,11 +1,11 @@
 import type { BreadcrumbItem } from '$lib/types';
 
 /**
- * Genera breadcrumbs para la página de detalle de un destino.
+ * Genera breadcrumbs para la página de detalle de una ubicación.
  * Ejemplo: Inicio › Barcelona
  */
-export function buildDestinationBreadcrumbs(destination: { name: string }): BreadcrumbItem[] {
-	return [{ label: 'Inicio', href: '/' }, { label: destination.name }];
+export function buildLocationBreadcrumbs(location: { name: string }): BreadcrumbItem[] {
+	return [{ label: 'Inicio', href: '/' }, { label: location.name }];
 }
 
 /**
@@ -18,12 +18,14 @@ export function buildDestinationBreadcrumbs(destination: { name: string }): Brea
  */
 export function buildActivityBreadcrumbs(activity: {
 	title: string;
-	destinations: Array<{ id: string; name: string; href: string }>;
+	locations?: Array<{ id: string; name: string; href?: string }>;
+	destinations?: Array<{ id: string; name: string; href?: string }>;
 }): BreadcrumbItem[] {
-	const destination = activity.destinations[0];
+	const locs = activity.locations ?? activity.destinations ?? [];
+	const loc = locs[0];
 	const items: BreadcrumbItem[] = [{ label: 'Inicio', href: '/' }];
-	if (destination) {
-		items.push({ label: destination.name, href: destination.href });
+	if (loc) {
+		items.push({ label: loc.name, href: loc.href });
 	}
 	items.push({ label: activity.title });
 	return items;

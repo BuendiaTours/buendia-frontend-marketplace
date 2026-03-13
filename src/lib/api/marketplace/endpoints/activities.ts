@@ -30,7 +30,8 @@ export type ActivitiesPublicParams = {
 	page?: number;
 	pageSize?: number;
 	search?: string; // Búsqueda de texto
-	destination?: string; // Filtro por destino
+	location?: string;
+	destination?: string; // @deprecated Use location
 	category?: string; // Filtro por categoría
 	kind?: string; // Filtro por tipo (FREE_TOUR, PAID_TOUR, etc.)
 	priceMin?: number; // Rango de precio

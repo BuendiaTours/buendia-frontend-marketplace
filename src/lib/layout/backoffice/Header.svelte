@@ -44,10 +44,10 @@
 				</li>
 				<li>
 					<a
-						href={ROUTES.backoffice.destinations.list}
-						class:menu-active={isActive(ROUTES.backoffice.destinations.list)}
+						href={ROUTES.backoffice.locations.list}
+						class:menu-active={isActive(ROUTES.backoffice.locations.list)}
 					>
-						Destinos
+						Ubicaciones
 					</a>
 				</li>
 				<li>
@@ -92,10 +92,10 @@
 			</li>
 			<li>
 				<a
-					href={ROUTES.backoffice.destinations.list}
-					class:menu-active={isActive(ROUTES.backoffice.destinations.list)}
+					href={ROUTES.backoffice.locations.list}
+					class:menu-active={isActive(ROUTES.backoffice.locations.list)}
 				>
-					Destinos
+					Ubicaciones
 				</a>
 			</li>
 			<li>

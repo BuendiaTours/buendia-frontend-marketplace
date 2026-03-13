@@ -2,17 +2,20 @@
  * @module activities/requests
  * @description API request functions for the Activities resource.
  * Provides CRUD operations and sub-resource management (attractions, categories,
- * destinations, distributives, meals, multimedia, and stages).
+ * locations, distributives, meals, and stages).
  */
 
 import type { CriteriaResult } from '$core/_shared/types';
 import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
 import type {
 	Activity,
+	ActivityAttractionAddDto,
+	ActivityCategoryAddDto,
 	ActivityCreateDto,
 	ActivityCriteria,
+	ActivityDistributiveAddDto,
+	ActivityLocationAddDto,
 	ActivityMealAddDto,
-	ActivityMultimediaAddDto,
 	ActivityStageAddDto,
 	ActivityUpdateDto
 } from '$core/activities/types';
@@ -85,10 +88,13 @@ export const ACTIVITY_REQUEST = {
 	 * Links an attraction to an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param attractionId - Attraction ID to associate.
+	 * @param data - Attraction add payload.
 	 */
-	addAttraction: (fetchFn: typeof fetch, id: string, attractionId: string): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/attractions/${attractionId}`, {}),
+	addAttraction: (
+		fetchFn: typeof fetch,
+		id: string,
+		data: ActivityAttractionAddDto
+	): Promise<void> => post(fetchFn, `${BASE}/${id}/attractions`, data),
 
 	/**
 	 * Unlinks an attraction from an activity.
@@ -105,10 +111,10 @@ export const ACTIVITY_REQUEST = {
 	 * Links a category to an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param categoryId - Category ID to associate.
+	 * @param data - Category add payload.
 	 */
-	addCategory: (fetchFn: typeof fetch, id: string, categoryId: string): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/categories/${categoryId}`, {}),
+	addCategory: (fetchFn: typeof fetch, id: string, data: ActivityCategoryAddDto): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/categories`, data),
 
 	/**
 	 * Unlinks a category from an activity.
@@ -119,25 +125,25 @@ export const ACTIVITY_REQUEST = {
 	removeCategory: (fetchFn: typeof fetch, id: string, categoryId: string): Promise<void> =>
 		del(fetchFn, `${BASE}/${id}/categories/${categoryId}`),
 
-	// ── Destinations ─────────────────────────────
+	// ── Locations ────────────────────────────────
 
 	/**
-	 * Links a destination to an activity.
+	 * Adds a location to an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param destinationId - Destination ID to associate.
+	 * @param data - Location add payload (includes locationId and role).
 	 */
-	addDestination: (fetchFn: typeof fetch, id: string, destinationId: string): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/destinations/${destinationId}`, {}),
+	addLocation: (fetchFn: typeof fetch, id: string, data: ActivityLocationAddDto): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/locations`, data),
 
 	/**
-	 * Unlinks a destination from an activity.
+	 * Removes a location from an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param destinationId - Destination ID to disassociate.
+	 * @param locationId - Location entity ID to remove.
 	 */
-	removeDestination: (fetchFn: typeof fetch, id: string, destinationId: string): Promise<void> =>
-		del(fetchFn, `${BASE}/${id}/destinations/${destinationId}`),
+	removeLocation: (fetchFn: typeof fetch, id: string, locationId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/locations/${locationId}`),
 
 	// ── Distributives ────────────────────────────
 
@@ -145,10 +151,13 @@ export const ACTIVITY_REQUEST = {
 	 * Links a distributive to an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param distributiveId - Distributive ID to associate.
+	 * @param data - Distributive add payload.
 	 */
-	addDistributive: (fetchFn: typeof fetch, id: string, distributiveId: string): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/distributives/${distributiveId}`, {}),
+	addDistributive: (
+		fetchFn: typeof fetch,
+		id: string,
+		data: ActivityDistributiveAddDto
+	): Promise<void> => post(fetchFn, `${BASE}/${id}/distributives`, data),
 
 	/**
 	 * Unlinks a distributive from an activity.
@@ -165,10 +174,10 @@ export const ACTIVITY_REQUEST = {
 	 * Adds a meal to an activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param data - Meal payload (includes the meal ID).
+	 * @param data - Meal payload.
 	 */
 	addMeal: (fetchFn: typeof fetch, id: string, data: ActivityMealAddDto): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/meals/${data.id}`, data),
+		post(fetchFn, `${BASE}/${id}/meals`, data),
 
 	/**
 	 * Removes a meal from an activity.
@@ -179,39 +188,16 @@ export const ACTIVITY_REQUEST = {
 	removeMeal: (fetchFn: typeof fetch, id: string, mealId: string): Promise<void> =>
 		del(fetchFn, `${BASE}/${id}/meals/${mealId}`),
 
-	// ── Multimedias ──────────────────────────────
-
-	/**
-	 * Adds a multimedia asset to an activity.
-	 * @param fetchFn - SvelteKit `fetch`.
-	 * @param id - Activity ID.
-	 * @param data - Multimedia payload (includes the multimedia ID).
-	 */
-	addMultimedia: (
-		fetchFn: typeof fetch,
-		id: string,
-		data: ActivityMultimediaAddDto
-	): Promise<void> => post(fetchFn, `${BASE}/${id}/multimedias/${data.id}`, data),
-
-	/**
-	 * Removes a multimedia asset from an activity.
-	 * @param fetchFn - SvelteKit `fetch`.
-	 * @param id - Activity ID.
-	 * @param multimediaId - Multimedia ID to remove.
-	 */
-	removeMultimedia: (fetchFn: typeof fetch, id: string, multimediaId: string): Promise<void> =>
-		del(fetchFn, `${BASE}/${id}/multimedias/${multimediaId}`),
-
 	// ── Stages ───────────────────────────────────
 
 	/**
 	 * Adds a stage to an activity itinerary.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
-	 * @param data - Stage payload (includes the stage ID).
+	 * @param data - Stage payload.
 	 */
 	addStage: (fetchFn: typeof fetch, id: string, data: ActivityStageAddDto): Promise<void> =>
-		post(fetchFn, `${BASE}/${id}/stages/${data.id}`, data),
+		post(fetchFn, `${BASE}/${id}/stages`, data),
 
 	/**
 	 * Removes a stage from an activity itinerary.

@@ -1,10 +1,10 @@
 import type { PageServerLoad } from './$types';
-import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
+import { locationsEndpoints } from '$lib/api/marketplace/endpoints/locations';
 import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
 import { categoriesEndpoints } from '$lib/api/marketplace/endpoints/categories';
 import { buildPagination } from '$core/_shared/params';
 import { handleApiError } from '$core/_shared/errors';
-import { buildDestinationBreadcrumbs } from '$lib/utils/breadcrumbsMarketplace';
+import { buildLocationBreadcrumbs } from '$lib/utils/breadcrumbsMarketplace';
 
 export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const { slug } = params;
@@ -12,11 +12,10 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const pageSize = Number(url.searchParams.get('pageSize')) || 10;
 
 	try {
-		// Fetch destination, activities and categories in parallel
-		const [destination, activitiesResult, categoriesResult] = await Promise.all([
-			destinationsEndpoints.getBySlug(fetch, slug),
+		const [location, activitiesResult, categoriesResult] = await Promise.all([
+			locationsEndpoints.getBySlug(fetch, slug),
 			activitiesEndpoints.getAll(fetch, {
-				destination: slug,
+				location: slug,
 				page,
 				pageSize
 			}),
@@ -24,13 +23,13 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 		]);
 
 		return {
-			destination,
+			location,
 			activities: activitiesResult.data,
 			pagination: buildPagination(activitiesResult.total, page, pageSize),
 			categories: categoriesResult,
-			breadcrumbs: buildDestinationBreadcrumbs(destination)
+			breadcrumbs: buildLocationBreadcrumbs(location)
 		};
 	} catch (err) {
-		throw handleApiError(err, 'el destino');
+		throw handleApiError(err, 'la ubicación');
 	}
 };

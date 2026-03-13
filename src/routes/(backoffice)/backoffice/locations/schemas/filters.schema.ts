@@ -1,27 +1,21 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
+import { LocationKind } from '$core/locations/enums';
 
-// Enums
-import { DestinationKind } from '$core/destinations/enums';
-
-export type DestinationsFilters = {
-	// Paginación (opcional - solo si la API la provee)
+export type LocationsFilters = {
 	page?: number;
 	pageSize?: number;
-	// Ordenamiento
 	sort?: 'id' | 'name' | 'slug' | 'kind';
 	order?: CriteriaSortOption;
-	// Búsqueda
 	q?: string;
-	kind?: DestinationKind;
-	// Filtros avanzados
+	kind?: LocationKind;
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
 	kidsFreeTour?: boolean;
 };
 
-export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
+export const locationsFiltersSchema: FiltersSchema<LocationsFilters> = {
 	fields: {
 		page: {
 			parse: (raw) => {
@@ -70,8 +64,8 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 		},
 		kind: {
 			parse: (raw) => {
-				if (Object.values(DestinationKind).includes(raw as DestinationKind)) {
-					return raw as DestinationKind;
+				if (Object.values(LocationKind).includes(raw as LocationKind)) {
+					return raw as LocationKind;
 				}
 				return undefined;
 			},
@@ -84,8 +78,6 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 			},
 			resetPageOnChange: true
 		},
-
-		// Filtros booleanos - todos usan la misma configuración
 		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
 		breakfastIncluded: createBooleanField('breakfastIncluded'),
 		kidsFreeTour: createBooleanField('kidsFreeTour')

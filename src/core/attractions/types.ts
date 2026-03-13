@@ -4,20 +4,29 @@
  * Organised into Projections (read), DTOs (write), and Criteria (query).
  */
 
-import type { AttractionSortAttribute, AttractionStatus } from '$core/attractions/enums';
+import type {
+	AttractionLocationKind,
+	AttractionSortAttribute,
+	AttractionStatus
+} from '$core/attractions/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
-import type { DestinationKind } from '$core/destinations/enums';
 
 // ── Projections (read models) ───────────────────
 
-/** Destination summary embedded within an attraction. */
-export type AttractionDestination = {
+/** Location summary embedded within an attraction. */
+export type AttractionLocation = {
 	id: string;
 	descriptionShort: string | null;
+	kind: AttractionLocationKind;
 	name: string;
-	kind: DestinationKind;
-	photoUrlHero: string | null;
+};
+
+/** Image asset attached to an attraction via media-relationship. */
+export type AttractionImage = {
+	mediaId: string;
+	order: number;
+	variants: Record<string, string>;
 };
 
 /** Full attraction projection as returned by the API. */
@@ -27,12 +36,10 @@ export type Attraction = {
 	createdAt: string;
 	description: string | null;
 	descriptionLong: string | null;
-	destinations: AttractionDestination[];
+	images: AttractionImage[];
+	locations: AttractionLocation[];
 	name: string;
-	photoUrl: string | null;
-	photoUrlHero: string | null;
 	postalAddress: string | null;
-	slug: string;
 	status: AttractionStatus;
 	updatedAt: string;
 };
@@ -43,30 +50,24 @@ export type Attraction = {
 export type AttractionCreateDto = {
 	id: string;
 	name: string;
-	slug: string;
 	status: AttractionStatus;
-	latitude?: number | null;
-	longitude?: number | null;
-	description?: string | null;
-	descriptionLong?: string | null;
-	destinationIds?: string[];
-	photoUrl?: string | null;
-	photoUrlHero?: string | null;
-	postalAddress?: string | null;
+	description?: string;
+	descriptionLong?: string;
+	latitude?: number;
+	locationIds?: string[];
+	longitude?: number;
+	postalAddress?: string;
 };
 
 /** Payload for partially updating an existing attraction. */
 export type AttractionUpdateDto = {
-	latitude?: number | null;
-	longitude?: number | null;
-	description?: string | null;
-	descriptionLong?: string | null;
-	destinationIds?: string[];
+	description?: string;
+	descriptionLong?: string;
+	latitude?: number;
+	locationIds?: string[];
+	longitude?: number;
 	name?: string;
-	photoUrl?: string | null;
-	photoUrlHero?: string | null;
-	postalAddress?: string | null;
-	slug?: string;
+	postalAddress?: string;
 	status?: AttractionStatus;
 };
 
@@ -74,16 +75,15 @@ export type AttractionUpdateDto = {
 
 /** Query parameters for filtering, sorting, and paginating attraction lists. */
 export type AttractionCriteria = {
-	page?: number;
-	pageSize?: number;
-	name?: string;
-	query?: string;
-	search_text?: string;
-	status?: AttractionStatus;
-	radius?: number;
+	skip?: number;
+	limit?: number;
 	latitude?: number;
 	longitude?: number;
-	slug?: string;
+	name?: string;
+	query?: string;
+	radius?: number;
+	search_text?: string;
+	status?: AttractionStatus;
 	sort?: AttractionSortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;
