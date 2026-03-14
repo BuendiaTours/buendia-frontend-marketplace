@@ -1,8 +1,13 @@
+/**
+ * URL-driven filter schema for the locations list page.
+ * Defines how each filter field is parsed from and serialized to URL search params.
+ */
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
 import { LocationKind } from '$core/locations/enums';
 
+/** Typed shape of all filter values for the locations list. */
 export type LocationsFilters = {
 	page?: number;
 	pageSize?: number;

@@ -1,3 +1,7 @@
+/**
+ * Server load and actions for the location edit page.
+ * Fetches the location by route param `id`, populates the form, and wires up update/delete actions.
+ */
 import { LOCATION_REQUEST } from '$core/locations/requests';
 import { ApiError } from '$core/_shared/errors';
 import { locationFormSchema } from '../../schemas/location-form.schema';
@@ -44,6 +48,7 @@ export const actions: Actions = {
 		updateFn: LOCATION_REQUEST.update,
 		redirectToList: true,
 		paramName: 'id',
+		// Strip `id` — the API identifies the resource via the URL param, not the body
 		transformData: ({ id, ...rest }) => rest
 	}),
 	delete: createDeleteAction({

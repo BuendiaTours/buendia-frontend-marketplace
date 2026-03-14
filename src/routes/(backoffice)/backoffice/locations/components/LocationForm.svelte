@@ -21,7 +21,9 @@
 	type Props = {
 		form: SuperValidated<LocationFormSchema>;
 		mode: 'create' | 'edit';
+		/** Required in edit mode — used to build the delete action URL. */
 		locationId?: string;
+		/** Display name of the current parent, used as initial label for the async search. */
 		parentName?: string | null;
 	};
 
@@ -30,6 +32,7 @@
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
 
+	// formData is intentionally captured once at mount
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance } = superForm(formData, {
 		dataType: 'json'
@@ -52,6 +55,7 @@
 		{#snippet content()}
 			<input type="hidden" name="id" value={$form.id} />
 
+			<!-- excludeValue prevents a location from being set as its own parent -->
 			<FormAsyncSearch
 				id="parentId"
 				label={m.locations_labelParent()}

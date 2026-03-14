@@ -1,3 +1,7 @@
+/**
+ * Server load and action for the location creation page.
+ * Uses generic factories — breadcrumbs and entity name are handled by the page component.
+ */
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { locationFormSchema } from '../schemas/location-form.schema';

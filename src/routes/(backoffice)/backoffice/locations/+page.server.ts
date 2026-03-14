@@ -1,3 +1,7 @@
+/**
+ * Server load function for the locations list page.
+ * Parses URL filters, fetches paginated locations from the API, and builds breadcrumbs.
+ */
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { locationsFiltersSchema } from './schemas/filters.schema';
@@ -9,7 +13,6 @@ import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-	// Parsear filtros desde URL usando el schema
 	const filters = parseFilters(locationsFiltersSchema, url.searchParams);
 	const page = filters.page ?? 1;
 	const pageSize = filters.pageSize ?? 10;

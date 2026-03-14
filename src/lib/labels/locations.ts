@@ -1,3 +1,7 @@
+/**
+ * UI label mappings for location enums.
+ * Maps LocationKind values to their i18n-translated display names for selects and filters.
+ */
 import { LocationKind } from '$core/locations/enums';
 import * as m from '$paraglide/messages';
 

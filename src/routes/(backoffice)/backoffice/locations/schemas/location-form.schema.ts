@@ -1,3 +1,7 @@
+/**
+ * Zod schema for the location create/edit form.
+ * Source of truth for client-side validation — server re-validates via Superforms.
+ */
 import { z } from 'zod/v3';
 import { LocationKind } from '$core/locations/enums';
 

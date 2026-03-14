@@ -34,10 +34,10 @@
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
-	/** Local search input state, synced from URL filters. */
+	/** Local search input state — re-derived from URL on navigation so it stays in sync. */
 	let searchQuery = $derived(filters.q || '');
 
-	/** Applies a partial filter update to the URL search params. */
+	/** Applies a partial filter update to the URL and triggers client-side navigation. */
 	function applyFilterPatch(patch: {
 		[K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]>;
 	}) {

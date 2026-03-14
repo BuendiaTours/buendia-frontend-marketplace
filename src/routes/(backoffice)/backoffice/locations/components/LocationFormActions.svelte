@@ -11,7 +11,9 @@
 
 	type Props = {
 		mode: 'create' | 'edit';
+		/** Required in edit mode — used to build the delete action URL. */
 		locationId?: string;
+		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
 	};
 
