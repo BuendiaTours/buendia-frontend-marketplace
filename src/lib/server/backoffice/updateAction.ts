@@ -29,23 +29,6 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
 
 /**
  * Crea un action handler genérico para actualizar/guardar recursos.
- *
- * @example
- * ```typescript
- * import { createUpdateAction } from '$lib/server/updateAction';
- * import { ACTIVITY_REQUEST } from '$core/activities/requests';
- * import { activityFormSchema } from './activity-form.schema';
- * import { zod } from 'sveltekit-superforms/adapters';
- *
- * export const actions = {
- *   default: createUpdateAction({
- *     basePath: '/activities',
- *     schema: zod(activityFormSchema),
- *     updateFn: api.activities.update,
- *     redirectToEdit: true
- *   })
- * };
- * ```
  */
 export function createUpdateAction<T extends Record<string, unknown>>(
 	config: UpdateActionConfig<T>
@@ -66,13 +49,15 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			const errorMessage = 'Por favor, corrige los errores del formulario.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: errorMessage
+				message: errorMessage,
+				code: 'error.validation'
 			});
 			return fail(400, {
 				form,
 				alert: {
 					type: 'error',
-					message: errorMessage
+					message: errorMessage,
+					code: 'error.validation'
 				}
 			});
 		}
@@ -88,7 +73,8 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 
 			setFlashMessage(cookies, {
 				type: 'success',
-				message: 'Los cambios se guardaron correctamente.'
+				message: 'Los cambios se guardaron correctamente.',
+				code: 'update.success'
 			});
 
 			// Redirigir según configuración: listado, edición o detalle
@@ -111,48 +97,60 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			console.error('❌ [updateAction] Error capturado:', err);
 
 			let errorMessage = 'Error al guardar los cambios.';
+			let errorCode = 'error.unknown';
 
 			if (err instanceof ApiError && err.status) {
 				console.error('❌ [updateAction] ApiError con status:', err.status);
 				switch (err.status) {
-					case 400: // Bad Request - Solicitud inválida
+					case 400:
 						errorMessage = 'Los datos enviados no son válidos.';
+						errorCode = 'error.400';
 						break;
-					case 401: // Unauthorized - No autenticado
+					case 401:
 						errorMessage = 'Debes iniciar sesión para guardar cambios.';
+						errorCode = 'error.401';
 						break;
-					case 403: // Forbidden - No autorizado
+					case 403:
 						errorMessage = 'No tienes permisos para modificar este elemento.';
+						errorCode = 'error.403';
 						break;
-					case 404: // Not Found - Elemento no encontrado
+					case 404:
 						errorMessage = 'El elemento no existe.';
+						errorCode = 'error.404';
 						break;
-					case 409: // Conflict - Conflicto (ej: slug duplicado)
+					case 409:
 						errorMessage = 'Ya existe un elemento con estos datos. Verifica el slug o nombre.';
+						errorCode = 'error.409';
 						break;
-					case 422: // Unprocessable Entity - Validación fallida en servidor
+					case 422:
 						errorMessage = 'Los datos no cumplen con los requisitos del servidor.';
+						errorCode = 'error.422';
 						break;
-					case 500: // Internal Server Error - Error del servidor
+					case 500:
 						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
+						errorCode = 'error.500';
 						break;
-					case 503: // Service Unavailable - Servicio no disponible
+					case 503:
 						errorMessage = 'El servicio no está disponible. Por favor, inténtalo más tarde.';
+						errorCode = 'error.503';
 						break;
 					default:
 						errorMessage = `Error al guardar los cambios (código ${err.status}).`;
+						errorCode = `error.${err.status}`;
 				}
 
 				setFlashMessage(cookies, {
 					type: 'error',
-					message: errorMessage
+					message: errorMessage,
+					code: errorCode
 				});
 
 				return fail(err.status || 500, {
 					form,
 					alert: {
 						type: 'error',
-						message: errorMessage
+						message: errorMessage,
+						code: errorCode
 					}
 				});
 			}
@@ -162,14 +160,16 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			const unknownErrorMessage = 'Error inesperado al guardar. Por favor, inténtalo de nuevo.';
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: unknownErrorMessage
+				message: unknownErrorMessage,
+				code: 'error.unknown'
 			});
 
 			return fail(503, {
 				form,
 				alert: {
 					type: 'error',
-					message: unknownErrorMessage
+					message: unknownErrorMessage,
+					code: 'error.unknown'
 				}
 			});
 		}

@@ -9,6 +9,7 @@
 	"plugin.inlang.messageFormat": {
 		"pathPattern": [
 			"./messages/{locale}/common.json",
+			"./messages/{locale}/backoffice.json",
 			"./messages/{locale}/activities.json",
 			"./messages/{locale}/enums.json",
 			"./messages/{locale}/users.json",

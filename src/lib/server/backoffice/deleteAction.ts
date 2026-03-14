@@ -18,19 +18,6 @@ export type DeleteActionConfig = {
 
 /**
  * Crea un action handler genérico para eliminar recursos.
- *
- * @example
- * ```typescript
- * import { createDeleteAction } from '$lib/server/deleteAction';
- * import { ACTIVITY_REQUEST } from '$core/activities/requests';
- *
- * export const actions = {
- *   default: createDeleteAction({
- *     basePath: '/activities',
- *     deleteFn: ACTIVITY_REQUEST.delete
- *   })
- * };
- * ```
  */
 export function createDeleteAction(config: DeleteActionConfig) {
 	return async ({ params, fetch, url, cookies, request }: RequestEvent) => {
@@ -49,7 +36,8 @@ export function createDeleteAction(config: DeleteActionConfig) {
 
 			setFlashMessage(cookies, {
 				type: 'success',
-				message: 'El elemento fue eliminado correctamente.'
+				message: 'El elemento fue eliminado correctamente.',
+				code: 'delete.success'
 			});
 
 			const searchParams = url.searchParams.toString();
@@ -68,39 +56,49 @@ export function createDeleteAction(config: DeleteActionConfig) {
 			}
 
 			let errorMessage = 'Error al eliminar el elemento.';
+			let errorCode = 'error.unknown';
 
 			if (err instanceof ApiError && err.status) {
 				switch (err.status) {
-					case 400: // Bad Request - Solicitud inválida
+					case 400:
 						errorMessage = 'La solicitud de eliminación no es válida.';
+						errorCode = 'error.400';
 						break;
-					case 401: // Unauthorized - No autenticado
+					case 401:
 						errorMessage = 'Debes iniciar sesión para eliminar este elemento.';
+						errorCode = 'error.401';
 						break;
-					case 403: // Forbidden - No autorizado
+					case 403:
 						errorMessage = 'No tienes permisos para eliminar este elemento.';
+						errorCode = 'error.403';
 						break;
-					case 404: // Not Found - Elemento no encontrado
+					case 404:
 						errorMessage = 'El elemento no existe o ya fue eliminado.';
+						errorCode = 'error.404';
 						break;
-					case 409: // Conflict - Conflicto (ej: elemento tiene dependencias)
+					case 409:
 						errorMessage =
 							'No se puede eliminar el elemento porque está siendo usado por otros recursos.';
+						errorCode = 'error.409';
 						break;
-					case 500: // Internal Server Error - Error del servidor
+					case 500:
 						errorMessage = 'Error del servidor. Por favor, inténtalo más tarde.';
+						errorCode = 'error.500';
 						break;
-					case 503: // Service Unavailable - Servicio no disponible
+					case 503:
 						errorMessage = 'El servicio no está disponible. Por favor, inténtalo más tarde.';
+						errorCode = 'error.503';
 						break;
 					default:
 						errorMessage = `Error al eliminar el elemento (código ${err.status}).`;
+						errorCode = `error.${err.status}`;
 				}
 			}
 
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: errorMessage
+				message: errorMessage,
+				code: errorCode
 			});
 
 			const searchParams = url.searchParams.toString();

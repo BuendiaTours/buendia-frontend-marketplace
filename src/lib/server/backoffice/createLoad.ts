@@ -20,10 +20,10 @@ export type CreateLoadConfig<
 	initialValues: Partial<T>;
 	/** Función async que carga listas disponibles (tags, categories, etc.) - Opcional */
 	loadAvailableData?: (fetch: typeof globalThis.fetch) => Promise<A>;
-	/** Label para breadcrumbs (ej: 'Nueva actividad', 'Nueva atracción') */
-	breadcrumbLabel: string;
-	/** Nombre de la entidad para mensajes de error (ej: 'actividad', 'atracción') */
-	entityName: string;
+	/** Label para breadcrumbs (ej: 'Nueva actividad'). Si no se pasa, no se generan breadcrumbs desde el server */
+	breadcrumbLabel?: string;
+	/** Nombre de la entidad para mensajes de error (ej: 'actividad'). Defaults to 'elemento' */
+	entityName?: string;
 };
 
 /**
@@ -33,33 +33,8 @@ export type CreateLoadConfig<
  * - Generación automática de UUID único (server-side)
  * - Carga de listas disponibles (tags, categories, locations, etc.)
  * - Inicialización del formulario con valores por defecto
- * - Generación de breadcrumbs
+ * - Generación de breadcrumbs (opcional — preferir construirlos en la page)
  * - Manejo consistente de errores
- *
- * @example
- * ```typescript
- * import { createCreateLoad } from '$lib/server/createLoad';
- * import { ACTIVITY_REQUEST } from '$core/activities/requests';
- * import { activityFormSchema } from './activity-form.schema';
- * import { zod } from 'sveltekit-superforms/adapters';
- *
- * export const load = createCreateLoad({
- *   schema: zod(activityFormSchema),
- *   initialValues: {
- *     title: '',
- *     slug: '',
- *     status: 'DRAFT',
- *     categories: [],
- *     tags: []
- *   },
- *   loadAvailableData: async (fetch) => ({
- *     availableTags: await fetch(...).then(r => r.json()),
- *     availableCategories: await api.categories.getAll(fetch)
- *   }),
- *   breadcrumbLabel: 'Nueva actividad',
- *   entityName: 'actividad'
- * });
- * ```
  */
 export function createCreateLoad<
 	T extends Record<string, unknown>,
@@ -77,7 +52,13 @@ export function createCreateLoad<
 			breadcrumbs: ReturnType<typeof buildBreadcrumbs>;
 		} & A
 	> => {
-		const { schema, initialValues, loadAvailableData, breadcrumbLabel, entityName } = config;
+		const {
+			schema,
+			initialValues,
+			loadAvailableData,
+			breadcrumbLabel,
+			entityName = 'elemento'
+		} = config;
 
 		try {
 			logger.log(`📦 [createLoad] Iniciando load para crear [${entityName}]`);
@@ -102,16 +83,15 @@ export function createCreateLoad<
 			const form = await superValidate(dataWithUuid, schema, { errors: false });
 			logger.log(`📦 [createLoad] Formulario inicializado`);
 
-			// 4. Generar breadcrumbs
-			const breadcrumbs = buildBreadcrumbs(url.pathname, {
-				label: breadcrumbLabel
-			});
+			// 4. Generar breadcrumbs (vacíos si no se proporcionó label — la page los construye)
+			const breadcrumbs = breadcrumbLabel
+				? buildBreadcrumbs(url.pathname, { label: breadcrumbLabel })
+				: [];
 
-			// 5. Retornar data completa
 			return {
 				form,
-				...availableData,
-				breadcrumbs
+				breadcrumbs,
+				...availableData
 			};
 		} catch (err) {
 			console.error(`❌ [createLoad] Error al cargar página de creación de [${entityName}]:`, err);

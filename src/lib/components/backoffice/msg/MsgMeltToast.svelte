@@ -3,6 +3,7 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/state';
+	import * as m from '$paraglide/messages';
 
 	import { Close, InfoCircle, DangerTriangle, CheckCircle } from '$lib/icons/Linear';
 
@@ -10,6 +11,7 @@
 	 * Componente de Toast usando Melt-UI
 	 * Muestra notificaciones temporales en la esquina superior derecha
 	 * Se integra con el sistema de alertas de SvelteKit (page.form.alert o page.data.alert)
+	 * Resuelve códigos de acción a traducciones i18n cuando están disponibles
 	 */
 
 	type ToastType = 'info' | 'warning' | 'error' | 'success';
@@ -23,6 +25,7 @@
 	type AlertMessage = {
 		type: ToastType;
 		message: string;
+		code?: string;
 	};
 
 	const {
@@ -52,6 +55,32 @@
 		}
 	};
 
+	/**
+	 * Resuelve un código de acción a su traducción i18n.
+	 * Si no hay código o no se encuentra, usa el message legacy como fallback.
+	 */
+	function resolveMessage(alert: AlertMessage): string {
+		if (!alert.code) return alert.message;
+
+		const resolver: Record<string, () => string> = {
+			'create.success': () => m.backoffice_createSuccess(),
+			'update.success': () => m.backoffice_updateSuccess(),
+			'delete.success': () => m.backoffice_deleteSuccess(),
+			'error.validation': () => m.backoffice_validationError(),
+			'error.400': () => m.backoffice_error400(),
+			'error.401': () => m.backoffice_error401(),
+			'error.403': () => m.backoffice_error403(),
+			'error.404': () => m.backoffice_error404(),
+			'error.409': () => m.backoffice_error409(),
+			'error.422': () => m.backoffice_error422(),
+			'error.500': () => m.backoffice_error500(),
+			'error.503': () => m.backoffice_error503(),
+			'error.unknown': () => m.backoffice_errorUnknown()
+		};
+
+		return resolver[alert.code]?.() ?? alert.message;
+	}
+
 	// Obtener el mensaje de alerta desde page.form o page.data
 	const alert = $derived(
 		(page.form?.alert as AlertMessage | undefined) || (page.data?.alert as AlertMessage | undefined)
@@ -63,7 +92,7 @@
 			addToast({
 				data: {
 					title: alert.type.charAt(0).toUpperCase() + alert.type.slice(1),
-					description: alert.message,
+					description: resolveMessage(alert),
 					type: alert.type
 				}
 			});

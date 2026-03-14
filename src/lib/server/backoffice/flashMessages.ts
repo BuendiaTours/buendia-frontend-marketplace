@@ -5,6 +5,7 @@ export type FlashMessageType = 'info' | 'warning' | 'error' | 'success';
 export type FlashMessage = {
 	type: FlashMessageType;
 	message: string;
+	code?: string;
 };
 
 const FLASH_COOKIE_NAME = 'flash_message';

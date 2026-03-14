@@ -29,6 +29,5 @@
 	"locations_columnKind": "Tipo",
 	"locations_emptyState": "No se encontraron elementos",
 	"locations_belongsTo": "Pertenece a \"{parentName}\"",
-	"locations_breadcrumbNew": "Nueva ubicación",
-	"locations_entityName": "ubicación"
+	"locations_breadcrumbNew": "Nueva ubicación"
 }

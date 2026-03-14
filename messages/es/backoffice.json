@@ -1,0 +1,17 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"backoffice_createSuccess": "Elemento creado correctamente",
+	"backoffice_updateSuccess": "Los cambios se guardaron correctamente",
+	"backoffice_deleteSuccess": "El elemento fue eliminado correctamente",
+	"backoffice_validationError": "Por favor, corrige los errores del formulario",
+	"backoffice_error400": "Los datos enviados no son válidos",
+	"backoffice_error401": "Debes iniciar sesión para realizar esta acción",
+	"backoffice_error403": "No tienes permisos para realizar esta acción",
+	"backoffice_error404": "El elemento no existe o ya fue eliminado",
+	"backoffice_error409": "Ya existe un elemento con estos datos",
+	"backoffice_error422": "Los datos no cumplen con los requisitos del servidor",
+	"backoffice_error500": "Error del servidor. Por favor, inténtalo más tarde",
+	"backoffice_error503": "El servicio no está disponible. Por favor, inténtalo más tarde",
+	"backoffice_errorUnknown": "Error inesperado. Por favor, inténtalo de nuevo",
+	"backoffice_errorDefault": "Error al procesar la solicitud (código {status})"
+}
