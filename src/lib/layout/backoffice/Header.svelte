@@ -77,6 +77,14 @@
 				</li>
 				<li>
 					<a
+						href={ROUTES.backoffice.suppliers.list}
+						class:menu-active={isActive(ROUTES.backoffice.suppliers.list)}
+					>
+						{m.suppliers_navLabel()}
+					</a>
+				</li>
+				<li>
+					<a
 						href={ROUTES.backoffice.components}
 						class:menu-active={isActive(ROUTES.backoffice.components)}
 					>
@@ -129,6 +137,14 @@
 					class:menu-active={isActive(ROUTES.backoffice.categories.list)}
 				>
 					{m.categories_navLabel()}
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.suppliers.list}
+					class:menu-active={isActive(ROUTES.backoffice.suppliers.list)}
+				>
+					{m.suppliers_navLabel()}
 				</a>
 			</li>
 			<li>

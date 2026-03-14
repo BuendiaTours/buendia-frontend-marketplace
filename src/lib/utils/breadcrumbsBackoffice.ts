@@ -10,6 +10,7 @@ const routeLabels: Record<string, string> = {
 	categories: 'Categorias',
 	locations: 'Ubicaciones',
 	distributives: 'Distributivos',
+	suppliers: 'Proveedores',
 	users: 'Usuarios',
 	edit: 'Editar',
 	create: 'Crear',
@@ -85,6 +86,7 @@ export function buildBreadcrumbs(
 		attractions: ROUTES.backoffice.attractions.list,
 		categories: ROUTES.backoffice.categories.list,
 		locations: ROUTES.backoffice.locations.list,
+		suppliers: ROUTES.backoffice.suppliers.list,
 		'api-catalog': ROUTES.backoffice.apiCatalog,
 		components: ROUTES.backoffice.components
 	};

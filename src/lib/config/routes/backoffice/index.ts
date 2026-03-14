@@ -10,6 +10,7 @@ import { ACTIVITY_ROUTES } from './activities';
 import { ATTRACTION_ROUTES } from './attractions';
 import { CATEGORY_ROUTES } from './categories';
 import { LOCATION_ROUTES } from './locations';
+import { SUPPLIER_ROUTES } from './suppliers';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {
@@ -21,5 +22,6 @@ export const backofficeRoutes = {
 	attractions: ATTRACTION_ROUTES,
 	categories: CATEGORY_ROUTES,
 	locations: LOCATION_ROUTES,
+	suppliers: SUPPLIER_ROUTES,
 	...toolsRoutes
 } as const;
