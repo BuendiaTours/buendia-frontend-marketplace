@@ -565,6 +565,36 @@ Use for `FormAccordion` titles: `Database` (main data), `MapPoint` (location/geo
 
 ---
 
+### 14. Navigation link — `src/lib/layout/backoffice/Header.svelte`
+
+Add the new resource to the backoffice topbar navigation. The Header has **two menu lists** (mobile dropdown + desktop horizontal) that must stay in sync.
+
+Ensure `import * as m from '$paraglide/messages'` is present in the `<script>` block.
+
+Add a `<li>` entry in **both** menus, placed before the "Componentes" item (which is always last):
+
+```svelte
+<!-- In BOTH the mobile <ul class="dropdown-content menu"> AND the desktop <ul class="menu menu-horizontal px-1"> -->
+<li>
+	<a
+		href={ROUTES.backoffice.{resources}.list}
+		class:menu-active={isActive(ROUTES.backoffice.{resources}.list)}
+	>
+		{m.{resources}_navLabel()}
+	</a>
+</li>
+```
+
+Add the corresponding i18n key to the resource's translation file (`messages/es/{resources}.json`):
+
+```json
+"{resources}_navLabel": "..."
+```
+
+The label should be the plural resource name in Spanish (e.g., "Ubicaciones", "Atracciones").
+
+---
+
 ## After generating all files
 
 1. Run `npx @inlang/paraglide-js compile --project ./project.inlang`
