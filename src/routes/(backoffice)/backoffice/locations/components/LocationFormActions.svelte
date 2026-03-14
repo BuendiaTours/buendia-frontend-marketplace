@@ -1,9 +1,11 @@
 <script lang="ts">
 	/**
-	 * LocationFormActions - Action bar for location form (back, delete, submit)
+	 * LocationFormActions — Action bar for location form (back, delete, submit).
+	 * Delete uses progressive enhancement to avoid full page reload.
 	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { LOCATION_ROUTES } from '$lib/config/routes/backoffice/locations';
 
@@ -27,7 +29,12 @@
 	</a>
 
 	{#if isEditMode && locationId}
-		<form method="POST" action={`${LOCATION_ROUTES.edit(locationId)}?/delete`} class="ml-auto">
+		<form
+			method="POST"
+			action={`${LOCATION_ROUTES.edit(locationId)}?/delete`}
+			class="ml-auto"
+			use:enhance
+		>
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"
