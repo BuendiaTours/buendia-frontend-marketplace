@@ -87,6 +87,11 @@ export const {RESOURCE}_ROUTES = {
 
 Then update `src/lib/config/routes/backoffice/index.ts`: add the import and add `{resources}: {RESOURCE}_ROUTES` to `backofficeRoutes`.
 
+Then update `src/lib/utils/breadcrumbsBackoffice.ts`:
+
+- Add `{resources}: '...'` (Spanish plural label) to the `routeLabels` map.
+- Add `{resources}: ROUTES.backoffice.{resources}.list` to the `sectionRoutes` map inside `buildBreadcrumbs`.
+
 ### 2. Labels — `src/lib/labels/{resources}.ts`
 
 One options array per enum. The i18n keys follow `enum_{resource}{EnumName}_{lowerValue}` pattern.
