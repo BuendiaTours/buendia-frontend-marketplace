@@ -1,5 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"locations_breadcrumbLocation": "Ubicación",
+	"locations_editPageTitle": "Editar Ubicación",
 	"locations_backToList": "Volver al listado",
 	"locations_createLocation": "Crear ubicación",
 	"locations_confirmDeleteTitle": "Eliminar elemento",
@@ -7,7 +9,6 @@
 	"locations_deleteButton": "Borrar",
 	"locations_editButton": "Editar",
 	"locations_saveChanges": "Guardar cambios",
-	"locations_detailPageTitle": "Ubicación - Backoffice",
 	"locations_sectionMainData": "Datos principales",
 	"locations_sectionMainDataDescription": "Información principal de la ubicación",
 	"locations_labelParent": "Ubicación padre",

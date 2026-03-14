@@ -29,6 +29,7 @@
 	let { data, mode, locationId, parentName }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
+	const formAction = $derived(isEditMode ? '?/update' : undefined);
 
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance } = superForm(data.form, {
@@ -40,7 +41,7 @@
 
 <LocationFormActions {mode} {locationId} {formId} />
 
-<form id={formId} method="POST" use:enhance class="space-y-4">
+<form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-location-data" open>
 		{#snippet title()}
 			<Database class="size-6" />

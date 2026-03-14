@@ -12,7 +12,7 @@ export type DeleteActionConfig = {
 	basePath: string;
 	/** Función que realiza la eliminación en la API */
 	deleteFn: (fetchFn: typeof globalThis.fetch, identifier: string) => Promise<void>;
-	/** Nombre del parámetro de ruta que identifica el recurso (default: 'slug') */
+	/** Nombre del parámetro de ruta que identifica el recurso (default: 'id') */
 	paramName?: string;
 };
 
@@ -34,9 +34,9 @@ export type DeleteActionConfig = {
  */
 export function createDeleteAction(config: DeleteActionConfig) {
 	return async ({ params, fetch, url, cookies, request }: RequestEvent) => {
-		const identifier = params[config.paramName ?? 'slug'];
+		const identifier = (params as Record<string, string | undefined>)[config.paramName ?? 'id'];
 		if (!identifier) {
-			throw new Error(`Route parameter '${config.paramName ?? 'slug'}' is required`);
+			throw new Error(`Route parameter '${config.paramName ?? 'id'}' is required`);
 		}
 		const referer = request.headers.get('referer') || config.basePath;
 		const refererUrl = new URL(referer);

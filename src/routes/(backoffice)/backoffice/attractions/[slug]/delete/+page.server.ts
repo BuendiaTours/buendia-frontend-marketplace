@@ -6,6 +6,7 @@ import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 export const actions: Actions = {
 	default: createDeleteAction({
 		basePath: `${BACKOFFICE_PREFIX}/attractions`,
-		deleteFn: ATTRACTION_REQUEST.delete
+		deleteFn: ATTRACTION_REQUEST.delete,
+		paramName: 'slug'
 	})
 };

@@ -27,7 +27,7 @@
 	</a>
 
 	{#if isEditMode && locationId}
-		<form method="POST" action={`${LOCATION_ROUTES.detail(locationId)}?/delete`} class="ml-auto">
+		<form method="POST" action={`${LOCATION_ROUTES.edit(locationId)}?/delete`} class="ml-auto">
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"

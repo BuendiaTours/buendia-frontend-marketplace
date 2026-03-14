@@ -51,7 +51,7 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 	config: UpdateActionConfig<T>
 ) {
 	return async ({ request, params, fetch, cookies, url }: RequestEvent) => {
-		const identifier = params[config.paramName ?? 'slug'];
+		const identifier = (params as Record<string, string | undefined>)[config.paramName ?? 'slug'];
 		if (!identifier) {
 			throw new Error(`Route parameter '${config.paramName ?? 'slug'}' is required`);
 		}
