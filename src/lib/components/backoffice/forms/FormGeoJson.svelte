@@ -1,67 +1,30 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
 	import FormErrorMsg from './FormErrorMsg.svelte';
-	import { onMount } from 'svelte';
-	import { env } from '$env/dynamic/public';
 	import { InfoCircle, Magnifier } from '$lib/icons/Linear';
-	import { loadGoogleMapsAPI, isGoogleMapsLoaded } from '$lib/utils/googleMaps';
+	import { GoogleMapController } from '$lib/utils/googleMapsMarker.svelte';
+	import {
+		DEFAULT_COORDINATES,
+		DEFAULT_GEOJSON_CONFIG,
+		type FormGeoJsonConfig,
+		type GeoJsonPoint
+	} from '$lib/utils/googleMapsTypes';
 
 	/**
-	 * Componente reutilizable para editar coordenadas GeoJSON con mapa de Google Maps
+	 * Reusable GeoJSON coordinate editor with an embedded Google Map.
+	 * The map supports click-to-place, marker dragging, manual coordinate input,
+	 * and optional geocoding search. Writes a GeoJSON Point back to the parent via $bindable.
 	 *
-	 * @example Uso básico
+	 * @example Basic usage
 	 * ```svelte
-	 * <FormGeoJson
-	 *   id="location"
-	 *   label="Ubicación"
-	 *   bind:value={$form.location}
-	 *   error={$errors.location}
-	 * />
+	 * <FormGeoJson id="location" label="Ubicacion" bind:value={$form.location} error={$errors.location} />
 	 * ```
 	 *
-	 * @example Con configuración personalizada
+	 * @example With search box
 	 * ```svelte
-	 * <FormGeoJson
-	 *   id="location"
-	 *   label="Ubicación"
-	 *   bind:value={$form.location}
-	 *   config={{
-	 *     showSearchBox: true,
-	 *     defaultZoom: 15
-	 *   }}
-	 * />
+	 * <FormGeoJson id="location" label="Ubicacion" bind:value={$form.location} config={{ showSearchBox: true }} />
 	 * ```
 	 */
-
-	type GeoJsonPoint = {
-		type: 'Point';
-		coordinates: [number, number]; // [longitude, latitude]
-	};
-
-	/**
-	 * Configuración del componente FormGeoJson
-	 */
-	type FormGeoJsonConfig = {
-		showSearchBox: boolean;
-		showCoordinatesDisplay: boolean;
-		enableGeocoding: boolean;
-		defaultZoom: number;
-		mapTypeControl: boolean;
-		streetViewControl: boolean;
-		fullscreenControl: boolean;
-	};
-
-	/**
-	 * Valores por defecto de la configuración
-	 */
-	const DEFAULT_CONFIG: FormGeoJsonConfig = {
-		showSearchBox: false,
-		showCoordinatesDisplay: true,
-		enableGeocoding: true,
-		defaultZoom: 13,
-		mapTypeControl: true,
-		streetViewControl: false,
-		fullscreenControl: false
-	};
 
 	type Props = {
 		id: string;
@@ -85,257 +48,56 @@
 		config = {}
 	}: Props = $props();
 
-	// Merge de configuración con defaults
-	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
+	const cfg = $derived({ ...DEFAULT_GEOJSON_CONFIG, ...config });
 
 	let searchQuery = $state('');
-	let isSearching = $state(false);
-	let searchError = $state<string | null>(null);
 	// eslint-disable-next-line svelte/no-top-level-browser-globals -- type-only usage for bind:this
 	let mapContainer = $state<HTMLDivElement>();
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-	let map: any = null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-	let marker: any = null;
-	let isMapLoaded = $state(false);
-	let mapError = $state<string | null>(null);
+	const longitude = $derived(value?.coordinates?.[0] ?? DEFAULT_COORDINATES[0]);
+	const latitude = $derived(value?.coordinates?.[1] ?? DEFAULT_COORDINATES[1]);
 
-	// Coordenadas por defecto (centro de España)
-	const defaultCoordinates: [number, number] = [-3.7038, 40.4168];
-
-	// Derived values para los inputs
-	const longitude = $derived(value?.coordinates?.[0] ?? defaultCoordinates[0]);
-	const latitude = $derived(value?.coordinates?.[1] ?? defaultCoordinates[1]);
-
-	function initializeMap() {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-		if (!mapContainer || !(window as any).google) return;
-
-		try {
-			const initialPosition = {
-				lat: latitude,
-				lng: longitude
-			};
-
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-			map = new (window as any).google.maps.Map(mapContainer, {
-				center: initialPosition,
-				zoom: cfg.defaultZoom,
-				mapTypeControl: cfg.mapTypeControl,
-				streetViewControl: cfg.streetViewControl,
-				fullscreenControl: cfg.fullscreenControl,
-				mapId: `map-${id}`
-			});
-
-			try {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-				const { AdvancedMarkerElement } = (window as any).google.maps.marker;
-				if (AdvancedMarkerElement) {
-					marker = new AdvancedMarkerElement({
-						position: initialPosition,
-						map: map,
-						title: 'Ubicación',
-						gmpDraggable: true
-					});
-
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-					marker.addListener('dragend', (_event: any) => {
-						if (!marker) return;
-						const position = marker.position;
-						if (position && position.lat !== undefined && position.lng !== undefined) {
-							const lat = typeof position.lat === 'function' ? position.lat() : position.lat;
-							const lng = typeof position.lng === 'function' ? position.lng() : position.lng;
-							updateCoordinates(lng, lat);
-						}
-					});
-
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-					map.addListener('click', (e: any) => {
-						if (e.latLng && marker) {
-							marker.position = e.latLng;
-							updateCoordinates(e.latLng.lng(), e.latLng.lat());
-						}
-					});
-				} else {
-					throw new Error('AdvancedMarkerElement not available');
-				}
-			} catch (advancedMarkerError) {
-				console.warn(
-					'AdvancedMarkerElement not available, falling back to deprecated Marker:',
-					advancedMarkerError
-				);
-				// Fallback to deprecated Marker API
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-				marker = new (window as any).google.maps.Marker({
-					position: initialPosition,
-					map: map,
-					draggable: true,
-					title: 'Ubicación'
-				});
-
-				marker.addListener('dragend', () => {
-					if (!marker) return;
-					const position = marker.getPosition();
-					if (position) {
-						updateCoordinates(position.lng(), position.lat());
-					}
-				});
-
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-				map.addListener('click', (e: any) => {
-					if (e.latLng && marker) {
-						marker.setPosition(e.latLng);
-						updateCoordinates(e.latLng.lng(), e.latLng.lat());
-					}
-				});
-			}
-
-			isMapLoaded = true;
-		} catch (err) {
-			console.error('Error initializing map:', err);
-			mapError = 'Error al cargar el mapa';
+	const controller = new GoogleMapController({
+		onCoordinatesChange: (point) => {
+			value = point;
 		}
-	}
+	});
 
-	async function searchLocation() {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-		if (!searchQuery.trim() || !(window as any).google) return;
+	// Initialize map when container DOM element is available
+	$effect(() => {
+		if (!mapContainer) return;
+		controller.init({ container: mapContainer, id, config });
+		return () => controller.destroy();
+	});
 
-		isSearching = true;
-		searchError = null;
-
-		try {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-			const geocoder = new (window as any).google.maps.Geocoder();
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-			const result = await new Promise<any>((resolve, reject) => {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Google Maps API (no types available)
-				geocoder.geocode({ address: searchQuery }, (results: any, status: string) => {
-					if (status === 'OK' && results) {
-						resolve(results);
-					} else {
-						reject({ status, results });
-					}
-				});
-			});
-
-			if (result.length > 0 && result[0].geometry?.location) {
-				const location = result[0].geometry.location;
-				const lat = location.lat();
-				const lng = location.lng();
-
-				updateCoordinates(lng, lat);
-				if (map) {
-					map.setCenter({ lat, lng });
-					map.setZoom(13);
-				}
-
-				// Actualizar marcador
-				if (marker) {
-					if (marker.position !== undefined) {
-						marker.position = { lat, lng };
-					} else if (marker.setPosition) {
-						marker.setPosition({ lat, lng });
-					}
-				}
-
-				searchQuery = '';
-			}
-		} catch (err: unknown) {
-			console.error('Error searching location:', err);
-
-			// Check if it's a Geocoding API permission error
-			const geoErr = err as { status?: string };
-			if (geoErr?.status === 'REQUEST_DENIED') {
-				searchError =
-					'La API key no tiene permisos de Geocoding. Activa "Geocoding API" en Google Cloud Console.';
-			} else if (geoErr?.status === 'ZERO_RESULTS') {
-				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
-			} else if (geoErr?.status === 'OVER_QUERY_LIMIT') {
-				searchError = 'Se ha excedido el límite de consultas de la API. Intenta más tarde.';
-			} else if (geoErr?.status === 'INVALID_REQUEST') {
-				searchError = 'Solicitud inválida. Verifica el formato de la búsqueda.';
-			} else {
-				searchError = 'No se encontró la ubicación. Intenta con otra ciudad o dirección.';
-			}
-		} finally {
-			isSearching = false;
+	// Sync external value changes to the map (separate effect to avoid triggering re-init)
+	$effect(() => {
+		if (value && controller.isLoaded) {
+			controller.syncFromValue(value);
 		}
+	});
+
+	async function handleSearch() {
+		await controller.searchLocation(searchQuery);
+		if (!controller.searchError) searchQuery = '';
 	}
 
 	function handleSearchKeydown(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			searchLocation();
+			handleSearch();
 		}
-	}
-
-	function updateCoordinates(lng: number, lat: number) {
-		value = {
-			type: 'Point',
-			coordinates: [Number(lng.toFixed(6)), Number(lat.toFixed(6))]
-		};
 	}
 
 	function handleLongitudeChange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		const lng = parseFloat(target.value);
-		if (!isNaN(lng)) {
-			updateCoordinates(lng, latitude);
-			updateMarkerPosition();
-		}
+		const lng = parseFloat((e.target as HTMLInputElement).value);
+		if (!isNaN(lng)) controller.setPosition(lng, latitude);
 	}
 
 	function handleLatitudeChange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		const lat = parseFloat(target.value);
-		if (!isNaN(lat)) {
-			updateCoordinates(longitude, lat);
-			updateMarkerPosition();
-		}
+		const lat = parseFloat((e.target as HTMLInputElement).value);
+		if (!isNaN(lat)) controller.setPosition(longitude, lat);
 	}
-
-	function updateMarkerPosition() {
-		if (marker && map) {
-			const position = { lat: latitude, lng: longitude };
-
-			if (marker.position !== undefined) {
-				marker.position = position;
-			} else if (marker.setPosition) {
-				marker.setPosition(position);
-			}
-
-			map.setCenter(position);
-		}
-	}
-
-	onMount(async () => {
-		// Verificar si Google Maps ya está cargado
-		if (isGoogleMapsLoaded()) {
-			initializeMap();
-			return;
-		}
-
-		// Verificar que existe la API key
-		const apiKey = env.PUBLIC_GOOGLE_MAPS_API_KEY;
-		if (!apiKey || apiKey === 'your_google_maps_api_key_here') {
-			mapError = 'Configura PUBLIC_GOOGLE_MAPS_API_KEY en el archivo .env';
-			return;
-		}
-
-		// Cargar Google Maps API usando la utilidad global
-		try {
-			await loadGoogleMapsAPI(apiKey);
-			// Pequeño delay para asegurar que todo está inicializado
-			setTimeout(() => {
-				initializeMap();
-			}, 50);
-		} catch (err) {
-			console.error('Error loading Google Maps:', err);
-			mapError = err instanceof Error ? err.message : 'Error al cargar Google Maps';
-		}
-	});
 </script>
 
 <div class={wrapperClass}>
@@ -352,19 +114,22 @@
 				<div class="relative">
 					<input
 						type="text"
-						placeholder="Buscar ciudad o dirección (ej: Oviedo, Madrid...)"
+						placeholder={m.geoJson_searchPlaceholder()}
 						class="input input-sm w-full pr-20"
 						bind:value={searchQuery}
 						onkeydown={handleSearchKeydown}
-						disabled={isSearching || !isMapLoaded || !cfg.enableGeocoding}
+						disabled={controller.isSearching || !controller.isLoaded || !cfg.enableGeocoding}
 					/>
 					<button
 						type="button"
 						class="btn btn-ghost btn-sm absolute top-0 right-0"
-						onclick={searchLocation}
-						disabled={isSearching || !isMapLoaded || !searchQuery.trim() || !cfg.enableGeocoding}
+						onclick={handleSearch}
+						disabled={controller.isSearching ||
+							!controller.isLoaded ||
+							!searchQuery.trim() ||
+							!cfg.enableGeocoding}
 					>
-						{#if isSearching}
+						{#if controller.isSearching}
 							<span class="loading loading-xs loading-spinner"></span>
 						{:else}
 							<Magnifier class="size-5" />
@@ -372,91 +137,82 @@
 					</button>
 				</div>
 
-				<!-- Mensaje de advertencia -->
 				<div class="text-warning mt-2 flex items-center gap-2 text-xs">
 					<InfoCircle class="size-4" />
-					<span
-						>Este buscador es solo para facilitar la ubicación del punto. No se guardará esta
-						información.</span
-					>
+					<span>{m.geoJson_searchHelperText()}</span>
 				</div>
 
-				{#if searchError}
-					<div class="text-error mt-2 text-xs">{searchError}</div>
+				{#if controller.searchError}
+					<div class="text-error mt-2 text-xs">{controller.searchError}</div>
 				{/if}
 			</div>
 		{/if}
 
-		<!-- Grid responsive: stack en mobile, 8+4 cols en desktop -->
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-12">
-			<!-- Mapa - 8 columnas en desktop, full width en mobile -->
-			<div class="md:col-span-8">
-				<div class="relative overflow-hidden rounded-lg">
-					{#if mapError}
-						<div class="bg-base-200 flex items-center justify-center p-8 {mapClass}">
-							<div class="text-center">
-								<p class="text-error text-sm">{mapError}</p>
-								<p class="text-base-content/50 mt-2 text-xs">
-									Configura tu API key de Google Maps en el componente
-								</p>
-							</div>
-						</div>
-					{:else}
-						<div bind:this={mapContainer} class="w-full {mapClass}">
-							{#if !isMapLoaded}
-								<div class="bg-base-200 flex items-center justify-center {mapClass}">
-									<span class="loading loading-lg loading-spinner"></span>
-								</div>
-							{/if}
-						</div>
-					{/if}
-				</div>
+		<!-- Map container always in the DOM to prevent $effect re-init cycles -->
+		<div class="relative overflow-hidden rounded-lg">
+			<div
+				bind:this={mapContainer}
+				class="w-full {mapClass}"
+				class:invisible={!!controller.error}
+			></div>
 
-				<div class="text-base-content/50 mt-2 text-xs">
-					Haz clic en el mapa o arrastra el marcador para cambiar la ubicación
+			{#if controller.error}
+				<div class="bg-base-200 absolute inset-0 flex items-center justify-center p-8 {mapClass}">
+					<div class="text-center">
+						<p class="text-error text-sm">{controller.error}</p>
+						<p class="text-base-content/50 mt-2 text-xs">
+							{m.geoJson_configureApiKey()}
+						</p>
+					</div>
 				</div>
+			{:else if !controller.isLoaded}
+				<div class="bg-base-200 absolute inset-0 flex items-center justify-center {mapClass}">
+					<span class="loading loading-lg loading-spinner"></span>
+				</div>
+			{/if}
+		</div>
+
+		<div class="mt-2 flex items-end gap-4">
+			<div class="text-base-content/50 flex-1 text-xs">
+				{m.geoJson_mapClickHint()}
 			</div>
 
-			<!-- Inputs de coordenadas -->
 			{#if cfg.showCoordinatesDisplay}
-				<div class="md:col-span-4">
-					<div class="grid grid-cols-2 gap-4 md:grid-cols-1">
-						<div>
-							<label class="label text-xs" for="{id}-longitude">
-								<span>Longitud</span>
-							</label>
-							<input
-								type="number"
-								id="{id}-longitude"
-								name="{id}.coordinates[0]"
-								class="input w-full"
-								class:input-error={error}
-								value={longitude}
-								step="0.000001"
-								oninput={handleLongitudeChange}
-							/>
-						</div>
-						<div>
-							<label class="label text-xs" for="{id}-latitude">
-								<span>Latitud</span>
-							</label>
-							<input
-								type="number"
-								id="{id}-latitude"
-								name="{id}.coordinates[1]"
-								class="input w-full"
-								class:input-error={error}
-								value={latitude}
-								step="0.000001"
-								oninput={handleLatitudeChange}
-							/>
-						</div>
+				<div class="flex items-end gap-3">
+					<div>
+						<label class="label text-xs" for="{id}-latitude">
+							<span>{m.geoJson_latitude()}</span>
+						</label>
+						<input
+							type="number"
+							id="{id}-latitude"
+							name="{id}.coordinates[1]"
+							class="input input-sm w-36"
+							class:input-error={error}
+							value={latitude}
+							step="0.000001"
+							oninput={handleLatitudeChange}
+						/>
+					</div>
+					<div>
+						<label class="label text-xs" for="{id}-longitude">
+							<span>{m.geoJson_longitude()}</span>
+						</label>
+						<input
+							type="number"
+							id="{id}-longitude"
+							name="{id}.coordinates[0]"
+							class="input input-sm w-36"
+							class:input-error={error}
+							value={longitude}
+							step="0.000001"
+							oninput={handleLongitudeChange}
+						/>
 					</div>
 				</div>
 			{/if}
 		</div>
 
-		<!-- Hidden input para el tipo -->
 		<input type="hidden" name="{id}.type" value="Point" />
 
 		<FormErrorMsg {error} />

@@ -13,7 +13,8 @@
 			"./messages/{locale}/activities.json",
 			"./messages/{locale}/enums.json",
 			"./messages/{locale}/users.json",
-			"./messages/{locale}/locations.json"
+			"./messages/{locale}/locations.json",
+			"./messages/{locale}/geoJson.json"
 		]
 	}
 }

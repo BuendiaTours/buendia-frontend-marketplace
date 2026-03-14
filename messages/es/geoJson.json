@@ -1,0 +1,18 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"geoJson_searchPlaceholder": "Buscar ciudad o direcci\u00f3n (ej: Oviedo, Madrid...)",
+	"geoJson_searchHelperText": "Este buscador es solo para facilitar la ubicaci\u00f3n del punto. No se guardar\u00e1 esta informaci\u00f3n.",
+	"geoJson_mapClickHint": "Haz clic en el mapa o arrastra el marcador para cambiar la ubicaci\u00f3n",
+	"geoJson_longitude": "Longitud",
+	"geoJson_latitude": "Latitud",
+	"geoJson_markerTitle": "Ubicaci\u00f3n",
+	"geoJson_mapLoadError": "Error al cargar el mapa",
+	"geoJson_configureApiKey": "Configura tu API key de Google Maps en el componente",
+	"geoJson_configureApiKeyEnv": "Configura PUBLIC_GOOGLE_MAPS_API_KEY en el archivo .env",
+	"geoJson_searchErrorDenied": "La API key no tiene permisos de Geocoding. Activa \"Geocoding API\" en Google Cloud Console.",
+	"geoJson_searchErrorNotFound": "No se encontr\u00f3 la ubicaci\u00f3n. Intenta con otra ciudad o direcci\u00f3n.",
+	"geoJson_searchErrorOverLimit": "Se ha excedido el l\u00edmite de consultas de la API. Intenta m\u00e1s tarde.",
+	"geoJson_searchErrorInvalidRequest": "Solicitud inv\u00e1lida. Verifica el formato de la b\u00fasqueda.",
+	"geoJson_apiLoadError": "Error al cargar Google Maps. Verifica la API key.",
+	"geoJson_apiUnavailable": "Error al cargar Google Maps. La API no est\u00e1 disponible."
+}
