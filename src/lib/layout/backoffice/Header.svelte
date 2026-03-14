@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import ThemeSwitcher from '$lib/components/backoffice/ThemeSwitcher.svelte';
 	import { ROUTES } from '$lib/config/routes';
@@ -68,6 +69,14 @@
 				</li>
 				<li>
 					<a
+						href={ROUTES.backoffice.categories.list}
+						class:menu-active={isActive(ROUTES.backoffice.categories.list)}
+					>
+						{m.categories_navLabel()}
+					</a>
+				</li>
+				<li>
+					<a
 						href={ROUTES.backoffice.components}
 						class:menu-active={isActive(ROUTES.backoffice.components)}
 					>
@@ -112,6 +121,14 @@
 					class:menu-active={isActive(ROUTES.backoffice.users.list)}
 				>
 					Usuarios
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.categories.list}
+					class:menu-active={isActive(ROUTES.backoffice.categories.list)}
+				>
+					{m.categories_navLabel()}
 				</a>
 			</li>
 			<li>

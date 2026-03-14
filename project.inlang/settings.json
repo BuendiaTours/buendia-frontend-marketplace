@@ -15,7 +15,8 @@
 			"./messages/{locale}/users.json",
 			"./messages/{locale}/locations.json",
 			"./messages/{locale}/geoJson.json",
-			"./messages/{locale}/attractions.json"
+			"./messages/{locale}/attractions.json",
+			"./messages/{locale}/categories.json"
 		]
 	}
 }
