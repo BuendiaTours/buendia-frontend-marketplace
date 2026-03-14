@@ -2,6 +2,7 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"locations_breadcrumbLocation": "Ubicación",
 	"locations_editPageTitle": "Editar Ubicación",
+	"locations_createPageTitle": "Nueva Ubicación",
 	"locations_backToList": "Volver al listado",
 	"locations_createLocation": "Crear ubicación",
 	"locations_confirmDeleteTitle": "Eliminar elemento",

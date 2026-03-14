@@ -1,12 +1,16 @@
 <script lang="ts">
+	/**
+	 * Edit location page.
+	 * Loads the existing location data and renders the form in edit mode.
+	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 	import LocationForm from '../../components/LocationForm.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
 	const breadcrumbs = $derived(
 		buildBreadcrumbs(page.url.pathname, {
@@ -22,7 +26,7 @@
 <LocationBar title={m.locations_editPageTitle()} {breadcrumbs} />
 
 <LocationForm
-	data={{ form: data.form }}
+	form={data.form}
 	mode="edit"
 	locationId={data.location.id}
 	parentName={data.parentName}

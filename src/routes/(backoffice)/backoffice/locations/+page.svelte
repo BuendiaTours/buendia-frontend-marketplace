@@ -1,44 +1,30 @@
 <script lang="ts">
-	// ============================================================================
-	// IMPORTS
-	// ============================================================================
-
-	// Types
-	import type { PageData } from './$types';
-	import type { Location, Column } from '$lib/types';
+	/**
+	 * Locations list page.
+	 * Displays a filterable, sortable, paginated table of locations.
+	 */
+	import type { PageProps } from './$types';
 	import type { LocationsFilters } from './schemas/filters.schema';
 
-	// SvelteKit
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
-	// Utils
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { locationsFiltersSchema } from './schemas/filters.schema';
-
-	// Enums
 	import { LOCATION_KIND_OPTIONS } from '$lib/labels/locations';
-
-	// Routes
 	import { LOCATION_ROUTES } from '$lib/config/routes/backoffice/locations';
 
-	// Components
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
-
-	// Icons
 	import { Add, Magnifier } from '$lib/icons/Linear';
 
-	// ============================================================================
-	// PROPS & DATA
-	// ============================================================================
-
-	let { data }: { data: PageData } = $props();
+	/** Page data from server load function. */
+	let { data }: PageProps = $props();
 
 	const items = $derived(data.items);
 	const pagination = $derived(data.pagination);
@@ -47,26 +33,10 @@
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
-	// ============================================================================
-	// SEARCH STATE
-	// ============================================================================
+	/** Local search input state, synced from URL filters. */
+	let searchQuery = $derived(filters.q || '');
 
-	let searchQuery = $derived.by(() => filters.q || '');
-
-	// ============================================================================
-	// FILTRO: KIND
-	// ============================================================================
-
-	function handleKindFilterChange(filterKey: string, value: string | null) {
-		applyFilterPatch({
-			[filterKey]: value
-		} as { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> });
-	}
-
-	// ============================================================================
-	// FILTER FUNCTIONS
-	// ============================================================================
-
+	/** Applies a partial filter update to the URL search params. */
 	function applyFilterPatch(patch: {
 		[K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]>;
 	}) {
@@ -75,32 +45,19 @@
 		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
+	function handleKindFilterChange(filterKey: string, value: string | null) {
+		applyFilterPatch({
+			[filterKey]: value
+		} as { [K in keyof LocationsFilters]?: PatchValue<LocationsFilters[K]> });
+	}
+
 	function handleSearch() {
 		applyFilterPatch({ q: searchQuery || null });
 	}
 
-	// ============================================================================
-	// SORTING
-	// ============================================================================
-	// Sort logic is now handled inside TableSortableHeader component
-	// Reset sort logic is now handled inside TableResetSort component
-
-	// ============================================================================
-	// TABLA Y PAGINACIÓN
-	// ============================================================================
-
-	const columns: Column<Location>[] = [
-		{ key: 'name', title: 'Nombre', sortable: true },
-		{ key: 'kind', title: 'Tipo', sortable: true }
-	];
-
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
 	}
-
-	// ============================================================================
-	// COMPUTED
-	// ============================================================================
 </script>
 
 <svelte:head>
@@ -145,24 +102,30 @@
 	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
-				{#each columns as col (col.key)}
-					<th>
-						{#if col.sortable}
-							<TableSortableHeader
-								title={col.title}
-								field={col.key}
-								currentSort={sort}
-								onSortChange={(newSort) =>
-									applyFilterPatch({
-										sort: newSort.field as LocationsFilters['sort'],
-										order: newSort.order
-									})}
-							/>
-						{:else}
-							<span>{col.title}</span>
-						{/if}
-					</th>
-				{/each}
+				<th>
+					<TableSortableHeader
+						title="Nombre"
+						field="name"
+						currentSort={sort}
+						onSortChange={(newSort) =>
+							applyFilterPatch({
+								sort: newSort.field as LocationsFilters['sort'],
+								order: newSort.order
+							})}
+					/>
+				</th>
+				<th>
+					<TableSortableHeader
+						title="Tipo"
+						field="kind"
+						currentSort={sort}
+						onSortChange={(newSort) =>
+							applyFilterPatch({
+								sort: newSort.field as LocationsFilters['sort'],
+								order: newSort.order
+							})}
+					/>
+				</th>
 				<th class="w-0">
 					<TableResetSort currentSort={sort} />
 				</th>
@@ -171,7 +134,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan={columns.length + 1} class="text-center">
+					<td colspan="3" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">No se encontraron elementos</p>
 						</div>
@@ -180,40 +143,24 @@
 			{:else}
 				{#each items as item (item.id)}
 					<tr>
-						{#each columns as col (col.key)}
-							{#if col.key === 'name'}
-								<td>
-									<p>
-										<a
-											href={buildUrlWithFilters(
-												LOCATION_ROUTES.edit(item.id),
-												page.url.searchParams
-											)}
-										>
-											{item[col.key]}
-										</a>
-									</p>
-									<p class="text-base-content/50 text-xs">
-										{item['descriptionShort']}
-									</p>
-									{#if item.parent?.name}
-										<p class="text-base-content/40 text-xs">
-											Pertenece a "{item.parent.name}"
-										</p>
-									{/if}
-								</td>
-							{:else if col.key === 'kind'}
-								<td>
-									<span>
-										{LOCATION_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
-									</span>
-								</td>
-							{:else}
-								<td>
-									{item[col.key]}
-								</td>
+						<td>
+							<p>
+								<a href={buildUrlWithFilters(LOCATION_ROUTES.edit(item.id), page.url.searchParams)}>
+									{item.name}
+								</a>
+							</p>
+							<p class="text-base-content/50 text-xs">
+								{item.descriptionShort}
+							</p>
+							{#if item.parent?.name}
+								<p class="text-base-content/40 text-xs">
+									Pertenece a "{item.parent.name}"
+								</p>
 							{/if}
-						{/each}
+						</td>
+						<td>
+							{LOCATION_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
+						</td>
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
 								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>

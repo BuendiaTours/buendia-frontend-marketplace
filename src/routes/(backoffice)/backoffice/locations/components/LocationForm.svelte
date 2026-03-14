@@ -1,6 +1,7 @@
 <script lang="ts">
 	/**
-	 * LocationForm - Reusable form for creating and editing locations
+	 * LocationForm — Reusable form for creating and editing locations.
+	 * Handles parent search, name, kind, and short description fields.
 	 */
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
@@ -18,21 +19,19 @@
 	import { searchLocations, loadLocationById } from '../queries/location-search.queries';
 
 	type Props = {
-		data: {
-			form: SuperValidated<LocationFormSchema>;
-		};
+		form: SuperValidated<LocationFormSchema>;
 		mode: 'create' | 'edit';
 		locationId?: string;
 		parentName?: string | null;
 	};
 
-	let { data, mode, locationId, parentName }: Props = $props();
+	let { form: formData, mode, locationId, parentName }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
 
 	// svelte-ignore state_referenced_locally
-	const { form, errors, enhance } = superForm(data.form, {
+	const { form, errors, enhance } = superForm(formData, {
 		dataType: 'json'
 	});
 
