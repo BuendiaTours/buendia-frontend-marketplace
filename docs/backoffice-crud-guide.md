@@ -1,7 +1,7 @@
 # Guía: Crear una sección CRUD en el Backoffice
 
-> Ejemplo de referencia: sección **Destinations**
-> `src/routes/(backoffice)/backoffice/destinations/`
+> Ejemplo de referencia: sección **Locations**
+> `src/routes/(backoffice)/backoffice/locations/`
 
 ---
 
@@ -14,17 +14,14 @@ backoffice/[resource]/
 ├── create/
 │   ├── +page.svelte              ← Formulario de creación
 │   └── +page.server.ts           ← Load + action de creación
-├── [slug]/
-│   ├── +page.svelte              ← Vista detalle (read-only)
-│   ├── +page.server.ts           ← Load del detalle
-│   ├── edit/
-│   │   ├── +page.svelte          ← Formulario de edición
-│   │   └── +page.server.ts       ← Load + action de edición
-│   └── delete/
-│       ├── +page.svelte          ← Vacío (solo existe por requerimiento de SK)
-│       └── +page.server.ts       ← Action de borrado
+├── [id]/edit/
+│   ├── +page.svelte              ← Formulario de edición
+│   └── +page.server.ts           ← Load + actions de edición y borrado
 ├── components/
-│   └── ResourceForm.svelte       ← Formulario compartido (create + edit)
+│   ├── ResourceForm.svelte       ← Formulario compartido (create + edit)
+│   └── ResourceFormActions.svelte ← Barra de acciones (volver, borrar, guardar)
+├── queries/
+│   └── resource-search.queries.ts ← Búsquedas asíncronas del lado del cliente
 └── schemas/
     ├── resource-form.schema.ts   ← Schema Zod del formulario
     └── filters.schema.ts         ← Schema de filtros URL
@@ -32,74 +29,102 @@ backoffice/[resource]/
 
 ---
 
-## 1. Tipos TypeScript
+## 1. Tipos y peticiones API (`src/core/`)
 
-**Archivo:** [`src/lib/types.ts`](src/lib/types.ts)
-
-Todos los tipos del proyecto van aquí. Añadir el tipo del recurso:
+### Tipos — `src/core/[resource]/types.ts`
 
 ```typescript
-export type Destination = {
+import type { ResourceKind } from '$core/[resource]/enums';
+
+/** Full projection as returned by the API. */
+export type Resource = {
 	id: string;
 	name: string;
-	slug: string;
-	kind: DestinationKind;
-	descriptionShort: string;
-	photoUrlHero: string;
+	kind: ResourceKind;
+	descriptionShort: string | null;
+};
+
+/** Payload for creating a new resource. */
+export type ResourceCreateDto = {
+	id: string;
+	name: string;
+	kind: ResourceKind;
+	descriptionShort?: string;
+};
+
+/** Payload for partially updating a resource. */
+export type ResourceUpdateDto = {
+	name?: string;
+	kind?: ResourceKind;
+	descriptionShort?: string;
+};
+
+/** Query parameters for filtering/sorting/paginating. */
+export type ResourceCriteria = {
+	skip?: number;
+	limit?: number;
+	query?: string;
+	kind?: ResourceKind;
+	sort?: string;
+	order?: string;
 };
 ```
 
----
-
-## 2. Endpoints API
-
-**Archivo:** [`src/lib/api/backoffice/endpoints/destinations.ts`](src/lib/api/backoffice/endpoints/destinations.ts)
-**Rutas:** [`src/lib/api/shared/endpoints.config.ts`](src/lib/api/shared/endpoints.config.ts)
-
-Primero definir la ruta en `endpoints.config.ts`, luego implementar el módulo:
+### Requests — `src/core/[resource]/requests.ts`
 
 ```typescript
-// endpoints/destinations.ts
+import type { CriteriaResult } from '$core/_shared/types';
 import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import type { Resource, ResourceCreateDto, ResourceCriteria, ResourceUpdateDto } from './types';
 
-const BASE = '/destinations';
+const BASE = '/resources';
 
-export const DESTINATION_REQUEST = {
-	findByCriteria: (fetch, criteria?) => getWithParams(fetch, BASE, criteria),
-	findBySlug: (fetch, slug) => get(fetch, `${BASE}/slug/${slug}`),
-	create: (fetch, data) => post(fetch, BASE, data),
-	update: (fetch, id, data) => patch(fetch, `${BASE}/${id}`, data),
-	delete: (fetch, id) => del(fetch, `${BASE}/${id}`)
+/** API request functions for the Resource entity. */
+export const RESOURCE_REQUEST = {
+	create: (fetchFn: typeof fetch, data: ResourceCreateDto): Promise<void> =>
+		post(fetchFn, BASE, data),
+
+	update: (fetchFn: typeof fetch, id: string, data: ResourceUpdateDto): Promise<void> =>
+		patch(fetchFn, `${BASE}/${id}`, data),
+
+	delete: (fetchFn: typeof fetch, id: string): Promise<void> => del(fetchFn, `${BASE}/${id}`),
+
+	findById: (fetchFn: typeof fetch, id: string): Promise<Resource> =>
+		get<Resource>(fetchFn, `${BASE}/${id}`),
+
+	findByCriteria: (
+		fetchFn: typeof fetch,
+		criteria?: ResourceCriteria
+	): Promise<CriteriaResult<Resource>> =>
+		getWithParams<CriteriaResult<Resource>>(fetchFn, BASE, criteria)
 };
 ```
 
-> Nunca usar `fetch()` directamente. Siempre pasar el `fetch` de SvelteKit.
+> Nunca usar `fetch()` directamente. Siempre pasar a través de los helpers de `$core` para obtener retry, timeout, auth headers y errores tipados.
 
 ---
 
-## 3. Schema de validación (Zod)
+## 2. Schema de validación (Zod)
 
-**Archivo:** `schemas/destination-form.schema.ts`
+**Archivo:** `schemas/resource-form.schema.ts`
 
 ```typescript
 import { z } from 'zod/v3';
-import { DestinationKind } from '$core/destinations/enums';
+import { ResourceKind } from '$core/[resource]/enums';
 
-export const destinationFormSchema = z.object({
+export const resourceFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2).max(100),
-	slug: z.string().min(2).max(100),
-	kind: z.nativeEnum(DestinationKind),
-	descriptionShort: z.string().min(10).max(500),
-	photoUrlHero: z.string().url()
+	kind: z.nativeEnum(ResourceKind),
+	descriptionShort: z.string().max(500).optional()
 });
 
-export type DestinationFormSchema = z.infer<typeof destinationFormSchema>;
+export type ResourceFormSchema = z.infer<typeof resourceFormSchema>;
 ```
 
 ---
 
-## 4. Filtros URL
+## 3. Filtros URL
 
 **Archivo:** `schemas/filters.schema.ts`
 **Utilidades:** [`src/lib/utils/filters.ts`](src/lib/utils/filters.ts)
@@ -107,16 +132,34 @@ export type DestinationFormSchema = z.infer<typeof destinationFormSchema>;
 La URL es la única fuente de verdad para filtros, paginación y orden:
 
 ```typescript
-import { createPageField, createSortField, createOrderField } from '$lib/utils/filters';
+import {
+	createPageField,
+	createPageSizeField,
+	createSortField,
+	createOrderField
+} from '$lib/utils/filters';
 
-export const destinationsFiltersSchema = {
+export type ResourceFilters = {
+	page?: number;
+	pageSize?: number;
+	sort?: 'name' | 'kind';
+	order?: 'asc' | 'desc';
+	q?: string;
+	kind?: string;
+};
+
+export const resourceFiltersSchema = {
 	fields: {
 		page: createPageField(),
-		sort: createSortField(['id', 'name', 'slug'] as const),
+		pageSize: createPageSizeField(),
+		sort: createSortField(['name', 'kind'] as const),
 		order: createOrderField(),
 		q: {
-			parse: (raw) => raw || undefined,
-			serialize: (val, out) => (val ? out.set('q', val) : out.delete('q')),
+			parse: (raw: string | null) => raw || undefined,
+			serialize: (val: string | undefined, out: URLSearchParams) => {
+				if (val) out.set('q', val);
+				else out.delete('q');
+			},
 			resetPageOnChange: true
 		}
 	}
@@ -125,117 +168,328 @@ export const destinationsFiltersSchema = {
 
 ---
 
-## 5. Server factories (CRUD sin boilerplate)
-
-**Directorio:** [`src/lib/server/backoffice/`](src/lib/server/backoffice/)
-
-Las factories generan el 90% del código repetitivo. Son las mismas para todos los recursos.
+## 4. Server: Load y Actions
 
 ### Listado — `+page.server.ts`
 
 ```typescript
+import type { PageServerLoad } from './$types';
+import { error } from '@sveltejs/kit';
 import { parseFilters } from '$lib/utils/filters';
-import { destinationsFiltersSchema } from './schemas/filters.schema';
-import { DESTINATION_REQUEST } from '$core/destinations/requests';
 import { buildPagination } from '$core/_shared/params';
+import { ApiError } from '$core/_shared/errors';
+import { RESOURCE_REQUEST } from '$core/[resource]/requests';
+import { resourceFiltersSchema } from './schemas/filters.schema';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
-	const response = await DESTINATION_REQUEST.findByCriteria(fetch, filters);
-	return {
-		items: response.data,
-		pagination: buildPagination(response.total, filters.page, filters.pageSize),
-		filters
-	};
+	const filters = parseFilters(resourceFiltersSchema, url.searchParams);
+
+	try {
+		const response = await RESOURCE_REQUEST.findByCriteria(fetch, {
+			page: filters.page,
+			pageSize: filters.pageSize,
+			sort: filters.sort,
+			order: filters.order,
+			query: filters.q
+		});
+
+		return {
+			items: response.data || [],
+			pagination: buildPagination(response.total, filters.page ?? 1, filters.pageSize ?? 10),
+			filters,
+			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null
+		};
+	} catch (err) {
+		if (err instanceof ApiError) throw error(err.status || 500);
+		throw error(503);
+	}
 };
 ```
 
 ### Creación — `create/+page.server.ts`
 
 ```typescript
-import { createCreateLoad }   from '$lib/server/backoffice/createLoad'
-import { createCreateAction } from '$lib/server/backoffice/createAction'
-import { zod } from 'sveltekit-superforms/adapters'
+import { createCreateLoad } from '$lib/server/backoffice/createLoad';
+import { createCreateAction } from '$lib/server/backoffice/createAction';
+import { zod } from 'sveltekit-superforms/adapters';
+import { resourceFormSchema } from '../schemas/resource-form.schema';
+import { RESOURCE_REQUEST } from '$core/[resource]/requests';
+import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 
-export const load    = createCreateLoad({
-  schema: zod(destinationFormSchema),
-  initialValues: { name: '', slug: '', kind: undefined, ... }
-})
-
-export const actions = {
-  default: createCreateAction({
-    basePath:  '/backoffice/destinations',
-    schema:    zod(destinationFormSchema),
-    createFn:  DESTINATION_REQUEST.create,
-    entityName: 'destino',
-    redirectToEdit: true
-  })
-}
-```
-
-### Edición — `[slug]/edit/+page.server.ts`
-
-```typescript
-export const load: PageServerLoad = async ({ fetch, params }) => {
-	const item = await DESTINATION_REQUEST.findBySlug(fetch, params.slug);
-	const form = await superValidate({ ...item }, zod(destinationFormSchema));
-	return { item, form };
-};
+export const load = createCreateLoad({
+	schema: zod(resourceFormSchema),
+	initialValues: { name: '', kind: undefined, descriptionShort: '' }
+});
 
 export const actions = {
-	default: createUpdateAction({
-		basePath: '/backoffice/destinations',
-		schema: zod(destinationFormSchema),
-		updateFn: DESTINATION_REQUEST.update
+	default: createCreateAction({
+		basePath: `${BACKOFFICE_PREFIX}/resources`,
+		schema: zod(resourceFormSchema),
+		createFn: RESOURCE_REQUEST.create,
+		entityName: 'recurso',
+		redirectToEdit: true
 	})
 };
 ```
 
-### Borrado — `[slug]/delete/+page.server.ts`
+### Edición + Borrado — `[id]/edit/+page.server.ts`
 
 ```typescript
-export const actions = {
-	default: createDeleteAction({
-		basePath: '/backoffice/destinations',
-		deleteFn: DESTINATION_REQUEST.delete
+import type { PageServerLoad, Actions } from './$types';
+import { error } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { ApiError } from '$core/_shared/errors';
+import { RESOURCE_REQUEST } from '$core/[resource]/requests';
+import { createUpdateAction } from '$lib/server/backoffice/updateAction';
+import { createDeleteAction } from '$lib/server/backoffice/deleteAction';
+import { resourceFormSchema } from '../../schemas/resource-form.schema';
+import { BACKOFFICE_PREFIX } from '$lib/config/routes';
+
+export const load: PageServerLoad = async ({ fetch, params }) => {
+	try {
+		const item = await RESOURCE_REQUEST.findById(fetch, params.id);
+		const form = await superValidate(
+			{
+				id: item.id,
+				name: item.name,
+				kind: item.kind,
+				descriptionShort: item.descriptionShort ?? ''
+			},
+			zod(resourceFormSchema)
+		);
+		return { item, form };
+	} catch (err) {
+		if (err instanceof ApiError) throw error(err.status || 500);
+		throw error(503);
+	}
+};
+
+export const actions: Actions = {
+	update: createUpdateAction({
+		basePath: `${BACKOFFICE_PREFIX}/resources`,
+		schema: zod(resourceFormSchema),
+		updateFn: RESOURCE_REQUEST.update,
+		redirectToList: true,
+		paramName: 'id',
+		transformData: ({ id, ...rest }) => rest
+	}),
+	delete: createDeleteAction({
+		basePath: `${BACKOFFICE_PREFIX}/resources`,
+		deleteFn: RESOURCE_REQUEST.delete
 	})
 };
 ```
 
 ---
 
-## 6. Formulario Svelte (`ResourceForm.svelte`)
+## 5. Páginas Svelte
 
-Un único componente para create y edit, con prop `mode: 'create' | 'edit'`:
+### Listado — `+page.svelte`
 
 ```svelte
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms';
-	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
-	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	/**
+	 * Resource list page.
+	 * Filterable, sortable, paginated table.
+	 */
+	import type { PageProps } from './$types';
 
-	let { data, mode } = $props();
-	const { form, errors, enhance } = superForm(data.form, { dataType: 'json' });
+	let { data }: PageProps = $props();
+
+	const items = $derived(data.items);
+</script>
+```
+
+Patrones clave:
+
+- Usar `PageProps` (no `{ data: PageData }`)
+- Usar `$derived` para valores computados desde `data`
+- Usar `$state` + `$effect` para estado local de inputs que se sincroniza con filtros URL
+
+### Crear — `create/+page.svelte`
+
+```svelte
+<script lang="ts">
+	/**
+	 * Create resource page.
+	 */
+	import * as m from '$paraglide/messages';
+	import type { PageProps } from './$types';
+	import ResourceForm from '../components/ResourceForm.svelte';
+
+	let { data }: PageProps = $props();
 </script>
 
-<form method="POST" use:enhance>
-	<FormInputText id="name" label="Nombre" bind:value={$form.name} error={$errors.name} />
+<ResourceForm form={data.form} mode="create" />
+```
 
-	<FormSelect
-		id="kind"
-		label="Tipo"
-		bind:value={$form.kind}
-		error={$errors.kind}
-		options={DESTINATION_KIND_OPTIONS}
+### Editar — `[id]/edit/+page.svelte`
+
+```svelte
+<script lang="ts">
+	/**
+	 * Edit resource page.
+	 */
+	import * as m from '$paraglide/messages';
+	import type { PageProps } from './$types';
+	import ResourceForm from '../../components/ResourceForm.svelte';
+
+	let { data }: PageProps = $props();
+</script>
+
+<ResourceForm form={data.form} mode="edit" resourceId={data.item.id} />
+```
+
+---
+
+## 6. Formulario (`ResourceForm.svelte`)
+
+Un único componente para create y edit. El form se recibe directamente como prop (sin wrapper):
+
+```svelte
+<script lang="ts">
+	/**
+	 * ResourceForm — Shared form for creating and editing resources.
+	 */
+	import * as m from '$paraglide/messages';
+	import { superForm } from 'sveltekit-superforms';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { ResourceFormSchema } from '../schemas/resource-form.schema';
+	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
+	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import ResourceFormActions from './ResourceFormActions.svelte';
+
+	type Props = {
+		form: SuperValidated<ResourceFormSchema>;
+		mode: 'create' | 'edit';
+		resourceId?: string;
+	};
+
+	let { form: formData, mode, resourceId }: Props = $props();
+
+	const isEditMode = $derived(mode === 'edit');
+	const formAction = $derived(isEditMode ? '?/update' : undefined);
+
+	// svelte-ignore state_referenced_locally
+	const { form, errors, enhance } = superForm(formData, { dataType: 'json' });
+
+	const formId = 'resource-form';
+</script>
+
+<ResourceFormActions {mode} {resourceId} {formId} />
+
+<form id={formId} method="POST" action={formAction} use:enhance>
+	<FormInputText
+		id="name"
+		label={m.resources_labelName()}
+		bind:value={$form.name}
+		error={$errors.name}
 	/>
-
-	<button type="submit">
-		{mode === 'create' ? 'Crear' : 'Guardar'}
-	</button>
 </form>
 ```
 
-**Componentes de formulario disponibles** en [`src/lib/components/backoffice/forms/`](src/lib/components/backoffice/forms/):
+---
+
+## 7. Barra de acciones (`ResourceFormActions.svelte`)
+
+**Importante:** El form de borrado DEBE usar `use:enhance` para evitar un full page reload.
+
+```svelte
+<script lang="ts">
+	/**
+	 * ResourceFormActions — Action bar with back, delete, and submit buttons.
+	 */
+	import * as m from '$paraglide/messages';
+	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
+	import { RESOURCE_ROUTES } from '$lib/config/routes/backoffice/resources';
+
+	type Props = {
+		mode: 'create' | 'edit';
+		resourceId?: string;
+		formId: string;
+	};
+
+	let { mode, resourceId, formId }: Props = $props();
+
+	const isCreateMode = $derived(mode === 'create');
+	const isEditMode = $derived(mode === 'edit');
+</script>
+
+<div class="bnd-main-actions ...">
+	<a href={`${RESOURCE_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
+		← {m.resources_backToList()}
+	</a>
+
+	{#if isEditMode && resourceId}
+		<form method="POST" action={`${RESOURCE_ROUTES.edit(resourceId)}?/delete`} class="ml-auto" use:enhance>
+			<button type="submit" class="btn btn-soft btn-error"
+				use:confirmAction={{ title: m.resources_confirmDeleteTitle(), ... }}>
+				{m.resources_deleteButton()}
+			</button>
+		</form>
+	{/if}
+
+	<button form={formId} type="submit" class="btn btn-outline btn-primary" class:ml-auto={isCreateMode}>
+		{isCreateMode ? m.resources_create() : m.resources_saveChanges()}
+	</button>
+</div>
+```
+
+---
+
+## 8. Queries del lado del cliente
+
+**Archivo:** `queries/resource-search.queries.ts`
+
+Para componentes de búsqueda asíncrona que necesitan hacer fetch desde el browser:
+
+```typescript
+/**
+ * Client-side search queries for the resource form.
+ * Maps API responses to SearchResult format for FormAsyncSearch.
+ */
+import type { SearchResult } from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
+import { RESOURCE_REQUEST } from '$core/[resource]/requests';
+
+export async function searchResources(query: string): Promise<SearchResult[]> {
+	try {
+		const result = await RESOURCE_REQUEST.findByCriteria(fetch, { query, limit: 10 });
+		return (result.data ?? []).map((item) => ({
+			value: item.id,
+			label: item.name
+		}));
+	} catch {
+		return [];
+	}
+}
+```
+
+> Siempre usar las funciones de `$core` — nunca `fetch()` con URLs construidas manualmente.
+
+---
+
+## 9. Rutas del recurso
+
+**Archivo:** `src/lib/config/routes/backoffice/[resource].ts`
+
+```typescript
+import { backoffice } from '../core';
+
+export const RESOURCE_ROUTES = {
+	list: backoffice('resources'),
+	create: backoffice('resources/create'),
+	edit: (id: string) => backoffice('resources', id, 'edit')
+};
+```
+
+---
+
+## 10. Componentes de formulario disponibles
+
+En `src/lib/components/backoffice/forms/`:
 
 | Componente             | Uso                                      |
 | ---------------------- | ---------------------------------------- |
@@ -246,59 +500,22 @@ Un único componente para create y edit, con prop `mode: 'create' | 'edit'`:
 | `FormTextareaMarkdown` | Editor markdown                          |
 | `FormCheckboxGroup`    | Checkboxes múltiples                     |
 | `FormTagManager`       | Gestión de tags                          |
+| `FormAsyncSearch`      | Búsqueda asíncrona con debounce          |
 | `layout/FormAccordion` | Sección colapsable con título            |
 
 ---
 
-## 7. Rutas del recurso
+## Checklist para un CRUD nuevo
 
-**Archivo:** `src/lib/config/routes/backoffice/[resource].ts`
-
-```typescript
-import { backoffice } from '../core';
-
-export const DESTINATION_ROUTES = {
-	list: backoffice('destinations'),
-	create: backoffice('destinations/create'),
-	detail: (slug: string) => backoffice('destinations', slug),
-	edit: (slug: string) => backoffice('destinations', slug, 'edit'),
-	delete: (slug: string) => backoffice('destinations', slug, 'delete')
-};
-```
-
----
-
-## 8. Flujo completo
-
-```
-GET  /backoffice/destinations          → listado con filtros
-GET  /backoffice/destinations/create   → form vacío con UUID pre-generado
-POST /backoffice/destinations/create   → valida → POST API → redirect a edit
-GET  /backoffice/destinations/[slug]/edit  → form pre-rellenado desde API
-POST /backoffice/destinations/[slug]/edit  → valida → PATCH API → redirect a edit
-POST /backoffice/destinations/[slug]/delete → DELETE API → redirect a listado
-```
-
----
-
-## 9. Checklist para un CRUD nuevo
-
-- [ ] Tipo en `src/lib/types.ts`
-- [ ] Enums en `$core/[resource]/enums.ts`
-- [ ] Rutas en `endpoints.config.ts`
-- [ ] Módulo API en `src/lib/api/backoffice/endpoints/[resource].ts`
+- [ ] Tipos, DTOs y Criteria en `src/core/[resource]/types.ts`
+- [ ] Enums en `src/core/[resource]/enums.ts`
+- [ ] Funciones de request en `src/core/[resource]/requests.ts`
 - [ ] Schema Zod en `schemas/[resource]-form.schema.ts`
 - [ ] Schema de filtros en `schemas/filters.schema.ts`
-- [ ] Rutas del recurso en `src/lib/config/routes/backoffice/[resource].ts`
-- [ ] Ficheros de ruta: `+page`, `create/`, `[slug]/`, `[slug]/edit/`, `[slug]/delete/`
-- [ ] Componente `ResourceForm.svelte` compartido
-
----
-
-## Convenciones importantes
-
-- **Svelte 5**: Solo `$state()`, `$props()`, `$derived()`, `$effect()`. Sin `export let` ni `$:`.
-- **Styling**: Solo Tailwind CSS v4 + DaisyUI. Sin estilos inline ni CSS modules.
-- **Tipos**: `import type { ... }` para imports de solo tipo. `type` en vez de `interface`.
-- **Each blocks**: Siempre con key: `{#each items as item (item.id)}`.
-- **Maps**: `new SvelteMap()` en vez de `new Map()`.
+- [ ] Claves i18n en `messages/{locale}/[resource].json`
+- [ ] Rutas en `src/lib/config/routes/backoffice/[resource].ts`
+- [ ] Ficheros de ruta: `+page`, `create/`, `[id]/edit/`
+- [ ] `ResourceForm.svelte` + `ResourceFormActions.svelte`
+- [ ] Queries en `queries/` si se necesita búsqueda asíncrona
+- [ ] `use:enhance` en TODOS los forms (crear, actualizar, borrar)
+- [ ] `PageProps` para tipado de props de página (no `{ data: PageData }`)
