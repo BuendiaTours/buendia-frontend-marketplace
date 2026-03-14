@@ -94,7 +94,7 @@ import * as m from '$paraglide/messages';
 // Usage: {m.activities_newActivity()}
 ```
 
-Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is auto-generated. Never hardcode user-facing strings — always add i18n keys.
+Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is auto-generated. **Never hardcode user-facing strings** — always add i18n keys. This applies to both `.svelte` components and `+page.server.ts` files (Paraglide works in SSR). Strings passed to server-side factories (`breadcrumbLabel`, `entityName`, error messages, etc.) must also use `m.*()` translations.
 
 ## Code Conventions
 

@@ -3,6 +3,7 @@
 	 * Locations list page.
 	 * Displays a filterable, sortable, paginated table of locations.
 	 */
+	import * as m from '$paraglide/messages';
 	import type { PageProps } from './$types';
 	import type { LocationsFilters } from './schemas/filters.schema';
 
@@ -61,10 +62,10 @@
 </script>
 
 <svelte:head>
-	<title>Ubicaciones - Backoffice</title>
+	<title>{m.locations_listPageTitle()} - Backoffice</title>
 </svelte:head>
 
-<LocationBar title="Listado de ubicaciones" breadcrumbs={data.breadcrumbs} />
+<LocationBar title={m.locations_listTitle()} breadcrumbs={data.breadcrumbs} />
 
 <!-- Filters Bar -->
 <div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
@@ -72,7 +73,7 @@
 	<div class="flex w-full items-center gap-2">
 		<input
 			type="text"
-			placeholder="Buscar ubicaciones..."
+			placeholder={m.locations_searchPlaceholder()}
 			class="input-bordered input w-full"
 			bind:value={searchQuery}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
@@ -86,14 +87,14 @@
 		options={LOCATION_KIND_OPTIONS}
 		filterKey="kind"
 		currentValue={filters.kind}
-		placeholder="Selecciona tipo"
-		clearTooltip="Limpia el tipo"
+		placeholder={m.locations_filterKindPlaceholder()}
+		clearTooltip={m.locations_filterKindClear()}
 		onFilterChange={handleKindFilterChange}
 	/>
 
 	<a href={LOCATION_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
 		<Add class="size-5" />
-		Nueva ubicación
+		{m.locations_newLocation()}
 	</a>
 </div>
 
@@ -104,7 +105,7 @@
 			<tr>
 				<th>
 					<TableSortableHeader
-						title="Nombre"
+						title={m.locations_columnName()}
 						field="name"
 						currentSort={sort}
 						onSortChange={(newSort) =>
@@ -116,7 +117,7 @@
 				</th>
 				<th>
 					<TableSortableHeader
-						title="Tipo"
+						title={m.locations_columnKind()}
 						field="kind"
 						currentSort={sort}
 						onSortChange={(newSort) =>
@@ -136,7 +137,7 @@
 				<tr>
 					<td colspan="3" class="text-center">
 						<div class="py-8">
-							<p class="text-base-content/50">No se encontraron elementos</p>
+							<p class="text-base-content/50">{m.locations_emptyState()}</p>
 						</div>
 					</td>
 				</tr>
@@ -154,7 +155,7 @@
 							</p>
 							{#if item.parent?.name}
 								<p class="text-base-content/40 text-xs">
-									Pertenece a "{item.parent.name}"
+									{m.locations_belongsTo({ parentName: item.parent.name })}
 								</p>
 							{/if}
 						</td>
@@ -170,7 +171,7 @@
 											href={buildUrlWithFilters(
 												LOCATION_ROUTES.edit(item.id),
 												page.url.searchParams
-											)}>Editar</a
+											)}>{m.locations_editButton()}</a
 										>
 									</li>
 								</ul>

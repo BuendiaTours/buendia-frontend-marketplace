@@ -1,3 +1,4 @@
+import * as m from '$paraglide/messages';
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { locationFormSchema } from '../schemas/location-form.schema';
@@ -13,8 +14,8 @@ export const load: PageServerLoad = createCreateLoad({
 		kind: undefined,
 		descriptionShort: ''
 	},
-	breadcrumbLabel: 'Nueva ubicación',
-	entityName: 'ubicación'
+	breadcrumbLabel: m.locations_breadcrumbNew(),
+	entityName: m.locations_entityName()
 });
 
 export const actions: Actions = {
@@ -22,7 +23,7 @@ export const actions: Actions = {
 		basePath: `${BACKOFFICE_PREFIX}/locations`,
 		schema: zod(locationFormSchema),
 		createFn: LOCATION_REQUEST.create,
-		entityName: 'ubicación',
+		entityName: m.locations_entityName(),
 		redirectToList: true
 	})
 };

@@ -18,5 +18,17 @@
 	"locations_labelKind": "Tipo",
 	"locations_labelDescriptionShort": "Descripción corta",
 	"locations_placeholderKind": "Selecciona un tipo",
-	"locations_badgeReadOnly": "read only"
+	"locations_badgeReadOnly": "read only",
+	"locations_listPageTitle": "Ubicaciones",
+	"locations_listTitle": "Listado de ubicaciones",
+	"locations_searchPlaceholder": "Buscar ubicaciones...",
+	"locations_filterKindPlaceholder": "Selecciona tipo",
+	"locations_filterKindClear": "Limpia el tipo",
+	"locations_newLocation": "Nueva ubicación",
+	"locations_columnName": "Nombre",
+	"locations_columnKind": "Tipo",
+	"locations_emptyState": "No se encontraron elementos",
+	"locations_belongsTo": "Pertenece a \"{parentName}\"",
+	"locations_breadcrumbNew": "Nueva ubicación",
+	"locations_entityName": "ubicación"
 }
