@@ -1,3 +1,7 @@
+/**
+ * Server load function for the attractions list page.
+ * Parses URL filters, fetches paginated attractions from the API, and builds breadcrumbs.
+ */
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { attractionsFiltersSchema } from './schemas/filters.schema';
@@ -9,7 +13,6 @@ import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
-	// Parsear filtros desde URL usando el schema
 	const filters = parseFilters(attractionsFiltersSchema, url.searchParams);
 
 	try {
@@ -33,16 +36,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		};
 	} catch (err) {
 		if (err instanceof ApiError) {
-			const errorMessage =
-				err.type === 'not_found'
-					? 'No se encontró el recurso solicitado'
-					: err.type === 'server_error'
-						? 'El servidor no está disponible. Por favor, verifica que la API esté funcionando.'
-						: `Error al cargar elementos (${err.status || 'desconocido'})`;
-
-			throw error(err.status || 500, errorMessage);
+			throw error(err.status || 500);
 		}
-
-		throw error(503, 'No se pudo conectar con el servidor. Verifica que la API esté funcionando.');
+		throw error(503);
 	}
 };

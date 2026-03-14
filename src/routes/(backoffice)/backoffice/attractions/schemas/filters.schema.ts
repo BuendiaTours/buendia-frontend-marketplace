@@ -1,24 +1,15 @@
 import type { FiltersSchema } from '$lib/utils/filters';
-import { createBooleanField, createOrderField, createSortField } from '$lib/utils/filters';
+import { createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-
-// Enums
 import { AttractionStatus } from '$core/attractions/enums';
 
 export type AttractionsFilters = {
-	// Paginación (opcional - solo si la API la provee)
 	page?: number;
 	pageSize?: number;
-	// Ordenamiento
-	sort?: 'id' | 'name' | 'slug' | 'status';
+	sort?: 'id' | 'name' | 'status';
 	order?: CriteriaSortOption;
-	// Búsqueda
 	q?: string;
 	status?: AttractionStatus;
-	// Filtros avanzados
-	wheelchairAccessible?: boolean;
-	breakfastIncluded?: boolean;
-	kidsFreeTour?: boolean;
 };
 
 export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
@@ -53,7 +44,7 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 			},
 			resetPageOnChange: false
 		},
-		sort: createSortField(['id', 'name', 'slug', 'status'] as const),
+		sort: createSortField(['id', 'name', 'status'] as const),
 		order: createOrderField(),
 		q: {
 			parse: (raw) => {
@@ -83,11 +74,6 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 				}
 			},
 			resetPageOnChange: true
-		},
-
-		// Filtros booleanos - todos usan la misma configuración
-		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
-		breakfastIncluded: createBooleanField('breakfastIncluded'),
-		kidsFreeTour: createBooleanField('kidsFreeTour')
+		}
 	}
 };

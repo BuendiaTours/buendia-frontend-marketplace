@@ -12,18 +12,8 @@ export const ATTRACTION_ROUTES = {
 	/** Attraction creation page. */
 	create: backoffice('attractions/create'),
 	/**
-	 * Attraction detail page.
-	 * @param slug - URL-friendly attraction identifier.
-	 */
-	detail: (slug: string) => backoffice('attractions', slug),
-	/**
 	 * Attraction edit page.
-	 * @param slug - URL-friendly attraction identifier.
+	 * @param id - Attraction identifier.
 	 */
-	edit: (slug: string) => backoffice('attractions', slug, 'edit'),
-	/**
-	 * Attraction delete confirmation page.
-	 * @param slug - URL-friendly attraction identifier.
-	 */
-	delete: (slug: string) => backoffice('attractions', slug, 'delete')
+	edit: (id: string) => backoffice('attractions', id, 'edit')
 } as const;

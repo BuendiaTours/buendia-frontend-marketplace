@@ -17,6 +17,7 @@ import type { Coords } from '$core/_shared/types';
 /** Location summary embedded within an attraction. */
 export type AttractionLocation = {
 	id: string;
+	coordinates: Coords | null;
 	descriptionShort: string | null;
 	kind: AttractionLocationKind;
 	name: string;

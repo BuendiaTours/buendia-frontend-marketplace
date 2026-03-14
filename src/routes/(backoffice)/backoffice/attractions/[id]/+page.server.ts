@@ -5,16 +5,12 @@ import { ApiError } from '$core/_shared/errors';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const attraction = await ATTRACTION_REQUEST.findBySlug(fetch, params.slug);
+		const attraction = await ATTRACTION_REQUEST.findById(fetch, params.id);
 		return { attraction };
 	} catch (err) {
 		if (err instanceof ApiError) {
-			if (err.type === 'not_found') {
-				throw error(404, 'Elemento no encontrado');
-			}
-			throw error(err.status || 500, `Error API: ${err.status || 'desconocido'}`);
+			throw error(err.status || 500);
 		}
-
-		throw error(503, 'No se pudo conectar con el servidor');
+		throw error(503);
 	}
 };

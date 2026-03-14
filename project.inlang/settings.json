@@ -14,7 +14,8 @@
 			"./messages/{locale}/enums.json",
 			"./messages/{locale}/users.json",
 			"./messages/{locale}/locations.json",
-			"./messages/{locale}/geoJson.json"
+			"./messages/{locale}/geoJson.json",
+			"./messages/{locale}/attractions.json"
 		]
 	}
 }
