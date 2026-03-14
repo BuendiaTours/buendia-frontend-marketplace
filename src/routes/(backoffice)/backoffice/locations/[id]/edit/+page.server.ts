@@ -23,7 +23,11 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				parentId: location.parent?.id,
 				name: location.name,
 				kind: location.kind,
-				descriptionShort: location.descriptionShort ?? ''
+				descriptionShort: location.descriptionShort ?? '',
+				location:
+					location.latitude != null && location.longitude != null
+						? { type: 'Point' as const, coordinates: [location.longitude, location.latitude] }
+						: null
 			},
 			zod(locationFormSchema)
 		);
@@ -48,8 +52,12 @@ export const actions: Actions = {
 		updateFn: LOCATION_REQUEST.update,
 		redirectToList: true,
 		paramName: 'id',
-		// Strip `id` — the API identifies the resource via the URL param, not the body
-		transformData: ({ id, ...rest }) => rest
+		// Strip `id` and convert GeoJSON point to flat lat/lng for the API
+		transformData: ({ id, location, ...rest }) => ({
+			...rest,
+			latitude: location?.coordinates[1],
+			longitude: location?.coordinates[0]
+		})
 	}),
 	delete: createDeleteAction({
 		basePath: `${BACKOFFICE_PREFIX}/locations`,

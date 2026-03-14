@@ -12,7 +12,14 @@ export const locationFormSchema = z.object({
 	kind: z.nativeEnum(LocationKind, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
-	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500)
+	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
+	location: z
+		.object({
+			type: z.literal('Point'),
+			coordinates: z.tuple([z.number(), z.number()])
+		})
+		.nullable()
+		.default(null)
 });
 
 export type LocationFormSchema = z.infer<typeof locationFormSchema>;

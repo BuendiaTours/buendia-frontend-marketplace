@@ -11,6 +11,7 @@
 
 	import { Database } from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
+	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
@@ -94,6 +95,14 @@
 				error={$errors.descriptionShort}
 				rows={3}
 				wrapperClass="md:col-span-12"
+			/>
+
+			<FormGeoJson
+				id="location"
+				label={m.locations_labelLocation()}
+				bind:value={$form.location}
+				error={$errors.location?._errors}
+				config={{ showSearchBox: true }}
 			/>
 		{/snippet}
 	</FormAccordion>
