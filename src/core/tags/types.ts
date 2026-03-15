@@ -36,6 +36,7 @@ export type TagCriteria = {
 	pageSize?: number;
 	id?: string;
 	name?: string;
+	search_text?: string;
 	sort?: TagSortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;

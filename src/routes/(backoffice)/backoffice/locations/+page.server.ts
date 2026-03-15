@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			query: filters.q,
+			search_text: filters.q,
 			kind: filters.kind
 		} as LocationCriteria);
 

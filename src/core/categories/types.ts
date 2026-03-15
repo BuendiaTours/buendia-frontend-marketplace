@@ -44,6 +44,7 @@ export type CategoryCriteria = {
 	limit?: number;
 	name?: string;
 	query?: string;
+	search_text?: string;
 	status?: CategoryStatus;
 	sort?: CategorySortAttribute;
 	operator?: CriteriaOperator;

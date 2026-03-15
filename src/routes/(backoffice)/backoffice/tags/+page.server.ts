@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			name: filters.q
+			search_text: filters.q
 		} as TagCriteria);
 
 		return {

@@ -81,6 +81,7 @@ export type LocationCriteria = {
 	name?: string;
 	parentId?: string;
 	query?: string;
+	search_text?: string;
 	radius?: number;
 	sort?: LocationSortAttribute;
 	operator?: CriteriaOperator;
