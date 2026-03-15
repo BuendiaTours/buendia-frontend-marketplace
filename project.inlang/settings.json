@@ -17,7 +17,8 @@
 			"./messages/{locale}/geoJson.json",
 			"./messages/{locale}/attractions.json",
 			"./messages/{locale}/categories.json",
-			"./messages/{locale}/suppliers.json"
+			"./messages/{locale}/suppliers.json",
+			"./messages/{locale}/tags.json"
 		]
 	}
 }
