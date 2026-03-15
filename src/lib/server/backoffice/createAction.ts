@@ -1,4 +1,4 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
@@ -116,14 +116,13 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
-			console.error(`❌ [createAction] Error capturado:`, err);
-			console.error(`❌ [createAction] Tipo de error:`, err?.constructor?.name);
-
-			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
-			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				logger.log(`✅ [createAction] Es un redirect, dejándolo pasar`);
+			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje (no es un error)
+			if (isRedirect(err)) {
 				throw err;
 			}
+
+			console.error(`❌ [createAction] Error capturado:`, err);
+			console.error(`❌ [createAction] Tipo de error:`, err?.constructor?.name);
 
 			// 6. Manejar ApiError con mensajes personalizados
 			let errorMessage = `Error al crear ${entityName}.`;
