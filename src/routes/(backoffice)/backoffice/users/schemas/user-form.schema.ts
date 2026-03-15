@@ -1,16 +1,13 @@
 import { z } from 'zod/v3';
-import { UserKind, UserRole, UserStatus } from '$core/users/enums';
+import { UserRole, UserStatus } from '$core/users/enums';
 
 export const userFormSchema = z.object({
 	id: z.string(),
-	email: z.string().email('Debe ser un email válido'),
-	name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
-	phone: z.string().min(9, 'El teléfono debe tener al menos 9 caracteres'),
-	kind: z.nativeEnum(UserKind, {
-		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
-	}),
+	name: z.string().min(2).max(100),
+	email: z.string().email(),
+	phone: z.string().min(9).max(30),
 	status: z.nativeEnum(UserStatus).optional(),
-	roles: z.array(z.nativeEnum(UserRole)).optional()
+	roles: z.array(z.nativeEnum(UserRole)).default([])
 });
 
 export type UserFormSchema = z.infer<typeof userFormSchema>;

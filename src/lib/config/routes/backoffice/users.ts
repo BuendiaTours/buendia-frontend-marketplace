@@ -12,18 +12,8 @@ export const USER_ROUTES = {
 	/** User creation page. */
 	create: backoffice('users/create'),
 	/**
-	 * User detail page.
-	 * @param id - User ID.
-	 */
-	detail: (id: string) => backoffice('users', id),
-	/**
 	 * User edit page.
-	 * @param id - User ID.
+	 * @param id - User identifier.
 	 */
-	edit: (id: string) => backoffice('users', id, 'edit'),
-	/**
-	 * User delete confirmation page.
-	 * @param id - User ID.
-	 */
-	delete: (id: string) => backoffice('users', id, 'delete')
+	edit: (id: string) => backoffice('users', id, 'edit')
 } as const;

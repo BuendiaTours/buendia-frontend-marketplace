@@ -1,9 +1,14 @@
+/**
+ * Server load function for the users list page.
+ * Parses URL filters, fetches paginated users from the API, and builds breadcrumbs.
+ */
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { usersFiltersSchema } from './schemas/filters.schema';
 import { USER_REQUEST } from '$core/users/requests';
-import { handleApiError } from '$core/_shared/errors';
+import type { UserCriteria } from '$core/users/types';
+import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
-
 import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
@@ -18,12 +23,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			q: filters.q,
-			email: filters.email,
-			phone: filters.phone,
-			kind: filters.kind,
+			search_text: filters.q,
 			status: filters.status
-		});
+		} as UserCriteria);
 
 		return {
 			items: response.data || [],
@@ -33,6 +35,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			breadcrumbs
 		};
 	} catch (err) {
-		throw handleApiError(err, 'los usuarios');
+		if (err instanceof ApiError) {
+			throw error(err.status || 500);
+		}
+		throw error(503);
 	}
 };

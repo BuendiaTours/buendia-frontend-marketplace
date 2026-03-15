@@ -1,89 +1,51 @@
 <script lang="ts">
-	import type { User } from '$core/users/types';
-	import type { Column } from '$lib/types';
-	import type { CriteriaSortOption } from '$core/_shared/enums';
+	/**
+	 * Users list page.
+	 * Displays a filterable, sortable, paginated table of users.
+	 */
+	import * as m from '$paraglide/messages';
+	import type { PageProps } from './$types';
 	import type { UsersFilters } from './schemas/filters.schema';
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
 	import type { PatchValue } from '$lib/utils/filters';
-	import { patchFilters, clearAllFilters, hasActiveFilters } from '$lib/utils/filters';
+	import { patchFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { usersFiltersSchema } from './schemas/filters.schema';
-
+	import { USER_STATUS_OPTIONS, USER_ROLE_OPTIONS } from '$lib/labels/users';
 	import { USER_ROUTES } from '$lib/config/routes/backoffice/users';
-	import { UserStatus, UserSortAttribute } from '$core/users/enums';
-	import { USER_KIND_OPTIONS, USER_STATUS_OPTIONS } from '$lib/labels/users';
+	import { UserStatus } from '$core/users/enums';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
-	import PagecountAboveTable from '$lib/layout/backoffice/partials/PagecountAboveTable.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
+	import { Add, Magnifier } from '$lib/icons/Linear';
 
-	import { Add, Close, Magnifier } from '$lib/icons/Linear';
-
-	import * as m from '$paraglide/messages';
-
-	let {
-		data
-	}: {
-		data: {
-			items: User[];
-			pagination: {
-				page: number;
-				pageSize: number;
-				total: number;
-				totalPages: number;
-			} | null;
-			filters: UsersFilters;
-			sort: { field: string; order: CriteriaSortOption } | null;
-			breadcrumbs: Array<{ label: string; href?: string }>;
-		};
-	} = $props();
+	let { data }: PageProps = $props();
 
 	const items = $derived(data.items);
 	const pagination = $derived(data.pagination);
-	const filters = $derived(data.filters);
+	const filters = $derived(data.filters as UsersFilters);
 	const sort = $derived(data.sort);
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
-	// Necesitamos $state + $effect: los inputs requieren estado mutable local que se sincronice desde la URL.
-	// $derived no permite bind:value porque sus propiedades no son reactivas para escritura.
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let filterValues = $state<UsersFilters>({});
-	$effect(() => {
-		filterValues = filters;
-	});
+	let searchQuery = $derived(filters.q || '');
 
 	function applyFilterPatch(patch: {
 		[K in keyof UsersFilters]?: PatchValue<UsersFilters[K]>;
 	}) {
 		const currentParams = page.url.searchParams;
 		const newParams = patchFilters(usersFiltersSchema, currentParams, patch);
-		goto(`?${newParams.toString()}`, {
-			replaceState: true,
-			noScroll: true,
-			keepFocus: true
-		});
-	}
-
-	function handleClearFilters() {
-		clearAllFilters(page.url.pathname, page.url.searchParams, goto);
-		filterValues = {};
+		goto(`?${newParams.toString()}`, { keepFocus: true, noScroll: true });
 	}
 
 	function handleSearch() {
-		applyFilterPatch({
-			q: filterValues.q ?? undefined,
-			email: filterValues.email ?? undefined,
-			phone: filterValues.phone ?? undefined,
-			kind: filterValues.kind,
-			status: filterValues.status
-		});
+		applyFilterPatch({ q: searchQuery || null });
 	}
 
 	function handleFilterChange(filterKey: string, value: string | null) {
@@ -92,121 +54,70 @@
 		} as { [K in keyof UsersFilters]?: PatchValue<UsersFilters[K]> });
 	}
 
-	const columns: Column<User>[] = [
-		{ key: 'name', title: m.users_name(), sortable: true, sortField: UserSortAttribute.NAME },
-		{ key: 'email', title: m.users_email(), sortable: false },
-		{ key: 'kind', title: m.users_kind(), sortable: false },
-		{ key: 'status', title: m.users_status(), sortable: false }
-	];
-
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
 	}
-
-	const hasFilters = $derived(hasActiveFilters(filters));
 </script>
 
 <svelte:head>
-	<title>{m.users_listPageTitle()}</title>
+	<title>{m.users_listPageTitle()} - Backoffice</title>
 </svelte:head>
 
-<LocationBar title={m.users_listLabel()} breadcrumbs={data.breadcrumbs} />
+<LocationBar title={m.users_listTitle()} breadcrumbs={data.breadcrumbs} />
 
-<div class="bnd-filter-bar card flex-row flex-wrap items-center gap-4 p-4">
-	<div class="flex flex-1 items-center gap-2">
+<!-- Filters Bar -->
+<div class="bnd-filter-bar card flex-row items-center gap-6 p-2">
+	<div class="flex w-full items-center gap-2">
 		<input
 			type="text"
 			placeholder={m.users_searchPlaceholder()}
-			class="input-bordered input input-sm w-48"
-			bind:value={filterValues.q}
+			class="input-bordered input w-full"
+			bind:value={searchQuery}
 			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 		/>
-		<input
-			type="text"
-			placeholder={m.users_placeholderEmail()}
-			class="input-bordered input input-sm w-48"
-			bind:value={filterValues.email}
-			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
-		/>
-		<input
-			type="text"
-			placeholder={m.users_placeholderPhone()}
-			class="input-bordered input input-sm w-40"
-			bind:value={filterValues.phone}
-			onkeydown={(e) => e.key === 'Enter' && handleSearch()}
-		/>
-		<FilterSelect
-			options={USER_KIND_OPTIONS}
-			filterKey="kind"
-			currentValue={filters.kind}
-			placeholder={m.users_placeholderKind()}
-			clearTooltip={m.users_clearKind()}
-			width="w-32"
-			onFilterChange={handleFilterChange}
-		/>
-		<FilterSelect
-			options={USER_STATUS_OPTIONS}
-			filterKey="status"
-			currentValue={filters.status}
-			placeholder={m.users_placeholderStatus()}
-			clearTooltip={m.users_clearStatus()}
-			width="w-36"
-			onFilterChange={handleFilterChange}
-		/>
-		<button class="btn btn-square btn-outline btn-primary btn-sm" onclick={handleSearch}>
+		<button class="btn btn-square btn-outline btn-primary" onclick={handleSearch}>
 			<Magnifier class="size-5" />
 		</button>
 	</div>
 
-	<div class="flex items-center gap-2">
-		<div class="tooltip" data-tip={m.users_clearAllFilters()}>
-			<button
-				class="btn btn-square btn-soft btn-error"
-				onclick={handleClearFilters}
-				disabled={!hasFilters}
-			>
-				<Close class="size-5" />
-			</button>
-		</div>
-	</div>
-</div>
+	<FilterSelect
+		options={USER_STATUS_OPTIONS}
+		filterKey="status"
+		currentValue={filters.status}
+		placeholder={m.users_filterStatusPlaceholder()}
+		clearTooltip={m.users_filterStatusClear()}
+		onFilterChange={handleFilterChange}
+	/>
 
-<div class="mt-6 flex items-center justify-between">
-	<PagecountAboveTable itemsLength={items.length} {pagination} />
-
-	<a href={USER_ROUTES.create} class="btn btn-outline btn-primary">
+	<a href={USER_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
 		<Add class="size-5" />
 		{m.users_newUser()}
 	</a>
 </div>
 
+<!-- Table -->
 <div class="card mt-6">
 	<table class="table-zebra table-sm table">
 		<thead>
 			<tr>
-				{#each columns as col (col.key)}
-					<th>
-						{#if col.sortable}
-							<TableSortableHeader
-								title={col.title}
-								field={col.sortField ?? String(col.key)}
-								currentSort={sort}
-								onSortChange={(newSort) => {
-									if (newSort.field && newSort.order) {
-										applyFilterPatch({
-											sort: newSort.field as UserSortAttribute,
-											order: newSort.order
-										});
-									} else {
-										applyFilterPatch({ sort: null, order: null });
-									}
-								}}
-							/>
-						{:else}
-							<span>{col.title}</span>
-						{/if}
-					</th>
-				{/each}
+				<th>
+					<TableSortableHeader
+						title={m.users_columnName()}
+						field="name"
+						currentSort={sort}
+						onSortChange={(newSort) =>
+							applyFilterPatch({
+								sort: newSort.field as UsersFilters['sort'],
+								order: newSort.order
+							})}
+					/>
+				</th>
+				<th>
+					<span>{m.users_columnRoles()}</span>
+				</th>
+				<th>
+					<span>{m.users_columnStatus()}</span>
+				</th>
 				<th class="w-0">
 					<TableResetSort currentSort={sort} />
 				</th>
@@ -215,9 +126,9 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan={columns.length + 1} class="text-center">
+					<td colspan="4" class="text-center">
 						<div class="py-8">
-							<p class="text-base-content/50">{m.users_noUsers()}</p>
+							<p class="text-base-content/50">{m.users_emptyState()}</p>
 						</div>
 					</td>
 				</tr>
@@ -225,39 +136,42 @@
 				{#each items as item (item.id)}
 					<tr>
 						<td>
-							<a href={buildUrlWithFilters(USER_ROUTES.detail(item.id), page.url.searchParams)}>
-								{item.name}
-							</a>
+							<p>
+								<a href={buildUrlWithFilters(USER_ROUTES.edit(item.id), page.url.searchParams)}>
+									{item.name}
+								</a>
+							</p>
+							<p class="text-base-content/50 text-xs">{item.email}</p>
 						</td>
-						<td>{item.email}</td>
 						<td>
-							<span class="badge badge-sm">{item.kind}</span>
+							<div class="flex flex-wrap gap-1">
+								{#each item.roles as role (role)}
+									<span class="badge badge-outline badge-sm">
+										{USER_ROLE_OPTIONS.find((o) => o.id === role)?.name}
+									</span>
+								{/each}
+							</div>
 						</td>
 						<td>
-							<span
-								class="badge badge-sm"
-								class:badge-success={item.status === UserStatus.ACTIVE}
-								class:badge-warning={item.status === UserStatus.SUSPENDED}
-								class:badge-error={item.status === UserStatus.INACTIVE}
-							>
-								{item.status}
-							</span>
+							{#if item.status === UserStatus.ACTIVE}
+								<div aria-label="success" class="status status-lg status-success mr-1"></div>
+								<span>{USER_STATUS_OPTIONS.find((o) => o.id === item.status)?.name}</span>
+							{:else if item.status === UserStatus.SUSPENDED}
+								<div aria-label="warning" class="status status-lg status-warning mr-1"></div>
+								<span>{USER_STATUS_OPTIONS.find((o) => o.id === item.status)?.name}</span>
+							{:else}
+								<div aria-label="error" class="status status-lg status-error mr-1"></div>
+								<span>{USER_STATUS_OPTIONS.find((o) => o.id === item.status)?.name}</span>
+							{/if}
 						</td>
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">
-								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">...</div>
+								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
 								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
-										<a
-											href={buildUrlWithFilters(USER_ROUTES.detail(item.id), page.url.searchParams)}
-										>
-											{m.users_view()}
+										<a href={buildUrlWithFilters(USER_ROUTES.edit(item.id), page.url.searchParams)}>
+											{m.users_editButton()}
 										</a>
-									</li>
-									<li>
-										<a href={buildUrlWithFilters(USER_ROUTES.edit(item.id), page.url.searchParams)}
-											>{m.common_edit()}</a
-										>
 									</li>
 								</ul>
 							</div>
@@ -269,6 +183,7 @@
 	</table>
 </div>
 
+<!-- Pagination -->
 {#if data.pagination}
 	<div class="mt-4">
 		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />

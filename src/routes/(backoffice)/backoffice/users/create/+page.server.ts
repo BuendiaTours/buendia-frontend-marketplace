@@ -1,25 +1,24 @@
+/**
+ * Server load and action for the user creation page.
+ * All users created from backoffice are ADMIN kind.
+ */
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { userFormSchema } from '../schemas/user-form.schema';
+import { userFormSchema, type UserFormSchema } from '../schemas/user-form.schema';
 import { USER_REQUEST } from '$core/users/requests';
 import { zod } from 'sveltekit-superforms/adapters';
+import { UserKind } from '$core/users/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
-import { UserStatus } from '$core/users/enums';
 import type { PageServerLoad, Actions } from './$types';
-import * as m from '$paraglide/messages';
 
-export const load: PageServerLoad = createCreateLoad({
+export const load: PageServerLoad = createCreateLoad<UserFormSchema>({
 	schema: zod(userFormSchema),
 	initialValues: {
 		name: '',
 		email: '',
 		phone: '',
-		kind: undefined,
-		status: UserStatus.ACTIVE,
 		roles: []
-	},
-	breadcrumbLabel: m.users_newUser(),
-	entityName: 'usuario'
+	}
 });
 
 export const actions: Actions = {
@@ -27,7 +26,7 @@ export const actions: Actions = {
 		basePath: `${BACKOFFICE_PREFIX}/users`,
 		schema: zod(userFormSchema),
 		createFn: USER_REQUEST.create,
-		entityName: 'usuario',
-		redirectToList: true
+		redirectToList: true,
+		transformData: ({ id, status, ...rest }) => ({ id, kind: UserKind.ADMIN, ...rest })
 	})
 };

@@ -35,6 +35,7 @@ export type UserCriteria = {
 	page?: number;
 	pageSize?: number;
 	q?: string;
+	search_text?: string;
 	email?: string;
 	phone?: string;
 	kind?: UserKind;
