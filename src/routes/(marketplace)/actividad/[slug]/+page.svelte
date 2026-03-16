@@ -8,8 +8,8 @@
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
-	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
