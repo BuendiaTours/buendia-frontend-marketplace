@@ -4,9 +4,34 @@
 </script>
 
 <Icon iconName="Linear.CalendarCheck" {...props}>
-	<path d="M9 14.9998L10.9976 16.9998L15 12.9998" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2 12.0005C2 8.22925 2 6.34363 3.17157 5.17206C4.34315 4.00049 6.22876 4.00049 10 4.00049H14C17.7712 4.00049 19.6569 4.00049 20.8284 5.17206C22 6.34363 22 8.22925 22 12.0005V14.0005C22 17.7717 22 19.6573 20.8284 20.8289C19.6569 22.0005 17.7712 22.0005 14 22.0005H10C6.22876 22.0005 4.34315 22.0005 3.17157 20.8289C2 19.6573 2 17.7717 2 14.0005V12.0005Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
-<path d="M7 4.00049V2.50049" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
-<path d="M17 4.00049V2.50049" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
-<path d="M2.5 9.00049H21.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/>
+	<path
+		d="M9 14.9998L10.9976 16.9998L15 12.9998"
+		stroke="currentColor"
+		stroke-width="var(--icon-stroke-width)"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	/>
+	<path
+		d="M2 12.0005C2 8.22925 2 6.34363 3.17157 5.17206C4.34315 4.00049 6.22876 4.00049 10 4.00049H14C17.7712 4.00049 19.6569 4.00049 20.8284 5.17206C22 6.34363 22 8.22925 22 12.0005V14.0005C22 17.7717 22 19.6573 20.8284 20.8289C19.6569 22.0005 17.7712 22.0005 14 22.0005H10C6.22876 22.0005 4.34315 22.0005 3.17157 20.8289C2 19.6573 2 17.7717 2 14.0005V12.0005Z"
+		stroke="currentColor"
+		stroke-width="var(--icon-stroke-width)"
+	/>
+	<path
+		d="M7 4.00049V2.50049"
+		stroke="currentColor"
+		stroke-width="var(--icon-stroke-width)"
+		stroke-linecap="round"
+	/>
+	<path
+		d="M17 4.00049V2.50049"
+		stroke="currentColor"
+		stroke-width="var(--icon-stroke-width)"
+		stroke-linecap="round"
+	/>
+	<path
+		d="M2.5 9.00049H21.5"
+		stroke="currentColor"
+		stroke-width="var(--icon-stroke-width)"
+		stroke-linecap="round"
+	/>
 </Icon>
