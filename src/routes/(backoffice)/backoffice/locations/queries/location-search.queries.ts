@@ -9,7 +9,7 @@ import { LOCATION_REQUEST } from '$core/locations/requests';
 /** Searches locations by name, returning results formatted for FormAsyncSearch. */
 export async function searchLocations(query: string): Promise<SearchResult[]> {
 	try {
-		const result = await LOCATION_REQUEST.findByCriteria(fetch, { query, limit: 10 });
+		const result = await LOCATION_REQUEST.findByCriteria(fetch, { search_text: query, limit: 10 });
 		return (result.data ?? []).map((loc) => ({
 			value: loc.id,
 			label: loc.name,
