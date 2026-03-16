@@ -11,6 +11,10 @@
 	import 'swiper/css/pagination';
 	import 'swiper/css/scrollbar';
 
+	// Zod error messages in Spanish
+	import { initZodErrorMap } from '$lib/config/zod-errors-es';
+	initZodErrorMap();
+
 	// Components
 	import AlertDialog from '$lib/components/backoffice/MeltAlertDialog.svelte';
 	import MsgMeltToast from '$lib/components/backoffice/msg/MsgMeltToast.svelte';
