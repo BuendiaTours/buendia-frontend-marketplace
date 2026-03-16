@@ -1,0 +1,14 @@
+@media (width >= theme(--breakpoint-lg)) {
+	.c-faqs ul {
+		counter-reset: faq;
+	}
+
+	.c-faq-item {
+		counter-increment: faq;
+	}
+
+	.c-faq-item .faq-question:before {
+		content: counter(faq, decimal-leading-zero);
+		color: var(--color-neutral-500);
+	}
+}

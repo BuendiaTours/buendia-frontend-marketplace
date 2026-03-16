@@ -2,14 +2,16 @@
 	import type { PageData } from './$types';
 
 	// Components
-	import Badge from '$lib/components/marketplace/Badge.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
+	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+
+	import Badge from '$lib/components/marketplace/Badge.svelte';
+	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
+	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 
@@ -41,6 +43,9 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- faqs -->
+	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
