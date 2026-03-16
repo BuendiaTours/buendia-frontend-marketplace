@@ -107,6 +107,32 @@
 		</div>
 	{/if}
 
+	<Spacer />
+
+	<!-- pdp-reviews-featured -->
+	{#if data.reviews && data.reviews.length > 1}
+		<div class="pdp-reviews-featured bg-white">
+			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
+			<div class="pdp-reviews-featured__reviews flex flex-col gap-4 sm:flex-row">
+				{#each data.reviews.slice(0, 2) as review (review.id)}
+					<ReviewCard
+						name={review.user || 'Anónimo'}
+						text={review.content}
+						rating={review.averageRating}
+						lines={3}
+						wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg"
+						{...review}
+					/>
+				{/each}
+			</div>
+			<a href="#reviews" class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
+				>Ver todas las opiniones</a
+			>
+		</div>
+	{/if}
+
+	<Spacer />
+
 	<!-- Important Info -->
 	{#if activity.infoImportant}
 		<div class="e-card mb-8">

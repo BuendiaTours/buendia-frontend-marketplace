@@ -44,7 +44,7 @@
 		<AuthorMeta {name} {desc} />
 		{#if rating != null}
 			<div
-				class="mt-1 flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0"
+				class="mt-3.5 flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0"
 			>
 				<StarRating value={rating} size="sm" />
 				{#if showRatingValue}
