@@ -15,9 +15,10 @@
 		categoryId?: string;
 		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
+		submitting?: boolean;
 	};
 
-	let { mode, categoryId, formId }: Props = $props();
+	let { mode, categoryId, formId, submitting = false }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -40,6 +41,7 @@
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"
+				disabled={submitting}
 				use:confirmAction={{
 					title: m.categories_confirmDeleteTitle(),
 					message: m.categories_confirmDeleteMessage(),
@@ -58,7 +60,9 @@
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
+		disabled={submitting}
 	>
+		{#if submitting}<span class="loading loading-spinner loading-sm"></span>{/if}
 		{isCreateMode ? m.categories_createCategory() : m.categories_saveChanges()}
 	</button>
 </div>

@@ -11,9 +11,10 @@
 		mode: 'create' | 'edit';
 		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
+		submitting?: boolean;
 	};
 
-	let { mode, formId }: Props = $props();
+	let { mode, formId, submitting = false }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 </script>
@@ -30,7 +31,9 @@
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
+		disabled={submitting}
 	>
+		{#if submitting}<span class="loading loading-spinner loading-sm"></span>{/if}
 		{isCreateMode ? m.users_createUser() : m.users_saveChanges()}
 	</button>
 </div>

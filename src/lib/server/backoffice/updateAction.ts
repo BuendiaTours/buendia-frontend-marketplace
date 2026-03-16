@@ -25,6 +25,12 @@ export type UpdateActionConfig<T extends Record<string, unknown> = Record<string
 	redirectToList?: boolean;
 	/** Nombre del parámetro de ruta que identifica el recurso (default: 'slug') */
 	paramName?: string;
+	/**
+	 * Delay in ms before redirecting.
+	 * Useful for CQRS backends where projections need time to propagate.
+	 * Defaults to 500ms when redirectToList is true, 0 otherwise.
+	 */
+	redirectDelayMs?: number;
 };
 
 /**
@@ -87,6 +93,10 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 					: `${config.basePath}/${identifier}${suffix}`;
 
 			logger.log('💾 [updateAction] Redirigiendo a:', redirectPath);
+			const delay = config.redirectDelayMs ?? (config.redirectToList ? 500 : 0);
+			if (delay > 0) {
+				await new Promise((resolve) => setTimeout(resolve, delay));
+			}
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje

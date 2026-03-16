@@ -15,9 +15,10 @@
 		tagId?: string;
 		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
+		submitting?: boolean;
 	};
 
-	let { mode, tagId, formId }: Props = $props();
+	let { mode, tagId, formId, submitting = false }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -35,6 +36,7 @@
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"
+				disabled={submitting}
 				use:confirmAction={{
 					title: m.tags_confirmDeleteTitle(),
 					message: m.tags_confirmDeleteMessage(),
@@ -53,7 +55,9 @@
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
+		disabled={submitting}
 	>
+		{#if submitting}<span class="loading loading-spinner loading-sm"></span>{/if}
 		{isCreateMode ? m.tags_createTag() : m.tags_saveChanges()}
 	</button>
 </div>

@@ -11,13 +11,12 @@
 
 	type Props = {
 		mode: 'create' | 'edit';
-		/** Required in edit mode — used to build the delete action URL. */
 		locationId?: string;
-		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
+		submitting?: boolean;
 	};
 
-	let { mode, locationId, formId }: Props = $props();
+	let { mode, locationId, formId, submitting = false }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -40,6 +39,7 @@
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"
+				disabled={submitting}
 				use:confirmAction={{
 					title: m.locations_confirmDeleteTitle(),
 					message: m.locations_confirmDeleteMessage(),
@@ -58,7 +58,11 @@
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
+		disabled={submitting}
 	>
+		{#if submitting}
+			<span class="loading loading-spinner loading-sm"></span>
+		{/if}
 		{isCreateMode ? m.locations_createLocation() : m.locations_saveChanges()}
 	</button>
 </div>

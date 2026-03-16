@@ -14,6 +14,12 @@ export type DeleteActionConfig = {
 	deleteFn: (fetchFn: typeof globalThis.fetch, identifier: string) => Promise<void>;
 	/** Nombre del parámetro de ruta que identifica el recurso (default: 'id') */
 	paramName?: string;
+	/**
+	 * Delay in ms before redirecting.
+	 * Useful for CQRS backends where projections need time to propagate.
+	 * Defaults to 500ms.
+	 */
+	redirectDelayMs?: number;
 };
 
 /**
@@ -43,6 +49,10 @@ export function createDeleteAction(config: DeleteActionConfig) {
 			const searchParams = url.searchParams.toString();
 			const redirectUrl = searchParams ? `${config.basePath}?${searchParams}` : config.basePath;
 
+			const delay = config.redirectDelayMs ?? 500;
+			if (delay > 0) {
+				await new Promise((resolve) => setTimeout(resolve, delay));
+			}
 			throw redirect(303, redirectUrl);
 		} catch (err) {
 			console.error(' [deleteAction] Error capturado:', err);

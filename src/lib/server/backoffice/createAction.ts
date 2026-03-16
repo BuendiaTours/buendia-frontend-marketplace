@@ -27,6 +27,12 @@ export type CreateActionConfig<T extends Record<string, unknown> = Record<string
 	redirectToList?: boolean;
 	/** Campo del formulario a usar como identificador en la URL de redirección (default: 'slug') */
 	redirectField?: string;
+	/**
+	 * Delay in ms before redirecting.
+	 * Useful for CQRS backends where projections need time to propagate.
+	 * Defaults to 800ms when redirectToList is true, 0 otherwise.
+	 */
+	redirectDelayMs?: number;
 };
 
 /**
@@ -51,8 +57,11 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			transformData,
 			redirectToEdit = true,
 			redirectToList = false,
-			redirectField = 'slug'
+			redirectField = 'slug',
+			redirectDelayMs
 		} = config;
+
+		const delay = redirectDelayMs ?? (redirectToList ? 500 : 0);
 
 		logger.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
 
@@ -114,6 +123,9 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			}
 
 			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
+			if (delay > 0) {
+				await new Promise((resolve) => setTimeout(resolve, delay));
+			}
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje (no es un error)

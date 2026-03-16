@@ -30,14 +30,14 @@
 
 	// formData is intentionally captured once at mount
 	// svelte-ignore state_referenced_locally
-	const { form, errors, enhance } = superForm(formData, {
+	const { form, errors, enhance, submitting } = superForm(formData, {
 		dataType: 'json'
 	});
 
 	const formId = 'category-form';
 </script>
 
-<CategoryFormActions {mode} {categoryId} {formId} />
+<CategoryFormActions {mode} {categoryId} {formId} submitting={$submitting} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-category-data" open>
