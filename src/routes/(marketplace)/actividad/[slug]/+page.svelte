@@ -11,6 +11,7 @@
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
+	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -327,6 +328,8 @@
 			layoutComponent={ReviewsLayout}
 		/>
 	</div>
+
+	<Spacer />
 
 	<!-- Reviews -->
 	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
