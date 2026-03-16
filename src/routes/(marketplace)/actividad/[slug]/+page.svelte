@@ -4,8 +4,8 @@
 	// Components
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
