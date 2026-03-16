@@ -227,6 +227,7 @@ export type ActivityCriteria = {
 	status?: ActivityStatus;
 	supplierId?: string;
 	title?: string;
+	search_text?: string;
 	slug?: string;
 	sort?: ActivitySortAttribute;
 	operator?: CriteriaOperator;

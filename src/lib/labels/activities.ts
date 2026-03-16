@@ -1,15 +1,19 @@
 /**
- * Labels de UI para enums de activities
- * Traducciones de los enums de dominio para dropdowns, selects, checkboxes, etc.
+ * UI labels for activity enums.
+ * Translations of domain enums for dropdowns, selects, checkboxes, etc.
  */
 
 import {
 	ActivityStatus,
 	ActivityKind,
 	ActivityGuideKind,
+	ActivityDateMode,
 	ActivityNotSuitableFor,
 	ActivityRestriction,
 	ActivityAllergen,
+	ActivityTransportKind,
+	ActivityTransportLocation,
+	ActivityPetsAllowed,
 	StageKind,
 	StageRequirement,
 	StageRelevance,
@@ -41,6 +45,39 @@ export const ACTIVITY_GUIDE_KIND_OPTIONS = [
 	{ id: ActivityGuideKind.DRIVER, name: m.enum_activityGuideKind_driver() },
 	{ id: ActivityGuideKind.GUEST, name: m.enum_activityGuideKind_guest() },
 	{ id: ActivityGuideKind.INSTRUCTOR, name: m.enum_activityGuideKind_instructor() }
+];
+
+export const ACTIVITY_DATE_MODE_OPTIONS = [
+	{ id: ActivityDateMode.DATE_AND_TIME, name: m.enum_activityDateMode_dateAndTime() },
+	{ id: ActivityDateMode.DATE, name: m.enum_activityDateMode_date() }
+];
+
+export const ACTIVITY_TRANSPORT_KIND_OPTIONS = [
+	{ id: ActivityTransportKind.BUS, name: m.enum_activityTransportKind_bus() },
+	{ id: ActivityTransportKind.CAR, name: m.enum_activityTransportKind_car() },
+	{ id: ActivityTransportKind.TRAIN, name: m.enum_activityTransportKind_train() },
+	{ id: ActivityTransportKind.PLANE, name: m.enum_activityTransportKind_plane() },
+	{ id: ActivityTransportKind.BOAT, name: m.enum_activityTransportKind_boat() },
+	{ id: ActivityTransportKind.BIKE, name: m.enum_activityTransportKind_bike() },
+	{ id: ActivityTransportKind.OTHER, name: m.enum_activityTransportKind_other() },
+	{ id: ActivityTransportKind.NONE, name: m.enum_activityTransportKind_none() }
+];
+
+export const ACTIVITY_TRANSPORT_LOCATION_OPTIONS = [
+	{
+		id: ActivityTransportLocation.SAME_PLACE,
+		name: m.enum_activityTransportLocation_samePlace()
+	},
+	{
+		id: ActivityTransportLocation.DIFFERENT_PLACE,
+		name: m.enum_activityTransportLocation_differentPlace()
+	}
+];
+
+export const ACTIVITY_PETS_ALLOWED_OPTIONS = [
+	{ id: ActivityPetsAllowed.YES, name: m.enum_activityPetsAllowed_yes() },
+	{ id: ActivityPetsAllowed.NO, name: m.enum_activityPetsAllowed_no() },
+	{ id: ActivityPetsAllowed.NOT_APPLY, name: m.enum_activityPetsAllowed_notApply() }
 ];
 
 export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = [

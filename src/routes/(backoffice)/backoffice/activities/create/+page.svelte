@@ -1,32 +1,26 @@
 <script lang="ts">
 	/**
-	 * Página de creación de nueva actividad
-	 *
-	 * Utiliza el componente ActivityForm compartido en modo 'create'
-	 * para reutilizar toda la lógica y UI del formulario de edición.
+	 * Create activity page.
+	 * Renders an empty form for creating a new activity.
 	 */
-	import type { PageData } from './$types';
+	import * as m from '$paraglide/messages';
+	import { page } from '$app/state';
+	import type { PageProps } from './$types';
+	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 	import ActivityForm from '../components/ActivityForm.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
-	// createCreateLoad retorna form, available*, breadcrumbs; PageData los une con alert del layout
-	const formData = $derived({
-		form: data.form,
-		availableTags: data.availableTags ?? [],
-		availableCategories: data.availableCategories ?? [],
-		availableAttractions: data.availableAttractions ?? [],
-		availableLocations: data.availableLocations ?? [],
-		availableDistributives: data.availableDistributives ?? [],
-		breadcrumbs: data.breadcrumbs
-	});
+	const breadcrumbs = $derived(
+		buildBreadcrumbs(page.url.pathname, { label: m.activities_breadcrumbNew() })
+	);
 </script>
 
 <svelte:head>
-	<title>Nueva Actividad - Backoffice</title>
+	<title>{m.activities_createPageTitle()} - Backoffice</title>
 </svelte:head>
 
-<LocationBar title="Nueva Actividad" breadcrumbs={data.breadcrumbs} />
+<LocationBar title={m.activities_createPageTitle()} {breadcrumbs} />
 
-<ActivityForm data={formData} mode="create" />
+<ActivityForm form={data.form} mode="create" availableSuppliers={data.availableSuppliers} />

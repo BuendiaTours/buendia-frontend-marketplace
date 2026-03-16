@@ -70,7 +70,7 @@
 						href={ROUTES.backoffice.activities.list}
 						class:menu-active={isActive(ROUTES.backoffice.activities.list)}
 					>
-						Actividades
+						{m.activities_navLabel()}
 					</a>
 				</li>
 				<li>
@@ -156,7 +156,7 @@
 					href={ROUTES.backoffice.activities.list}
 					class:menu-active={isActive(ROUTES.backoffice.activities.list)}
 				>
-					Actividades
+					{m.activities_navLabel()}
 				</a>
 			</li>
 			<li class="relative">

@@ -1,94 +1,87 @@
+/**
+ * Server load and action for the activity creation page.
+ * Uses generic factories — breadcrumbs and entity name are handled by the page component.
+ */
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { activityFormSchema } from '../schemas/activity-form.schema';
+import { activityFormSchema, type ActivityFormSchema } from '../schemas/activity-form.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
-import { ATTRACTION_REQUEST } from '$core/attractions/requests';
-import { CATEGORY_REQUEST } from '$core/categories/requests';
-import { LOCATION_REQUEST } from '$core/locations/requests';
-import { DISTRIBUTIVE_REQUEST } from '$core/distributives/requests';
-import { TAG_REQUEST } from '$core/tags/requests';
+import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { zod } from 'sveltekit-superforms/adapters';
+import {
+	ActivityDateMode,
+	ActivityStatus,
+	ActivityKind,
+	ActivityGuideKind
+} from '$core/activities/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
-import { ActivityStatus } from '$core/activities/enums';
 import type { PageServerLoad, Actions } from './$types';
 
-/**
- * Load function para crear nueva actividad
- *
- * Usa createCreateLoad() factory que maneja:
- * - Generación de UUID único
- * - Carga de listas disponibles (tags, categories, etc.)
- * - Inicialización del formulario con valores por defecto
- * - Generación de breadcrumbs
- */
-export const load: PageServerLoad = createCreateLoad({
+export const load: PageServerLoad = createCreateLoad<
+	ActivityFormSchema,
+	{ availableSuppliers: Array<{ id: string; name: string }> }
+>({
 	schema: zod(activityFormSchema),
 	initialValues: {
-		// Campos básicos
 		title: '',
 		slug: '',
+		supplierId: '',
 		codeRef: '',
-
-		// Descripciones
-		descriptionFull: '',
-		descriptionShort: '',
-		infoImportant: '',
-
-		// Estado y tipos
 		status: ActivityStatus.DRAFT,
-		kind: '',
-		guideKind: '',
-
-		// Relaciones (arrays vacíos)
-		categories: [],
-		tags: [],
-		attractions: [],
-		destinations: [], // API field name - maps to locations in UI
-		distributives: [],
-
-		// Listas de elementos
-		stages: [],
-		meals: [],
+		kind: ActivityKind.PAID_TOUR,
+		dateMode: ActivityDateMode.DATE_AND_TIME,
+		guideKind: ActivityGuideKind.AUTO,
+		descriptionShort: '',
+		descriptionFull: '',
+		infoImportant: '',
+		phoneContact: '',
+		restrictions: [],
+		notSuitableFor: [],
 		included: [],
 		excluded: [],
 		itemsToBring: [],
-		notSuitableFor: []
+		willDoing: []
 	},
-	loadAvailableData: async (
-		fetch
-	): Promise<{
-		availableTags: Array<{ id: string; name: string }>;
-		availableCategories: Array<{ id: string; name: string }>;
-		availableAttractions: Array<{ id: string; name: string }>;
-		availableLocations: Array<{ id: string; name: string }>;
-		availableDistributives: Array<{ id: string; name: string }>;
-	}> => ({
-		availableTags: (await TAG_REQUEST.findByCriteria(fetch)).data || [],
-		availableCategories: (await CATEGORY_REQUEST.findByCriteria(fetch)).data || [],
-		availableAttractions: (await ATTRACTION_REQUEST.findByCriteria(fetch)).data || [],
-		availableLocations: (await LOCATION_REQUEST.findByCriteria(fetch)).data || [],
-		availableDistributives: (await DISTRIBUTIVE_REQUEST.findByCriteria(fetch)).data || []
-	}),
-	breadcrumbLabel: 'Nueva actividad',
-	entityName: 'actividad'
+	loadAvailableData: async (fetch) => ({
+		availableSuppliers: (await SUPPLIER_REQUEST.findByCriteria(fetch)).data.map((s) => ({
+			id: s.id,
+			name: s.name
+		}))
+	})
 });
 
-/**
- * Action para crear una nueva actividad
- *
- * Usa createCreateAction() factory que maneja:
- * - Validación del formulario
- * - Llamada a api.activities.create()
- * - Manejo de errores con mensajes personalizados
- * - Flash messages
- * - Redirección a la página de edición
- */
 export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityFormSchema),
 		createFn: ACTIVITY_REQUEST.create,
-		entityName: 'actividad',
-		redirectToEdit: true
+		redirectToList: true,
+		transformData: ({
+			id,
+			title,
+			slug,
+			supplierId,
+			codeRef,
+			dateMode,
+			descriptionFull,
+			descriptionShort,
+			guideKind,
+			infoImportant,
+			kind,
+			phoneContact
+		}) => ({
+			id,
+			title,
+			slug,
+			supplierId,
+			descriptionFull,
+			descriptionShort,
+			guideKind,
+			kind,
+			...(codeRef ? { codeRef } : {}),
+			...(dateMode ? { dateMode } : {}),
+			...(infoImportant ? { infoImportant } : {}),
+			...(phoneContact ? { phoneContact } : {})
+		})
 	})
 };
