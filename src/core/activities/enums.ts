@@ -94,7 +94,8 @@ export enum ActivityTransportKind {
 /** Whether the activity starts and ends at the same location. */
 export enum ActivityTransportLocation {
 	SAME_PLACE = 'SAME_PLACE',
-	DIFFERENT_PLACE = 'DIFFERENT_PLACE'
+	DIFFERENT_PLACE = 'DIFFERENT_PLACE',
+	NOT_APPLY = 'NOT_APPLY'
 }
 
 /** Pet policy for the activity. */

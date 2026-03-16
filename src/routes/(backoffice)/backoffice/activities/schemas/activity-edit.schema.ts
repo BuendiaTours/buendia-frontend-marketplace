@@ -9,7 +9,8 @@ import {
 	ActivityTransportLocation
 } from '$core/activities/enums';
 
-export const activityFormSchema = z.object({
+/** Schema for the activity edit form — maps to ActivityUpdateDto. */
+export const activityEditSchema = z.object({
 	id: z.string(),
 	title: z.string().min(3).max(200),
 	slug: z.string().min(3).max(200),
@@ -26,7 +27,7 @@ export const activityFormSchema = z.object({
 	transportKind: z.nativeEnum(ActivityTransportKind).default(ActivityTransportKind.NONE),
 	transportLocation: z
 		.nativeEnum(ActivityTransportLocation)
-		.default(ActivityTransportLocation.SAME_PLACE),
+		.default(ActivityTransportLocation.NOT_APPLY),
 	petsAllowed: z.nativeEnum(ActivityPetsAllowed).default(ActivityPetsAllowed.NOT_APPLY),
 	petsAllowedDescription: z.string().default(''),
 	voucherInfo: z.string().default(''),
@@ -38,4 +39,4 @@ export const activityFormSchema = z.object({
 	willDoing: z.array(z.string()).default([])
 });
 
-export type ActivityFormSchema = z.infer<typeof activityFormSchema>;
+export type ActivityEditSchema = z.infer<typeof activityEditSchema>;

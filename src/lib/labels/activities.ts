@@ -8,6 +8,7 @@ import {
 	ActivityKind,
 	ActivityGuideKind,
 	ActivityDateMode,
+	ActivityLocationRole,
 	ActivityNotSuitableFor,
 	ActivityRestriction,
 	ActivityAllergen,
@@ -71,6 +72,10 @@ export const ACTIVITY_TRANSPORT_LOCATION_OPTIONS = [
 	{
 		id: ActivityTransportLocation.DIFFERENT_PLACE,
 		name: m.enum_activityTransportLocation_differentPlace()
+	},
+	{
+		id: ActivityTransportLocation.NOT_APPLY,
+		name: m.enum_activityTransportLocation_notApply()
 	}
 ];
 
@@ -78,6 +83,12 @@ export const ACTIVITY_PETS_ALLOWED_OPTIONS = [
 	{ id: ActivityPetsAllowed.YES, name: m.enum_activityPetsAllowed_yes() },
 	{ id: ActivityPetsAllowed.NO, name: m.enum_activityPetsAllowed_no() },
 	{ id: ActivityPetsAllowed.NOT_APPLY, name: m.enum_activityPetsAllowed_notApply() }
+];
+
+export const ACTIVITY_LOCATION_ROLE_OPTIONS = [
+	{ id: ActivityLocationRole.DESTINATION, name: m.enum_activityLocationRole_destination() },
+	{ id: ActivityLocationRole.ORIGIN, name: m.enum_activityLocationRole_origin() },
+	{ id: ActivityLocationRole.WAYPOINT, name: m.enum_activityLocationRole_waypoint() }
 ];
 
 export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = [

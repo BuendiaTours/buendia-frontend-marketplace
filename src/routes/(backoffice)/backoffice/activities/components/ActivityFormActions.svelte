@@ -13,9 +13,10 @@
 		mode: 'create' | 'edit';
 		activityId?: string;
 		formId: string;
+		submitting?: boolean;
 	};
 
-	let { mode, activityId, formId }: Props = $props();
+	let { mode, activityId, formId, submitting = false }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -38,6 +39,7 @@
 			<button
 				type="submit"
 				class="btn btn-soft btn-error"
+				disabled={submitting}
 				use:confirmAction={{
 					title: m.activities_confirmDeleteTitle(),
 					message: m.activities_confirmDeleteMessage(),
@@ -56,7 +58,11 @@
 		type="submit"
 		class="btn btn-outline btn-primary"
 		class:ml-auto={isCreateMode}
+		disabled={submitting}
 	>
+		{#if submitting}
+			<span class="loading loading-spinner loading-sm"></span>
+		{/if}
 		{isCreateMode ? m.activities_createActivity() : m.activities_saveChanges()}
 	</button>
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Edit activity page.
-	 * Loads the existing activity data and renders the form in edit mode.
+	 * Full management view: UpdateDto fields + sub-resource management (locations, etc.).
 	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
@@ -27,7 +27,9 @@
 
 <ActivityForm
 	form={data.form}
-	mode="edit"
 	activityId={data.activity.id}
 	availableSuppliers={data.availableSuppliers}
+	locations={data.activity.locations ?? []}
+	attractions={data.activity.attractions ?? []}
+	meals={data.activity.meals ?? []}
 />

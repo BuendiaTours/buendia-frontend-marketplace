@@ -1,46 +1,34 @@
 /**
  * Server load and action for the activity creation page.
- * Uses generic factories — breadcrumbs and entity name are handled by the page component.
+ * Uses the minimal ActivityCreateDto schema — after creation, redirects to the edit page.
  */
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { activityFormSchema, type ActivityFormSchema } from '../schemas/activity-form.schema';
+import { activityCreateSchema, type ActivityCreateSchema } from '../schemas/activity-create.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { zod } from 'sveltekit-superforms/adapters';
-import {
-	ActivityDateMode,
-	ActivityStatus,
-	ActivityKind,
-	ActivityGuideKind
-} from '$core/activities/enums';
+import { ActivityDateMode, ActivityKind, ActivityGuideKind } from '$core/activities/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = createCreateLoad<
-	ActivityFormSchema,
+	ActivityCreateSchema,
 	{ availableSuppliers: Array<{ id: string; name: string }> }
 >({
-	schema: zod(activityFormSchema),
+	schema: zod(activityCreateSchema),
 	initialValues: {
 		title: '',
 		slug: '',
 		supplierId: '',
-		codeRef: '',
-		status: ActivityStatus.DRAFT,
 		kind: ActivityKind.PAID_TOUR,
-		dateMode: ActivityDateMode.DATE_AND_TIME,
 		guideKind: ActivityGuideKind.AUTO,
+		dateMode: ActivityDateMode.DATE_AND_TIME,
 		descriptionShort: '',
 		descriptionFull: '',
+		codeRef: '',
 		infoImportant: '',
-		phoneContact: '',
-		restrictions: [],
-		notSuitableFor: [],
-		included: [],
-		excluded: [],
-		itemsToBring: [],
-		willDoing: []
+		phoneContact: ''
 	},
 	loadAvailableData: async (fetch) => ({
 		availableSuppliers: (await SUPPLIER_REQUEST.findByCriteria(fetch)).data.map((s) => ({
@@ -53,9 +41,10 @@ export const load: PageServerLoad = createCreateLoad<
 export const actions: Actions = {
 	default: createCreateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
-		schema: zod(activityFormSchema),
+		schema: zod(activityCreateSchema),
 		createFn: ACTIVITY_REQUEST.create,
-		redirectToList: true,
+		redirectToEdit: true,
+		redirectField: 'id',
 		transformData: ({
 			id,
 			title,

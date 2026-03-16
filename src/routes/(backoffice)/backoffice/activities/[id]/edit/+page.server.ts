@@ -5,7 +5,7 @@
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { ApiError } from '$core/_shared/errors';
-import { activityFormSchema } from '../../schemas/activity-form.schema';
+import { activityEditSchema } from '../../schemas/activity-edit.schema';
 import {
 	ACTIVITY_RESTRICTION_OPTIONS,
 	ACTIVITY_NOT_SUITABLE_FOR_OPTIONS
@@ -58,7 +58,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				itemsToBring: activity.itemsToBring ?? [],
 				willDoing: activity.willDoing ?? []
 			},
-			zod(activityFormSchema)
+			zod(activityEditSchema)
 		);
 
 		return {
@@ -80,7 +80,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 export const actions: Actions = {
 	update: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
-		schema: zod(activityFormSchema),
+		schema: zod(activityEditSchema),
 		updateFn: ACTIVITY_REQUEST.update,
 		redirectToList: true,
 		paramName: 'id',
