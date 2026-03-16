@@ -41,6 +41,9 @@
 @import '$lib/styles/marketplace/components/c-melt-range-calendar.css';
 @import '$lib/styles/marketplace/components/c-review-card.css';
 
+/* PDP */
+@import '$lib/styles/marketplace/components/pdp-reviews-featured.css';
+
 /* ============================================
    DISABLE TAILWIND DEFAULT TEXT CLASSES
    ============================================

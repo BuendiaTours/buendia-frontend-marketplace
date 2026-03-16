@@ -113,16 +113,20 @@
 	{#if data.reviews && data.reviews.length > 1}
 		<div class="pdp-reviews-featured bg-white">
 			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
-			<div class="pdp-reviews-featured__reviews flex flex-col gap-4 sm:flex-row">
+			<div
+				class="pdp-reviews-featured__reviews -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 sm:mx-0 sm:overflow-visible sm:px-0"
+			>
 				{#each data.reviews.slice(0, 2) as review (review.id)}
-					<ReviewCard
-						name={review.user || 'Anónimo'}
-						text={review.content}
-						rating={review.averageRating}
-						lines={3}
-						wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg"
-						{...review}
-					/>
+					<div class="w-4/5 flex-none snap-start snap-always sm:w-auto sm:flex-1">
+						<ReviewCard
+							name={review.user || 'Anónimo'}
+							text={review.content}
+							rating={review.averageRating}
+							lines={3}
+							wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
+							{...review}
+						/>
+					</div>
 				{/each}
 			</div>
 			<a href="#reviews" class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"

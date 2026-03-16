@@ -39,12 +39,12 @@
 
 <div class="c-review-card group w-full {wrapperClass}" style="--rc-lines: {lines}">
 	<div
-		class="c-review-card__head flex items-start justify-between gap-3 group-[.is-variant-vertical]:flex-col"
+		class="c-review-card__head flex flex-col gap-3 group-[.is-variant-vertical]:flex-col sm:flex-row sm:items-start sm:justify-between"
 	>
 		<AuthorMeta {name} {desc} />
 		{#if rating != null}
 			<div
-				class="mt-3.5 flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0"
+				class="c-review-card__rating flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0 sm:mt-3.5"
 			>
 				<StarRating value={rating} size="sm" />
 				{#if showRatingValue}
