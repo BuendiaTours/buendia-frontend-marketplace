@@ -24,4 +24,4 @@
 
 <LocationBar title={m.activities_createPageTitle()} {breadcrumbs} />
 
-<ActivityCreateForm form={data.form} availableSuppliers={data.availableSuppliers} />
+<ActivityCreateForm form={data.form} />

@@ -6,16 +6,12 @@ import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { activityCreateSchema, type ActivityCreateSchema } from '../schemas/activity-create.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
-import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { ActivityDateMode, ActivityKind, ActivityGuideKind } from '$core/activities/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = createCreateLoad<
-	ActivityCreateSchema,
-	{ availableSuppliers: Array<{ id: string; name: string }> }
->({
+export const load: PageServerLoad = createCreateLoad<ActivityCreateSchema>({
 	schema: zod(activityCreateSchema),
 	initialValues: {
 		title: '',
@@ -29,13 +25,7 @@ export const load: PageServerLoad = createCreateLoad<
 		codeRef: '',
 		infoImportant: '',
 		phoneContact: ''
-	},
-	loadAvailableData: async (fetch) => ({
-		availableSuppliers: (await SUPPLIER_REQUEST.findByCriteria(fetch)).data.map((s) => ({
-			id: s.id,
-			name: s.name
-		}))
-	})
+	}
 });
 
 export const actions: Actions = {

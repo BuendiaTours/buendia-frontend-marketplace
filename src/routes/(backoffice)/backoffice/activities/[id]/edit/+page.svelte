@@ -28,7 +28,6 @@
 <ActivityForm
 	form={data.form}
 	activityId={data.activity.id}
-	availableSuppliers={data.availableSuppliers}
 	locations={data.activity.locations ?? []}
 	attractions={data.activity.attractions ?? []}
 	meals={data.activity.meals ?? []}

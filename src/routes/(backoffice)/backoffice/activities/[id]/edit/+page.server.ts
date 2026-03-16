@@ -3,7 +3,6 @@
  * Fetches the activity by ID, populates the form, and wires up update/delete actions.
  */
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
-import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { ApiError } from '$core/_shared/errors';
 import { activityEditSchema } from '../../schemas/activity-edit.schema';
 import {
@@ -20,10 +19,7 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	try {
-		const [activity, suppliersResponse] = await Promise.all([
-			ACTIVITY_REQUEST.findById(fetch, params.id),
-			SUPPLIER_REQUEST.findByCriteria(fetch)
-		]);
+		const activity = await ACTIVITY_REQUEST.findById(fetch, params.id);
 
 		const form = await superValidate(
 			{
@@ -61,14 +57,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			zod(activityEditSchema)
 		);
 
-		return {
-			activity,
-			form,
-			availableSuppliers: (suppliersResponse.data || []).map((s) => ({
-				id: s.id,
-				name: s.name
-			}))
-		};
+		return { activity, form };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			throw error(err.status || 500);

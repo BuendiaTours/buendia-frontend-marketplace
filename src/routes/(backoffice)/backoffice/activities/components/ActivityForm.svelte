@@ -24,6 +24,7 @@
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import { loadSupplierById } from '../queries/supplier-search.queries';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
@@ -41,7 +42,6 @@
 	type Props = {
 		form: SuperValidated<ActivityEditSchema>;
 		activityId: string;
-		availableSuppliers?: Array<{ id: string; name: string }>;
 		locations?: ActivityLocation[];
 		attractions?: ActivityAttraction[];
 		meals?: ActivityMeal[];
@@ -50,7 +50,6 @@
 	let {
 		form: formData,
 		activityId,
-		availableSuppliers = [],
 		locations = $bindable([]),
 		attractions = $bindable([]),
 		meals = $bindable([])
@@ -62,6 +61,15 @@
 	});
 
 	const formId = 'activity-form';
+
+	let supplierName = $state('');
+	$effect(() => {
+		if ($form.supplierId && !supplierName) {
+			loadSupplierById($form.supplierId).then((result) => {
+				if (result) supplierName = result.label;
+			});
+		}
+	});
 
 	type ToastData = { title: string; description: string; type: 'success' | 'error' };
 
@@ -253,13 +261,12 @@
 				wrapperClass="md:col-span-4"
 			/>
 
-			<FormSelect
+			<FormInputText
 				id="supplierId"
 				label={m.activities_labelSupplierId()}
-				bind:value={$form.supplierId}
-				error={$errors.supplierId}
-				options={availableSuppliers}
-				placeholder={m.activities_placeholderSupplierId()}
+				value={supplierName || $form.supplierId}
+				badge="read only"
+				readonly
 				wrapperClass="md:col-span-4"
 			/>
 

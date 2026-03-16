@@ -1,61 +1,45 @@
 <script lang="ts">
 	/**
-	 * ActivityCreateForm — Simple form for creating a new activity.
-	 * Only includes fields from ActivityCreateDto.
-	 * After creation, the user is redirected to the edit page for full management.
+	 * ActivityCreateForm — Form for creating a new activity.
+	 * Mirrors the edit page structure: main data section + config section.
+	 * After creation, redirects to edit where all sections become available.
 	 */
 	import * as m from '$paraglide/messages';
-	import { page } from '$app/state';
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { ActivityCreateSchema } from '../schemas/activity-create.schema';
 	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_GUIDE_KIND_OPTIONS } from '$lib/labels/activities';
-	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
+	import { checkSlugAvailability } from '../queries/slug-check.queries';
+	import { searchSuppliers, loadSupplierById } from '../queries/supplier-search.queries';
 
-	import { Database } from '$lib/icons/Linear';
+	import { Database, FolderCheck } from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
+	import FormAsyncSearch from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
-	import { checkSlugAvailability } from '../queries/slug-check.queries';
+	import ActivityFormActions from './ActivityFormActions.svelte';
 
 	type Props = {
 		form: SuperValidated<ActivityCreateSchema>;
-		availableSuppliers?: Array<{ id: string; name: string }>;
 	};
 
-	let { form: formData, availableSuppliers = [] }: Props = $props();
+	let { form: formData }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance, submitting } = superForm(formData, {
 		dataType: 'json'
 	});
+
+	const formId = 'activity-create-form';
 </script>
 
-<div
-	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
->
-	<a href={`${ACTIVITY_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
-		← {m.activities_backToList()}
-	</a>
+<ActivityFormActions mode="create" {formId} submitting={$submitting} />
 
-	<button
-		form="activity-create-form"
-		type="submit"
-		class="btn btn-outline btn-primary ml-auto"
-		disabled={$submitting}
-	>
-		{#if $submitting}
-			<span class="loading loading-spinner loading-sm"></span>
-		{/if}
-		{m.activities_createActivity()}
-	</button>
-</div>
-
-<form id="activity-create-form" method="POST" use:enhance class="space-y-4">
-	<FormAccordion name="form-activity-create" open>
+<form id={formId} method="POST" use:enhance class="space-y-4">
+	<FormAccordion name="form-activity-data" open>
 		{#snippet title()}
 			<Database class="size-6" />
 			<span>{m.activities_sectionMainData()}</span>
@@ -71,48 +55,7 @@
 				label={m.activities_labelTitle()}
 				bind:value={$form.title}
 				error={$errors.title}
-				wrapperClass="md:col-span-8"
-			/>
-
-			<FormSelect
-				id="supplierId"
-				label={m.activities_labelSupplierId()}
-				bind:value={$form.supplierId}
-				error={$errors.supplierId}
-				options={availableSuppliers}
-				placeholder={m.activities_placeholderSupplierId()}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormInputSlug
-				id="slug"
-				label={m.activities_labelSlug()}
-				bind:value={$form.slug}
-				sourceValue={$form.title}
-				error={$errors.slug}
-				generateTooltip="Comprobar disponibilidad del slug"
-				checkSlugFn={checkSlugAvailability}
 				wrapperClass="md:col-span-12"
-			/>
-
-			<FormSelect
-				id="kind"
-				label={m.activities_labelKind()}
-				bind:value={$form.kind}
-				error={$errors.kind}
-				options={ACTIVITY_KIND_OPTIONS}
-				placeholder={m.activities_placeholderKind()}
-				wrapperClass="md:col-span-6"
-			/>
-
-			<FormSelect
-				id="guideKind"
-				label={m.activities_labelGuideKind()}
-				bind:value={$form.guideKind}
-				error={$errors.guideKind}
-				options={ACTIVITY_GUIDE_KIND_OPTIONS}
-				placeholder={m.activities_placeholderGuideKind()}
-				wrapperClass="md:col-span-6"
 			/>
 
 			<FormTextarea
@@ -129,6 +72,59 @@
 				label={m.activities_labelDescriptionFull()}
 				bind:value={$form.descriptionFull}
 				error={$errors.descriptionFull}
+			/>
+		{/snippet}
+	</FormAccordion>
+
+	<FormAccordion name="form-activity-config" open>
+		{#snippet title()}
+			<FolderCheck class="size-6" />
+			<span>{m.activities_sectionConfig()}</span>
+		{/snippet}
+		{#snippet asideContent()}
+			<p class="text-xs">{m.activities_sectionConfigDescription()}</p>
+		{/snippet}
+		{#snippet content()}
+			<FormSelect
+				id="kind"
+				label={m.activities_labelKind()}
+				bind:value={$form.kind}
+				error={$errors.kind}
+				options={ACTIVITY_KIND_OPTIONS}
+				placeholder={m.activities_placeholderKind()}
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormSelect
+				id="guideKind"
+				label={m.activities_labelGuideKind()}
+				bind:value={$form.guideKind}
+				error={$errors.guideKind}
+				options={ACTIVITY_GUIDE_KIND_OPTIONS}
+				placeholder={m.activities_placeholderGuideKind()}
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormAsyncSearch
+				id="supplierId"
+				label={m.activities_labelSupplierId()}
+				bind:value={$form.supplierId}
+				searchFn={searchSuppliers}
+				loadSelectedFn={loadSupplierById}
+				placeholder={m.activities_placeholderSupplierId()}
+				error={$errors.supplierId}
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormInputSlug
+				id="slug"
+				label={m.activities_labelSlug()}
+				bind:value={$form.slug}
+				sourceValue={$form.title}
+				error={$errors.slug}
+				generateTooltip="Comprobar disponibilidad del slug"
+				checkSlugFn={checkSlugAvailability}
+				wrapperClass="md:col-span-12"
 			/>
 		{/snippet}
 	</FormAccordion>
