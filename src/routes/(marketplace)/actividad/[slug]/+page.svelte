@@ -114,10 +114,10 @@
 		<div class="pdp-reviews-featured bg-white">
 			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
 			<div
-				class="pdp-reviews-featured__reviews -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 sm:mx-0 sm:overflow-visible sm:px-0"
+				class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
 			>
 				{#each data.reviews.slice(0, 2) as review (review.id)}
-					<div class="w-4/5 flex-none snap-start snap-always sm:w-auto sm:flex-1">
+					<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
 							text={review.content}
@@ -129,7 +129,9 @@
 					</div>
 				{/each}
 			</div>
-			<a href="#reviews" class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
+			<a
+				href="#reviews"
+				class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
 				>Ver todas las opiniones</a
 			>
 		</div>
