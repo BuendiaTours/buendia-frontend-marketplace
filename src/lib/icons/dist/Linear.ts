@@ -672,6 +672,7 @@ export { default as MinimizeSquare } from './Linear/MinimizeSquare.svelte';
 export { default as MinimizeSquare2 } from './Linear/MinimizeSquare2.svelte';
 export { default as MinimizeSquare3 } from './Linear/MinimizeSquare3.svelte';
 export { default as MinimizeSquareMinimalistic } from './Linear/MinimizeSquareMinimalistic.svelte';
+export { default as Minus } from './Linear/Minus.svelte';
 export { default as MinusCircle } from './Linear/MinusCircle.svelte';
 export { default as MinusSquare } from './Linear/MinusSquare.svelte';
 export { default as Mirror } from './Linear/Mirror.svelte';
@@ -781,6 +782,7 @@ export { default as PlaylistMinimalistic } from './Linear/PlaylistMinimalistic.s
 export { default as PlaylistMinimalistic2 } from './Linear/PlaylistMinimalistic2.svelte';
 export { default as PlaylistMinimalistic3 } from './Linear/PlaylistMinimalistic3.svelte';
 export { default as PlugCircle } from './Linear/PlugCircle.svelte';
+export { default as Plus } from './Linear/Plus.svelte';
 export { default as PlusMinus } from './Linear/PlusMinus.svelte';
 export { default as Podcast } from './Linear/Podcast.svelte';
 export { default as PointOnMap } from './Linear/PointOnMap.svelte';

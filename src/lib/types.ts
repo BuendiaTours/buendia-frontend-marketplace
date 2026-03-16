@@ -23,6 +23,8 @@ export type ActivityListItem = {
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
+	faqs: Array<{ id: string; position: number; question: string; answer: string }>;
+	faqsTitle: string | null;
 	guideKind: ActivityGuideKind;
 	included: string[];
 	infoImportant: string | null;

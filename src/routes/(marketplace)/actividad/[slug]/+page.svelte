@@ -11,6 +11,7 @@
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
+	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -40,6 +41,9 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- faqs -->
+	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
