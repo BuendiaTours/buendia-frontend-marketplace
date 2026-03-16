@@ -1,3 +1,23 @@
 .c-faq-item {
 	border-bottom: 1px solid var(--color-neutral-200);
+
+	.icon-minus {
+		display: none;
+	}
+
+	&[open] .icon-plus {
+		display: none;
+	}
+
+	&[open] .icon-minus {
+		display: block;
+	}
+
+	> summary {
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
 }

@@ -19,11 +19,11 @@
 		{title}
 	</p>
 
-	<ul>
+	<div>
 		{#each visibleFaqs as faq (faq.id)}
 			<FaqItem question={faq.question} answer={faq.answer} />
 		{/each}
-	</ul>
+	</div>
 
 	{#if sortedFaqs.length > 4 && !showAll}
 		<button
