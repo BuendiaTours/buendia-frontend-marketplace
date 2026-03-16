@@ -67,6 +67,15 @@ The `fetch` parameter is injected — it accepts both SvelteKit's `fetch` (serve
 - HTTP helpers in `src/core/_shared/helpers.ts` (get, getWithParams, post, patch, put, del)
 - Error types: `network`, `timeout`, `not_found`, `unauthorized`, `forbidden`, `validation`, `server_error`, `unknown`
 
+### CQRS / Eventual Consistency
+
+The backend uses CQRS with event sourcing. Write operations (create, update, delete) return immediately but **read projections take ~500ms to propagate**. This affects all redirects after mutations:
+
+- **Action factories** (`createAction`, `updateAction`, `deleteAction`) include a `redirectDelayMs` option (defaults to 500ms) that waits before redirecting so the projection is ready when the next page loads.
+- **Never set `redirectDelayMs: 0`** on create/update/delete actions — the target page will fetch stale or missing data.
+- **All submit buttons** must show a loading spinner and be disabled during submission (including the delay). Use `$submitting` from superforms and pass it to the FormActions component.
+- **Sub-resource operations** (e.g., addLocation, removeMeal) are client-side API calls that update local state optimistically — no redirect needed, so no delay.
+
 ### Forms
 
 SvelteKit Superforms + Zod. **Always use `use:enhance`** for progressive enhancement — on ALL forms including delete. Adding a form field requires updating:

@@ -61,7 +61,7 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			redirectDelayMs
 		} = config;
 
-		const delay = redirectDelayMs ?? (redirectToList ? 500 : 0);
+		const delay = redirectDelayMs ?? 500;
 
 		logger.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
 
