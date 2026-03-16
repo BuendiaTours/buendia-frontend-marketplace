@@ -111,7 +111,7 @@
 
 	<!-- pdp-reviews-featured -->
 	{#if data.reviews && data.reviews.length > 1}
-		<div class="pdp-reviews-featured bg-white">
+		<div class="pdp-reviews-featured">
 			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
 			<div
 				class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
@@ -333,7 +333,7 @@
 	{/if}
 
 	<!-- Multimedias -->
-	{#if activity.multimedias && activity.multimedias.length > 0}
+	<!-- {#if activity.multimedias && activity.multimedias.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📸 Multimedia</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -342,7 +342,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<div class="pdp-review-gallery">
 		<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
