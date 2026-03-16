@@ -125,7 +125,7 @@
 				bind:value={comboSingle}
 			/>
 			{#if comboSingle}
-				<p class="mt-2 text-sm text-gray-500">Seleccionado: <strong>{comboSingle}</strong></p>
+				<p class="p-sm mt-2 text-gray-500">Seleccionado: <strong>{comboSingle}</strong></p>
 			{/if}
 		</div>
 		<div>
@@ -136,7 +136,7 @@
 				bind:value={comboMultiple}
 			/>
 			{#if comboMultiple.length > 0}
-				<p class="mt-2 text-sm text-gray-500">
+				<p class="p-sm mt-2 text-gray-500">
 					Seleccionados: <strong>{comboMultiple.join(', ')}</strong>
 				</p>
 			{/if}

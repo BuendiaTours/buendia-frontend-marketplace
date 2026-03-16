@@ -16,7 +16,7 @@ Soporta modo single y multiple.
 
 <script lang="ts">
 	import { createCombobox, melt } from '@melt-ui/svelte';
-	import { SortVertical, CheckSquare } from '$lib/icons/Linear';
+	import { AltArrowDown, CheckSquare } from '$lib/icons/Linear';
 	import type { Component } from 'svelte';
 	import { untrack } from 'svelte';
 	import { fly } from 'svelte/transition';
@@ -128,20 +128,20 @@ Soporta modo single y multiple.
 	{/if}
 	<input
 		use:melt={$input}
-		class={`w-full bg-transparent pr-10 ${Icon ? 'pl-10' : 'pl-4'}`}
+		class={`h-10 w-full min-w-[110px] rounded-lg border border-neutral-400 bg-gray-50 pr-10 ${Icon ? 'pl-10' : 'pl-4'}`}
 		{placeholder}
 		aria-label={placeholder}
 		{name}
 	/>
 	<div class="absolute end-3 top-1/2 size-5 -translate-y-1/2 opacity-60">
-		<SortVertical class="size-5" />
+		<AltArrowDown class="size-5" />
 	</div>
 </div>
 
 {#if $open}
 	<ul
 		use:melt={$menu}
-		class="melt-combobox__menu z-50 flex max-h-75 flex-col overflow-hidden rounded-lg border shadow-lg {wrapperClass}"
+		class="melt-combobox__menu z-50 flex max-h-75 flex-col overflow-hidden rounded-lg border border-neutral-400 bg-gray-50 shadow-lg {wrapperClass}"
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
