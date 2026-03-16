@@ -12,6 +12,7 @@
 	import type { BndLightboxItem } from '$lib/types';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -44,6 +45,12 @@
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+
+	<!-- conditions -->
+	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
+	{#each activity.conditions as condition (condition.id)}
+		<Conditions style={condition.style} items={condition.items} />
+	{/each}
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
