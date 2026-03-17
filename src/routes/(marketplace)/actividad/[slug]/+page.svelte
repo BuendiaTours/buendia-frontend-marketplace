@@ -6,6 +6,7 @@
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 
 	import Badge from '$lib/components/marketplace/Badge.svelte';
+	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
@@ -46,6 +47,12 @@
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+
+	<!-- conditions -->
+	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
+	{#each activity.conditions as condition (condition.id)}
+		<Conditions style={condition.style} items={condition.items} />
+	{/each}
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner

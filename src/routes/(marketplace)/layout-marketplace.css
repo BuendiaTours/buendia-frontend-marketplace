@@ -38,6 +38,7 @@
 @import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
 @import '$lib/styles/marketplace/components/c-faqs.css';
 @import '$lib/styles/marketplace/components/c-faq-item.css';
+@import '$lib/styles/marketplace/components/c-conditions.css';
 @import '$lib/styles/marketplace/components/c-tooltip.css';
 @import '$lib/styles/marketplace/components/c-melt-calendar.css';
 @import '$lib/styles/marketplace/components/c-melt-range-calendar.css';
