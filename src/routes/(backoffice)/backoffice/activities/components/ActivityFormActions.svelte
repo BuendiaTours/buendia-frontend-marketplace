@@ -1,6 +1,7 @@
 <script lang="ts">
 	/**
 	 * ActivityFormActions — Action bar for activity form (back, delete, submit).
+	 * Submit button is hidden when no formId is provided (e.g. sub-resource tabs).
 	 * Delete uses progressive enhancement to avoid full page reload.
 	 */
 	import * as m from '$paraglide/messages';
@@ -12,7 +13,7 @@
 	type Props = {
 		mode: 'create' | 'edit';
 		activityId?: string;
-		formId: string;
+		formId?: string;
 		submitting?: boolean;
 	};
 
@@ -23,7 +24,7 @@
 </script>
 
 <div
-	class="bnd-main-actions border-base-content/10 bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 border-t py-4"
+	class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 py-4"
 >
 	<a href={`${ACTIVITY_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← {m.activities_backToList()}
@@ -53,16 +54,18 @@
 		</form>
 	{/if}
 
-	<button
-		form={formId}
-		type="submit"
-		class="btn btn-outline btn-primary"
-		class:ml-auto={isCreateMode}
-		disabled={submitting}
-	>
-		{#if submitting}
-			<span class="loading loading-spinner loading-sm"></span>
-		{/if}
-		{isCreateMode ? m.activities_createActivity() : m.activities_saveChanges()}
-	</button>
+	{#if formId}
+		<button
+			form={formId}
+			type="submit"
+			class="btn btn-outline btn-primary"
+			class:ml-auto={isCreateMode}
+			disabled={submitting}
+		>
+			{#if submitting}
+				<span class="loading loading-spinner loading-sm"></span>
+			{/if}
+			{isCreateMode ? m.activities_createActivity() : m.activities_saveChanges()}
+		</button>
+	{/if}
 </div>

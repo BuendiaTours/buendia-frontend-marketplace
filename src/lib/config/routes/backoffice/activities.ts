@@ -8,5 +8,7 @@ import { backoffice } from '../core';
 export const ACTIVITY_ROUTES = {
 	list: backoffice('activities'),
 	create: backoffice('activities/create'),
-	edit: (id: string) => backoffice('activities', id, 'edit')
+	edit: (id: string) => backoffice('activities', id, 'edit'),
+	locations: (id: string) => backoffice('activities', id, 'locations'),
+	meals: (id: string) => backoffice('activities', id, 'meals')
 } as const;
