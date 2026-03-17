@@ -14,6 +14,7 @@
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
@@ -96,6 +97,14 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- highlights -->
+	<PdpHighlights
+		items={activity.pdpHighlights}
+		wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
+	/>
+
+	<Spacer margin="my-0" />
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />

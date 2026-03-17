@@ -1,5 +1,5 @@
 @media (width >= theme(--breakpoint-lg)) {
-	.c-faqs ul {
+	.c-faqs > div {
 		counter-reset: faq;
 	}
 
