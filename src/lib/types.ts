@@ -11,6 +11,19 @@ import type {
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
 
+export type ConditionItem = {
+	id: string;
+	icon: string;
+	title: string;
+	description: string;
+};
+
+export type Condition = {
+	id: string;
+	style: string;
+	items: ConditionItem[];
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -18,12 +31,14 @@ export type ActivityListItem = {
 	attractions: Array<{ id: string; name: string }>;
 	categories: Array<{ id: string; name: string }>;
 	codeRef: string;
+	conditions: Condition[];
+	conditionsTitle: string | null;
 	descriptionFull: string;
 	descriptionShort: string;
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
-	faqs: Array<{ id: string; position: number; question: string; answer: string }>;
+	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
 	faqsTitle: string | null;
 	guideKind: ActivityGuideKind;
 	included: string[];

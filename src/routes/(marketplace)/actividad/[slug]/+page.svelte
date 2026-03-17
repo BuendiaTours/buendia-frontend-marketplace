@@ -9,10 +9,11 @@
 	import type { ActivityReviewParams } from '$lib/types';
 
 	import Badge from '$lib/components/marketplace/Badge.svelte';
+	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
-	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
@@ -96,6 +97,12 @@
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+
+	<!-- conditions -->
+	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
+	{#each activity.conditions as condition (condition.id)}
+		<Conditions style={condition.style} items={condition.items} />
+	{/each}
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner

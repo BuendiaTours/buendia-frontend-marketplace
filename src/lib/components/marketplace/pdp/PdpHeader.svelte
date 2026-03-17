@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Breadcrumbs from './Breadcrumbs.svelte';
+	import Breadcrumbs from './../Breadcrumbs.svelte';
 	import type { BreadcrumbItem } from '$lib/types';
-	import StarRating from './StarRating.svelte';
-	import Badge from './Badge.svelte';
+	import StarRating from './../StarRating.svelte';
+	import Badge from './../Badge.svelte';
 
 	type Props = {
 		dataBreadcrumbs: BreadcrumbItem[];
