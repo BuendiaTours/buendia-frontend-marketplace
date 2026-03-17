@@ -1,25 +1,30 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { format } from 'date-fns';
+
+	// Types
+	import type { ActivityReviewParams } from '$lib/types';
+	import type { BndLightboxItem } from '$lib/types';
+
+	// API - Endpoints
+	import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
 
 	// Components
-	import type { BndLightboxItem } from '$lib/types';
-	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
-
-	import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
-	import type { ActivityReviewParams } from '$lib/types';
-
 	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
-	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+
+	// Lightbox
+	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 
 	// Icons
 	import { VerifiedCheck } from '$lib/icons/Linear';
@@ -208,6 +213,7 @@
 					<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
+							desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
 							text={review.content}
 							rating={review.averageRating}
 							lines={3}
@@ -478,6 +484,7 @@
 					<li class="border-b border-[var(--color-border-default)] pb-6">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
+							desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
 							text={review.content}
 							rating={review.averageRating}
 							lines={4}

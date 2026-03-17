@@ -16,7 +16,12 @@
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { format } from 'date-fns';
+
+	// Types
 	import type { BndLightboxItemContext } from '$lib/types';
+
+	// Componentes
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
@@ -95,7 +100,9 @@
 				<div class="pt-4 transition-opacity duration-200" class:opacity-0={!contentVisible}>
 					<ReviewCard
 						name={displayedMeta.user || 'Anónimo'}
-						desc={String(displayedMeta.date ?? '')}
+						desc={displayedMeta.date
+							? format(new Date(displayedMeta.date), 'dd/MM/yyyy')
+							: undefined}
 						rating={Number(displayedMeta.rating)}
 						text={String(displayedMeta.content ?? '')}
 						lines={6}
