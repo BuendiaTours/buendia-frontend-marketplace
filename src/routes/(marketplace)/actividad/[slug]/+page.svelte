@@ -122,6 +122,7 @@
 			description:
 				'Si quieres disfrutar al máximo de tu tiempo libre, en Brujas aprovecha para recorrer el Muelle del Rosario y el Beguinaje, dos lugares menos transitados, pero de una belleza única. Y si visitas en invierno, lleva ropa de abrigo.'
 		}}
+		wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
 	/>
 
 	<!-- Activity Header -->
