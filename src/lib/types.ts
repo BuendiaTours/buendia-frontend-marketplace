@@ -90,6 +90,27 @@ export type ActivityReview = {
 	replies: ReviewReply[];
 };
 
+export type ActivityReviewParams = {
+	sort?: 'averageRating' | 'createdAt';
+	order?: 'ASC' | 'DESC';
+	page?: number;
+	pageSize?: number;
+};
+
+export type ActivityReviewsResponse = {
+	data: ActivityReview[];
+	pagination: {
+		page: number;
+		pageSize: number;
+		total: number;
+		totalPages: number;
+	};
+	sort: {
+		field: string;
+		order: 'asc' | 'desc';
+	};
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
