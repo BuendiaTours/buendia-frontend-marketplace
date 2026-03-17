@@ -382,10 +382,12 @@
 				<p class="p-base whitespace-nowrap">Ordenar por</p>
 				<select class="select" placeholder="Seleccionar destino..." aria-label="Seleccionar orden">
 					<option value="recommended" selected>Recomendado</option>
+					<option value="best" selected>Mejor valoración</option>
+					<option value="worst" selected>Peor valoración</option>
 				</select>
 			</div>
 		</div>
-		<ul class="pdp-review-list__reviews space-y-6">
+		<ul id="pdp-review-list__reviews" class="pdp-review-list__reviews space-y-6">
 			{#if data.reviews && data.reviews.length > 0}
 				{#each data.reviews as review (review.id)}
 					<li class="border-b border-[var(--color-border-default)] pb-6">
