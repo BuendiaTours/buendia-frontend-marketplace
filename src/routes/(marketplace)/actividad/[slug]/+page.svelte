@@ -15,6 +15,9 @@
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 
+	// Icons
+	import { VerifiedCheck } from '$lib/icons/Linear';
+
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 
@@ -369,12 +372,23 @@
 	<Spacer />
 
 	<!-- Reviews -->
-	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-		<h2 class="mb-4 font-semibold text-gray-800">Reviews ({data.reviews.length})</h2>
-		<ul class="space-y-6">
+	<div class="pdp-review-list" id="reviews">
+		<div class="pdp-review-list__header mb-4 flex flex-row items-center justify-between gap-2">
+			<div class="flex items-center gap-1">
+				<VerifiedCheck class="size-5" />
+				<p class="p-base whitespace-nowrap">Opiniones verificadas</p>
+			</div>
+			<div class="flex items-center gap-3">
+				<p class="p-base whitespace-nowrap">Ordenar por</p>
+				<select class="select" placeholder="Seleccionar destino..." aria-label="Seleccionar orden">
+					<option value="recommended" selected>Recomendado</option>
+				</select>
+			</div>
+		</div>
+		<ul class="pdp-review-list__reviews space-y-6">
 			{#if data.reviews && data.reviews.length > 0}
 				{#each data.reviews as review (review.id)}
-					<li class="border-b border-[var(--color-border-default)] pb-6 last:border-0 last:pb-0">
+					<li class="border-b border-[var(--color-border-default)] pb-6">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
 							text={review.content}
@@ -406,5 +420,8 @@
 				<li class="text-gray-600">No hay reviews para esta actividad.</li>
 			{/if}
 		</ul>
+		<div class="pdp-review-list__footer-actions mt-6 flex">
+			<button type="button" class="e-button e-button-secondary">Mostrar más</button>
+		</div>
 	</div>
 </div>

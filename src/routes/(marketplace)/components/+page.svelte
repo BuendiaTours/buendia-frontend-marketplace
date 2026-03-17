@@ -145,6 +145,33 @@
 </div>
 
 <!-- ============================================================ -->
+<!-- Select nativo -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Select nativo</h2>
+	<div class="flex max-w-sm flex-col gap-6">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Default</p>
+			<select class="select">
+				<option value="">Seleccionar destino...</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Con valor seleccionado</p>
+			<select class="select">
+				<option value="madrid" selected>Madrid</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
 <!-- AuthorMeta -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6 !bg-red-500">

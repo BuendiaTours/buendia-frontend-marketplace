@@ -15,6 +15,7 @@
 @import '$lib/styles/marketplace/core/typography.css';
 @import '$lib/styles/marketplace/core/base.css';
 @import '$lib/styles/marketplace/core/layout.css';
+@import '$lib/styles/marketplace/core/forms.css';
 
 /* Utilities */
 @import '$lib/styles/marketplace/utilities/icons.css';
