@@ -15,6 +15,7 @@
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -111,6 +112,17 @@
 		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
 		imageAlt="Imagén de prueba"
 		wrapperClass="my-12"
+	/>
+
+	<!-- pdp-single-conditions -->
+	<PdpSingleConditions
+		data={{
+			icon: 'HandHeart',
+			title: 'Consejo by buendía',
+			description:
+				'Si quieres disfrutar al máximo de tu tiempo libre, en Brujas aprovecha para recorrer el Muelle del Rosario y el Beguinaje, dos lugares menos transitados, pero de una belleza única. Y si visitas en invierno, lleva ropa de abrigo.'
+		}}
+		wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
 	/>
 
 	<!-- Activity Header -->
