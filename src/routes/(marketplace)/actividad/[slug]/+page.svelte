@@ -11,6 +11,7 @@
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -46,6 +47,18 @@
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+
+	<Spacer />
+	<!-- pdp-by-buendia-banner -->
+	{#if activity.byBuendiaBanner}
+		<PdpByBuendiaBanner
+			title={activity.byBuendiaBanner.title}
+			description={activity.byBuendiaBanner.description}
+			items={activity.byBuendiaBanner.items}
+			link={activity.byBuendiaBanner.link}
+		/>
+	{/if}
+	<Spacer />
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
