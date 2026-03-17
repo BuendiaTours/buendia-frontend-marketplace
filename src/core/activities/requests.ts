@@ -11,6 +11,7 @@ import type {
 	Activity,
 	ActivityAttractionAddDto,
 	ActivityCategoryAddDto,
+	ActivityContentBlockAddDto,
 	ActivityCreateDto,
 	ActivityCriteria,
 	ActivityDistributiveAddDto,
@@ -124,6 +125,29 @@ export const ACTIVITY_REQUEST = {
 	 */
 	removeCategory: (fetchFn: typeof fetch, id: string, categoryId: string): Promise<void> =>
 		del(fetchFn, `${BASE}/${id}/categories/${categoryId}`),
+
+	// ── Content Blocks ──────────────────────────
+
+	/**
+	 * Links a content block to an activity.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 * @param data - Content block add payload.
+	 */
+	addContentBlock: (
+		fetchFn: typeof fetch,
+		id: string,
+		data: ActivityContentBlockAddDto
+	): Promise<void> => post(fetchFn, `${BASE}/${id}/content-blocks`, data),
+
+	/**
+	 * Unlinks a content block from an activity.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 * @param contentBlockId - Content block ID to disassociate.
+	 */
+	removeContentBlock: (fetchFn: typeof fetch, id: string, contentBlockId: string): Promise<void> =>
+		del(fetchFn, `${BASE}/${id}/content-blocks/${contentBlockId}`),
 
 	// ── Locations ────────────────────────────────
 

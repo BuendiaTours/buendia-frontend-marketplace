@@ -135,11 +135,13 @@
 			{:else}
 				<div class="mt-2 space-y-2">
 					{#each attractions as attraction (attraction.id)}
-						<div class="bg-base-200/50 flex items-center justify-between rounded-lg px-3 py-2">
+						<div
+							class="border-primary bg-base-200/50 flex items-center justify-between rounded-lg border-l-4 px-3 py-2"
+						>
 							<span class="font-medium">{attraction.name}</span>
 							<button
 								type="button"
-								class="btn btn-ghost btn-xs"
+								class="btn btn-ghost btn-xs text-error hover:bg-error/10"
 								disabled={isRemoving === attraction.id}
 								onclick={() => handleRemove(attraction)}
 							>

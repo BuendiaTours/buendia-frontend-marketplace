@@ -38,6 +38,15 @@ export type ActivityAttraction = {
 	name: string;
 };
 
+/** Content block reference embedded in an activity. */
+export type ActivityContentBlock = {
+	id: string;
+	description: string;
+	kind: string;
+	target: string;
+	title: string;
+};
+
 /** Lightweight category reference embedded in an activity. */
 export type ActivityCategory = {
 	id: string;
@@ -99,6 +108,7 @@ export type Activity = {
 	attractions: ActivityAttraction[];
 	categories: ActivityCategory[];
 	codeRef: string | null;
+	contentBlocks: ActivityContentBlock[];
 	dateMode: ActivityDateMode;
 	descriptionFull: string;
 	descriptionShort: string;
@@ -174,6 +184,11 @@ export type ActivityUpdateDto = {
 /** Payload for adding an attraction to an activity. */
 export type ActivityAttractionAddDto = {
 	attractionId: string;
+};
+
+/** Payload for adding a content block to an activity. */
+export type ActivityContentBlockAddDto = {
+	contentBlockId: string;
 };
 
 /** Payload for adding a category to an activity. */
