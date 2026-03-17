@@ -445,7 +445,7 @@
 				<p class="p-base whitespace-nowrap">Opiniones verificadas ({reviewsTotal})</p>
 			</div>
 			<div class="flex items-center gap-3">
-				<p class="p-base whitespace-nowrap">Ordenar por</p>
+				<p class="p-base hidden whitespace-nowrap sm:block">Ordenar por</p>
 				<select
 					class="select"
 					aria-label="Seleccionar orden"
@@ -494,7 +494,7 @@
 			{/if}
 		</ul>
 		{#if hasMoreReviews}
-			<div class="pdp-review-list__footer-actions mt-6 flex">
+			<div class="pdp-review-list__footer-actions mt-6 flex justify-center sm:justify-start">
 				<button
 					type="button"
 					class="e-button e-button-secondary"

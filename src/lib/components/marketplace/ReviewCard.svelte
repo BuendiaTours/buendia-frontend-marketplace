@@ -3,6 +3,7 @@
 	Variantes: wrapperClass="is-variant-vertical"
 -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import AuthorMeta from './AuthorMeta.svelte';
 	import StarRating from './StarRating.svelte';
 
@@ -30,21 +31,42 @@
 	let textEl = $state<{ scrollHeight: number; clientHeight: number } | undefined>();
 	let isClamped = $state(false);
 
+	// Reset expanded when text changes (component is reused across reviews in lightbox)
 	$effect(() => {
-		if (textEl) {
-			isClamped = textEl.scrollHeight > textEl.clientHeight;
-		}
+		const _text = text;
+		untrack(() => {
+			expanded = false;
+		});
+	});
+
+	// ResizeObserver (en lugar de un $effect simple) re-evalúa cuando el elemento se hace visible
+	// dentro de un lightbox o contenedor oculto. El rAF difiere la medición hasta que los @container
+	// queries se resuelvan (necesitan dos pasadas de layout), evitando falsos positivos.
+	$effect(() => {
+		if (!textEl) return;
+		let rafId: number;
+		const observer = new ResizeObserver(() => {
+			cancelAnimationFrame(rafId);
+			rafId = requestAnimationFrame(() => {
+				if (textEl) isClamped = textEl.scrollHeight > textEl.clientHeight;
+			});
+		});
+		observer.observe(textEl);
+		return () => {
+			observer.disconnect();
+			cancelAnimationFrame(rafId);
+		};
 	});
 </script>
 
-<div class="c-review-card group w-full {wrapperClass}" style="--rc-lines: {lines}">
+<div class="c-review-card group @container w-full {wrapperClass}" style="--rc-lines: {lines}">
 	<div
-		class="c-review-card__head flex flex-col gap-3 group-[.is-variant-vertical]:flex-col sm:flex-row sm:items-start sm:justify-between"
+		class="c-review-card__head flex flex-col gap-3 group-[.is-variant-vertical]:flex-col @[480px]:flex-row @[480px]:items-start @[480px]:justify-between"
 	>
 		<AuthorMeta {name} {desc} />
 		{#if rating != null}
 			<div
-				class="c-review-card__rating flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0 sm:mt-3.5"
+				class="c-review-card__rating flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0 @[480px]:mt-3.5"
 			>
 				<StarRating value={rating} size="sm" />
 				{#if showRatingValue}
