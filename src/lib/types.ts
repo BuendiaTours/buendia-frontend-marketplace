@@ -11,6 +11,23 @@ import type {
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
 
+export type ByBuendiaBannerItem = {
+	id: string;
+	icon: string;
+	title: string;
+	description: string;
+};
+
+export type ByBuendiaBanner = {
+	title: string;
+	description: string;
+	items: ByBuendiaBannerItem[];
+	link: {
+		text: string;
+		src: string;
+	};
+};
+
 export type ConditionItem = {
 	id: string;
 	icon: string;
@@ -39,6 +56,7 @@ export type ActivityListItem = {
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
 	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
+	byBuendiaBanner: ByBuendiaBanner | null;
 	faqsTitle: string | null;
 	guideKind: ActivityGuideKind;
 	included: string[];

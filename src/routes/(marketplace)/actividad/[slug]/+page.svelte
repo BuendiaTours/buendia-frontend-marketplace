@@ -16,6 +16,7 @@
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
+	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -104,6 +105,19 @@
 	{#each activity.conditions as condition (condition.id)}
 		<Conditions style={condition.style} items={condition.items} />
 	{/each}
+
+	<Spacer />
+
+	<!-- pdp-by-buendia-banner -->
+	{#if activity.byBuendiaBanner}
+		<PdpByBuendiaBanner
+			title={activity.byBuendiaBanner.title}
+			description={activity.byBuendiaBanner.description}
+			items={activity.byBuendiaBanner.items}
+			link={activity.byBuendiaBanner.link}
+		/>
+	{/if}
+	<Spacer />
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
