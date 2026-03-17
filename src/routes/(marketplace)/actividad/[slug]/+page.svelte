@@ -5,7 +5,11 @@
 	import type { BndLightboxItem } from '$lib/types';
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 
+	import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
+	import type { ActivityReviewParams } from '$lib/types';
+
 	import Badge from '$lib/components/marketplace/Badge.svelte';
+	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
@@ -16,11 +20,58 @@
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 
+	// Icons
+	import { VerifiedCheck } from '$lib/icons/Linear';
+
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 
+	// Estado cliente para reviews (sort + show more)
+	let reviews = $state(data.reviews);
+	let reviewsTotal = $state(data.reviewsTotal);
+	let sortValue = $state<'recommended' | 'best' | 'worst'>('recommended');
+	let currentPage = $state(1);
+	let totalPages = $state(data.reviewsTotalPages);
+	let isLoadingReviews = $state(false);
+
+	const hasMoreReviews = $derived(currentPage < totalPages);
+	const activityId = $derived(data.activity.id);
+
+	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
+		recommended: {},
+		best: { sort: 'averageRating', order: 'DESC' },
+		worst: { sort: 'averageRating', order: 'ASC' }
+	};
+
+	async function loadActivityReviews(params: ActivityReviewParams, append = false) {
+		isLoadingReviews = true;
+		try {
+			const result = await reviewsEndpoints.getByActivityId(fetch, activityId, params);
+			if (append) {
+				reviews = [...reviews, ...result.data];
+			} else {
+				reviews = result.data;
+			}
+			currentPage = result.pagination.page;
+			totalPages = result.pagination.totalPages;
+			reviewsTotal = result.pagination.total;
+		} finally {
+			isLoadingReviews = false;
+		}
+	}
+
+	async function handleReviewSortChange(value: string) {
+		sortValue = value as typeof sortValue;
+		currentPage = 1;
+		await loadActivityReviews(SORT_PARAMS[value] ?? {});
+	}
+
+	async function handleShowMore() {
+		await loadActivityReviews({ ...SORT_PARAMS[sortValue], page: currentPage + 1 }, true);
+	}
+
 	const reviewItems = $derived<BndLightboxItem[]>(
-		data.reviews.flatMap((review, reviewIdx) =>
+		reviews.flatMap((review, reviewIdx) =>
 			(review.attachments ?? []).map((att) => ({
 				src: att.url.value,
 				alt: `Foto de ${review.user ?? 'Anónimo'}`,
@@ -47,6 +98,12 @@
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+
+	<!-- conditions -->
+	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
+	{#each activity.conditions as condition (condition.id)}
+		<Conditions style={condition.style} items={condition.items} />
+	{/each}
 
 	<!-- pdp-brand-banner -->
 	<PdpBrandBanner
@@ -380,12 +437,30 @@
 	<Spacer />
 
 	<!-- Reviews -->
-	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-		<h2 class="mb-4 font-semibold text-gray-800">Reviews ({data.reviews.length})</h2>
-		<ul class="space-y-6">
-			{#if data.reviews && data.reviews.length > 0}
-				{#each data.reviews as review (review.id)}
-					<li class="border-b border-[var(--color-border-default)] pb-6 last:border-0 last:pb-0">
+	<div class="pdp-review-list" id="reviews">
+		<div class="pdp-review-list__header mb-4 flex flex-row items-center justify-between gap-2">
+			<div class="flex items-center gap-1">
+				<VerifiedCheck class="size-5" />
+				<p class="p-base whitespace-nowrap">Opiniones verificadas ({reviewsTotal})</p>
+			</div>
+			<div class="flex items-center gap-3">
+				<p class="p-base whitespace-nowrap">Ordenar por</p>
+				<select
+					class="select"
+					aria-label="Seleccionar orden"
+					value={sortValue}
+					onchange={(e) => handleReviewSortChange(e.currentTarget.value)}
+				>
+					<option value="recommended">Recomendado</option>
+					<option value="best">Mejor valoración</option>
+					<option value="worst">Peor valoración</option>
+				</select>
+			</div>
+		</div>
+		<ul id="pdp-review-list__reviews" class="pdp-review-list__reviews space-y-6">
+			{#if reviews.length > 0}
+				{#each reviews as review (review.id)}
+					<li class="border-b border-[var(--color-border-default)] pb-6">
 						<ReviewCard
 							name={review.user || 'Anónimo'}
 							text={review.content}
@@ -417,5 +492,17 @@
 				<li class="text-gray-600">No hay reviews para esta actividad.</li>
 			{/if}
 		</ul>
+		{#if hasMoreReviews}
+			<div class="pdp-review-list__footer-actions mt-6 flex">
+				<button
+					type="button"
+					class="e-button e-button-secondary"
+					onclick={handleShowMore}
+					disabled={isLoadingReviews}
+				>
+					{isLoadingReviews ? 'Cargando...' : 'Mostrar más'}
+				</button>
+			</div>
+		{/if}
 	</div>
 </div>

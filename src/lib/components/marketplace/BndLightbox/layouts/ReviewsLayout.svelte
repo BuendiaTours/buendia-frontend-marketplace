@@ -98,6 +98,7 @@
 						desc={String(displayedMeta.date ?? '')}
 						rating={Number(displayedMeta.rating)}
 						text={String(displayedMeta.content ?? '')}
+						lines={6}
 					/>
 				</div>
 			{/if}

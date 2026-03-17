@@ -15,6 +15,7 @@
 @import '$lib/styles/marketplace/core/typography.css';
 @import '$lib/styles/marketplace/core/base.css';
 @import '$lib/styles/marketplace/core/layout.css';
+@import '$lib/styles/marketplace/core/forms.css';
 
 /* Utilities */
 @import '$lib/styles/marketplace/utilities/icons.css';
@@ -38,6 +39,7 @@
 @import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
 @import '$lib/styles/marketplace/components/c-faqs.css';
 @import '$lib/styles/marketplace/components/c-faq-item.css';
+@import '$lib/styles/marketplace/components/c-conditions.css';
 @import '$lib/styles/marketplace/components/c-tooltip.css';
 @import '$lib/styles/marketplace/components/c-melt-calendar.css';
 @import '$lib/styles/marketplace/components/c-melt-range-calendar.css';

@@ -3,14 +3,15 @@
 
 	type Props = {
 		title?: string | null;
-		faqs: Array<{ id: string; position: number; question: string; answer: string }>;
+		faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
 	};
 
 	let { title, faqs }: Props = $props();
 
 	let showAll = $state(false);
 
-	const sortedFaqs = $derived(faqs?.slice().sort((a, b) => a.position - b.position) ?? []);
+	const publishedFaqs = $derived(faqs?.filter((faq) => faq.status === 'PUBLISHED') ?? []);
+	const sortedFaqs = $derived(publishedFaqs.slice().sort((a, b) => a.position - b.position));
 	const visibleFaqs = $derived(showAll ? sortedFaqs : sortedFaqs.slice(0, 4));
 </script>
 

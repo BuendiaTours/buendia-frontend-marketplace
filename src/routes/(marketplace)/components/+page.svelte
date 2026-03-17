@@ -15,12 +15,25 @@
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import { Calendar } from '$lib/icons/Linear';
+	import { Calendar, MapPoint } from '$lib/icons/Linear';
+	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
 
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	// MeltComboBox
+	const destinos = [
+		{ value: 'madrid', label: 'Madrid' },
+		{ value: 'barcelona', label: 'Barcelona' },
+		{ value: 'sevilla', label: 'Sevilla' },
+		{ value: 'valencia', label: 'Valencia' },
+		{ value: 'granada', label: 'Granada' },
+		{ value: 'toledo', label: 'Toledo' }
+	];
+	let comboSingle = $state<string | undefined>();
+	let comboMultiple = $state<string[]>([]);
 
 	// PureHtmlDialog
 	let pureDialog: PureHtmlDialog;
@@ -94,6 +107,68 @@
 			— Galería lightbox con layouts personalizables y soporte de reviews
 		</li>
 	</ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- MeltComboBox -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">MeltComboBox</h2>
+	<div class="flex max-w-sm flex-col gap-6">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Single — con icono</p>
+			<MeltComboBox
+				items={destinos}
+				placeholder="Buscar destino..."
+				icon={MapPoint}
+				type="single"
+				bind:value={comboSingle}
+			/>
+			{#if comboSingle}
+				<p class="p-sm mt-2 text-gray-500">Seleccionado: <strong>{comboSingle}</strong></p>
+			{/if}
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Multiple — sin icono</p>
+			<MeltComboBox
+				items={destinos}
+				placeholder="Seleccionar destinos..."
+				bind:value={comboMultiple}
+			/>
+			{#if comboMultiple.length > 0}
+				<p class="p-sm mt-2 text-gray-500">
+					Seleccionados: <strong>{comboMultiple.join(', ')}</strong>
+				</p>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Select nativo -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Select nativo</h2>
+	<div class="flex max-w-sm flex-col gap-6">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Default</p>
+			<select class="select">
+				<option value="">Seleccionar destino...</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Con valor seleccionado</p>
+			<select class="select">
+				<option value="madrid" selected>Madrid</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
 </div>
 
 <!-- ============================================================ -->

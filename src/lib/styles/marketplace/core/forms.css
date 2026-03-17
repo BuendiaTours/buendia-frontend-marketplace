@@ -1,0 +1,57 @@
+.select {
+	display: block;
+	height: 40px;
+	min-width: 110px;
+	width: 100%;
+	padding-inline-start: 16px;
+	padding-inline-end: 40px;
+	border-radius: 8px;
+	border: 1px solid var(--color-neutral-400);
+	background-color: var(--color-neutral-50);
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+		border-color: var(--color-neutral-300);
+	}
+}
+
+/* Chrome 135+ — opt-in al customizable select */
+/* Browsers sin soporte ignoran estas reglas y mantienen appearance: none de arriba */
+.select,
+.select::picker(select) {
+	appearance: base-select;
+}
+
+.select::picker-icon {
+	display: none;
+}
+
+.select::picker(select) {
+	border-radius: 8px;
+	border: 1px solid var(--color-neutral-400);
+	background-color: var(--color-neutral-50);
+	box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+	padding: 8px;
+	margin-block-start: 4px;
+}
+
+.select option {
+	border-radius: 6px;
+	padding: 8px 16px;
+	cursor: pointer;
+}
+
+.select option:hover,
+.select option:focus {
+	background-color: #f3f4f6;
+}
+
+.select option:checked {
+	background-color: #f3f4f6;
+	font-weight: 500;
+}
