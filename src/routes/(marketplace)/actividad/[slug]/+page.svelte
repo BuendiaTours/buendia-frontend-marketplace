@@ -2,17 +2,19 @@
 	import type { PageData } from './$types';
 
 	// Components
-	import Badge from '$lib/components/marketplace/Badge.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpHeader from '$lib/components/marketplace/PdpHeader.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/PdpBrandBanner.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
-	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
-	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+
+	import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
+	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
+	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -116,6 +118,38 @@
 			</div>
 		</div>
 	{/if}
+
+	<Spacer />
+
+	<!-- pdp-reviews-featured -->
+	{#if data.reviews && data.reviews.length > 1}
+		<div class="pdp-reviews-featured">
+			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
+			<div
+				class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
+			>
+				{#each data.reviews.slice(0, 2) as review (review.id)}
+					<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
+						<ReviewCard
+							name={review.user || 'Anónimo'}
+							text={review.content}
+							rating={review.averageRating}
+							lines={3}
+							wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
+							{...review}
+						/>
+					</div>
+				{/each}
+			</div>
+			<a
+				href="#reviews"
+				class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
+				>Ver todas las opiniones</a
+			>
+		</div>
+	{/if}
+
+	<Spacer />
 
 	<!-- Important Info -->
 	{#if activity.infoImportant}
@@ -311,7 +345,7 @@
 	{/if}
 
 	<!-- Multimedias -->
-	{#if activity.multimedias && activity.multimedias.length > 0}
+	<!-- {#if activity.multimedias && activity.multimedias.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📸 Multimedia</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -320,7 +354,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<div class="pdp-review-gallery">
 		<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
@@ -338,6 +372,8 @@
 			layoutComponent={ReviewsLayout}
 		/>
 	</div>
+
+	<Spacer />
 
 	<!-- Reviews -->
 	<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">

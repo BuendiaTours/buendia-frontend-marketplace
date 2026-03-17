@@ -1,0 +1,7 @@
+.pdp-reviews-featured__reviews {
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
