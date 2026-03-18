@@ -9,7 +9,7 @@
 	let { items, wrapperClass }: Props = $props();
 </script>
 
-<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6 {wrapperClass}">
+<div class="pdp-highlights grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6 {wrapperClass}">
 	{#if items}
 		{#each items as item (item.id)}
 			<Hightlight

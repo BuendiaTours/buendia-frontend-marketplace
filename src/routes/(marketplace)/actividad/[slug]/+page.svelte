@@ -99,10 +99,12 @@
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
 
 	<!-- highlights -->
-	<PdpHighlights
-		items={activity.pdpHighlights}
-		wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
-	/>
+	{#if activity.pdpHighlights && activity.pdpHighlights.length > 0}
+		<PdpHighlights
+			items={activity.pdpHighlights}
+			wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
+		/>
+	{/if}
 
 	<Spacer margin="my-0" />
 
