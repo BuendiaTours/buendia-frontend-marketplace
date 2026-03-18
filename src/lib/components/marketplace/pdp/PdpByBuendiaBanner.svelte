@@ -14,13 +14,14 @@
 			text: string;
 			src: string;
 		};
+		wrapperClass?: string;
 	};
 
-	let { title, description, items, link }: Props = $props();
+	let { title, description, items, link, wrapperClass }: Props = $props();
 </script>
 
 <div
-	class="mt-2 flex flex-col gap-5 bg-right bg-no-repeat py-4 sm:bg-[url(/marketplace/BrandMark.svg)] lg:py-8"
+	class="pdp-by-buendia-banner flex flex-col gap-5 bg-right bg-no-repeat sm:bg-[url(/marketplace/BrandMark.svg)] {wrapperClass}"
 >
 	<div class="flex flex-col gap-2">
 		<div class="flex gap-2">
