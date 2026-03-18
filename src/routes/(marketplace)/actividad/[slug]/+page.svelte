@@ -353,7 +353,7 @@
 	{/if}
 
 	<!-- Meals -->
-	{#if activity.meals && activity.meals.length > 0}
+	<!-- {#if activity.meals && activity.meals.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🍽️ Comidas</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -362,12 +362,12 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Stages -->
 	{#if activity.stages && activity.stages.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">📍 Etapas</h2>
+			<h2 class="mb-4 font-semibold text-gray-800">Itinerario</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.stages as stage, i (i)}
 					<li>{stage}</li>
