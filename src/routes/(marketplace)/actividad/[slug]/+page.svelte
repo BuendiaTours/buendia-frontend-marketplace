@@ -122,6 +122,39 @@
 					link={activity.byBuendiaBanner.link}
 				/>
 
+				<Spacer wrapperClass="mt-8 mb-6" />
+			{/if}
+
+			<!-- pdp-reviews-featured -->
+			{#if data.reviews && data.reviews.length > 1}
+				<div class="pdp-reviews-featured">
+					<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
+					<div
+						class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
+					>
+						{#each data.reviews.slice(0, 2) as review (review.id)}
+							<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
+								<ReviewCard
+									name={review.user || 'Anónimo'}
+									desc={review.createdAt
+										? format(new Date(review.createdAt), 'dd/MM/yyyy')
+										: undefined}
+									text={review.content}
+									rating={review.averageRating}
+									lines={3}
+									wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
+									{...review}
+								/>
+							</div>
+						{/each}
+					</div>
+					<a
+						href="#reviews"
+						class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
+						>Ver todas las opiniones</a
+					>
+				</div>
+
 				<Spacer />
 			{/if}
 		</div>
@@ -225,37 +258,6 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
 				{@html activity.descriptionFull}
 			</div>
-		</div>
-	{/if}
-
-	<Spacer />
-
-	<!-- pdp-reviews-featured -->
-	{#if data.reviews && data.reviews.length > 1}
-		<div class="pdp-reviews-featured">
-			<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
-			<div
-				class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
-			>
-				{#each data.reviews.slice(0, 2) as review (review.id)}
-					<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
-						<ReviewCard
-							name={review.user || 'Anónimo'}
-							desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
-							text={review.content}
-							rating={review.averageRating}
-							lines={3}
-							wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
-							{...review}
-						/>
-					</div>
-				{/each}
-			</div>
-			<a
-				href="#reviews"
-				class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
-				>Ver todas las opiniones</a
-			>
 		</div>
 	{/if}
 
