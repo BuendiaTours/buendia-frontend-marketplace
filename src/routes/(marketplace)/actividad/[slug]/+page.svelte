@@ -215,7 +215,7 @@
 	</div>
 
 	<!-- Basic Info -->
-	<div class="e-card mb-8">
+	<!-- <div class="e-card mb-8">
 		<h2 class="mb-4 font-semibold text-gray-800">Información básica</h2>
 		<dl class="space-y-2">
 			<div>
@@ -245,7 +245,7 @@
 				</div>
 			{/if}
 		</dl>
-	</div>
+	</div> -->
 
 	<!-- Description -->
 	{#if activity.descriptionFull}
@@ -269,7 +269,7 @@
 	{/if}
 
 	<!-- Destinations -->
-	{#if activity.destinations && activity.destinations.length > 0}
+	<!-- {#if activity.destinations && activity.destinations.length > 0}
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Destinos</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -278,10 +278,10 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Categories -->
-	{#if activity.categories && activity.categories.length > 0}
+	<!-- {#if activity.categories && activity.categories.length > 0}
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -290,10 +290,10 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Attractions -->
-	{#if activity.attractions && activity.attractions.length > 0}
+	<!-- {#if activity.attractions && activity.attractions.length > 0}
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-gray-800">Atracciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -302,7 +302,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Included -->
 	{#if activity.included && activity.included.length > 0}
