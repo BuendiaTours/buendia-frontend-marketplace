@@ -19,7 +19,7 @@
 	/* Forzar contenido siempre visible (override del UA stylesheet que oculta hijos de <details> cerrado) */
 	&::details-content {
 		content-visibility: visible;
-		background-color: aqua;
+		/* background-color: aqua; */
 	}
 }
 

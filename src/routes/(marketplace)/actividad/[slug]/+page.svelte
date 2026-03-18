@@ -168,8 +168,20 @@
 
 			<Spacer />
 
+			<!-- Description -->
+			{#if activity.descriptionFull}
+				<AccordionOnMobile open={true} contentClass="mt-6">
+					{#snippet summary()}
+						<h2 class="h2">Descripción de la actividad</h2>
+					{/snippet}
+					<SvelteMarkdown source={activity.descriptionFull} />
+				</AccordionOnMobile>
+			{/if}
+
+			<Spacer />
+
 			<!-- faqs -->
-			<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
+			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
 		</div>
 
 		<div class="col-sidebar">
@@ -186,10 +198,14 @@
 	{/if}
 
 	<!-- conditions -->
-	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
-	{#each activity.conditions as condition (condition.id)}
-		<Conditions style={condition.style} items={condition.items} />
-	{/each}
+	{#if activity.conditions && activity.conditions.length > 0}
+		<p class="h2 pt-4 pb-4 lg:pt-8">Condiciones</p>
+		<div class="pdp-conditions flex flex-col gap-4">
+			{#each activity.conditions as condition (condition.id)}
+				<Conditions style={condition.style} items={condition.items} />
+			{/each}
+		</div>
+	{/if}
 
 	<Spacer />
 
@@ -248,16 +264,6 @@
 			{/if}
 		</dl>
 	</div> -->
-
-	<!-- Description -->
-	{#if activity.descriptionFull}
-		<AccordionOnMobile open={true} contentClass="mt-6">
-			{#snippet summary()}
-				<h2 class="h2">Descripción completa</h2>
-			{/snippet}
-			<SvelteMarkdown source={activity.descriptionFull} />
-		</AccordionOnMobile>
-	{/if}
 
 	<Spacer />
 

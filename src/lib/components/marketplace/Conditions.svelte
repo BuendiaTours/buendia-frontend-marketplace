@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="c-conditions c-conditions_{style} mb-4 flex flex-col gap-4 rounded-xl p-5">
+<div class="c-conditions c-conditions_{style} flex flex-col gap-4 rounded-xl p-5">
 	{#each items as item (item.id)}
 		{@const IconComponent = getIconComponent(item.icon)}
 		<div class="flex gap-2">
