@@ -13,9 +13,9 @@ import type { AttractionStatus } from '$core/attractions/enums';
 
 export type ByBuendiaBannerItem = {
 	id: string;
-	icon: string;
-	title: string;
-	description: string;
+	icon?: string;
+	title?: string;
+	description?: string;
 };
 
 export type ByBuendiaBanner = {
@@ -57,6 +57,7 @@ export type ActivityListItem = {
 	excluded: string[];
 	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
 	byBuendiaBanner: ByBuendiaBanner | null;
+	pdpHighlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	faqsTitle: string | null;
 	guideKind: ActivityGuideKind;
 	included: string[];
