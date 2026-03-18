@@ -168,6 +168,18 @@
 
 			<Spacer />
 
+			<!-- conditions -->
+			{#if activity.willDoing && activity.willDoing.length > 0}
+				<p class="h2 mt-4 mb-2 lg:mt-6">Qué harás</p>
+				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+					{#each activity.willDoing as item, i (i)}
+						<li>{item}</li>
+					{/each}
+				</ul>
+			{/if}
+
+			<Spacer />
+
 			<!-- Description -->
 			{#if activity.descriptionFull}
 				<AccordionOnMobile open={true} contentClass="mt-6">
@@ -182,6 +194,19 @@
 
 			<!-- faqs -->
 			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
+
+			<Spacer />
+
+			<!-- pdp-single-conditions -->
+			<PdpSingleConditions
+				data={{
+					icon: 'HandHeart',
+					title: 'Consejo by buendía',
+					description:
+						'Si quieres disfrutar al máximo de tu tiempo libre, en Brujas aprovecha para recorrer el Muelle del Rosario y el Beguinaje, dos lugares menos transitados, pero de una belleza única. Y si visitas en invierno, lleva ropa de abrigo.'
+				}}
+				wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
+			/>
 		</div>
 
 		<div class="col-sidebar">
@@ -207,30 +232,21 @@
 		</div>
 	{/if}
 
-	<Spacer />
-
-	<!-- pdp-single-conditions -->
-	<PdpSingleConditions
-		data={{
-			icon: 'HandHeart',
-			title: 'Consejo by buendía',
-			description:
-				'Si quieres disfrutar al máximo de tu tiempo libre, en Brujas aprovecha para recorrer el Muelle del Rosario y el Beguinaje, dos lugares menos transitados, pero de una belleza única. Y si visitas en invierno, lleva ropa de abrigo.'
-		}}
-		wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
-	/>
-
-	<!-- Activity Header -->
-	<div class="e-card mb-8">
-		<h1 class="mb-4 font-bold text-gray-900">{activity.title}</h1>
-		<div class="mb-2 flex gap-2">
-			<Badge data={{ icon: 'FireFlame', title: activity.kind, class: 'bg-red-500' }} />
-			<Badge data={{ title: activity.status, class: 'bg-green-500' }} />
-		</div>
-		{#if activity.descriptionShort}
-			<p class="text-gray-600">{activity.descriptionShort}</p>
-		{/if}
-	</div>
+	<!-- conditions -->
+	{#if activity.infoImportant}
+		<Conditions
+			style="important"
+			items={[
+				{
+					id: 'important-info',
+					icon: 'InfoCircle',
+					title: 'Información importante',
+					description: activity.infoImportant
+				}
+			]}
+			wrapperClass="mt-4"
+		/>
+	{/if}
 
 	<!-- Basic Info -->
 	<!-- <div class="e-card mb-8">
