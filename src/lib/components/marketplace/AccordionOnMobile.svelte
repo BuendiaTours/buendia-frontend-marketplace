@@ -15,16 +15,18 @@
 		open?: boolean;
 		summary: Snippet;
 		children: Snippet;
+		wrapperClass?: string;
+		contentClass?: string;
 	};
 
-	let { open = false, summary, children }: Props = $props();
+	let { open = false, summary, children, wrapperClass, contentClass }: Props = $props();
 </script>
 
-<details class="c-accordion-on-mobile" {open}>
+<details class="c-accordion-on-mobile {wrapperClass}" {open}>
 	<summary class="c-accordion-on-mobile__summary">
 		{@render summary()}
 	</summary>
-	<div class="c-accordion-on-mobile__content">
+	<div class="c-accordion-on-mobile__content {contentClass}">
 		{@render children()}
 	</div>
 </details>

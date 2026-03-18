@@ -29,6 +29,8 @@
 
 	// Icons
 	import { VerifiedCheck } from '$lib/icons/Linear';
+	import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -249,13 +251,12 @@
 
 	<!-- Description -->
 	{#if activity.descriptionFull}
-		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-gray-800">Descripción completa</h2>
-			<div class="prose max-w-none text-gray-600">
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
-				{@html activity.descriptionFull}
-			</div>
-		</div>
+		<AccordionOnMobile open={true} contentClass="mt-6">
+			{#snippet summary()}
+				<h2 class="h2">Descripción completa</h2>
+			{/snippet}
+			<SvelteMarkdown source={activity.descriptionFull} />
+		</AccordionOnMobile>
 	{/if}
 
 	<Spacer />
