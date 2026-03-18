@@ -157,6 +157,9 @@
 
 				<Spacer />
 			{/if}
+
+			<!-- faqs -->
+			<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
 		</div>
 
 		<div class="col-sidebar">
@@ -172,11 +175,6 @@
 		/>
 	{/if}
 
-	<Spacer margin="my-0" />
-
-	<!-- faqs -->
-	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
-
 	<!-- conditions -->
 	<p class="h2 pt-4 pb-4 lg:pt-8">{activity.conditionsTitle}</p>
 	{#each activity.conditions as condition (condition.id)}
@@ -184,15 +182,6 @@
 	{/each}
 
 	<Spacer />
-
-	<!-- pdp-brand-banner -->
-	<PdpBrandBanner
-		title="¿Sabías qué?"
-		description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
-		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
-		imageAlt="Imagén de prueba"
-		wrapperClass="my-12"
-	/>
 
 	<!-- pdp-single-conditions -->
 	<PdpSingleConditions
@@ -557,5 +546,14 @@
 				</button>
 			</div>
 		{/if}
+
+		<!-- pdp-brand-banner -->
+		<PdpBrandBanner
+			title="¿Sabías qué?"
+			description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
+			image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+			imageAlt="Imagén de prueba"
+			wrapperClass="my-12"
+		/>
 	</div>
 </div>

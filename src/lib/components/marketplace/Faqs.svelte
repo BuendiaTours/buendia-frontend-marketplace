@@ -4,9 +4,10 @@
 	type Props = {
 		title?: string | null;
 		faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
+		wrapperClass?: string;
 	};
 
-	let { title, faqs }: Props = $props();
+	let { title, faqs, wrapperClass }: Props = $props();
 
 	let showAll = $state(false);
 
@@ -15,8 +16,8 @@
 	const visibleFaqs = $derived(showAll ? sortedFaqs : sortedFaqs.slice(0, 4));
 </script>
 
-<div class="c-faqs mb-2 pt-2 pb-4">
-	<p class="h2 py-4">
+<div class="c-faqs pb-1 {wrapperClass}">
+	<p class="h2 pb-4">
 		{title}
 	</p>
 
