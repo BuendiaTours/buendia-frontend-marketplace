@@ -35,7 +35,7 @@
 	// Estado cliente para reviews (sort + show more)
 	let reviews = $state(data.reviews);
 	let reviewsTotal = $state(data.reviewsTotal);
-	let sortValue = $state<'recommended' | 'best' | 'worst'>('recommended');
+	let sortValue = $state<'recommended' | 'best' | 'recent' | 'worst'>('recommended');
 	let currentPage = $state(1);
 	let totalPages = $state(data.reviewsTotalPages);
 	let isLoadingReviews = $state(false);
@@ -46,7 +46,8 @@
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
 		best: { sort: 'averageRating', order: 'DESC' },
-		worst: { sort: 'averageRating', order: 'ASC' }
+		worst: { sort: 'averageRating', order: 'ASC' },
+		recent: { sort: 'createdAt', order: 'DESC' }
 	};
 
 	async function loadActivityReviews(params: ActivityReviewParams, append = false) {
@@ -93,11 +94,31 @@
 	);
 </script>
 
-<div class="my-6 min-h-45 bg-white p-6">Caja que ocupa TODO el ancho</div>
+<div class="mb-6 min-h-45 bg-neutral-200 p-6">Caja que ocupa TODO el ancho</div>
 
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
 	<PdpHeadGallery items={activity.multimedias} />
+
+	<div class="page-grid">
+		<div class="col-content">
+			<!-- pdp-by-buendia-banner -->
+			{#if activity.byBuendiaBanner}
+				<PdpByBuendiaBanner
+					title={activity.byBuendiaBanner.title}
+					description={activity.byBuendiaBanner.description}
+					items={activity.byBuendiaBanner.items}
+					link={activity.byBuendiaBanner.link}
+				/>
+
+				<Spacer />
+			{/if}
+		</div>
+
+		<div class="col-sidebar">
+			<div class="carrito bg-neutral-500 p-4 text-center">carrito</div>
+		</div>
+	</div>
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
@@ -111,17 +132,6 @@
 		<Conditions style={condition.style} items={condition.items} />
 	{/each}
 
-	<Spacer />
-
-	<!-- pdp-by-buendia-banner -->
-	{#if activity.byBuendiaBanner}
-		<PdpByBuendiaBanner
-			title={activity.byBuendiaBanner.title}
-			description={activity.byBuendiaBanner.description}
-			items={activity.byBuendiaBanner.items}
-			link={activity.byBuendiaBanner.link}
-		/>
-	{/if}
 	<Spacer />
 
 	<!-- pdp-brand-banner -->
@@ -475,6 +485,7 @@
 					<option value="recommended">Recomendado</option>
 					<option value="best">Mejor valoración</option>
 					<option value="worst">Peor valoración</option>
+					<option value="recent">Más recientes</option>
 				</select>
 			</div>
 		</div>

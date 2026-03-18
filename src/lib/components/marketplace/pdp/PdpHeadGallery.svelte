@@ -6,9 +6,10 @@
 
 	type Props = {
 		items: MultimediaItem[];
+		wrapperClass?: string;
 	};
 
-	let { items }: Props = $props();
+	let { items, wrapperClass }: Props = $props();
 
 	const desktopVisible = 3;
 	const totalImages = $derived(items.length);
@@ -32,7 +33,8 @@
 
 <!-- Desktop / Tablet gallery -->
 <div
-	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr]"
+	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr] {wrapperClass ??
+		''}"
 >
 	<a
 		href={items[0].variants?.find((v) => v.preset === 'MAX')?.url}
