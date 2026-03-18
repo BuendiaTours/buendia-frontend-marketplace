@@ -6,15 +6,16 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database, MapPoint, Plate } from '$lib/icons/Linear';
+	import { Database, MapPoint, Plate, Widget } from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
 		locationCount?: number;
 		mealCount?: number;
+		addonCount?: number;
 	};
 
-	let { activityId, locationCount = 0, mealCount = 0 }: Props = $props();
+	let { activityId, locationCount = 0, mealCount = 0, addonCount = 0 }: Props = $props();
 
 	const tabs = $derived([
 		{
@@ -34,6 +35,12 @@
 			href: ACTIVITY_ROUTES.meals(activityId),
 			icon: Plate,
 			badge: mealCount > 0 ? mealCount : undefined
+		},
+		{
+			label: m.activities_tabAddons(),
+			href: ACTIVITY_ROUTES.addons(activityId),
+			icon: Widget,
+			badge: addonCount > 0 ? addonCount : undefined
 		}
 	]);
 

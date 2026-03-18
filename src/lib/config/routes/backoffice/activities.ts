@@ -10,5 +10,6 @@ export const ACTIVITY_ROUTES = {
 	create: backoffice('activities/create'),
 	edit: (id: string) => backoffice('activities', id, 'edit'),
 	locations: (id: string) => backoffice('activities', id, 'locations'),
-	meals: (id: string) => backoffice('activities', id, 'meals')
+	meals: (id: string) => backoffice('activities', id, 'meals'),
+	addons: (id: string) => backoffice('activities', id, 'addons')
 } as const;

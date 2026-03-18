@@ -42,6 +42,11 @@
 		(data.activity.locations?.length ?? 0) + (data.activity.attractions?.length ?? 0)
 	);
 	const mealCount = $derived(data.activity.meals?.length ?? 0);
+	let addonCount = $state(data.addons?.length ?? 0);
+
+	setContext('updateAddonCount', (count: number) => {
+		addonCount = count;
+	});
 </script>
 
 <svelte:head>
@@ -50,7 +55,7 @@
 
 <LocationBar title={m.activities_editPageTitle()} {breadcrumbs} />
 
-<ActivityTabNav activityId={data.activity.id} {locationCount} {mealCount} />
+<ActivityTabNav activityId={data.activity.id} {locationCount} {mealCount} {addonCount} />
 
 <div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
 	{@render children()}
