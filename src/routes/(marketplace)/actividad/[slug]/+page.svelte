@@ -158,6 +158,14 @@
 				<Spacer />
 			{/if}
 
+			<span>c-collection-points</span>
+
+			<Spacer />
+
+			<span>pdp-itinerary</span>
+
+			<Spacer />
+
 			<!-- faqs -->
 			<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
 		</div>
