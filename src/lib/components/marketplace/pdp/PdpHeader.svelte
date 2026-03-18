@@ -8,25 +8,28 @@
 		dataBreadcrumbs: BreadcrumbItem[];
 		title?: string;
 		wrapperClass?: string;
+		reviewsCount?: number;
 	};
 
-	let { dataBreadcrumbs, title, wrapperClass }: Props = $props();
+	let { dataBreadcrumbs, title, wrapperClass, reviewsCount }: Props = $props();
 </script>
 
-<div class="pdp-header mb-2 pt-5 {wrapperClass}">
+<div class="pdp-header {wrapperClass}">
 	<Breadcrumbs items={dataBreadcrumbs} />
 	<h1 class="h1 pt-2 pb-4">
 		{title}
 	</h1>
-	<div
-		class="flex flex-wrap items-center justify-between border-b border-solid border-neutral-200 pb-5 sm:flex-nowrap lg:pb-6"
-	>
+	<div class="flex flex-wrap items-center justify-between sm:flex-nowrap">
 		<div class="mb-4 flex w-full flex-none gap-2 sm:mb-0 sm:w-auto sm:flex-auto">
 			<StarRating value={4.5} size="md" />
 			<span class="p-lg font-bold text-neutral-800">4.5</span>
-			<a href="#reviews" class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
-				>333 opiniones</a
-			>
+			{#if reviewsCount !== undefined}
+				<a
+					href="#reviews"
+					class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
+					>{reviewsCount} opiniones</a
+				>
+			{/if}
 		</div>
 		<Badge
 			data={{
