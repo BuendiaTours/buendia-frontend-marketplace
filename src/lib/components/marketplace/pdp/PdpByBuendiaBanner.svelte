@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Hightlight from '../Hightlight.svelte';
+	import Hightlight from './../Hightlight.svelte';
 
 	type Props = {
 		title?: string;
 		description?: string;
 		items?: Array<{
 			id: string;
-			icon: string;
-			title: string;
-			description: string;
+			icon?: string;
+			title?: string;
+			description?: string;
 		}>;
 		link?: {
 			text: string;

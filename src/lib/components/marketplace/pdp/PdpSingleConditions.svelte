@@ -6,6 +6,7 @@
 		icon?: string;
 		title?: string;
 		description: string;
+		wrapperClass?: string;
 	};
 
 	let { data, wrapperClass = '' }: { data: Condition; wrapperClass?: string } = $props();

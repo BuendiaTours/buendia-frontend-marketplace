@@ -17,6 +17,7 @@
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
@@ -122,6 +123,16 @@
 
 	<!-- pdp-header -->
 	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
+
+	<!-- highlights -->
+	{#if activity.pdpHighlights && activity.pdpHighlights.length > 0}
+		<PdpHighlights
+			items={activity.pdpHighlights}
+			wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
+		/>
+	{/if}
+
+	<Spacer margin="my-0" />
 
 	<!-- faqs -->
 	<Faqs title={activity.faqsTitle} faqs={activity.faqs} />
