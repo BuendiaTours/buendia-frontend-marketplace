@@ -65,6 +65,7 @@
 	},
 	"dependencies": {
 		"@bytemd/plugin-gfm": "^1.21.0",
+		"@humanspeak/svelte-markdown": "^1.0.5",
 		"@internationalized/date": "^3.10.1",
 		"@melt-ui/svelte": "^0.86.6",
 		"@solar-icons/svelte": "^1.1.0",

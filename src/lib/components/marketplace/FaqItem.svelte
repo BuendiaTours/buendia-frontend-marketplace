@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Plus, Minus } from '$lib/icons/Linear';
+	import SvelteMarkdown from '@humanspeak/svelte-markdown';
+
 	type Props = {
 		question?: string;
 		answer?: string;
@@ -21,7 +23,6 @@
 	<div
 		class="p pt-2 text-neutral-700 [&_a]:text-neutral-700 [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-neutral-900 [&_p:not(:last-child)]:pb-2 [$_a]:font-bold"
 	>
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html answer}
+		<SvelteMarkdown source={answer} />
 	</div>
 </details>
