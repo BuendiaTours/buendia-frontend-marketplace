@@ -103,6 +103,16 @@
 
 	<div class="page-grid">
 		<div class="col-content">
+			<!-- pdp-header -->
+			<PdpHeader
+				dataBreadcrumbs={data.breadcrumbs}
+				title={activity.title}
+				reviewsCount={reviewItems.length}
+				wrapperClass="mt-5"
+			/>
+
+			<Spacer />
+
 			<!-- pdp-by-buendia-banner -->
 			{#if activity.byBuendiaBanner}
 				<PdpByBuendiaBanner
@@ -120,9 +130,6 @@
 			<div class="carrito bg-neutral-500 p-4 text-center">carrito</div>
 		</div>
 	</div>
-
-	<!-- pdp-header -->
-	<PdpHeader dataBreadcrumbs={data.breadcrumbs} title={activity.title} />
 
 	<!-- highlights -->
 	{#if activity.pdpHighlights && activity.pdpHighlights.length > 0}
