@@ -8,11 +8,10 @@
 		title?: string;
 		description?: string;
 		descriptionColor?: string;
-		wrappedClass?: string;
 		itsLevel?: boolean;
 	};
 
-	let { data }: { data: Condition } = $props();
+	let { data, wrapperClass }: { data: Condition; wrapperClass?: string } = $props();
 	let drawerOpen = $state(false);
 
 	const IconComponent = $derived(
@@ -21,7 +20,7 @@
 	const descriptionColor = $derived(data.descriptionColor || 'text-neutral-700');
 </script>
 
-<div class="flex items-start gap-3 {data.wrappedClass}">
+<div class="e-highlight flex items-start gap-3 {wrapperClass}">
 	{#if IconComponent}
 		<div
 			class="flex items-center justify-center rounded-lg border border-solid border-neutral-300 bg-white p-3"
