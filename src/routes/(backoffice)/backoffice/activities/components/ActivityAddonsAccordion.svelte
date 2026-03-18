@@ -136,7 +136,7 @@
 		<p class="text-xs">{m.activities_sectionAddonsDescription()}</p>
 	{/snippet}
 	{#snippet content()}
-		<div class="md:col-span-12">
+		<div class="text-right md:col-span-12">
 			<button type="button" class="btn btn-outline btn-primary btn-sm" onclick={openCreateDialog}>
 				<Add class="size-4" />
 				{m.activities_addonsAddButton()}
