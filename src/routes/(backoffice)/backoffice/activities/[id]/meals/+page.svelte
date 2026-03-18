@@ -15,6 +15,12 @@
 		getContext<
 			(toast: { data: { title: string; description: string; type: 'success' | 'error' } }) => void
 		>('activityToast');
+
+	const updateMealCount = getContext<(count: number) => void>('updateMealCount');
+
+	$effect(() => {
+		updateMealCount(meals.length);
+	});
 </script>
 
 <div class="space-y-4">

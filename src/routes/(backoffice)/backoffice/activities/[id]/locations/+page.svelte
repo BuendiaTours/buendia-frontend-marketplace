@@ -18,6 +18,12 @@
 		getContext<
 			(toast: { data: { title: string; description: string; type: 'success' | 'error' } }) => void
 		>('activityToast');
+
+	const updateLocationCount = getContext<(count: number) => void>('updateLocationCount');
+
+	$effect(() => {
+		updateLocationCount(locations.length + attractions.length);
+	});
 </script>
 
 <div class="space-y-4">
