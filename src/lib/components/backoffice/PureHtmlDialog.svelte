@@ -89,18 +89,28 @@ USO CON FORMULARIO:
 		dialogElement?.close(returnValue);
 	}
 
-	// Manejar click en el backdrop para cerrar
+	/** Tracks whether mousedown started outside the dialog content area. */
+	let mouseDownOutside = false;
+
+	function isOutsideDialog(event: MouseEvent): boolean {
+		const rect = dialogElement.getBoundingClientRect();
+		return (
+			event.clientY < rect.top ||
+			event.clientY > rect.top + rect.height ||
+			event.clientX < rect.left ||
+			event.clientX > rect.left + rect.width
+		);
+	}
+
+	function handleMouseDown(event: MouseEvent) {
+		mouseDownOutside = isOutsideDialog(event);
+	}
+
+	// Close only when both mousedown and mouseup happened outside the dialog,
+	// so that dragging a text selection past the edge doesn't dismiss it.
 	function handleBackdropClick(event: MouseEvent) {
 		if (!mergedConfig.closeOnBackdrop) return;
-
-		const rect = dialogElement.getBoundingClientRect();
-		const isInDialog =
-			rect.top <= event.clientY &&
-			event.clientY <= rect.top + rect.height &&
-			rect.left <= event.clientX &&
-			event.clientX <= rect.left + rect.width;
-
-		if (!isInDialog) {
+		if (mouseDownOutside && isOutsideDialog(event)) {
 			close();
 		}
 	}
@@ -118,6 +128,7 @@ USO CON FORMULARIO:
 <dialog
 	bind:this={dialogElement}
 	class="bg-base-100 rounded-lg p-0 shadow-xl backdrop:bg-(--default-overlay-bg)"
+	onmousedown={handleMouseDown}
 	onclick={handleBackdropClick}
 	onkeydown={handleKeydown}
 >
