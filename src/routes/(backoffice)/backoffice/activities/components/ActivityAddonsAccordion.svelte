@@ -146,21 +146,24 @@
 		<!-- Addons list -->
 		<div class="md:col-span-12">
 			{#if addons.length === 0}
-				<p class="text-base-content/50 py-4 text-center text-sm">
-					{m.activities_addonsEmpty()}
-				</p>
+				<div class="flex flex-col items-center gap-2 py-8">
+					<Widget class="text-base-content/20 size-10" />
+					<p class="text-base-content/50 text-sm">{m.activities_addonsEmpty()}</p>
+				</div>
 			{:else}
 				<div class="space-y-2">
 					{#each addons as addon (addon.id)}
-						<div class="bg-base-200/50 flex items-center justify-between rounded-lg px-3 py-2">
-							<div class="flex items-center gap-3">
+						<div
+							class="border-neutral bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
+						>
+							<Widget class="text-base-content/40 size-5 shrink-0" />
+							<div class="min-w-0 flex-1">
 								<span class="font-medium">{addon.name}</span>
-								<span class="badge badge-ghost badge-sm">{formatPrice(addon.basePrice)}</span>
-								{#if addon.maxPerBooking !== null}
-									<span class="badge badge-outline badge-sm">
-										{m.activities_addonsMaxLabel({ max: addon.maxPerBooking })}
-									</span>
-								{/if}
+								<p class="text-base-content/50 mt-0.5 text-xs">
+									{formatPrice(addon.basePrice)}{addon.maxPerBooking !== null
+										? ` · ${m.activities_addonsMaxLabel({ max: addon.maxPerBooking })}`
+										: ''}
+								</p>
 							</div>
 							<button
 								type="button"

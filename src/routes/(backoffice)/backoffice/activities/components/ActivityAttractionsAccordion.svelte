@@ -4,7 +4,7 @@
 	 * Uses direct API calls (addAttraction / removeAttraction) instead of form submission.
 	 */
 	import * as m from '$paraglide/messages';
-	import { MapPoint, Close } from '$lib/icons/Linear';
+	import { MapPoint, Close, Compass } from '$lib/icons/Linear';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
 	import type { ActivityAttraction } from '$core/activities/types';
 	import type { SearchResult } from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
@@ -129,16 +129,18 @@
 
 		<div class="md:col-span-12">
 			{#if attractions.length === 0}
-				<p class="text-base-content/50 py-4 text-center text-sm">
-					{m.activities_attractionsEmpty()}
-				</p>
+				<div class="flex flex-col items-center gap-2 py-8">
+					<Compass class="text-base-content/20 size-10" />
+					<p class="text-base-content/50 text-sm">{m.activities_attractionsEmpty()}</p>
+				</div>
 			{:else}
 				<div class="mt-2 space-y-2">
 					{#each attractions as attraction (attraction.id)}
 						<div
-							class="border-primary bg-base-200/50 flex items-center justify-between rounded-lg border-l-4 px-3 py-2"
+							class="border-neutral bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
 						>
-							<span class="font-medium">{attraction.name}</span>
+							<Compass class="text-base-content/40 size-5 shrink-0" />
+							<span class="min-w-0 flex-1 font-medium">{attraction.name}</span>
 							<button
 								type="button"
 								class="btn btn-ghost btn-xs text-error hover:bg-error/10"

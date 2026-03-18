@@ -6,7 +6,7 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { v4 as uuidv4 } from 'uuid';
-	import { Add, Close } from '$lib/icons/Linear';
+	import { Add, Close, Plate } from '$lib/icons/Linear';
 	import type { MealAdditional, ActivityAllergen } from '$core/activities/enums';
 	import { MealKind, MealFormat } from '$core/activities/enums';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
@@ -168,21 +168,23 @@
 		<!-- Meals list -->
 		<div class="md:col-span-12">
 			{#if meals.length === 0}
-				<p class="text-base-content/50 py-4 text-center text-sm">
-					{m.activities_mealsEmpty()}
-				</p>
+				<div class="flex flex-col items-center gap-2 py-8">
+					<Plate class="text-base-content/20 size-10" />
+					<p class="text-base-content/50 text-sm">{m.activities_mealsEmpty()}</p>
+				</div>
 			{:else}
 				<div class="space-y-2">
 					{#each meals as meal (meal.id)}
-						<div class="bg-base-200/50 flex items-center justify-between rounded-lg px-3 py-2">
-							<div>
+						<div
+							class="border-neutral bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
+						>
+							<Plate class="text-base-content/40 size-5 shrink-0" />
+							<div class="min-w-0 flex-1">
 								<span class="font-medium">{getMealLabel(meal)}</span>
 								{#if getMealTags(meal).length > 0}
-									<div class="mt-1 flex flex-wrap gap-1">
-										{#each getMealTags(meal) as tag (tag)}
-											<span class="badge badge-ghost badge-sm">{tag}</span>
-										{/each}
-									</div>
+									<p class="text-base-content/50 mt-0.5 text-xs">
+										{getMealTags(meal).join(' · ')}
+									</p>
 								{/if}
 							</div>
 							<button

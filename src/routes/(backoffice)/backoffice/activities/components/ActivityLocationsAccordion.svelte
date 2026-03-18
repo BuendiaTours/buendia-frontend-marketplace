@@ -6,7 +6,7 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { v4 as uuidv4 } from 'uuid';
-	import { MapPoint, Close } from '$lib/icons/Linear';
+	import { MapPoint, Close, Map as MapIcon } from '$lib/icons/Linear';
 	import { ACTIVITY_LOCATION_ROLE_OPTIONS } from '$lib/labels/activities';
 	import { ActivityLocationRole } from '$core/activities/enums';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
@@ -147,21 +147,23 @@
 
 		<div class="md:col-span-12">
 			{#if locations.length === 0}
-				<p class="text-base-content/50 py-4 text-center text-sm">
-					{m.activities_locationsEmpty()}
-				</p>
+				<div class="flex flex-col items-center gap-2 py-8">
+					<MapIcon class="text-base-content/20 size-10" />
+					<p class="text-base-content/50 text-sm">{m.activities_locationsEmpty()}</p>
+				</div>
 			{:else}
 				<div class="mt-2 space-y-2">
 					{#each locations as location (location.id)}
 						<div
-							class="border-primary bg-base-200/50 flex items-center justify-between rounded-lg border-l-4 px-3 py-2"
+							class="border-neutral bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
 						>
-							<div class="flex items-center gap-2">
+							<MapPoint class="text-base-content/40 size-5 shrink-0" />
+							<div class="min-w-0 flex-1">
 								<span class="font-medium">{location.name}</span>
-								<span class="badge badge-ghost badge-sm">
+								<p class="text-base-content/50 text-xs">
 									{ACTIVITY_LOCATION_ROLE_OPTIONS.find((r) => r.id === location.role)?.name ??
 										location.role}
-								</span>
+								</p>
 							</div>
 							<button
 								type="button"
