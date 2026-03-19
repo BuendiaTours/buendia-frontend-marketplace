@@ -230,6 +230,11 @@ export type ActivityStageAddDto = {
 	name?: string;
 };
 
+/** Payload for reordering the stages of an activity. */
+export type ActivityStageReorderDto = {
+	stageIds: string[];
+};
+
 // ── Criteria (query params) ─────────────────────
 
 /** Query parameters for filtering, sorting, and paginating activity lists. */

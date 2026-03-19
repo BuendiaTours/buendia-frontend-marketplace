@@ -6,7 +6,7 @@
  */
 
 import type { CriteriaResult } from '$core/_shared/types';
-import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
+import { get, getWithParams, post, put, patch, del } from '$core/_shared/helpers';
 import type {
 	Activity,
 	ActivityAttractionAddDto,
@@ -18,6 +18,7 @@ import type {
 	ActivityLocationAddDto,
 	ActivityMealAddDto,
 	ActivityStageAddDto,
+	ActivityStageReorderDto,
 	ActivityUpdateDto
 } from '$core/activities/types';
 
@@ -222,6 +223,18 @@ export const ACTIVITY_REQUEST = {
 	 */
 	addStage: (fetchFn: typeof fetch, id: string, data: ActivityStageAddDto): Promise<void> =>
 		post(fetchFn, `${BASE}/${id}/stages`, data),
+
+	/**
+	 * Reorders the stages of an activity.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 * @param data - Ordered list of stage IDs.
+	 */
+	reorderStages: (
+		fetchFn: typeof fetch,
+		id: string,
+		data: ActivityStageReorderDto
+	): Promise<void> => put(fetchFn, `${BASE}/${id}/stages/reorder`, data),
 
 	/**
 	 * Removes a stage from an activity itinerary.
