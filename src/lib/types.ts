@@ -57,7 +57,7 @@ export type ActivityListItem = {
 	excluded: string[];
 	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
 	byBuendiaBanner: ByBuendiaBanner | null;
-	pdpHighlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
+	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
 	included: string[];
 	infoImportant: string | null;

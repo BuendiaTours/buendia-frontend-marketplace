@@ -116,7 +116,14 @@
 				wrapperClass="mt-5"
 			/>
 
-			<Spacer />
+			<Spacer wrapperClass="mt-5 mb-8" />
+
+			<!-- highlights -->
+			{#if activity.highlights && activity.highlights.length > 0}
+				<PdpHighlights items={activity.highlights} wrapperClass="" />
+			{/if}
+
+			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-by-buendia-banner -->
 			{#if activity.byBuendiaBanner}
@@ -287,20 +294,101 @@
 					layoutComponent={ReviewsLayout}
 				/>
 			</div>
+
+			<Spacer />
+
+			pdp-reviews-average
+
+			<Spacer />
+
+			<!-- Reviews -->
+			<div class="pdp-review-list" id="reviews">
+				<div class="pdp-review-list__header mb-4 flex flex-row items-center justify-between gap-2">
+					<div class="flex items-center gap-1">
+						<VerifiedCheck class="size-5" />
+						<p class="p-base whitespace-nowrap">Opiniones verificadas ({reviewsTotal})</p>
+					</div>
+					<div class="flex items-center gap-3">
+						<p class="p-base hidden whitespace-nowrap sm:block">Ordenar por</p>
+						<select
+							class="select"
+							aria-label="Seleccionar orden"
+							value={sortValue}
+							onchange={(e) => handleReviewSortChange(e.currentTarget.value)}
+						>
+							<option value="recommended">Recomendado</option>
+							<option value="best">Mejor valoración</option>
+							<option value="worst">Peor valoración</option>
+							<option value="recent">Más recientes</option>
+						</select>
+					</div>
+				</div>
+				<ul id="pdp-review-list__reviews" class="pdp-review-list__reviews space-y-6">
+					{#if reviews.length > 0}
+						{#each reviews as review (review.id)}
+							<li class="border-b border-[var(--color-border-default)] pb-6">
+								<ReviewCard
+									name={review.user || 'Anónimo'}
+									desc={review.createdAt
+										? format(new Date(review.createdAt), 'dd/MM/yyyy')
+										: undefined}
+									text={review.content}
+									rating={review.averageRating}
+									lines={4}
+									{...review}
+								/>
+
+								{#if review.attachments && review.attachments.length > 0}
+									<GallerySquareThumbs
+										items={review.attachments.map((att) => ({ src: att.url.value }))}
+										visibleCount={5}
+										categoryId="review-{review.id}"
+										wrapperClass="mt-4 gap-2"
+										thumbClass="w-34"
+									/>
+								{/if}
+
+								{#if review.replies && review.replies.length > 0}
+									<div class="mt-6 space-y-2">
+										{#each review.replies as reply (reply.id)}
+											<ReviewComment {reply} />
+										{/each}
+									</div>
+								{/if}
+							</li>
+						{/each}
+					{:else}
+						<li class="text-gray-600">No hay reviews para esta actividad.</li>
+					{/if}
+				</ul>
+				{#if hasMoreReviews}
+					<div class="pdp-review-list__footer-actions mt-6 flex justify-center sm:justify-start">
+						<button
+							type="button"
+							class="e-button e-button-secondary"
+							onclick={handleShowMore}
+							disabled={isLoadingReviews}
+						>
+							{isLoadingReviews ? 'Cargando...' : 'Mostrar más'}
+						</button>
+					</div>
+				{/if}
+
+				<!-- pdp-brand-banner -->
+				<PdpBrandBanner
+					title="¿Sabías qué?"
+					description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
+					image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+					imageAlt="Imagén de prueba"
+					wrapperClass="my-12"
+				/>
+			</div>
 		</div>
 
 		<div class="col-sidebar">
 			<div class="carrito bg-neutral-500 p-4 text-center">carrito</div>
 		</div>
 	</div>
-
-	<!-- highlights -->
-	{#if activity.pdpHighlights && activity.pdpHighlights.length > 0}
-		<PdpHighlights
-			items={activity.pdpHighlights}
-			wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
-		/>
-	{/if}
 
 	<!-- Basic Info -->
 	<!-- <div class="e-card mb-8">
@@ -429,7 +517,7 @@
 	{/if}
 
 	<!-- Tags -->
-	{#if activity.tags && activity.tags.length > 0}
+	<!-- {#if activity.tags && activity.tags.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🏷️ Etiquetas</h2>
 			<div class="flex flex-wrap gap-2">
@@ -438,10 +526,10 @@
 				{/each}
 			</div>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Distributives -->
-	{#if activity.distributives && activity.distributives.length > 0}
+	<!-- {#if activity.distributives && activity.distributives.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">📄 Páginas distributivas</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -450,96 +538,15 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Voucher Info -->
-	{#if activity.voucherInfo}
+	<!-- {#if activity.voucherInfo}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🎫 Información del voucher</h2>
 			<p class="text-gray-600">{activity.voucherInfo}</p>
 		</div>
-	{/if}
+	{/if} -->
 
 	<Spacer />
-
-	<!-- Reviews -->
-	<div class="pdp-review-list" id="reviews">
-		<div class="pdp-review-list__header mb-4 flex flex-row items-center justify-between gap-2">
-			<div class="flex items-center gap-1">
-				<VerifiedCheck class="size-5" />
-				<p class="p-base whitespace-nowrap">Opiniones verificadas ({reviewsTotal})</p>
-			</div>
-			<div class="flex items-center gap-3">
-				<p class="p-base hidden whitespace-nowrap sm:block">Ordenar por</p>
-				<select
-					class="select"
-					aria-label="Seleccionar orden"
-					value={sortValue}
-					onchange={(e) => handleReviewSortChange(e.currentTarget.value)}
-				>
-					<option value="recommended">Recomendado</option>
-					<option value="best">Mejor valoración</option>
-					<option value="worst">Peor valoración</option>
-					<option value="recent">Más recientes</option>
-				</select>
-			</div>
-		</div>
-		<ul id="pdp-review-list__reviews" class="pdp-review-list__reviews space-y-6">
-			{#if reviews.length > 0}
-				{#each reviews as review (review.id)}
-					<li class="border-b border-[var(--color-border-default)] pb-6">
-						<ReviewCard
-							name={review.user || 'Anónimo'}
-							desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
-							text={review.content}
-							rating={review.averageRating}
-							lines={4}
-							{...review}
-						/>
-
-						{#if review.attachments && review.attachments.length > 0}
-							<GallerySquareThumbs
-								items={review.attachments.map((att) => ({ src: att.url.value }))}
-								visibleCount={5}
-								categoryId="review-{review.id}"
-								wrapperClass="mt-4 gap-2"
-								thumbClass="w-34"
-							/>
-						{/if}
-
-						{#if review.replies && review.replies.length > 0}
-							<div class="mt-6 space-y-2">
-								{#each review.replies as reply (reply.id)}
-									<ReviewComment {reply} />
-								{/each}
-							</div>
-						{/if}
-					</li>
-				{/each}
-			{:else}
-				<li class="text-gray-600">No hay reviews para esta actividad.</li>
-			{/if}
-		</ul>
-		{#if hasMoreReviews}
-			<div class="pdp-review-list__footer-actions mt-6 flex justify-center sm:justify-start">
-				<button
-					type="button"
-					class="e-button e-button-secondary"
-					onclick={handleShowMore}
-					disabled={isLoadingReviews}
-				>
-					{isLoadingReviews ? 'Cargando...' : 'Mostrar más'}
-				</button>
-			</div>
-		{/if}
-
-		<!-- pdp-brand-banner -->
-		<PdpBrandBanner
-			title="¿Sabías qué?"
-			description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
-			image="https://dummyimage.com/666x666/ffffff/000000.jpg"
-			imageAlt="Imagén de prueba"
-			wrapperClass="my-12"
-		/>
-	</div>
 </div>
