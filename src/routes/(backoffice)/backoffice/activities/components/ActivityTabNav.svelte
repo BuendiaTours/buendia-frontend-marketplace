@@ -6,16 +6,23 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database, MapPoint, Plate, Widget } from '$lib/icons/Linear';
+	import { Database, Map as MapIcon, MapPoint, Plate, Widget } from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
 		locationCount?: number;
 		mealCount?: number;
 		addonCount?: number;
+		stageCount?: number;
 	};
 
-	let { activityId, locationCount = 0, mealCount = 0, addonCount = 0 }: Props = $props();
+	let {
+		activityId,
+		locationCount = 0,
+		mealCount = 0,
+		addonCount = 0,
+		stageCount = 0
+	}: Props = $props();
 
 	const tabs = $derived([
 		{
@@ -41,6 +48,12 @@
 			href: ACTIVITY_ROUTES.addons(activityId),
 			icon: Widget,
 			badge: addonCount > 0 ? addonCount : undefined
+		},
+		{
+			label: m.activities_tabStages(),
+			href: ACTIVITY_ROUTES.stages(activityId),
+			icon: MapIcon,
+			badge: stageCount > 0 ? stageCount : undefined
 		}
 	]);
 
