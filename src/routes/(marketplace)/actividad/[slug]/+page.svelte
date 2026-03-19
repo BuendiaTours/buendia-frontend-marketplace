@@ -192,14 +192,40 @@
 					<p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p>
 					<!-- <SvelteMarkdown source={activity.descriptionFull} /> -->
 				</AccordionOnMobile>
+				<Spacer wrapperClass="mt-6 mb-8" />
 			{/if}
 
-			<Spacer />
+			<!-- conditions -->
+			{#if activity.conditions && activity.conditions.length > 0}
+				<p class="h2 pb-4">Condiciones</p>
+				<div class="pdp-conditions flex flex-col gap-4">
+					{#each activity.conditions as condition (condition.id)}
+						<Conditions style={condition.style} items={condition.items} />
+					{/each}
+				</div>
+			{/if}
+
+			<!-- conditions -->
+			{#if activity.infoImportant}
+				<Conditions
+					style="important"
+					items={[
+						{
+							id: 'important-info',
+							icon: 'InfoCircle',
+							title: 'Información importante',
+							description: activity.infoImportant
+						}
+					]}
+					wrapperClass="mt-4"
+				/>
+				<Spacer />
+			{/if}
 
 			<!-- pdp-included-excluded -->
 			{#if (activity.included && activity.included.length > 0) || (activity.excluded && activity.excluded.length > 0)}
 				<p class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</p>
-				<ul class="pdp-included-excluded space-y-2">
+				<ul class="pdp-included-excluded space-y-1">
 					{#each activity.included ?? [] as item, i (i)}
 						<li class="flex items-start gap-2">
 							<CustomMiniTick class="mt-0.5 size-5 shrink-0 text-green-600" />
@@ -211,6 +237,17 @@
 							<CustomMiniCancel class="mt-0.5 size-5 shrink-0 text-red-500" />
 							<span>{item.description}</span>
 						</li>
+					{/each}
+				</ul>
+				<Spacer />
+			{/if}
+
+			<!-- Not Suitable For -->
+			{#if activity.notSuitableFor && activity.notSuitableFor.length > 0}
+				<p class="h2 mt-4 mb-2 lg:mt-6">No apto para</p>
+				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+					{#each activity.notSuitableFor as item, i (i)}
+						<li>{item.description}</li>
 					{/each}
 				</ul>
 				<Spacer />
@@ -231,6 +268,25 @@
 				}}
 				wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
 			/>
+
+			<Spacer />
+
+			<div class="pdp-review-gallery">
+				<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
+
+				<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
+
+				<GallerySquareThumbs
+					items={reviewItems}
+					visibleCount={3}
+					thumbClass="w-[245px]"
+					wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
+					showCount={true}
+					categoryId="reviews"
+					categoryLabel="Fotos de viajeros"
+					layoutComponent={ReviewsLayout}
+				/>
+			</div>
 		</div>
 
 		<div class="col-sidebar">
@@ -243,32 +299,6 @@
 		<PdpHighlights
 			items={activity.pdpHighlights}
 			wrapperClass="py-4 mt-2 mb-2 lg:py-8 lg:mt-0 lg:mb-0"
-		/>
-	{/if}
-
-	<!-- conditions -->
-	{#if activity.conditions && activity.conditions.length > 0}
-		<p class="h2 pt-4 pb-4 lg:pt-8">Condiciones</p>
-		<div class="pdp-conditions flex flex-col gap-4">
-			{#each activity.conditions as condition (condition.id)}
-				<Conditions style={condition.style} items={condition.items} />
-			{/each}
-		</div>
-	{/if}
-
-	<!-- conditions -->
-	{#if activity.infoImportant}
-		<Conditions
-			style="important"
-			items={[
-				{
-					id: 'important-info',
-					icon: 'InfoCircle',
-					title: 'Información importante',
-					description: activity.infoImportant
-				}
-			]}
-			wrapperClass="mt-4"
 		/>
 	{/if}
 
@@ -305,15 +335,13 @@
 		</dl>
 	</div> -->
 
-	<Spacer />
-
-	<!-- Important Info -->
-	{#if activity.infoImportant}
+	<!-- Important Info OLD -->
+	<!-- {#if activity.infoImportant}
 		<div class="e-card mb-8">
 			<h2 class="mb-4 font-semibold text-yellow-900">⚠️ Información importante</h2>
 			<p class="text-yellow-800">{activity.infoImportant}</p>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Destinations -->
 	<!-- {#if activity.destinations && activity.destinations.length > 0}
@@ -351,48 +379,12 @@
 		</div>
 	{/if} -->
 
-	<!-- Included -->
-	{#if activity.included && activity.included.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">✅ Incluido</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.included as item, i (i)}
-					<li>{item}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
-	<!-- Excluded -->
-	{#if activity.excluded && activity.excluded.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">❌ No incluido</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.excluded as item, i (i)}
-					<li>{item}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
 	<!-- Items to Bring -->
 	{#if activity.itemsToBring && activity.itemsToBring.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🎒 Qué llevar</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.itemsToBring as item, i (i)}
-					<li>{item}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
-	<!-- Will Doing -->
-	{#if activity.willDoing && activity.willDoing.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🎯 Qué harás</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.willDoing as item, i (i)}
 					<li>{item}</li>
 				{/each}
 			</ul>
@@ -411,18 +403,6 @@
 		</div>
 	{/if} -->
 
-	<!-- Stages -->
-	{#if activity.stages && activity.stages.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">Itinerario</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.stages as stage, i (i)}
-					<li>{stage}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
 	<!-- Restrictions -->
 	{#if activity.restrictions && activity.restrictions.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -430,18 +410,6 @@
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
 				{#each activity.restrictions as restriction, i (i)}
 					<li>{restriction}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
-	<!-- Not Suitable For -->
-	{#if activity.notSuitableFor && activity.notSuitableFor.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">⚠️ No recomendado para</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.notSuitableFor as item, i (i)}
-					<li>{item}</li>
 				{/each}
 			</ul>
 		</div>
@@ -484,14 +452,6 @@
 		</div>
 	{/if}
 
-	<!-- Contact Info -->
-	{#if activity.phoneContact}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">📞 Contacto</h2>
-			<p class="text-gray-600">{activity.phoneContact}</p>
-		</div>
-	{/if}
-
 	<!-- Voucher Info -->
 	{#if activity.voucherInfo}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -499,35 +459,6 @@
 			<p class="text-gray-600">{activity.voucherInfo}</p>
 		</div>
 	{/if}
-
-	<!-- Multimedias -->
-	<!-- {#if activity.multimedias && activity.multimedias.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">📸 Multimedia</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.multimedias as media, i (i)}
-					<li>{media}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<div class="pdp-review-gallery">
-		<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
-
-		<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
-
-		<GallerySquareThumbs
-			items={reviewItems}
-			visibleCount={3}
-			thumbClass="w-[245px]"
-			wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
-			showCount={true}
-			categoryId="reviews"
-			categoryLabel="Fotos de viajeros"
-			layoutComponent={ReviewsLayout}
-		/>
-	</div>
 
 	<Spacer />
 
