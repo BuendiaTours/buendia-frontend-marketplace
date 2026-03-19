@@ -38,11 +38,11 @@
 
 	setContext('activityToast', handleToast);
 
-	let locationCount = $state(
-		(data.activity.locations?.length ?? 0) + (data.activity.attractions?.length ?? 0)
-	);
-	let mealCount = $state(data.activity.meals?.length ?? 0);
-	let addonCount = $state(data.addons?.length ?? 0);
+	let locationCount = $derived.by(() => {
+		return (data.activity.locations?.length ?? 0) + (data.activity.attractions?.length ?? 0);
+	});
+	let mealCount = $derived(data.activity.meals?.length ?? 0);
+	let addonCount = $derived(data.addons?.length ?? 0);
 
 	setContext('updateLocationCount', (count: number) => {
 		locationCount = count;
