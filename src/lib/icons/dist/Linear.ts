@@ -320,6 +320,8 @@ export { default as CupPaper } from './Linear/CupPaper.svelte';
 export { default as CupStar } from './Linear/CupStar.svelte';
 export { default as Cursor } from './Linear/Cursor.svelte';
 export { default as CursorSquare } from './Linear/CursorSquare.svelte';
+export { default as CustomMiniCancel } from './Linear/CustomMiniCancel.svelte';
+export { default as CustomMiniTick } from './Linear/CustomMiniTick.svelte';
 export { default as Danger } from './Linear/Danger.svelte';
 export { default as DangerCircle } from './Linear/DangerCircle.svelte';
 export { default as DangerSquare } from './Linear/DangerSquare.svelte';

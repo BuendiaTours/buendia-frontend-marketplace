@@ -9,8 +9,11 @@
 	// API - Endpoints
 	import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
 
+	// Actions
+	import { clampText } from '$lib/actions/marketplace/clampText';
+
 	// Components
-	import Badge from '$lib/components/marketplace/Badge.svelte';
+	// import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
@@ -28,8 +31,8 @@
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 
 	// Icons
-	import { CheckCircle, CloseCircle, VerifiedCheck } from '$lib/icons/Linear';
-	import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -186,13 +189,32 @@
 					{#snippet summary()}
 						<h2 class="h2">Descripción de la actividad</h2>
 					{/snippet}
-					<SvelteMarkdown source={activity.descriptionFull} />
+					<p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p>
+					<!-- <SvelteMarkdown source={activity.descriptionFull} /> -->
 				</AccordionOnMobile>
 			{/if}
 
 			<Spacer />
 
-			Que incluye esta excusión.
+			<!-- pdp-included-excluded -->
+			{#if (activity.included && activity.included.length > 0) || (activity.excluded && activity.excluded.length > 0)}
+				<p class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</p>
+				<ul class="pdp-included-excluded space-y-2">
+					{#each activity.included ?? [] as item, i (i)}
+						<li class="flex items-start gap-2">
+							<CustomMiniTick class="mt-0.5 size-5 shrink-0 text-green-600" />
+							<span>{item.description}</span>
+						</li>
+					{/each}
+					{#each activity.excluded ?? [] as item, i (i)}
+						<li class="flex items-start gap-2">
+							<CustomMiniCancel class="mt-0.5 size-5 shrink-0 text-red-500" />
+							<span>{item.description}</span>
+						</li>
+					{/each}
+				</ul>
+				<Spacer />
+			{/if}
 
 			<!-- faqs -->
 			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
