@@ -116,7 +116,7 @@
 				wrapperClass="mt-5"
 			/>
 
-			<Spacer wrapperClass="mt-5 mb-8" />
+			<Spacer wrapperClass="mt-6 mb-8" />
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
@@ -260,6 +260,25 @@
 				<Spacer />
 			{/if}
 
+			<!-- Pets Allowed -->
+			{#if activity.petsAllowed}
+				<p class="h2 mt-4 mb-2 lg:mt-6">Mascotas</p>
+				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+					<li>
+						<span
+							>{activity.petsAllowed.allowed === 'YES'
+								? 'Esta actividad permite mascotas.'
+								: 'Esta actividad no permite mascotas.'}
+						</span>
+						{#if activity.petsAllowed.description}
+							<p class="text-gray-600">{activity.petsAllowed.description}</p>
+						{/if}
+					</li>
+				</ul>
+
+				<Spacer />
+			{/if}
+
 			<!-- faqs -->
 			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
 
@@ -373,15 +392,6 @@
 						</button>
 					</div>
 				{/if}
-
-				<!-- pdp-brand-banner -->
-				<PdpBrandBanner
-					title="¿Sabías qué?"
-					description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
-					image="https://dummyimage.com/666x666/ffffff/000000.jpg"
-					imageAlt="Imagén de prueba"
-					wrapperClass="my-12"
-				/>
 			</div>
 		</div>
 
@@ -389,6 +399,37 @@
 			<div class="carrito bg-neutral-500 p-4 text-center">carrito</div>
 		</div>
 	</div>
+
+	<div class="pdp-related-pans mt-16">
+		<p class="h2 mb-4">Plaanes relacionados</p>
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			<div class="rounded-lg border border-gray-200 bg-white p-6">
+				<p class="font-semibold text-gray-800">Pana 1</p>
+				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+			</div>
+			<div class="rounded-lg border border-gray-200 bg-white p-6">
+				<p class="font-semibold text-gray-800">Pana 2</p>
+				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+			</div>
+			<div class="rounded-lg border border-gray-200 bg-white p-6">
+				<p class="font-semibold text-gray-800">Pana 3</p>
+				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+			</div>
+			<div class="rounded-lg border border-gray-200 bg-white p-6">
+				<p class="font-semibold text-gray-800">Pana 3</p>
+				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- pdp-brand-banner -->
+	<PdpBrandBanner
+		title="¿Sabías qué?"
+		description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
+		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+		imageAlt="Imagén de prueba"
+		wrapperClass="my-16"
+	/>
 
 	<!-- Basic Info -->
 	<!-- <div class="e-card mb-8">
@@ -468,7 +509,7 @@
 	{/if} -->
 
 	<!-- Items to Bring -->
-	{#if activity.itemsToBring && activity.itemsToBring.length > 0}
+	<!-- {#if activity.itemsToBring && activity.itemsToBring.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🎒 Qué llevar</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -477,7 +518,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Meals -->
 	<!-- {#if activity.meals && activity.meals.length > 0}
@@ -492,7 +533,7 @@
 	{/if} -->
 
 	<!-- Restrictions -->
-	{#if activity.restrictions && activity.restrictions.length > 0}
+	<!-- {#if activity.restrictions && activity.restrictions.length > 0}
 		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<h2 class="mb-4 font-semibold text-gray-800">🚫 Restricciones</h2>
 			<ul class="list-inside list-disc space-y-1 text-gray-600">
@@ -501,20 +542,7 @@
 				{/each}
 			</ul>
 		</div>
-	{/if}
-
-	<!-- Pets Allowed -->
-	{#if activity.petsAllowed}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🐕 Mascotas</h2>
-			<p class="mb-2 font-medium text-gray-700">
-				{activity.petsAllowed.allowed === 'YES' ? '✅ Permitidas' : '❌ No permitidas'}
-			</p>
-			{#if activity.petsAllowed.description}
-				<p class="text-gray-600">{activity.petsAllowed.description}</p>
-			{/if}
-		</div>
-	{/if}
+	{/if} -->
 
 	<!-- Tags -->
 	<!-- {#if activity.tags && activity.tags.length > 0}
@@ -547,6 +575,4 @@
 			<p class="text-gray-600">{activity.voucherInfo}</p>
 		</div>
 	{/if} -->
-
-	<Spacer />
 </div>
