@@ -18,7 +18,8 @@
 			"./messages/{locale}/attractions.json",
 			"./messages/{locale}/categories.json",
 			"./messages/{locale}/suppliers.json",
-			"./messages/{locale}/tags.json"
+			"./messages/{locale}/tags.json",
+			"./messages/{locale}/pickupPoints.json"
 		]
 	}
 }
