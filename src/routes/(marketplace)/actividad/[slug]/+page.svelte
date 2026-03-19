@@ -28,7 +28,7 @@
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
 
 	// Icons
-	import { VerifiedCheck } from '$lib/icons/Linear';
+	import { CheckCircle, CloseCircle, VerifiedCheck } from '$lib/icons/Linear';
 	import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 
@@ -191,6 +191,8 @@
 			{/if}
 
 			<Spacer />
+
+			Que incluye esta excusión.
 
 			<!-- faqs -->
 			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
