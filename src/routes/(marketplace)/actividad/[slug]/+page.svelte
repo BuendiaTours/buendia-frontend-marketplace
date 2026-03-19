@@ -194,7 +194,7 @@
 			{#if activity.descriptionFull}
 				<AccordionOnMobile open={true} contentClass="mt-6">
 					{#snippet summary()}
-						<h2 class="h2">Descripción de la actividad</h2>
+						<h2 class="h2">Descripción de la excursión</h2>
 					{/snippet}
 					<p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p>
 					<!-- <SvelteMarkdown source={activity.descriptionFull} /> -->
@@ -231,8 +231,8 @@
 
 			<!-- pdp-included-excluded -->
 			{#if (activity.included && activity.included.length > 0) || (activity.excluded && activity.excluded.length > 0)}
-				<p class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</p>
-				<ul class="pdp-included-excluded space-y-1">
+				<h2 class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</h2>
+				<ul class="pdp-list pdp-included-excluded space-y-1">
 					{#each activity.included ?? [] as item, i (i)}
 						<li class="flex items-start gap-2">
 							<CustomMiniTick class="mt-0.5 size-5 shrink-0 text-green-600" />
@@ -280,7 +280,10 @@
 			{/if}
 
 			<!-- faqs -->
-			<Faqs title="Preguntas frecuentes" faqs={activity.faqs} />
+			<Faqs
+				title={`Preguntas frecuentes sobre esta excursión desde ${activity.destinations?.[0]?.name || '<DESTINO?>'}`}
+				faqs={activity.faqs}
+			/>
 
 			<Spacer />
 
@@ -298,7 +301,7 @@
 			<Spacer />
 
 			<div class="pdp-review-gallery">
-				<p class="h2">Opiniones de Excursiones a Brujas y Gante desde Bruselas</p>
+				<h2 class="h2">Opiniones de {activity.title}</h2>
 
 				<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
 
@@ -401,7 +404,7 @@
 	</div>
 
 	<div class="pdp-related-pans mt-16">
-		<p class="h2 mb-4">Plaanes relacionados</p>
+		<p class="h2 mb-4">Planes relacionados</p>
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<div class="rounded-lg border border-gray-200 bg-white p-6">
 				<p class="font-semibold text-gray-800">Pana 1</p>

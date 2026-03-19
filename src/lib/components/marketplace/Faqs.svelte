@@ -17,9 +17,9 @@
 </script>
 
 <div class="c-faqs pb-1 {wrapperClass}">
-	<p class="h2 pb-4">
+	<h2 class="h2 pb-4">
 		{title}
-	</p>
+	</h2>
 
 	<div>
 		{#each visibleFaqs as faq (faq.id)}
