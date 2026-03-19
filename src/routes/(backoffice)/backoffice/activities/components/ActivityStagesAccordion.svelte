@@ -234,7 +234,7 @@
 								<span
 									class="bg-base-content/10 flex size-7 items-center justify-center rounded-full text-xs font-bold"
 								>
-									{stage.order}
+									{idx + 1}
 								</span>
 								<button
 									type="button"
