@@ -9,25 +9,25 @@
 	font-size: var(--font-size-p-base);
 	line-height: var(--line-height-p-base);
 	font-weight: 700;
-	color: var(--color-action-primary-text);
+	color: var(--color-white);
 
 	cursor: pointer;
 	user-select: none;
-	background-color: var(--color-action-primary-bg);
+	background-color: var(--color-accent-500);
 	transition: background-color border-color color 0.25s ease;
 
 	&:hover {
-		background-color: var(--color-action-primary-bg-hover);
+		background-color: var(--color-accent-700);
 	}
 
 	&:active {
-		background-color: var(--color-action-primary-bg-active);
+		background-color: var(--color-accent-700);
 	}
 
 	&.disabled,
 	&[disabled] {
-		background-color: var(--color-action-primary-bg-disabled);
-		color: var(--color-action-primary-text-disabled);
+		background-color: var(--color-neutral-200);
+		color: var(--color-neutral-500);
 		cursor: not-allowed;
 	}
 
@@ -46,14 +46,14 @@
 
 	/* Variants */
 	&.e-button-secondary {
-		border: 1px solid var(--color-action-secondary-border);
-		background-color: var(--color-action-secondary-bg);
-		color: var(--color-action-secondary-text);
+		border: 1px solid var(--color-accent-500);
+		background-color: var(--color-white);
+		color: var(--color-accent-500);
 
 		&:hover {
-			border-color: var(--color-action-secondary-border-hover);
-			background-color: var(--color-action-secondary-bg-hover);
-			color: var(--color-action-secondary-text-hover);
+			border-color: var(--color-accent-900);
+			background-color: var(--color-white);
+			color: var(--color-accent-900);
 		}
 
 		&:active {
@@ -64,35 +64,35 @@
 
 		&.disabled,
 		&[disabled] {
-			border-color: var(--color-action-secondary-border-disabled);
-			background-color: var(--color-action-secondary-bg-disabled);
-			color: var(--color-action-secondary-text-disabled);
+			border-color: var(--color-neutral-500);
+			background-color: var(--color-white);
+			color: var(--color-neutral-500);
 			cursor: not-allowed;
 		}
 	}
 
 	&.e-button-tertiary {
-		border: 1px solid var(--color-action-tertiary-border);
-		background-color: var(--color-action-tertiary-bg);
-		color: var(--color-action-tertiary-text);
+		border: 1px solid var(--color-neutral-800);
+		background-color: var(--color-white);
+		color: var(--color-neutral-800);
 
 		&:hover {
-			border-color: var(--color-action-tertiary-border-hover);
-			background-color: var(--color-action-tertiary-bg-hover);
-			color: var(--color-action-tertiary-text-hover);
+			border-color: var(--color-accent-900);
+			background-color: var(--color-white);
+			color: var(--color-accent-900);
 		}
 
 		&:active {
 			border-color: var(--color-action-tertiary-border-active);
-			background-color: var(--color-action-tertiary-bg-active);
+			background-color: var(--color-white);
 			color: var(--color-action-tertiary-text-active);
 		}
 
 		&.disabled,
 		&[disabled] {
-			border-color: var(--color-action-tertiary-border-disabled);
-			background-color: var(--color-action-tertiary-bg-disabled);
-			color: var(--color-action-tertiary-text-disabled);
+			border-color: var(--color-neutral-500);
+			background-color: var(--color-white);
+			color: var(--color-neutral-500);
 			cursor: not-allowed;
 		}
 	}

@@ -148,8 +148,8 @@
 			<pre class="rounded-lg bg-neutral-900 p-4 text-white"><code
 					>{`/* En tu CSS */
 .my-component {
-  background-color: var(--color-action-primary-bg);
-  color: var(--color-action-primary-text);
+  background-color: var(--color-accent-500);
+  color: var(--color-white);
 }
 
 /* En estilos inline */

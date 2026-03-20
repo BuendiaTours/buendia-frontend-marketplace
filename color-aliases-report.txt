@@ -1,0 +1,242 @@
+
+--color-surface-canvas
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/components/c-conditions.css:16
+    background: var(--color-surface-canvas);
+
+--color-surface-default
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/core/forms.css:71
+    background-color: var(--color-surface-default);
+
+--color-surface-subtle
+  → aliased to: --color-neutral-100
+  → replace with: var(--color-neutral-100)
+  src/lib/components/marketplace/ReviewComment.svelte:16
+    <article class="c-review-comment rounded-md bg-[var(--color-surface-subtle)] p-5 md:p-6">
+  src/lib/components/marketplace/AuthorMeta.svelte:22
+    class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-subtle)] text-neutral-800"
+
+--color-text-primary
+  → aliased to: --color-neutral-800
+  → replace with: var(--color-neutral-800)
+  src/lib/styles/marketplace/components/c-conditions.css:23
+    color: var(--color-text-primary);
+
+--color-text-secondary
+  → aliased to: --color-neutral-700
+  → replace with: var(--color-neutral-700)
+  src/lib/components/marketplace/AuthorMeta.svelte:29
+    {#if desc}<span class="p-sm text-[var(--color-text-secondary)]">{desc}</span>{/if}
+
+--color-text-tertiary
+  → aliased to: --color-neutral-600
+  → replace with: var(--color-neutral-600)
+  src/routes/(marketplace)/components/+page.svelte:683
+    color: var(--color-text-tertiary);
+
+--color-text-disabled
+  → aliased to: --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/routes/(marketplace)/components/+page.svelte:698
+    color: var(--color-text-disabled);
+
+--color-border-subtle
+  → aliased to: --color-neutral-200
+  → replace with: var(--color-neutral-200)
+  src/routes/(marketplace)/components/+page.svelte:686
+    border-bottom: 1px solid var(--color-border-subtle);
+
+--color-border-default
+  → aliased to: --color-neutral-300
+  → replace with: var(--color-neutral-300)
+  src/lib/styles/marketplace/core/forms.css:70
+    border: 1px solid var(--color-border-default);
+  src/lib/styles/marketplace/components/c-conditions.css:15
+    border: 1px solid var(--color-border-default);
+  src/lib/components/marketplace/Spacer.svelte:11
+    lineColor = 'border-[var(--color-border-default)]'
+  src/lib/components/marketplace/pdp/PdpReviewsAverage.svelte:30
+    class="pdp-reviews-average flex flex-col items-center gap-4 rounded-xl border border-[var(--color-border-default)] p-6 sm:flex-row {wrapperClass}"
+  src/routes/(marketplace)/actividad/[slug]/+page.svelte:160
+    wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
+  src/routes/(marketplace)/actividad/[slug]/+page.svelte:364
+    <li class="border-b border-[var(--color-border-default)] pb-6">
+
+--color-action-primary-bg
+  → aliased to: --color-accent-500
+  → replace with: var(--color-accent-500)
+  src/stories/marketplace/Colors.stories.svelte:151
+    background-color: var(--color-action-primary-bg);
+  src/lib/styles/marketplace/elements/e-button.css:16
+    background-color: var(--color-action-primary-bg);
+
+--color-action-primary-bg-hover
+  → aliased to: --color-accent-700
+  → replace with: var(--color-accent-700)
+  src/lib/styles/marketplace/elements/e-button.css:20
+    background-color: var(--color-action-primary-bg-hover);
+
+--color-action-primary-bg-active
+  → aliased to: --color-accent-700
+  → replace with: var(--color-accent-700)
+  src/lib/styles/marketplace/elements/e-button.css:24
+    background-color: var(--color-action-primary-bg-active);
+
+--color-action-primary-bg-disabled
+  → aliased to: --color-neutral-200
+  → replace with: var(--color-neutral-200)
+  src/lib/styles/marketplace/elements/e-button.css:29
+    background-color: var(--color-action-primary-bg-disabled);
+
+--color-action-primary-text
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/stories/marketplace/Colors.stories.svelte:152
+    color: var(--color-action-primary-text);
+  src/lib/styles/marketplace/elements/e-button.css:12
+    color: var(--color-action-primary-text);
+
+--color-action-primary-text-disabled
+  → aliased to: --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/lib/styles/marketplace/elements/e-button.css:30
+    color: var(--color-action-primary-text-disabled);
+
+--color-action-secondary-bg
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:50
+    background-color: var(--color-action-secondary-bg);
+
+--color-action-secondary-bg-hover
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:55
+    background-color: var(--color-action-secondary-bg-hover);
+
+--color-action-secondary-bg-active
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:61
+    background-color: var(--color-action-secondary-bg-active);
+
+--color-action-secondary-bg-disabled
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:68
+    background-color: var(--color-action-secondary-bg-disabled);
+
+--color-action-secondary-text
+  → aliased to: --color-action-secondary-fg → --color-accent-500
+  → replace with: var(--color-accent-500)
+  src/lib/styles/marketplace/elements/e-button.css:51
+    color: var(--color-action-secondary-text);
+
+--color-action-secondary-text-hover
+  → aliased to: --color-accent-900
+  → replace with: var(--color-accent-900)
+  src/lib/styles/marketplace/elements/e-button.css:56
+    color: var(--color-action-secondary-text-hover);
+
+--color-action-secondary-text-disabled
+  → aliased to: --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/lib/styles/marketplace/elements/e-button.css:69
+    color: var(--color-action-secondary-text-disabled);
+
+--color-action-secondary-border
+  → aliased to: --color-action-secondary-fg → --color-accent-500
+  → replace with: var(--color-accent-500)
+  src/lib/styles/marketplace/elements/e-button.css:49
+    border: 1px solid var(--color-action-secondary-border);
+
+--color-action-secondary-border-hover
+  → aliased to: --color-accent-900
+  → replace with: var(--color-accent-900)
+  src/lib/styles/marketplace/elements/e-button.css:54
+    border-color: var(--color-action-secondary-border-hover);
+
+--color-action-secondary-border-disabled
+  → aliased to: --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/lib/styles/marketplace/elements/e-button.css:67
+    border-color: var(--color-action-secondary-border-disabled);
+
+--color-action-tertiary-bg
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:76
+    background-color: var(--color-action-tertiary-bg);
+
+--color-action-tertiary-bg-hover
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:81
+    background-color: var(--color-action-tertiary-bg-hover);
+
+--color-action-tertiary-bg-active
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:87
+    background-color: var(--color-action-tertiary-bg-active);
+
+--color-action-tertiary-bg-disabled
+  → aliased to: --color-white
+  → replace with: var(--color-white)
+  src/lib/styles/marketplace/elements/e-button.css:94
+    background-color: var(--color-action-tertiary-bg-disabled);
+
+--color-action-tertiary-text
+  → aliased to: --color-action-tertiary-fg → --color-neutral-800
+  → replace with: var(--color-neutral-800)
+  src/lib/styles/marketplace/elements/e-button.css:77
+    color: var(--color-action-tertiary-text);
+
+--color-action-tertiary-text-hover
+  → aliased to: --color-action-tertiary-fg-hover → --color-accent-900
+  → replace with: var(--color-accent-900)
+  src/lib/styles/marketplace/elements/e-button.css:82
+    color: var(--color-action-tertiary-text-hover);
+
+--color-action-tertiary-text-disabled
+  → aliased to: --color-action-tertiary-fg-disabled → --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/lib/styles/marketplace/elements/e-button.css:95
+    color: var(--color-action-tertiary-text-disabled);
+
+--color-action-tertiary-border
+  → aliased to: --color-action-tertiary-fg → --color-neutral-800
+  → replace with: var(--color-neutral-800)
+  src/lib/styles/marketplace/elements/e-button.css:75
+    border: 1px solid var(--color-action-tertiary-border);
+
+--color-action-tertiary-border-hover
+  → aliased to: --color-action-tertiary-fg-hover → --color-accent-900
+  → replace with: var(--color-accent-900)
+  src/lib/styles/marketplace/elements/e-button.css:80
+    border-color: var(--color-action-tertiary-border-hover);
+
+--color-action-tertiary-border-disabled
+  → aliased to: --color-action-tertiary-fg-disabled → --color-neutral-500
+  → replace with: var(--color-neutral-500)
+  src/lib/styles/marketplace/elements/e-button.css:93
+    border-color: var(--color-action-tertiary-border-disabled);
+
+--color-status-success-icon
+  → aliased to: --color-success-700
+  → replace with: var(--color-success-700)
+  src/lib/styles/marketplace/components/c-star-rating.css:15
+    --star-rating-filled: var(--color-status-success-icon);
+
+--color-focus-ring
+  → aliased to: --color-accent-500
+  → replace with: var(--color-accent-500)
+  src/lib/styles/marketplace/core/forms.css:102
+    outline: 2px solid var(--color-focus-ring);
+  src/lib/styles/marketplace/core/forms.css:153
+    outline: 2px solid var(--color-focus-ring);
+
+Total: 46 usage(s) across 145 alias variable(s) checked

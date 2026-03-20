@@ -680,10 +680,10 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--color-text-tertiary);
+		color: var(--color-neutral-600);
 		margin-top: 0.75rem;
 		padding-bottom: 0.25rem;
-		border-bottom: 1px solid var(--color-border-subtle);
+		border-bottom: 1px solid var(--color-neutral-200);
 
 		&:first-of-type {
 			margin-top: 0;
@@ -695,7 +695,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		color: var(--color-text-disabled);
+		color: var(--color-neutral-500);
 		text-align: center;
 	}
 
