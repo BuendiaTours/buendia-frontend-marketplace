@@ -24,6 +24,7 @@
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
+	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -177,7 +178,7 @@
 
 			<Spacer />
 
-			<span>pdp-itinerary</span>
+			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 
 			<Spacer />
 

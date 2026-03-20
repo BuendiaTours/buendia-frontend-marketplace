@@ -72,7 +72,15 @@ export type ActivityListItem = {
 	};
 	phoneContact: string | null;
 	restrictions: string[];
-	stages: string[];
+	stagesTitle: string;
+	stages: Array<{
+		id: string;
+		order: number;
+		name: string;
+		description?: string;
+		kind: string;
+		duration?: string;
+	}>;
 	status: ActivityStatus;
 	tags: Array<{ id: string; name: string }>;
 	transportKind: ActivityTransportKind;

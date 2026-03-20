@@ -36,6 +36,7 @@
 /* Components */
 @import '$lib/styles/marketplace/components/c-bnd-css-slider.css';
 @import '$lib/styles/marketplace/components/c-star-rating.css';
+@import '$lib/styles/marketplace/components/c-stages.css';
 @import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
 @import '$lib/styles/marketplace/components/c-faqs.css';
 @import '$lib/styles/marketplace/components/c-faq-item.css';
