@@ -50,13 +50,15 @@
 			<span class="p-sm ml-5 text-right tabular-nums">
 				{item.count}
 			</span>
-			<input
-				type="checkbox"
-				class="checkbox checkbox-sm ml-3"
-				checked={selectedStars.includes(item.stars)}
-				onchange={(e) => handleCheckbox(item.stars, e.currentTarget.checked)}
-				aria-label={item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
-			/>
+			<div class="ml-3">
+				<input
+					type="checkbox"
+					class="checkbox checkbox-sm"
+					checked={selectedStars.includes(item.stars)}
+					onchange={(e) => handleCheckbox(item.stars, e.currentTarget.checked)}
+					aria-label={item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
+				/>
+			</div>
 		{/each}
 	</div>
 </div>

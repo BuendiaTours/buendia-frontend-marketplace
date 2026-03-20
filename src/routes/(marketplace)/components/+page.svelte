@@ -110,6 +110,67 @@
 </div>
 
 <!-- ============================================================ -->
+<!-- Checkbox & Radio -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Checkbox & Radio</h2>
+	<div class="demo-check-grid">
+		<div class="demo-header">Default</div>
+		<div class="demo-header">Default ✓</div>
+		<div class="demo-header">Small</div>
+		<div class="demo-header">Small ✓</div>
+
+		<div class="demo-row-label">Checkbox — fondo normal</div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" checked /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" checked /></div>
+
+		<div class="demo-row-label">Checkbox — fondo alternativo</div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox" /></div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox" checked /></div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox check--sm" /></div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="checkbox" class="checkbox check--sm" checked />
+		</div>
+
+		<div class="demo-row-label">Checkbox — disabled</div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" disabled /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" disabled checked /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" disabled /></div>
+		<div class="demo-cell">
+			<input type="checkbox" class="checkbox check--sm" disabled checked />
+		</div>
+
+		<div class="demo-row-label">Radio — fondo normal</div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r1" /></div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r2" checked /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r3" /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r4" checked /></div>
+
+		<div class="demo-row-label">Radio — fondo alternativo</div>
+		<div class="demo-cell demo-cell--alt"><input type="radio" class="radio" name="r5" /></div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio" name="r6" checked />
+		</div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio check--sm" name="r7" />
+		</div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio check--sm" name="r8" checked />
+		</div>
+
+		<div class="demo-row-label">Radio — disabled</div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r9" disabled /></div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r10" disabled checked /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r11" disabled /></div>
+		<div class="demo-cell">
+			<input type="radio" class="radio check--sm" name="r12" disabled checked />
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
 <!-- MeltComboBox -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6">
@@ -603,3 +664,50 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.demo-check-grid {
+		display: grid;
+		grid-template-columns: repeat(4, auto);
+		gap: 1rem 1.5rem;
+		align-items: center;
+		justify-content: start;
+	}
+
+	.demo-row-label {
+		grid-column: 1 / -1;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text-tertiary);
+		margin-top: 0.75rem;
+		padding-bottom: 0.25rem;
+		border-bottom: 1px solid var(--color-border-subtle);
+
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
+
+	.demo-header {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--color-text-disabled);
+		text-align: center;
+	}
+
+	.demo-cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+
+		&.demo-cell--alt {
+			background-color: var(--color-neutral-200);
+		}
+	}
+</style>
