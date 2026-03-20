@@ -15,5 +15,5 @@
 </script>
 
 <div class="flex h-2 rounded-full {bgColor} {wrapperClass}">
-	<div class="w-[{percentage}%] rounded-full {fgColor}"></div>
+	<div class="rounded-full {fgColor}" style="width: {percentage}%;"></div>
 </div>
