@@ -60,25 +60,3 @@
 		{/each}
 	</div>
 </div>
-
-<style>
-	/* .pdp-reviews-average {
-		display: flex;
-		flex-direction: column;
-		gap: theme('spacing.8');
-		padding: theme('spacing.6');
-		border: 1px solid var(--color-border-default);
-		border-radius: theme('borderRadius.lg');
-
-		@media (min-width: theme('screens.sm')) {
-			flex-direction: row;
-			align-items: center;
-		}
-	} */
-
-	/* .pdp-reviews-average__left {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	} */
-</style>

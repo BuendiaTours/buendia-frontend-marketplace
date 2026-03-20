@@ -305,7 +305,7 @@
 
 			<Spacer />
 
-			<div class="pdp-review-gallery">
+			<div class="pdp-review-gallery mb-8">
 				<h2 class="h2">Opiniones de {activity.title}</h2>
 
 				<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
@@ -322,8 +322,6 @@
 				/>
 			</div>
 
-			<Spacer />
-
 			<p class="h4 mb-4">Valoración</p>
 			{#if data.reviewsStats}
 				<PdpReviewsAverage
@@ -334,10 +332,9 @@
 						currentPage = 1;
 						await loadActivityReviews({ ...SORT_PARAMS[sortValue], stars });
 					}}
+					wrapperClass="mb-8"
 				/>
 			{/if}
-
-			<Spacer />
 
 			<!-- Reviews -->
 			<div class="pdp-review-list" id="reviews">
