@@ -128,6 +128,20 @@ export type ActivityReviewParams = {
 	order?: 'ASC' | 'DESC';
 	page?: number;
 	pageSize?: number;
+	stars?: number[];
+};
+
+export type ActivityReviewStatsDistribution = {
+	stars: number;
+	count: number;
+	percentage: number;
+};
+
+export type ActivityReviewStats = {
+	activityId: string;
+	total: number;
+	averageRating: number;
+	distribution: ActivityReviewStatsDistribution[];
 };
 
 export type ActivityReviewsResponse = {

@@ -345,6 +345,12 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene reviews de una actividad por ID',
 			params: ['activityId']
+		} satisfies EndpointWithParam,
+		byActivityStats: {
+			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}/stats`,
+			method: 'GET',
+			description: 'Obtiene estadísticas de reviews de una actividad',
+			params: ['activityId']
 		} satisfies EndpointWithParam
 	},
 

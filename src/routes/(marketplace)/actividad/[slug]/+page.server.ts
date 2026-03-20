@@ -9,13 +9,17 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 
 	try {
 		const activity = await activitiesEndpoints.getBySlug(fetch, slug);
-		const reviewsResult = await reviewsEndpoints.getByActivityId(fetch, activity.id);
+		const [reviewsResult, reviewsStats] = await Promise.all([
+			reviewsEndpoints.getByActivityId(fetch, activity.id),
+			reviewsEndpoints.getStatsByActivityId(fetch, activity.id)
+		]);
 
 		return {
 			activity,
 			reviews: reviewsResult.data,
 			reviewsTotalPages: reviewsResult.pagination.totalPages,
 			reviewsTotal: reviewsResult.pagination.total,
+			reviewsStats,
 			breadcrumbs: buildActivityBreadcrumbs(activity)
 		};
 	} catch (err) {

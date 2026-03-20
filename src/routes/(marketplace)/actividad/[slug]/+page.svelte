@@ -22,6 +22,7 @@
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
@@ -45,6 +46,7 @@
 	let currentPage = $state(1);
 	let totalPages = $state(data.reviewsTotalPages);
 	let isLoadingReviews = $state(false);
+	let activeStars = $state<number[]>([]);
 
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
@@ -76,11 +78,14 @@
 	async function handleReviewSortChange(value: string) {
 		sortValue = value as typeof sortValue;
 		currentPage = 1;
-		await loadActivityReviews(SORT_PARAMS[value] ?? {});
+		await loadActivityReviews({ ...(SORT_PARAMS[value] ?? {}), stars: activeStars });
 	}
 
 	async function handleShowMore() {
-		await loadActivityReviews({ ...SORT_PARAMS[sortValue], page: currentPage + 1 }, true);
+		await loadActivityReviews(
+			{ ...SORT_PARAMS[sortValue], page: currentPage + 1, stars: activeStars },
+			true
+		);
 	}
 
 	const reviewItems = $derived<BndLightboxItem[]>(
@@ -319,7 +324,18 @@
 
 			<Spacer />
 
-			pdp-reviews-average
+			<p class="h4 mb-4">Valoración</p>
+			{#if data.reviewsStats}
+				<PdpReviewsAverage
+					stats={data.reviewsStats}
+					activityTitle={activity.title}
+					onStarsChange={async (stars) => {
+						activeStars = stars;
+						currentPage = 1;
+						await loadActivityReviews({ ...SORT_PARAMS[sortValue], stars });
+					}}
+				/>
+			{/if}
 
 			<Spacer />
 

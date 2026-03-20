@@ -20,14 +20,14 @@
 	--star-rating-size-sm: 1.25rem; /* 20px */
 	--star-rating-size-md: 1.5rem; /* 24px */
 	--star-rating-size-lg: 2rem; /* 32px */
-	--star-rating-size-xl: 2.5rem; /* 40px */
+	--star-rating-size-xl: 2.8rem; /* 40px */
 
 	/* Anchos de las mitades (la mitad del tamaño) */
 	--star-rating-half-xs: 0.5rem; /* 8px */
 	--star-rating-half-sm: 0.625rem; /* 10px */
 	--star-rating-half-md: 0.75rem; /* 12px */
 	--star-rating-half-lg: 1rem; /* 16px */
-	--star-rating-half-xl: 1.25rem; /* 20px */
+	--star-rating-half-xl: 1.38rem; /* 20px */
 }
 
 /* ============================================
@@ -120,6 +120,11 @@
 .c-star-rating-xl .c-mask {
 	height: var(--star-rating-size-xl);
 	width: var(--star-rating-half-xl);
+}
+
+/* Reduce gap between stars */
+.c-star-rating-xl .c-mask-half-1:not(:first-child) {
+	margin-left: -0.5rem;
 }
 
 /* ============================================
