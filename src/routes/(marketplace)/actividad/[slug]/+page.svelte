@@ -312,7 +312,7 @@
 					<GallerySquareThumbs
 						items={reviewItems}
 						visibleCount={3}
-						thumbClass="w-[245px]"
+						thumbClass="flex-1"
 						wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
 						showCount={true}
 						categoryId="reviews"
@@ -378,8 +378,8 @@
 										items={review.attachments.map((att) => ({ src: att.url.value }))}
 										visibleCount={5}
 										categoryId="review-{review.id}"
-										wrapperClass="mt-4 gap-2"
-										thumbClass="w-34"
+										wrapperClass="mt-4 gap-2 flex-wrap"
+										thumbClass="w-[calc(50%-4px)] sm:w-34"
 									/>
 								{/if}
 

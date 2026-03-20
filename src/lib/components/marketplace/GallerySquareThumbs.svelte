@@ -55,7 +55,7 @@
 		{#each visibleItems as item, i (item.src)}
 			<button
 				type="button"
-				class="relative block aspect-square {thumbClass} cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
+				class="relative block aspect-square cursor-pointer overflow-hidden rounded-md border-none bg-none p-0 {thumbClass}"
 				aria-label={String(item.meta?.user ?? item.alt ?? '')}
 				onclick={() => {
 					startIndex = i;
