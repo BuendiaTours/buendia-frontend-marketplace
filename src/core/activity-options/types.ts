@@ -209,6 +209,7 @@ export type ActivityOptionCriteria = {
 	limit?: number;
 	id?: string;
 	activityId?: string;
+	search_text?: string;
 	status?: OptionStatus;
 	title?: string;
 	sort?: OptionSortAttribute;

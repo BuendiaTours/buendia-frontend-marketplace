@@ -6,6 +6,8 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import type { LayoutProps } from './$types';
+	import { ROUTES } from '$lib/config/routes';
+	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import ActivityTabNav from '../components/ActivityTabNav.svelte';
@@ -17,11 +19,24 @@
 
 	let { data, children }: LayoutProps = $props();
 
-	const breadcrumbs = $derived(
-		buildBreadcrumbs(page.url.pathname, {
+	const isOptionDetail = $derived(page.url.pathname.match(/\/options\/[^/]+/) !== null);
+
+	const breadcrumbs = $derived.by(() => {
+		if (isOptionDetail && page.data.option) {
+			return [
+				{ label: m.common_breadcrumbHome(), href: ROUTES.backoffice.home },
+				{ label: m.activities_navLabel(), href: ROUTES.backoffice.activities.list },
+				{
+					label: data.activity.title,
+					href: ACTIVITY_ROUTES.options(data.activity.id)
+				},
+				{ label: page.data.option.title || m.activities_optionEditPageTitle() }
+			];
+		}
+		return buildBreadcrumbs(page.url.pathname, {
 			label: data.activity.title || m.activities_breadcrumbResource()
-		})
-	);
+		});
+	});
 
 	type ToastData = { title: string; description: string; type: 'success' | 'error' };
 
@@ -44,6 +59,7 @@
 	let mealCount = $derived(data.activity.meals?.length ?? 0);
 	let addonCount = $derived(data.addons?.length ?? 0);
 	let stageCount = $derived(data.activity.stages?.length ?? 0);
+	let optionCount = $derived(data.options?.length ?? 0);
 
 	setContext('updateLocationCount', (count: number) => {
 		locationCount = count;
@@ -57,6 +73,9 @@
 	setContext('updateStageCount', (count: number) => {
 		stageCount = count;
 	});
+	setContext('updateOptionCount', (count: number) => {
+		optionCount = count;
+	});
 </script>
 
 <svelte:head>
@@ -65,17 +84,22 @@
 
 <LocationBar title={m.activities_editPageTitle()} {breadcrumbs} />
 
-<ActivityTabNav
-	activityId={data.activity.id}
-	{locationCount}
-	{mealCount}
-	{addonCount}
-	{stageCount}
-/>
+{#if !isOptionDetail}
+	<ActivityTabNav
+		activityId={data.activity.id}
+		{locationCount}
+		{mealCount}
+		{addonCount}
+		{stageCount}
+		{optionCount}
+	/>
 
-<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
+	<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
+		{@render children()}
+	</div>
+{:else}
 	{@render children()}
-</div>
+{/if}
 
 <div
 	class="fixed top-0 right-0 z-50 m-4 flex flex-col items-end gap-2 md:top-auto md:bottom-0"

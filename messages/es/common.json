@@ -20,5 +20,6 @@
 	"common_save": "Guardar",
 	"common_search": "Buscar",
 	"common_resetSort": "Restablecer orden",
-	"common_success": "Éxito"
+	"common_success": "Éxito",
+	"common_breadcrumbHome": "Inicio"
 }

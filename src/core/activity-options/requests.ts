@@ -131,7 +131,12 @@ export const ACTIVITY_OPTION_REQUEST = {
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity option ID.
 	 * @param pickupLocationId - Pickup location ID to remove.
+	 * @param kind - Kind of pickup place (PICKUP or DROPOFF).
 	 */
-	removePickupPlace: (fetchFn: typeof fetch, id: string, pickupLocationId: string): Promise<void> =>
-		del(fetchFn, `${BASE}/${id}/pickup-places/${pickupLocationId}`)
+	removePickupPlace: (
+		fetchFn: typeof fetch,
+		id: string,
+		pickupLocationId: string,
+		kind: string
+	): Promise<void> => del(fetchFn, `${BASE}/${id}/pickup-places/${pickupLocationId}?kind=${kind}`)
 };

@@ -4,17 +4,19 @@
  */
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { ACTIVITY_ADDON_REQUEST } from '$core/activity-addons/requests';
+import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 import { ApiError } from '$core/_shared/errors';
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ fetch, params }) => {
 	try {
-		const [activity, addonsResponse] = await Promise.all([
+		const [activity, addonsResponse, options] = await Promise.all([
 			ACTIVITY_REQUEST.findById(fetch, params.id),
-			ACTIVITY_ADDON_REQUEST.findByCriteria(fetch, { activityId: params.id })
+			ACTIVITY_ADDON_REQUEST.findByCriteria(fetch, { activityId: params.id }),
+			ACTIVITY_OPTION_REQUEST.findByActivityId(fetch, params.id)
 		]);
-		return { activity, addons: addonsResponse.data ?? [] };
+		return { activity, addons: addonsResponse.data ?? [], options: options ?? [] };
 	} catch (err) {
 		if (err instanceof ApiError) {
 			throw error(err.status || 500);
