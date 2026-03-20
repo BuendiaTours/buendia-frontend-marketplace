@@ -23,7 +23,7 @@
 		<div class="mb-4 flex w-full flex-none gap-2 sm:mb-0 sm:w-auto sm:flex-auto">
 			<StarRating value={4.5} size="md" />
 			<span class="p-lg font-bold text-neutral-800">4.5</span>
-			{#if reviewsCount !== undefined}
+			{#if reviewsCount !== undefined && reviewsCount > 0}
 				<a
 					href="#reviews"
 					class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
