@@ -105,8 +105,6 @@
 	);
 </script>
 
-<div class="mb-6 min-h-45 bg-neutral-200 p-6">Caja que ocupa TODO el ancho</div>
-
 <div class="wrapper">
 	<!-- pdp-head-gallery -->
 	<PdpHeadGallery items={activity.multimedias} />
@@ -308,18 +306,20 @@
 			<div class="pdp-review-gallery mb-8">
 				<h2 class="h2">Opiniones de {activity.title}</h2>
 
-				<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
+				{#if reviewItems?.length > 0}
+					<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
 
-				<GallerySquareThumbs
-					items={reviewItems}
-					visibleCount={3}
-					thumbClass="w-[245px]"
-					wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
-					showCount={true}
-					categoryId="reviews"
-					categoryLabel="Fotos de viajeros"
-					layoutComponent={ReviewsLayout}
-				/>
+					<GallerySquareThumbs
+						items={reviewItems}
+						visibleCount={3}
+						thumbClass="w-[245px]"
+						wrapperClass="mt-4 gap-4 @max-[400px]:flex-wrap @max-[400px]:justify-center"
+						showCount={true}
+						categoryId="reviews"
+						categoryLabel="Fotos de viajeros"
+						layoutComponent={ReviewsLayout}
+					/>
+				{/if}
 			</div>
 
 			<p class="h4 mb-4">Valoración</p>
@@ -411,8 +411,8 @@
 			</div>
 		</div>
 
-		<div class="col-sidebar">
-			<div class="carrito bg-neutral-500 p-4 text-center">carrito</div>
+		<div class="col-sidebar pt-6">
+			<div class="carrito sticky top-0 bg-neutral-500 p-4 text-center">carrito</div>
 		</div>
 	</div>
 

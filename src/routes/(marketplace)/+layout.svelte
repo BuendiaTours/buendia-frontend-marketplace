@@ -26,7 +26,7 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col">
-	<Header title="Backoffice App" />
+	<Header title="Marketplace App" wrapperClass="my-6" />
 
 	<main class="layout-content-area flex-1">
 		<!-- MsgAlertBox /-->
