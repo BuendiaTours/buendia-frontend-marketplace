@@ -9,6 +9,7 @@
 /** Base path segments for each API resource. */
 export const BASE_PATHS = {
 	activities: '/activities',
+	activityOptions: '/activity-options',
 	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
@@ -330,6 +331,21 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Activity Options
+	// ──────────────────────────────────────────────
+	activityOptions: {
+		groupName: 'Activity Options',
+		groupDescription: 'Opciones adicionales de actividades',
+		/** @description Retrieves all options for a given activity ID. */
+		byActivity: {
+			path: (activityId: string) => `${BASE_PATHS.activityOptions}/${activityId}`,
+			method: 'GET',
+			description: 'Obtiene las opciones adicionales de una actividad por ID',
+			params: ['activityId']
 		} satisfies EndpointWithParam
 	},
 

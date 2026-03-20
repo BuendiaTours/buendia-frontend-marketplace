@@ -158,6 +158,54 @@ export type ActivityReviewsResponse = {
 	};
 };
 
+type ActivityOptionTicket = {
+	id: string;
+	price: number;
+	commission: number;
+	status: string;
+	ageRange: { min: number; max: number };
+	adultRequired: boolean;
+	free: boolean;
+	group: boolean;
+	ticketNeeded: boolean;
+};
+
+type ActivityOptionPickupLocation = {
+	id: string;
+	optionId: string;
+	coords: { lat: number; lng: number } | null;
+	description: string;
+	marginTime: number;
+	timeOfDay: string | null;
+};
+
+export type ActivityOption = {
+	id: string;
+	activityId: string;
+	availabilityGroupId: string | null;
+	title: string;
+	description: string | null;
+	supplierOptionCode: string;
+	status: string;
+	bookingSystem: string;
+	privacy: string;
+	language: string;
+	wheelchair: string;
+	ticketKind: string;
+	skipTheLineType: string | null;
+	maxGroupSize: number;
+	maxTicketsPerIndividual: number;
+	duration: { unit: string; quantity: number };
+	audios: string[];
+	brochures: string[];
+	liveGuides: string[];
+	individualTickets: ActivityOptionTicket[];
+	groupTickets: ActivityOptionTicket[];
+	pickupLocations: ActivityOptionPickupLocation[];
+	createdAt: string;
+	updatedAt: string;
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
