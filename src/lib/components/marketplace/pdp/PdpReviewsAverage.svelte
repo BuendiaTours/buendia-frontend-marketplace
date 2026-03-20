@@ -39,24 +39,24 @@
 		</p>
 	</div>
 
-	<div class="flex w-full flex-col gap-3 sm:w-1/2">
+	<div
+		class="grid w-full grid-cols-[auto_1fr_auto_auto] items-center gap-y-3 pr-0 sm:w-1/2 sm:pr-10"
+	>
 		{#each sortedDistribution as item (item.stars)}
-			<div class="grid w-full grid-cols-[auto_1fr_auto_auto] items-center sm:w-7/8">
-				<span class="p-sm whitespace-nowrap text-neutral-700">
-					{item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
-				</span>
-				<Progressbar percentage={String(item.percentage)} wrapperClass="ml-3" />
-				<span class="p-sm ml-5 text-right tabular-nums">
-					{item.count}
-				</span>
-				<input
-					type="checkbox"
-					class="checkbox checkbox-sm ml-3"
-					checked={selectedStars.includes(item.stars)}
-					onchange={(e) => handleCheckbox(item.stars, e.currentTarget.checked)}
-					aria-label={item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
-				/>
-			</div>
+			<span class="p-sm whitespace-nowrap text-neutral-700">
+				{item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
+			</span>
+			<Progressbar percentage={String(item.percentage)} wrapperClass="ml-3" />
+			<span class="p-sm ml-5 text-right tabular-nums">
+				{item.count}
+			</span>
+			<input
+				type="checkbox"
+				class="checkbox checkbox-sm ml-3"
+				checked={selectedStars.includes(item.stars)}
+				onchange={(e) => handleCheckbox(item.stars, e.currentTarget.checked)}
+				aria-label={item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
+			/>
 		{/each}
 	</div>
 </div>
