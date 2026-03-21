@@ -47,10 +47,10 @@
 		applyFilterPatch({ q: searchQuery || null });
 	}
 
-	function handleStatusFilterChange(filterKey: string, value: string | null) {
+	function handleFilterChange(filterKey: string, value: string | null) {
 		applyFilterPatch({
 			[filterKey]: value
-		} as { [K in keyof CategoriesFilters]?: PatchValue<CategoriesFilters[K]> });
+		});
 	}
 
 	function handlePageChange(newPage: number) {
@@ -85,7 +85,7 @@
 		currentValue={filters.status}
 		placeholder={m.categories_filterStatusPlaceholder()}
 		clearTooltip={m.categories_filterStatusClear()}
-		onFilterChange={handleStatusFilterChange}
+		onFilterChange={handleFilterChange}
 	/>
 
 	<a href={CATEGORY_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
