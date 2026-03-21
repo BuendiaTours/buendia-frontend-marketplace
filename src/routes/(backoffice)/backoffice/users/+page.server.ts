@@ -7,6 +7,7 @@ import type { PageServerLoad } from './$types';
 import { usersFiltersSchema } from './schemas/filters.schema';
 import { USER_REQUEST } from '$core/users/requests';
 import type { UserCriteria } from '$core/users/types';
+import { UserKind } from '$core/users/enums';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
@@ -24,7 +25,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			sort: filters.sort,
 			order: filters.order,
 			search_text: filters.q,
-			status: filters.status
+			status: filters.status,
+			kind: UserKind.ADMIN
 		} as UserCriteria);
 
 		return {
