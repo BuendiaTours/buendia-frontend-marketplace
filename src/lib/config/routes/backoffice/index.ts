@@ -13,6 +13,7 @@ import { LOCATION_ROUTES } from './locations';
 import { PICKUP_POINT_ROUTES } from './pickupPoints';
 import { SUPPLIER_ROUTES } from './suppliers';
 import { TAG_ROUTES } from './tags';
+import { BOOKING_ROUTES } from './bookings';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {
@@ -27,5 +28,6 @@ export const backofficeRoutes = {
 	pickupPoints: PICKUP_POINT_ROUTES,
 	suppliers: SUPPLIER_ROUTES,
 	tags: TAG_ROUTES,
+	bookings: BOOKING_ROUTES,
 	...toolsRoutes
 } as const;

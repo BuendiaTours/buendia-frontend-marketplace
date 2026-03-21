@@ -23,7 +23,9 @@
 	);
 
 	const isManagementActive = $derived(
-		isActive(ROUTES.backoffice.users.list) || isActive(ROUTES.backoffice.suppliers.list)
+		isActive(ROUTES.backoffice.users.list) ||
+			isActive(ROUTES.backoffice.suppliers.list) ||
+			isActive(ROUTES.backoffice.bookings.list)
 	);
 
 	let openDropdown = $state<string | null>(null);
@@ -139,6 +141,14 @@
 									class:menu-active={isActive(ROUTES.backoffice.suppliers.list)}
 								>
 									{m.suppliers_navLabel()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.bookings.list}
+									class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
+								>
+									{m.bookings_navLabel()}
 								</a>
 							</li>
 						</ul>
@@ -279,6 +289,14 @@
 								class:menu-active={isActive(ROUTES.backoffice.suppliers.list)}
 							>
 								{m.suppliers_navLabel()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.bookings.list}
+								class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
+							>
+								{m.bookings_navLabel()}
 							</a>
 						</li>
 					</ul>

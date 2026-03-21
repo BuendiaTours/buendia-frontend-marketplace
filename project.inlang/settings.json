@@ -19,7 +19,8 @@
 			"./messages/{locale}/categories.json",
 			"./messages/{locale}/suppliers.json",
 			"./messages/{locale}/tags.json",
-			"./messages/{locale}/pickupPoints.json"
+			"./messages/{locale}/pickupPoints.json",
+			"./messages/{locale}/bookings.json"
 		]
 	}
 }
