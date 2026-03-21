@@ -67,10 +67,15 @@
 	let results = $state<SearchResult[]>([]);
 	let isLoading = $state(false);
 	let isOpen = $state(false);
+	// svelte-ignore state_referenced_locally
 	let selectedLabel = $state(initialLabel ?? '');
 	let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 	let focusoutTimer: ReturnType<typeof setTimeout> | undefined;
 	let searchVersion = 0;
+
+	$effect(() => {
+		if (initialLabel) selectedLabel = initialLabel;
+	});
 
 	$effect(() => {
 		if (value && !selectedLabel && loadSelectedFn) {
