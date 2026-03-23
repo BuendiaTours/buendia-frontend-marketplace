@@ -26,6 +26,7 @@
 	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
+	import MapView from '$lib/components/marketplace/MapView.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -182,6 +183,8 @@
 			{/if}
 
 			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
+
+			<MapView wrapperClass="mt-8" />
 
 			<Spacer />
 
