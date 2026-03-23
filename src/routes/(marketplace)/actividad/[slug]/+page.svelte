@@ -423,20 +423,20 @@
 		<p class="h2 mb-4">Planes relacionados</p>
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<div class="rounded-lg border border-gray-200 bg-white p-6">
-				<p class="font-semibold text-gray-800">Pana 1</p>
-				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+				<p class="font-semibold text-gray-800">Plan 1</p>
+				<p class="text-gray-600">Descripción breve del plan relacionada.</p>
 			</div>
 			<div class="rounded-lg border border-gray-200 bg-white p-6">
-				<p class="font-semibold text-gray-800">Pana 2</p>
-				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+				<p class="font-semibold text-gray-800">Plan 2</p>
+				<p class="text-gray-600">Descripción breve del plan relacionada.</p>
 			</div>
 			<div class="rounded-lg border border-gray-200 bg-white p-6">
-				<p class="font-semibold text-gray-800">Pana 3</p>
-				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+				<p class="font-semibold text-gray-800">Plan 3</p>
+				<p class="text-gray-600">Descripción breve del plan relacionada.</p>
 			</div>
 			<div class="rounded-lg border border-gray-200 bg-white p-6">
-				<p class="font-semibold text-gray-800">Pana 3</p>
-				<p class="text-gray-600">Descripción breve de la pana relacionada.</p>
+				<p class="font-semibold text-gray-800">Plan 4</p>
+				<p class="text-gray-600">Descripción breve del plan relacionada.</p>
 			</div>
 		</div>
 	</div>
