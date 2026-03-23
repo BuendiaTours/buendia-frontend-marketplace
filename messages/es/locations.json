@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"locations_navLabel": "Ubicaciones",
 	"locations_breadcrumbLocation": "Ubicación",
 	"locations_editPageTitle": "Editar Ubicación",
 	"locations_createPageTitle": "Nueva Ubicación",

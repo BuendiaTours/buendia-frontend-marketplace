@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"attractions_navLabel": "Atracciones",
 	"attractions_breadcrumbAttraction": "Atraccion",
 	"attractions_breadcrumbNew": "Nueva atraccion",
 	"attractions_editPageTitle": "Editar Atraccion",

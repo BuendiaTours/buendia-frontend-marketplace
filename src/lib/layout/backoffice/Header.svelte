@@ -23,9 +23,7 @@
 	);
 
 	const isManagementActive = $derived(
-		isActive(ROUTES.backoffice.users.list) ||
-			isActive(ROUTES.backoffice.suppliers.list) ||
-			isActive(ROUTES.backoffice.bookings.list)
+		isActive(ROUTES.backoffice.users.list) || isActive(ROUTES.backoffice.suppliers.list)
 	);
 
 	let openDropdown = $state<string | null>(null);
@@ -77,8 +75,16 @@
 					</a>
 				</li>
 				<li>
+					<a
+						href={ROUTES.backoffice.bookings.list}
+						class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
+					>
+						{m.bookings_navLabel()}
+					</a>
+				</li>
+				<li>
 					<details>
-						<summary class:menu-active={isResourcesActive}>Recursos</summary>
+						<summary class:menu-active={isResourcesActive}>{m.backoffice_navResources()}</summary>
 						<ul>
 							<li>
 								<a
@@ -101,7 +107,7 @@
 									href={ROUTES.backoffice.attractions.list}
 									class:menu-active={isActive(ROUTES.backoffice.attractions.list)}
 								>
-									Atracciones
+									{m.attractions_navLabel()}
 								</a>
 							</li>
 							<li>
@@ -109,7 +115,7 @@
 									href={ROUTES.backoffice.locations.list}
 									class:menu-active={isActive(ROUTES.backoffice.locations.list)}
 								>
-									Ubicaciones
+									{m.locations_navLabel()}
 								</a>
 							</li>
 							<li>
@@ -125,14 +131,14 @@
 				</li>
 				<li>
 					<details>
-						<summary class:menu-active={isManagementActive}>Gestión</summary>
+						<summary class:menu-active={isManagementActive}>{m.backoffice_navAdmin()}</summary>
 						<ul>
 							<li>
 								<a
 									href={ROUTES.backoffice.users.list}
 									class:menu-active={isActive(ROUTES.backoffice.users.list)}
 								>
-									Usuarios
+									{m.users_navLabel()}
 								</a>
 							</li>
 							<li>
@@ -143,14 +149,6 @@
 									{m.suppliers_navLabel()}
 								</a>
 							</li>
-							<li>
-								<a
-									href={ROUTES.backoffice.bookings.list}
-									class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
-								>
-									{m.bookings_navLabel()}
-								</a>
-							</li>
 						</ul>
 					</details>
 				</li>
@@ -159,7 +157,7 @@
 						href={ROUTES.backoffice.components}
 						class:menu-active={isActive(ROUTES.backoffice.components)}
 					>
-						Componentes
+						{m.backoffice_navComponents()}
 					</a>
 				</li>
 			</ul>
@@ -178,6 +176,14 @@
 					{m.activities_navLabel()}
 				</a>
 			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.bookings.list}
+					class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
+				>
+					{m.bookings_navLabel()}
+				</a>
+			</li>
 			<li class="relative">
 				<button
 					type="button"
@@ -187,7 +193,7 @@
 						toggleDropdown('resources');
 					}}
 				>
-					Recursos
+					{m.backoffice_navResources()}
 					<svg
 						class="inline size-3 transition-transform"
 						class:rotate-180={openDropdown === 'resources'}
@@ -226,7 +232,7 @@
 								href={ROUTES.backoffice.attractions.list}
 								class:menu-active={isActive(ROUTES.backoffice.attractions.list)}
 							>
-								Atracciones
+								{m.attractions_navLabel()}
 							</a>
 						</li>
 						<li>
@@ -234,7 +240,7 @@
 								href={ROUTES.backoffice.locations.list}
 								class:menu-active={isActive(ROUTES.backoffice.locations.list)}
 							>
-								Ubicaciones
+								{m.locations_navLabel()}
 							</a>
 						</li>
 						<li>
@@ -257,7 +263,7 @@
 						toggleDropdown('management');
 					}}
 				>
-					Gestión
+					{m.backoffice_navAdmin()}
 					<svg
 						class="inline size-3 transition-transform"
 						class:rotate-180={openDropdown === 'management'}
@@ -280,7 +286,7 @@
 								href={ROUTES.backoffice.users.list}
 								class:menu-active={isActive(ROUTES.backoffice.users.list)}
 							>
-								Usuarios
+								{m.users_navLabel()}
 							</a>
 						</li>
 						<li>
@@ -291,14 +297,6 @@
 								{m.suppliers_navLabel()}
 							</a>
 						</li>
-						<li>
-							<a
-								href={ROUTES.backoffice.bookings.list}
-								class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
-							>
-								{m.bookings_navLabel()}
-							</a>
-						</li>
 					</ul>
 				{/if}
 			</li>
@@ -307,7 +305,7 @@
 					href={ROUTES.backoffice.components}
 					class:menu-active={isActive(ROUTES.backoffice.components)}
 				>
-					Componentes
+					{m.backoffice_navComponents()}
 				</a>
 			</li>
 		</ul>

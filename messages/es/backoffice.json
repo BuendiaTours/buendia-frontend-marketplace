@@ -1,5 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"backoffice_navResources": "Recursos",
+	"backoffice_navAdmin": "Administración",
+	"backoffice_navComponents": "Componentes",
 	"backoffice_createSuccess": "Elemento creado correctamente",
 	"backoffice_updateSuccess": "Los cambios se guardaron correctamente",
 	"backoffice_deleteSuccess": "El elemento fue eliminado correctamente",
