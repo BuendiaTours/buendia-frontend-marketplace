@@ -6,7 +6,15 @@
  */
 
 import type { CriteriaResult } from '$core/_shared/types';
-import { get, getWithParams, post, put, patch, del } from '$core/_shared/helpers';
+import {
+	bookingSystemsApi,
+	get,
+	getWithParams,
+	post,
+	put,
+	patch,
+	del
+} from '$core/_shared/helpers';
 import type {
 	Activity,
 	ActivityAttractionAddDto,
@@ -15,6 +23,8 @@ import type {
 	ActivityCreateDto,
 	ActivityCriteria,
 	ActivityDistributiveAddDto,
+	ActivityIndexation,
+	ActivityIndexationDto,
 	ActivityLocationAddDto,
 	ActivityMealAddDto,
 	ActivityStageAddDto,
@@ -243,5 +253,59 @@ export const ACTIVITY_REQUEST = {
 	 * @param stageId - Stage ID to remove.
 	 */
 	removeStage: (fetchFn: typeof fetch, id: string, stageId: string): Promise<void> =>
-		del(fetchFn, `${BASE}/${id}/stages/${stageId}`)
+		del(fetchFn, `${BASE}/${id}/stages/${stageId}`),
+
+	// ── Indexation ───────────────────────────────────
+
+	/**
+	 * Indexes an activity in the booking system (`PUBLIC_BS_BASE_URL`).
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param data - Activity indexation payload.
+	 */
+	indexActivity: (fetchFn: typeof fetch, data: ActivityIndexationDto): Promise<void> =>
+		bookingSystemsApi.post(fetchFn, '/core-activities', data),
+
+	/**
+	 * Fetches an activity indexation by its core ID.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param coreId - Core activity ID.
+	 */
+	fetchIndexationActivity: async (
+		fetchFn: typeof fetch,
+		coreId: string
+	): Promise<ActivityIndexation | null> => {
+		const activities = await bookingSystemsApi.get<ActivityIndexation[]>(
+			fetchFn,
+			`/core-activities/${coreId}`
+		);
+
+		if (activities.length === 0) {
+			return null;
+		}
+
+		return activities[0];
+	},
+
+	/**
+	 * Fetches a booking system activity by its core ID.
+	 * Response depends on booking system
+	 *
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param coreId - Core activity ID.
+	 */
+	fetchBookingSystemActivity: async (
+		fetchFn: typeof fetch,
+		coreId: string
+	): Promise<Record<string, unknown> | null> => {
+		const activities = await bookingSystemsApi.get<Record<string, unknown>[]>(
+			fetchFn,
+			`/core-activities/${coreId}/booking-system`
+		);
+
+		if (activities.length === 0) {
+			return null;
+		}
+
+		return activities[0];
+	}
 };

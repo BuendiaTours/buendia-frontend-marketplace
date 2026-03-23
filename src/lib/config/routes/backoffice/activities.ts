@@ -13,6 +13,7 @@ export const ACTIVITY_ROUTES = {
 	meals: (id: string) => backoffice('activities', id, 'meals'),
 	addons: (id: string) => backoffice('activities', id, 'addons'),
 	stages: (id: string) => backoffice('activities', id, 'stages'),
+	indexation: (id: string) => backoffice('activities', id, 'indexation'),
 	options: (id: string) => backoffice('activities', id, 'options'),
 	optionEdit: (activityId: string, optionId: string) =>
 		backoffice('activities', activityId, 'options', optionId, 'edit')

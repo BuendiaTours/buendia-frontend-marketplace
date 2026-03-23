@@ -181,3 +181,21 @@ export enum MealAdditional {
 	ORGANIC = 'ORGANIC',
 	BIO = 'BIO'
 }
+
+// ── Indexation ───────────────────────────────────────
+
+export enum ActivityIndexationPriority {
+	HIGH = 'HIGH',
+	MEDIUM = 'MEDIUM',
+	LOW = 'LOW',
+	NONE = 'NONE'
+}
+
+export enum CoreActivityStatus {
+	ACTIVE = 'ACTIVE',
+	FAILED = 'FAILED',
+	INACTIVE = 'INACTIVE',
+	PENDING = 'PENDING',
+	PENDING_TO_MATCH = 'PENDING_TO_MATCH',
+	RUNNING = 'RUNNING'
+}

@@ -11,6 +11,7 @@ import type {
 	ActivityAllergen,
 	ActivityDateMode,
 	ActivityGuideKind,
+	ActivityIndexationPriority,
 	ActivityKind,
 	ActivityLocationRole,
 	ActivityNotSuitableFor,
@@ -20,6 +21,7 @@ import type {
 	ActivityStatus,
 	ActivityTransportKind,
 	ActivityTransportLocation,
+	CoreActivityStatus,
 	MealAdditional,
 	MealFormat,
 	MealKind,
@@ -29,6 +31,7 @@ import type {
 } from '$core/activities/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
+import type { BookingSystem } from '$core/bookings/enums';
 
 // ── Projections (read models) ───────────────────
 
@@ -252,4 +255,24 @@ export type ActivityCriteria = {
 	sort?: ActivitySortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;
+};
+
+// -- Activity Indexation
+
+export type ActivityIndexationDto = {
+	bookingSystemId: string;
+	coreId: string;
+	bookingSystem: BookingSystem;
+	coreTitle: string;
+	priority: ActivityIndexationPriority;
+};
+
+export type ActivityIndexation = {
+	coreId: string;
+	bookingSystem: BookingSystem;
+	bookingSystemId: string;
+	coreTitle: string;
+	priority: ActivityIndexationPriority;
+	status: CoreActivityStatus;
+	tenant: string | null;
 };

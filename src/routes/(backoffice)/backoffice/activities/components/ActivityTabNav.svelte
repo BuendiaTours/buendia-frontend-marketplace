@@ -6,7 +6,15 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database, Map as MapIcon, MapPoint, Plate, Tuning, Widget } from '$lib/icons/Linear';
+	import {
+		Database,
+		LinkRound,
+		Map as MapIcon,
+		MapPoint,
+		Plate,
+		Tuning,
+		Widget
+	} from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
@@ -56,6 +64,12 @@
 			href: ACTIVITY_ROUTES.stages(activityId),
 			icon: MapIcon,
 			badge: stageCount > 0 ? stageCount : undefined
+		},
+		{
+			label: m.activities_tabBookingSystem(),
+			href: ACTIVITY_ROUTES.indexation(activityId),
+			icon: LinkRound,
+			badge: undefined
 		},
 		{
 			label: m.activities_tabOptions(),

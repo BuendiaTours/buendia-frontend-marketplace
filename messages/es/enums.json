@@ -148,5 +148,15 @@
 	"enum_optionWheelchair_accessible": "Accesible",
 	"enum_optionWheelchair_notAccessible": "No accesible",
 	"enum_optionTicketKind_individual": "Individual",
-	"enum_optionTicketKind_group": "Grupal"
+	"enum_optionTicketKind_group": "Grupal",
+	"enum_indexationPriority_high": "Alta",
+	"enum_indexationPriority_medium": "Media",
+	"enum_indexationPriority_low": "Baja",
+	"enum_indexationPriority_none": "Ninguna",
+	"enum_coreActivityStatus_active": "Activo",
+	"enum_coreActivityStatus_failed": "Fallido",
+	"enum_coreActivityStatus_inactive": "Inactivo",
+	"enum_coreActivityStatus_pending": "Pendiente",
+	"enum_coreActivityStatus_pendingToMatch": "Pendiente de enlazar",
+	"enum_coreActivityStatus_running": "En ejecución"
 }
