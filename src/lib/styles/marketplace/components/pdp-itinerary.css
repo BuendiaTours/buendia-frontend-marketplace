@@ -1,4 +1,4 @@
-.stages-cnt {
+.pdp-itinerary {
 	> summary {
 		list-style: none;
 
@@ -8,10 +8,10 @@
 	}
 }
 
-.stages {
+.pdp-itinerary__stages {
 	counter-reset: stage;
 
-	.stage-item {
+	.c-stage-item {
 		counter-increment: stage;
 		position: relative;
 

@@ -29,7 +29,7 @@
 </script>
 
 <div
-	class="stage-item flex items-start gap-3"
+	class="c-stage-item flex items-start gap-3"
 	class:pb-8={!isLast}
 	class:counter={isCounter}
 	class:last={isLast}

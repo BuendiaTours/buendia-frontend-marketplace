@@ -13,14 +13,18 @@
 			duration?: string;
 		}>;
 		wrapperClass?: string;
+		initialVisible?: number;
 	};
 
-	let { title, wrapperClass, items }: Props = $props();
+	let { title, wrapperClass, items, initialVisible = 5 }: Props = $props();
+
+	let showAll = $state(false);
 
 	const sorted = $derived((items ?? []).toSorted((a, b) => a.order - b.order));
+	const visible = $derived(showAll ? sorted : sorted.slice(0, initialVisible));
 </script>
 
-<details open class="stages-cnt">
+<details open class="pdp-itinerary">
 	<summary
 		class="flex cursor-pointer items-center justify-between py-4 lg:pointer-events-none lg:cursor-default"
 	>
@@ -29,8 +33,8 @@
 		</h2>
 		<AltArrowDown class="shrink-0 grow-0 basis-6 lg:hidden" />
 	</summary>
-	<div class="stages flex flex-col gap-3">
-		{#each sorted as item, i (item.id)}
+	<div class="pdp-itinerary__stages flex flex-col gap-3">
+		{#each visible as item, i (item.id)}
 			<StageItem
 				name={item.name}
 				description={item.description}
@@ -41,4 +45,12 @@
 			/>
 		{/each}
 	</div>
+	{#if sorted.length > initialVisible && !showAll}
+		<button
+			class="mt-4 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
+			onclick={() => (showAll = true)}
+		>
+			Ver todo el itinerario
+		</button>
+	{/if}
 </details>
