@@ -3,10 +3,62 @@
  * @description Convenience wrappers around {@link ApiClient.request} for common HTTP verbs.
  * Every resource module (activities, attractions, etc.) uses these helpers instead of
  * calling the client directly, keeping request code concise and consistent.
+ * Booking-systems integration calls use {@link bookingSystemsApi} the same way.
  */
 
-import { apiClient } from '$core/_shared/client';
+import { apiClient, bsApiClient, type ApiClient } from '$core/_shared/client';
 import { buildEndpointUrl, toSkipLimit } from '$core/_shared/params';
+
+function createApiHelpers(client: ApiClient) {
+	async function get<T>(fetchFn: typeof fetch, path: string): Promise<T> {
+		const response = await client.request<T>(fetchFn, path, { method: 'GET' });
+		return response.data;
+	}
+
+	async function getWithParams<T>(
+		fetchFn: typeof fetch,
+		path: string,
+		params?: Record<string, unknown>
+	): Promise<T> {
+		const url = buildEndpointUrl(
+			path,
+			toSkipLimit(params) as Record<string, string | number | boolean | undefined>
+		);
+		return get<T>(fetchFn, url);
+	}
+
+	async function post<T = void>(fetchFn: typeof fetch, path: string, body: unknown): Promise<T> {
+		const response = await client.request<T>(fetchFn, path, {
+			method: 'POST',
+			body: JSON.stringify(body)
+		});
+		return response.data;
+	}
+
+	async function patch<T = void>(fetchFn: typeof fetch, path: string, body: unknown): Promise<T> {
+		const response = await client.request<T>(fetchFn, path, {
+			method: 'PATCH',
+			body: JSON.stringify(body)
+		});
+		return response.data;
+	}
+
+	async function put<T = void>(fetchFn: typeof fetch, path: string, body: unknown): Promise<T> {
+		const response = await client.request<T>(fetchFn, path, {
+			method: 'PUT',
+			body: JSON.stringify(body)
+		});
+		return response.data;
+	}
+
+	async function del(fetchFn: typeof fetch, path: string): Promise<void> {
+		await client.request<void>(fetchFn, path, { method: 'DELETE' });
+	}
+
+	return { get, getWithParams, post, patch, put, del };
+}
+
+const mainApi = createApiHelpers(apiClient);
 
 /**
  * Performs a GET request and returns the parsed response body.
@@ -15,8 +67,7 @@ import { buildEndpointUrl, toSkipLimit } from '$core/_shared/params';
  * @param path - API path relative to the base URL.
  */
 export async function get<T>(fetchFn: typeof fetch, path: string): Promise<T> {
-	const response = await apiClient.request<T>(fetchFn, path, { method: 'GET' });
-	return response.data;
+	return mainApi.get<T>(fetchFn, path);
 }
 
 /**
@@ -32,11 +83,7 @@ export async function getWithParams<T>(
 	path: string,
 	params?: Record<string, unknown>
 ): Promise<T> {
-	const url = buildEndpointUrl(
-		path,
-		toSkipLimit(params) as Record<string, string | number | boolean | undefined>
-	);
-	return get<T>(fetchFn, url);
+	return mainApi.getWithParams<T>(fetchFn, path, params);
 }
 
 /**
@@ -51,11 +98,7 @@ export async function post<T = void>(
 	path: string,
 	body: unknown
 ): Promise<T> {
-	const response = await apiClient.request<T>(fetchFn, path, {
-		method: 'POST',
-		body: JSON.stringify(body)
-	});
-	return response.data;
+	return mainApi.post<T>(fetchFn, path, body);
 }
 
 /**
@@ -70,11 +113,7 @@ export async function patch<T = void>(
 	path: string,
 	body: unknown
 ): Promise<T> {
-	const response = await apiClient.request<T>(fetchFn, path, {
-		method: 'PATCH',
-		body: JSON.stringify(body)
-	});
-	return response.data;
+	return mainApi.patch<T>(fetchFn, path, body);
 }
 
 /**
@@ -89,11 +128,7 @@ export async function put<T = void>(
 	path: string,
 	body: unknown
 ): Promise<T> {
-	const response = await apiClient.request<T>(fetchFn, path, {
-		method: 'PUT',
-		body: JSON.stringify(body)
-	});
-	return response.data;
+	return mainApi.put<T>(fetchFn, path, body);
 }
 
 /**
@@ -102,5 +137,11 @@ export async function put<T = void>(
  * @param path - API path relative to the base URL.
  */
 export async function del(fetchFn: typeof fetch, path: string): Promise<void> {
-	await apiClient.request<void>(fetchFn, path, { method: 'DELETE' });
+	return mainApi.del(fetchFn, path);
 }
+
+/**
+ * Same helpers as the root exports (`get`, `post`, …) but targeting {@link bsApiClient}
+ * (`PUBLIC_BS_BASE_URL`).
+ */
+export const bookingSystemsApi = createApiHelpers(bsApiClient);

@@ -7,7 +7,7 @@
  */
 
 import { logger } from '$lib/utils/logger';
-import { apiConfig } from '$core/_shared/config';
+import { apiConfig, bsApiConfig } from '$core/_shared/config';
 import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$core/_shared/types';
 import {
 	ApiError,
@@ -320,6 +320,12 @@ export class ApiClient {
 
 /** Pre-configured singleton client instance used across the application. */
 export const apiClient = new ApiClient(apiConfig);
+
+/**
+ * HTTP client for the booking-systems integration API (`PUBLIC_BS_BASE_URL`).
+ * Same behaviour as {@link apiClient}; pair with `bookingSystemsApi` in `$core/_shared/helpers`.
+ */
+export const bsApiClient = new ApiClient(bsApiConfig);
 
 /**
  * Returns the total number of API requests issued during this process.

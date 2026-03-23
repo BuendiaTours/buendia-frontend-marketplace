@@ -4,7 +4,7 @@
  * All values are read-only at runtime (`as const`).
  */
 
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
+import { PUBLIC_API_BASE_URL, PUBLIC_BS_BASE_URL } from '$env/static/public';
 
 declare const __APP_VERSION__: string;
 
@@ -36,4 +36,20 @@ export const apiConfig = {
 	},
 
 	debug: import.meta.env.DEV
+} as const;
+
+/**
+ * Configuration for the booking-systems integration API client (`PUBLIC_BS_BASE_URL`).
+ * Same timeouts, retry policy, and default headers as the main API; only the base URL differs.
+ */
+export const bsApiConfig = {
+	baseURL: PUBLIC_BS_BASE_URL,
+
+	timeout: apiConfig.timeout,
+
+	retry: apiConfig.retry,
+
+	headers: apiConfig.headers,
+
+	debug: apiConfig.debug
 } as const;
