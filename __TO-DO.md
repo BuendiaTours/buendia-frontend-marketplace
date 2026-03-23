@@ -1,20 +1,20 @@
 Quiero crear un componente `PdpCollectionPoint` en `src/lib/components/marketplace/pdp` basado en este JSON:
 
 ```
-{
-"id": <UUID>
-"optionId": <UUID>
-"description": "Vega de Arriba 19. 2ºA. 33600, Mieres (Asturias)",
-"timeOfDay": "Horario de oficina de 8:00h a 15:00h.",
-"marginTime": "15",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          2.17,
-          41.3874
-        ]
+      {
+        "id": "pkl-0001",
+        "optionId": "opt-0001",
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            -3.7038,
+            40.4168
+          ]
+        },
+        "description": "Puerta del Sol, junto a la estatua del oso",
+        "marginTime": 15,
+        "timeOfDay": "08:45"
       }
-}
 ```
 
 Además mostrará un icono `MapPoint`

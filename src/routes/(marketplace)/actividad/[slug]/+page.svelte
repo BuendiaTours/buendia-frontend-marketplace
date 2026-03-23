@@ -23,6 +23,7 @@
 	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
 	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
 	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
@@ -50,6 +51,7 @@
 
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
+	const pickupLocations = $derived(data.activityOptions.flatMap((opt) => opt.pickupLocations));
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -173,9 +175,10 @@
 				<Spacer />
 			{/if}
 
-			<span>c-collection-points</span>
-
-			<Spacer />
+			{#if pickupLocations.length > 0}
+				<PdpCollectionPointsGroup items={pickupLocations} />
+				<Spacer />
+			{/if}
 
 			<span>pdp-itinerary</span>
 

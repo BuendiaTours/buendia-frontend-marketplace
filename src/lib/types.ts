@@ -170,10 +170,10 @@ type ActivityOptionTicket = {
 	ticketNeeded: boolean;
 };
 
-type ActivityOptionPickupLocation = {
+export type ActivityOptionPickupLocation = {
 	id: string;
 	optionId: string;
-	coords: { lat: number; lng: number } | null;
+	location: { type: 'Point'; coordinates: [number, number] } | null;
 	description: string;
 	marginTime: number;
 	timeOfDay: string | null;
