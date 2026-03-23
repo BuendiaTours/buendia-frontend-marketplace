@@ -1,0 +1,59 @@
+.pdp-itinerary {
+	> summary {
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+}
+
+.pdp-itinerary__stages {
+	counter-reset: stage;
+
+	.c-stage-item {
+		counter-increment: stage;
+		position: relative;
+
+		&.counter:before {
+			content: counter(stage);
+			color: var(--color-neutral-500);
+			flex: 0 0 48px;
+			width: 48px;
+			height: 48px;
+			display: flex;
+			justify-content: center;
+			background: var(--color-neutral-800);
+			border-radius: 100%;
+			color: var(--color-white);
+			font-family: var(--font-serif);
+			font-weight: 700; /* bold */
+			font-size: var(--font-size-editorial-h4);
+			line-height: 43px;
+		}
+
+		&:after {
+			content: '';
+			width: 1px;
+			height: calc(100% - 60px);
+			display: block;
+			position: absolute;
+			left: 24px;
+			top: 60px;
+			background: var(--color-neutral-800);
+		}
+
+		&.transfer:before {
+			content: '';
+			display: block;
+			width: 11px;
+			height: 6px;
+			background-image: url('/marketplace/Arrow.svg');
+			background-repeat: no-repeat;
+			background-position: center;
+			position: absolute;
+			left: 19px;
+			bottom: -2px;
+		}
+	}
+}
