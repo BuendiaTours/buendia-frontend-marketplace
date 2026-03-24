@@ -13,24 +13,29 @@
 	import { imageCropVariants } from '$lib/config/image-crop-variants';
 
 	type Props = {
-		photo?: Partial<BackofficePhoto>;
+		imageData?: Partial<BackofficePhoto>;
 		variantsConfig?: VariantDefinition[];
 		editorConfig?: EditorConfig;
-		onPhotoSaved?: (id: string) => void;
+		onImageSaved?: (id: string) => void;
 	};
 
-	let { photo, variantsConfig = imageCropVariants, editorConfig, onPhotoSaved }: Props = $props();
+	let {
+		imageData,
+		variantsConfig = imageCropVariants,
+		editorConfig,
+		onImageSaved
+	}: Props = $props();
 
-	const isEditMode = !!photo?.id && !!photo?.originalUrl;
+	const isEditMode = !!imageData?.id && !!imageData?.originalUrl;
 
 	let editor: SicImageEditorInstance | undefined = $state();
 
-	const managerConfig = { apiBaseUrl: PUBLIC_API_BASE_URL, onSaved: onPhotoSaved };
+	const managerConfig = { apiBaseUrl: PUBLIC_API_BASE_URL, onSaved: onImageSaved };
 	const getEditor = () => editor;
 
 	const uploadManager = !isEditMode ? createS3UploadManager(managerConfig, getEditor) : undefined;
 	const editManager = isEditMode
-		? createS3EditManager(managerConfig, getEditor, photo.id ?? '')
+		? createS3EditManager(managerConfig, getEditor, imageData.id ?? '')
 		: undefined;
 
 	const resolvedEditorConfig: EditorConfig = editorConfig ?? {
@@ -48,15 +53,15 @@
 <SicImageEditor
 	bind:this={editor}
 	{variantsConfig}
-	id={photo?.id ?? ''}
-	originalUrl={photo?.originalUrl ?? ''}
-	originalWidth={photo?.originalWidth}
-	originalHeight={photo?.originalHeight}
-	title={photo?.title ?? ''}
-	altText={photo?.altText ?? ''}
-	mimeType={photo?.mimeType ?? ''}
-	originalSizeBytes={photo?.originalSizeBytes}
-	initialState={isEditMode ? (photo as unknown as ImageData) : undefined}
+	id={imageData?.id ?? ''}
+	originalUrl={imageData?.originalUrl ?? ''}
+	originalWidth={imageData?.originalWidth}
+	originalHeight={imageData?.originalHeight}
+	title={imageData?.title ?? ''}
+	altText={imageData?.altText ?? ''}
+	mimeType={imageData?.mimeType ?? ''}
+	originalSizeBytes={imageData?.originalSizeBytes}
+	initialState={isEditMode ? (imageData as unknown as ImageData) : undefined}
 	layout="default"
 	editorConfig={resolvedEditorConfig}
 	onimageUploaded={uploadManager?.handleImageUploaded}

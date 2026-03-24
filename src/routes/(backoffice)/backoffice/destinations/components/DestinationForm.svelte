@@ -147,8 +147,17 @@
 			<div class="md:col-span-12">
 				<label class="label flex items-center justify-between text-sm"> <span>Imagen</span></label>
 				<FormImageEditor
-					photo={data.destination?.image}
-					onPhotoSaved={(id) => ($form.photoId = id)}
+					imageData={data.destination?.image}
+					onImageSaved={(id) => ($form.photoId = id)}
+					editorConfig={{
+						showFileUpload: true,
+						showZoomControls: true,
+						showRotateControls: false,
+						showFlipControls: false,
+						showGeneratedCrops: false,
+						constrainToImage: true,
+						imageDrag: true
+					}}
 				/>
 			</div>
 		{/snippet}
