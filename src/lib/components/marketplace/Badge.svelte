@@ -15,9 +15,10 @@
 		icon?: string;
 		title: string;
 		color?: string;
+		wrapperClass?: string;
 	};
 
-	let { data }: { data: Badge } = $props();
+	let { data, wrapperClass = '' }: { data: Badge; wrapperClass?: string } = $props();
 
 	const IconComponent = $derived(
 		data.icon ? (Icons[data.icon as keyof typeof Icons] as Component) : null
@@ -25,7 +26,7 @@
 </script>
 
 <div
-	class="e-badge p-xs inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold uppercase {data.color ||
+	class="e-badge p-xs inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold uppercase {wrapperClass} {data.color ||
 		''}"
 >
 	{#if IconComponent}
