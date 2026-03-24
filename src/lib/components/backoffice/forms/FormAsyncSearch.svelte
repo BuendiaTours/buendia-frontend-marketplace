@@ -78,7 +78,10 @@
 	});
 
 	$effect(() => {
-		if (value && !selectedLabel && loadSelectedFn) {
+		if (!value) {
+			selectedLabel = '';
+			searchQuery = '';
+		} else if (!selectedLabel && loadSelectedFn) {
 			loadSelectedFn(value).then((result) => {
 				if (result) selectedLabel = result.label;
 			});
