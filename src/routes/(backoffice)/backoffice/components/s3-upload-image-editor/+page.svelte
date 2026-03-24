@@ -5,7 +5,6 @@
 	import SicImageEditor from '$lib/components/backoffice/SvelteImageCrop/components/SicImageEditor.svelte';
 	import type { SicImageEditorInstance } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
 	import type { ImageData } from '$lib/components/backoffice/SvelteImageCrop/types/persistedStateTypes';
-	import { EDITOR_CONFIG_PRESETS } from '$lib/components/backoffice/SvelteImageCrop/demo/demoHelpers';
 
 	import { createS3UploadManager } from '$lib/components/backoffice/SvelteImageCrop/utils/s3UploadManager.svelte';
 	import { createS3EditManager } from '$lib/components/backoffice/SvelteImageCrop/utils/s3EditManager.svelte';
@@ -54,10 +53,17 @@
 			altText=""
 			layout="default"
 			editorConfig={{
-				...EDITOR_CONFIG_PRESETS.FULL,
-				showGeneratedCrops: false,
+				constrainToImage: true,
+				imageDrag: true,
 				showCropDeleteButtons: false,
-				constrainToImage: true
+				showCropDownloadButton: true,
+				showCropNewTabButton: true,
+				showCropRefreshButton: true,
+				showDisableAllVariantsButton: false,
+				showFileUpload: true,
+				showFlipControls: false,
+				showGeneratedCrops: false,
+				showZoomControls: true
 			}}
 			onimageUploaded={upload1.handleImageUploaded}
 		/>
@@ -127,7 +133,18 @@
 				mimeType=""
 				altText=""
 				layout="default"
-				editorConfig={EDITOR_CONFIG_PRESETS.FULL}
+				editorConfig={{
+					constrainToImage: false,
+					imageDrag: true,
+					showCropDeleteButtons: true,
+					showCropDownloadButton: true,
+					showCropNewTabButton: true,
+					showCropRefreshButton: true,
+					showDisableAllVariantsButton: false,
+					showFileUpload: true,
+					showFlipControls: false,
+					showZoomControls: true
+				}}
 				onimageUploaded={upload2.handleImageUploaded}
 			/>
 
@@ -200,10 +217,17 @@
 				initialState={existingMedia}
 				layout="default"
 				editorConfig={{
-					...EDITOR_CONFIG_PRESETS.FULL,
-					showGeneratedCrops: false,
+					constrainToImage: true,
+					imageDrag: true,
 					showCropDeleteButtons: false,
-					constrainToImage: true
+					showCropDownloadButton: true,
+					showCropNewTabButton: true,
+					showCropRefreshButton: true,
+					showDisableAllVariantsButton: false,
+					showFileUpload: true,
+					showFlipControls: false,
+					showGeneratedCrops: false,
+					showZoomControls: true
 				}}
 			/>
 
