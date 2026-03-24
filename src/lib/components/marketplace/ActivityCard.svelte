@@ -1,145 +1,84 @@
 <script lang="ts">
-	/**
-	 * ActivityCard - Tarjeta de actividad para marketplace
-	 *
-	 * Muestra información resumida de una actividad con imagen,
-	 * título, descripción, ubicación y precio.
-	 *
-	 * @component
-	 */
+	import type { ActivityCard } from '$lib/types';
+	import { ByBuendia } from '$lib/icons/Linear';
+	import StarRating from './StarRating.svelte';
+	import Badge from './Badge.svelte';
 
-	type Activity = {
-		title: string;
-		description: string;
-		price: number;
-		image?: string;
-		location?: string;
+	type Props = {
+		item: ActivityCard;
+		wrapperClass?: string;
 	};
 
-	let { activity }: { activity: Activity } = $props();
+	let { item, wrapperClass }: Props = $props();
 </script>
 
-<article class="activity-card">
-	{#if activity.image}
-		<img src={activity.image} alt={activity.title} class="activity-card__image" />
-	{:else}
-		<div class="activity-card__image activity-card__image--placeholder">
-			<span class="text-sm text-gray-400">Sin imagen</span>
+<article class="sm:flex {wrapperClass}">
+	<a
+		href={item.slug}
+		class="flex min-h-[190px] gap-3 sm:relative sm:min-h-[372px] sm:basis-full sm:flex-col"
+	>
+		<div class="shrink-0 grow-0 basis-[140px] overflow-hidden rounded-lg sm:basis-[166px]">
+			<img src={item.image} alt={item.name} class="h-full w-full object-cover" />
 		</div>
-	{/if}
-
-	<div class="activity-card__content">
-		<h3 class="activity-card__title">{activity.title}</h3>
-
-		{#if activity.location}
-			<p class="activity-card__location">{activity.location}</p>
-		{/if}
-
-		<p class="activity-card__description">{activity.description}</p>
-
-		<div class="activity-card__footer">
-			<span class="activity-card__price">${activity.price}</span>
-			<button class="activity-card__button">Reservar</button>
+		<div class="flex shrink grow-0 basis-full flex-col gap-2">
+			{#if item.byBuendia}
+				<div class="sm:-mt-[41px] sm:-ml-[1px]">
+					<div
+						class="inline-flex items-center gap-[6px] sm:rounded-tr-lg sm:bg-white sm:pt-2 sm:pr-3 sm:pb-[2px]"
+					>
+						<ByBuendia size={16} />
+						<span class="p-sm font-bold text-neutral-800">Plan by buendía</span>
+					</div>
+				</div>
+			{/if}
+			{#if item.isNew}
+				<div class="sm:absolute sm:top-2 sm:left-2">
+					<Badge
+						data={{
+							icon: 'Bookmark',
+							title: 'Novedad',
+							color: 'bg-blue-300'
+						}}
+					/>
+				</div>
+			{/if}
+			<h3 class="h3">
+				{item.name}
+			</h3>
+			<ul class="flex flex-wrap gap-[6px]">
+				{#each item.infoList as info (info.id)}
+					<li class="p-xs flex gap-[6px] text-neutral-700 not-first:before:content-['·']">
+						{info.infoName}
+					</li>
+				{/each}
+			</ul>
+			<p class="p-xs text-neutral-700">{item.cancellation}</p>
+			<div class="mt-2 flex shrink grow-0 basis-full items-end justify-between">
+				<div>
+					{#if item.price}
+						<p class="p-xs text-neutral-800">
+							Desde {#if item.discount}<span class="line-through">{item.price} €</span>{/if}
+						</p>
+						{#if item.discount}
+							<p class="text-price text-salmon-700">{item.discount} €</p>
+						{:else}
+							<p class="text-price text-neutral-800">{item.price} €</p>
+						{/if}
+					{/if}
+					{#if item.isFreeTour}
+						<p class="text-price text-neutral-800">Gratis</p>
+					{/if}
+				</div>
+				{#if item.rating}
+					<div class="flex items-center gap-1">
+						<StarRating single size="sm" />
+						<span class="p-lg font-bold">{item.rating}</span>
+						{#if item.opinions}
+							<span class="p-sm text-neutral-600">({item.opinions})</span>
+						{/if}
+					</div>
+				{/if}
+			</div>
 		</div>
-	</div>
+	</a>
 </article>
-
-<style>
-	.activity-card {
-		background-color: white;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-		transition: all 0.3s ease;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.activity-card:hover {
-		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-		transform: translateY(-4px);
-	}
-
-	.activity-card__image {
-		width: 100%;
-		height: 200px;
-		object-fit: cover;
-	}
-
-	.activity-card__image--placeholder {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: #f3f4f6;
-	}
-
-	.activity-card__content {
-		padding: 1.25rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		flex: 1;
-	}
-
-	.activity-card__title {
-		font-size: 1.25rem;
-		font-weight: 700;
-		margin: 0;
-		color: #1f2937;
-		line-height: 1.4;
-	}
-
-	.activity-card__location {
-		font-size: 0.875rem;
-		color: #6b7280;
-		margin: 0;
-	}
-
-	.activity-card__location::before {
-		content: '📍 ';
-	}
-
-	.activity-card__description {
-		font-size: 0.875rem;
-		color: #4b5563;
-		margin: 0;
-		line-height: 1.6;
-		display: -webkit-box;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	}
-
-	.activity-card__footer {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 0.75rem;
-		margin-top: auto;
-		border-top: 1px solid #e5e7eb;
-	}
-
-	.activity-card__price {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #ff6b35;
-	}
-
-	.activity-card__button {
-		background-color: #ff6b35;
-		color: white;
-		border: none;
-		border-radius: 8px;
-		padding: 0.5rem 1.25rem;
-		font-weight: 600;
-		font-size: 0.875rem;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.activity-card__button:hover {
-		background-color: #e55a2b;
-		transform: translateY(-1px);
-		box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
-	}
-</style>

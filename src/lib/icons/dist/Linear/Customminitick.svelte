@@ -4,5 +4,5 @@
 </script>
 
 <Icon iconName="Linear.CustomMiniTick" {...props}>
-	<path d="M6.389,12.83L9.538,15.979L17.559,7.959" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" />
+	<path d="M6.389 12.83l3.149 3.149 8.021-8.02" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
 </Icon>
