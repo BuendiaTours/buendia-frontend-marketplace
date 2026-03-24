@@ -25,19 +25,12 @@
 
 	let editor: SicImageEditorInstance | undefined = $state();
 
-	const uploadManager = !isEditMode
-		? createS3UploadManager(
-				{ apiBaseUrl: PUBLIC_API_BASE_URL, onSaved: onPhotoSaved },
-				() => editor
-			)
-		: undefined;
+	const managerConfig = { apiBaseUrl: PUBLIC_API_BASE_URL, onSaved: onPhotoSaved };
+	const getEditor = () => editor;
 
+	const uploadManager = !isEditMode ? createS3UploadManager(managerConfig, getEditor) : undefined;
 	const editManager = isEditMode
-		? createS3EditManager(
-				{ apiBaseUrl: PUBLIC_API_BASE_URL, onSaved: onPhotoSaved },
-				() => editor,
-				photo.id ?? ''
-			)
+		? createS3EditManager(managerConfig, getEditor, photo.id ?? '')
 		: undefined;
 
 	const resolvedEditorConfig: EditorConfig = editorConfig ?? {
