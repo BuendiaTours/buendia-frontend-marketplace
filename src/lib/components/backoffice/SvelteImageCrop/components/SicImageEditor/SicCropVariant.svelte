@@ -25,9 +25,9 @@
 <div
 	class="sic-crop-variant card bg-base-100 border p-3 transition-colors"
 	class:cursor-pointer={isActive}
-	class:border-warning={isLowResolution}
-	class:border-success={isSelected && !isLowResolution}
-	class:border-zinc-700={!isSelected && !isLowResolution}
+	class:!border-warning={isLowResolution}
+	class:!border-success={isSelected && !isLowResolution}
+	class:!border-zinc-700={!isSelected && !isLowResolution}
 	onclick={() => isActive && onSelect()}
 	role="button"
 	tabindex="0"

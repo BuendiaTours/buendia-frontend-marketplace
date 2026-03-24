@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import variantsConfig from '$lib/components/backoffice/SvelteImageCrop/config/sample-variants-config.json';
-	import variantsConfigS3 from './variants-config.json';
+	import { imageCropVariants } from '$lib/config/image-crop-variants';
 	import SicImageEditor from '$lib/components/backoffice/SvelteImageCrop/components/SicImageEditor.svelte';
 	import type { SicImageEditorInstance } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
 	import type { ImageData } from '$lib/components/backoffice/SvelteImageCrop/types/persistedStateTypes';
@@ -36,14 +36,9 @@
 </script>
 
 <main class="mx-auto max-w-7xl p-8">
-	<div class="mb-6 flex items-center gap-4">
-		<a href="/" class="btn btn-ghost btn-sm">← Inicio</a>
-		<div>
-			<h1 class="text-2xl font-bold">S3 Presigned URL Upload</h1>
-			<p class="text-sm text-zinc-400">
-				Sube la imagen en background mientras ajustas los recortes
-			</p>
-		</div>
+	<div class="mb-6 flex flex-col gap-0">
+		<h1 class="text-2xl font-bold">S3 Presigned URL Upload</h1>
+		<p class="text-sm text-zinc-400">Sube la imagen en background mientras ajustas los recortes</p>
 	</div>
 
 	<!-- Editor 1 (sin thumbnails ni "Generar todos") -->
@@ -51,7 +46,7 @@
 	<div class="mb-6 rounded-lg border border-zinc-700 p-6">
 		<SicImageEditor
 			bind:this={editor1}
-			variantsConfig={variantsConfigS3}
+			variantsConfig={imageCropVariants}
 			originalUrl=""
 			id=""
 			title=""
@@ -64,7 +59,7 @@
 				showCropDeleteButtons: false,
 				constrainToImage: true
 			}}
-			on:imageUploaded={upload1.handleImageUploaded}
+			onimageUploaded={upload1.handleImageUploaded}
 		/>
 
 		<!-- Upload + save panel -->
@@ -90,14 +85,16 @@
 			</p>
 			<div class="flex shrink-0 gap-2">
 				{#if upload1.bgUpload === 'error'}
-					<button type="button" class="btn btn-outline btn-sm" onclick={upload1.retryUpload}
-						>Reintentar</button
+					<button
+						type="button"
+						class="btn btn-outline btn-sm btn-primary"
+						onclick={upload1.retryUpload}>Reintentar</button
 					>
 				{/if}
 				{#if upload1.saveStep !== 'done'}
 					<button
 						type="button"
-						class="btn btn-sm btn-primary"
+						class="btn btn-outline btn-sm btn-primary"
 						disabled={!upload1.canSave || upload1.isSaving}
 						onclick={(e) => {
 							e.preventDefault();
@@ -131,7 +128,7 @@
 				altText=""
 				layout="default"
 				editorConfig={EDITOR_CONFIG_PRESETS.FULL}
-				on:imageUploaded={upload2.handleImageUploaded}
+				onimageUploaded={upload2.handleImageUploaded}
 			/>
 
 			<!-- Upload + save panel -->
@@ -192,7 +189,7 @@
 		{:else if existingMedia}
 			<SicImageEditor
 				bind:this={editor3}
-				variantsConfig={variantsConfigS3}
+				variantsConfig={imageCropVariants}
 				id={existingMedia.id}
 				originalUrl={existingMedia.originalUrl}
 				originalWidth={existingMedia.originalWidth}

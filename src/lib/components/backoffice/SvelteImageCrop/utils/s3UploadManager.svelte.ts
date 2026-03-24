@@ -14,7 +14,7 @@ export type S3UploadConfig = {
 	apiBaseUrl: string;
 	onSaved?: (id: string) => void;
 	onError?: (msg: string) => void;
-}
+};
 
 export function createS3UploadManager(
 	config: S3UploadConfig,
@@ -38,8 +38,8 @@ export function createS3UploadManager(
 	);
 	const isSaving = $derived(saveStep === 'generating' || saveStep === 'creating-record');
 
-	function handleImageUploaded(event: CustomEvent<{ imageSrc: string; file?: File }>) {
-		pendingFile = event.detail.file ?? null;
+	function handleImageUploaded(detail: { imageSrc: string; file?: File }) {
+		pendingFile = detail.file ?? null;
 		saveStep = 'idle';
 		saveError = null;
 		createdMediaId = null;

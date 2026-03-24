@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { createEventDispatcher, onMount, tick, type Component } from 'svelte';
+	import { onMount, tick, type Component } from 'svelte';
 
 	// Layouts
 	import SicLayoutDefault from './SicLayouts/SicLayoutDefault.svelte';
@@ -69,7 +69,13 @@
 		initialState = undefined,
 		wrapperClass = '',
 		columnClass = 'w-[320px]',
-		name = undefined
+		name = undefined,
+		onimageUploaded = undefined,
+		oncropsGenerated = undefined,
+		onstateChange = undefined,
+		oncropRegenerated = undefined,
+		onready = undefined,
+		onerror = undefined
 	}: {
 		// Image metadata (aligned with ImageData API)
 		originalUrl?: string;
@@ -89,6 +95,12 @@
 		wrapperClass?: string;
 		columnClass?: string;
 		name?: string;
+		onimageUploaded?: (detail: SicImageEditorEvents['imageUploaded']) => void;
+		oncropsGenerated?: (detail: SicImageEditorEvents['cropsGenerated']) => void;
+		onstateChange?: (detail: SicImageEditorEvents['stateChange']) => void;
+		oncropRegenerated?: (detail: SicImageEditorEvents['cropRegenerated']) => void;
+		onready?: (detail: SicImageEditorEvents['ready']) => void;
+		onerror?: (detail: SicImageEditorEvents['error']) => void;
 	} = $props();
 
 	// ===== INTERNAL STATE =====
@@ -126,9 +138,6 @@
 	let editorContainerComponent = $state<EditorContainerApi | undefined>();
 	let manipulatingCropId = $state<string | null>(null);
 	let pendingUploadPresets = $state<string[] | null>(null);
-
-	// Event dispatcher
-	const dispatch = createEventDispatcher<SicImageEditorEvents>();
 
 	// Merge editor config defaults
 	const resolvedEditorConfig: EditorConfig = {
@@ -546,7 +555,7 @@
 					internalOriginalUrl = result;
 					internalOriginalSizeBytes = file.size;
 					reset();
-					dispatch('imageUploaded', { imageSrc: result, file });
+					onimageUploaded?.({ imageSrc: result, file });
 				}
 			};
 			reader.readAsDataURL(file);
@@ -752,19 +761,19 @@
 
 	function regenerateCrop(cropId: string): void {
 		if (!editorContainerComponent) {
-			dispatch('error', { message: 'EditorContainer not available' });
+			onerror?.({ message: 'EditorContainer not available' });
 			return;
 		}
 
 		const activeCropBox = activeCropBoxes.find((ac) => ac.instanceId === cropId);
 		if (!activeCropBox) {
-			dispatch('error', { message: 'Crop not found' });
+			onerror?.({ message: 'Crop not found' });
 			return;
 		}
 
 		const imageData = editorContainerComponent.getImageData();
 		if (!imageData) {
-			dispatch('error', { message: 'Could not get image data' });
+			onerror?.({ message: 'Could not get image data' });
 			return;
 		}
 
@@ -800,10 +809,10 @@
 					generatedCrops = [...generatedCrops, newCrop];
 				}
 
-				dispatch('cropRegenerated', { crop: newCrop, cropId });
+				oncropRegenerated?.({ crop: newCrop, cropId });
 			}
 		} catch (error) {
-			dispatch('error', {
+			onerror?.({
 				message: 'Error regenerating crop',
 				error: error instanceof Error ? error : undefined
 			});
@@ -818,13 +827,13 @@
 
 		if (!editorContainerComponent) {
 			console.error('❌ EditorContainer not available');
-			dispatch('error', { message: 'EditorContainer not available' });
+			onerror?.({ message: 'EditorContainer not available' });
 			return [];
 		}
 
 		if (activeCropBoxes.length === 0) {
 			console.error('❌ No crop boxes to generate');
-			dispatch('error', { message: 'No crops to generate. Add at least one crop first.' });
+			onerror?.({ message: 'No crops to generate. Add at least one crop first.' });
 			return [];
 		}
 
@@ -832,7 +841,7 @@
 		const imageData = editorContainerComponent.getImageData();
 		if (!imageData) {
 			console.error('❌ Could not get image data');
-			dispatch('error', { message: 'Could not get image data' });
+			onerror?.({ message: 'Could not get image data' });
 			return [];
 		}
 		console.log('✅ Image data obtained:', imageData);
@@ -869,7 +878,7 @@
 			console.log('✅ Image data created');
 
 			console.log('📡 Emitting cropsGenerated event...');
-			dispatch('cropsGenerated', {
+			oncropsGenerated?.({
 				crops: result.crops,
 				imageData: imageDataState,
 				timestamp: result.timestamp
@@ -881,7 +890,7 @@
 			return result.crops;
 		} catch (error) {
 			console.error('❌ Error in handleGenerateCrops:', error);
-			dispatch('error', {
+			onerror?.({
 				message: 'Error generating crops',
 				error: error instanceof Error ? error : undefined
 			});
@@ -923,7 +932,7 @@
 			}
 		}
 
-		dispatch('ready', { instanceId, outputConfig, editorConfig });
+		onready?.({ instanceId, outputConfig, editorConfig });
 	});
 </script>
 

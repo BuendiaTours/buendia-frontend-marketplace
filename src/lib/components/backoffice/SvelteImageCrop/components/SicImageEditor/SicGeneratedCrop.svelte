@@ -55,8 +55,8 @@
 
 <div
 	class="sic-generated-crop card border transition-colors"
-	class:border-success={isHighlighted}
-	class:border-zinc-700={!isHighlighted}
+	class:!border-success={isHighlighted}
+	class:!border-zinc-700={!isHighlighted}
 >
 	<figure class="bg-base-300 aspect-video">
 		<img src={imgSrc} alt={crop.preset} class="h-full w-full object-contain" />
