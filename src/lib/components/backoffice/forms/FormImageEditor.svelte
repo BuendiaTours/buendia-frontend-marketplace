@@ -88,7 +88,7 @@
 			{#if editManager.saveStep !== 'done'}
 				<button
 					type="button"
-					class="btn btn-sm btn-primary"
+					class="btn btn-sm btn-primary btn-outline"
 					disabled={!editManager.canSave || editManager.isSaving}
 					onclick={() => editManager?.handleSave()}
 				>
@@ -128,7 +128,7 @@
 			{#if uploadManager.saveStep !== 'done'}
 				<button
 					type="button"
-					class="btn btn-sm btn-primary"
+					class="btn btn-sm btn-primary btn-outline"
 					disabled={!uploadManager.canSave || uploadManager.isSaving}
 					onclick={() => uploadManager?.handleSave()}
 				>
