@@ -6,17 +6,38 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
+	import { setContext } from 'svelte';
 	import type { LayoutProps } from './$types';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database } from '$lib/icons/Linear';
+	import { Database, LinkRound, MapPoint } from '$lib/icons/Linear';
 
 	let { data, children }: LayoutProps = $props();
+
+	// svelte-ignore state_referenced_locally
+	let pickupCount = $state(data.option.pickupPlaces?.length ?? 0);
+
+	setContext('updatePickupCount', (count: number) => {
+		pickupCount = count;
+	});
 
 	const tabs = $derived([
 		{
 			label: m.activities_optionTabGeneral(),
 			href: ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id),
-			icon: Database
+			icon: Database,
+			badge: undefined as number | undefined
+		},
+		{
+			label: m.activities_optionTabPickup(),
+			href: ACTIVITY_ROUTES.optionPickup(data.activity.id, data.option.id),
+			icon: MapPoint,
+			badge: pickupCount > 0 ? pickupCount : undefined
+		},
+		{
+			label: m.activities_optionTabBookingSystem(),
+			href: ACTIVITY_ROUTES.optionBookingSystem(data.activity.id, data.option.id),
+			icon: LinkRound,
+			badge: undefined as number | undefined
 		}
 	]);
 
@@ -47,6 +68,9 @@
 		>
 			<tab.icon class="size-4" />
 			<span>{tab.label}</span>
+			{#if tab.badge !== undefined}
+				<span class="badge badge-sm badge-neutral">{tab.badge}</span>
+			{/if}
 		</a>
 	{/each}
 	<div class="border-base-300 flex-1 border-b"></div>

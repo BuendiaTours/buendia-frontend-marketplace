@@ -1,5 +1,6 @@
 /**
  * Server load and actions for the activity option edit page.
+ * Handles General + Configuration fields in a single form.
  */
 import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 import { OptionDurationUnit } from '$core/activity-options/enums';
@@ -18,16 +19,15 @@ export const load: PageServerLoad = async ({ parent }) => {
 			title: option.title,
 			description: option.description ?? '',
 			language: option.language,
-			bookingSystem: option.bookingSystem,
-			privacy: option.privacy,
 			status: option.status,
 			durationQuantity: option.duration?.quantity ?? 1,
 			durationUnit: option.duration?.unit ?? OptionDurationUnit.HOURS,
+			privacy: option.privacy,
 			wheelchair: option.wheelchair,
-			ticketKind: option.ticketKind ?? undefined,
+			skipTheLineType: option.skipTheLineType ?? undefined,
 			maxGroupSize: option.maxGroupSize ?? undefined,
 			maxTicketsPerIndividual: option.maxTicketsPerIndividual ?? undefined,
-			supplierOptionCode: option.supplierOptionCode ?? ''
+			cutOff: option.cutOff ?? undefined
 		},
 		zod(activityOptionFormSchema)
 	);
@@ -47,11 +47,11 @@ export const actions: Actions = {
 			id,
 			durationQuantity,
 			durationUnit,
-			supplierOptionCode,
 			description,
-			ticketKind,
+			skipTheLineType,
 			maxGroupSize,
 			maxTicketsPerIndividual,
+			cutOff,
 			...rest
 		} = form.data;
 
@@ -59,10 +59,10 @@ export const actions: Actions = {
 			...rest,
 			duration: { quantity: durationQuantity, unit: durationUnit },
 			description: description || undefined,
-			supplierOptionCode: supplierOptionCode || undefined,
-			ticketKind: ticketKind ?? undefined,
+			skipTheLineType: skipTheLineType ?? undefined,
 			maxGroupSize: maxGroupSize ?? undefined,
-			maxTicketsPerIndividual: maxTicketsPerIndividual ?? undefined
+			maxTicketsPerIndividual: maxTicketsPerIndividual ?? undefined,
+			cutOff: cutOff ?? undefined
 		});
 
 		return { form };

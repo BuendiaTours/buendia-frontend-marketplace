@@ -1,15 +1,14 @@
 /**
  * Zod schema for the activity option edit form.
- * Maps to ActivityOptionUpdateDto fields.
+ * Includes General + Configuration fields (everything except Booking System).
  */
 import { z } from 'zod/v3';
 import {
-	OptionBookingSystem,
 	OptionDurationUnit,
 	OptionLanguage,
 	OptionPrivacy,
+	OptionSkipTheLineType,
 	OptionStatus,
-	OptionTicketKind,
 	OptionWheelchair
 } from '$core/activity-options/enums';
 
@@ -18,16 +17,15 @@ export const activityOptionFormSchema = z.object({
 	title: z.string().min(2).max(200),
 	description: z.string().max(2000).optional().default(''),
 	language: z.nativeEnum(OptionLanguage),
-	bookingSystem: z.nativeEnum(OptionBookingSystem),
-	privacy: z.nativeEnum(OptionPrivacy),
 	status: z.nativeEnum(OptionStatus),
 	durationQuantity: z.number().min(1).default(1),
 	durationUnit: z.nativeEnum(OptionDurationUnit).default(OptionDurationUnit.HOURS),
+	privacy: z.nativeEnum(OptionPrivacy),
 	wheelchair: z.nativeEnum(OptionWheelchair).default(OptionWheelchair.NOT_ACCESSIBLE),
-	ticketKind: z.nativeEnum(OptionTicketKind).optional(),
+	skipTheLineType: z.nativeEnum(OptionSkipTheLineType).optional(),
 	maxGroupSize: z.number().optional(),
 	maxTicketsPerIndividual: z.number().optional(),
-	supplierOptionCode: z.string().max(100).optional().default('')
+	cutOff: z.number().min(0).optional()
 });
 
 export type ActivityOptionFormSchema = z.infer<typeof activityOptionFormSchema>;

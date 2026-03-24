@@ -1,19 +1,19 @@
 <script lang="ts">
 	/**
-	 * Activity option edit page — General tab.
-	 * Full form for editing option main data and configuration.
+	 * Activity option edit page — General + Configuration.
+	 * Single form with all option fields except Booking System.
 	 */
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageProps } from './$types';
+	import { getContext } from 'svelte';
 	import { Database, Settings } from '$lib/icons/Linear';
 	import {
-		OPTION_BOOKING_SYSTEM_OPTIONS,
 		OPTION_DURATION_UNIT_OPTIONS,
 		OPTION_LANGUAGE_OPTIONS,
 		OPTION_PRIVACY_OPTIONS,
+		OPTION_SKIP_THE_LINE_OPTIONS,
 		OPTION_STATUS_OPTIONS,
-		OPTION_TICKET_KIND_OPTIONS,
 		OPTION_WHEELCHAIR_OPTIONS
 	} from '$lib/labels/activityOptions';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
@@ -23,9 +23,28 @@
 
 	let { data }: PageProps = $props();
 
+	const addToast =
+		getContext<
+			(toast: { data: { title: string; description: string; type: 'success' | 'error' } }) => void
+		>('activityToast');
+
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance, submitting } = superForm(data.form, {
-		dataType: 'json'
+		dataType: 'json',
+		invalidateAll: false,
+		applyAction: false,
+		resetForm: false,
+		onResult({ result }) {
+			if (result.type === 'success') {
+				addToast({
+					data: {
+						title: m.backoffice_updateSuccess(),
+						description: '',
+						type: 'success'
+					}
+				});
+			}
+		}
 	});
 
 	const formId = 'activity-option-form';
@@ -41,6 +60,8 @@
 </div>
 
 <form id={formId} method="POST" action="?/update" use:enhance class="space-y-4">
+	<input type="hidden" name="id" value={$form.id} />
+
 	<FormAccordion name="form-option-main" open>
 		{#snippet title()}
 			<Database class="size-6" />
@@ -50,8 +71,6 @@
 			<p class="text-xs">{m.activities_optionSectionMainDataDescription()}</p>
 		{/snippet}
 		{#snippet content()}
-			<input type="hidden" name="id" value={$form.id} />
-
 			<FormInputText
 				id="title"
 				label={m.activities_optionLabelTitle()}
@@ -72,24 +91,16 @@
 			/>
 
 			<FormSelect
-				id="bookingSystem"
-				label={m.activities_optionLabelBookingSystem()}
-				bind:value={$form.bookingSystem}
-				error={$errors.bookingSystem}
-				options={OPTION_BOOKING_SYSTEM_OPTIONS}
-				placeholder={m.activities_optionPlaceholderBookingSystem()}
+				id="status"
+				label={m.activities_optionLabelStatus()}
+				bind:value={$form.status}
+				error={$errors.status}
+				options={OPTION_STATUS_OPTIONS}
+				placeholder={m.activities_optionPlaceholderStatus()}
 				wrapperClass="md:col-span-4"
 			/>
 
-			<FormSelect
-				id="privacy"
-				label={m.activities_optionLabelPrivacy()}
-				bind:value={$form.privacy}
-				error={$errors.privacy}
-				options={OPTION_PRIVACY_OPTIONS}
-				placeholder={m.activities_optionPlaceholderPrivacy()}
-				wrapperClass="md:col-span-4"
-			/>
+			<div class="md:col-span-4"></div>
 
 			<FormInputText
 				id="durationQuantity"
@@ -97,7 +108,7 @@
 				type="number"
 				bind:value={$form.durationQuantity}
 				error={$errors.durationQuantity}
-				wrapperClass="md:col-span-6"
+				wrapperClass="md:col-span-4"
 			/>
 
 			<FormSelect
@@ -106,7 +117,17 @@
 				bind:value={$form.durationUnit}
 				error={$errors.durationUnit}
 				options={OPTION_DURATION_UNIT_OPTIONS}
-				wrapperClass="md:col-span-6"
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormInputText
+				id="cutOff"
+				label={m.activities_optionLabelCutOff()}
+				placeholder={m.activities_optionPlaceholderCutOff()}
+				type="number"
+				bind:value={$form.cutOff}
+				error={$errors.cutOff}
+				wrapperClass="md:col-span-4"
 			/>
 
 			<FormTextarea
@@ -131,12 +152,12 @@
 		{/snippet}
 		{#snippet content()}
 			<FormSelect
-				id="status"
-				label={m.activities_optionLabelStatus()}
-				bind:value={$form.status}
-				error={$errors.status}
-				options={OPTION_STATUS_OPTIONS}
-				placeholder={m.activities_optionPlaceholderStatus()}
+				id="privacy"
+				label={m.activities_optionLabelPrivacy()}
+				bind:value={$form.privacy}
+				error={$errors.privacy}
+				options={OPTION_PRIVACY_OPTIONS}
+				placeholder={m.activities_optionPlaceholderPrivacy()}
 				wrapperClass="md:col-span-4"
 			/>
 
@@ -151,12 +172,12 @@
 			/>
 
 			<FormSelect
-				id="ticketKind"
-				label={m.activities_optionLabelTicketKind()}
-				bind:value={$form.ticketKind}
-				error={$errors.ticketKind}
-				options={OPTION_TICKET_KIND_OPTIONS}
-				placeholder={m.activities_optionPlaceholderTicketKind()}
+				id="skipTheLineType"
+				label={m.activities_optionLabelSkipTheLine()}
+				bind:value={$form.skipTheLineType}
+				error={$errors.skipTheLineType}
+				options={OPTION_SKIP_THE_LINE_OPTIONS}
+				placeholder={m.activities_optionPlaceholderSkipTheLine()}
 				wrapperClass="md:col-span-4"
 			/>
 
@@ -175,15 +196,6 @@
 				type="number"
 				bind:value={$form.maxTicketsPerIndividual}
 				error={$errors.maxTicketsPerIndividual}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormInputText
-				id="supplierOptionCode"
-				label={m.activities_optionLabelSupplierOptionCode()}
-				placeholder={m.activities_optionPlaceholderSupplierOptionCode()}
-				bind:value={$form.supplierOptionCode}
-				error={$errors.supplierOptionCode}
 				wrapperClass="md:col-span-4"
 			/>
 		{/snippet}
