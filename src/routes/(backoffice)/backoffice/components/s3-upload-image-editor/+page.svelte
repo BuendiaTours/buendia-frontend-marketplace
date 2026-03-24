@@ -16,9 +16,13 @@
 	let editor2: SicImageEditorInstance | undefined = $state();
 	let editor3: SicImageEditorInstance | undefined = $state();
 
-	const upload1 = createS3UploadManager({ apiBaseUrl: API_BASE_URL }, () => editor1);
-	const upload2 = createS3UploadManager({ apiBaseUrl: API_BASE_URL }, () => editor2);
-	const edit3 = createS3EditManager({ apiBaseUrl: API_BASE_URL }, () => editor3, EXISTING_MEDIA_ID);
+	const editor_1 = createS3UploadManager({ apiBaseUrl: API_BASE_URL }, () => editor1);
+	const editor_2 = createS3UploadManager({ apiBaseUrl: API_BASE_URL }, () => editor2);
+	const editor_3 = createS3EditManager(
+		{ apiBaseUrl: API_BASE_URL },
+		() => editor3,
+		EXISTING_MEDIA_ID
+	);
 
 	let existingMedia = $state<ImageData | null>(null);
 	let loadError = $state<string | null>(null);
@@ -65,49 +69,49 @@
 				showGeneratedCrops: false,
 				showZoomControls: true
 			}}
-			onimageUploaded={upload1.handleImageUploaded}
+			onimageUploaded={editor_1.handleImageUploaded}
 		/>
 
 		<!-- Upload + save panel -->
 		<div class="mt-2 flex items-center justify-between gap-4 rounded-lg border border-zinc-700 p-3">
 			<p class="text-sm text-zinc-400">
-				{#if upload1.saveStep === 'done'}
-					✓ ¡Media creado! ID: <code class="text-zinc-200">{upload1.createdMediaId}</code>
-				{:else if upload1.saveStep === 'error'}
-					<span class="text-error">{upload1.saveError}</span>
-				{:else if upload1.saveStep === 'generating'}
+				{#if editor_1.saveStep === 'done'}
+					✓ ¡Media creado! ID: <code class="text-zinc-200">{editor_1.createdMediaId}</code>
+				{:else if editor_1.saveStep === 'error'}
+					<span class="text-error">{editor_1.saveError}</span>
+				{:else if editor_1.saveStep === 'generating'}
 					<span class="loading loading-xs loading-spinner"></span> Generando recortes...
-				{:else if upload1.saveStep === 'creating-record'}
+				{:else if editor_1.saveStep === 'creating-record'}
 					<span class="loading loading-xs loading-spinner"></span> Registrando...
-				{:else if upload1.bgUpload === 'in-progress'}
+				{:else if editor_1.bgUpload === 'in-progress'}
 					<span class="loading loading-xs loading-spinner"></span> Subiendo a S3...
-				{:else if upload1.bgUpload === 'error'}
+				{:else if editor_1.bgUpload === 'error'}
 					<span class="text-error">✗ Error al subir</span>
-				{:else if upload1.bgUpload === 'done'}
+				{:else if editor_1.bgUpload === 'done'}
 					✓ Lista para guardar
 				{:else}
 					Sube una imagen para continuar
 				{/if}
 			</p>
 			<div class="flex shrink-0 gap-2">
-				{#if upload1.bgUpload === 'error'}
+				{#if editor_1.bgUpload === 'error'}
 					<button
 						type="button"
 						class="btn btn-outline btn-sm btn-primary"
-						onclick={upload1.retryUpload}>Reintentar</button
+						onclick={editor_1.retryUpload}>Reintentar</button
 					>
 				{/if}
-				{#if upload1.saveStep !== 'done'}
+				{#if editor_1.saveStep !== 'done'}
 					<button
 						type="button"
 						class="btn btn-outline btn-sm btn-primary"
-						disabled={!upload1.canSave || upload1.isSaving}
+						disabled={!editor_1.canSave || editor_1.isSaving}
 						onclick={(e) => {
 							e.preventDefault();
-							upload1.handleSave();
+							editor_1.handleSave();
 						}}
 					>
-						{#if upload1.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
+						{#if editor_1.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
 						Guardar
 					</button>
 				{/if}
@@ -120,7 +124,7 @@
 	<form
 		onsubmit={(e) => {
 			e.preventDefault();
-			upload2.handleSave();
+			editor_2.handleSave();
 		}}
 	>
 		<div class="mb-6 rounded-lg border border-zinc-700 p-6">
@@ -145,7 +149,7 @@
 					showFlipControls: false,
 					showZoomControls: true
 				}}
-				onimageUploaded={upload2.handleImageUploaded}
+				onimageUploaded={editor_2.handleImageUploaded}
 			/>
 
 			<!-- Upload + save panel -->
@@ -154,19 +158,19 @@
 			>
 				<!-- Status -->
 				<p class="text-sm text-zinc-400">
-					{#if upload2.saveStep === 'done'}
-						✓ ¡Media creado! ID: <code class="text-zinc-200">{upload2.createdMediaId}</code>
-					{:else if upload2.saveStep === 'error'}
-						<span class="text-error">{upload2.saveError}</span>
-					{:else if upload2.saveStep === 'generating'}
+					{#if editor_2.saveStep === 'done'}
+						✓ ¡Media creado! ID: <code class="text-zinc-200">{editor_2.createdMediaId}</code>
+					{:else if editor_2.saveStep === 'error'}
+						<span class="text-error">{editor_2.saveError}</span>
+					{:else if editor_2.saveStep === 'generating'}
 						<span class="loading loading-xs loading-spinner"></span> Generando recortes...
-					{:else if upload2.saveStep === 'creating-record'}
+					{:else if editor_2.saveStep === 'creating-record'}
 						<span class="loading loading-xs loading-spinner"></span> Registrando...
-					{:else if upload2.bgUpload === 'in-progress'}
+					{:else if editor_2.bgUpload === 'in-progress'}
 						<span class="loading loading-xs loading-spinner"></span> Subiendo a S3...
-					{:else if upload2.bgUpload === 'error'}
+					{:else if editor_2.bgUpload === 'error'}
 						<span class="text-error">✗ Error al subir</span>
-					{:else if upload2.bgUpload === 'done'}
+					{:else if editor_2.bgUpload === 'done'}
 						✓ Lista para guardar
 					{:else}
 						Sube una imagen para continuar
@@ -174,18 +178,18 @@
 				</p>
 				<!-- Actions -->
 				<div class="flex shrink-0 gap-2">
-					{#if upload2.bgUpload === 'error'}
-						<button type="button" class="btn btn-outline btn-sm" onclick={upload2.retryUpload}
+					{#if editor_2.bgUpload === 'error'}
+						<button type="button" class="btn btn-outline btn-sm" onclick={editor_2.retryUpload}
 							>Reintentar</button
 						>
 					{/if}
-					{#if upload2.saveStep !== 'done'}
+					{#if editor_2.saveStep !== 'done'}
 						<button
 							type="submit"
 							class="btn btn-sm btn-primary"
-							disabled={!upload2.canSave || upload2.isSaving}
+							disabled={!editor_2.canSave || editor_2.isSaving}
 						>
-							{#if upload2.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
+							{#if editor_2.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
 							Guardar
 						</button>
 					{/if}
@@ -236,27 +240,27 @@
 				class="mt-2 flex items-center justify-between gap-4 rounded-lg border border-zinc-700 p-3"
 			>
 				<p class="text-sm text-zinc-400">
-					{#if edit3.saveStep === 'done'}
-						✓ ¡Media actualizado! ID: <code class="text-zinc-200">{edit3.updatedMediaId}</code>
-					{:else if edit3.saveStep === 'error'}
-						<span class="text-error">{edit3.saveError}</span>
-					{:else if edit3.saveStep === 'generating'}
+					{#if editor_3.saveStep === 'done'}
+						✓ ¡Media actualizado! ID: <code class="text-zinc-200">{editor_3.updatedMediaId}</code>
+					{:else if editor_3.saveStep === 'error'}
+						<span class="text-error">{editor_3.saveError}</span>
+					{:else if editor_3.saveStep === 'generating'}
 						<span class="loading loading-xs loading-spinner"></span> Generando recortes...
-					{:else if edit3.saveStep === 'saving'}
+					{:else if editor_3.saveStep === 'saving'}
 						<span class="loading loading-xs loading-spinner"></span> Guardando...
 					{:else}
 						Ajusta los recortes y guarda
 					{/if}
 				</p>
 				<div class="flex shrink-0 gap-2">
-					{#if edit3.saveStep !== 'done'}
+					{#if editor_3.saveStep !== 'done'}
 						<button
 							type="button"
 							class="btn btn-sm btn-primary"
-							disabled={!edit3.canSave || edit3.isSaving}
-							onclick={() => edit3.handleSave()}
+							disabled={!editor_3.canSave || editor_3.isSaving}
+							onclick={() => editor_3.handleSave()}
 						>
-							{#if edit3.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
+							{#if editor_3.isSaving}<span class="loading loading-xs loading-spinner"></span>{/if}
 							Guardar cambios
 						</button>
 					{/if}
