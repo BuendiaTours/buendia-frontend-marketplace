@@ -2,18 +2,11 @@
 	/**
 	 * ActivityOptionsAccordion — Manages activity options as sub-resources.
 	 * Each option has a title, language, booking system, privacy, and optional duration/description.
-	 * Uses a dialog for creation and direct API calls via ACTIVITY_OPTION_REQUEST.
+	 * Creation is handled via a dedicated page; deletion via client-side API calls.
 	 */
 	import * as m from '$paraglide/messages';
-	import { v4 as uuidv4 } from 'uuid';
 	import { Add, Close, Tuning } from '$lib/icons/Linear';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import {
-		OptionBookingSystem,
-		OptionDurationUnit,
-		OptionLanguage,
-		OptionPrivacy
-	} from '$core/activity-options/enums';
 	import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 	import type { ActivityOption } from '$core/activity-options/types';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
@@ -25,7 +18,6 @@
 		OPTION_STATUS_OPTIONS
 	} from '$lib/labels/activityOptions';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
-	import PureHtmlDialog from '$lib/components/backoffice/PureHtmlDialog.svelte';
 
 	type ToastFn = (data: {
 		data: { title: string; description: string; type: 'success' | 'error' };
@@ -39,93 +31,10 @@
 
 	let { activityId, options = $bindable(), addToast }: Props = $props();
 
-	let dialog: PureHtmlDialog;
-	let selectedTitle = $state('');
-	let selectedLanguage = $state<OptionLanguage>(OptionLanguage.ES);
-	let selectedBookingSystem = $state<OptionBookingSystem>(OptionBookingSystem.BOKUN);
-	let selectedPrivacy = $state<OptionPrivacy>(OptionPrivacy.PUBLIC);
-	let selectedDescription = $state('');
-	let selectedDurationQuantity = $state<number>(1);
-	let selectedDurationUnit = $state<OptionDurationUnit>(OptionDurationUnit.HOURS);
-	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
 
 	function showToast(type: 'success' | 'error', description: string) {
 		addToast?.({ data: { title: type === 'success' ? 'Success' : 'Error', description, type } });
-	}
-
-	function resetForm() {
-		selectedTitle = '';
-		selectedLanguage = OptionLanguage.ES;
-		selectedBookingSystem = OptionBookingSystem.BOKUN;
-		selectedPrivacy = OptionPrivacy.PUBLIC;
-		selectedDescription = '';
-		selectedDurationQuantity = 1;
-		selectedDurationUnit = OptionDurationUnit.HOURS;
-	}
-
-	function openCreateDialog() {
-		resetForm();
-		dialog.showModal();
-	}
-
-	async function handleAdd() {
-		if (!selectedTitle.trim()) return;
-
-		isAdding = true;
-		try {
-			const optionId = uuidv4();
-			const duration = { unit: selectedDurationUnit, quantity: selectedDurationQuantity };
-
-			await ACTIVITY_OPTION_REQUEST.create(globalThis.fetch, {
-				id: optionId,
-				activityId,
-				title: selectedTitle.trim(),
-				language: selectedLanguage,
-				bookingSystem: selectedBookingSystem,
-				privacy: selectedPrivacy,
-				duration,
-				...(selectedDescription.trim() ? { description: selectedDescription.trim() } : {})
-			});
-
-			options = [
-				...options,
-				{
-					id: optionId,
-					activityId,
-					title: selectedTitle.trim(),
-					language: selectedLanguage,
-					bookingSystem: selectedBookingSystem,
-					privacy: selectedPrivacy,
-					duration,
-					description: selectedDescription.trim() || null,
-					audios: [],
-					availabilityGroupId: null,
-					brochures: [],
-					groupTickets: [],
-					individualTickets: [],
-					liveGuides: [],
-					maxGroupSize: null,
-					maxTicketsPerIndividual: null,
-					pickup: null,
-					skipTheLineType: null,
-					status: 'DRAFT' as ActivityOption['status'],
-					supplierOptionCode: null,
-					ticketKind: null,
-					wheelchair: 'NOT_ACCESSIBLE' as ActivityOption['wheelchair'],
-					createdAt: new Date().toISOString(),
-					updatedAt: new Date().toISOString()
-				}
-			];
-
-			dialog.close();
-			showToast('success', m.activities_optionsAdded());
-		} catch (err) {
-			console.error('Error adding option:', err);
-			showToast('error', m.activities_optionsError());
-		} finally {
-			isAdding = false;
-		}
 	}
 
 	async function handleRemove(option: ActivityOption) {
@@ -185,10 +94,10 @@
 	{/snippet}
 	{#snippet content()}
 		<div class="text-right md:col-span-12">
-			<button type="button" class="btn btn-outline btn-primary btn-sm" onclick={openCreateDialog}>
+			<a href={ACTIVITY_ROUTES.optionCreate(activityId)} class="btn btn-outline btn-primary btn-sm">
 				<Add class="size-4" />
 				{m.activities_optionsNewButton()}
-			</button>
+			</a>
 		</div>
 
 		<div class="md:col-span-12">
@@ -234,121 +143,3 @@
 		</div>
 	{/snippet}
 </FormAccordion>
-
-<!-- Create option dialog -->
-<PureHtmlDialog bind:this={dialog} title={m.activities_optionsDialogTitle()}>
-	{#snippet content()}
-		<div class="space-y-4">
-			<div class="form-control">
-				<label class="label text-sm" for="dialogOptionTitle">
-					<span>{m.activities_optionsTitleLabel()}</span>
-				</label>
-				<input
-					id="dialogOptionTitle"
-					type="text"
-					class="input w-full"
-					placeholder={m.activities_optionsTitlePlaceholder()}
-					bind:value={selectedTitle}
-				/>
-			</div>
-
-			<div class="grid grid-cols-3 gap-4">
-				<div class="form-control">
-					<label class="label text-sm" for="dialogOptionLanguage">
-						<span>{m.activities_optionsLanguageLabel()}</span>
-					</label>
-					<select id="dialogOptionLanguage" class="select w-full" bind:value={selectedLanguage}>
-						{#each OPTION_LANGUAGE_OPTIONS as opt (opt.id)}
-							<option value={opt.id}>{opt.name}</option>
-						{/each}
-					</select>
-				</div>
-
-				<div class="form-control">
-					<label class="label text-sm" for="dialogOptionBookingSystem">
-						<span>{m.activities_optionsBookingSystemLabel()}</span>
-					</label>
-					<select
-						id="dialogOptionBookingSystem"
-						class="select w-full"
-						bind:value={selectedBookingSystem}
-					>
-						{#each OPTION_BOOKING_SYSTEM_OPTIONS as opt (opt.id)}
-							<option value={opt.id}>{opt.name}</option>
-						{/each}
-					</select>
-				</div>
-
-				<div class="form-control">
-					<label class="label text-sm" for="dialogOptionPrivacy">
-						<span>{m.activities_optionsPrivacyLabel()}</span>
-					</label>
-					<select id="dialogOptionPrivacy" class="select w-full" bind:value={selectedPrivacy}>
-						{#each OPTION_PRIVACY_OPTIONS as opt (opt.id)}
-							<option value={opt.id}>{opt.name}</option>
-						{/each}
-					</select>
-				</div>
-			</div>
-
-			<div class="grid grid-cols-2 gap-4">
-				<div class="form-control">
-					<label class="label text-sm" for="dialogOptionDurationQty">
-						<span>{m.activities_optionsDurationLabel()}</span>
-					</label>
-					<input
-						id="dialogOptionDurationQty"
-						type="number"
-						class="input w-full"
-						min="1"
-						bind:value={selectedDurationQuantity}
-					/>
-				</div>
-
-				<div class="form-control">
-					<label class="label text-sm" for="dialogOptionDurationUnit">
-						<span>{m.activities_optionsDurationUnitLabel()}</span>
-					</label>
-					<select
-						id="dialogOptionDurationUnit"
-						class="select w-full"
-						bind:value={selectedDurationUnit}
-					>
-						{#each OPTION_DURATION_UNIT_OPTIONS as opt (opt.id)}
-							<option value={opt.id}>{opt.name}</option>
-						{/each}
-					</select>
-				</div>
-			</div>
-
-			<div class="form-control">
-				<label class="label text-sm" for="dialogOptionDescription">
-					<span>{m.activities_optionsDescriptionLabel()}</span>
-				</label>
-				<textarea
-					id="dialogOptionDescription"
-					class="textarea w-full"
-					rows={3}
-					placeholder={m.activities_optionsDescriptionPlaceholder()}
-					bind:value={selectedDescription}
-				></textarea>
-			</div>
-		</div>
-	{/snippet}
-	{#snippet actions()}
-		<button type="button" class="btn btn-ghost" onclick={() => dialog.close()}>
-			{m.common_cancel()}
-		</button>
-		<button
-			type="button"
-			class="btn btn-primary"
-			disabled={!selectedTitle.trim() || isAdding}
-			onclick={handleAdd}
-		>
-			{#if isAdding}
-				<span class="loading loading-spinner loading-xs"></span>
-			{/if}
-			{m.activities_optionsCreateButton()}
-		</button>
-	{/snippet}
-</PureHtmlDialog>

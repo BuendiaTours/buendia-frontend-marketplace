@@ -8,9 +8,11 @@ import {
 	OptionDurationUnit,
 	OptionLanguage,
 	OptionPrivacy,
+	OptionSkipTheLineType,
 	OptionStatus,
 	OptionTicketKind,
-	OptionWheelchair
+	OptionWheelchair,
+	PickupPlaceKind
 } from '$core/activity-options/enums';
 import * as m from '$paraglide/messages';
 
@@ -64,4 +66,29 @@ export const OPTION_WHEELCHAIR_OPTIONS = [
 export const OPTION_TICKET_KIND_OPTIONS = [
 	{ id: OptionTicketKind.INDIVIDUAL, name: m.enum_optionTicketKind_individual() },
 	{ id: OptionTicketKind.GROUP, name: m.enum_optionTicketKind_group() }
+];
+
+export const OPTION_SKIP_THE_LINE_OPTIONS = [
+	{
+		id: OptionSkipTheLineType.SKIP_THE_LINE_TO_GET_TICKETS,
+		name: m.enum_optionSkipTheLine_skipToGetTickets()
+	},
+	{
+		id: OptionSkipTheLineType.SEPARATE_ENTRANCE,
+		name: m.enum_optionSkipTheLine_separateEntrance()
+	},
+	{
+		id: OptionSkipTheLineType.EXPRESS_SECURITY_CHECK,
+		name: m.enum_optionSkipTheLine_expressSecurityCheck()
+	},
+	{
+		id: OptionSkipTheLineType.EXPRESS_ELEVATORS,
+		name: m.enum_optionSkipTheLine_expressElevators()
+	},
+	{ id: OptionSkipTheLineType.NO_SKIP_THE_LINE, name: m.enum_optionSkipTheLine_noSkipTheLine() }
+];
+
+export const PICKUP_PLACE_KIND_OPTIONS = [
+	{ id: PickupPlaceKind.PICKUP, name: m.enum_pickupPlaceKind_pickup() },
+	{ id: PickupPlaceKind.DROPOFF, name: m.enum_pickupPlaceKind_dropoff() }
 ];

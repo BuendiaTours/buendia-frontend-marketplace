@@ -15,6 +15,11 @@ export const ACTIVITY_ROUTES = {
 	stages: (id: string) => backoffice('activities', id, 'stages'),
 	indexation: (id: string) => backoffice('activities', id, 'indexation'),
 	options: (id: string) => backoffice('activities', id, 'options'),
+	optionCreate: (id: string) => backoffice('activities', id, 'options', 'create'),
 	optionEdit: (activityId: string, optionId: string) =>
-		backoffice('activities', activityId, 'options', optionId, 'edit')
+		backoffice('activities', activityId, 'options', optionId, 'edit'),
+	optionPickup: (activityId: string, optionId: string) =>
+		backoffice('activities', activityId, 'options', optionId, 'pickup'),
+	optionBookingSystem: (activityId: string, optionId: string) =>
+		backoffice('activities', activityId, 'options', optionId, 'booking-system')
 } as const;
