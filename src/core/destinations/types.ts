@@ -6,6 +6,7 @@
 
 import type { DestinationKind, DestinationSortAttribute } from '$core/destinations/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
+import type { BackofficePhoto } from '$lib/types';
 
 // ── Projections (read models) ───────────────────
 
@@ -34,8 +35,9 @@ export type Destination = {
 	longitude: number | null;
 	name: string;
 	parent: DestinationParent | null;
-	photoUrl: string | null;
-	photoUrlHero: string | null;
+	image?: Partial<BackofficePhoto>;
+	photoUrl?: string | null;
+	photoUrlHero?: string | null;
 	slug: string;
 };
 
@@ -52,8 +54,7 @@ export type DestinationCreateDto = {
 	descriptionShort?: string | null;
 	latitude?: number | null;
 	longitude?: number | null;
-	photoUrl?: string | null;
-	photoUrlHero?: string | null;
+	photoId?: string | null;
 };
 
 /** Payload for partially updating an existing destination. */
@@ -65,8 +66,7 @@ export type DestinationUpdateDto = {
 	name?: string;
 	latitude?: number | null;
 	longitude?: number | null;
-	photoUrl?: string | null;
-	photoUrlHero?: string | null;
+	photoId?: string | null;
 	slug?: string;
 };
 

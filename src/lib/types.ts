@@ -262,7 +262,7 @@ export type Destination = {
 	slug: string;
 	kind: DestinationKind;
 	descriptionShort: string;
-	photo?: Partial<BackofficePhoto>;
+	image?: Partial<BackofficePhoto>;
 };
 
 export type Attraction = {

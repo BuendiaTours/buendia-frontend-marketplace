@@ -8,7 +8,7 @@
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { DESTINATION_KIND_OPTIONS } from '$lib/labels/destinations';
 	import { DESTINATION_ROUTES } from '$lib/config/routes/backoffice/destinations';
-	import type { Destination } from '$lib/types';
+	import type { Destination } from '$core/destinations/types';
 
 	// Database
 	import { Database } from '$lib/icons/Linear';
@@ -17,6 +17,7 @@
 	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
+	import FormImageEditor from '$lib/components/backoffice/forms/FormImageEditor.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
@@ -143,25 +144,12 @@
 				wrapperClass="md:col-span-12"
 			/>
 
-			<div class="md:col-span-4">
-				<div class="card p-4">
-					{#if $form.photoUrlHero}
-						<a href={$form.photoUrlHero} target="_blank" rel="noopener noreferrer">
-							<img src={$form.photoUrlHero} alt="" />
-						</a>
-					{/if}
-				</div>
+			<div class="md:col-span-12">
+				<FormImageEditor
+					photo={data.destination?.image}
+					onPhotoSaved={(id) => ($form.photoId = id)}
+				/>
 			</div>
-
-			<FormInputText
-				id="photoUrlHero"
-				label="URL de imagen principal"
-				type="url"
-				bind:value={$form.photoUrlHero}
-				error={$errors.photoUrlHero}
-				wrapperClass="md:col-span-8"
-				placeholder="https://example.com/image.jpg"
-			/>
 		{/snippet}
 	</FormAccordion>
 </form>
