@@ -1,3 +1,5 @@
+// Gestiona la subida de una nueva imagen a S3 en background y la creación del registro media
+
 import {
 	getUploadUrl,
 	uploadFileToS3,

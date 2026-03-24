@@ -1,3 +1,5 @@
+// Llamadas HTTP: presigned URL, subida a S3 y creación/actualización de registros media
+
 import type { ImageData } from '../types/persistedStateTypes';
 
 export type PresignedUrlRequest = {

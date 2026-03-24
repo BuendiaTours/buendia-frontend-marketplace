@@ -1,3 +1,5 @@
+// Gestiona el guardado de ediciones sobre un media existente (PATCH a S3)
+
 import { updateMedia, type CreateMediaPayload } from './uploadService';
 import type { SicImageEditorInstance } from '../types/imageEditorTypes';
 import type { S3UploadConfig } from './s3UploadManager.svelte';
