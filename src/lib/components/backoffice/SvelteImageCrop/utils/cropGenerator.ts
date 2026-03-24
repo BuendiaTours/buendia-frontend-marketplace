@@ -2,7 +2,7 @@
  * Utilidades para generar crops de imagen usando Canvas 2D
  */
 
-import type { ActiveCropBox } from '$lib/SvelteImageCrop/types/imageEditorTypes';
+import type { ActiveCropBox } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
 
 /**
  * Información de la imagen original

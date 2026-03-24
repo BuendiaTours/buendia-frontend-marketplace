@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import variantsConfig from '$lib/SvelteImageCrop/config/sample-variants-config.json';
+	import variantsConfig from '$lib/components/backoffice/SvelteImageCrop/config/sample-variants-config.json';
 	import variantsConfigS3 from './variants-config.json';
-	import SicImageEditor from '$lib/SvelteImageCrop/components/SicImageEditor.svelte';
-	import type { SicImageEditorInstance } from '$lib/SvelteImageCrop/types/imageEditorTypes';
-	import type { ImageData } from '$lib/SvelteImageCrop/types/persistedStateTypes';
-	import { EDITOR_CONFIG_PRESETS } from '$lib/SvelteImageCrop/demo/demoHelpers';
+	import SicImageEditor from '$lib/components/backoffice/SvelteImageCrop/components/SicImageEditor.svelte';
+	import type { SicImageEditorInstance } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
+	import type { ImageData } from '$lib/components/backoffice/SvelteImageCrop/types/persistedStateTypes';
+	import { EDITOR_CONFIG_PRESETS } from '$lib/components/backoffice/SvelteImageCrop/demo/demoHelpers';
 
-	import { createS3UploadManager } from '$lib/SvelteImageCrop/utils/s3UploadManager.svelte';
-	import { createS3EditManager } from '$lib/SvelteImageCrop/utils/s3EditManager.svelte';
+	import { createS3UploadManager } from '$lib/components/backoffice/SvelteImageCrop/utils/s3UploadManager.svelte';
+	import { createS3EditManager } from '$lib/components/backoffice/SvelteImageCrop/utils/s3EditManager.svelte';
 
 	const API_BASE_URL = 'http://localhost:5555';
 	const EXISTING_MEDIA_ID = '66666666-6666-6666-6666-666666666666';

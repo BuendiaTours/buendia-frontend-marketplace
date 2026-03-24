@@ -5,8 +5,8 @@
  * without side effects. This makes them easily testable and reusable.
  */
 
-import type { ActiveCropBox } from '$lib/SvelteImageCrop/types/imageEditorTypes';
-import type { VariantDefinition } from '$lib/SvelteImageCrop/types/variantsConfigTypes';
+import type { ActiveCropBox } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
+import type { VariantDefinition } from '$lib/components/backoffice/SvelteImageCrop/types/variantsConfigTypes';
 
 // Libs
 import { v4 as uuidv4 } from 'uuid';

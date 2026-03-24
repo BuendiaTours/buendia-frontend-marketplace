@@ -9,18 +9,18 @@
  * regardless of container size or display dimensions.
  */
 
-import type { ActiveCropBox } from '$lib/SvelteImageCrop/types/imageEditorTypes';
-import type { VariantDefinition } from '$lib/SvelteImageCrop/types/variantsConfigTypes';
+import type { ActiveCropBox } from '$lib/components/backoffice/SvelteImageCrop/types/imageEditorTypes';
+import type { VariantDefinition } from '$lib/components/backoffice/SvelteImageCrop/types/variantsConfigTypes';
 import type {
 	ImageData,
 	Variant,
 	NormalizedCoords
-} from '$lib/SvelteImageCrop/types/persistedStateTypes';
-import type { GeneratedCrop } from '$lib/SvelteImageCrop/utils/cropGenerator';
+} from '$lib/components/backoffice/SvelteImageCrop/types/persistedStateTypes';
+import type { GeneratedCrop } from '$lib/components/backoffice/SvelteImageCrop/utils/cropGenerator';
 import {
 	containerToNormalized,
 	normalizedToImagePixels
-} from '$lib/SvelteImageCrop/utils/cropGenerator';
+} from '$lib/components/backoffice/SvelteImageCrop/utils/cropGenerator';
 /**
  * Converts editor state to ImageData (for saving to server)
  *

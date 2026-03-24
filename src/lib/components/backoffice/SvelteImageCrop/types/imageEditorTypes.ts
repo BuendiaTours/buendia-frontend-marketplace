@@ -7,7 +7,7 @@
 
 import type { VariantDefinition } from './variantsConfigTypes';
 import type { ImageData } from './persistedStateTypes';
-import type { GeneratedCrop } from '$lib/SvelteImageCrop/utils/cropGenerator';
+import type { GeneratedCrop } from '$lib/components/backoffice/SvelteImageCrop/utils/cropGenerator';
 
 /**
  * Layout variants for the editor
