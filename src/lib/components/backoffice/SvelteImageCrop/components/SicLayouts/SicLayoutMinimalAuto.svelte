@@ -49,7 +49,7 @@
 			onToggleCropBox(firstCrop);
 			await tick();
 
-			if (activeCropBoxes.length > 0) {
+			if (activeCropBoxes.length > 0 && editorContainerComponent) {
 				await editorContainerComponent.waitForImageReady();
 				onGenerateCrops();
 			}

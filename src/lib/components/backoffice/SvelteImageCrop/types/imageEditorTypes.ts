@@ -150,6 +150,8 @@ export type SicImageEditorEvents = {
 	 */
 	ready: {
 		instanceId: string;
+		outputConfig: OutputConfig;
+		editorConfig: EditorConfig;
 	};
 
 	/**
@@ -273,4 +275,4 @@ export type SicImageEditorInstance = {
 	 * @param data - Partial image metadata to update
 	 */
 	setImageData(data: Partial<Pick<ImageData, 'id' | 'originalUrl' | 'originalSizeBytes'>>): void;
-}
+};
