@@ -16,16 +16,12 @@ import type {
 	OptionBookingSystem,
 	OptionDurationUnit,
 	OptionLanguage,
-	OptionPickupConfirmationType,
-	OptionPickupDropOffType,
 	OptionPrivacy,
 	OptionSkipTheLineType,
 	OptionSortAttribute,
-	OptionStartingPlaceType,
 	OptionStatus,
 	OptionTicketKind,
 	OptionWheelchair,
-	PickupMinutesBefore,
 	PickupPlaceKind
 } from '$core/activity-options/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
@@ -49,24 +45,6 @@ export type AgeRange = {
 export type PersonsRange = {
 	min: number;
 	max: number | null;
-};
-
-/** Drop-off details within a pickup configuration. */
-export type OptionPickupDropOff = {
-	type: OptionPickupDropOffType;
-	location?: string;
-};
-
-/** Pickup configuration for an activity option. */
-export type OptionPickup = {
-	kind: OptionStartingPlaceType;
-	areas?: string[];
-	confirmationType?: OptionPickupConfirmationType;
-	description?: string;
-	dropOff?: OptionPickupDropOff;
-	minutesBefore?: PickupMinutesBefore;
-	referenceStartTime?: string;
-	transportationType?: string[];
 };
 
 // ── Projections (read models) ───────────────────
@@ -93,24 +71,28 @@ export type GroupTicket = {
 	status: GroupTicketStatus;
 };
 
-/** Point (pickup/meeting) associated with an activity option. */
-export type OptionPoint = {
-	id: string;
-	optionId: string;
+/** Pickup place associated with an activity option. */
+export type PickupPlace = {
+	pickupPointId: string;
+	address: string | null;
+	city: string | null;
 	coords: Coords | null;
-	description: string | null;
-	hour: string | null;
-	marginTime: number | null;
+	countryCode: string | null;
+	kind: PickupPlaceKind;
+	minutesBefore: number | null;
+	name: string;
+	postCode: string | null;
 };
 
 /** Full activity option projection as returned by the API. */
 export type ActivityOption = {
 	id: string;
 	activityId: string;
-	audios: OptionLanguage[];
 	availabilityGroupId: string | null;
+	audios: OptionLanguage[];
 	bookingSystem: OptionBookingSystem;
 	brochures: OptionLanguage[];
+	cutOff: number;
 	description: string | null;
 	duration: OptionDuration;
 	groupTickets: GroupTicket[];
@@ -119,7 +101,7 @@ export type ActivityOption = {
 	liveGuides: OptionLanguage[];
 	maxGroupSize: number | null;
 	maxTicketsPerIndividual: number | null;
-	pickup: Record<string, unknown> | null;
+	pickupPlaces: PickupPlace[];
 	privacy: OptionPrivacy;
 	skipTheLineType: OptionSkipTheLineType | null;
 	status: OptionStatus;
@@ -142,11 +124,11 @@ export type ActivityOptionCreateDto = {
 	privacy: OptionPrivacy;
 	title: string;
 	availabilityGroupId?: string | null;
+	cutOff?: number;
 	description?: string;
 	duration?: OptionDuration;
 	maxGroupSize?: number;
 	maxTicketsPerIndividual?: number;
-	pickup?: OptionPickup;
 	skipTheLineType?: OptionSkipTheLineType;
 	supplierOptionCode?: string;
 	ticketKind?: OptionTicketKind;
@@ -157,12 +139,12 @@ export type ActivityOptionCreateDto = {
 export type ActivityOptionUpdateDto = {
 	availabilityGroupId?: string | null;
 	bookingSystem?: OptionBookingSystem;
+	cutOff?: number;
 	description?: string;
 	duration?: Partial<OptionDuration>;
 	language?: OptionLanguage;
 	maxGroupSize?: number;
 	maxTicketsPerIndividual?: number;
-	pickup?: Partial<OptionPickup>;
 	privacy?: OptionPrivacy;
 	skipTheLineType?: OptionSkipTheLineType;
 	status?: OptionStatus;

@@ -76,35 +76,11 @@ export enum OptionTicketKind {
 
 // ── Pickup ──────────────────────────────────────
 
-/** Type of starting place for pickup. */
-export enum OptionStartingPlaceType {
-	MEETING_POINT = 'MEETING_POINT',
-	AREA = 'AREA',
-	LIST_OF_LOCATIONS = 'LIST_OF_LOCATIONS'
-}
-
 /** Drop-off policy relative to pickup. */
-export enum OptionPickupDropOffType {
+export enum OptionDropOffType {
 	SAME_PLACE = 'SAME_PLACE',
 	DIFFERENT_PLACE = 'DIFFERENT_PLACE',
 	NO_DROP_OFF = 'NO_DROP_OFF'
-}
-
-/** How pickup confirmation is communicated. */
-export enum OptionPickupConfirmationType {
-	DAY_BEFORE = 'DAY_BEFORE',
-	ON_SELECT_PICKUP_LOCATION = 'ON_SELECT_PICKUP_LOCATION'
-}
-
-/** Minutes before activity start for pickup arrival. */
-export enum PickupMinutesBefore {
-	NOT_APPLY = 'NOT_APPLY',
-	FIVE = 'FIVE',
-	TEN = 'TEN',
-	FIFTEEN = 'FIFTEEN',
-	TWENTY = 'TWENTY',
-	TWENTY_FIVE = 'TWENTY_FIVE',
-	THIRTY = 'THIRTY'
 }
 
 /** Kind of usage of a pickup place (pickup or dropoff). */
