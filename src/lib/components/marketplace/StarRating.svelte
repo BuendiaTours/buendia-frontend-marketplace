@@ -19,19 +19,21 @@
 	 */
 
 	type Props = {
-		value: number | null;
+		value?: number | null;
 		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		filledClass?: string;
 		emptyClass?: string;
 		wrapperClass?: string;
+		single?: boolean;
 	};
 
 	let {
-		value,
+		value = null,
 		size = 'xs',
 		filledClass = 'c-star-filled',
 		emptyClass = 'c-star-empty',
-		wrapperClass = ''
+		wrapperClass = '',
+		single = false
 	}: Props = $props();
 
 	const roundedRating = $derived(() => {
@@ -74,7 +76,12 @@
 	});
 </script>
 
-{#if value !== null}
+{#if single}
+	<div class="c-star-rating {sizeClass()} {wrapperClass}">
+		<div class="c-mask c-mask-star c-mask-half-1 {filledClass}"></div>
+		<div class="c-mask c-mask-star c-mask-half-2 {filledClass}"></div>
+	</div>
+{:else if value !== null}
 	<div class="c-star-rating {sizeClass()} {wrapperClass}">
 		{#each stars() as star, index (index)}
 			{#if star === 'full'}
