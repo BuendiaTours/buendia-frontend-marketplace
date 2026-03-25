@@ -367,7 +367,13 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene estadísticas de reviews de una actividad',
 			params: ['activityId']
-		} satisfies EndpointWithParam
+		} satisfies EndpointWithParam,
+		byDestinationSlug: {
+			path: (slug: string, page: number) => `/destination/${slug}/reviews/${page}`,
+			method: 'GET',
+			description: 'Obtiene reviews de un destino por slug y página',
+			params: ['slug', 'page']
+		}
 	},
 
 	// ──────────────────────────────────────────────

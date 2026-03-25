@@ -1,7 +1,14 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { resolveRoute } from '$app/paths';
+
+	// Lib
+	import { format } from 'date-fns';
+
+	// Components
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -86,6 +93,34 @@
 			<p class="text-gray-500">No hay actividades disponibles en este destino.</p>
 		{/if}
 	</div>
+
+	<!-- Reviews List -->
+	{#if data.reviews && data.reviews.length > 0}
+		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
+			{#each data.reviews as review (review.id)}
+				<div class="rounded-xl border border-[var(--color-border-default)] p-6 pb-6">
+					<ReviewCard
+						name={review.user || 'Anónimo'}
+						desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
+						text={review.content}
+						rating={review.averageRating}
+						lines={4}
+						{...review}
+					/>
+
+					{#if review.attachments && review.attachments.length > 0}
+						<GallerySquareThumbs
+							items={review.attachments.map((att) => ({ src: att.url.value }))}
+							visibleCount={3}
+							categoryId="review-{review.id}"
+							wrapperClass="mt-4 gap-2 flex-wrap"
+							thumbClass="w-[calc(33.33%-4px)] sm:w-34"
+						/>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	{/if}
 
 	<!-- Back to home link -->
 </div>

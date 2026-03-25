@@ -39,6 +39,23 @@ export const reviewsEndpoints = {
 	},
 
 	/**
+	 * Obtener reviews públicas de un destino por slug
+	 */
+	async getByDestinationSlug(
+		fetchFn: typeof fetch,
+		slug: string,
+		page = 1
+	): Promise<ActivityReviewsResponse> {
+		const path = API_ENDPOINTS.reviews.byDestinationSlug.path(slug, page);
+
+		const response = await apiClient.request<ActivityReviewsResponse>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
+	},
+
+	/**
 	 * Obtener estadísticas de reviews de una actividad
 	 */
 	async getStatsByActivityId(
