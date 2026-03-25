@@ -25,10 +25,10 @@
 		{#if data.destination.descriptionShort}
 			<p class="text-gray-600">{data.destination.descriptionShort}</p>
 		{/if}
-		{#if data.destination.photoUrlHero}
+		{#if data.destination.image?.originalUrl}
 			<div class="mt-4">
 				<img
-					src={data.destination.photoUrlHero}
+					src={data.destination.image.originalUrl}
 					alt={data.destination.name}
 					class="h-64 w-full rounded-lg object-cover"
 				/>
