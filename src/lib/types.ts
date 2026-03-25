@@ -214,6 +214,27 @@ export type ActivityOption = {
 	updatedAt: string;
 };
 
+export type ActivityCardInfoList = {
+	id: string;
+	infoName: string;
+};
+
+export type ActivityCard = {
+	id: string;
+	image: string;
+	name: string;
+	slug: string;
+	infoList: ActivityCardInfoList[];
+	cancellation?: string;
+	price?: string;
+	discount?: string;
+	rating?: number;
+	opinions?: number;
+	isFreeTour?: boolean;
+	isNew?: boolean;
+	byBuendia?: boolean;
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
@@ -257,12 +278,13 @@ export type BackofficePhoto = {
 };
 
 export type Destination = {
+	activities: ActivityCard[];
+	descriptionShort: string;
 	id: string;
+	image?: Partial<BackofficePhoto>;
+	kind: DestinationKind;
 	name: string;
 	slug: string;
-	kind: DestinationKind;
-	descriptionShort: string;
-	image?: Partial<BackofficePhoto>;
 };
 
 export type Attraction = {

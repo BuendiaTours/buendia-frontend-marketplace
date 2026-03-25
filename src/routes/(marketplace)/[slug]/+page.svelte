@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import { resolveRoute } from '$app/paths';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -88,4 +89,13 @@
 	</div>
 
 	<!-- Back to home link -->
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{#each data.destination.activities as activity (activity.id)}
+			<ActivityCard
+				item={activity}
+				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+			/>
+		{/each}
+	</div>
 </div>

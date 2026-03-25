@@ -1,9 +1,9 @@
 /**
  * MARKETPLACE TYPOGRAPHY
- * 
+ *
  * Sistema de tipografía basado en diseño de Figma
  * Incluye variantes responsive para desktop, tablet y mobile
- * 
+ *
  * Conversión: 1rem = 16px
  */
 
@@ -72,12 +72,12 @@
 	--line-height-p-xs-mobile: 1rem; /* 16px */
 
 	/* SPECIAL - Price & Metrics */
-	--font-size-price: 2rem; /* 32px */
-	--line-height-price: 2.25rem; /* 36px */
-	--font-size-price-tablet: 1.875rem; /* 30px */
-	--line-height-price-tablet: 2rem; /* 32px */
-	--font-size-price-mobile: 1.625rem; /* 26px */
-	--line-height-price-mobile: 1.75rem; /* 28px */
+	--font-size-price: 1.375rem; /* 22px */
+	--line-height-price: 1.625rem; /* 26px */
+	--font-size-price-tablet: 1.375rem; /* 22px */
+	--line-height-price-tablet: 1.625rem; /* 26px */
+	--font-size-price-mobile: 1.25rem; /* 20px */
+	--line-height-price-mobile: 1.5rem; /* 24px */
 
 	--font-size-metric: 2rem; /* 32px */
 	--line-height-metric: 2.25rem; /* 36px */
