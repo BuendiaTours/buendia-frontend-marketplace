@@ -9,8 +9,7 @@
 /** External booking system that manages this option. */
 export enum OptionBookingSystem {
 	BOKUN = 'BOKUN',
-	TURITOP = 'TURITOP',
-	TOUR_CMS = 'TOUR_CMS'
+	TURITOP = 'TURITOP'
 }
 
 /** Duration unit for an activity option. */

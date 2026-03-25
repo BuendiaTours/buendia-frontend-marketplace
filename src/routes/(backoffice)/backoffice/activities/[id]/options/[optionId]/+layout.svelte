@@ -9,15 +9,26 @@
 	import { setContext } from 'svelte';
 	import type { LayoutProps } from './$types';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database, LinkRound, MapPoint } from '$lib/icons/Linear';
+	import { Database, LinkRound, MapPoint, Ticket } from '$lib/icons/Linear';
 
 	let { data, children }: LayoutProps = $props();
 
 	// svelte-ignore state_referenced_locally
 	let pickupCount = $state(data.option.pickupPlaces?.length ?? 0);
+	// svelte-ignore state_referenced_locally
+	let ticketCount = $state(
+		data.option.ticketKind === 'INDIVIDUAL'
+			? (data.option.individualTickets?.length ?? 0)
+			: data.option.ticketKind === 'GROUP'
+				? (data.option.groupTickets?.length ?? 0)
+				: 0
+	);
 
 	setContext('updatePickupCount', (count: number) => {
 		pickupCount = count;
+	});
+	setContext('updateTicketCount', (count: number) => {
+		ticketCount = count;
 	});
 
 	const tabs = $derived([
@@ -26,6 +37,12 @@
 			href: ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id),
 			icon: Database,
 			badge: undefined as number | undefined
+		},
+		{
+			label: m.activities_optionTabTickets(),
+			href: ACTIVITY_ROUTES.optionTickets(data.activity.id, data.option.id),
+			icon: Ticket,
+			badge: ticketCount > 0 ? ticketCount : undefined
 		},
 		{
 			label: m.activities_optionTabPickup(),

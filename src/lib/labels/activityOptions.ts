@@ -4,6 +4,11 @@
  */
 
 import {
+	GroupTicketStatus,
+	IndividualTicketFree,
+	IndividualTicketGroup,
+	IndividualTicketNeeded,
+	IndividualTicketStatus,
 	OptionBookingSystem,
 	OptionDurationUnit,
 	OptionLanguage,
@@ -91,4 +96,38 @@ export const OPTION_SKIP_THE_LINE_OPTIONS = [
 export const PICKUP_PLACE_KIND_OPTIONS = [
 	{ id: PickupPlaceKind.PICKUP, name: m.enum_pickupPlaceKind_pickup() },
 	{ id: PickupPlaceKind.DROPOFF, name: m.enum_pickupPlaceKind_dropoff() }
+];
+
+export const INDIVIDUAL_TICKET_STATUS_OPTIONS = [
+	{ id: IndividualTicketStatus.ACTIVE, name: m.enum_individualTicketStatus_active() },
+	{ id: IndividualTicketStatus.INACTIVE, name: m.enum_individualTicketStatus_inactive() }
+];
+
+export const INDIVIDUAL_TICKET_GROUP_OPTIONS = [
+	{ id: IndividualTicketGroup.ADULT, name: m.enum_individualTicketGroup_adult() },
+	{ id: IndividualTicketGroup.CHILD, name: m.enum_individualTicketGroup_child() },
+	{ id: IndividualTicketGroup.CITIZEN_EU, name: m.enum_individualTicketGroup_citizenEu() },
+	{ id: IndividualTicketGroup.INFANT, name: m.enum_individualTicketGroup_infant() },
+	{ id: IndividualTicketGroup.SENIOR, name: m.enum_individualTicketGroup_senior() },
+	{ id: IndividualTicketGroup.STUDENT, name: m.enum_individualTicketGroup_student() },
+	{ id: IndividualTicketGroup.STUDENT_EU, name: m.enum_individualTicketGroup_studentEu() },
+	{ id: IndividualTicketGroup.YOUTH, name: m.enum_individualTicketGroup_youth() },
+	{ id: IndividualTicketGroup.ALL, name: m.enum_individualTicketGroup_all() }
+];
+
+export const INDIVIDUAL_TICKET_FREE_OPTIONS = [
+	{ id: IndividualTicketFree.YES, name: m.enum_individualTicketFree_yes() },
+	{ id: IndividualTicketFree.NO, name: m.enum_individualTicketFree_no() },
+	{ id: IndividualTicketFree.NOT_APPLY, name: m.enum_individualTicketFree_notApply() }
+];
+
+export const INDIVIDUAL_TICKET_NEEDED_OPTIONS = [
+	{ id: IndividualTicketNeeded.YES, name: m.enum_individualTicketNeeded_yes() },
+	{ id: IndividualTicketNeeded.NO, name: m.enum_individualTicketNeeded_no() },
+	{ id: IndividualTicketNeeded.NOT_APPLY, name: m.enum_individualTicketNeeded_notApply() }
+];
+
+export const GROUP_TICKET_STATUS_OPTIONS = [
+	{ id: GroupTicketStatus.ACTIVE, name: m.enum_groupTicketStatus_active() },
+	{ id: GroupTicketStatus.INACTIVE, name: m.enum_groupTicketStatus_inactive() }
 ];
