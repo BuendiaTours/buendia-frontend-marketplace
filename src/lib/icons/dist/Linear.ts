@@ -151,6 +151,7 @@ export { default as Buildings } from './Linear/Buildings.svelte';
 export { default as Buildings2 } from './Linear/Buildings2.svelte';
 export { default as Buildings3 } from './Linear/Buildings3.svelte';
 export { default as Bus } from './Linear/Bus.svelte';
+export { default as ByBuendia } from './Linear/ByBuendia.svelte';
 export { default as Calculator } from './Linear/Calculator.svelte';
 export { default as CalculatorMinimalistic } from './Linear/CalculatorMinimalistic.svelte';
 export { default as Calendar } from './Linear/Calendar.svelte';

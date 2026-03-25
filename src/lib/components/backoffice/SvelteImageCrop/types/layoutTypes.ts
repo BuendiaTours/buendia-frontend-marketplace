@@ -100,4 +100,4 @@ export type LayoutProps = {
 	onRegenerateCrop: (cropId: string) => void;
 	/** Called to delete a specific generated crop */
 	onDeleteGeneratedCrop: (cropId: string) => void;
-}
+};

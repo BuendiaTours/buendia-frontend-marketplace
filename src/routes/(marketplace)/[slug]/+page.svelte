@@ -6,9 +6,10 @@
 	import { format } from 'date-fns';
 
 	// Components
+	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -131,4 +132,13 @@
 	{/if}
 
 	<!-- Back to home link -->
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{#each data.destination.activities as activity (activity.id)}
+			<ActivityCard
+				item={activity}
+				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+			/>
+		{/each}
+	</div>
 </div>

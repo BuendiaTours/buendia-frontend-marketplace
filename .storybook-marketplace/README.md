@@ -2,7 +2,7 @@
 
 **Documentación de componentes del Marketplace**
 
-Este Storybook está configurado **solo para componentes del marketplace** (parte pública).  
+Este Storybook está configurado **solo para componentes del marketplace** (parte pública).
 **NO** incluye componentes del backoffice.
 
 ---
@@ -87,7 +87,6 @@ Marketplace/
 ```
 Marketplace/
 ├── Components/         # Componentes reutilizables
-│   ├── ActivityCard
 │   ├── PhotoGallery
 │   └── Button
 ├── Layout/            # Header, Footer
@@ -144,7 +143,7 @@ Addon habilitado. Verás warnings de accesibilidad en el panel "Accessibility".
 
 - **Storybook Docs:** https://storybook.js.org/docs
 - **Svelte CSF:** https://github.com/storybookjs/addon-svelte-csf
-- **Stories de ejemplo:** Ver `ActivityCard.stories.svelte` y `PhotoGallery.stories.svelte`
+- **Stories de ejemplo:** Ver `PhotoGallery.stories.svelte`
 
 ---
 
