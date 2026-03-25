@@ -11,6 +11,7 @@
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -129,4 +130,9 @@
 			/>
 		{/each}
 	</div>
+
+	<!-- <NewsletterRegistration
+		title="Lo mejor de buendía, en tu correo"
+		subTitle="Suscríbete a nuestra newsletter y accede a nuetros desitono, experiencias exclusivas y ventajas solo para exploradores"
+	/> -->
 </div>

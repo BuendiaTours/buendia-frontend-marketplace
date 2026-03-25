@@ -6,8 +6,8 @@
 	import type { ActivityReviewParams } from '$lib/types';
 	import type { BndLightboxItem } from '$lib/types';
 
-	// API - Endpoints
-	import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
+	// Reactivity
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
@@ -65,7 +65,15 @@
 	async function loadActivityReviews(params: ActivityReviewParams, append = false) {
 		isLoadingReviews = true;
 		try {
-			const result = await reviewsEndpoints.getByActivityId(fetch, activityId, params);
+			const qs = new SvelteURLSearchParams();
+			if (params.sort) qs.set('sort', params.sort);
+			if (params.order) qs.set('order', params.order);
+			if (params.page) qs.set('page', String(params.page));
+			if (params.pageSize) qs.set('pageSize', String(params.pageSize));
+			if (params.stars && params.stars.length > 0) {
+				params.stars.forEach((s) => qs.append('stars', String(s)));
+			}
+			const result = await fetch(`/api/reviews/${activityId}?${qs}`).then((r) => r.json());
 			if (append) {
 				reviews = [...reviews, ...result.data];
 			} else {
