@@ -98,13 +98,15 @@
 	{#if data.reviews && data.reviews.length > 0}
 		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
 			{#each data.reviews as review (review.id)}
-				<div class="rounded-xl border border-[var(--color-border-default)] p-6 pb-6">
+				<div
+					class="flex flex-col justify-between rounded-xl border border-[var(--color-border-default)] p-6 pb-6"
+				>
 					<ReviewCard
 						name={review.user || 'Anónimo'}
 						desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
 						text={review.content}
 						rating={review.averageRating}
-						lines={4}
+						lines={3}
 						{...review}
 					/>
 
@@ -113,10 +115,16 @@
 							items={review.attachments.map((att) => ({ src: att.url.value }))}
 							visibleCount={3}
 							categoryId="review-{review.id}"
-							wrapperClass="mt-4 gap-2 flex-wrap"
-							thumbClass="w-[calc(33.33%-4px)] sm:w-34"
+							containerClass="mt-auto pt-4"
+							wrapperClass="plp-reviews__gallery gap-2"
+							thumbClass="w-1/3"
 						/>
 					{/if}
+
+					<div class="plp-reviews__about mt-4">
+						<p class="p-base text-neutral-600">Opinión sobre</p>
+						<a href="#" class="p-base underline underline-offset-8">Cena en el Trastévere</a>
+					</div>
 				</div>
 			{/each}
 		</div>

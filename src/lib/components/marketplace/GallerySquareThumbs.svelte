@@ -7,6 +7,7 @@
 	type Props = {
 		categoryId?: string;
 		categoryLabel?: string;
+		containerClass?: string;
 		items: BndLightboxItem[];
 		layout?: Snippet<[BndLightboxItemContext]>;
 		layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
@@ -20,6 +21,7 @@
 	let {
 		categoryId,
 		categoryLabel,
+		containerClass = '',
 		items,
 		layout,
 		layoutComponent,
@@ -50,7 +52,7 @@
 	});
 </script>
 
-<div class="c-gallery-square-thumbs @container">
+<div class="c-gallery-square-thumbs @container {containerClass}">
 	<div class="relative flex {wrapperClass}">
 		{#each visibleItems as item, i (item.src)}
 			<button
