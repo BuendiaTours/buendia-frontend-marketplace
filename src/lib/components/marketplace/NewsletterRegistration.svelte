@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { BuendiaLogoStar } from '$lib/icons/Linear';
+
 	type Props = {
 		title?: string;
 		subTitle?: string;
@@ -40,6 +42,8 @@
 				<button type="button" class="e-button e-button-lg">Suscribirse</button>
 			</div>
 		</div>
-		<div class="c-newsletter-registration__form w-1/2"></div>
+		<div class="c-newsletter-registration__form w-1/2">
+			<BuendiaLogoStar class="h-[140px] text-white" />
+		</div>
 	</div>
 </div>
