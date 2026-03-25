@@ -115,16 +115,63 @@
 
 	// ── Auto-calculated min values ──
 
-	function nextAgeMin(): number {
-		if (individualTickets.length === 0) return 0;
-		const last = individualTickets[individualTickets.length - 1];
-		return last.ageRange.max !== null ? last.ageRange.max + 1 : 0;
+	/**
+	 * Find the best available age gap among existing tickets.
+	 * Returns { min, max } for the first gap found:
+	 * 1. Before the first ticket (if it doesn't start at 0)
+	 * 2. Between two tickets
+	 * 3. After the last ticket
+	 */
+	function suggestAgeRange(): { min: number; max: number } {
+		if (individualTickets.length === 0) return { min: 0, max: 99 };
+
+		const sorted = [...individualTickets]
+			.filter((t) => t.ageRange.min !== null)
+			.sort((a, b) => (a.ageRange.min ?? 0) - (b.ageRange.min ?? 0));
+
+		// Gap before the first ticket
+		const firstMin = sorted[0].ageRange.min ?? 0;
+		if (firstMin > 0) {
+			return { min: 0, max: firstMin - 1 };
+		}
+
+		// Gap between tickets
+		for (let i = 0; i < sorted.length - 1; i++) {
+			const currentMax = sorted[i].ageRange.max ?? 0;
+			const nextMin = sorted[i + 1].ageRange.min ?? 0;
+			if (nextMin > currentMax + 1) {
+				return { min: currentMax + 1, max: nextMin - 1 };
+			}
+		}
+
+		// After the last ticket
+		const lastMax = sorted[sorted.length - 1].ageRange.max ?? 0;
+		return { min: lastMax + 1, max: 99 };
 	}
 
-	function nextPersonsMin(): number {
-		if (groupTickets.length === 0) return 1;
-		const last = groupTickets[groupTickets.length - 1];
-		return last.personsRange.max !== null ? last.personsRange.max + 1 : 1;
+	/** Find the best available persons range gap. */
+	function suggestPersonsRange(): { min: number; max: number | null } {
+		if (groupTickets.length === 0) return { min: 1, max: null };
+
+		const sorted = [...groupTickets].sort((a, b) => a.personsRange.min - b.personsRange.min);
+
+		// Gap before the first ticket
+		if (sorted[0].personsRange.min > 1) {
+			return { min: 1, max: sorted[0].personsRange.min - 1 };
+		}
+
+		// Gap between tickets
+		for (let i = 0; i < sorted.length - 1; i++) {
+			const currentMax = sorted[i].personsRange.max;
+			const nextMin = sorted[i + 1].personsRange.min;
+			if (currentMax !== null && nextMin > currentMax + 1) {
+				return { min: currentMax + 1, max: nextMin - 1 };
+			}
+		}
+
+		// After the last ticket
+		const lastMax = sorted[sorted.length - 1].personsRange.max;
+		return { min: lastMax !== null ? lastMax + 1 : 1, max: null };
 	}
 
 	// ── Individual ticket dialog ──
@@ -149,8 +196,9 @@
 
 	function resetIndividualForm() {
 		indGroup = availableGroups[0]?.id ?? IndividualTicketGroup.ADULT;
-		indAgeMin = nextAgeMin();
-		indAgeMax = 99;
+		const suggested = suggestAgeRange();
+		indAgeMin = suggested.min;
+		indAgeMax = suggested.max;
 		indPrice = 0;
 		indCommission = 0;
 		indStatus = IndividualTicketStatus.ACTIVE;
@@ -224,14 +272,16 @@
 	// ── Group ticket dialog ──
 
 	let groupDialog = $state<PureHtmlDialog>();
-	let grpPersonsMin = $derived(nextPersonsMin());
+	let grpPersonsMin = $state(1);
 	let grpPersonsMax = $state<number | null>(null);
 	let grpPrice = $state(0);
 	let grpCommission = $state(0);
 	let grpStatus = $state<GroupTicketStatus>(GroupTicketStatus.ACTIVE);
 
 	function resetGroupForm() {
-		grpPersonsMax = null;
+		const suggested = suggestPersonsRange();
+		grpPersonsMin = suggested.min;
+		grpPersonsMax = suggested.max;
 		grpPrice = 0;
 		grpCommission = 0;
 		grpStatus = GroupTicketStatus.ACTIVE;
@@ -581,7 +631,7 @@
 						<div class="form-control">
 							<span class="label text-sm">{m.activities_optionTicketPersonsRangeLabel()}</span>
 							<div class="flex items-center gap-2">
-								<input type="number" class="input w-20" disabled value={grpPersonsMin} />
+								<input type="number" class="input w-20" min="1" bind:value={grpPersonsMin} />
 								<span class="text-base-content/50 text-sm"
 									>{m.activities_optionTicketAgeRangeTo()}</span
 								>
