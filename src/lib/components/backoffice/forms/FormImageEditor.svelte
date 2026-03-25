@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
-	import type { BackofficePhoto } from '$lib/types';
+	import type { ApiImage } from '$lib/types';
 	import type {
 		SicImageEditorInstance,
 		EditorConfig
@@ -13,7 +13,7 @@
 	import { imageCropVariants } from '$lib/config/image-crop-variants';
 
 	type Props = {
-		imageData?: Partial<BackofficePhoto>;
+		imageData?: Partial<ApiImage>;
 		variantsConfig?: VariantDefinition[];
 		editorConfig?: EditorConfig;
 		onImageSaved?: (id: string) => void;

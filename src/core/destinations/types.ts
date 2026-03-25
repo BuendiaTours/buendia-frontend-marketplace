@@ -6,7 +6,7 @@
 
 import type { DestinationKind, DestinationSortAttribute } from '$core/destinations/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
-import type { BackofficePhoto } from '$lib/types';
+import type { ApiImage } from '$lib/types';
 
 // ── Projections (read models) ───────────────────
 
@@ -35,7 +35,7 @@ export type Destination = {
 	longitude: number | null;
 	name: string;
 	parent: DestinationParent | null;
-	image?: Partial<BackofficePhoto>;
+	image?: Partial<ApiImage>;
 	photoUrl?: string | null;
 	photoUrlHero?: string | null;
 	slug: string;

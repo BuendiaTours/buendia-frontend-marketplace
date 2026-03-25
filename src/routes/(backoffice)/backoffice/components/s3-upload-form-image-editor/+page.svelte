@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { PUBLIC_API_BASE_URL } from '$env/static/public';
-	import type { BackofficePhoto } from '$lib/types';
+	import type { ApiImage } from '$lib/types';
 	import FormImageEditor from '$lib/components/backoffice/forms/FormImageEditor.svelte';
 
 	const EXISTING_MEDIA_ID = '66666666-6666-6666-6666-666666666666';
 
-	let existingMedia = $state<Partial<BackofficePhoto> | null>(null);
+	let existingMedia = $state<Partial<ApiImage> | null>(null);
 	let loadError = $state<string | null>(null);
 
 	onMount(async () => {

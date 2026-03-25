@@ -242,13 +242,14 @@ export type Column<T> = {
 	sortField?: string;
 };
 
-export type BackofficePhotoVariant = {
+export type ApiImageVariant = {
 	id: string;
 	preset: string;
 	format: string;
 	width: number;
 	height: number;
 	sizeBytes: number;
+	url?: string;
 	normalizedCoords: {
 		x: number;
 		y: number;
@@ -258,7 +259,7 @@ export type BackofficePhotoVariant = {
 	};
 };
 
-export type BackofficePhoto = {
+export type ApiImage = {
 	id: string;
 	title: string;
 	altText: string;
@@ -272,7 +273,7 @@ export type BackofficePhoto = {
 		flipH: boolean;
 		flipV: boolean;
 	};
-	variants: BackofficePhotoVariant[];
+	variants: ApiImageVariant[];
 	createdAt: string;
 	updatedAt: string;
 };
@@ -281,7 +282,7 @@ export type Destination = {
 	activities: ActivityCard[];
 	descriptionShort: string;
 	id: string;
-	image?: Partial<BackofficePhoto>;
+	image?: Partial<ApiImage>;
 	kind: DestinationKind;
 	name: string;
 	slug: string;

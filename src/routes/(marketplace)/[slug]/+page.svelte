@@ -9,6 +9,7 @@
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -19,22 +20,9 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<!-- Destination Info -->
-	<div class="e-card mb-8">
-		<h1 class="mb-4 font-bold text-gray-900">{data.destination.name}</h1>
-		{#if data.destination.descriptionShort}
-			<p class="text-gray-600">{data.destination.descriptionShort}</p>
-		{/if}
-		{#if data.destination.image?.originalUrl}
-			<div class="mt-4">
-				<img
-					src={data.destination.image.originalUrl}
-					alt={data.destination.name}
-					class="h-64 w-full rounded-lg object-cover"
-				/>
-			</div>
-		{/if}
-	</div>
+	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
+
+	<!-- <textarea class="w-full font-mono">{JSON.stringify(data.destination)}</textarea> -->
 
 	<!-- Categories List -->
 	<div class="e-card mb-8">
