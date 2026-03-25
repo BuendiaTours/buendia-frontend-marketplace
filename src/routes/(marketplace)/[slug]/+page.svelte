@@ -131,8 +131,8 @@
 		{/each}
 	</div>
 
-	<!-- <NewsletterRegistration
+	<NewsletterRegistration
 		title="Lo mejor de buendía, en tu correo"
 		subTitle="Suscríbete a nuestra newsletter y accede a nuetros desitono, experiencias exclusivas y ventajas solo para exploradores"
-	/> -->
+	/>
 </div>

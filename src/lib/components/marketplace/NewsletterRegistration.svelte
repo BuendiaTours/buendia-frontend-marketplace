@@ -3,14 +3,43 @@
 		title?: string;
 		subTitle?: string;
 		wrapperClass?: string;
+		imgUrl?: string;
 	};
 
-	let { title: _title, subTitle: _subTitle, wrapperClass }: Props = $props();
+	let {
+		title = 'Lo mejor de buendía, en tu correo',
+		subTitle = 'Suscríbete a nuestra newsletter y accede a nuestros destionos, experiencias exclusivas y ventajas solo para exploradores',
+		imgUrl = '/marketplace/newsletter-bg.jpg',
+		wrapperClass
+	}: Props = $props();
 </script>
 
 <div
-	class="c-newsletter-registration relative h-[196px] overflow-hidden rounded-xl sm:h-[314px] {wrapperClass}"
+	class="c-newsletter-registration relative min-h-[280px] overflow-hidden rounded-xl {wrapperClass}"
 >
-	<img src="" class="h-full w-full object-cover object-center" />
-	<div class="bg-alpha-ink-48 absolute inset-0"></div>
+	<img
+		src={imgUrl}
+		alt="Suscríbete a nuestra newsletter"
+		class="absolute inset-0 h-full w-full object-cover object-center"
+	/>
+	<div class="bg-alpha-ink-72 relative flex gap-16 px-16 py-8">
+		<div class="c-newsletter-registration__content flex w-1/2 flex-col justify-center">
+			{#if title}
+				<p class="h2-editorial text-white">{title}</p>
+			{/if}
+			{#if subTitle}
+				<p class="p-base mt-2 text-white">{subTitle}</p>
+			{/if}
+			<div class="mt-8 flex w-full max-w-[466px] items-center gap-2 rounded-xl bg-white p-2">
+				<input
+					class="appareance-none w-full rounded-full"
+					type="email"
+					name="newsletter-email"
+					id="newsletter-email"
+				/>
+				<button type="button" class="e-button e-button-lg">Suscribirse</button>
+			</div>
+		</div>
+		<div class="c-newsletter-registration__form w-1/2"></div>
+	</div>
 </div>
