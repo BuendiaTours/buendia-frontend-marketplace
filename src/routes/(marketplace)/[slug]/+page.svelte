@@ -10,6 +10,7 @@
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -141,4 +142,12 @@
 			/>
 		{/each}
 	</div>
+
+	<!-- faqs -->
+	<Faqs
+		title={data.destination.faqsTitle}
+		faqs={data.destination.faqs}
+		wrapperClass="mt-12 lg:my-23"
+		fullOpened
+	/>
 </div>

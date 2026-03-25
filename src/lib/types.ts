@@ -41,6 +41,14 @@ export type Condition = {
 	items: ConditionItem[];
 };
 
+export type Faqs = {
+	id: string;
+	position: number;
+	question: string;
+	answer: string;
+	status: string;
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -55,7 +63,7 @@ export type ActivityListItem = {
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
-	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
+	faqs: Faqs[];
 	byBuendiaBanner: ByBuendiaBanner | null;
 	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
@@ -285,6 +293,8 @@ export type Destination = {
 	kind: DestinationKind;
 	name: string;
 	slug: string;
+	faqsTitle?: string;
+	faqs: Faqs[];
 };
 
 export type Attraction = {
