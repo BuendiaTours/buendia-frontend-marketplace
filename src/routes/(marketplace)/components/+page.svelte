@@ -11,15 +11,29 @@
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import { Calendar } from '$lib/icons/Linear';
+	import { Calendar, MapPoint } from '$lib/icons/Linear';
+	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
 
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	// MeltComboBox
+	const destinos = [
+		{ value: 'madrid', label: 'Madrid' },
+		{ value: 'barcelona', label: 'Barcelona' },
+		{ value: 'sevilla', label: 'Sevilla' },
+		{ value: 'valencia', label: 'Valencia' },
+		{ value: 'granada', label: 'Granada' },
+		{ value: 'toledo', label: 'Toledo' }
+	];
+	let comboSingle = $state<string | undefined>();
+	let comboMultiple = $state<string[]>([]);
 
 	// PureHtmlDialog
 	let pureDialog: PureHtmlDialog;
@@ -96,6 +110,129 @@
 </div>
 
 <!-- ============================================================ -->
+<!-- Checkbox & Radio -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Checkbox & Radio</h2>
+	<div class="demo-check-grid">
+		<div class="demo-header">Default</div>
+		<div class="demo-header">Default ✓</div>
+		<div class="demo-header">Small</div>
+		<div class="demo-header">Small ✓</div>
+
+		<div class="demo-row-label">Checkbox — fondo normal</div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" checked /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" checked /></div>
+
+		<div class="demo-row-label">Checkbox — fondo alternativo</div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox" /></div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox" checked /></div>
+		<div class="demo-cell demo-cell--alt"><input type="checkbox" class="checkbox check--sm" /></div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="checkbox" class="checkbox check--sm" checked />
+		</div>
+
+		<div class="demo-row-label">Checkbox — disabled</div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" disabled /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox" disabled checked /></div>
+		<div class="demo-cell"><input type="checkbox" class="checkbox check--sm" disabled /></div>
+		<div class="demo-cell">
+			<input type="checkbox" class="checkbox check--sm" disabled checked />
+		</div>
+
+		<div class="demo-row-label">Radio — fondo normal</div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r1" /></div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r2" checked /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r3" /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r4" checked /></div>
+
+		<div class="demo-row-label">Radio — fondo alternativo</div>
+		<div class="demo-cell demo-cell--alt"><input type="radio" class="radio" name="r5" /></div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio" name="r6" checked />
+		</div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio check--sm" name="r7" />
+		</div>
+		<div class="demo-cell demo-cell--alt">
+			<input type="radio" class="radio check--sm" name="r8" checked />
+		</div>
+
+		<div class="demo-row-label">Radio — disabled</div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r9" disabled /></div>
+		<div class="demo-cell"><input type="radio" class="radio" name="r10" disabled checked /></div>
+		<div class="demo-cell"><input type="radio" class="radio check--sm" name="r11" disabled /></div>
+		<div class="demo-cell">
+			<input type="radio" class="radio check--sm" name="r12" disabled checked />
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MeltComboBox -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">MeltComboBox</h2>
+	<div class="flex max-w-sm flex-col gap-6">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Single — con icono</p>
+			<MeltComboBox
+				items={destinos}
+				placeholder="Buscar destino..."
+				icon={MapPoint}
+				type="single"
+				bind:value={comboSingle}
+			/>
+			{#if comboSingle}
+				<p class="p-sm mt-2 text-gray-500">Seleccionado: <strong>{comboSingle}</strong></p>
+			{/if}
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Multiple — sin icono</p>
+			<MeltComboBox
+				items={destinos}
+				placeholder="Seleccionar destinos..."
+				bind:value={comboMultiple}
+			/>
+			{#if comboMultiple.length > 0}
+				<p class="p-sm mt-2 text-gray-500">
+					Seleccionados: <strong>{comboMultiple.join(', ')}</strong>
+				</p>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Select nativo -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Select nativo</h2>
+	<div class="flex max-w-sm flex-col gap-6">
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Default</p>
+			<select class="select">
+				<option value="">Seleccionar destino...</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+		<div>
+			<p class="p-sm mb-3 font-medium text-gray-400">Con valor seleccionado</p>
+			<select class="select">
+				<option value="madrid" selected>Madrid</option>
+				{#each destinos as d (d.value)}
+					<option value={d.value}>{d.label}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
+</div>
+
+<!-- ============================================================ -->
 <!-- AuthorMeta -->
 <!-- ============================================================ -->
 <div class="wrapper mt-6 !bg-red-500">
@@ -134,6 +271,24 @@
 			/>
 		</div>
 	</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Progressbar -->
+<!-- ============================================================ -->
+<div class="wrapper mt-6">
+	<h2 class="mb-4 font-semibold">Progressbar</h2>
+	<p class="mb-6 text-gray-500">
+		<b>Se le puede pasar:</b><br />
+		<code>fgColor</code> para representar el color principal, que por defecto es
+		<code>bg-success-700</code><br />
+		<code>bgColor</code> para representar el color del fondo, que por defecto es
+		<code>bg-neutral-100</code><br />
+		<code>percentage</code> para representar que porcentaje del 100% va ocupar la barra de color<br
+		/>
+		<code>wrapperClass</code> para poder pasar clases al contenedor por si lo necesitamos
+	</p>
+	<Progressbar percentage="80" />
 </div>
 
 <!-- ============================================================ -->
@@ -509,3 +664,50 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.demo-check-grid {
+		display: grid;
+		grid-template-columns: repeat(4, auto);
+		gap: 1rem 1.5rem;
+		align-items: center;
+		justify-content: start;
+	}
+
+	.demo-row-label {
+		grid-column: 1 / -1;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-neutral-600);
+		margin-top: 0.75rem;
+		padding-bottom: 0.25rem;
+		border-bottom: 1px solid var(--color-neutral-200);
+
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
+
+	.demo-header {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--color-neutral-500);
+		text-align: center;
+	}
+
+	.demo-cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+
+		&.demo-cell--alt {
+			background-color: var(--color-neutral-200);
+		}
+	}
+</style>

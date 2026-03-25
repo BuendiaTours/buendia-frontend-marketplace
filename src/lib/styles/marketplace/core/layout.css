@@ -3,11 +3,9 @@
 }
 
 .layout-header-area {
-	background-color: #ee0000;
 }
 
 .layout-footer-area {
-	background-color: #00ee00;
 }
 
 .wrapper {
@@ -17,7 +15,6 @@
 	padding-left: 1rem;
 	padding-right: 1rem;
 	margin-inline: auto;
-	background-color: aliceblue;
 
 	@media (width >= theme(--breakpoint-sm)) {
 		& {
@@ -31,5 +28,83 @@
 			padding-left: 6rem;
 			padding-right: 6rem;
 		}
+	}
+}
+
+/*
+  PAGE GRID — 4 cols (mobile) · 8 cols (md) · 12 cols (lg)
+  Use .page-grid as container, then a .col-* on each child.
+
+  Column helpers:
+    .col-full     → 1/-1  all breakpoints
+    .col-content  → full | 1/6 (md) | 1/9  (lg)   main content area
+    .col-sidebar  → full | 6/-1(md) | 9/-1 (lg)   sidebar
+    .col-narrow   → full | 2/8 (md) | 3/11 (lg)   centered narrow column
+
+	Custom span: use Tailwind  col-span-{n}  or  [grid-column:X/Y]
+	Gap between columns is fixed at 2rem; row gap must be set per-layout.
+
+	grid-column: inicio / fin define entre qué líneas del grid ocupa el elemento.
+	En un grid de 12 columnas hay 13 líneas (una antes de cada columna + una al final):
+
+	|  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 |
+	^     ^     ^     ^     ^     ^     ^     ^     ^                          ^
+	1     2     3     4     5     6     7     8     9                         13
+	Entonces 1 / 9 = desde la línea 1 hasta la línea 9 → ocupa 8 columnas.
+
+	El -1 es un shortcut para "la última línea" (sea cual sea el número de columnas), por eso .col-full usa 1 / -1.
+*/
+
+.page-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	column-gap: 2rem;
+
+	@media (width >= theme(--breakpoint-md)) {
+		grid-template-columns: repeat(8, 1fr);
+	}
+
+	@media (width >= theme(--breakpoint-lg)) {
+		grid-template-columns: repeat(12, 1fr);
+	}
+}
+
+.col-full {
+	grid-column: 1 / -1;
+}
+
+.col-content {
+	grid-column: 1 / -1;
+
+	@media (width >= theme(--breakpoint-md)) {
+		grid-column: 1 / 6;
+	}
+
+	@media (width >= theme(--breakpoint-lg)) {
+		grid-column: 1 / 9;
+	}
+}
+
+.col-sidebar {
+	grid-column: 1 / -1;
+
+	@media (width >= theme(--breakpoint-md)) {
+		grid-column: 6 / -1;
+	}
+
+	@media (width >= theme(--breakpoint-lg)) {
+		grid-column: 9 / -1;
+	}
+}
+
+.col-narrow {
+	grid-column: 1 / -1;
+
+	@media (width >= theme(--breakpoint-md)) {
+		grid-column: 2 / 8;
+	}
+
+	@media (width >= theme(--breakpoint-lg)) {
+		grid-column: 3 / 11;
 	}
 }

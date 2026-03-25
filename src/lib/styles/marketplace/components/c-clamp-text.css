@@ -1,0 +1,37 @@
+.u-clamp {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	line-clamp: var(--clamp-lines, 3);
+	-webkit-line-clamp: var(--clamp-lines, 3);
+
+	&.is-expanded {
+		display: block;
+		overflow: visible;
+		line-clamp: unset;
+		-webkit-line-clamp: unset;
+	}
+}
+
+.u-clamp-height {
+	overflow: hidden;
+	max-height: var(--clamp-max-height);
+	mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+	-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+
+	&.is-expanded {
+		overflow: visible;
+		max-height: none;
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+}
+
+.c-clamp-text__btn {
+	display: inline-block;
+	margin-top: 0.5rem;
+	cursor: pointer;
+	border-bottom: 1px solid currentColor;
+	font-weight: 500;
+	line-height: 1;
+}

@@ -8,8 +8,37 @@ import type {
 	ActivityTransportKind,
 	ActivityTransportLocation
 } from '$core/activities/enums';
-import type { LocationKind } from '$core/locations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
+
+export type ByBuendiaBannerItem = {
+	id: string;
+	icon?: string;
+	title?: string;
+	description?: string;
+};
+
+export type ByBuendiaBanner = {
+	title: string;
+	description: string;
+	items: ByBuendiaBannerItem[];
+	link: {
+		text: string;
+		src: string;
+	};
+};
+
+export type ConditionItem = {
+	id: string;
+	icon: string;
+	title: string;
+	description: string;
+};
+
+export type Condition = {
+	id: string;
+	style: string;
+	items: ConditionItem[];
+};
 
 export type ActivityListItem = {
 	id: string;
@@ -18,6 +47,8 @@ export type ActivityListItem = {
 	attractions: Array<{ id: string; name: string }>;
 	categories: Array<{ id: string; name: string }>;
 	codeRef: string;
+	conditions: Condition[];
+	conditionsTitle: string | null;
 	descriptionFull: string;
 	descriptionShort: string;
 	locations: Array<{ id: string; name: string }>;
@@ -25,6 +56,9 @@ export type ActivityListItem = {
 	destinations?: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
+	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
+	byBuendiaBanner: ByBuendiaBanner | null;
+	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
 	included: string[];
 	infoImportant: string | null;
@@ -39,7 +73,15 @@ export type ActivityListItem = {
 	};
 	phoneContact: string | null;
 	restrictions: string[];
-	stages: string[];
+	stagesTitle: string;
+	stages: Array<{
+		id: string;
+		order: number;
+		name: string;
+		description?: string;
+		kind: string;
+		duration?: string;
+	}>;
 	status: ActivityStatus;
 	tags: Array<{ id: string; name: string }>;
 	transportKind: ActivityTransportKind;
@@ -90,6 +132,110 @@ export type ActivityReview = {
 	replies: ReviewReply[];
 };
 
+export type ActivityReviewParams = {
+	sort?: 'averageRating' | 'createdAt';
+	order?: 'ASC' | 'DESC';
+	page?: number;
+	pageSize?: number;
+	stars?: number[];
+};
+
+export type ActivityReviewStatsDistribution = {
+	stars: number;
+	count: number;
+	percentage: number;
+};
+
+export type ActivityReviewStats = {
+	activityId: string;
+	total: number;
+	averageRating: number;
+	distribution: ActivityReviewStatsDistribution[];
+};
+
+export type ActivityReviewsResponse = {
+	data: ActivityReview[];
+	pagination: {
+		page: number;
+		pageSize: number;
+		total: number;
+		totalPages: number;
+	};
+	sort: {
+		field: string;
+		order: 'asc' | 'desc';
+	};
+};
+
+type ActivityOptionTicket = {
+	id: string;
+	price: number;
+	commission: number;
+	status: string;
+	ageRange: { min: number; max: number };
+	adultRequired: boolean;
+	free: boolean;
+	group: boolean;
+	ticketNeeded: boolean;
+};
+
+export type ActivityOptionPickupLocation = {
+	id: string;
+	optionId: string;
+	location: { type: 'Point'; coordinates: [number, number] } | null;
+	description: string;
+	marginTime: number;
+	timeOfDay: string | null;
+};
+
+export type ActivityOption = {
+	id: string;
+	activityId: string;
+	availabilityGroupId: string | null;
+	title: string;
+	description: string | null;
+	supplierOptionCode: string;
+	status: string;
+	bookingSystem: string;
+	privacy: string;
+	language: string;
+	wheelchair: string;
+	ticketKind: string;
+	skipTheLineType: string | null;
+	maxGroupSize: number;
+	maxTicketsPerIndividual: number;
+	duration: { unit: string; quantity: number };
+	audios: string[];
+	brochures: string[];
+	liveGuides: string[];
+	individualTickets: ActivityOptionTicket[];
+	groupTickets: ActivityOptionTicket[];
+	pickupLocations: ActivityOptionPickupLocation[];
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type ActivityCardInfoList = {
+	id: string;
+	infoName: string;
+};
+
+export type ActivityCard = {
+	id: string;
+	image: string;
+	name: string;
+	slug: string;
+	infoList: ActivityCardInfoList[];
+	cancellation?: string;
+	price?: string;
+	discount?: string;
+	rating?: number;
+	opinions?: number;
+	isFreeTour?: boolean;
+	isNew?: boolean;
+	byBuendia?: boolean;
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
@@ -97,14 +243,40 @@ export type Column<T> = {
 	sortField?: string;
 };
 
-export type Location = {
+export type ApiImageVariant = {
 	id: string;
-	name: string;
-	slug: string;
-	kind: LocationKind;
-	descriptionShort: string;
-	descriptionLong?: string | null;
-	photoUrlHero?: string;
+	preset: string;
+	format: string;
+	width: number;
+	height: number;
+	sizeBytes: number;
+	url?: string;
+	normalizedCoords: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+		scale: number;
+	};
+};
+
+export type ApiImage = {
+	id: string;
+	title: string;
+	altText: string;
+	mimeType: string;
+	originalUrl: string;
+	originalWidth: number;
+	originalHeight: number;
+	originalSizeBytes: number;
+	modifications: {
+		rotation: number;
+		flipH: boolean;
+		flipV: boolean;
+	};
+	variants: ApiImageVariant[];
+	createdAt: string;
+	updatedAt: string;
 };
 
 export type Attraction = {

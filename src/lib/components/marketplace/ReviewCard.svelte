@@ -5,6 +5,7 @@
 <script lang="ts">
 	import AuthorMeta from './AuthorMeta.svelte';
 	import StarRating from './StarRating.svelte';
+	import { clampText } from '$lib/actions/marketplace/clampText';
 
 	type Props = {
 		name: string;
@@ -25,26 +26,16 @@
 		showRatingValue = true,
 		wrapperClass = ''
 	}: Props = $props();
-
-	let expanded = $state(false);
-	let textEl = $state<{ scrollHeight: number; clientHeight: number } | undefined>();
-	let isClamped = $state(false);
-
-	$effect(() => {
-		if (textEl) {
-			isClamped = textEl.scrollHeight > textEl.clientHeight;
-		}
-	});
 </script>
 
-<div class="c-review-card group w-full {wrapperClass}" style="--rc-lines: {lines}">
+<div class="c-review-card group @container w-full {wrapperClass}">
 	<div
-		class="c-review-card__head flex items-start justify-between gap-3 group-[.is-variant-vertical]:flex-col"
+		class="c-review-card__head flex flex-col gap-3 group-[.is-variant-vertical]:flex-col @[480px]:flex-row @[480px]:items-start @[480px]:justify-between"
 	>
 		<AuthorMeta {name} {desc} />
 		{#if rating != null}
 			<div
-				class="mt-1 flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0"
+				class="c-review-card__rating flex shrink-0 items-center gap-2 group-[.is-variant-vertical]:order-[-1] group-[.is-variant-vertical]:mt-0 @[480px]:mt-3.5"
 			>
 				<StarRating value={rating} size="sm" />
 				{#if showRatingValue}
@@ -54,16 +45,7 @@
 		{/if}
 	</div>
 
-	<p bind:this={textEl} class="c-review-card__text p-base mt-3" class:is-expanded={expanded}>
+	<p class="c-review-card__text p-base mt-3" use:clampText={{ lines, key: text }}>
 		{text}
 	</p>
-
-	{#if isClamped || expanded}
-		<button
-			class="c-review-card__read-more p-sm mt-2 cursor-pointer border-b border-current leading-none font-medium"
-			onclick={() => (expanded = !expanded)}
-		>
-			{expanded ? 'Leer menos' : 'Leer más'}
-		</button>
-	{/if}
 </div>

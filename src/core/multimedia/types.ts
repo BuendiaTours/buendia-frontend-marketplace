@@ -95,11 +95,12 @@ export type MediaUploadUrlResponse = {
 
 /** Query parameters for filtering, sorting, and paginating media lists. */
 export type MediaCriteria = {
-	page?: number;
-	pageSize?: number;
-	title?: string;
+	skip?: number;
+	limit?: number;
 	kind?: MediaKind;
+	search_text?: string;
 	status?: MediaStatus;
+	title?: string;
 	sort?: MediaSortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;
@@ -145,8 +146,8 @@ export type MediaRelationshipReorderDto = {
 
 /** Query parameters for filtering, sorting, and paginating media relationship lists. */
 export type MediaRelationshipCriteria = {
-	page?: number;
-	pageSize?: number;
+	skip?: number;
+	limit?: number;
 	entityId?: string;
 	entityType?: MediaRelationshipEntityType;
 	mediaId?: string;

@@ -1,7 +1,28 @@
+<!--
+	ReviewsLayout — layout for BndLightbox that shows an image alongside a review card.
+
+	Receives `ctx: BndLightboxItemContext` where each item must follow this shape:
+
+	{
+	  src: string          // URL of the review image
+	  alt?: string         // Accessible description of the image
+	  meta: {
+	    user:    string    // Reviewer name
+	    date:    string    // Display date, e.g. "12 marzo 2026"
+	    rating:  number    // Score 1–5
+	    content: string    // Review body text
+	  }
+	}
+-->
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { format } from 'date-fns';
+
+	// Types
 	import type { BndLightboxItemContext } from '$lib/types';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+
+	// Componentes
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 
@@ -12,8 +33,6 @@
 
 	// Un solo booleano controla opacity de imagen y review conjuntamente
 	let contentVisible = $state(true);
-
-	const initial = $derived(displayedMeta?.user?.[0]?.toUpperCase() ?? '?');
 
 	$effect(() => {
 		const newSrc = ctx.item.src; // dependencia reactiva
@@ -78,39 +97,18 @@
 			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-full sm:bg-transparent sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0 lg:w-80"
 		>
 			{#if displayedMeta}
-				<div
-					class="flex flex-col gap-4 overflow-auto pt-4 transition-opacity duration-200"
-					class:opacity-0={!contentVisible}
-				>
-					<!-- Stars + rating number -->
-					<div class="flex items-center gap-2">
-						<StarRating value={Number(displayedMeta.rating)} size="sm" />
-						<span class="h4 text-neutral-900">{displayedMeta.rating}</span>
-					</div>
-
-					<!-- Avatar + name + date -->
-					<div class="flex items-center gap-3">
-						<div
-							class="flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-neutral-100"
-						>
-							<span class="p-sm font-semibold text-neutral-700">{initial}</span>
-						</div>
-						<div class="flex flex-col">
-							<span class="p-sm font-semibold text-neutral-900">{displayedMeta.user}</span>
-							<span class="p-xs text-neutral-400">{displayedMeta.date}</span>
-						</div>
-					</div>
-
-					<!-- Review text -->
-					<p class="p-sm leading-relaxed text-neutral-700">{displayedMeta.content}</p>
+				<div class="pt-4 transition-opacity duration-200" class:opacity-0={!contentVisible}>
+					<ReviewCard
+						name={displayedMeta.user || 'Anónimo'}
+						desc={displayedMeta.date
+							? format(new Date(displayedMeta.date), 'dd/MM/yyyy')
+							: undefined}
+						rating={Number(displayedMeta.rating)}
+						text={String(displayedMeta.content ?? '')}
+						lines={6}
+					/>
 				</div>
 			{/if}
 		</div>
 	</div>
 </div>
-
-<style>
-	:global(.c-star-filled-green) {
-		background-color: var(--color-success-700);
-	}
-</style>

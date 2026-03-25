@@ -1,7 +1,16 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { resolveRoute } from '$app/paths';
+
+	// Lib
+	import { format } from 'date-fns';
+
+	// Components
+	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -87,5 +96,50 @@
 		{/if}
 	</div>
 
+	<!-- Reviews List -->
+	{#if data.reviews && data.reviews.length > 0}
+		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
+			{#each data.reviews as review (review.id)}
+				<div
+					class="flex flex-col justify-between rounded-xl border border-[var(--color-border-default)] p-6 pb-6"
+				>
+					<ReviewCard
+						name={review.user || 'Anónimo'}
+						desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
+						text={review.content}
+						rating={review.averageRating}
+						lines={3}
+						{...review}
+					/>
+
+					{#if review.attachments && review.attachments.length > 0}
+						<GallerySquareThumbs
+							items={review.attachments.map((att) => ({ src: att.url.value }))}
+							visibleCount={3}
+							categoryId="review-{review.id}"
+							containerClass="mt-auto pt-4"
+							wrapperClass="plp-reviews__gallery gap-2"
+							thumbClass="w-1/3"
+						/>
+					{/if}
+
+					<div class="plp-reviews__about mt-4">
+						<p class="p-base text-neutral-600">Opinión sobre</p>
+						<a href="#" class="p-base underline underline-offset-8">Cena en el Trastévere</a>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
+
 	<!-- Back to home link -->
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{#each data.destination.activities as activity (activity.id)}
+			<ActivityCard
+				item={activity}
+				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+			/>
+		{/each}
+	</div>
 </div>

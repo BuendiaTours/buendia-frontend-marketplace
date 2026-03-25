@@ -273,7 +273,7 @@
 				type="button"
 				onclick={() => openLbD(i)}
 				aria-label={String(item.meta?.user ?? '')}
-				class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-md border-none bg-none p-0 transition-transform hover:scale-105"
+				class="relative block aspect-square w-24 cursor-pointer overflow-hidden rounded-md border-none bg-none p-0"
 			>
 				<img
 					src={item.src.replace('w=1200', 'w=200')}

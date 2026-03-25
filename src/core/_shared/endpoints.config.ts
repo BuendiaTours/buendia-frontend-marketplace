@@ -9,6 +9,7 @@
 /** Base path segments for each API resource. */
 export const BASE_PATHS = {
 	activities: '/activities',
+	activityOptions: '/activity-options',
 	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
@@ -304,6 +305,21 @@ export const API_ENDPOINTS = {
 	},
 
 	// ──────────────────────────────────────────────
+	// Activity Options
+	// ──────────────────────────────────────────────
+	activityOptions: {
+		groupName: 'Activity Options',
+		groupDescription: 'Opciones adicionales de actividades',
+		/** @description Retrieves all options for a given activity ID. */
+		byActivity: {
+			path: (activityId: string) => `${BASE_PATHS.activityOptions}/${activityId}`,
+			method: 'GET',
+			description: 'Obtiene las opciones adicionales de una actividad por ID',
+			params: ['activityId']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
 	// Reviews
 	// ──────────────────────────────────────────────
 	reviews: {
@@ -315,7 +331,19 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene reviews de una actividad por ID',
 			params: ['activityId']
-		} satisfies EndpointWithParam
+		} satisfies EndpointWithParam,
+		byActivityStats: {
+			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}/stats`,
+			method: 'GET',
+			description: 'Obtiene estadísticas de reviews de una actividad',
+			params: ['activityId']
+		} satisfies EndpointWithParam,
+		byDestinationSlug: {
+			path: (slug: string, page: number) => `/destination/${slug}/reviews/${page}`,
+			method: 'GET',
+			description: 'Obtiene reviews de un destino por slug y página',
+			params: ['slug', 'page']
+		}
 	},
 
 	// ──────────────────────────────────────────────

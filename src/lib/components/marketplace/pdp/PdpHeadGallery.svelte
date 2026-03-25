@@ -2,15 +2,14 @@
 	import type { MultimediaItem } from '$lib/types';
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 	import { BndCssSlider } from '$lib/components/marketplace/BndCssSlider';
-
-	// Hicimos una prueba con Swiper para comparar rendimiento y experiencia de usuario contra la implementación nativa con scroll-timeline. Por ahora, dejamos el código comentado para referencia futura.
-	// import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
 
 	type Props = {
 		items: MultimediaItem[];
+		wrapperClass?: string;
 	};
 
-	let { items }: Props = $props();
+	let { items, wrapperClass }: Props = $props();
 
 	const desktopVisible = 3;
 	const totalImages = $derived(items.length);
@@ -34,7 +33,8 @@
 
 <!-- Desktop / Tablet gallery -->
 <div
-	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr]"
+	class="pdp-head-gallery hidden md:grid md:[grid-template-columns:472fr_216fr] md:gap-4 lg:[grid-template-columns:502fr_337fr_337fr] {wrapperClass ??
+		''}"
 >
 	<a
 		href={items[0].variants?.find((v) => v.preset === 'MAX')?.url}
@@ -72,11 +72,7 @@
 				class="h-full w-full object-cover"
 				loading="lazy"
 			/>
-			<span
-				class="bg-alpha-ink-84 pointer-events-none absolute right-3 bottom-3 rounded-lg border border-neutral-300 p-3 font-bold text-white"
-			>
-				+{hiddenCount}
-			</span>
+			<GalleryCount count="+{hiddenCount}" />
 		</a>
 	</div>
 </div>

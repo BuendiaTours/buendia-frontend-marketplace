@@ -42,8 +42,8 @@ export enum MediaSortAttribute {
 /** Types of entities that can be associated with a media through a relationship. */
 export enum MediaRelationshipEntityType {
 	ACTIVITY = 'ACTIVITY',
-	ATTRACTION = 'ATTRACTION',
-	DESTINATION = 'DESTINATION'
+	CONTENT_BLOCK = 'CONTENT_BLOCK',
+	DISTRIBUTIVE = 'DISTRIBUTIVE'
 }
 
 /** Attributes available for sorting media relationship lists. */

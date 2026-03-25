@@ -28,7 +28,7 @@ const colors = {
 	red: '\x1b[31m'
 };
 
-function log(message: string, color = colors.reset) {
+function log(message: string, _color = colors.reset) {
 	/* console.log(`${color}${message}${colors.reset}`); */
 }
 
@@ -49,9 +49,9 @@ function toPascalCase(filename: string): string {
  */
 function replaceColorsWithCurrentColor(svgContent: string): string {
 	return svgContent
-		.replace(/\bfill="[^"]*"/g, 'fill="currentColor"')
+		.replace(/\bfill="(?!none")[^"]*"/g, 'fill="currentColor"')
 		.replace(/\bstroke="[^"]*"/g, 'stroke="currentColor"')
-		.replace(/\bfill='[^']*'/g, "fill='currentColor'")
+		.replace(/\bfill='(?!none')[^']*'/g, "fill='currentColor'")
 		.replace(/\bstroke='[^']*'/g, "stroke='currentColor'")
 		.replace(/\bstroke-width="[^"]*"/g, 'stroke-width="var(--icon-stroke-width)"')
 		.replace(/\bstroke-width='[^']*'/g, "stroke-width='var(--icon-stroke-width)'");

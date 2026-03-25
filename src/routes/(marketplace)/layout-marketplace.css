@@ -15,6 +15,7 @@
 @import '$lib/styles/marketplace/core/typography.css';
 @import '$lib/styles/marketplace/core/base.css';
 @import '$lib/styles/marketplace/core/layout.css';
+@import '$lib/styles/marketplace/core/forms.css';
 
 /* Utilities */
 @import '$lib/styles/marketplace/utilities/icons.css';
@@ -33,13 +34,21 @@
 /* Organisms */
 
 /* Components */
-@import '$lib/styles/marketplace/components/c-bnd-css-slider.css';
-@import '$lib/styles/marketplace/components/c-star-rating.css';
 @import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
-@import '$lib/styles/marketplace/components/c-tooltip.css';
+@import '$lib/styles/marketplace/components/c-bnd-css-slider.css';
+@import '$lib/styles/marketplace/components/c-clamp-text.css';
+@import '$lib/styles/marketplace/components/c-conditions.css';
+@import '$lib/styles/marketplace/components/c-faq-item.css';
+@import '$lib/styles/marketplace/components/c-faqs.css';
 @import '$lib/styles/marketplace/components/c-melt-calendar.css';
 @import '$lib/styles/marketplace/components/c-melt-range-calendar.css';
 @import '$lib/styles/marketplace/components/c-review-card.css';
+@import '$lib/styles/marketplace/components/c-star-rating.css';
+@import '$lib/styles/marketplace/components/c-tooltip.css';
+
+/* PDP */
+@import '$lib/styles/marketplace/components/pdp-itinerary.css';
+@import '$lib/styles/marketplace/components/pdp-reviews-featured.css';
 
 /* ============================================
    DISABLE TAILWIND DEFAULT TEXT CLASSES

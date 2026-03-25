@@ -1,0 +1,167 @@
+.select {
+	display: block;
+	height: 40px;
+	min-width: 110px;
+	width: 100%;
+	padding-inline-start: 16px;
+	padding-inline-end: 40px;
+	border-radius: 8px;
+	border: 1px solid var(--color-neutral-400);
+	background-color: var(--color-neutral-50);
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+		border-color: var(--color-neutral-300);
+	}
+}
+
+/* Chrome 135+ — opt-in al customizable select */
+/* Browsers sin soporte ignoran estas reglas y mantienen appearance: none de arriba */
+.select,
+.select::picker(select) {
+	appearance: base-select;
+}
+
+.select::picker-icon {
+	display: none;
+}
+
+.select::picker(select) {
+	border-radius: 8px;
+	border: 1px solid var(--color-neutral-400);
+	background-color: var(--color-neutral-50);
+	box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+	padding: 8px;
+	margin-block-start: 4px;
+}
+
+.select option {
+	border-radius: 6px;
+	padding: 8px 16px;
+	cursor: pointer;
+}
+
+.select option:hover,
+.select option:focus {
+	background-color: var(--color-neutral-50);
+}
+
+.select option:checked {
+	background-color: var(--color-neutral-50);
+	font-weight: 500;
+}
+
+/* ========================================
+   CHECKBOX & RADIO
+   ======================================== */
+
+input[type='checkbox'].checkbox,
+input[type='radio'].radio {
+	appearance: none;
+	-webkit-appearance: none;
+	margin: 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 1px solid var(--color-border-default);
+	background-color: var(--color-white);
+	cursor: pointer;
+	transition:
+		background-color 150ms ease-in-out,
+		border-color 150ms ease-in-out,
+		box-shadow 150ms ease-in-out;
+}
+
+/* SVG source: src/lib/icons/src/Linear/custom-mini-tick.svg */
+input[type='checkbox'].checkbox {
+	border-radius: 0.35em;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 0%;
+	transition:
+		background-color 150ms ease-in-out,
+		border-color 150ms ease-in-out,
+		background-size 120ms ease-in-out;
+
+	&:checked {
+		border-color: var(--color-accent-500);
+		background-size: 85%;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6.389 12.83l3.149 3.149 8.021-8.02' stroke='%234a33b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	}
+
+	&.check--sm {
+		width: 1.125rem;
+		height: 1.125rem;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-accent-500);
+		outline-offset: 2px;
+	}
+
+	&:disabled {
+		background-color: var(--color-neutral-200);
+		border-color: var(--color-neutral-300);
+		cursor: not-allowed;
+		opacity: 0.6;
+
+		&:checked {
+			background-color: var(--color-neutral-300);
+			border-color: var(--color-neutral-300);
+		}
+	}
+}
+
+input[type='radio'].radio {
+	border-radius: 50%;
+	display: grid;
+	place-content: center;
+
+	&::before {
+		content: '';
+		display: block;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		transform: scale(0);
+		transition: transform 120ms ease-in-out;
+		background-color: var(--color-accent-500);
+	}
+
+	&:checked {
+		border-color: var(--color-accent-500);
+
+		&::before {
+			transform: scale(1);
+		}
+	}
+
+	&.check--sm {
+		width: 1.125rem;
+		height: 1.125rem;
+		&::before {
+			width: 6px;
+			height: 6px;
+		}
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-accent-500);
+		outline-offset: 2px;
+	}
+
+	&:disabled {
+		background-color: var(--color-neutral-200);
+		border-color: var(--color-neutral-300);
+		cursor: not-allowed;
+		opacity: 0.6;
+
+		&:checked::before {
+			background-color: var(--color-neutral-300);
+		}
+	}
+}
