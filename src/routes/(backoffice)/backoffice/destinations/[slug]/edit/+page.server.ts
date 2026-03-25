@@ -13,23 +13,20 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	try {
 		const destination = await DESTINATION_REQUEST.findBySlug(fetch, params.slug);
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is not fully typed yet
-		const apiData = destination as Record<string, any>;
-
 		const form = await superValidate(
 			{
-				id: apiData.id,
-				name: apiData.name,
-				slug: apiData.slug,
-				kind: apiData.kind,
-				descriptionShort: apiData.descriptionShort,
-				photoUrlHero: apiData.photoUrlHero
+				id: destination.id,
+				name: destination.name,
+				slug: destination.slug,
+				kind: destination.kind,
+				descriptionShort: destination.descriptionShort,
+				photoId: destination.image?.id ?? ''
 			},
 			zod(destinationFormSchema)
 		);
 
 		const breadcrumbs = buildBreadcrumbs(url.pathname, {
-			label: apiData.name || 'Destino'
+			label: destination.name || 'Destino'
 		});
 
 		return {

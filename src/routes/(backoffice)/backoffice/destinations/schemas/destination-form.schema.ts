@@ -13,7 +13,7 @@ export const destinationFormSchema = z.object({
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
 	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
-	photoUrlHero: z.string().url('Debe ser una URL válida')
+	photoId: z.string().optional()
 });
 
 export type DestinationFormSchema = z.infer<typeof destinationFormSchema>;

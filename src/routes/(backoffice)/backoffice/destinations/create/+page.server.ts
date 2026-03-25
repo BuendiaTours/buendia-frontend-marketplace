@@ -25,8 +25,7 @@ export const load: PageServerLoad = createCreateLoad({
 		// Descripciones
 		descriptionShort: '',
 
-		// Imágenes
-		photoUrlHero: ''
+		photoId: ''
 	},
 	breadcrumbLabel: 'Nuevo destino',
 	entityName: 'destino'

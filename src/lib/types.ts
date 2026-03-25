@@ -242,14 +242,49 @@ export type Column<T> = {
 	sortField?: string;
 };
 
-export type Destination = {
+export type BackofficePhotoVariant = {
 	id: string;
+	preset: string;
+	format: string;
+	width: number;
+	height: number;
+	sizeBytes: number;
+	normalizedCoords: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+		scale: number;
+	};
+};
+
+export type BackofficePhoto = {
+	id: string;
+	title: string;
+	altText: string;
+	mimeType: string;
+	originalUrl: string;
+	originalWidth: number;
+	originalHeight: number;
+	originalSizeBytes: number;
+	modifications: {
+		rotation: number;
+		flipH: boolean;
+		flipV: boolean;
+	};
+	variants: BackofficePhotoVariant[];
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type Destination = {
+	activities: ActivityCard[];
+	descriptionShort: string;
+	id: string;
+	image?: Partial<BackofficePhoto>;
+	kind: DestinationKind;
 	name: string;
 	slug: string;
-	kind: DestinationKind;
-	descriptionShort: string;
-	photoUrlHero: string;
-	activities: ActivityCard[];
 };
 
 export type Attraction = {
