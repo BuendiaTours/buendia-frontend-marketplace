@@ -28,7 +28,7 @@
 	let priority = $state<ActivityIndexationPriority | ''>('');
 	let submitting = $state(false);
 	let unlinking = $state(false);
-	let unlinkDialog: PureHtmlDialog;
+	let unlinkDialog = $state<PureHtmlDialog>();
 
 	const isIndexed = $derived(data.indexation !== null);
 
@@ -103,7 +103,7 @@
 		try {
 			// TODO: endpoint not yet developed
 			// await ACTIVITY_REQUEST.deleteIndexationActivity(fetch, data.activity.id);
-			unlinkDialog.close();
+			unlinkDialog?.close();
 			addToast({
 				data: {
 					title: m.activities_bookingSystemUnlinkSuccess(),
@@ -163,7 +163,7 @@
 				<button
 					type="button"
 					class="btn btn-error btn-outline"
-					onclick={() => unlinkDialog.showModal()}
+					onclick={() => unlinkDialog?.showModal()}
 				>
 					{m.activities_bookingSystemUnlinkButton()}
 				</button>
@@ -175,7 +175,7 @@
 				<p>{m.activities_bookingSystemUnlinkDialogMessage()}</p>
 			{/snippet}
 			{#snippet actions()}
-				<button class="btn" onclick={() => unlinkDialog.close()}>
+				<button class="btn" onclick={() => unlinkDialog?.close()}>
 					{m.common_cancel()}
 				</button>
 				<button class="btn btn-error" disabled={unlinking} onclick={handleUnlink}>
