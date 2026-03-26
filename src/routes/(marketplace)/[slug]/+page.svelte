@@ -13,7 +13,7 @@
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -135,11 +135,10 @@
 		{/each}
 	</div>
 
-	<Faqs
+	<FaqsInline
 		title={data.destination.faqsTitle}
 		faqs={data.destination.faqs}
 		wrapperClass="mt-12 lg:my-23"
-		fullOpened
 	/>
 
 	<ContentBlockStack
