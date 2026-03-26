@@ -1,3 +1,8 @@
+/*
+Precaución: Estos estilos se aplican a dos componentes:
+@FaqCollapsableItem y @FaqInlineItem
+*/
+
 .c-faq-item {
 	border-bottom: 1px solid var(--color-neutral-200);
 

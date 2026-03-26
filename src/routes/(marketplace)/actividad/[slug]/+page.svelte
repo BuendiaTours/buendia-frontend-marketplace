@@ -15,7 +15,7 @@
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
-	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
@@ -298,7 +298,7 @@
 			{/if}
 
 			<!-- faqs -->
-			<Faqs
+			<FaqsCollapsable
 				title={`Preguntas frecuentes sobre esta excursión desde ${activity.destinations?.[0]?.name || '<DESTINO?>'}`}
 				faqs={activity.faqs}
 			/>

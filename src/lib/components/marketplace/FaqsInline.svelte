@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FaqItem from './FaqItem.svelte';
+	import FaqInlineItem from './FaqInlineItem.svelte';
 
 	type Props = {
 		title?: string | null;
@@ -9,30 +9,22 @@
 
 	let { title, faqs, wrapperClass }: Props = $props();
 
-	let showAll = $state(false);
-
 	const publishedFaqs = $derived(faqs?.filter((faq) => faq.status === 'PUBLISHED') ?? []);
 	const sortedFaqs = $derived(publishedFaqs.slice().sort((a, b) => a.position - b.position));
-	const visibleFaqs = $derived(showAll ? sortedFaqs : sortedFaqs.slice(0, 4));
 </script>
 
 <div class="c-faqs pb-1 {wrapperClass}">
-	<h2 class="h2 pb-4">
+	<h2 class="h2-editorial pb-5 text-neutral-800 lg:pb-6">
 		{title}
 	</h2>
 
-	<div>
-		{#each visibleFaqs as faq (faq.id)}
-			<FaqItem question={faq.question} answer={faq.answer} />
+	<div class="flex flex-col gap-7 sm:gap-9 lg:gap-12 lg:pt-6">
+		{#each sortedFaqs as faq, i (faq.id)}
+			<FaqInlineItem
+				question={faq.question}
+				answer={faq.answer}
+				index={String(i + 1).padStart(2, '0')}
+			/>
 		{/each}
 	</div>
-
-	{#if sortedFaqs.length > 4 && !showAll}
-		<button
-			class="mt-4 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-			onclick={() => (showAll = true)}
-		>
-			Ver más
-		</button>
-	{/if}
 </div>
