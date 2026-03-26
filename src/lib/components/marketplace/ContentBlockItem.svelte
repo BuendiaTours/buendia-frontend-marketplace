@@ -44,7 +44,7 @@
 		</div>
 		{#if overflows || expanded}
 			<button
-				class="p-base-editorial self-start text-neutral-800 underline underline-offset-8"
+				class="p-base cursor-pointer self-start text-neutral-800 underline underline-offset-8"
 				onclick={() => (expanded = !expanded)}
 			>
 				{expanded ? 'Ver menos' : 'Ver más'}

@@ -177,7 +177,7 @@
 					</div>
 					<a
 						href="#reviews"
-						class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
+						class="p-base mt-4 block cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
 						>Ver todas las opiniones</a
 					>
 				</div>

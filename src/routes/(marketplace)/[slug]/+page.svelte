@@ -114,7 +114,9 @@
 
 					<div class="plp-reviews__about mt-4">
 						<p class="p-base text-neutral-600">Opinión sobre</p>
-						<a href="#" class="p-base underline underline-offset-8">Cena en el Trastévere</a>
+						<a href="#" class="p-base cursor-pointer underline underline-offset-8"
+							>Cena en el Trastévere</a
+						>
 					</div>
 				</div>
 			{/each}

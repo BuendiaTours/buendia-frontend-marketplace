@@ -26,7 +26,7 @@
 			{#if reviewsCount !== undefined && reviewsCount > 0}
 				<a
 					href="#reviews"
-					class="p-base ml-1 font-bold text-neutral-800 underline underline-offset-8"
+					class="p-base ml-1 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
 					>{reviewsCount} opiniones</a
 				>
 			{/if}
