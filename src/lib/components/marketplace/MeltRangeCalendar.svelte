@@ -20,11 +20,16 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 	import { AltArrowLeft, AltArrowRight } from '$lib/icons/Linear';
 	import { untrack } from 'svelte';
 
+	import type { DateValue } from '@internationalized/date';
+
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
+
+	type DayInfo = { price?: string | number; available?: boolean };
 
 	type Props = {
 		value?: DateRange;
 		onValueChange?: (value: DateRange | undefined) => void;
+		dayInfo?: (date: DateValue) => DayInfo;
 		numberOfMonths?: number;
 		wrapperClass?: string;
 	};
@@ -32,6 +37,7 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 	let {
 		value = $bindable(),
 		onValueChange,
+		dayInfo,
 		numberOfMonths = 2,
 		wrapperClass = ''
 	}: Props = $props();
@@ -46,6 +52,7 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 			numberOfMonths,
 			weekStartsOn: 0,
 			fixedWeeks: true,
+			isDateDisabled: (date) => dayInfo?.(date)?.available === false,
 			onValueChange: ({ next }) => {
 				value = next;
 				onValueChange?.(next);
@@ -94,10 +101,14 @@ Personaliza con variables CSS: --c-melt-range-calendar-bg, --c-melt-range-calend
 					{#each month.weeks as weekDates, wi (wi)}
 						<tr class="flex w-full">
 							{#each weekDates as date, di (di)}
-								<td class="p-sm relative m-0 size-10 p-0 text-center focus-within:z-20">
+								{@const info = dayInfo?.(date)}
+								<td class="relative m-0 w-10 p-0 text-center focus-within:z-20">
 									<button use:melt={$cell(date, month.value)} class="c-melt-range-calendar__cell">
 										<div class="c-melt-range-calendar__today-dot"></div>
-										{date.day}
+										<span class="c-melt-range-calendar__day">{date.day}</span>
+										{#if info?.price !== undefined}
+											<span class="c-melt-range-calendar__price">{info.price}</span>
+										{/if}
 									</button>
 								</td>
 							{/each}
