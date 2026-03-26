@@ -85,6 +85,8 @@
 	--color-alpha-brand-primary-24: rgba(64, 42, 148, 0.24);
 	--color-alpha-brand-primary-40: rgba(64, 42, 148, 0.4);
 
+	--color-overlay: rgb(15, 17, 21);
+
 	/* DECORATIVE ---------- */
 
 	--color-accent-softer: #eae6f5;

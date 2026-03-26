@@ -8,7 +8,10 @@
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
+	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Faqs from '$lib/components/marketplace/Faqs.svelte';
 
@@ -20,22 +23,9 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<!-- Destination Info -->
-	<div class="e-card mb-8">
-		<h1 class="mb-4 font-bold text-gray-900">{data.destination.name}</h1>
-		{#if data.destination.descriptionShort}
-			<p class="text-gray-600">{data.destination.descriptionShort}</p>
-		{/if}
-		{#if data.destination.image?.originalUrl}
-			<div class="mt-4">
-				<img
-					src={data.destination.image.originalUrl}
-					alt={data.destination.name}
-					class="h-64 w-full rounded-lg object-cover"
-				/>
-			</div>
-		{/if}
-	</div>
+	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
+
+	<!-- <textarea class="w-full font-mono">{JSON.stringify(data.destination)}</textarea> -->
 
 	<!-- Categories List -->
 	<div class="e-card mb-8">
@@ -125,7 +115,9 @@
 
 					<div class="plp-reviews__about mt-4">
 						<p class="p-base text-neutral-600">Opinión sobre</p>
-						<a href="#" class="p-base underline underline-offset-8">Cena en el Trastévere</a>
+						<a href="#" class="p-base cursor-pointer underline underline-offset-8"
+							>Cena en el Trastévere</a
+						>
 					</div>
 				</div>
 			{/each}
@@ -143,11 +135,18 @@
 		{/each}
 	</div>
 
-	<!-- faqs -->
 	<Faqs
 		title={data.destination.faqsTitle}
 		faqs={data.destination.faqs}
 		wrapperClass="mt-12 lg:my-23"
 		fullOpened
 	/>
+
+	<ContentBlockStack
+		title="Los mejores planes para descubrir {data.destination.name}"
+		items={data.destination.contentBlockStack}
+		wrapperClass="mt-12 mb-48 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
+
+	<NewsletterRegistration />
 </div>

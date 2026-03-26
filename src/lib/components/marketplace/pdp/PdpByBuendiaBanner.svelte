@@ -49,8 +49,9 @@
 		{/if}
 	</div>
 	{#if link?.text && link?.src}
-		<a class="p font-bold text-neutral-800 underline underline-offset-8" href={link.src}
-			>{link.text}</a
+		<a
+			class="p cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
+			href={link.src}>{link.text}</a
 		>
 	{/if}
 </div>

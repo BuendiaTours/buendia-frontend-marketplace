@@ -64,11 +64,13 @@
 .c-melt-calendar__cell {
 	position: relative;
 	display: inline-flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	width: var(--c-melt-calendar-cell-size);
-	height: var(--c-melt-calendar-cell-size);
-	padding: 0;
+	min-height: var(--c-melt-calendar-cell-size);
+	padding: 0.125rem 0;
+	gap: 0.0625rem;
 	background: transparent;
 	border: 1px solid transparent;
 	border-radius: 0.5rem;
@@ -80,6 +82,16 @@
 	transition:
 		background 0.1s ease,
 		border-color 0.1s ease;
+}
+
+.c-melt-calendar__day {
+	line-height: 1;
+}
+
+.c-melt-calendar__price {
+	font-size: 0.625rem;
+	line-height: 1;
+	opacity: 0.6;
 }
 
 .c-melt-calendar__cell:hover:not([data-disabled]):not([data-outside-month]) {

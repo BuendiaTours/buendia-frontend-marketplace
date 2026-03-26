@@ -7,6 +7,7 @@
  */
 
 import { dev } from '$app/environment';
+import { env } from '$env/dynamic/private';
 import { logger } from '$lib/utils/logger';
 import { apiConfig } from '$core/_shared/config';
 import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$core/_shared/types';
@@ -305,7 +306,7 @@ export class ApiClient {
 				this.log('info', `Success: ${url}`, { status: response.status });
 			}
 
-			if (dev) {
+			if (dev && env.LOG_API_BACKEND_RESPONSE === 'true') {
 				logger.log(
 					`[API] Backend response ${method} ${pathForLog}:`,
 					JSON.stringify(data, null, 2)

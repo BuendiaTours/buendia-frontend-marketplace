@@ -68,6 +68,13 @@
 	// MeltCalendar
 	let calendarValue = $state<DateValue | undefined>();
 
+	// dayInfo demo: €30 en días de martes a sábado, lunes y domingos no disponibles
+	function demoDayInfo(date: DateValue) {
+		const dow = date.toDate('UTC').getUTCDay(); // 0=dom, 1=lun, ... 6=sáb
+		if (dow === 0 || dow === 1) return { available: false };
+		return { price: '€30' };
+	}
+
 	// MeltRangeCalendar + Popover
 	type DateRange = CreateRangeCalendarProps['defaultValue'];
 	let rangeValue = $state<DateRange | undefined>();
@@ -510,7 +517,7 @@
 		Calendario inline. Personaliza con <code>--c-melt-calendar-selected-bg</code>,
 		<code>--c-melt-calendar-cell-size</code>, etc.
 	</p>
-	<MeltCalendar bind:value={calendarValue} />
+	<MeltCalendar bind:value={calendarValue} dayInfo={demoDayInfo} />
 	{#if calendarValue}
 		<p class="mt-4 text-gray-500">Seleccionado: <strong>{calendarValue.toString()}</strong></p>
 	{/if}
@@ -540,7 +547,7 @@
 			transition:fade={{ duration: 100 }}
 			class="z-50 rounded-lg border border-gray-200 bg-white shadow-lg"
 		>
-			<MeltRangeCalendar bind:value={rangeValue} numberOfMonths={2} />
+			<MeltRangeCalendar bind:value={rangeValue} numberOfMonths={2} dayInfo={demoDayInfo} />
 		</div>
 	{/if}
 </div>
