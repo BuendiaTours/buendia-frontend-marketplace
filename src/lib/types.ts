@@ -41,6 +41,13 @@ export type Condition = {
 	items: ConditionItem[];
 };
 
+export type ContentBlockStack = {
+	id: string;
+	image: string;
+	title: string;
+	description: string;
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -286,6 +293,7 @@ export type Destination = {
 	kind: DestinationKind;
 	name: string;
 	slug: string;
+	contentBlockStack: ContentBlockStack[];
 };
 
 export type Attraction = {

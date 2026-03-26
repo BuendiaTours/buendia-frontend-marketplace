@@ -8,10 +8,11 @@
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -130,6 +131,12 @@
 			/>
 		{/each}
 	</div>
+
+	<ContentBlockStack
+		title="Los mejores planes para descubrir {data.destination.name}"
+		items={data.destination.contentBlockStack}
+		wrapperClass="mt-12 mb-48 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
 
 	<NewsletterRegistration />
 </div>
