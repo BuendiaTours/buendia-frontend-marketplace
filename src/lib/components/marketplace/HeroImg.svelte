@@ -11,8 +11,10 @@
 </script>
 
 {#if imgObj?.originalUrl}
-	<div class="c-hero-img relative h-[196px] overflow-hidden rounded-xl sm:h-[314px] {wrapperClass}">
-		<picture>
+	<div
+		class="c-hero-img bg-overlay relative h-[196px] overflow-hidden rounded-xl sm:h-[314px] {wrapperClass}"
+	>
+		<picture class="opacity-52">
 			{#if imgObj.variants?.find((v) => v.preset === '16_9')?.url}
 				<source
 					media="(max-width: 600px)"
@@ -25,7 +27,6 @@
 				alt={imgObj.altText ?? ''}
 			/>
 		</picture>
-		<div class="bg-alpha-ink-48 absolute inset-0"></div>
 		{#if title}
 			<div class="absolute inset-0 flex items-center justify-center">
 				<h1 class="h1-editorial text-center text-white">{title}</h1>

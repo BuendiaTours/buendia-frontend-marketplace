@@ -17,7 +17,8 @@ export const BASE_PATHS = {
 	destinations: '/destinations',
 	distributives: '/distributives',
 	reviews: '/reviews',
-	auth: '/auth'
+	auth: '/auth',
+	newsletter: '/newsletter'
 } as const;
 
 /** Supported HTTP methods. */
@@ -409,6 +410,20 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene información del usuario actual',
 			params: []
+		} satisfies Endpoint
+	},
+
+	// Newsletter
+	// ──────────────────────────────────────────────
+	newsletter: {
+		groupName: 'Newsletter',
+		groupDescription: 'Suscripción a la newsletter',
+		/** @description Subscribes an email address to the newsletter. */
+		subscribe: {
+			path: () => `${BASE_PATHS.newsletter}/subscribe`,
+			method: 'POST',
+			description: 'Suscribe un email a la newsletter',
+			params: ['email']
 		} satisfies Endpoint
 	}
 } as const;

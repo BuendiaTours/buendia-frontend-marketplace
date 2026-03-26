@@ -19,13 +19,16 @@ Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-
 	import { AltArrowLeft, AltArrowRight } from '$lib/icons/Linear';
 	import type { DateValue } from '@internationalized/date';
 
+	type DayInfo = { price?: string | number; available?: boolean };
+
 	type Props = {
 		value?: DateValue;
 		onValueChange?: (value: DateValue | undefined) => void;
+		dayInfo?: (date: DateValue) => DayInfo;
 		wrapperClass?: string;
 	};
 
-	let { value = $bindable(), onValueChange, wrapperClass = '' }: Props = $props();
+	let { value = $bindable(), onValueChange, dayInfo, wrapperClass = '' }: Props = $props();
 
 	const {
 		elements: { calendar, grid, cell, prevButton, nextButton },
@@ -35,6 +38,7 @@ Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-
 		locale: 'es-ES',
 		weekStartsOn: 0,
 		fixedWeeks: true,
+		isDateDisabled: (date) => dayInfo?.(date)?.available === false,
 		onValueChange: ({ next }) => {
 			value = next;
 			onValueChange?.(next);
@@ -79,10 +83,14 @@ Personaliza con variables CSS: --c-melt-calendar-bg, --c-melt-calendar-selected-
 					{#each month.weeks as weekDates, wi (wi)}
 						<tr class="flex w-full">
 							{#each weekDates as date, di (di)}
-								<td class="p-sm relative size-10 p-0 text-center">
+								{@const info = dayInfo?.(date)}
+								<td class="relative w-10 p-0 text-center">
 									<button use:melt={$cell(date, month.value)} class="c-melt-calendar__cell">
 										<div class="c-melt-calendar__today-dot"></div>
-										{date.day}
+										<span class="c-melt-calendar__day">{date.day}</span>
+										{#if info?.price !== undefined}
+											<span class="c-melt-calendar__price">{info.price}</span>
+										{/if}
 									</button>
 								</td>
 							{/each}

@@ -62,6 +62,40 @@ const data = await api.activities.getAll(fetch, { page: 1 });
 - Config (retry, timeout, headers) in `src/lib/api/shared/config.ts`
 - Error types: `network`, `timeout`, `not_found`, `unauthorized`, `forbidden`, `validation`, `server_error`, `unknown`
 
+### NEVER import API endpoints directly in Svelte components
+
+`apiClient` imports `$env/dynamic/private` — a server-only module. Importing any marketplace/backoffice endpoint file from a `.svelte` component causes the SvelteKit error **"An impossible situation occurred"**.
+
+**Rule:** Svelte components must NEVER import from `$lib/api/` or `$core/`. Client-side API calls must go through a SvelteKit proxy route.
+
+**Pattern for client-side API calls from components:**
+
+1. Create a proxy route `src/routes/api/[resource]/[action]/+server.ts`:
+
+```ts
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import { myEndpoints } from '$lib/api/marketplace/endpoints/myResource';
+
+export const POST: RequestHandler = async ({ request, fetch }) => {
+	const body = await request.json();
+	const result = await myEndpoints.doSomething(fetch, body.param);
+	return json(result);
+};
+```
+
+2. Call that proxy from the component using plain `fetch`:
+
+```ts
+const res = await fetch('/api/resource/action', {
+	method: 'POST',
+	headers: { 'Content-Type': 'application/json' },
+	body: JSON.stringify({ param: value })
+});
+```
+
+Existing proxy example: `src/routes/api/reviews/[activityId]/+server.ts`
+
 ### Forms
 
 SvelteKit Superforms + Zod. Use `use:enhance` for progressive enhancement. Adding a form field requires updating:
