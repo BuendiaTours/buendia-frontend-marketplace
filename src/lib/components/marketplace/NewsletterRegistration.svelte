@@ -68,8 +68,12 @@
 				<p class="p-base mt-2 text-white">{displaySubTitle}</p>
 			{/if}
 			{#if status !== 'success'}
-				<div
+				<form
 					class="c-newsletter-registration__form mt-8 flex w-full max-w-max max-w-none flex-col items-center gap-2 rounded-xl bg-none p-0 md:max-w-[466px] md:flex-row md:bg-white md:p-2"
+					onsubmit={(e) => {
+						e.preventDefault();
+						handleSubscribe();
+					}}
 				>
 					<input
 						class="h-[48px] w-full appearance-none rounded-lg border-0 bg-white shadow-none ring-0 outline-none"
@@ -79,16 +83,12 @@
 						placeholder="Introduce tu email"
 						bind:value={email}
 						disabled={loading}
+						required
 					/>
-					<button
-						type="button"
-						class="e-button e-button-lg w-full md:w-auto"
-						disabled={loading}
-						onclick={handleSubscribe}
-					>
+					<button type="submit" class="e-button e-button-lg w-full md:w-auto" disabled={loading}>
 						Suscribirse
 					</button>
-				</div>
+				</form>
 			{/if}
 		</div>
 		<div class="hidden w-1/2 items-center justify-center md:flex">
