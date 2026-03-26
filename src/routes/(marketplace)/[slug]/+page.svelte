@@ -12,6 +12,7 @@
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
+	import PlpAttractions from '$lib/components/marketplace/plp/PlpAttractions.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -130,6 +131,12 @@
 			/>
 		{/each}
 	</div>
+
+	<PlpAttractions
+		title="Atracciones en {data.destination.name}"
+		items={data.destination.attractions}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
 
 	<NewsletterRegistration />
 </div>

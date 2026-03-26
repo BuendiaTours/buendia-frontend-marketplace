@@ -28,6 +28,7 @@
 /* Atoms */
 @import '$lib/styles/marketplace/elements/e-button.css';
 @import '$lib/styles/marketplace/elements/e-card.css';
+@import '$lib/styles/marketplace/elements/e-nav-button.css';
 
 /* Molecules */
 

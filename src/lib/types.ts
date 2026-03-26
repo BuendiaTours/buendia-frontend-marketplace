@@ -235,6 +235,15 @@ export type ActivityCard = {
 	byBuendia?: boolean;
 };
 
+export type PlpAttractionItem = {
+	id: string;
+	image: string;
+	title: string;
+	slug: string;
+	activities: number;
+	price: number;
+};
+
 export type Column<T> = {
 	key: keyof T;
 	title?: string;
@@ -286,6 +295,7 @@ export type Destination = {
 	kind: DestinationKind;
 	name: string;
 	slug: string;
+	attractions: PlpAttractionItem[];
 };
 
 export type Attraction = {

@@ -1,0 +1,23 @@
+.e-nav-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	border: 1px solid var(--color-neutral-800);
+	cursor: pointer;
+
+	svg {
+		color: var(--color-neutral-800);
+	}
+
+	&.swiper-button-disabled {
+		border-color: var(--color-neutral-300);
+		cursor: default;
+
+		svg {
+			color: var(--color-neutral-300);
+		}
+	}
+}
