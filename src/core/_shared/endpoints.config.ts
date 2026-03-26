@@ -10,6 +10,7 @@
 export const BASE_PATHS = {
 	activities: '/activities',
 	activityOptions: '/activity-options',
+	activityKinds: '/activity-kind',
 	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
@@ -333,6 +334,19 @@ export const API_ENDPOINTS = {
 			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
 		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Activity Kinds
+	// ──────────────────────────────────────────────
+	activityKinds: {
+		groupName: 'Activity Kinds',
+		groupDescription: 'Tipos de actividad',
+		list: {
+			path: () => BASE_PATHS.activityKinds,
+			method: 'GET',
+			description: 'Obtiene listado de tipos de actividad'
+		} satisfies Endpoint
 	},
 
 	// ──────────────────────────────────────────────

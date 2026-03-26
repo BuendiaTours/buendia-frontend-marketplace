@@ -14,8 +14,26 @@
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
+	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
+	import { page } from '$app/stores';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
+
+	const activeKind = $derived($page.url.searchParams.get('kind'));
+
+	function buildUrl(kind: string | null) {
+		const params = new SvelteURLSearchParams($page.url.searchParams.toString());
+		if (kind) params.set('kind', kind);
+		else params.delete('kind');
+		const qs = params.toString();
+		return qs ? `${$page.url.pathname}?${qs}` : $page.url.pathname;
+	}
+
+	const tabs = $derived([
+		{ id: 'all', name: 'Todo', href: buildUrl(null) },
+		...data.activityKinds.map((k) => ({ id: k.id, name: k.name, href: buildUrl(k.id) }))
+	]);
 </script>
 
 <div class="wrapper">
@@ -49,6 +67,8 @@
 			<p class="text-gray-500">No hay categorías disponibles en este destino.</p>
 		{/if}
 	</div>
+
+	<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
 
 	<!-- Activities List -->
 	<div class="e-card mb-8">
