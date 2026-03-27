@@ -19,8 +19,10 @@ export type ByBuendiaBannerItem = {
 };
 
 export type ByBuendiaBanner = {
-	title: string;
-	description: string;
+	title?: string;
+	description?: string;
+	image?: string;
+	itemsDescription?: string;
 	items: ByBuendiaBannerItem[];
 	link: {
 		text: string;
@@ -304,6 +306,7 @@ export type Destination = {
 	faqsTitle?: string;
 	faqs: Faqs[];
 	contentBlockStack: ContentBlockStack[];
+	byBuendiaBanner: ByBuendiaBanner | null;
 };
 
 export type Attraction = {

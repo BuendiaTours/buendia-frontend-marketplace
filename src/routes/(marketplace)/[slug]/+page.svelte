@@ -14,6 +14,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import { page } from '$app/stores';
+	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -61,7 +62,7 @@
 	{/if}
 
 	<!-- Reviews List -->
-	{#if data.reviews && data.reviews.length > 0}
+	<!-- {#if data.reviews && data.reviews.length > 0}
 		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
 			{#each data.reviews as review (review.id)}
 				<div
@@ -96,7 +97,7 @@
 				</div>
 			{/each}
 		</div>
-	{/if}
+	{/if} -->
 
 	<FaqsInline
 		title={data.destination.faqsTitle}
@@ -107,8 +108,14 @@
 	<ContentBlockStack
 		title="Los mejores planes para descubrir {data.destination.name}"
 		items={data.destination.contentBlockStack}
-		wrapperClass="mt-12 mb-48 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
+	{#if data.destination.byBuendiaBanner}
+		<ByBuendiaBanner
+			banner={data.destination.byBuendiaBanner}
+			wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		/>
+	{/if}
 
 	<NewsletterRegistration />
 </div>

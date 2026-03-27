@@ -18,7 +18,7 @@
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
+	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
@@ -142,12 +142,7 @@
 
 			<!-- pdp-by-buendia-banner -->
 			{#if activity.byBuendiaBanner}
-				<PdpByBuendiaBanner
-					title={activity.byBuendiaBanner.title}
-					description={activity.byBuendiaBanner.description}
-					items={activity.byBuendiaBanner.items}
-					link={activity.byBuendiaBanner.link}
-				/>
+				<ByBuendiaBanner banner={activity.byBuendiaBanner} />
 
 				<Spacer wrapperClass="mt-8 mb-6" />
 			{/if}
