@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { resolveRoute } from '$app/paths';
 
 	// Lib
 	import { format } from 'date-fns';
@@ -14,6 +13,7 @@
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
+	import { page } from '$app/stores';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -25,66 +25,40 @@
 
 	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
 
-	<!-- <textarea class="w-full font-mono">{JSON.stringify(data.destination)}</textarea> -->
-
-	<!-- Categories List -->
-	<div class="e-card mb-8">
-		<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
-
-		{#if data.categories && data.categories.length > 0}
-			<ul class="space-y-3">
-				{#each data.categories as category (category.slug)}
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- /categoria/[slug] route not yet created -->
-					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a
-							href={`/categoria/${category.slug}`}
-							class="block hover:text-blue-600 hover:underline"
-						>
-							{category.name}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-gray-500">No hay categorías disponibles en este destino.</p>
-		{/if}
+	<!-- Activities grid -->
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{#each data.activities as activity (activity.id)}
+			<ActivityCard
+				item={activity}
+				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+			/>
+		{/each}
 	</div>
 
-	<!-- Activities List -->
-	<div class="e-card mb-8">
-		<h2 class="mb-4 font-semibold text-gray-800">
-			Actividades en {data.destination.name}
-		</h2>
-
-		{#if data.activities && data.activities.length > 0}
-			<ul class="space-y-3">
-				{#each data.activities as activity (activity.id)}
-					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a
-							href={resolveRoute('/(marketplace)/actividad/[slug]', { slug: activity.slug })}
-							class="block hover:text-blue-600 hover:underline"
-						>
-							<h3 class="font-medium text-gray-800">{activity.title}</h3>
-							{#if activity.descriptionShort}
-								<p class="mt-1 text-gray-600">{activity.descriptionShort}</p>
-							{/if}
-						</a>
-					</li>
-				{/each}
-			</ul>
-
-			<!-- Pagination info -->
-			{#if data.pagination && data.pagination.total > data.pagination.pageSize}
-				<div class="mt-4 text-center text-gray-600">
-					Página {data.pagination.page} de {Math.ceil(
-						data.pagination.total / data.pagination.pageSize
-					)}
-				</div>
+	<!-- Pagination -->
+	{#if data.pagination && data.pagination.totalPages > 1}
+		<div class="mt-6 flex justify-center gap-4">
+			{#if data.pagination.page > 1}
+				<a
+					href="{$page.url.pathname}?page={data.pagination.page - 1}"
+					class="rounded border px-4 py-2 hover:bg-neutral-100"
+				>
+					Anterior
+				</a>
 			{/if}
-		{:else}
-			<p class="text-gray-500">No hay actividades disponibles en este destino.</p>
-		{/if}
-	</div>
+			<span class="flex items-center text-sm text-neutral-600">
+				Página {data.pagination.page} de {data.pagination.totalPages}
+			</span>
+			{#if data.pagination.page < data.pagination.totalPages}
+				<a
+					href="{$page.url.pathname}?page={data.pagination.page + 1}"
+					class="rounded border px-4 py-2 hover:bg-neutral-100"
+				>
+					Siguiente
+				</a>
+			{/if}
+		</div>
+	{/if}
 
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
@@ -123,17 +97,6 @@
 			{/each}
 		</div>
 	{/if}
-
-	<!-- Back to home link -->
-
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-		{#each data.destination.activities as activity (activity.id)}
-			<ActivityCard
-				item={activity}
-				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
-			/>
-		{/each}
-	</div>
 
 	<FaqsInline
 		title={data.destination.faqsTitle}

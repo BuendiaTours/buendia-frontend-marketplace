@@ -9,7 +9,7 @@ import { apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-import type { CriteriaResult, Destination } from '$lib/types';
+import type { ActivityCard, CriteriaResult, Destination, Pagination } from '$lib/types';
 
 export type DestinationsPublicParams = {
 	page?: number;
@@ -49,6 +49,28 @@ export const destinationsEndpoints = {
 		const response = await apiClient.request<Destination>(fetchFn, path, {
 			method: 'GET'
 		});
+
+		return response.data;
+	},
+
+	/**
+	 * Obtener actividades paginadas de un destino
+	 */
+	async getActivities(
+		fetchFn: typeof fetch,
+		destinationId: string,
+		params?: { page?: number; pageSize?: number }
+	): Promise<{ data: ActivityCard[]; pagination: Pagination }> {
+		const path = buildEndpointUrl(
+			API_ENDPOINTS.destinations.activities.path(destinationId),
+			params
+		);
+
+		const response = await apiClient.request<{ data: ActivityCard[]; pagination: Pagination }>(
+			fetchFn,
+			path,
+			{ method: 'GET' }
+		);
 
 		return response.data;
 	}
