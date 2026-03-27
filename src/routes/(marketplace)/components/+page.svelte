@@ -15,7 +15,7 @@
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import { Calendar, MapPoint } from '$lib/icons/Linear';
+	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
 
@@ -102,6 +102,15 @@
 		});
 	}
 </script>
+
+<div class="wrapper mt-6">
+	<BuendiaComment class="size-5" />
+	<BuendiaCommentHollow class="size-5" />
+	<BuendiaComment class="size-6" />
+	<BuendiaCommentHollow class="size-6" />
+	<BuendiaComment class="size-12" />
+	<BuendiaCommentHollow class="size-12" />
+</div>
 
 <!-- ============================================================ -->
 <!-- Index -->
