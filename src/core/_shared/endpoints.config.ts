@@ -238,6 +238,13 @@ export const API_ENDPOINTS = {
 			method: 'PUT',
 			description: 'Actualiza un destino por slug',
 			params: ['slug', 'body']
+		} satisfies EndpointWithParam,
+		/** @description Retrieves paginated activities for a destination by its ID. */
+		activitiesByDestination: {
+			path: (id: string) => `/destination/${id}/activities`,
+			method: 'GET',
+			description: 'Obtiene actividades paginadas de un destino por ID',
+			params: ['id', 'page', 'pageSize', 'kind']
 		} satisfies EndpointWithParam
 	},
 
