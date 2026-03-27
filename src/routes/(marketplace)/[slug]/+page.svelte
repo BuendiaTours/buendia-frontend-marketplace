@@ -62,7 +62,7 @@
 	{/if}
 
 	<!-- Reviews List -->
-	<!-- {#if data.reviews && data.reviews.length > 0}
+	{#if data.reviews && data.reviews.length > 0}
 		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
 			{#each data.reviews as review (review.id)}
 				<div
@@ -97,7 +97,7 @@
 				</div>
 			{/each}
 		</div>
-	{/if} -->
+	{/if}
 
 	<FaqsInline
 		title={data.destination.faqsTitle}
