@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { AltArrowLeft, AltArrowRight } from '$lib/icons/Linear';
+
 	type Tab = {
 		id: string;
 		name: string;
@@ -51,7 +53,7 @@
 		{#each tabs as tab (tab.id)}
 			<a
 				href={tab.href}
-				class="tab-bar__item p-sm rounded-full px-4 py-2 font-medium whitespace-nowrap transition-colors"
+				class="tab-bar__item p-lg rounded-full px-4 py-2 font-medium whitespace-nowrap text-neutral-700 transition-colors"
 				class:tab-bar__item--active={tab.id === activeId}
 			>
 				{tab.name}
@@ -67,24 +69,16 @@
 	<button
 		type="button"
 		onclick={scrollLeft}
-		class="absolute inset-y-0 left-0 hidden items-center justify-center px-1 transition-opacity sm:flex"
+		class="p-lg absolute inset-y-0 left-0 hidden items-center justify-center transition-opacity sm:flex"
 		class:opacity-0={!showLeftArrow}
 		class:pointer-events-none={!showLeftArrow}
 		aria-label="Ver categorías anteriores"
 	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
+		<span
+			class="cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
 		>
-			<path d="M15 18l-6-6 6-6" />
-		</svg>
+			<AltArrowLeft class="size-5" />
+		</span>
 	</button>
 
 	<!-- Right gradient + arrow -->
@@ -95,24 +89,16 @@
 	<button
 		type="button"
 		onclick={scrollRight}
-		class="absolute inset-y-0 right-0 hidden items-center justify-center px-1 transition-opacity sm:flex"
+		class="absolute inset-y-0 right-0 hidden items-center justify-center transition-opacity sm:flex"
 		class:opacity-0={!showRightArrow}
 		class:pointer-events-none={!showRightArrow}
 		aria-label="Ver más categorías"
 	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
+		<span
+			class="cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
 		>
-			<path d="M9 18l6-6-6-6" />
-		</svg>
+			<AltArrowRight class="size-5" />
+		</span>
 	</button>
 </div>
 
