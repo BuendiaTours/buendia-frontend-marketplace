@@ -13,6 +13,7 @@
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
+	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
 	import { page } from '$app/stores';
 
 	let { data }: { data: PageData } = $props();
@@ -107,8 +108,10 @@
 	<ContentBlockStack
 		title="Los mejores planes para descubrir {data.destination.name}"
 		items={data.destination.contentBlockStack}
-		wrapperClass="mt-12 mb-48 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
+
+	<WhyUsGrid wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24" />
 
 	<NewsletterRegistration />
 </div>
