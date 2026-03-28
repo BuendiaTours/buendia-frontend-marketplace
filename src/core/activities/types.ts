@@ -74,6 +74,7 @@ export type ActivityDistributive = {
 export type ActivityImage = {
 	mediaId: string;
 	order: number;
+	originalUrl: string;
 	variants: Record<string, string>;
 };
 

@@ -8,6 +8,7 @@
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import {
 		Database,
+		FolderCheck,
 		LinkRound,
 		Map as MapIcon,
 		MapPoint,
@@ -21,6 +22,7 @@
 		locationCount?: number;
 		mealCount?: number;
 		addonCount?: number;
+		contentBlockCount?: number;
 		stageCount?: number;
 		optionCount?: number;
 	};
@@ -30,6 +32,7 @@
 		locationCount = 0,
 		mealCount = 0,
 		addonCount = 0,
+		contentBlockCount = 0,
 		stageCount = 0,
 		optionCount = 0
 	}: Props = $props();
@@ -58,6 +61,12 @@
 			href: ACTIVITY_ROUTES.addons(activityId),
 			icon: Widget,
 			badge: addonCount > 0 ? addonCount : undefined
+		},
+		{
+			label: m.activities_tabContentBlocks(),
+			href: ACTIVITY_ROUTES.contentBlocks(activityId),
+			icon: FolderCheck,
+			badge: contentBlockCount > 0 ? contentBlockCount : undefined
 		},
 		{
 			label: m.activities_tabStages(),

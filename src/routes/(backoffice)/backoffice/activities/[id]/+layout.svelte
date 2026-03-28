@@ -58,6 +58,7 @@
 	});
 	let mealCount = $derived(data.activity.meals?.length ?? 0);
 	let addonCount = $derived(data.addons?.length ?? 0);
+	let contentBlockCount = $derived(data.activity.contentBlocks?.length ?? 0);
 	let stageCount = $derived(data.activity.stages?.length ?? 0);
 	let optionCount = $derived(data.options?.length ?? 0);
 
@@ -69,6 +70,9 @@
 	});
 	setContext('updateAddonCount', (count: number) => {
 		addonCount = count;
+	});
+	setContext('updateContentBlockCount', (count: number) => {
+		contentBlockCount = count;
 	});
 	setContext('updateStageCount', (count: number) => {
 		stageCount = count;
@@ -90,6 +94,7 @@
 		{locationCount}
 		{mealCount}
 		{addonCount}
+		{contentBlockCount}
 		{stageCount}
 		{optionCount}
 	/>

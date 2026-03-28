@@ -298,5 +298,15 @@
 	"activities_optionLabelMaxGroupSize": "Tamaño máximo del grupo",
 	"activities_optionLabelMaxTicketsPerIndividual": "Máx. tickets por persona",
 	"activities_optionLabelSupplierOptionCode": "Código proveedor",
-	"activities_optionPlaceholderSupplierOptionCode": "Código de la opción en el sistema externo"
+	"activities_optionPlaceholderSupplierOptionCode": "Código de la opción en el sistema externo",
+	"activities_tabContentBlocks": "Contenido",
+	"activities_sectionContentBlocks": "Bloques de contenido",
+	"activities_sectionContentBlocksDescription": "Bloques de contenido vinculados a esta actividad. El orden determina cómo se muestran en el marketplace.",
+	"activities_contentBlocksSearchPlaceholder": "Buscar bloque de contenido...",
+	"activities_contentBlocksAddButton": "Añadir",
+	"activities_contentBlocksEmpty": "No hay bloques de contenido vinculados",
+	"activities_contentBlocksAdded": "Bloque de contenido añadido",
+	"activities_contentBlocksRemoved": "Bloque de contenido eliminado",
+	"activities_contentBlocksError": "Error al gestionar el bloque de contenido",
+	"activities_contentBlocksMoveError": "Error al mover el bloque de contenido"
 }
