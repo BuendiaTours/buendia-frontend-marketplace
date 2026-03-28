@@ -1,3 +1,5 @@
+import { MediaVariantPreset } from '$core/multimedia/enums';
+
 type ImageCropVariant = {
 	id: string;
 	format: 'JPEG' | 'PNG' | 'WEBP';
@@ -7,9 +9,8 @@ type ImageCropVariant = {
 };
 
 export const imageCropVariants: ImageCropVariant[] = [
-	{ id: '', format: 'JPEG', preset: 'HERO', width: 1280, height: 332 },
-	{ id: '', format: 'JPEG', preset: '16_9', width: 600, height: 338 },
-	{ id: '', format: 'JPEG', preset: '4_3', width: 480, height: 360 },
-	{ id: '', format: 'JPEG', preset: 'SQUARE', width: 480, height: 480 },
-	{ id: '', format: 'JPEG', preset: 'PORTRAIT', width: 300, height: 400 }
+	{ id: '', format: 'JPEG', preset: MediaVariantPreset.HERO_DESKTOP, width: 1920, height: 1080 },
+	{ id: '', format: 'JPEG', preset: MediaVariantPreset.HERO_MOBILE, width: 768, height: 1024 },
+	{ id: '', format: 'JPEG', preset: MediaVariantPreset.CARD, width: 400, height: 300 },
+	{ id: '', format: 'JPEG', preset: MediaVariantPreset.THUMBNAIL, width: 200, height: 200 }
 ];

@@ -86,9 +86,9 @@ export type MediaUploadUrlDto = {
 
 /** Response from the upload-url endpoint. */
 export type MediaUploadUrlResponse = {
-	url: string;
-	key: string;
-	expiresIn: number;
+	uploadUrl: string;
+	s3Key: string;
+	expiresAt: string;
 };
 
 // ── Criteria (query params) ─────────────────────

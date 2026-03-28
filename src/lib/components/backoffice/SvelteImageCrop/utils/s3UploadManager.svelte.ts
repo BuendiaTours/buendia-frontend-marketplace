@@ -1,4 +1,7 @@
-// Gestiona la subida de una nueva imagen a S3 en background y la creación del registro media
+/**
+ * Manages the full upload flow: presigned URL → S3 upload → create media record.
+ * After record creation, the user adjusts crops and saves focal points via the edit manager.
+ */
 
 import {
 	getUploadUrl,
@@ -10,7 +13,6 @@ import {
 import type { SicImageEditorInstance } from '../types/imageEditorTypes';
 
 type BgUpload = 'idle' | 'in-progress' | 'done' | 'error';
-type SaveStep = 'idle' | 'generating' | 'creating-record' | 'done' | 'error';
 
 export type S3UploadConfig = {
 	apiBaseUrl: string;
@@ -24,26 +26,14 @@ export function createS3UploadManager(
 ) {
 	let bgUpload = $state<BgUpload>('idle');
 	let bgUploadError = $state<string | null>(null);
-	let presignedResponse = $state<PresignedUrlResponse | null>(null);
-	let bgUploadPromise: Promise<void> | null = null;
-	let uploadVersion = 0;
-
-	let saveStep = $state<SaveStep>('idle');
-	let saveError = $state<string | null>(null);
+	let _presignedResponse = $state<PresignedUrlResponse | null>(null);
 	let createdMediaId = $state<string | null>(null);
 	let pendingFile = $state<File | null>(null);
-
-	const canSave = $derived(
-		!!pendingFile &&
-			(bgUpload === 'done' || bgUpload === 'in-progress') &&
-			(saveStep === 'idle' || saveStep === 'error')
-	);
-	const isSaving = $derived(saveStep === 'generating' || saveStep === 'creating-record');
+	let uploadVersion = 0;
 
 	function handleImageUploaded(detail: { imageSrc: string; file?: File }) {
 		pendingFile = detail.file ?? null;
-		saveStep = 'idle';
-		saveError = null;
+		bgUploadError = null;
 		createdMediaId = null;
 
 		if (pendingFile) {
@@ -51,67 +41,65 @@ export function createS3UploadManager(
 		}
 	}
 
+	/** Upload to S3 and immediately create the media record. */
 	function startBackgroundUpload(file: File): void {
 		const version = ++uploadVersion;
 		bgUpload = 'in-progress';
 		bgUploadError = null;
-		presignedResponse = null;
+		_presignedResponse = null;
 
-		bgUploadPromise = (async () => {
+		(async () => {
 			const presigned = await getUploadUrl(config.apiBaseUrl, {
 				fileName: file.name,
 				mimeType: file.type,
 				fileSize: file.size
 			});
+
 			await uploadFileToS3(presigned.uploadUrl, file);
 			if (version !== uploadVersion) return;
-			presignedResponse = presigned;
-			getEditor()?.setImageData({ id: presigned.id, originalUrl: presigned.s3Key });
-			bgUpload = 'done';
-		})();
 
-		bgUploadPromise.catch((e: unknown) => {
+			_presignedResponse = presigned;
+			getEditor()?.setImageData({
+				id: presigned.id,
+				originalUrl: presigned.s3Key,
+				originalSizeBytes: file.size
+			});
+
+			const editor = getEditor();
+			const imgData = editor
+				? (() => {
+						try {
+							return editor.getState();
+						} catch {
+							return null;
+						}
+					})()
+				: null;
+
+			const payload: CreateMediaPayload = {
+				id: presigned.id,
+				altText: imgData?.altText ?? '',
+				kind: 'IMAGE',
+				mimeType: file.type,
+				originalHeight: imgData?.originalHeight ?? 0,
+				originalSizeBytes: file.size,
+				originalUrl: presigned.s3Key,
+				originalWidth: imgData?.originalWidth ?? 0,
+				title: imgData?.title ?? ''
+			};
+
+			await createMedia(config.apiBaseUrl, payload);
+			if (version !== uploadVersion) return;
+
+			createdMediaId = presigned.id;
+			bgUpload = 'done';
+			config.onSaved?.(presigned.id);
+		})().catch((e: unknown) => {
 			if (version !== uploadVersion) return;
 			bgUploadError = e instanceof Error ? e.message : String(e);
 			bgUpload = 'error';
+			config.onError?.(bgUploadError);
 		});
-	}
-
-	async function handleSave() {
-		const editor = getEditor();
-		if (!editor || !pendingFile) return;
-
-		saveError = null;
-		saveStep = 'generating';
-		await editor.generateCrops();
-		const state = editor.getState();
-
-		if (bgUploadPromise) {
-			await bgUploadPromise.catch(() => {});
-		}
-
-		if (bgUpload !== 'done' || !presignedResponse) {
-			saveError = bgUploadError ?? 'Error en la subida a S3. Reintenta.';
-			saveStep = 'error';
-			return;
-		}
-
-		try {
-			saveStep = 'creating-record';
-			const payload: CreateMediaPayload = {
-				...state,
-				kind: 'IMAGE',
-				originalSizeBytes: pendingFile.size
-			};
-			const response = await createMedia(config.apiBaseUrl, payload);
-			createdMediaId = response.id;
-			saveStep = 'done';
-			config.onSaved?.(response.id);
-		} catch (e) {
-			saveError = e instanceof Error ? e.message : String(e);
-			saveStep = 'error';
-			config.onError?.(saveError);
-		}
 	}
 
 	function retryUpload() {
@@ -122,12 +110,9 @@ export function createS3UploadManager(
 		pendingFile = null;
 		bgUpload = 'idle';
 		bgUploadError = null;
-		presignedResponse = null;
-		bgUploadPromise = null;
-		uploadVersion = 0;
-		saveStep = 'idle';
-		saveError = null;
+		_presignedResponse = null;
 		createdMediaId = null;
+		uploadVersion = 0;
 		getEditor()?.reset();
 	}
 
@@ -138,26 +123,13 @@ export function createS3UploadManager(
 		get bgUploadError() {
 			return bgUploadError;
 		},
-		get saveStep() {
-			return saveStep;
-		},
-		get saveError() {
-			return saveError;
-		},
 		get createdMediaId() {
 			return createdMediaId;
 		},
 		get pendingFile() {
 			return pendingFile;
 		},
-		get canSave() {
-			return canSave;
-		},
-		get isSaving() {
-			return isSaving;
-		},
 		handleImageUploaded,
-		handleSave,
 		retryUpload,
 		reset
 	};

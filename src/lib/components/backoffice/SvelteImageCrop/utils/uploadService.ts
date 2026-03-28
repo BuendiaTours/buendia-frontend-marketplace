@@ -1,13 +1,12 @@
 // Llamadas HTTP: presigned URL, subida a S3 y creación/actualización de registros media
 
-import type { ImageData } from '../types/persistedStateTypes';
-
 export type PresignedUrlRequest = {
 	fileName: string;
 	mimeType: string;
 	fileSize: number;
 };
 
+/** Normalized response used internally by the upload manager. */
 export type PresignedUrlResponse = {
 	uploadUrl: string;
 	s3Key: string;
@@ -15,9 +14,32 @@ export type PresignedUrlResponse = {
 	id: string;
 };
 
-export type CreateMediaPayload = ImageData & { kind: 'IMAGE' };
+/** Raw response from the API upload-url endpoint. */
+type ApiUploadUrlResponse = {
+	uploadUrl: string;
+	s3Key: string;
+	expiresAt: string;
+};
 
-export type CreatedMediaResponse = { id: string; [key: string]: unknown };
+/** Payload for creating a media record (POST /media). */
+export type CreateMediaPayload = {
+	id: string;
+	altText: string;
+	kind: string;
+	mimeType: string;
+	originalHeight: number;
+	originalSizeBytes: number;
+	originalUrl: string;
+	originalWidth: number;
+	title: string;
+};
+
+/** Payload for updating focal points (PATCH /media/:id). */
+export type UpdateMediaPayload = {
+	altText?: string;
+	title?: string;
+	focalPoints?: Record<string, { x: number; y: number; scale: number } | null>;
+};
 
 export async function getUploadUrl(
 	apiBaseUrl: string,
@@ -31,7 +53,16 @@ export async function getUploadUrl(
 	if (!res.ok) {
 		throw new Error(`Failed to get upload URL: ${res.status} ${res.statusText}`);
 	}
-	return res.json() as Promise<PresignedUrlResponse>;
+	const raw: ApiUploadUrlResponse = await res.json();
+	const uuidMatch = raw.s3Key.match(
+		/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
+	);
+	return {
+		uploadUrl: raw.uploadUrl,
+		s3Key: raw.s3Key,
+		expiresAt: raw.expiresAt,
+		id: uuidMatch?.[0] ?? ''
+	};
 }
 
 export async function uploadFileToS3(uploadUrl: string, file: File): Promise<void> {
@@ -45,33 +76,32 @@ export async function uploadFileToS3(uploadUrl: string, file: File): Promise<voi
 	}
 }
 
-export async function createMedia(
-	apiBaseUrl: string,
-	payload: CreateMediaPayload
-): Promise<CreatedMediaResponse> {
+/** Creates the media record. API returns 201 with no body. */
+export async function createMedia(apiBaseUrl: string, payload: CreateMediaPayload): Promise<void> {
 	const res = await fetch(`${apiBaseUrl}/media`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload)
 	});
 	if (!res.ok) {
-		throw new Error(`Failed to create media record: ${res.status} ${res.statusText}`);
+		const errorBody = await res.text();
+		throw new Error(`Failed to create media record: ${res.status} ${errorBody}`);
 	}
-	return res.json() as Promise<CreatedMediaResponse>;
 }
 
+/** Updates focal points on an existing media record. API returns 200 with no body. */
 export async function updateMedia(
 	apiBaseUrl: string,
 	id: string,
-	payload: CreateMediaPayload
-): Promise<CreatedMediaResponse> {
+	payload: UpdateMediaPayload
+): Promise<void> {
 	const res = await fetch(`${apiBaseUrl}/media/${id}`, {
 		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload)
 	});
 	if (!res.ok) {
-		throw new Error(`Failed to update media record: ${res.status} ${res.statusText}`);
+		const errorBody = await res.text();
+		throw new Error(`Failed to update media record: ${res.status} ${errorBody}`);
 	}
-	return res.json() as Promise<CreatedMediaResponse>;
 }

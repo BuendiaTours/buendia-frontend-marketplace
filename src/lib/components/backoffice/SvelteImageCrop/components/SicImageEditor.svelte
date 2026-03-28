@@ -67,6 +67,7 @@
 		editorConfig = {},
 		outputConfig = {},
 		initialState = undefined,
+		savedFocalPoints = undefined,
 		wrapperClass = '',
 		columnClass = 'w-[320px]',
 		name = undefined,
@@ -92,6 +93,8 @@
 		editorConfig?: EditorConfig;
 		outputConfig?: OutputConfig;
 		initialState?: ImageData | undefined;
+		/** Pre-saved focal points keyed by preset. When a crop is toggled on, it uses these to position instead of centering. */
+		savedFocalPoints?: Record<string, { x: number; y: number; scale: number }>;
 		wrapperClass?: string;
 		columnClass?: string;
 		name?: string;
@@ -618,7 +621,34 @@
 			}
 		}
 
-		const position = getCenteredCropPosition(initialWidth, initialHeight);
+		// Use saved focalPoint position if available, otherwise center
+		const fp = savedFocalPoints?.[crop.preset];
+		let position: { x: number; y: number };
+
+		if (fp && editorContainerComponent) {
+			const imgData = editorContainerComponent.getImageData();
+			const transformState = editorContainerComponent.getTransformState();
+
+			if (imgData) {
+				const imageCenterX = imgData.containerWidth / 2 + transformState.imageX;
+				const imageCenterY = imgData.containerHeight / 2 + transformState.imageY;
+				const imageLeft = imageCenterX - imgData.displayWidth / 2;
+				const imageTop = imageCenterY - imgData.displayHeight / 2;
+
+				// fp.x/y are normalized 0-1 (center of crop on the image)
+				const cropCenterX = imageLeft + fp.x * imgData.displayWidth;
+				const cropCenterY = imageTop + fp.y * imgData.displayHeight;
+
+				position = {
+					x: cropCenterX - initialWidth / 2,
+					y: cropCenterY - initialHeight / 2
+				};
+			} else {
+				position = getCenteredCropPosition(initialWidth, initialHeight);
+			}
+		} else {
+			position = getCenteredCropPosition(initialWidth, initialHeight);
+		}
 
 		const newCropBox = cropState.createActiveCropBox(
 			crop,

@@ -1,6 +1,8 @@
-// Gestiona el guardado de ediciones sobre un media existente (PATCH a S3)
+/**
+ * Manages saving crop/focal-point edits on an existing media record (PATCH).
+ */
 
-import { updateMedia, type CreateMediaPayload } from './uploadService';
+import { updateMedia, type UpdateMediaPayload } from './uploadService';
 import type { SicImageEditorInstance } from '../types/imageEditorTypes';
 import type { S3UploadConfig } from './s3UploadManager.svelte';
 
@@ -24,16 +26,34 @@ export function createS3EditManager(
 
 		saveError = null;
 		saveStep = 'generating';
-		await editor.generateCrops();
+		try {
+			await editor.generateCrops();
+		} catch (e) {
+			console.error('[EDIT MANAGER] generateCrops failed:', e);
+		}
 		const state = editor.getState();
 
 		try {
 			saveStep = 'saving';
-			const payload: CreateMediaPayload = { ...state, kind: 'IMAGE' };
-			const response = await updateMedia(config.apiBaseUrl, mediaId, payload);
-			updatedMediaId = response.id;
+
+			const clamp = (v: number) => Math.max(0, Math.min(1, v));
+			const focalPoints: Record<string, { x: number; y: number; scale: number } | null> = {};
+			for (const variant of state.variants) {
+				focalPoints[variant.preset] = {
+					x: clamp(variant.normalizedCoords.x),
+					y: clamp(variant.normalizedCoords.y),
+					scale: clamp(variant.normalizedCoords.scale ?? 0.5)
+				};
+			}
+
+			const payload: UpdateMediaPayload = {
+				focalPoints
+			};
+
+			await updateMedia(config.apiBaseUrl, mediaId, payload);
+			updatedMediaId = mediaId;
 			saveStep = 'done';
-			config.onSaved?.(response.id);
+			config.onSaved?.(mediaId);
 		} catch (e) {
 			saveError = e instanceof Error ? e.message : String(e);
 			saveStep = 'error';
