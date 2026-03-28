@@ -20,7 +20,9 @@
 			"./messages/{locale}/suppliers.json",
 			"./messages/{locale}/tags.json",
 			"./messages/{locale}/pickupPoints.json",
-			"./messages/{locale}/bookings.json"
+			"./messages/{locale}/bookings.json",
+			"./messages/{locale}/multimedia.json",
+			"./messages/{locale}/contentBlocks.json"
 		]
 	}
 }

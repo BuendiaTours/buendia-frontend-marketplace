@@ -14,6 +14,8 @@ import { PICKUP_POINT_ROUTES } from './pickupPoints';
 import { SUPPLIER_ROUTES } from './suppliers';
 import { TAG_ROUTES } from './tags';
 import { BOOKING_ROUTES } from './bookings';
+import { MULTIMEDIA_ROUTES } from './multimedia';
+import { CONTENT_BLOCK_ROUTES } from './contentBlocks';
 import { toolsRoutes } from './tools';
 
 export const backofficeRoutes = {
@@ -29,5 +31,7 @@ export const backofficeRoutes = {
 	suppliers: SUPPLIER_ROUTES,
 	tags: TAG_ROUTES,
 	bookings: BOOKING_ROUTES,
+	multimedia: MULTIMEDIA_ROUTES,
+	contentBlocks: CONTENT_BLOCK_ROUTES,
 	...toolsRoutes
 } as const;

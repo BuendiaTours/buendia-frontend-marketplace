@@ -14,6 +14,8 @@ const routeLabels: Record<string, string> = {
 	suppliers: 'Proveedores',
 	tags: 'Tags',
 	bookings: 'Reservas',
+	multimedia: 'Multimedia',
+	'content-blocks': 'Bloques de contenido',
 	users: 'Usuarios',
 	edit: 'Editar',
 	create: 'Crear',
@@ -45,15 +47,14 @@ export function generateBreadcrumbs(
 		// Si es el último segmento, no incluir href (es la página actual)
 		const isLast = index === segments.length - 1;
 
-		// Si el segmento parece un slug (contiene guiones), no agregarlo
-		// a menos que sea el último
-		if (segment.includes('-') && !isLast) {
+		// Si el segmento parece un slug (contiene guiones) y no es una ruta conocida,
+		// no agregarlo — a menos que sea el último
+		const isKnownRoute = segment in routeLabels;
+		if (segment.includes('-') && !isKnownRoute && !isLast) {
 			return;
 		}
 
-		// Si es un slug y es el último, lo dejamos para que se sobrescriba
-		// con el título real desde el servidor
-		if (segment.includes('-') && isLast) {
+		if (segment.includes('-') && !isKnownRoute && isLast) {
 			return; // Se agregará desde customItems
 		}
 
@@ -93,12 +94,18 @@ export function buildBreadcrumbs(
 		suppliers: ROUTES.backoffice.suppliers.list,
 		tags: ROUTES.backoffice.tags.list,
 		bookings: ROUTES.backoffice.bookings.list,
+		multimedia: ROUTES.backoffice.multimedia.list,
+		'content-blocks': ROUTES.backoffice.contentBlocks.list,
 		'api-catalog': ROUTES.backoffice.apiCatalog,
 		components: ROUTES.backoffice.components
 	};
 	for (const segment of segments) {
 		if (segment === 'edit' || segment === 'create') break;
-		if (slugPattern.test(segment) || (segment.includes('-') && segment.length > 10)) break;
+		if (
+			slugPattern.test(segment) ||
+			(segment.includes('-') && segment.length > 10 && !(segment in sectionRoutes))
+		)
+			break;
 		const href =
 			sectionRoutes[segment] ?? `/${segments.slice(0, segments.indexOf(segment) + 1).join('/')}`;
 		breadcrumbs.push({

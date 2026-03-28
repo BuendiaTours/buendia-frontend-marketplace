@@ -19,7 +19,9 @@
 			isActive(ROUTES.backoffice.tags.list) ||
 			isActive(ROUTES.backoffice.attractions.list) ||
 			isActive(ROUTES.backoffice.locations.list) ||
-			isActive(ROUTES.backoffice.pickupPoints.list)
+			isActive(ROUTES.backoffice.pickupPoints.list) ||
+			isActive(ROUTES.backoffice.multimedia.list) ||
+			isActive(ROUTES.backoffice.contentBlocks.list)
 	);
 
 	const isManagementActive = $derived(
@@ -124,6 +126,22 @@
 									class:menu-active={isActive(ROUTES.backoffice.pickupPoints.list)}
 								>
 									{m.pickupPoints_navLabel()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.multimedia.list}
+									class:menu-active={isActive(ROUTES.backoffice.multimedia.list)}
+								>
+									{m.multimedia_navLabel()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.contentBlocks.list}
+									class:menu-active={isActive(ROUTES.backoffice.contentBlocks.list)}
+								>
+									{m.contentBlocks_navLabel()}
 								</a>
 							</li>
 						</ul>
@@ -249,6 +267,22 @@
 								class:menu-active={isActive(ROUTES.backoffice.pickupPoints.list)}
 							>
 								{m.pickupPoints_navLabel()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.multimedia.list}
+								class:menu-active={isActive(ROUTES.backoffice.multimedia.list)}
+							>
+								{m.multimedia_navLabel()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.contentBlocks.list}
+								class:menu-active={isActive(ROUTES.backoffice.contentBlocks.list)}
+							>
+								{m.contentBlocks_navLabel()}
 							</a>
 						</li>
 					</ul>
