@@ -26,11 +26,13 @@
 	import * as m from '$paraglide/messages';
 	import { Close } from '$lib/icons/Linear';
 	import FormErrorMsg from './FormErrorMsg.svelte';
+	import { tick } from 'svelte';
 
 	export type SearchResult = {
 		value: string;
 		label: string;
 		subtitle?: string;
+		image?: string;
 	};
 
 	type Props = {
@@ -67,6 +69,8 @@
 	let results = $state<SearchResult[]>([]);
 	let isLoading = $state(false);
 	let isOpen = $state(false);
+	let inputElement: HTMLInputElement | undefined = $state();
+	let dropdownStyle = $state('');
 	// svelte-ignore state_referenced_locally
 	let selectedLabel = $state(initialLabel ?? '');
 	let debounceTimer: ReturnType<typeof setTimeout> | undefined;
@@ -117,6 +121,7 @@
 			}
 			results = items;
 			isOpen = results.length > 0;
+			if (isOpen) updateDropdownPosition();
 		} catch {
 			if (version !== searchVersion) return;
 			results = [];
@@ -133,6 +138,12 @@
 		searchQuery = '';
 		results = [];
 		isOpen = false;
+	}
+
+	function updateDropdownPosition() {
+		if (!inputElement) return;
+		const rect = inputElement.getBoundingClientRect();
+		dropdownStyle = `position: fixed; top: ${rect.bottom + 4}px; left: ${rect.left}px; width: ${rect.width}px;`;
 	}
 
 	function clear() {
@@ -160,6 +171,7 @@
 	{:else}
 		<div class="relative">
 			<input
+				bind:this={inputElement}
 				type="text"
 				{id}
 				class="input w-full"
@@ -167,6 +179,7 @@
 				{placeholder}
 				value={searchQuery}
 				oninput={handleInput}
+				onfocusin={updateDropdownPosition}
 				onfocusout={() => {
 					if (focusoutTimer) clearTimeout(focusoutTimer);
 					focusoutTimer = setTimeout(() => (isOpen = false), 200);
@@ -183,19 +196,25 @@
 
 		{#if isOpen}
 			<ul
-				class="menu rounded-box bg-base-100 absolute z-50 mt-1 max-h-60 w-full overflow-y-auto border shadow-lg"
+				class="menu rounded-box bg-base-100 z-50 max-h-60 overflow-y-auto border shadow-lg"
+				style={dropdownStyle}
 			>
 				{#each results as item (item.value)}
 					<li>
-						<button
-							type="button"
-							class="flex flex-col items-start"
-							onmousedown={() => select(item)}
-						>
-							<span class="font-medium">{item.label}</span>
-							{#if item.subtitle}
-								<span class="text-base-content/50 text-xs">{item.subtitle}</span>
+						<button type="button" class="flex items-center gap-2" onmousedown={() => select(item)}>
+							{#if item.image}
+								<img
+									src={item.image}
+									alt={item.label}
+									class="h-8 w-8 shrink-0 rounded object-cover"
+								/>
 							{/if}
+							<div class="flex flex-col items-start">
+								<span class="font-medium">{item.label}</span>
+								{#if item.subtitle}
+									<span class="text-base-content/50 text-xs">{item.subtitle}</span>
+								{/if}
+							</div>
 						</button>
 					</li>
 				{/each}
