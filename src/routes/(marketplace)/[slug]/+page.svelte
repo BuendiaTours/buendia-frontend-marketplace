@@ -13,7 +13,9 @@
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
+	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -58,6 +60,14 @@
 				</a>
 			{/if}
 		</div>
+	{/if}
+
+	{#if data.pagination}
+		<MeltPagination
+			count={data.pagination.total}
+			perPage={data.pagination.pageSize}
+			onPageChange={(n) => goto(`${$page.url.pathname}?page=${n}`)}
+		/>
 	{/if}
 
 	<!-- Reviews List -->
