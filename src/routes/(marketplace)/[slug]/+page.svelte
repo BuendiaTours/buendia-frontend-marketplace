@@ -38,30 +38,6 @@
 	</div>
 
 	<!-- Pagination -->
-	{#if data.pagination && data.pagination.totalPages > 1}
-		<div class="mt-6 flex justify-center gap-4">
-			{#if data.pagination.page > 1}
-				<a
-					href="{$page.url.pathname}?page={data.pagination.page - 1}"
-					class="rounded border px-4 py-2 hover:bg-neutral-100"
-				>
-					Anterior
-				</a>
-			{/if}
-			<span class="flex items-center text-sm text-neutral-600">
-				Página {data.pagination.page} de {data.pagination.totalPages}
-			</span>
-			{#if data.pagination.page < data.pagination.totalPages}
-				<a
-					href="{$page.url.pathname}?page={data.pagination.page + 1}"
-					class="rounded border px-4 py-2 hover:bg-neutral-100"
-				>
-					Siguiente
-				</a>
-			{/if}
-		</div>
-	{/if}
-
 	{#if data.pagination}
 		<MeltPagination
 			count={data.pagination.total}

@@ -44,11 +44,11 @@
 	<div class="flex gap-1">
 		{#each $pages as page (page.key)}
 			{#if page.type === 'ellipsis'}
-				<div class="px-3 py-1.5 text-sm opacity-40 select-none">...</div>
+				<div class="p-sm px-3 py-1.5 opacity-40 select-none">...</div>
 			{:else}
 				<button
 					use:melt={$pageTrigger(page)}
-					class="rounded border border-neutral-200 px-3 py-1.5 text-sm hover:bg-neutral-100 data-selected:border-neutral-900 data-selected:bg-neutral-900 data-selected:text-white"
+					class="p-sm rounded border border-neutral-200 px-3 py-1.5 hover:bg-neutral-100 data-selected:border-neutral-900 data-selected:bg-neutral-900 data-selected:text-white"
 				>
 					{page.value}
 				</button>
