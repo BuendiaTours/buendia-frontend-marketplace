@@ -41,7 +41,7 @@ Ejemplo de items:
 		}).replace(/<\/script>/gi, '<\\/script>')
 	);
 
-	const scriptTag = `<${'script'} type="application/ld+json">${jsonLd}</${'script'}>`;
+	let scriptTag = $derived(`<${'script'} type="application/ld+json">${jsonLd}</${'script'}>`);
 </script>
 
 <svelte:head>

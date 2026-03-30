@@ -51,10 +51,10 @@
 	let draggableImageComponent = $state<object | undefined>();
 	// eslint-disable-next-line svelte/no-top-level-browser-globals
 	let imageElement = $state<HTMLImageElement>();
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let imageX = $state(initialX);
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let imageY = $state(initialY);
+	// eslint-disable-next-line svelte/prefer-writable-derived -- mutated by drag, resize, zoom
+	let imageX = $state(0);
+	// eslint-disable-next-line svelte/prefer-writable-derived -- mutated by drag, resize, zoom
+	let imageY = $state(0);
 	let previousContainerHeight = $state(0);
 	let previousContainerWidth = $state(0);
 	let imageLoadCount = $state(0);

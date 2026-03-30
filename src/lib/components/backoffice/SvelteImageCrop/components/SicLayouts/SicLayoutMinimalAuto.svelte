@@ -63,12 +63,13 @@
 		// Auto-activate first crop box if available and not already active
 		if (normalizedCrops.length > 0 && activeCropBoxes.length === 0) {
 			await autoActivateAndGenerate();
-			hasInitialized = true;
 		}
+		trackedImageSrc = imageSrc;
+		hasInitialized = true;
 	});
 
 	// Track imageSrc changes to regenerate crop when a new image is uploaded
-	let trackedImageSrc = $state(imageSrc);
+	let trackedImageSrc = $state('');
 
 	$effect(() => {
 		// Only react to changes after initial mount

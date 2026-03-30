@@ -27,9 +27,10 @@
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 
 	// Copias locales que se muestran — se actualizan solo cuando el contenido está invisible
-	let displayedSrc = $state(ctx.item.src);
-	let displayedAlt = $state(ctx.item.alt);
-	let displayedMeta: typeof ctx.item.meta = $state(ctx.item.meta);
+	let displayedSrc = $state('');
+	let displayedAlt = $state<string | undefined>(undefined);
+	let displayedMeta: typeof ctx.item.meta = $state(undefined as typeof ctx.item.meta);
+	let initialized = false;
 
 	// Un solo booleano controla opacity de imagen y review conjuntamente
 	let contentVisible = $state(true);
@@ -42,7 +43,16 @@
 		let aborted = false;
 
 		untrack(() => {
-			// Skip en el primer render (valores iguales a los iniciales)
+			// Primer render: asignar valores sin animación
+			if (!initialized) {
+				displayedSrc = newSrc;
+				displayedAlt = newAlt;
+				displayedMeta = newMeta;
+				initialized = true;
+				return;
+			}
+
+			// Skip si no hay cambio real
 			if (newSrc === displayedSrc && newMeta === displayedMeta) return;
 
 			// Fase 1: fade-out

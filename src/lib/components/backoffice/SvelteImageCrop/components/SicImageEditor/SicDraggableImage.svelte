@@ -23,10 +23,10 @@
 		onPositionChange?: (data: { x: number; y: number }) => void;
 	} = $props();
 
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let x = $state(initialX);
-	// eslint-disable-next-line svelte/prefer-writable-derived
-	let y = $state(initialY);
+	// eslint-disable-next-line svelte/prefer-writable-derived -- mutated imperatively during drag
+	let x = $state(0);
+	// eslint-disable-next-line svelte/prefer-writable-derived -- mutated imperatively during drag
+	let y = $state(0);
 	let isDragging = $state(false);
 	let startX = $state(0);
 	let startY = $state(0);

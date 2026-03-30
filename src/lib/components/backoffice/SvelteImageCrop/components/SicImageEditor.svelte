@@ -110,11 +110,30 @@
 
 	// Overrideable metadata — initialized from props, updated via setImageData()
 	// Separate from the display props so setImageData() doesn't affect the rendered image
-	let internalId = $state(id);
-	let internalOriginalUrl = $state(originalUrl);
-	let internalOriginalSizeBytes = $state<number | undefined>(originalSizeBytes);
-	let internalTitle = $state(title);
-	let internalAltText = $state(altText);
+	/* eslint-disable svelte/prefer-writable-derived -- mutated by setImageData/loadState/setState */
+	let internalId = $state('');
+	let internalOriginalUrl = $state('');
+	let internalOriginalSizeBytes = $state<number | undefined>(undefined);
+	let internalTitle = $state('');
+	let internalAltText = $state('');
+	/* eslint-enable svelte/prefer-writable-derived */
+
+	// Sync internal metadata from props
+	$effect(() => {
+		internalId = id;
+	});
+	$effect(() => {
+		internalOriginalUrl = originalUrl;
+	});
+	$effect(() => {
+		internalOriginalSizeBytes = originalSizeBytes;
+	});
+	$effect(() => {
+		internalTitle = title;
+	});
+	$effect(() => {
+		internalAltText = altText;
+	});
 
 	// Generate unique instance ID for this editor
 	const instanceId = `sic-editor-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -143,7 +162,7 @@
 	let pendingUploadPresets = $state<string[] | null>(null);
 
 	// Merge editor config defaults
-	const resolvedEditorConfig: EditorConfig = {
+	let resolvedEditorConfig = $derived<EditorConfig>({
 		aspectRatio: 1.5,
 		allowFreeRotate: false,
 		constrainToImage: false,
@@ -161,15 +180,15 @@
 		showRotateControls: false,
 		showVariantToggleButton: false,
 		...editorConfig
-	};
+	});
 
 	// Merge output config defaults
-	const outputDefaults: OutputConfig = {
+	let outputDefaults = $derived<OutputConfig>({
 		includeBase64: false,
 		imageFormat: 'image/jpeg',
 		quality: 0.94,
 		...outputConfig
-	};
+	});
 
 	// ===== LAYOUT COMPONENT MAPPING =====
 
