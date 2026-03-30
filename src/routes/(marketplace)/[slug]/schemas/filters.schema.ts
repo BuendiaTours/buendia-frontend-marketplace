@@ -10,7 +10,7 @@ export type DestinationActivitiesFilters = {
 export const destinationActivitiesFiltersSchema: FiltersSchema<DestinationActivitiesFilters> = {
 	fields: {
 		page: createPageField(1),
-		pageSize: createPageSizeField(10),
+		pageSize: createPageSizeField(12),
 		kind: {
 			parse: (raw) => raw || undefined,
 			serialize: (value, out) => {
