@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { patchFilters } from '$lib/utils/filters';
 	import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
+
 	// Lib
 	import { format } from 'date-fns';
 
@@ -16,6 +17,8 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
+	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
+	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 
@@ -42,32 +45,15 @@
 
 	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
 
-	<!-- <textarea class="w-full font-mono">{JSON.stringify(data.destination)}</textarea> -->
-
-	<!-- Categories List -->
-	<div class="e-card mb-8">
-		<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
-
-		{#if data.categories && data.categories.length > 0}
-			<ul class="space-y-3">
-				{#each data.categories as category (category.slug)}
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- /categoria/[slug] route not yet created -->
-					<li class="border-b border-gray-100 pb-3 last:border-b-0">
-						<a
-							href={`/categoria/${category.slug}`}
-							class="block hover:text-blue-600 hover:underline"
-						>
-							{category.name}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<p class="text-gray-500">No hay categorías disponibles en este destino.</p>
-		{/if}
-	</div>
-
 	<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
+	<!-- Pagination -->
+	{#if data.pagination}
+		<MeltPagination
+			count={data.pagination.total}
+			perPage={data.pagination.pageSize}
+			onPageChange={(n) => goto(`${$page.url.pathname}?page=${n}`)}
+		/>
+	{/if}
 
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
@@ -107,7 +93,7 @@
 		</div>
 	{/if}
 
-	<!-- Back to home link -->
+	<!-- Activities grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 		{#each data.destinationActivities as activity (activity.id)}
 			<ActivityCard
