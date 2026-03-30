@@ -46,6 +46,17 @@
 	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
 
 	<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
+
+	<!-- Activities grid -->
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		{#each data.destinationActivities as activity (activity.id)}
+			<ActivityCard
+				item={activity}
+				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+			/>
+		{/each}
+	</div>
+
 	<!-- Pagination -->
 	{#if data.pagination}
 		<MeltPagination
@@ -92,16 +103,6 @@
 			{/each}
 		</div>
 	{/if}
-
-	<!-- Activities grid -->
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-		{#each data.destinationActivities as activity (activity.id)}
-			<ActivityCard
-				item={activity}
-				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
-			/>
-		{/each}
-	</div>
 
 	<FaqsInline
 		title={data.destination.faqsTitle}
