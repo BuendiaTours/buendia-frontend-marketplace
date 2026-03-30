@@ -9,7 +9,7 @@
 	import {
 		Database,
 		FolderCheck,
-		LinkRound,
+		GalleryMinimalistic,
 		Map as MapIcon,
 		MapPoint,
 		Plate,
@@ -23,6 +23,7 @@
 		mealCount?: number;
 		addonCount?: number;
 		contentBlockCount?: number;
+		imageCount?: number;
 		stageCount?: number;
 		optionCount?: number;
 	};
@@ -33,6 +34,7 @@
 		mealCount = 0,
 		addonCount = 0,
 		contentBlockCount = 0,
+		imageCount = 0,
 		stageCount = 0,
 		optionCount = 0
 	}: Props = $props();
@@ -69,16 +71,16 @@
 			badge: contentBlockCount > 0 ? contentBlockCount : undefined
 		},
 		{
+			label: m.activities_tabMultimedia(),
+			href: ACTIVITY_ROUTES.multimedia(activityId),
+			icon: GalleryMinimalistic,
+			badge: imageCount > 0 ? imageCount : undefined
+		},
+		{
 			label: m.activities_tabStages(),
 			href: ACTIVITY_ROUTES.stages(activityId),
 			icon: MapIcon,
 			badge: stageCount > 0 ? stageCount : undefined
-		},
-		{
-			label: m.activities_tabBookingSystem(),
-			href: ACTIVITY_ROUTES.indexation(activityId),
-			icon: LinkRound,
-			badge: undefined
 		},
 		{
 			label: m.activities_tabOptions(),

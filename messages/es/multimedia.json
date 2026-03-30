@@ -19,6 +19,7 @@
 	"multimedia_labelTitle": "Título",
 	"multimedia_placeholderTitle": "Título descriptivo de la imagen",
 	"multimedia_labelAltText": "Texto alternativo",
+	"multimedia_labelFile": "Imagen",
 	"multimedia_placeholderAltText": "Descripción accesible de la imagen",
 	"multimedia_listPageTitle": "Multimedia",
 	"multimedia_listTitle": "Listado de multimedia",

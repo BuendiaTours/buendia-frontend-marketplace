@@ -308,5 +308,15 @@
 	"activities_contentBlocksAdded": "Bloque de contenido añadido",
 	"activities_contentBlocksRemoved": "Bloque de contenido eliminado",
 	"activities_contentBlocksError": "Error al gestionar el bloque de contenido",
-	"activities_contentBlocksMoveError": "Error al mover el bloque de contenido"
+	"activities_contentBlocksMoveError": "Error al mover el bloque de contenido",
+	"activities_tabMultimedia": "Imágenes",
+	"activities_sectionMultimedia": "Imágenes",
+	"activities_sectionMultimediaDescription": "Imágenes vinculadas a esta actividad. El orden determina cómo se muestran en el marketplace.",
+	"activities_multimediaSearchPlaceholder": "Buscar imagen por título...",
+	"activities_multimediaEmpty": "No hay imágenes vinculadas",
+	"activities_multimediaAdded": "Imagen añadida",
+	"activities_multimediaRemoved": "Imagen eliminada",
+	"activities_multimediaError": "Error al gestionar la imagen",
+	"activities_multimediaMoveError": "Error al reordenar las imágenes",
+	"activities_multimediaSearchLabel": "Buscar imagen"
 }

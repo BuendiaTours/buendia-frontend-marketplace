@@ -70,11 +70,13 @@ export type ActivityDistributive = {
 	name: string;
 };
 
-/** Image asset attached to an activity via media-relationship. */
+/** Image asset attached to an activity. */
 export type ActivityImage = {
 	mediaId: string;
+	altText: string;
 	order: number;
 	originalUrl: string;
+	title: string;
 	variants: Record<string, string>;
 };
 
@@ -171,6 +173,7 @@ export type ActivityUpdateDto = {
 	infoImportant?: string;
 	itemsToBring?: string[];
 	kind?: ActivityKind;
+	mediaIds?: string[];
 	notSuitableFor?: string[];
 	petsAllowed?: ActivityPetsAllowed;
 	petsAllowedDescription?: string;
