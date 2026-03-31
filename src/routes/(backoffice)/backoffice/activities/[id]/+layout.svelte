@@ -62,6 +62,7 @@
 	let imageCount = $derived(data.activity.images?.length ?? 0);
 	let stageCount = $derived(data.activity.stages?.length ?? 0);
 	let optionCount = $derived(data.options?.length ?? 0);
+	let classificationCount = $derived(data.activity.categories?.length ?? 0);
 
 	setContext('updateLocationCount', (count: number) => {
 		locationCount = count;
@@ -84,6 +85,9 @@
 	setContext('updateOptionCount', (count: number) => {
 		optionCount = count;
 	});
+	setContext('updateClassificationCount', (count: number) => {
+		classificationCount = count;
+	});
 </script>
 
 <svelte:head>
@@ -102,6 +106,7 @@
 		{imageCount}
 		{stageCount}
 		{optionCount}
+		{classificationCount}
 	/>
 
 	<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">

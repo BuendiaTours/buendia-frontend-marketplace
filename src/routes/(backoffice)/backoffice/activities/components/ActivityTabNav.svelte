@@ -13,6 +13,7 @@
 		Map as MapIcon,
 		MapPoint,
 		Plate,
+		Tag,
 		Tuning,
 		Widget
 	} from '$lib/icons/Linear';
@@ -26,6 +27,7 @@
 		imageCount?: number;
 		stageCount?: number;
 		optionCount?: number;
+		classificationCount?: number;
 	};
 
 	let {
@@ -36,7 +38,8 @@
 		contentBlockCount = 0,
 		imageCount = 0,
 		stageCount = 0,
-		optionCount = 0
+		optionCount = 0,
+		classificationCount = 0
 	}: Props = $props();
 
 	const tabs = $derived([
@@ -45,6 +48,12 @@
 			href: ACTIVITY_ROUTES.edit(activityId),
 			icon: Database,
 			badge: undefined
+		},
+		{
+			label: m.activities_tabClassification(),
+			href: ACTIVITY_ROUTES.classification(activityId),
+			icon: Tag,
+			badge: classificationCount > 0 ? classificationCount : undefined
 		},
 		{
 			label: m.activities_tabLocations(),

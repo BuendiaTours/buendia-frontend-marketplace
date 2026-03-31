@@ -6,7 +6,15 @@
 
 import type { CriteriaResult } from '$core/_shared/types';
 import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
-import type { Tag, TagCreateDto, TagCriteria, TagUpdateDto } from '$core/tags/types';
+import type {
+	Tag,
+	TagCreateDto,
+	TagCriteria,
+	TagRelationship,
+	TagRelationshipCreateDto,
+	TagRelationshipCriteria,
+	TagUpdateDto
+} from '$core/tags/types';
 
 /** @internal Base API path for the tags resource. */
 const BASE = '/tags';
@@ -53,4 +61,50 @@ export const TAG_REQUEST = {
 	 */
 	findByCriteria: (fetchFn: typeof fetch, criteria?: TagCriteria): Promise<CriteriaResult<Tag>> =>
 		getWithParams<CriteriaResult<Tag>>(fetchFn, BASE, criteria)
+};
+
+// ── Tag Relationship ───────────────────────────
+
+/** @internal Base API path for the tag relationship resource. */
+const TAG_RELATIONSHIP_BASE = '/tags-relationship';
+
+/**
+ * Namespace containing all API request methods for tag relationships.
+ * Each method accepts the SvelteKit-provided `fetch` as its first argument.
+ */
+export const TAG_RELATIONSHIP_REQUEST = {
+	/**
+	 * Creates a new tag relationship.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param data - Tag relationship creation payload.
+	 */
+	create: (fetchFn: typeof fetch, data: TagRelationshipCreateDto): Promise<void> =>
+		post(fetchFn, TAG_RELATIONSHIP_BASE, data),
+
+	/**
+	 * Deletes a tag relationship by ID.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Tag relationship ID.
+	 */
+	delete: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		del(fetchFn, `${TAG_RELATIONSHIP_BASE}/${id}`),
+
+	/**
+	 * Retrieves a single tag relationship by its ID.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Tag relationship ID.
+	 */
+	findById: (fetchFn: typeof fetch, id: string): Promise<TagRelationship> =>
+		get<TagRelationship>(fetchFn, `${TAG_RELATIONSHIP_BASE}/${id}`),
+
+	/**
+	 * Queries tag relationships using criteria-based filtering and pagination.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param criteria - Optional filter, sort, and pagination parameters.
+	 */
+	findByCriteria: (
+		fetchFn: typeof fetch,
+		criteria?: TagRelationshipCriteria
+	): Promise<CriteriaResult<TagRelationship>> =>
+		getWithParams<CriteriaResult<TagRelationship>>(fetchFn, TAG_RELATIONSHIP_BASE, criteria)
 };
