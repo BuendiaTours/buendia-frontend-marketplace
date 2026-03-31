@@ -4,8 +4,10 @@
 	import type { ActivityCard as ActivityCardType } from '$lib/types';
 	import {
 		destinationActivitiesFiltersSchema,
+		DESTINATION_ACTIVITIES_SORT_OPTIONS,
 		type DestinationActivitiesFilters
 	} from './schemas/filters.schema';
+	import type { CriteriaSortOption } from '$core/_shared/enums';
 
 	// Lib
 	import { page } from '$app/stores';
@@ -41,6 +43,12 @@
 
 	const activeKind = $derived($page.url.searchParams.get('kind'));
 
+	const currentSortValue = $derived(() => {
+		const s = $page.url.searchParams.get('sort');
+		const o = $page.url.searchParams.get('order');
+		return s && o ? `${s}:${o}` : '';
+	});
+
 	async function loadMore() {
 		const nextPage = loadedPage + 1;
 		const params = new SvelteURLSearchParams({
@@ -48,6 +56,10 @@
 			pageSize: String(data.pagination?.pageSize ?? 12)
 		});
 		if (activeKind) params.set('kind', activeKind);
+		const sort = $page.url.searchParams.get('sort');
+		const order = $page.url.searchParams.get('order');
+		if (sort) params.set('sort', sort);
+		if (order) params.set('order', order);
 		const res = await fetch(`/api/destinations/${data.destination.id}/activities?${params}`);
 		const result = await res.json();
 		for (const item of result.data) {
@@ -146,10 +158,28 @@
 		>
 		<div class="flex items-center gap-2">
 			<span class="p-base whitespace-nowrap text-neutral-600">Ordenar por:</span>
-			<select onchange={(e) => {}} class="select" name="sort" id="sort">
-				<option value="name">Valoraciones</option>
-				<option value="price">Precio ascendente</option>
-				<option value="price">Precio descendente</option>
+			<select
+				value={currentSortValue()}
+				onchange={(e) => {
+					const [sort, order] = e.currentTarget.value.split(':');
+					const patch = {
+						sort: (sort as 'rating' | 'price') || null,
+						order: (order as CriteriaSortOption) || null
+					};
+					const newParams = patchFilters(
+						destinationActivitiesFiltersSchema,
+						$page.url.searchParams,
+						patch
+					);
+					goto(`?${newParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
+				}}
+				class="select"
+				name="sort"
+				id="sort"
+			>
+				{#each DESTINATION_ACTIVITIES_SORT_OPTIONS as opt (opt.value)}
+					<option value={opt.value}>{opt.label}</option>
+				{/each}
 			</select>
 		</div>
 	</div>

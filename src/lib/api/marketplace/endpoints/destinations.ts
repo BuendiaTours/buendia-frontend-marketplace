@@ -63,6 +63,8 @@ export const destinationsEndpoints = {
 			page?: number;
 			pageSize?: number;
 			kind?: string;
+			sort?: string;
+			order?: CriteriaSortOption;
 			isFreeTour?: boolean;
 			kidsFreeTour?: boolean;
 			wheelchairAccessible?: boolean;

@@ -21,6 +21,8 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 				page: filters.page,
 				pageSize: filters.pageSize,
 				kind: filters.kind,
+				sort: filters.sort,
+				order: filters.order,
 				isFreeTour: filters.isFreeTour,
 				kidsFreeTour: filters.kidsFreeTour,
 				wheelchairAccessible: filters.wheelchairAccessible,
