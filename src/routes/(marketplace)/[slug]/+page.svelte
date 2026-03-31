@@ -75,13 +75,31 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
+	<HeroImg
+		wrapperClass="mb-4"
+		imgObj={data.destination.image}
+		title={`Qué hacer en ${data.destination.name}`}
+	/>
 
-	<div class="mt-6 flex flex-row items-center justify-between gap-6">
-		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
+	<div class="mb-6 flex flex-row items-center justify-between gap-6">
+		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
 		<div class="e-button e-button-tertiary !border-neutral-200">
 			<Tuning4 class="inline size-4" />
 			<span class="ml-2">Filtros</span>
+		</div>
+	</div>
+
+	<div class="mb-4 flex flex-row items-center justify-between gap-6">
+		<span class="p-base text-neutral-600"
+			>Todas las actividades en {data.destination.name} ({data.pagination?.total ?? 0})</span
+		>
+		<div class="flex items-center gap-2">
+			<span class="p-base whitespace-nowrap text-neutral-600">Ordenar por:</span>
+			<select onchange={(e) => {}} class="select" name="sort" id="sort">
+				<option value="name">Valoraciones</option>
+				<option value="price">Precio ascendente</option>
+				<option value="price">Precio descendente</option>
+			</select>
 		</div>
 	</div>
 
