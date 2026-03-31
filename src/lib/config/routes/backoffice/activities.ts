@@ -11,6 +11,7 @@ export const ACTIVITY_ROUTES = {
 	edit: (id: string) => backoffice('activities', id, 'edit'),
 	locations: (id: string) => backoffice('activities', id, 'locations'),
 	contentBlocks: (id: string) => backoffice('activities', id, 'content-blocks'),
+	services: (id: string) => backoffice('activities', id, 'services'),
 	options: (id: string) => backoffice('activities', id, 'options'),
 	optionCreate: (id: string) => backoffice('activities', id, 'options', 'create'),
 	optionEdit: (activityId: string, optionId: string) =>

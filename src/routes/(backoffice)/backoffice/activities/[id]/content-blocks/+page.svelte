@@ -1,20 +1,17 @@
 <script lang="ts">
 	/**
-	 * Content tab — manages content blocks, multimedia, meals, and addons
+	 * Content tab — manages content blocks and multimedia
 	 * linked to the activity via client-side API calls.
 	 * Supports auto-add when returning from content block creation.
 	 */
 	import * as m from '$paraglide/messages';
 	import type { PageProps } from './$types';
-	import type { ActivityAddon } from '$core/activity-addons/types';
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import ActivityContentBlocksAccordion from '../../components/ActivityContentBlocksAccordion.svelte';
 	import ActivityMultimediaAccordion from '../../components/ActivityMultimediaAccordion.svelte';
-	import ActivityMealsAccordion from '../../components/ActivityMealsAccordion.svelte';
-	import ActivityAddonsAccordion from '../../components/ActivityAddonsAccordion.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -22,10 +19,6 @@
 	let contentBlocks = $state(data.contentBlocks);
 	// svelte-ignore state_referenced_locally
 	let images = $state(data.images);
-	// svelte-ignore state_referenced_locally
-	let meals = $state(data.meals);
-	// svelte-ignore state_referenced_locally
-	let addons: ActivityAddon[] = $state(data.addons);
 
 	const addToast =
 		getContext<
@@ -125,8 +118,4 @@
 	/>
 
 	<ActivityMultimediaAccordion activityId={data.activity.id} bind:images {addToast} />
-
-	<ActivityMealsAccordion activityId={data.activity.id} bind:meals {addToast} />
-
-	<ActivityAddonsAccordion activityId={data.activity.id} bind:addons {addToast} />
 </div>

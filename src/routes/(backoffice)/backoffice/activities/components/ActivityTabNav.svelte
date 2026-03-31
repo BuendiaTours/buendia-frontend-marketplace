@@ -6,7 +6,7 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { Database, FolderCheck, MapPoint, Tuning } from '$lib/icons/Linear';
+	import { Database, FolderCheck, MapPoint, Plate, Tuning } from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
@@ -32,6 +32,12 @@
 			label: m.activities_tabContentBlocks(),
 			href: ACTIVITY_ROUTES.contentBlocks(activityId),
 			icon: FolderCheck,
+			badge: undefined as number | undefined
+		},
+		{
+			label: m.activities_tabServices(),
+			href: ACTIVITY_ROUTES.services(activityId),
+			icon: Plate,
 			badge: undefined as number | undefined
 		},
 		{

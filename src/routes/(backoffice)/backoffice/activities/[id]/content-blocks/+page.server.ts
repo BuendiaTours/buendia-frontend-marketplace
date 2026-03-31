@@ -1,6 +1,6 @@
 /**
  * Server load for the content tab.
- * Includes content blocks (with auto-add support), multimedia, meals, and addons.
+ * Includes content blocks (with auto-add support) and multimedia.
  */
 import { CONTENT_BLOCK_REQUEST } from '$core/content-blocks/requests';
 import { MEDIA_REQUEST } from '$core/multimedia/requests';
@@ -15,7 +15,7 @@ export type EnrichedActivityImage = ActivityImage & {
 };
 
 export const load: PageServerLoad = async ({ parent, fetch, url }) => {
-	const { activity, addons } = await parent();
+	const { activity } = await parent();
 
 	const addContentBlockId = url.searchParams.get('addContentBlockId');
 	let pendingContentBlock: ContentBlock | null = null;
@@ -43,8 +43,6 @@ export const load: PageServerLoad = async ({ parent, fetch, url }) => {
 	return {
 		contentBlocks: activity.contentBlocks ?? [],
 		pendingContentBlock,
-		images,
-		meals: activity.meals ?? [],
-		addons: addons ?? []
+		images
 	};
 };
