@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import type { ActivityCard as ActivityCardType } from '$lib/types';
 	import { page } from '$app/stores';
 	import { patchFilters } from '$lib/utils/filters';
 	import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
@@ -19,10 +20,36 @@
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
 
+	let accumulatedActivities = $state<ActivityCardType[]>(data.destinationActivities.slice());
+	let loadedPage = $state(data.pagination?.page ?? 1);
+
+	$effect(() => {
+		accumulatedActivities = data.destinationActivities.slice();
+		loadedPage = data.pagination?.page ?? 1;
+	});
+
+	const hasMore = $derived(loadedPage < (data.pagination?.totalPages ?? 1));
+
 	const activeKind = $derived($page.url.searchParams.get('kind'));
+
+	async function loadMore() {
+		const nextPage = loadedPage + 1;
+		const params = new SvelteURLSearchParams({
+			page: String(nextPage),
+			pageSize: String(data.pagination?.pageSize ?? 12)
+		});
+		if (activeKind) params.set('kind', activeKind);
+		const res = await fetch(`/api/destinations/${data.destination.id}/activities?${params}`);
+		const result = await res.json();
+		for (const item of result.data) {
+			accumulatedActivities.push(item);
+		}
+		loadedPage = nextPage;
+	}
 
 	function buildUrl(kind: string | null) {
 		const newParams = patchFilters(destinationActivitiesFiltersSchema, $page.url.searchParams, {
@@ -49,7 +76,7 @@
 
 	<!-- Activities grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-		{#each data.destinationActivities as activity (activity.id)}
+		{#each accumulatedActivities as activity (activity.id)}
 			<ActivityCard
 				item={activity}
 				wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
@@ -64,6 +91,12 @@
 			perPage={data.pagination.pageSize}
 			onPageChange={(n) => goto(`${$page.url.pathname}?page=${n}`)}
 		/>
+	{/if}
+
+	{#if hasMore}
+		<div class="mt-6 flex justify-center">
+			<button onclick={loadMore} class="e-button e-button-secondary">Cargar más actividades</button>
+		</div>
 	{/if}
 
 	<!-- Reviews List -->
