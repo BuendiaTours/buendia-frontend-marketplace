@@ -59,7 +59,17 @@ export const destinationsEndpoints = {
 	async getActivitiesById(
 		fetchFn: typeof fetch,
 		id: string,
-		params?: { page?: number; pageSize?: number; kind?: string }
+		params?: {
+			page?: number;
+			pageSize?: number;
+			kind?: string;
+			kidsFreeTour?: boolean;
+			wheelchairAccessible?: boolean;
+			breakfastIncluded?: boolean;
+			audioGuideAvailable?: boolean;
+			photographyAllowed?: boolean;
+			smallGroup?: boolean;
+		}
 	): Promise<DestinationActivitiesResult> {
 		const path = buildEndpointUrl(
 			API_ENDPOINTS.destinations.activitiesByDestination.path(id),

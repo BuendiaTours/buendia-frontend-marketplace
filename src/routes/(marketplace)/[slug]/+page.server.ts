@@ -20,7 +20,13 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 			destinationsEndpoints.getActivitiesById(fetch, destination.id, {
 				page: filters.page,
 				pageSize: filters.pageSize,
-				kind: filters.kind
+				kind: filters.kind,
+				kidsFreeTour: filters.kidsFreeTour,
+				wheelchairAccessible: filters.wheelchairAccessible,
+				breakfastIncluded: filters.breakfastIncluded,
+				audioGuideAvailable: filters.audioGuideAvailable,
+				photographyAllowed: filters.photographyAllowed,
+				smallGroup: filters.smallGroup
 			}),
 			categoriesEndpoints.getAll(fetch),
 			reviewsEndpoints.getByDestinationSlug(fetch, slug, reviewsPage),
@@ -31,6 +37,7 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 			destination,
 			destinationActivities: activitiesResult.data,
 			pagination: activitiesResult.pagination,
+			availableFilters: activitiesResult.filters ?? {},
 			categories: categoriesResult,
 			reviews: reviewsResult.data,
 			activityKinds,

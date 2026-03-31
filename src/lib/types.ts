@@ -259,6 +259,7 @@ export type DestinationActivitiesResult = {
 		total: number;
 		totalPages: number;
 	};
+	filters?: Record<string, boolean>;
 };
 
 export type Column<T> = {

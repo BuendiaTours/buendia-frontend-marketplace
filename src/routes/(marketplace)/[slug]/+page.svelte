@@ -2,21 +2,23 @@
 	// Types
 	import type { PageData } from './$types';
 	import type { ActivityCard as ActivityCardType } from '$lib/types';
-	import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
+	import {
+		destinationActivitiesFiltersSchema,
+		type DestinationActivitiesFilters
+	} from './schemas/filters.schema';
 
 	// Lib
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { format } from 'date-fns';
 	import { patchFilters } from '$lib/utils/filters';
-
-	// Icons
-	import { Tuning4 } from '$lib/icons/Linear';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
+	import FiltersDialog from '$lib/components/marketplace/FiltersDialog.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
@@ -24,8 +26,6 @@
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
-
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
 
@@ -68,6 +68,59 @@
 		{ id: 'all', name: 'Todo', href: buildUrl(null) },
 		...data.activityKinds.map((k) => ({ id: k.id, name: k.name, href: buildUrl(k.id) }))
 	]);
+
+	const FILTER_LABELS: Record<string, string> = {
+		kidsFreeTour: 'Gratis para niños',
+		wheelchairAccessible: 'Accesible para sillas de ruedas',
+		breakfastIncluded: 'Desayuno incluido',
+		audioGuideAvailable: 'Audioguía disponible',
+		photographyAllowed: 'Fotografía permitida',
+		smallGroup: 'Grupo pequeño'
+	};
+
+	const BOOL_FILTER_KEYS = [
+		'kidsFreeTour',
+		'wheelchairAccessible',
+		'breakfastIncluded',
+		'audioGuideAvailable',
+		'photographyAllowed',
+		'smallGroup'
+	] as const;
+
+	const availableFilterOptions = $derived(
+		Object.entries(data.availableFilters ?? {})
+			.filter(([, available]) => available)
+			.map(([key]) => ({ key, label: FILTER_LABELS[key] ?? key }))
+	);
+
+	const currentAdvancedFilters = $derived(
+		Object.fromEntries(BOOL_FILTER_KEYS.map((k) => [k, data.filters[k] ?? false]))
+	);
+
+	function applyFilterPatch(patch: Partial<DestinationActivitiesFilters>) {
+		const newParams = patchFilters(
+			destinationActivitiesFiltersSchema,
+			$page.url.searchParams,
+			patch
+		);
+		goto(`?${newParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
+	}
+
+	function handleFiltersApply(applied: Record<string, boolean>) {
+		const patch: Partial<DestinationActivitiesFilters> = {};
+		BOOL_FILTER_KEYS.forEach((k) => {
+			patch[k] = applied[k] || null;
+		});
+		applyFilterPatch(patch);
+	}
+
+	function handleFiltersClear() {
+		const patch: Partial<DestinationActivitiesFilters> = {};
+		BOOL_FILTER_KEYS.forEach((k) => {
+			patch[k] = null;
+		});
+		applyFilterPatch(patch);
+	}
 </script>
 
 <div class="wrapper">
@@ -83,10 +136,12 @@
 
 	<div class="mb-6 flex flex-row items-center justify-between gap-6">
 		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
-		<button class="e-button e-button-tertiary !border-neutral-200">
-			<Tuning4 class="inline size-4" />
-			<span class="ml-2">Filtros</span>
-		</button>
+		<FiltersDialog
+			filters={availableFilterOptions}
+			currentFilters={currentAdvancedFilters}
+			onApply={handleFiltersApply}
+			onClear={handleFiltersClear}
+		/>
 	</div>
 
 	<div class="mb-4 flex flex-row items-center justify-between gap-6">
