@@ -48,12 +48,12 @@
 	});
 </script>
 
-<div class="relative {wrapperClass}">
-	<nav bind:this={scrollEl} class="tab-bar flex gap-1 overflow-x-auto">
+<div class="c-scrollable-tab-bar relative border-b border-neutral-200 {wrapperClass}">
+	<nav bind:this={scrollEl} class="tab-bar flex gap-6 overflow-x-auto">
 		{#each tabs as tab (tab.id)}
 			<a
 				href={tab.href}
-				class="tab-bar__item p-lg rounded-full px-4 py-2 font-medium whitespace-nowrap text-neutral-700 transition-colors"
+				class="tab-bar__item p-lg rounded-full py-2 font-medium whitespace-nowrap text-neutral-700 transition-colors"
 				class:tab-bar__item--active={tab.id === activeId}
 			>
 				{tab.name}
@@ -103,31 +103,4 @@
 </div>
 
 <style>
-	.tab-bar {
-		scrollbar-width: none;
-		-webkit-overflow-scrolling: touch;
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
-	}
-
-	.tab-bar__item {
-		color: var(--color-neutral-600, #525252);
-		border-bottom: 2px solid transparent;
-		border-radius: 0;
-		padding-inline: 0;
-		padding-block: 0.5rem;
-		margin-inline-end: 1.5rem;
-
-		&:hover {
-			color: var(--color-neutral-900, #171717);
-		}
-
-		&--active {
-			color: var(--color-neutral-900, #171717);
-			font-weight: 600;
-			border-bottom-color: currentColor;
-		}
-	}
 </style>
