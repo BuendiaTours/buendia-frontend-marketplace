@@ -1,12 +1,17 @@
 <script lang="ts">
+	// Types
 	import type { PageData } from './$types';
 	import type { ActivityCard as ActivityCardType } from '$lib/types';
-	import { page } from '$app/stores';
-	import { patchFilters } from '$lib/utils/filters';
 	import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
 
 	// Lib
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { format } from 'date-fns';
+	import { patchFilters } from '$lib/utils/filters';
+
+	// Icons
+	import { Tuning4 } from '$lib/icons/Linear';
 
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
@@ -19,7 +24,7 @@
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
-	import { goto } from '$app/navigation';
+
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
@@ -72,7 +77,13 @@
 
 	<HeroImg imgObj={data.destination.image} title={`Qué hacer en ${data.destination.name}`} />
 
-	<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
+	<div class="mt-6 flex flex-row items-center justify-between gap-6">
+		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="my-6" />
+		<div class="e-button e-button-tertiary !border-neutral-200">
+			<Tuning4 class="inline size-4" />
+			<span class="ml-2">Filtros</span>
+		</div>
+	</div>
 
 	<!-- Activities grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
