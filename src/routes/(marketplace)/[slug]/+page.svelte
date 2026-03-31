@@ -143,14 +143,16 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<div class="mb-4 flex flex-row items-center justify-between gap-6">
-		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
-		<FiltersDialog
-			filters={advancedFiltersConfig}
-			currentFilters={currentAdvancedFilters}
-			onApply={handleFiltersApply}
-			onClear={handleFiltersClear}
-		/>
+	<div class="mb-4 flex flex-col items-center justify-between gap-6 sm:flex-row">
+		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="min-w-0 flex-1" />
+		<div class="shrink-0">
+			<FiltersDialog
+				filters={advancedFiltersConfig}
+				currentFilters={currentAdvancedFilters}
+				onApply={handleFiltersApply}
+				onClear={handleFiltersClear}
+			/>
+		</div>
 	</div>
 
 	<div class="mb-4 flex flex-row items-center justify-between gap-6">

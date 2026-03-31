@@ -15,9 +15,17 @@
 		onApply: (filters: Record<string, boolean>) => void;
 		onClear?: () => void;
 		triggerClass?: string;
+		wrapperClass?: string;
 	};
 
-	let { filters, currentFilters, onApply, onClear, triggerClass = '' }: Props = $props();
+	let {
+		filters,
+		currentFilters,
+		onApply,
+		onClear,
+		triggerClass = '',
+		wrapperClass = ''
+	}: Props = $props();
 
 	let localFilters = $state<Record<string, boolean>>({});
 
@@ -55,7 +63,7 @@
 	use:melt={$trigger}
 	class="e-button e-button-tertiary {hasActiveFilters
 		? '!border-accent'
-		: '!border-neutral-200'} {triggerClass}"
+		: '!border-neutral-200'} {triggerClass} {wrapperClass}"
 	class:!border-[var(--color-primary)]={hasActiveFilters}
 >
 	<Tuning4 class="inline size-4 {hasActiveFilters ? 'text-accent' : ''}" />

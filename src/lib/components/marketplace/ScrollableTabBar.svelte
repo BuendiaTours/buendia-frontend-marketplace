@@ -69,13 +69,13 @@
 	<button
 		type="button"
 		onclick={scrollLeft}
-		class="p-lg absolute inset-y-0 left-0 hidden items-center justify-center transition-opacity sm:flex"
+		class="absolute inset-y-0 left-0 hidden items-center justify-center transition-opacity sm:flex"
 		class:opacity-0={!showLeftArrow}
 		class:pointer-events-none={!showLeftArrow}
 		aria-label="Ver categorías anteriores"
 	>
 		<span
-			class="cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
 		>
 			<AltArrowLeft class="size-5" />
 		</span>
@@ -95,7 +95,7 @@
 		aria-label="Ver más categorías"
 	>
 		<span
-			class="cursor-pointer rounded-full border border-neutral-300 bg-white p-2.5 text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 shadow-sm transition-colors hover:bg-neutral-100"
 		>
 			<AltArrowRight class="size-5" />
 		</span>
