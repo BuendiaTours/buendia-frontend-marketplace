@@ -83,10 +83,10 @@
 
 	<div class="mb-6 flex flex-row items-center justify-between gap-6">
 		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
-		<div class="e-button e-button-tertiary !border-neutral-200">
+		<button class="e-button e-button-tertiary !border-neutral-200">
 			<Tuning4 class="inline size-4" />
 			<span class="ml-2">Filtros</span>
-		</div>
+		</button>
 	</div>
 
 	<div class="mb-4 flex flex-row items-center justify-between gap-6">
