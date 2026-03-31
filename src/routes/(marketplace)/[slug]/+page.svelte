@@ -27,6 +27,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
+	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -132,17 +133,17 @@
 </script>
 
 <div class="wrapper">
-	<div class="my-6">
-		<Breadcrumb items={data.breadcrumbs} />
-	</div>
-
 	<HeroImg
-		wrapperClass="mb-4"
+		wrapperClass=""
 		imgObj={data.destination.image}
 		title={`Qué hacer en ${data.destination.name}`}
 	/>
 
-	<div class="mb-6 flex flex-row items-center justify-between gap-6">
+	<div class="mt-6 mb-2">
+		<Breadcrumb items={data.breadcrumbs} />
+	</div>
+
+	<div class="mb-4 flex flex-row items-center justify-between gap-6">
 		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
 		<FiltersDialog
 			filters={advancedFiltersConfig}
@@ -204,10 +205,12 @@
 	{/if}
 
 	{#if hasMore}
-		<div class="mt-6 flex justify-center">
+		<div class="my-8 flex justify-center">
 			<button onclick={loadMore} class="e-button e-button-secondary">Cargar más actividades</button>
 		</div>
 	{/if}
+
+	<Spacer wrapperClass="my-24" />
 
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
