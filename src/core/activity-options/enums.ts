@@ -12,6 +12,14 @@ export enum OptionBookingSystem {
 	TURITOP = 'TURITOP'
 }
 
+/** Integration status with external booking system. */
+export enum OptionIntegrationStatus {
+	PENDING = 'PENDING',
+	UNNECESSARY = 'UNNECESSARY',
+	ACTIVITY_INDEXED = 'ACTIVITY_INDEXED',
+	COMPLETED = 'COMPLETED'
+}
+
 /** Duration unit for an activity option. */
 export enum OptionDurationUnit {
 	MINUTES = 'MINUTES',
@@ -105,8 +113,7 @@ export enum IndividualTicketGroup {
 	SENIOR = 'SENIOR',
 	STUDENT = 'STUDENT',
 	STUDENT_EU = 'STUDENT_EU',
-	YOUTH = 'YOUTH',
-	ALL = 'ALL'
+	YOUTH = 'YOUTH'
 }
 
 /** Whether an individual ticket is free. */

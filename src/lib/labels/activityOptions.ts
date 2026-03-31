@@ -11,6 +11,7 @@ import {
 	IndividualTicketStatus,
 	OptionBookingSystem,
 	OptionDurationUnit,
+	OptionIntegrationStatus,
 	OptionLanguage,
 	OptionPrivacy,
 	OptionSkipTheLineType,
@@ -25,6 +26,16 @@ export const OPTION_BOOKING_SYSTEM_OPTIONS = [
 	{ id: OptionBookingSystem.BOKUN, name: m.enum_optionBookingSystem_bokun() },
 	{ id: OptionBookingSystem.TURITOP, name: m.enum_optionBookingSystem_turitop() },
 	{ id: OptionBookingSystem.TOUR_CMS, name: m.enum_optionBookingSystem_tourCms() }
+];
+
+export const OPTION_INTEGRATION_STATUS_OPTIONS = [
+	{ id: OptionIntegrationStatus.PENDING, name: m.enum_optionIntegrationStatus_pending() },
+	{ id: OptionIntegrationStatus.UNNECESSARY, name: m.enum_optionIntegrationStatus_unnecessary() },
+	{
+		id: OptionIntegrationStatus.ACTIVITY_INDEXED,
+		name: m.enum_optionIntegrationStatus_activityIndexed()
+	},
+	{ id: OptionIntegrationStatus.COMPLETED, name: m.enum_optionIntegrationStatus_completed() }
 ];
 
 export const OPTION_LANGUAGE_OPTIONS = [

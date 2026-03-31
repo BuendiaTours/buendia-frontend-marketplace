@@ -14,6 +14,7 @@ import type {
 	IndividualTicketNeeded,
 	IndividualTicketStatus,
 	OptionBookingSystem,
+	OptionIntegrationStatus,
 	OptionDurationUnit,
 	OptionLanguage,
 	OptionPrivacy,
@@ -97,6 +98,7 @@ export type ActivityOption = {
 	duration: OptionDuration;
 	groupTickets: GroupTicket[];
 	individualTickets: IndividualTicket[];
+	integrationStatus: OptionIntegrationStatus;
 	language: OptionLanguage;
 	liveGuides: OptionLanguage[];
 	maxGroupSize: number | null;
@@ -142,6 +144,7 @@ export type ActivityOptionUpdateDto = {
 	cutOff?: number;
 	description?: string;
 	duration?: Partial<OptionDuration>;
+	integrationStatus?: OptionIntegrationStatus;
 	language?: OptionLanguage;
 	maxGroupSize?: number;
 	maxTicketsPerIndividual?: number;
