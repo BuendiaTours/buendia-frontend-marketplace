@@ -5,6 +5,7 @@ export type DestinationActivitiesFilters = {
 	page: number;
 	pageSize: number;
 	kind: string | undefined;
+	isFreeTour?: boolean;
 	kidsFreeTour?: boolean;
 	wheelchairAccessible?: boolean;
 	breakfastIncluded?: boolean;
@@ -25,6 +26,7 @@ export const destinationActivitiesFiltersSchema: FiltersSchema<DestinationActivi
 			},
 			resetPageOnChange: true
 		},
+		isFreeTour: createBooleanField('isFreeTour'),
 		kidsFreeTour: createBooleanField('kidsFreeTour'),
 		wheelchairAccessible: createBooleanField('wheelchairAccessible'),
 		breakfastIncluded: createBooleanField('breakfastIncluded'),

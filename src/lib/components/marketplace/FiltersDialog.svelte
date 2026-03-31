@@ -53,11 +53,13 @@
 
 <button
 	use:melt={$trigger}
-	class="e-button e-button-tertiary !border-neutral-200 {triggerClass}"
+	class="e-button e-button-tertiary {hasActiveFilters
+		? '!border-accent'
+		: '!border-neutral-200'} {triggerClass}"
 	class:!border-[var(--color-primary)]={hasActiveFilters}
 >
-	<Tuning4 class="inline size-4 {hasActiveFilters ? 'text-[var(--color-primary)]' : ''}" />
-	<span class="ml-2">Filtros{hasActiveFilters ? ' •' : ''}</span>
+	<Tuning4 class="inline size-4 {hasActiveFilters ? 'text-accent' : ''}" />
+	<span class="ml-2 {hasActiveFilters ? 'text-accent' : ''}">Filtros</span>
 </button>
 
 {#if $open}
@@ -78,11 +80,7 @@
 				<div class="mb-6 flex flex-col gap-4">
 					{#each filters as filter (filter.key)}
 						<label class="flex cursor-pointer items-center gap-3">
-							<input
-								type="checkbox"
-								class="size-4 cursor-pointer accent-[var(--color-primary)]"
-								bind:checked={localFilters[filter.key]}
-							/>
+							<input type="checkbox" class="checkbox" bind:checked={localFilters[filter.key]} />
 							<span class="p-base select-none">{filter.label}</span>
 						</label>
 					{/each}

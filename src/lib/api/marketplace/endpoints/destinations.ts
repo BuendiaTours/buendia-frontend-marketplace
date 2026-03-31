@@ -63,6 +63,7 @@ export const destinationsEndpoints = {
 			page?: number;
 			pageSize?: number;
 			kind?: string;
+			isFreeTour?: boolean;
 			kidsFreeTour?: boolean;
 			wheelchairAccessible?: boolean;
 			breakfastIncluded?: boolean;

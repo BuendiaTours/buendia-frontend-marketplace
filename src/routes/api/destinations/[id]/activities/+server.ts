@@ -3,6 +3,7 @@ import type { RequestHandler } from './$types';
 import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
 
 const BOOL_FILTER_KEYS = [
+	'isFreeTour',
 	'kidsFreeTour',
 	'wheelchairAccessible',
 	'breakfastIncluded',

@@ -69,16 +69,18 @@
 		...data.activityKinds.map((k) => ({ id: k.id, name: k.name, href: buildUrl(k.id) }))
 	]);
 
-	const FILTER_LABELS: Record<string, string> = {
-		kidsFreeTour: 'Gratis para niños',
-		wheelchairAccessible: 'Accesible para sillas de ruedas',
-		breakfastIncluded: 'Desayuno incluido',
-		audioGuideAvailable: 'Audioguía disponible',
-		photographyAllowed: 'Fotografía permitida',
-		smallGroup: 'Grupo pequeño'
-	};
+	const advancedFiltersConfig = [
+		{ key: 'isFreeTour', label: 'Free Tour' },
+		{ key: 'kidsFreeTour', label: 'Gratis para niños' },
+		{ key: 'wheelchairAccessible', label: 'Accesible para sillas de ruedas' },
+		{ key: 'breakfastIncluded', label: 'Desayuno incluido' },
+		{ key: 'audioGuideAvailable', label: 'Audioguía disponible' },
+		{ key: 'photographyAllowed', label: 'Fotografía permitida' },
+		{ key: 'smallGroup', label: 'Grupo pequeño' }
+	] as const;
 
 	const BOOL_FILTER_KEYS = [
+		'isFreeTour',
 		'kidsFreeTour',
 		'wheelchairAccessible',
 		'breakfastIncluded',
@@ -86,12 +88,6 @@
 		'photographyAllowed',
 		'smallGroup'
 	] as const;
-
-	const availableFilterOptions = $derived(
-		Object.entries(data.availableFilters ?? {})
-			.filter(([, available]) => available)
-			.map(([key]) => ({ key, label: FILTER_LABELS[key] ?? key }))
-	);
 
 	const currentAdvancedFilters = $derived(
 		Object.fromEntries(BOOL_FILTER_KEYS.map((k) => [k, data.filters[k] ?? false]))
@@ -137,7 +133,7 @@
 	<div class="mb-6 flex flex-row items-center justify-between gap-6">
 		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} />
 		<FiltersDialog
-			filters={availableFilterOptions}
+			filters={advancedFiltersConfig}
 			currentFilters={currentAdvancedFilters}
 			onApply={handleFiltersApply}
 			onClear={handleFiltersClear}
