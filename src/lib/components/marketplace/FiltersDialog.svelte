@@ -61,13 +61,13 @@
 
 <button
 	use:melt={$trigger}
-	class="e-button e-button-tertiary {hasActiveFilters
+	class="e-button e-button-tertiary min-w-[48px] {hasActiveFilters
 		? '!border-accent'
 		: '!border-neutral-200'} {triggerClass} {wrapperClass}"
 	class:!border-[var(--color-primary)]={hasActiveFilters}
 >
 	<Tuning4 class="inline size-4 {hasActiveFilters ? 'text-accent' : ''}" />
-	<span class="ml-2 {hasActiveFilters ? 'text-accent' : ''}">Filtros</span>
+	<span class="ml-2 hidden sm:inline {hasActiveFilters ? 'text-accent' : ''}">Filtros</span>
 </button>
 
 {#if $open}

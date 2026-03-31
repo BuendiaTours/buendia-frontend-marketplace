@@ -143,7 +143,9 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<div class="mb-4 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+	<div
+		class="mb-4 flex flex-col items-end justify-between gap-2 sm:flex-row sm:items-center sm:gap-6"
+	>
 		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="w-full min-w-0 flex-1" />
 		<div class="shrink-0">
 			<FiltersDialog
@@ -156,10 +158,11 @@
 	</div>
 
 	<div class="mb-4 flex flex-row items-center justify-between gap-6">
-		<span class="p-base text-neutral-600"
-			>Todas las actividades en {data.destination.name} ({data.pagination?.total ?? 0})</span
+		<span
+			class="p-base max-w-[calc(100%-120px)] translate-y-[-52px] text-neutral-600 sm:translate-y-[0]"
+			>Todas las actividades en {data.destination.name}&nbsp;({data.pagination?.total ?? 0})</span
 		>
-		<div class="flex items-center gap-2">
+		<div class="hidden items-center gap-2 sm:flex">
 			<span class="p-base whitespace-nowrap text-neutral-600">Ordenar por:</span>
 			<select
 				value={currentSortValue()}
