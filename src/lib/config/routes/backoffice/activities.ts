@@ -10,12 +10,7 @@ export const ACTIVITY_ROUTES = {
 	create: backoffice('activities/create'),
 	edit: (id: string) => backoffice('activities', id, 'edit'),
 	locations: (id: string) => backoffice('activities', id, 'locations'),
-	meals: (id: string) => backoffice('activities', id, 'meals'),
-	addons: (id: string) => backoffice('activities', id, 'addons'),
 	contentBlocks: (id: string) => backoffice('activities', id, 'content-blocks'),
-	multimedia: (id: string) => backoffice('activities', id, 'multimedia'),
-	classification: (id: string) => backoffice('activities', id, 'classification'),
-	stages: (id: string) => backoffice('activities', id, 'stages'),
 	options: (id: string) => backoffice('activities', id, 'options'),
 	optionCreate: (id: string) => backoffice('activities', id, 'options', 'create'),
 	optionEdit: (activityId: string, optionId: string) =>

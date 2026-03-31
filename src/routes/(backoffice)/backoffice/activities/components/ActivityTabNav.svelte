@@ -6,90 +6,33 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import {
-		Database,
-		FolderCheck,
-		GalleryMinimalistic,
-		Map as MapIcon,
-		MapPoint,
-		Plate,
-		Tag,
-		Tuning,
-		Widget
-	} from '$lib/icons/Linear';
+	import { Database, FolderCheck, MapPoint, Tuning } from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
-		locationCount?: number;
-		mealCount?: number;
-		addonCount?: number;
-		contentBlockCount?: number;
-		imageCount?: number;
-		stageCount?: number;
 		optionCount?: number;
-		classificationCount?: number;
 	};
 
-	let {
-		activityId,
-		locationCount = 0,
-		mealCount = 0,
-		addonCount = 0,
-		contentBlockCount = 0,
-		imageCount = 0,
-		stageCount = 0,
-		optionCount = 0,
-		classificationCount = 0
-	}: Props = $props();
+	let { activityId, optionCount = 0 }: Props = $props();
 
 	const tabs = $derived([
 		{
 			label: m.activities_tabGeneral(),
 			href: ACTIVITY_ROUTES.edit(activityId),
 			icon: Database,
-			badge: undefined
-		},
-		{
-			label: m.activities_tabClassification(),
-			href: ACTIVITY_ROUTES.classification(activityId),
-			icon: Tag,
-			badge: classificationCount > 0 ? classificationCount : undefined
+			badge: undefined as number | undefined
 		},
 		{
 			label: m.activities_tabLocations(),
 			href: ACTIVITY_ROUTES.locations(activityId),
 			icon: MapPoint,
-			badge: locationCount > 0 ? locationCount : undefined
-		},
-		{
-			label: m.activities_tabMeals(),
-			href: ACTIVITY_ROUTES.meals(activityId),
-			icon: Plate,
-			badge: mealCount > 0 ? mealCount : undefined
-		},
-		{
-			label: m.activities_tabAddons(),
-			href: ACTIVITY_ROUTES.addons(activityId),
-			icon: Widget,
-			badge: addonCount > 0 ? addonCount : undefined
+			badge: undefined as number | undefined
 		},
 		{
 			label: m.activities_tabContentBlocks(),
 			href: ACTIVITY_ROUTES.contentBlocks(activityId),
 			icon: FolderCheck,
-			badge: contentBlockCount > 0 ? contentBlockCount : undefined
-		},
-		{
-			label: m.activities_tabMultimedia(),
-			href: ACTIVITY_ROUTES.multimedia(activityId),
-			icon: GalleryMinimalistic,
-			badge: imageCount > 0 ? imageCount : undefined
-		},
-		{
-			label: m.activities_tabStages(),
-			href: ACTIVITY_ROUTES.stages(activityId),
-			icon: MapIcon,
-			badge: stageCount > 0 ? stageCount : undefined
+			badge: undefined as number | undefined
 		},
 		{
 			label: m.activities_tabOptions(),

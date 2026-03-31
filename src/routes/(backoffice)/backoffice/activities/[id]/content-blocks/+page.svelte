@@ -1,32 +1,36 @@
 <script lang="ts">
 	/**
-	 * Content blocks tab — manages content blocks linked to the activity.
-	 * Order matters: determines display order in the marketplace.
+	 * Content tab — manages content blocks, multimedia, meals, and addons
+	 * linked to the activity via client-side API calls.
 	 * Supports auto-add when returning from content block creation.
 	 */
 	import * as m from '$paraglide/messages';
 	import type { PageProps } from './$types';
+	import type { ActivityAddon } from '$core/activity-addons/types';
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import ActivityContentBlocksAccordion from '../../components/ActivityContentBlocksAccordion.svelte';
+	import ActivityMultimediaAccordion from '../../components/ActivityMultimediaAccordion.svelte';
+	import ActivityMealsAccordion from '../../components/ActivityMealsAccordion.svelte';
+	import ActivityAddonsAccordion from '../../components/ActivityAddonsAccordion.svelte';
 
 	let { data }: PageProps = $props();
 
 	// svelte-ignore state_referenced_locally
 	let contentBlocks = $state(data.contentBlocks);
+	// svelte-ignore state_referenced_locally
+	let images = $state(data.images);
+	// svelte-ignore state_referenced_locally
+	let meals = $state(data.meals);
+	// svelte-ignore state_referenced_locally
+	let addons: ActivityAddon[] = $state(data.addons);
 
 	const addToast =
 		getContext<
 			(toast: { data: { title: string; description: string; type: 'success' | 'error' } }) => void
 		>('activityToast');
-
-	const updateContentBlockCount = getContext<(count: number) => void>('updateContentBlockCount');
-
-	$effect(() => {
-		updateContentBlockCount(contentBlocks.length);
-	});
 
 	const returnToUrl = $derived(ACTIVITY_ROUTES.contentBlocks(data.activity.id));
 
@@ -45,7 +49,6 @@
 		const alreadyAdded = contentBlocks.some((b) => b.id === cb.id);
 
 		if (alreadyAdded) {
-			// Already in projection (CQRS propagated fast) — just clean URL
 			goto(returnToUrl, { replaceState: true, noScroll: true });
 			return;
 		}
@@ -113,9 +116,17 @@
 	});
 </script>
 
-<ActivityContentBlocksAccordion
-	activityId={data.activity.id}
-	bind:contentBlocks
-	{addToast}
-	{createContentBlockHref}
-/>
+<div class="space-y-4">
+	<ActivityContentBlocksAccordion
+		activityId={data.activity.id}
+		bind:contentBlocks
+		{addToast}
+		{createContentBlockHref}
+	/>
+
+	<ActivityMultimediaAccordion activityId={data.activity.id} bind:images {addToast} />
+
+	<ActivityMealsAccordion activityId={data.activity.id} bind:meals {addToast} />
+
+	<ActivityAddonsAccordion activityId={data.activity.id} bind:addons {addToast} />
+</div>

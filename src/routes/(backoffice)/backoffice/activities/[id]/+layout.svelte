@@ -53,40 +53,10 @@
 
 	setContext('activityToast', handleToast);
 
-	let locationCount = $derived.by(() => {
-		return (data.activity.locations?.length ?? 0) + (data.activity.attractions?.length ?? 0);
-	});
-	let mealCount = $derived(data.activity.meals?.length ?? 0);
-	let addonCount = $derived(data.addons?.length ?? 0);
-	let contentBlockCount = $derived(data.activity.contentBlocks?.length ?? 0);
-	let imageCount = $derived(data.activity.images?.length ?? 0);
-	let stageCount = $derived(data.activity.stages?.length ?? 0);
 	let optionCount = $derived(data.options?.length ?? 0);
-	let classificationCount = $derived(data.activity.categories?.length ?? 0);
 
-	setContext('updateLocationCount', (count: number) => {
-		locationCount = count;
-	});
-	setContext('updateMealCount', (count: number) => {
-		mealCount = count;
-	});
-	setContext('updateAddonCount', (count: number) => {
-		addonCount = count;
-	});
-	setContext('updateContentBlockCount', (count: number) => {
-		contentBlockCount = count;
-	});
-	setContext('updateImageCount', (count: number) => {
-		imageCount = count;
-	});
-	setContext('updateStageCount', (count: number) => {
-		stageCount = count;
-	});
 	setContext('updateOptionCount', (count: number) => {
 		optionCount = count;
-	});
-	setContext('updateClassificationCount', (count: number) => {
-		classificationCount = count;
 	});
 </script>
 
@@ -97,17 +67,7 @@
 <LocationBar title={m.activities_editPageTitle()} {breadcrumbs} />
 
 {#if !isOptionDetail}
-	<ActivityTabNav
-		activityId={data.activity.id}
-		{locationCount}
-		{mealCount}
-		{addonCount}
-		{contentBlockCount}
-		{imageCount}
-		{stageCount}
-		{optionCount}
-		{classificationCount}
-	/>
+	<ActivityTabNav activityId={data.activity.id} {optionCount} />
 
 	<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
 		{@render children()}

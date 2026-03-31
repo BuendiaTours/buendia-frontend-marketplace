@@ -6,7 +6,7 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { v4 as uuidv4 } from 'uuid';
-	import type { EnrichedActivityImage } from '../[id]/multimedia/+page.server';
+	import type { EnrichedActivityImage } from '../[id]/content-blocks/+page.server';
 	import { MEDIA_RELATIONSHIP_REQUEST } from '$core/multimedia/requests';
 	import { MediaRelationshipEntityType } from '$core/multimedia/enums';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';

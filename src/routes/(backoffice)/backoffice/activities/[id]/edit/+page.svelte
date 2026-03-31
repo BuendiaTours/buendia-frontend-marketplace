@@ -28,8 +28,16 @@
 	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
 	import FormOrderedStringList from '$lib/components/backoffice/forms/FormOrderedStringList.svelte';
 	import ActivityFormActions from '../../components/ActivityFormActions.svelte';
+	import ActivityCategoriesAccordion from '../../components/ActivityCategoriesAccordion.svelte';
+	import ActivityTagsAccordion from '../../components/ActivityTagsAccordion.svelte';
+	import { getContext } from 'svelte';
 
 	let { data }: PageProps = $props();
+
+	const addToast =
+		getContext<
+			(toast: { data: { title: string; description: string; type: 'success' | 'error' } }) => void
+		>('activityToast');
 
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance, submitting } = superForm(data.form, {
@@ -37,6 +45,11 @@
 	});
 
 	const formId = 'activity-form';
+
+	// svelte-ignore state_referenced_locally
+	let categories = $state(data.activity.categories ?? []);
+	// svelte-ignore state_referenced_locally
+	let tags = $state(data.activityTags);
 
 	$effect(() => {
 		if (
@@ -343,3 +356,19 @@
 		{/snippet}
 	</FormAccordion>
 </form>
+
+<div class="mt-4 space-y-4">
+	<ActivityCategoriesAccordion
+		activityId={data.activity.id}
+		bind:categories
+		availableCategories={data.availableCategories}
+		{addToast}
+	/>
+
+	<ActivityTagsAccordion
+		activityId={data.activity.id}
+		bind:tags
+		availableTags={data.availableTags}
+		{addToast}
+	/>
+</div>

@@ -1,8 +1,12 @@
 /**
  * Server load and actions for the activity edit (General) tab.
- * Uses parent layout data to populate the form; provides update/delete actions.
+ * Includes form data, classification (categories + tags), and update/delete actions.
  */
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import { CATEGORY_REQUEST } from '$core/categories/requests';
+import { TAG_REQUEST, TAG_RELATIONSHIP_REQUEST } from '$core/tags/requests';
+import { CategoryStatus } from '$core/categories/enums';
+import { TagRelationshipKind } from '$core/tags/enums';
 import { activityEditSchema } from '../../schemas/activity-edit.schema';
 import {
 	ACTIVITY_RESTRICTION_OPTIONS,
@@ -15,8 +19,30 @@ import { createUpdateAction } from '$lib/server/backoffice/updateAction';
 import { createDeleteAction } from '$lib/server/backoffice/deleteAction';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ fetch, parent }) => {
 	const { activity } = await parent();
+
+	const [categoriesResponse, tagsResponse, tagRelationshipsResponse] = await Promise.all([
+		CATEGORY_REQUEST.findByCriteria(fetch, {
+			status: CategoryStatus.ACTIVE,
+			limit: 200
+		}),
+		TAG_REQUEST.findByCriteria(fetch, { pageSize: 200 }),
+		TAG_RELATIONSHIP_REQUEST.findByCriteria(fetch, {
+			entityId: activity.id,
+			kind: TagRelationshipKind.ACTIVITY,
+			limit: 200
+		})
+	]);
+
+	const availableCategories = categoriesResponse.data.map((c) => ({ id: c.id, name: c.name }));
+	const availableTags = tagsResponse.data.map((t) => ({ id: t.id, name: t.name }));
+	const tagMap = new Map(availableTags.map((t) => [t.id, t.name]));
+	const activityTags = (tagRelationshipsResponse.data ?? []).map((rel) => ({
+		relationshipId: rel.id,
+		tagId: rel.tagId,
+		name: tagMap.get(rel.tagId) ?? rel.tagId
+	}));
 
 	const form = await superValidate(
 		{
@@ -54,7 +80,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 		zod(activityEditSchema)
 	);
 
-	return { form };
+	return { form, availableCategories, availableTags, activityTags };
 };
 
 export const actions: Actions = {
