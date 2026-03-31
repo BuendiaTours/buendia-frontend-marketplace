@@ -143,8 +143,8 @@
 		<Breadcrumb items={data.breadcrumbs} />
 	</div>
 
-	<div class="mb-4 flex flex-col items-center justify-between gap-6 sm:flex-row">
-		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="min-w-0 flex-1" />
+	<div class="mb-4 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+		<ScrollableTabBar {tabs} activeId={activeKind ?? 'all'} wrapperClass="w-full min-w-0 flex-1" />
 		<div class="shrink-0">
 			<FiltersDialog
 				filters={advancedFiltersConfig}

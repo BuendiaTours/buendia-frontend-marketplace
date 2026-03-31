@@ -63,7 +63,7 @@
 
 	<!-- Left gradient + arrow -->
 	<div
-		class="pointer-events-none absolute inset-y-0 left-8 w-16 bg-gradient-to-r from-white to-transparent transition-opacity"
+		class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent transition-opacity sm:left-8"
 		class:opacity-0={!showLeftArrow}
 	></div>
 	<button
@@ -83,7 +83,7 @@
 
 	<!-- Right gradient + arrow -->
 	<div
-		class="pointer-events-none absolute inset-y-0 right-8 w-16 bg-gradient-to-l from-white to-transparent transition-opacity"
+		class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent transition-opacity sm:right-8"
 		class:opacity-0={!showRightArrow}
 	></div>
 	<button
