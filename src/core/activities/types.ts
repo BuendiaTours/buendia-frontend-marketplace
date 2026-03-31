@@ -70,6 +70,12 @@ export type ActivityDistributive = {
 	name: string;
 };
 
+/** Supplier reference embedded in an activity. */
+export type ActivitySupplier = {
+	id: string;
+	name: string;
+};
+
 /** Image asset attached to an activity. */
 export type ActivityImage = {
 	mediaId: string;
@@ -135,7 +141,7 @@ export type Activity = {
 	slug: string;
 	stages: ActivityStage[];
 	status: ActivityStatus;
-	supplierId: string;
+	supplier: ActivitySupplier;
 	title: string;
 	transportKind: ActivityTransportKind;
 	transportLocation: ActivityTransportLocation;

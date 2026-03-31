@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 			id: activity.id,
 			title: activity.title ?? '',
 			slug: activity.slug ?? '',
-			supplierId: activity.supplierId ?? '',
+			supplierId: activity.supplier?.id ?? '',
 			codeRef: activity.codeRef ?? '',
 			status: activity.status,
 			kind: activity.kind,

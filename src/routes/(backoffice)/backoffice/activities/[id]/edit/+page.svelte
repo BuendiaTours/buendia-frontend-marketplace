@@ -23,7 +23,6 @@
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
-	import { loadSupplierById } from '../../queries/supplier-search.queries';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import FormCheckboxGroup from '$lib/components/backoffice/forms/FormCheckboxGroup.svelte';
@@ -38,15 +37,6 @@
 	});
 
 	const formId = 'activity-form';
-
-	let supplierName = $state('');
-	$effect(() => {
-		if ($form.supplierId && !supplierName) {
-			loadSupplierById($form.supplierId).then((result) => {
-				if (result) supplierName = result.label;
-			});
-		}
-	});
 
 	$effect(() => {
 		if (
@@ -225,7 +215,7 @@
 			<FormInputText
 				id="supplierId"
 				label={m.activities_labelSupplierId()}
-				value={supplierName || $form.supplierId}
+				value={data.activity.supplier?.name ?? ''}
 				badge="read only"
 				readonly
 				wrapperClass="md:col-span-4"
