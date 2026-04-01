@@ -151,7 +151,7 @@ export type ActivityOptionUpdateDto = {
 	privacy?: OptionPrivacy;
 	skipTheLineType?: OptionSkipTheLineType;
 	status?: OptionStatus;
-	supplierOptionCode?: string;
+	supplierOptionCode?: string | null;
 	ticketKind?: OptionTicketKind;
 	title?: string;
 	wheelchair?: OptionWheelchair;
