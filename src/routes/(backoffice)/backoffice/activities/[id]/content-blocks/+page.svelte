@@ -12,6 +12,7 @@
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import ActivityContentBlocksAccordion from '../../components/ActivityContentBlocksAccordion.svelte';
 	import ActivityMultimediaAccordion from '../../components/ActivityMultimediaAccordion.svelte';
+	import ActivityFaqsAccordion from '../../components/ActivityFaqsAccordion.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -19,6 +20,8 @@
 	let contentBlocks = $state(data.contentBlocks);
 	// svelte-ignore state_referenced_locally
 	let images = $state(data.images);
+	// svelte-ignore state_referenced_locally
+	let faqs = $state(data.activityFaqs);
 
 	const addToast =
 		getContext<
@@ -118,4 +121,11 @@
 	/>
 
 	<ActivityMultimediaAccordion activityId={data.activity.id} bind:images {addToast} />
+
+	<ActivityFaqsAccordion
+		activityId={data.activity.id}
+		bind:faqs
+		availableFaqs={data.availableFaqs}
+		{addToast}
+	/>
 </div>
