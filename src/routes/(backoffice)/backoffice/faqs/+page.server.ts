@@ -15,9 +15,9 @@ import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(faqsFiltersSchema, url.searchParams);
 
-	try {
-		const breadcrumbs = generateBreadcrumbs(url.pathname);
+	const breadcrumbs = generateBreadcrumbs(url.pathname);
 
+	try {
 		const response = await FAQ_REQUEST.findByCriteria(fetch, {
 			page: filters.page,
 			pageSize: filters.pageSize,
@@ -34,6 +34,16 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			breadcrumbs
 		};
 	} catch (err) {
+		if (err instanceof ApiError && err.status === 404) {
+			// FAQ endpoint not deployed yet — return empty state
+			return {
+				items: [],
+				pagination: buildPagination(0, filters.page, filters.pageSize),
+				filters,
+				sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
+				breadcrumbs
+			};
+		}
 		if (err instanceof ApiError) {
 			throw error(err.status || 500);
 		}
