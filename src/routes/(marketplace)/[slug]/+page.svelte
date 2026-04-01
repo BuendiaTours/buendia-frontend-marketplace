@@ -28,7 +28,7 @@
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
-	import PlpAttractions from '$lib/components/marketplace/plp/PlpAttractions.svelte';
+	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
 	import PlpAttractionItem from '$lib/components/marketplace/plp/PlpAttractionItem.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
@@ -339,7 +339,7 @@
 		/>
 	</ByBuendiaBanner>
 
-	<PlpAttractions
+	<PlpSwiper
 		swiperOptions={{
 			slidesPerView: 'auto',
 			spaceBetween: 16,
@@ -360,7 +360,7 @@
 				<PlpAttractionItem item={attraction} />
 			</swiper-slide>
 		{/each}
-	</PlpAttractions>
+	</PlpSwiper>
 
 	<NewsletterRegistration />
 </div>

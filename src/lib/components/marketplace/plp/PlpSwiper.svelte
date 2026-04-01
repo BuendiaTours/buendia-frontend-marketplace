@@ -24,7 +24,7 @@
 	});
 </script>
 
-<div class="c-swipper-manager {wrapperClass}">
+<div class="plp-swipper {wrapperClass}">
 	<div class="gp-4 mb-5 flex items-center justify-between lg:mb-6">
 		<div class="c-swipper-manager__header">
 			{@render header()}
