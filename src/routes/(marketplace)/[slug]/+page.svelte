@@ -119,7 +119,7 @@
 	function handleFiltersApply(applied: Record<string, boolean>) {
 		const patch: Partial<DestinationActivitiesFilters> = {};
 		BOOL_FILTER_KEYS.forEach((k) => {
-			patch[k] = applied[k] || null;
+			patch[k] = applied[k] || undefined;
 		});
 		applyFilterPatch(patch);
 	}
@@ -127,7 +127,7 @@
 	function handleFiltersClear() {
 		const patch: Partial<DestinationActivitiesFilters> = {};
 		BOOL_FILTER_KEYS.forEach((k) => {
-			patch[k] = null;
+			patch[k] = undefined;
 		});
 		applyFilterPatch(patch);
 	}
