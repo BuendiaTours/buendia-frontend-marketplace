@@ -19,6 +19,8 @@
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
+	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import FiltersDialog from '$lib/components/marketplace/FiltersDialog.svelte';
@@ -211,6 +213,7 @@
 	{/if}
 
 	{#if hasMore}
+		<!--Cargar más -->
 		<div class="my-8 flex justify-center">
 			<button onclick={loadMore} class="e-button e-button-secondary">Cargar más actividades</button>
 		</div>
@@ -296,6 +299,43 @@
 		]}
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
+
+	<h2 class="h2-editorial text-neutral-800">Busca el sello de Plan by buendía</h2>
+
+	<p class="p-lg-editorial mt-2 text-neutral-800">
+		Indica que esa actividad es un plan propio de buendía, creado por nosotros y con las mejores
+		condiciones
+	</p>
+
+	<ByBuendiaBanner img={{ src: '/marketplace/CardPDP.jpg', alt: 'Plan ByBuendía' }}>
+		<ByBuendiaHighlights
+			data={{
+				title: 'Plan by buendía',
+				items: [
+					{
+						icon: 'CalendarCheck',
+						title: 'Cancelación gratuita',
+						description: 'Cancela sin coste hasta el incio de la actividad'
+					},
+					{
+						icon: 'MoneyBack',
+						title: 'Garantía de reembolso',
+						description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+					},
+					{
+						icon: 'ChatRoundLine',
+						title: 'Soporte humano antes, durante y después',
+						description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+					}
+				],
+				link: {
+					text: 'Saber más',
+					src: 'https://google.es'
+				}
+			}}
+			wrapperClass=""
+		/>
+	</ByBuendiaBanner>
 
 	<NewsletterRegistration />
 </div>

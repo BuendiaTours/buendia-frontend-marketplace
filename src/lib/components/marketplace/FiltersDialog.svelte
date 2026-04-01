@@ -10,7 +10,7 @@
 	};
 
 	type Props = {
-		filters: FilterOption[];
+		filters: readonly FilterOption[];
 		currentFilters: Record<string, boolean>;
 		onApply: (filters: Record<string, boolean>) => void;
 		onClear?: () => void;
