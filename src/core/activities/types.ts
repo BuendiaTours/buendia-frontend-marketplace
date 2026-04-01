@@ -275,6 +275,7 @@ export type ActivityIndexationDto = {
 	bookingSystem: BookingSystem;
 	coreTitle: string;
 	priority: ActivityIndexationPriority;
+	tenant?: string;
 };
 
 export type ActivityIndexation = {
