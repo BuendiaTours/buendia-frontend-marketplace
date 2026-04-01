@@ -10,6 +10,7 @@
 export const BASE_PATHS = {
 	activities: '/activities',
 	activityOptions: '/activity-options',
+	activityKinds: '/activity-kind',
 	locations: '/locations',
 	categories: '/categories',
 	tags: '/tags',
@@ -237,6 +238,13 @@ export const API_ENDPOINTS = {
 			method: 'PUT',
 			description: 'Actualiza un destino por slug',
 			params: ['slug', 'body']
+		} satisfies EndpointWithParam,
+		/** @description Retrieves paginated activities for a destination by its ID. */
+		activitiesByDestination: {
+			path: (id: string) => `/destination/${id}/activities`,
+			method: 'GET',
+			description: 'Obtiene actividades paginadas de un destino por ID',
+			params: ['id', 'page', 'pageSize', 'kind']
 		} satisfies EndpointWithParam
 	},
 
@@ -333,6 +341,19 @@ export const API_ENDPOINTS = {
 			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
 		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Activity Kinds
+	// ──────────────────────────────────────────────
+	activityKinds: {
+		groupName: 'Activity Kinds',
+		groupDescription: 'Tipos de actividad',
+		list: {
+			path: () => BASE_PATHS.activityKinds,
+			method: 'GET',
+			description: 'Obtiene listado de tipos de actividad'
+		} satisfies Endpoint
 	},
 
 	// ──────────────────────────────────────────────

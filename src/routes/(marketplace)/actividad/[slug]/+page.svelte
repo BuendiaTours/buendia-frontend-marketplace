@@ -15,10 +15,10 @@
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
-	import Faqs from '$lib/components/marketplace/Faqs.svelte';
+	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import PdpByBuendiaBanner from '$lib/components/marketplace/pdp/PdpByBuendiaBanner.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
@@ -141,16 +141,37 @@
 			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-by-buendia-banner -->
-			{#if activity.byBuendiaBanner}
-				<PdpByBuendiaBanner
-					title={activity.byBuendiaBanner.title}
-					description={activity.byBuendiaBanner.description}
-					items={activity.byBuendiaBanner.items}
-					link={activity.byBuendiaBanner.link}
-				/>
 
-				<Spacer wrapperClass="mt-8 mb-6" />
-			{/if}
+			<ByBuendiaHighlights
+				data={{
+					title: 'Plan by buendía',
+					description: 'Lo organizamos nosotros, por eso te damos las mejores condiciones',
+					items: [
+						{
+							icon: 'CalendarCheck',
+							title: 'Cancelación gratuita',
+							description: 'Cancela sin coste hasta el incio de la actividad'
+						},
+						{
+							icon: 'MoneyBack',
+							title: 'Garantía de reembolso',
+							description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+						},
+						{
+							icon: 'ChatRoundLine',
+							title: 'Soporte humano antes, durante y después',
+							description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+						}
+					],
+					link: {
+						text: 'Saber más',
+						src: 'https://google.es'
+					}
+				}}
+				wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
+			/>
+
+			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-reviews-featured -->
 			{#if data.reviews && data.reviews.length > 1}
@@ -177,7 +198,7 @@
 					</div>
 					<a
 						href="#reviews"
-						class="p-base mt-4 block font-bold text-neutral-800 underline underline-offset-8"
+						class="p-base mt-4 block cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
 						>Ver todas las opiniones</a
 					>
 				</div>
@@ -298,7 +319,7 @@
 			{/if}
 
 			<!-- faqs -->
-			<Faqs
+			<FaqsCollapsable
 				title={`Preguntas frecuentes sobre esta excursión desde ${activity.destinations?.[0]?.name || '<DESTINO?>'}`}
 				faqs={activity.faqs}
 			/>

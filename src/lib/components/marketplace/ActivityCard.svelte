@@ -42,17 +42,19 @@
 					/>
 				</div>
 			{/if}
-			<h3 class="h3">
-				{item.name}
-			</h3>
-			{#if item.infoList.length > 0}
-				<ul class="flex flex-wrap gap-[6px]">
-					{#each item.infoList as info (info.id)}
-						<li class="p-xs flex gap-[6px] text-neutral-700 not-first:before:content-['·']">
-							{info.infoName}
-						</li>
-					{/each}
-				</ul>
+			{#if item.infoList}
+				<h3 class="h3">
+					{item.name}
+				</h3>
+				{#if item.infoList.length > 0}
+					<ul class="flex flex-wrap gap-[6px]">
+						{#each item.infoList as info (info.id)}
+							<li class="p-xs flex gap-[6px] text-neutral-700 not-first:before:content-['·']">
+								{info.infoName}
+							</li>
+						{/each}
+					</ul>
+				{/if}
 			{/if}
 			<p class="p-xs text-neutral-700">{item.cancellation}</p>
 			<div class="mt-2 flex shrink grow-0 basis-full items-end justify-between">

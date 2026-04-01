@@ -19,8 +19,10 @@ export type ByBuendiaBannerItem = {
 };
 
 export type ByBuendiaBanner = {
-	title: string;
-	description: string;
+	title?: string;
+	description?: string;
+	image?: string;
+	itemsDescription?: string;
 	items: ByBuendiaBannerItem[];
 	link: {
 		text: string;
@@ -41,6 +43,21 @@ export type Condition = {
 	items: ConditionItem[];
 };
 
+export type Faqs = {
+	id: string;
+	position: number;
+	question: string;
+	answer: string;
+	status: string;
+};
+
+export type ContentBlockStack = {
+	id: string;
+	image: string;
+	title: string;
+	description: string;
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -55,7 +72,7 @@ export type ActivityListItem = {
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
 	excluded: string[];
-	faqs: Array<{ id: string; position: number; question: string; answer: string; status: string }>;
+	faqs: Faqs[];
 	byBuendiaBanner: ByBuendiaBanner | null;
 	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
@@ -224,6 +241,7 @@ export type ActivityCard = {
 	image: string;
 	name: string;
 	slug: string;
+	kind?: string;
 	infoList: ActivityCardInfoList[];
 	cancellation?: string;
 	price?: string;
@@ -242,6 +260,17 @@ export type PlpAttractionItem = {
 	slug: string;
 	activities: number;
 	price: number;
+};
+
+export type DestinationActivitiesResult = {
+	data: ActivityCard[];
+	pagination: {
+		page: number;
+		pageSize: number;
+		total: number;
+		totalPages: number;
+	};
+	filters?: Record<string, boolean>;
 };
 
 export type Column<T> = {
@@ -296,6 +325,10 @@ export type Destination = {
 	name: string;
 	slug: string;
 	attractions: PlpAttractionItem[];
+	faqsTitle?: string;
+	faqs: Faqs[];
+	contentBlockStack: ContentBlockStack[];
+	byBuendiaBanner: ByBuendiaBanner | null;
 };
 
 export type Attraction = {

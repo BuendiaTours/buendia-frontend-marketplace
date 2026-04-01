@@ -9,7 +9,7 @@ import { apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 import { toSkipLimit, buildEndpointUrl } from '$core/_shared/params';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-import type { CriteriaResult, Destination } from '$lib/types';
+import type { CriteriaResult, Destination, DestinationActivitiesResult } from '$lib/types';
 
 export type DestinationsPublicParams = {
 	page?: number;
@@ -47,6 +47,39 @@ export const destinationsEndpoints = {
 		const path = API_ENDPOINTS.destinations.detailBySlug.path(slug);
 
 		const response = await apiClient.request<Destination>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
+	},
+
+	/**
+	 * Obtener actividades paginadas de un destino por su ID
+	 */
+	async getActivitiesById(
+		fetchFn: typeof fetch,
+		id: string,
+		params?: {
+			page?: number;
+			pageSize?: number;
+			kind?: string;
+			sort?: string;
+			order?: CriteriaSortOption;
+			isFreeTour?: boolean;
+			kidsFreeTour?: boolean;
+			wheelchairAccessible?: boolean;
+			breakfastIncluded?: boolean;
+			audioGuideAvailable?: boolean;
+			photographyAllowed?: boolean;
+			smallGroup?: boolean;
+		}
+	): Promise<DestinationActivitiesResult> {
+		const path = buildEndpointUrl(
+			API_ENDPOINTS.destinations.activitiesByDestination.path(id),
+			params
+		);
+
+		const response = await apiClient.request<DestinationActivitiesResult>(fetchFn, path, {
 			method: 'GET'
 		});
 

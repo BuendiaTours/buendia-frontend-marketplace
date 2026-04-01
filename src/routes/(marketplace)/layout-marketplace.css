@@ -40,10 +40,10 @@
 @import '$lib/styles/marketplace/components/c-clamp-text.css';
 @import '$lib/styles/marketplace/components/c-conditions.css';
 @import '$lib/styles/marketplace/components/c-faq-item.css';
-@import '$lib/styles/marketplace/components/c-faqs.css';
 @import '$lib/styles/marketplace/components/c-melt-calendar.css';
 @import '$lib/styles/marketplace/components/c-melt-range-calendar.css';
 @import '$lib/styles/marketplace/components/c-review-card.css';
+@import '$lib/styles/marketplace/components/c-scrollable-tab-bar.css';
 @import '$lib/styles/marketplace/components/c-star-rating.css';
 @import '$lib/styles/marketplace/components/c-tooltip.css';
 
