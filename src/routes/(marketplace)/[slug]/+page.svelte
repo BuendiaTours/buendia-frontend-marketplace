@@ -33,6 +33,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -225,40 +226,67 @@
 
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
-		<div id="plp-reviews" class="plp-reviews grid grid-cols-3 gap-4">
-			{#each data.reviews as review (review.id)}
-				<div
-					class="flex flex-col justify-between rounded-xl border border-[var(--color-border-default)] p-6 pb-6"
-				>
-					<ReviewCard
-						name={review.user || 'Anónimo'}
-						desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
-						text={review.content}
-						rating={review.averageRating}
-						lines={3}
-						{...review}
-					/>
-
-					{#if review.attachments && review.attachments.length > 0}
-						<GallerySquareThumbs
-							items={review.attachments.map((att) => ({ src: att.url.value }))}
-							visibleCount={3}
-							categoryId="review-{review.id}"
-							containerClass="mt-auto pt-4"
-							wrapperClass="plp-reviews__gallery gap-2"
-							thumbClass="w-1/3"
-						/>
-					{/if}
-
-					<div class="plp-reviews__about mt-4">
-						<p class="p-base text-neutral-600">Opinión sobre</p>
-						<a href="#" class="p-base cursor-pointer underline underline-offset-8"
-							>Cena en el Trastévere</a
-						>
+		<PlpSwiper
+			id="plp-reviews"
+			swiperOptions={{
+				slidesPerView: 1.1,
+				spaceBetween: 16,
+				navigation: true,
+				loop: false,
+				breakpoints: {
+					640: { slidesPerView: 2 },
+					1024: { slidesPerView: 3 }
+				}
+			}}
+			wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		>
+			{#snippet header()}
+				<div class="flex flex-col">
+					<h2 class="h2-editorial text-neutral-800">
+						Reseñas de nuestros viajeros en {data.destination.name}
+					</h2>
+					<div class="mt-1 flex items-center">
+						<StarRating single size="md" />
+						<span class="p-lg font-bold">4.5</span>
+						<span class="p-sm ml-2 text-neutral-600">Valoración media según XXX opiniones</span>
 					</div>
 				</div>
+			{/snippet}
+			{#each data.reviews as review (review.id)}
+				<swiper-slide>
+					<div
+						class="flex h-full flex-col justify-between rounded-xl border border-[var(--color-border-default)] p-6 pb-6"
+					>
+						<ReviewCard
+							name={review.user || 'Anónimo'}
+							desc={review.createdAt ? format(new Date(review.createdAt), 'dd/MM/yyyy') : undefined}
+							text={review.content}
+							rating={review.averageRating}
+							lines={3}
+							{...review}
+						/>
+
+						{#if review.attachments && review.attachments.length > 0}
+							<GallerySquareThumbs
+								items={review.attachments.map((att) => ({ src: att.url.value }))}
+								visibleCount={3}
+								categoryId="review-{review.id}"
+								containerClass="mt-auto pt-4"
+								wrapperClass="plp-reviews__gallery gap-2"
+								thumbClass="w-1/3"
+							/>
+						{/if}
+
+						<div class="plp-reviews__about mt-4">
+							<p class="p-base text-neutral-600">Opinión sobre</p>
+							<a href="#" class="p-base cursor-pointer underline underline-offset-8"
+								>Cena en el Trastévere</a
+							>
+						</div>
+					</div>
+				</swiper-slide>
 			{/each}
-		</div>
+		</PlpSwiper>
 	{/if}
 
 	<FaqsInline
@@ -276,24 +304,20 @@
 	<WhyUsGrid
 		data={[
 			{
-				id: 'WhyUsItem1',
 				title: '​Empresa mejor valorada del sector en Trustpilot',
 				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
 			},
 			{
-				id: 'WhyUsItem2',
 				icon: 'Heart',
 				title: '​Empresa mejor valorada del sector en Trustpilot',
 				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
 			},
 			{
-				id: 'WhyUsItem3',
 				icon: 'BuendiaCommentHollow',
 				title: '​Empresa mejor valorada del sector en Trustpilot',
 				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
 			},
 			{
-				id: 'WhyUsItem4',
 				icon: 'SmileCircle',
 				title: '​Empresa mejor valorada del sector en Trustpilot',
 				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'

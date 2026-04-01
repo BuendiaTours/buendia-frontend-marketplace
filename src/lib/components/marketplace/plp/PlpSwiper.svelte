@@ -9,9 +9,10 @@
 		children: Snippet;
 		swiperOptions?: Record<string, unknown>;
 		wrapperClass: string;
+		id?: string;
 	};
 
-	let { header, children, swiperOptions, wrapperClass }: Props = $props();
+	let { header, children, swiperOptions, wrapperClass, id }: Props = $props();
 	let prevBtn: HTMLButtonElement | undefined = $state(undefined);
 	let nextBtn: HTMLButtonElement | undefined = $state(undefined);
 	let buttonsReady = $state(false);
@@ -24,7 +25,7 @@
 	});
 </script>
 
-<div class="plp-swipper {wrapperClass}">
+<div {id} class="plp-swipper {wrapperClass}">
 	<div class="mb-5 flex items-center justify-between gap-4 lg:mb-6">
 		<div class="c-swipper-manager__header w-full">
 			{@render header()}
@@ -41,10 +42,19 @@
 
 	{#if buttonsReady}
 		<SwiperElement
-			className="-mr-4 sm:-mr-8 lg:mr-0"
+			className="-mr-4 sm:-mr-8 lg:mr-0 flex"
 			options={{ ...swiperOptions, navigation: { prevEl: prevBtn, nextEl: nextBtn } }}
 		>
 			{@render children()}
 		</SwiperElement>
 	{/if}
 </div>
+
+<style>
+	:global(.plp-swipper .swiper-wrapper) {
+		align-items: stretch;
+	}
+	:global(.plp-swipper swiper-slide) {
+		height: auto;
+	}
+</style>

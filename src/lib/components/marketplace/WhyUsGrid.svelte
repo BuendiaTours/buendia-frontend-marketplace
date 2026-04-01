@@ -3,7 +3,7 @@
 
 	type Props = {
 		data: {
-			id: string;
+			id?: string;
 			icon?: string;
 			title: string;
 			description: string;
@@ -25,7 +25,7 @@
 <div class={wrapperClass}>
 	<h2 class="h2-editorial mb-5">Qué nos diferencia</h2>
 	<div class="grid grid-cols-1 gap-4 xl:grid-cols-[1.001fr_1fr_1fr_1fr]">
-		{#each data as item (item.id)}
+		{#each data as item, i (i)}
 			<WhyUsItem {item} />
 		{/each}
 	</div>
