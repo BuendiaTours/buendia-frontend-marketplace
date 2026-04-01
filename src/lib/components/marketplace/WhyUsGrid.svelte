@@ -2,36 +2,25 @@
 	import WhyUsItem from './WhyUsItem.svelte';
 
 	type Props = {
+		data: {
+			id: string;
+			icon?: string;
+			title: string;
+			description: string;
+		}[];
 		wrapperClass?: string;
 	};
 
-	let { wrapperClass }: Props = $props();
-	const data = [
-		{
-			id: 'WhyUsItem1',
-			title: '​Empresa mejor valorada del sector en Trustpilot',
-			description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-		},
-		{
-			id: 'WhyUsItem2',
-			icon: 'Heart',
-			title: '​Empresa mejor valorada del sector en Trustpilot',
-			description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-		},
-		{
-			id: 'WhyUsItem3',
-			icon: 'BuendiaCommentHollow',
-			title: '​Empresa mejor valorada del sector en Trustpilot',
-			description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-		},
-		{
-			id: 'WhyUsItem4',
-			icon: 'SmileCircle',
-			title: '​Empresa mejor valorada del sector en Trustpilot',
-			description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-		}
-	];
+	let { data, wrapperClass }: Props = $props();
 </script>
+
+<svelte:head>
+	<script
+		type="text/javascript"
+		src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+		async
+	></script>
+</svelte:head>
 
 <div class={wrapperClass}>
 	<h2 class="h2-editorial mb-5">Qué nos diferencia</h2>

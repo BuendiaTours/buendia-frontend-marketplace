@@ -111,7 +111,34 @@
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
 
-	<WhyUsGrid wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24" />
+	<WhyUsGrid
+		data={[
+			{
+				id: 'WhyUsItem1',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem2',
+				icon: 'Heart',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem3',
+				icon: 'BuendiaCommentHollow',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem4',
+				icon: 'SmileCircle',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			}
+		]}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
 
 	<NewsletterRegistration />
 </div>
