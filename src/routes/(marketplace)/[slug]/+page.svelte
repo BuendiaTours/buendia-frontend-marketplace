@@ -15,6 +15,7 @@
 	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import { page } from '$app/stores';
 	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -110,12 +111,43 @@
 		items={data.destination.contentBlockStack}
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
-	{#if data.destination.byBuendiaBanner}
-		<ByBuendiaBanner
-			banner={data.destination.byBuendiaBanner}
-			wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+
+	<h2 class="h2-editorial text-neutral-800">Busca el sello de Plan by buendía</h2>
+
+	<p class="p-lg-editorial mt-2 text-neutral-800">
+		Indica que esa actividad es un plan propio de buendía, creado por nosotros y con las mejores
+		condiciones
+	</p>
+
+	<ByBuendiaBanner img={{ src: '/marketplace/CardPDP.jpg', alt: 'Plan ByBuendía' }}>
+		<ByBuendiaHighlights
+			data={{
+				title: 'Plan by buendía',
+				items: [
+					{
+						icon: 'CalendarCheck',
+						title: 'Cancelación gratuita',
+						description: 'Cancela sin coste hasta el incio de la actividad'
+					},
+					{
+						icon: 'MoneyBack',
+						title: 'Garantía de reembolso',
+						description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+					},
+					{
+						icon: 'ChatRoundLine',
+						title: 'Soporte humano antes, durante y después',
+						description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+					}
+				],
+				link: {
+					text: 'Saber más',
+					src: 'https://google.es'
+				}
+			}}
+			wrapperClass=""
 		/>
-	{/if}
+	</ByBuendiaBanner>
 
 	<NewsletterRegistration />
 </div>

@@ -18,7 +18,7 @@
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
 	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
 	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
@@ -141,11 +141,37 @@
 			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-by-buendia-banner -->
-			{#if activity.byBuendiaBanner}
-				<ByBuendiaBanner banner={activity.byBuendiaBanner} />
 
-				<Spacer wrapperClass="mt-8 mb-6" />
-			{/if}
+			<ByBuendiaHighlights
+				data={{
+					title: 'Plan by buendía',
+					description: 'Lo organizamos nosotros, por eso te damos las mejores condiciones',
+					items: [
+						{
+							icon: 'CalendarCheck',
+							title: 'Cancelación gratuita',
+							description: 'Cancela sin coste hasta el incio de la actividad'
+						},
+						{
+							icon: 'MoneyBack',
+							title: 'Garantía de reembolso',
+							description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+						},
+						{
+							icon: 'ChatRoundLine',
+							title: 'Soporte humano antes, durante y después',
+							description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+						}
+					],
+					link: {
+						text: 'Saber más',
+						src: 'https://google.es'
+					}
+				}}
+				wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
+			/>
+
+			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-reviews-featured -->
 			{#if data.reviews && data.reviews.length > 1}
