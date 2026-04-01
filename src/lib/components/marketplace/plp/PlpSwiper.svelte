@@ -25,8 +25,8 @@
 </script>
 
 <div class="plp-swipper {wrapperClass}">
-	<div class="gp-4 mb-5 flex items-center justify-between lg:mb-6">
-		<div class="c-swipper-manager__header">
+	<div class="mb-5 flex items-center justify-between gap-4 lg:mb-6">
+		<div class="c-swipper-manager__header w-full">
 			{@render header()}
 		</div>
 		<div class="hidden gap-2 lg:flex">

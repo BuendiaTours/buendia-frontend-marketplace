@@ -362,5 +362,38 @@
 		{/each}
 	</PlpSwiper>
 
+	<PlpSwiper
+		swiperOptions={{
+			slidesPerView: 1.2,
+			spaceBetween: 16,
+			navigation: true,
+			loop: false,
+			breakpoints: {
+				640: { slidesPerView: 2 },
+				1024: { slidesPerView: 4 }
+			}
+		}}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	>
+		{#snippet header()}
+			<div
+				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
+			>
+				<h2 class="h2-editorial text-neutral-800">Excuriones a Florencia desde Roma</h2>
+				<a href="#" class="p-base cursor-pointer underline underline-offset-8"
+					>Ver todas las excursiones</a
+				>
+			</div>
+		{/snippet}
+		{#each accumulatedActivities.slice(0, 5) as activity (activity.id)}
+			<swiper-slide>
+				<ActivityCard
+					item={activity}
+					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+				/>
+			</swiper-slide>
+		{/each}
+	</PlpSwiper>
+
 	<NewsletterRegistration />
 </div>
