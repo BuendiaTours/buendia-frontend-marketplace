@@ -1,18 +1,17 @@
 <script lang="ts">
-	import type { PlpAttractionItem as PlpAttractionItemType } from '$lib/types';
 	import { browser } from '$app/environment';
-	import { tick } from 'svelte';
+	import { tick, type Snippet } from 'svelte';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
-	import PlpAttractionItem from './PlpAttractionItem.svelte';
 	import { AltArrowLeft, AltArrowRight } from '$lib/icons/Linear';
 
 	type Props = {
-		title: string;
-		items: PlpAttractionItemType[];
+		header: Snippet;
+		children: Snippet;
+		swiperOptions?: Record<string, unknown>;
 		wrapperClass: string;
 	};
 
-	let { title, items, wrapperClass }: Props = $props();
+	let { header, children, swiperOptions, wrapperClass }: Props = $props();
 	let prevBtn: HTMLButtonElement | undefined = $state(undefined);
 	let nextBtn: HTMLButtonElement | undefined = $state(undefined);
 	let buttonsReady = $state(false);
@@ -25,9 +24,11 @@
 	});
 </script>
 
-<div class={wrapperClass}>
-	<div class="mb-5 flex items-center justify-between lg:mb-6">
-		<h2 class="h2-editorial text-neutral-800">{title}</h2>
+<div class="c-swipper-manager {wrapperClass}">
+	<div class="gp-4 mb-5 flex items-center justify-between lg:mb-6">
+		<div class="c-swipper-manager__header">
+			{@render header()}
+		</div>
 		<div class="hidden gap-2 lg:flex">
 			<button bind:this={prevBtn} class="e-nav-button" aria-label="Anterior">
 				<AltArrowLeft class="size-4" />
@@ -41,20 +42,9 @@
 	{#if buttonsReady}
 		<SwiperElement
 			className="-mr-4 sm:-mr-8 lg:mr-0"
-			options={{
-				slidesPerView: 'auto',
-				spaceBetween: 16,
-				navigation: { prevEl: prevBtn, nextEl: nextBtn },
-				loop: false
-			}}
+			options={{ ...swiperOptions, navigation: { prevEl: prevBtn, nextEl: nextBtn } }}
 		>
-			{#each items as attraction (attraction.id)}
-				<swiper-slide
-					class="relative aspect-[34/19] w-[340px] overflow-hidden rounded-xl sm:aspect-[340/314] lg:aspect-[392/314] lg:w-[392px]"
-				>
-					<PlpAttractionItem item={attraction} />
-				</swiper-slide>
-			{/each}
+			{@render children()}
 		</SwiperElement>
 	{/if}
 </div>

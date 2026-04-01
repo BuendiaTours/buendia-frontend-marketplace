@@ -29,6 +29,7 @@
 	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import PlpAttractions from '$lib/components/marketplace/plp/PlpAttractions.svelte';
+	import PlpAttractionItem from '$lib/components/marketplace/plp/PlpAttractionItem.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -339,10 +340,27 @@
 	</ByBuendiaBanner>
 
 	<PlpAttractions
-		title="Atracciones en {data.destination.name}"
-		items={data.destination.attractions}
+		swiperOptions={{
+			slidesPerView: 'auto',
+			spaceBetween: 16,
+			navigation: true,
+			loop: false
+		}}
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
-	/>
+	>
+		{#snippet header()}
+			<h2 class="h2-editorial text-neutral-800">Atracciones en {data.destination.name}</h2>
+		{/snippet}
+
+		<!-- default slot -->
+		{#each data.destination.attractions as attraction (attraction.id)}
+			<swiper-slide
+				class="relative aspect-[34/19] w-[340px] overflow-hidden rounded-xl sm:aspect-[340/314] lg:aspect-[392/314] lg:w-[392px]"
+			>
+				<PlpAttractionItem item={attraction} />
+			</swiper-slide>
+		{/each}
+	</PlpAttractions>
 
 	<NewsletterRegistration />
 </div>
