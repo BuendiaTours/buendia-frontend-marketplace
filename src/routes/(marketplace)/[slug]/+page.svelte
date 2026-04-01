@@ -20,15 +20,16 @@
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
 	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
+	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import FiltersDialog from '$lib/components/marketplace/FiltersDialog.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
+	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
 	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
 	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
-	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
+	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -118,7 +119,7 @@
 	function handleFiltersApply(applied: Record<string, boolean>) {
 		const patch: Partial<DestinationActivitiesFilters> = {};
 		BOOL_FILTER_KEYS.forEach((k) => {
-			patch[k] = applied[k] || null;
+			patch[k] = applied[k] || undefined;
 		});
 		applyFilterPatch(patch);
 	}
@@ -126,7 +127,7 @@
 	function handleFiltersClear() {
 		const patch: Partial<DestinationActivitiesFilters> = {};
 		BOOL_FILTER_KEYS.forEach((k) => {
-			patch[k] = null;
+			patch[k] = undefined;
 		});
 		applyFilterPatch(patch);
 	}
@@ -264,7 +265,36 @@
 	<ContentBlockStack
 		title="Los mejores planes para descubrir {data.destination.name}"
 		items={data.destination.contentBlockStack}
-		wrapperClass="mt-12 mb-48 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
+
+	<WhyUsGrid
+		data={[
+			{
+				id: 'WhyUsItem1',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem2',
+				icon: 'Heart',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem3',
+				icon: 'BuendiaCommentHollow',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				id: 'WhyUsItem4',
+				icon: 'SmileCircle',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			}
+		]}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
 
 	<NewsletterRegistration />
