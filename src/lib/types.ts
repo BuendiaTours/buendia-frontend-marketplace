@@ -241,6 +241,7 @@ export type ActivityCard = {
 	image: string;
 	name: string;
 	slug: string;
+	kind?: string;
 	infoList: ActivityCardInfoList[];
 	cancellation?: string;
 	price?: string;
@@ -250,6 +251,17 @@ export type ActivityCard = {
 	isFreeTour?: boolean;
 	isNew?: boolean;
 	byBuendia?: boolean;
+};
+
+export type DestinationActivitiesResult = {
+	data: ActivityCard[];
+	pagination: {
+		page: number;
+		pageSize: number;
+		total: number;
+		totalPages: number;
+	};
+	filters?: Record<string, boolean>;
 };
 
 export type Column<T> = {

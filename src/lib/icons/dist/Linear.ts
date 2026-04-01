@@ -145,6 +145,8 @@ export { default as BoxMinimalistic } from './Linear/BoxMinimalistic.svelte';
 export { default as BranchingPathsDown } from './Linear/BranchingPathsDown.svelte';
 export { default as BranchingPathsUp } from './Linear/BranchingPathsUp.svelte';
 export { default as Broom } from './Linear/Broom.svelte';
+export { default as BuendiaComment } from './Linear/BuendiaComment.svelte';
+export { default as BuendiaCommentHollow } from './Linear/BuendiaCommentHollow.svelte';
 export { default as BuendiaLogoStar } from './Linear/BuendiaLogoStar.svelte';
 export { default as Bug } from './Linear/Bug.svelte';
 export { default as BugMinimalistic } from './Linear/BugMinimalistic.svelte';
