@@ -1,0 +1,27 @@
+.c-scrollable-tab-bar {
+	.tab-bar {
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+
+	.tab-bar__item {
+		color: var(--color-neutral-600);
+		border-top: 3px solid transparent;
+		border-bottom: 3px solid transparent;
+		border-radius: 0;
+		padding-block: 0.5rem;
+
+		&:hover {
+			color: var(--color-neutral-800);
+		}
+	}
+	.tab-bar__item--active {
+		color: var(--color-neutral-800);
+		font-weight: 600;
+		border-bottom-color: currentColor;
+	}
+}
