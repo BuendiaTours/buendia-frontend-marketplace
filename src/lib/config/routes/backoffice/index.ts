@@ -13,6 +13,7 @@ import { LOCATION_ROUTES } from './locations';
 import { PICKUP_POINT_ROUTES } from './pickupPoints';
 import { SUPPLIER_ROUTES } from './suppliers';
 import { TAG_ROUTES } from './tags';
+import { FAQ_ROUTES } from './faqs';
 import { BOOKING_ROUTES } from './bookings';
 import { MULTIMEDIA_ROUTES } from './multimedia';
 import { CONTENT_BLOCK_ROUTES } from './contentBlocks';
@@ -30,6 +31,7 @@ export const backofficeRoutes = {
 	pickupPoints: PICKUP_POINT_ROUTES,
 	suppliers: SUPPLIER_ROUTES,
 	tags: TAG_ROUTES,
+	faqs: FAQ_ROUTES,
 	bookings: BOOKING_ROUTES,
 	multimedia: MULTIMEDIA_ROUTES,
 	contentBlocks: CONTENT_BLOCK_ROUTES,

@@ -17,6 +17,7 @@
 	const isResourcesActive = $derived(
 		isActive(ROUTES.backoffice.categories.list) ||
 			isActive(ROUTES.backoffice.tags.list) ||
+			isActive(ROUTES.backoffice.faqs.list) ||
 			isActive(ROUTES.backoffice.attractions.list) ||
 			isActive(ROUTES.backoffice.locations.list) ||
 			isActive(ROUTES.backoffice.pickupPoints.list) ||
@@ -102,6 +103,14 @@
 									class:menu-active={isActive(ROUTES.backoffice.tags.list)}
 								>
 									{m.tags_navLabel()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.faqs.list}
+									class:menu-active={isActive(ROUTES.backoffice.faqs.list)}
+								>
+									{m.faqs_navLabel()}
 								</a>
 							</li>
 							<li>
@@ -243,6 +252,14 @@
 								class:menu-active={isActive(ROUTES.backoffice.tags.list)}
 							>
 								{m.tags_navLabel()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.faqs.list}
+								class:menu-active={isActive(ROUTES.backoffice.faqs.list)}
+							>
+								{m.faqs_navLabel()}
 							</a>
 						</li>
 						<li>

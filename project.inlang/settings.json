@@ -22,7 +22,8 @@
 			"./messages/{locale}/pickupPoints.json",
 			"./messages/{locale}/bookings.json",
 			"./messages/{locale}/multimedia.json",
-			"./messages/{locale}/contentBlocks.json"
+			"./messages/{locale}/contentBlocks.json",
+			"./messages/{locale}/faqs.json"
 		]
 	}
 }
