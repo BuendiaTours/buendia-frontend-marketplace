@@ -9,14 +9,20 @@
 	import type { PageProps } from './$types';
 	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import { BOOKING_STATUS_OPTIONS, BOOKING_SYSTEM_OPTIONS } from '$lib/labels/bookings';
+	import {
+		BOOKING_STATUS_OPTIONS,
+		BOOKING_SYSTEM_OPTIONS,
+		PAYMENT_METHOD_OPTIONS,
+		PAYMENT_STATUS_OPTIONS
+	} from '$lib/labels/bookings';
 	import { BOOKING_ROUTES } from '$lib/config/routes/backoffice/bookings';
 	import {
 		Database,
 		UsersGroupRounded,
 		WalletMoney,
 		MapPoint,
-		Buildings3
+		Buildings3,
+		UserRounded
 	} from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
@@ -26,7 +32,12 @@
 	const booking = $derived(data.booking);
 	const breadcrumbs = $derived(buildBreadcrumbs(page.url.pathname, { label: booking.legibleId }));
 
-	const isCancellable = $derived(booking.status !== 'CANCELLED' && booking.status !== 'FAILED');
+	const isCancellable = $derived(
+		booking.status !== 'CANCELLED' && booking.status !== 'FAILED' && booking.status !== 'EXPIRED'
+	);
+	const hasContact = $derived(
+		booking.orderContactName || booking.orderContactEmail || booking.orderContactPhone
+	);
 
 	function formatPrice(cents: number): string {
 		return (cents / 100).toFixed(2) + ' €';
@@ -50,6 +61,23 @@
 		});
 	}
 
+	function getPaymentStatusClass(status: string): string {
+		switch (status) {
+			case 'COMPLETED':
+				return 'badge-success';
+			case 'PENDING':
+			case 'ON_HOLD':
+				return 'badge-warning';
+			case 'FAILED':
+			case 'CANCELLED':
+				return 'badge-error';
+			case 'REFUNDED':
+				return 'badge-info';
+			default:
+				return 'badge-neutral';
+		}
+	}
+
 	function getStatusClass(status: string): string {
 		switch (status) {
 			case 'CONFIRMED':
@@ -61,6 +89,8 @@
 			case 'FAILED':
 				return 'badge-error';
 			case 'CANCELLED':
+				return 'badge-neutral';
+			case 'EXPIRED':
 				return 'badge-neutral';
 			default:
 				return 'badge-neutral';
@@ -168,6 +198,47 @@
 		{/snippet}
 	</FormAccordion>
 
+	<!-- Contact -->
+	{#if hasContact}
+		<FormAccordion name="booking-contact" open>
+			{#snippet title()}
+				<UserRounded class="size-6" />
+				<span>{m.bookings_sectionContact()}</span>
+			{/snippet}
+			{#snippet asideContent()}
+				<p class="text-xs">{m.bookings_sectionContactDescription()}</p>
+			{/snippet}
+			{#snippet content()}
+				{#if booking.orderContactName}
+					<div class="md:col-span-4">
+						<p class="text-base-content/50 text-sm">{m.bookings_labelContactName()}</p>
+						<p class="font-medium">{booking.orderContactName}</p>
+					</div>
+				{/if}
+				{#if booking.orderContactEmail}
+					<div class="md:col-span-4">
+						<p class="text-base-content/50 text-sm">{m.bookings_labelContactEmail()}</p>
+						<p>
+							<a href="mailto:{booking.orderContactEmail}" class="link">
+								{booking.orderContactEmail}
+							</a>
+						</p>
+					</div>
+				{/if}
+				{#if booking.orderContactPhone}
+					<div class="md:col-span-4">
+						<p class="text-base-content/50 text-sm">{m.bookings_labelContactPhone()}</p>
+						<p>
+							<a href="tel:{booking.orderContactPhone}" class="link">
+								{booking.orderContactPhone}
+							</a>
+						</p>
+					</div>
+				{/if}
+			{/snippet}
+		</FormAccordion>
+	{/if}
+
 	<!-- Passengers -->
 	{#if booking.passengers.length > 0}
 		<FormAccordion name="booking-passengers" open>
@@ -212,7 +283,7 @@
 	{/if}
 
 	<!-- Payment -->
-	{#if booking.paymentData}
+	{#if booking.payment}
 		<FormAccordion name="booking-payment" open>
 			{#snippet title()}
 				<WalletMoney class="size-6" />
@@ -223,17 +294,36 @@
 			{/snippet}
 			{#snippet content()}
 				<div class="md:col-span-4">
-					<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentAmount()}</p>
-					<p class="font-semibold">{formatPrice(booking.paymentData?.amount ?? 0)}</p>
+					<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentMethod()}</p>
+					<p>
+						{PAYMENT_METHOD_OPTIONS.find((o) => o.id === booking.payment?.paymentMethod)?.name ??
+							booking.payment?.paymentMethod}
+					</p>
 				</div>
 				<div class="md:col-span-4">
-					<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentCard()}</p>
-					<p>{booking.paymentData?.cardBrand}</p>
+					<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentStatus()}</p>
+					<span class="badge {getPaymentStatusClass(booking.payment?.status ?? '')}">
+						{PAYMENT_STATUS_OPTIONS.find((o) => o.id === booking.payment?.status)?.name ??
+							booking.payment?.status}
+					</span>
 				</div>
-				<div class="md:col-span-4">
-					<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentLast4()}</p>
-					<p>•••• {booking.paymentData?.last4}</p>
-				</div>
+				{#if booking.payment?.cardBrand}
+					<div class="md:col-span-4">
+						<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentCard()}</p>
+						<p>
+							{booking.payment.cardBrand}
+							{#if booking.payment.last4}
+								<span class="text-base-content/50">•••• {booking.payment.last4}</span>
+							{/if}
+						</p>
+					</div>
+				{/if}
+				{#if booking.payment?.externalId}
+					<div class="md:col-span-12">
+						<p class="text-base-content/50 text-sm">{m.bookings_labelPaymentExternalId()}</p>
+						<p class="font-mono text-sm break-all">{booking.payment.externalId}</p>
+					</div>
+				{/if}
 			{/snippet}
 		</FormAccordion>
 	{/if}

@@ -13,6 +13,7 @@ import type {
 	BookingSystem,
 	VoucherKind
 } from '$core/bookings/enums';
+import type { PaymentMethod, PaymentStatus } from '$core/payments/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
 
@@ -60,13 +61,14 @@ export type BookingPassenger = {
 	unitCommission: number;
 };
 
-/** Payment data from the payment provider. */
-export type BookingPaymentData = {
-	amount: number;
-	cardBrand: string;
-	currency: string;
-	last4: string;
-	paymentIntentId: string;
+/** Denormalized payment data from the order's payment. */
+export type BookingPayment = {
+	id: string;
+	cardBrand: string | null;
+	externalId: string | null;
+	last4: string | null;
+	paymentMethod: PaymentMethod;
+	status: PaymentStatus;
 };
 
 /** Pickup or dropoff point with resolved location details. */
@@ -109,8 +111,11 @@ export type Booking = {
 	externalBookingId: string | null;
 	hotel: BookingHotel | null;
 	lastError: BookingLastError | null;
+	orderContactEmail: string | null;
+	orderContactName: string | null;
+	orderContactPhone: string | null;
+	payment: BookingPayment | null;
 	passengers: BookingPassenger[];
-	paymentData: BookingPaymentData | null;
 	pickupPoint: BookingPickupPoint | null;
 	reserveExpiry: string | null;
 	snapshot: Record<string, unknown>;

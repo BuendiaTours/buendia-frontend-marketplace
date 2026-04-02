@@ -13,8 +13,9 @@
 	import type { PatchValue } from '$lib/utils/filters';
 	import { patchFilters } from '$lib/utils/filters';
 	import { bookingsFiltersSchema } from './schemas/filters.schema';
-	import { BOOKING_STATUS_OPTIONS } from '$lib/labels/bookings';
+	import { BOOKING_STATUS_OPTIONS, PAYMENT_METHOD_OPTIONS } from '$lib/labels/bookings';
 	import { BOOKING_ROUTES } from '$lib/config/routes/backoffice/bookings';
+	import { buildUrlWithFilters } from '$lib/utils/url';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
 	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
@@ -80,6 +81,8 @@
 				return 'status-error';
 			case 'CANCELLED':
 				return 'status-neutral';
+			case 'EXPIRED':
+				return 'status-neutral';
 			default:
 				return 'status-neutral';
 		}
@@ -126,6 +129,9 @@
 					<span>{m.bookings_columnLegibleId()}</span>
 				</th>
 				<th>
+					<span>{m.bookings_columnContact()}</span>
+				</th>
+				<th>
 					<TableSortableHeader
 						title={m.bookings_columnDate()}
 						field="ACTIVITY_DATETIME"
@@ -144,6 +150,9 @@
 					<span>{m.bookings_columnPrice()}</span>
 				</th>
 				<th>
+					<span>{m.bookings_columnPayment()}</span>
+				</th>
+				<th>
 					<span>{m.bookings_columnStatus()}</span>
 				</th>
 				<th class="w-0">
@@ -154,7 +163,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="6" class="text-center">
+					<td colspan="8" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.bookings_emptyState()}</p>
 						</div>
@@ -164,9 +173,20 @@
 				{#each items as item (item.id)}
 					<tr>
 						<td>
-							<a href={BOOKING_ROUTES.detail(item.id)} class="link">
+							<a
+								href={buildUrlWithFilters(BOOKING_ROUTES.detail(item.id), page.url.searchParams)}
+								class="link"
+							>
 								{item.legibleId}
 							</a>
+						</td>
+						<td>
+							{#if item.orderContactName}
+								<p class="text-sm">{item.orderContactName}</p>
+							{/if}
+							{#if item.orderContactEmail}
+								<p class="text-base-content/50 text-xs">{item.orderContactEmail}</p>
+							{/if}
 						</td>
 						<td>
 							<p>{formatDate(item.date)}</p>
@@ -177,6 +197,21 @@
 						</td>
 						<td>
 							{formatPrice(item.subtotalPrice)}
+						</td>
+						<td>
+							{#if item.payment}
+								<p class="text-sm">
+									{PAYMENT_METHOD_OPTIONS.find((o) => o.id === item.payment?.paymentMethod)?.name ??
+										item.payment.paymentMethod}
+								</p>
+								{#if item.payment.cardBrand && item.payment.last4}
+									<p class="text-base-content/50 text-xs">
+										{item.payment.cardBrand} •••• {item.payment.last4}
+									</p>
+								{/if}
+							{:else}
+								<span class="text-base-content/30 text-xs">{m.bookings_labelNoPayment()}</span>
+							{/if}
 						</td>
 						<td>
 							<div
@@ -193,7 +228,12 @@
 								<div tabindex="0" role="button" class="text-bold btn btn-sm m-1">⋮</div>
 								<ul tabindex="-1" class="dropdown-content menu">
 									<li>
-										<a href={BOOKING_ROUTES.detail(item.id)}>
+										<a
+											href={buildUrlWithFilters(
+												BOOKING_ROUTES.detail(item.id),
+												page.url.searchParams
+											)}
+										>
 											{m.bookings_viewDetail()}
 										</a>
 									</li>
@@ -210,6 +250,11 @@
 <!-- Pagination -->
 {#if data.pagination}
 	<div class="mt-4">
-		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
+		<Pagination
+			count={total}
+			currentPage={pagination?.page ?? 1}
+			perPage={pageSize}
+			onPageChange={handlePageChange}
+		/>
 	</div>
 {/if}
