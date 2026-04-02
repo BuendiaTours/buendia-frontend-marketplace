@@ -4,7 +4,6 @@ import {
 	ActivityGuideKind,
 	ActivityKind,
 	ActivityPetsAllowed,
-	ActivityStatus,
 	ActivityTransportKind,
 	ActivityTransportLocation
 } from '$core/activities/enums';
@@ -16,7 +15,6 @@ export const activityEditSchema = z.object({
 	slug: z.string().min(3).max(200),
 	supplierId: z.string().min(1),
 	codeRef: z.string().max(100).default(''),
-	status: z.nativeEnum(ActivityStatus),
 	kind: z.nativeEnum(ActivityKind),
 	dateMode: z.nativeEnum(ActivityDateMode),
 	guideKind: z.nativeEnum(ActivityGuideKind),

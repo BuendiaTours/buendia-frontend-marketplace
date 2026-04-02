@@ -7,7 +7,6 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageProps } from './$types';
 	import {
-		ACTIVITY_STATUS_OPTIONS,
 		ACTIVITY_KIND_OPTIONS,
 		ACTIVITY_GUIDE_KIND_OPTIONS,
 		ACTIVITY_DATE_MODE_OPTIONS,
@@ -61,7 +60,13 @@
 	});
 </script>
 
-<ActivityFormActions mode="edit" activityId={data.activity.id} {formId} submitting={$submitting} />
+<ActivityFormActions
+	mode="edit"
+	activityId={data.activity.id}
+	activityStatus={data.activity.status}
+	{formId}
+	submitting={$submitting}
+/>
 
 <form id={formId} method="POST" action="?/update" use:enhance class="space-y-4">
 	<FormAccordion name="form-activity-data" open>
@@ -185,16 +190,6 @@
 			<p class="text-xs">{m.activities_sectionConfigDescription()}</p>
 		{/snippet}
 		{#snippet content()}
-			<FormSelect
-				id="status"
-				label={m.activities_labelStatus()}
-				bind:value={$form.status}
-				error={$errors.status}
-				options={ACTIVITY_STATUS_OPTIONS}
-				placeholder={m.activities_placeholderStatus()}
-				wrapperClass="md:col-span-4"
-			/>
-
 			<FormSelect
 				id="kind"
 				label={m.activities_labelKind()}

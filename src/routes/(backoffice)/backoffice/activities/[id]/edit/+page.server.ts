@@ -6,7 +6,9 @@ import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { CATEGORY_REQUEST } from '$core/categories/requests';
 import { TAG_REQUEST, TAG_RELATIONSHIP_REQUEST } from '$core/tags/requests';
 import { CategoryStatus } from '$core/categories/enums';
+import { ActivityStatus } from '$core/activities/enums';
 import { TagRelationshipKind } from '$core/tags/enums';
+import { ApiError } from '$core/_shared/errors';
 import { activityEditSchema } from '../../schemas/activity-edit.schema';
 import {
 	ACTIVITY_RESTRICTION_OPTIONS,
@@ -17,6 +19,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import { createUpdateAction } from '$lib/server/backoffice/updateAction';
 import { createDeleteAction } from '$lib/server/backoffice/deleteAction';
+import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, parent }) => {
@@ -51,7 +55,6 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 			slug: activity.slug ?? '',
 			supplierId: activity.supplier?.id ?? '',
 			codeRef: activity.codeRef ?? '',
-			status: activity.status,
 			kind: activity.kind,
 			dateMode: activity.dateMode,
 			guideKind: activity.guideKind,
@@ -99,5 +102,41 @@ export const actions: Actions = {
 	delete: createDeleteAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		deleteFn: ACTIVITY_REQUEST.delete
-	})
+	}),
+	changeStatus: async ({ fetch, params, request, cookies }) => {
+		const formData = await request.formData();
+		const newStatus = formData.get('status') as string;
+
+		const allowed = [ActivityStatus.PUBLISHED, ActivityStatus.UNPUBLISHED];
+		if (!allowed.includes(newStatus as ActivityStatus)) {
+			setFlashMessage(cookies, {
+				type: 'error',
+				message: 'Transición de estado no permitida.',
+				code: 'status.error'
+			});
+			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
+		}
+
+		try {
+			await ACTIVITY_REQUEST.update(fetch, params.id, { status: newStatus as ActivityStatus });
+			setFlashMessage(cookies, {
+				type: 'success',
+				message:
+					newStatus === ActivityStatus.PUBLISHED
+						? 'Actividad publicada correctamente.'
+						: 'Actividad despublicada correctamente.',
+				code: 'status.success'
+			});
+			await new Promise((resolve) => setTimeout(resolve, 500));
+			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
+		} catch (err) {
+			if (err && typeof err === 'object' && 'status' in err && err.status === 303) throw err;
+			const errorMessage =
+				err instanceof ApiError
+					? `Error al cambiar el estado (código ${err.status}).`
+					: 'Error al cambiar el estado de la actividad.';
+			setFlashMessage(cookies, { type: 'error', message: errorMessage, code: 'status.error' });
+			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
+		}
+	}
 };
