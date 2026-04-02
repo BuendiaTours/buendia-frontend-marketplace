@@ -119,6 +119,8 @@
 		supplierOptionCode.trim() !== '' && priority !== '' && !submitting
 	);
 
+	const usedTicketIds = $derived(new Set(Object.values(pricingMappings).filter(Boolean)));
+
 	const canFinish = $derived(
 		currentRate !== undefined &&
 			ratePricingCategories.length > 0 &&
@@ -369,7 +371,9 @@
 					>
 						<option value="" disabled>{m.activities_integrationPricingPlaceholder()}</option>
 						{#each tickets as ticket (ticket.id)}
-							<option value={ticket.id}
+							<option
+								value={ticket.id}
+								disabled={usedTicketIds.has(ticket.id) && pricingMappings[pc.id] !== ticket.id}
 								>{#if 'group' in ticket}{INDIVIDUAL_TICKET_GROUP_OPTIONS.find(
 										(o) => o.id === ticket.group
 									)?.name ?? ticket.group}{:else}{ticket.id.slice(0, 8)}{/if}</option

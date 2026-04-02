@@ -93,6 +93,8 @@
 		supplierOptionCode.trim() !== '' && priority !== '' && tenant.trim() !== '' && !submitting
 	);
 
+	const usedTicketIds = $derived(new Set(Object.values(ticketMappings).filter(Boolean)));
+
 	const canFinish = $derived(
 		turitopTickets.filter((t) => !t.isAddon).length > 0 &&
 			turitopTickets.filter((t) => !t.isAddon).every((t) => mappedTickets.has(t.turitopId)) &&
@@ -301,7 +303,9 @@
 				>
 					<option value="" disabled>{m.activities_integrationPricingPlaceholder()}</option>
 					{#each tickets as ticket (ticket.id)}
-						<option value={ticket.id}
+						<option
+							value={ticket.id}
+							disabled={usedTicketIds.has(ticket.id) && ticketMappings[tt.turitopId] !== ticket.id}
 							>{#if 'group' in ticket}{INDIVIDUAL_TICKET_GROUP_OPTIONS.find(
 									(o) => o.id === ticket.group
 								)?.name ?? ticket.group}{:else}{ticket.id.slice(0, 8)}{/if}</option
