@@ -315,7 +315,12 @@
 <!-- Pagination -->
 {#if data.pagination}
 	<div class="mt-4">
-		<Pagination count={total} perPage={pageSize} onPageChange={handlePageChange} />
+		<Pagination
+			count={total}
+			currentPage={pagination?.page ?? 1}
+			perPage={pageSize}
+			onPageChange={handlePageChange}
+		/>
 	</div>
 {/if}
 
