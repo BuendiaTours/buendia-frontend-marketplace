@@ -8,7 +8,6 @@ import {
 	OptionLanguage,
 	OptionPrivacy,
 	OptionSkipTheLineType,
-	OptionStatus,
 	OptionWheelchair
 } from '$core/activity-options/enums';
 
@@ -17,7 +16,6 @@ export const activityOptionFormSchema = z.object({
 	title: z.string().min(2).max(200),
 	description: z.string().max(2000).optional().default(''),
 	language: z.nativeEnum(OptionLanguage),
-	status: z.nativeEnum(OptionStatus),
 	durationQuantity: z.number().min(1).default(1),
 	durationUnit: z.nativeEnum(OptionDurationUnit).default(OptionDurationUnit.HOURS),
 	privacy: z.nativeEnum(OptionPrivacy),

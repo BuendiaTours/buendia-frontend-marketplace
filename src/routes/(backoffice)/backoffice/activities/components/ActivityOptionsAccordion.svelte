@@ -9,6 +9,7 @@
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 	import type { ActivityOption } from '$core/activity-options/types';
+	import { OptionStatus } from '$core/activity-options/enums';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import {
 		OPTION_BOOKING_SYSTEM_OPTIONS,
@@ -69,8 +70,6 @@
 
 	function getOptionTags(option: ActivityOption): string[] {
 		const tags: string[] = [];
-		const status = OPTION_STATUS_OPTIONS.find((o) => o.id === option.status);
-		if (status) tags.push(status.name);
 		const privacy = OPTION_PRIVACY_OPTIONS.find((o) => o.id === option.privacy);
 		if (privacy) tags.push(privacy.name);
 		const booking = OPTION_BOOKING_SYSTEM_OPTIONS.find((o) => o.id === option.bookingSystem);
@@ -81,6 +80,32 @@
 			tags.push(`${option.duration.quantity} ${unit}`);
 		}
 		return tags;
+	}
+
+	function getStatusBorderClass(status: string): string {
+		switch (status) {
+			case OptionStatus.PUBLISHED:
+				return 'border-success';
+			case OptionStatus.DRAFT:
+				return 'border-warning';
+			case OptionStatus.UNPUBLISHED:
+				return 'border-neutral';
+			default:
+				return 'border-base-300';
+		}
+	}
+
+	function getStatusBadgeClass(status: string): string {
+		switch (status) {
+			case OptionStatus.PUBLISHED:
+				return 'badge-success';
+			case OptionStatus.DRAFT:
+				return 'badge-warning';
+			case OptionStatus.UNPUBLISHED:
+				return 'badge-neutral';
+			default:
+				return 'badge-ghost';
+		}
 	}
 </script>
 
@@ -110,7 +135,9 @@
 				<div class="space-y-2">
 					{#each options as option (option.id)}
 						<div
-							class="border-neutral bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
+							class="{getStatusBorderClass(
+								option.status
+							)} bg-base-200/50 flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5"
 						>
 							<Tuning class="text-base-content/40 size-5 shrink-0" />
 							<div class="min-w-0 flex-1">
@@ -124,6 +151,9 @@
 									{getOptionTags(option).join(' · ')}
 								</p>
 							</div>
+							<span class="badge badge-sm {getStatusBadgeClass(option.status)}">
+								{OPTION_STATUS_OPTIONS.find((o) => o.id === option.status)?.name ?? option.status}
+							</span>
 							<button
 								type="button"
 								class="btn btn-ghost btn-xs text-error hover:bg-error/10"

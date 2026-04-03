@@ -13,7 +13,6 @@
 		OPTION_LANGUAGE_OPTIONS,
 		OPTION_PRIVACY_OPTIONS,
 		OPTION_SKIP_THE_LINE_OPTIONS,
-		OPTION_STATUS_OPTIONS,
 		OPTION_WHEELCHAIR_OPTIONS
 	} from '$lib/labels/activityOptions';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
@@ -89,18 +88,6 @@
 				placeholder={m.activities_optionPlaceholderLanguage()}
 				wrapperClass="md:col-span-4"
 			/>
-
-			<FormSelect
-				id="status"
-				label={m.activities_optionLabelStatus()}
-				bind:value={$form.status}
-				error={$errors.status}
-				options={OPTION_STATUS_OPTIONS}
-				placeholder={m.activities_optionPlaceholderStatus()}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<div class="md:col-span-4"></div>
 
 			<FormInputText
 				id="durationQuantity"

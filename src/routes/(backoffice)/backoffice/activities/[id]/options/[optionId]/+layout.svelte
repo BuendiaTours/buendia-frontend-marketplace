@@ -6,9 +6,13 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
 	import { setContext } from 'svelte';
 	import type { LayoutProps } from './$types';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
+	import { OptionStatus } from '$core/activity-options/enums';
+	import { OPTION_STATUS_OPTIONS } from '$lib/labels/activityOptions';
+	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { Database, LinkRound, MapPoint, Ticket } from '$lib/icons/Linear';
 
 	let { data, children }: LayoutProps = $props();
@@ -22,6 +26,31 @@
 			: data.option.ticketKind === 'GROUP'
 				? (data.option.groupTickets?.length ?? 0)
 				: 0
+	);
+
+	const optionStatus = $derived(data.option.status as OptionStatus);
+	const statusLabel = $derived(
+		OPTION_STATUS_OPTIONS.find((o) => o.id === optionStatus)?.name ?? optionStatus
+	);
+	const statusBadgeClass = $derived.by(() => {
+		switch (optionStatus) {
+			case OptionStatus.PUBLISHED:
+				return 'badge-success';
+			case OptionStatus.DRAFT:
+				return 'badge-warning';
+			case OptionStatus.UNPUBLISHED:
+				return 'badge-neutral';
+			default:
+				return 'badge-ghost';
+		}
+	});
+	const canPublish = $derived(
+		optionStatus === OptionStatus.DRAFT || optionStatus === OptionStatus.UNPUBLISHED
+	);
+	const canUnpublish = $derived(optionStatus === OptionStatus.PUBLISHED);
+	const nextStatus = $derived(canPublish ? OptionStatus.PUBLISHED : OptionStatus.UNPUBLISHED);
+	const changeStatusAction = $derived(
+		`${ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id)}?/changeStatus`
 	);
 
 	setContext('updatePickupCount', (count: number) => {
@@ -67,10 +96,45 @@
 	<title>{m.activities_optionEditPageTitle()} - Backoffice</title>
 </svelte:head>
 
-<div class="mb-4">
+<div class="mb-4 flex items-center gap-3">
 	<a href={ACTIVITY_ROUTES.options(data.activity.id)} class="btn btn-ghost btn-sm">
 		{m.activities_optionBackToOptions()}
 	</a>
+	<span class="badge badge-lg {statusBadgeClass}">{statusLabel}</span>
+	{#if canPublish || canUnpublish}
+		<form method="POST" action={changeStatusAction} class="ml-auto" use:enhance>
+			<input type="hidden" name="status" value={nextStatus} />
+			{#if canPublish}
+				<button
+					type="submit"
+					class="btn btn-soft btn-success"
+					use:confirmAction={{
+						title: m.activities_optionConfirmPublishTitle(),
+						message: m.activities_optionConfirmPublishMessage(),
+						confirmText: m.activities_optionPublishButton(),
+						cancelText: m.common_cancel(),
+						danger: false
+					}}
+				>
+					{m.activities_optionPublishButton()}
+				</button>
+			{:else}
+				<button
+					type="submit"
+					class="btn btn-soft btn-warning"
+					use:confirmAction={{
+						title: m.activities_optionConfirmUnpublishTitle(),
+						message: m.activities_optionConfirmUnpublishMessage(),
+						confirmText: m.activities_optionUnpublishButton(),
+						cancelText: m.common_cancel(),
+						danger: true
+					}}
+				>
+					{m.activities_optionUnpublishButton()}
+				</button>
+			{/if}
+		</form>
+	{/if}
 </div>
 
 <nav class="flex items-end" aria-label="Option sections">
