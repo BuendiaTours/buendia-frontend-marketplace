@@ -289,3 +289,4 @@ Never use raw `fetch()` with manual URL construction in query files. Always go t
 - `docs/api.md` — API client system guide
 - `docs/backoffice-crud-guide.md` — Step-by-step CRUD section guide
 - `docs/i18n-paraglide.md` — i18n setup
+- `.claude/docs/hexagonal-architecture.md` — Hexagonal architecture review guide (layers, checklists, violations)

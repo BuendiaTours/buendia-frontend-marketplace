@@ -1,0 +1,10 @@
+{
+	"skills": {
+		"svelte-code-writer": {
+			"enabled": true
+		},
+		"svelte5-best-practices": {
+			"enabled": true
+		}
+	}
+}
