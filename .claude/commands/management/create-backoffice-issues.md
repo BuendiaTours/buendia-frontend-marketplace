@@ -1,8 +1,11 @@
-# Workflow: Crear Issues Frontend desde Especificacion
+# Workflow: Crear Issues de Backoffice desde Especificacion
 
 ## Descripcion
 
-Recibe una especificacion funcional (epic de Jira, descripcion libre, o referencia a un documento), la analiza desde la perspectiva frontend de este proyecto SvelteKit, la descompone en issues tecnicos de GitHub y los sube al repositorio. Produce un issue padre (epic tecnico) con subtareas vinculadas.
+Recibe una especificacion funcional (epic de Jira, descripcion libre, o referencia a un documento), la analiza desde la perspectiva del **backoffice** (panel admin con CRUD, filtros, formularios, workflows), la descompone en issues tecnicos de GitHub y los sube al repositorio. Produce un issue padre (epic tecnico) con subtareas vinculadas.
+
+**Dominio**: Backoffice — admin CRUD panel (DaisyUI, Superforms, URL-driven filters).
+**No usar para**: componentes de marketplace/PLP/PDP — usar `/management/create-marketplace-issues` en su lugar.
 
 ## Contexto del proyecto
 
