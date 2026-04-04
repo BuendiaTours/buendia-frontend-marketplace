@@ -7,6 +7,9 @@
 	import KpiCard from './components/KpiCard.svelte';
 	import RevenueChart from './components/RevenueChart.svelte';
 	import BookingsChart from './components/BookingsChart.svelte';
+	import SupplierSummaryCards from './components/SupplierSummaryCards.svelte';
+	import TopSuppliersTable from './components/TopSuppliersTable.svelte';
+	import TopActivitiesTable from './components/TopActivitiesTable.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -14,6 +17,9 @@
 	const filters = $derived(data.filters);
 	const revenueTimeSeries = $derived(data.revenueTimeSeries);
 	const bookingsTimeSeries = $derived(data.bookingsTimeSeries);
+	const topSuppliers = $derived(data.topSuppliers);
+	const suppliersSummary = $derived(data.suppliersSummary);
+	const topActivities = $derived(data.topActivities);
 </script>
 
 <svelte:head>
@@ -78,4 +84,15 @@
 <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
 	<RevenueChart data={revenueTimeSeries} />
 	<BookingsChart data={bookingsTimeSeries} />
+</div>
+
+<!-- Supplier Summary -->
+<div class="mt-6">
+	<SupplierSummaryCards summary={suppliersSummary} />
+</div>
+
+<!-- Ranking Tables -->
+<div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+	<TopSuppliersTable suppliers={topSuppliers} />
+	<TopActivitiesTable activities={topActivities} />
 </div>
