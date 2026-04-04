@@ -86,6 +86,14 @@
 					</a>
 				</li>
 				<li>
+					<a
+						href={ROUTES.backoffice.analytics.dashboard}
+						class:menu-active={isActive(ROUTES.backoffice.analytics.dashboard)}
+					>
+						{m.analytics_navLabel()}
+					</a>
+				</li>
+				<li>
 					<details>
 						<summary class:menu-active={isResourcesActive}>{m.backoffice_navResources()}</summary>
 						<ul>
@@ -209,6 +217,14 @@
 					class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
 				>
 					{m.bookings_navLabel()}
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.analytics.dashboard}
+					class:menu-active={isActive(ROUTES.backoffice.analytics.dashboard)}
+				>
+					{m.analytics_navLabel()}
 				</a>
 			</li>
 			<li class="relative">
