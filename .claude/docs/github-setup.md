@@ -32,7 +32,7 @@
 
 ### Context
 
-`context: activities` · `context: activity-options` · `context: attractions` · `context: bookings` · `context: categories` · `context: content-blocks` · `context: faqs` · `context: locations` · `context: multimedia` · `context: payments` · `context: pickup-points` · `context: suppliers` · `context: tags` · `context: users`
+`context: activities` · `context: activity-options` · `context: analytics` · `context: attractions` · `context: bookings` · `context: categories` · `context: content-blocks` · `context: faqs` · `context: locations` · `context: multimedia` · `context: payments` · `context: pickup-points` · `context: suppliers` · `context: tags` · `context: users`
 
 ### Priority
 
