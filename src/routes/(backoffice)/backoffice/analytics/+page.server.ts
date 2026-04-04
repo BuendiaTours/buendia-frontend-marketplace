@@ -6,7 +6,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { analyticsFiltersSchema } from './schemas/filters.schema';
 import { ANALYTICS_REQUEST } from '$core/analytics/requests';
-import { AnalyticsGranularity } from '$core/analytics/enums';
+import { AnalyticsGranularity, SupplierSort, ActivitySort, SortOrder } from '$core/analytics/enums';
 import { ApiError } from '$core/_shared/errors';
 import { parseFilters } from '$lib/utils/filters';
 import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
@@ -40,16 +40,32 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const [kpis, revenueTimeSeries, bookingsTimeSeries] = await Promise.all([
-			ANALYTICS_REQUEST.getKpis(fetch, apiFilters),
-			ANALYTICS_REQUEST.getRevenueTimeSeries(fetch, apiFilters),
-			ANALYTICS_REQUEST.getBookingsTimeSeries(fetch, apiFilters)
-		]);
+		const [kpis, revenueTimeSeries, bookingsTimeSeries, topSuppliers, topActivities] =
+			await Promise.all([
+				ANALYTICS_REQUEST.getKpis(fetch, apiFilters),
+				ANALYTICS_REQUEST.getRevenueTimeSeries(fetch, apiFilters),
+				ANALYTICS_REQUEST.getBookingsTimeSeries(fetch, apiFilters),
+				ANALYTICS_REQUEST.getTopSuppliers(fetch, {
+					...apiFilters,
+					sort: SupplierSort.BOOKINGS,
+					order: SortOrder.DESC,
+					limit: 10
+				}),
+				ANALYTICS_REQUEST.getTopActivities(fetch, {
+					...apiFilters,
+					sort: ActivitySort.BOOKINGS,
+					order: SortOrder.DESC,
+					limit: 10
+				})
+			]);
 
 		return {
 			kpis,
 			revenueTimeSeries: revenueTimeSeries.data,
 			bookingsTimeSeries: bookingsTimeSeries.data,
+			topSuppliers: topSuppliers.data,
+			suppliersSummary: topSuppliers.summary,
+			topActivities: topActivities.data,
 			filters: {
 				...filters,
 				dateFrom,
