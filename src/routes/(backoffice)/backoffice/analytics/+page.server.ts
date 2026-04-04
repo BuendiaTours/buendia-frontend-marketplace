@@ -1,0 +1,61 @@
+/**
+ * Server load function for the analytics dashboard page.
+ * Parses URL filters, applies defaults (last 30 days), and fetches KPI data.
+ */
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+import { analyticsFiltersSchema } from './schemas/filters.schema';
+import { ANALYTICS_REQUEST } from '$core/analytics/requests';
+import { AnalyticsGranularity } from '$core/analytics/enums';
+import { ApiError } from '$core/_shared/errors';
+import { parseFilters } from '$lib/utils/filters';
+import { generateBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
+
+function getDefaultDateFrom(): string {
+	const d = new Date();
+	d.setDate(d.getDate() - 30);
+	return d.toISOString().split('T')[0];
+}
+
+function getDefaultDateTo(): string {
+	return new Date().toISOString().split('T')[0];
+}
+
+export const load: PageServerLoad = async ({ fetch, url }) => {
+	const filters = parseFilters(analyticsFiltersSchema, url.searchParams);
+
+	const dateFrom = filters.dateFrom ?? getDefaultDateFrom();
+	const dateTo = filters.dateTo ?? getDefaultDateTo();
+	const granularity = filters.granularity ?? AnalyticsGranularity.WEEK;
+
+	const apiFilters = {
+		dateFrom,
+		dateTo,
+		granularity,
+		activityKind: filters.activityKind,
+		locationId: filters.locationId,
+		comparePrevious: true
+	};
+
+	try {
+		const breadcrumbs = generateBreadcrumbs(url.pathname);
+
+		const kpis = await ANALYTICS_REQUEST.getKpis(fetch, apiFilters);
+
+		return {
+			kpis,
+			filters: {
+				...filters,
+				dateFrom,
+				dateTo,
+				granularity
+			},
+			breadcrumbs
+		};
+	} catch (err) {
+		if (err instanceof ApiError) {
+			throw error(err.status || 500);
+		}
+		throw error(503);
+	}
+};
