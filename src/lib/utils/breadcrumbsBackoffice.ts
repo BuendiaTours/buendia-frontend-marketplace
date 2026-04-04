@@ -17,6 +17,7 @@ const routeLabels: Record<string, string> = {
 	bookings: 'Reservas',
 	multimedia: 'Multimedia',
 	'content-blocks': 'Bloques de contenido',
+	analytics: 'Analytics',
 	users: 'Usuarios',
 	edit: 'Editar',
 	create: 'Crear',
@@ -98,6 +99,7 @@ export function buildBreadcrumbs(
 		bookings: ROUTES.backoffice.bookings.list,
 		multimedia: ROUTES.backoffice.multimedia.list,
 		'content-blocks': ROUTES.backoffice.contentBlocks.list,
+		analytics: ROUTES.backoffice.analytics.dashboard,
 		'api-catalog': ROUTES.backoffice.apiCatalog,
 		components: ROUTES.backoffice.components
 	};

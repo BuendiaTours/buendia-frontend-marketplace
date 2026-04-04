@@ -1,0 +1,75 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+
+	"analytics_navLabel": "Analytics",
+	"analytics_pageTitle": "Dashboard de KPIs",
+	"analytics_breadcrumb": "Analytics",
+
+	"analytics_filter_dateRange": "Rango de fechas",
+	"analytics_filter_granularity": "Granularidad",
+	"analytics_filter_activityKind": "Tipo de actividad",
+	"analytics_filter_activityKindPlaceholder": "Todas",
+	"analytics_filter_activityKindClear": "Limpiar tipo",
+	"analytics_filter_location": "Ubicación",
+	"analytics_filter_locationPlaceholder": "Buscar ubicación...",
+
+	"analytics_preset_7d": "7 días",
+	"analytics_preset_30d": "30 días",
+	"analytics_preset_3m": "3 meses",
+	"analytics_preset_1y": "1 año",
+
+	"analytics_granularity_day": "Día",
+	"analytics_granularity_week": "Semana",
+	"analytics_granularity_month": "Mes",
+	"analytics_granularity_quarter": "Trimestre",
+
+	"analytics_activityKind_paidTour": "Paid Tour",
+	"analytics_activityKind_freeTour": "Free Tour",
+
+	"analytics_kpi_gmv": "GMV",
+	"analytics_kpi_netRevenue": "Ingresos netos",
+	"analytics_kpi_bookings": "Reservas",
+	"analytics_kpi_avgBookingValue": "Ticket medio",
+	"analytics_kpi_travellersPerBooking": "Viajeros / reserva",
+	"analytics_kpi_cancellationRate": "Tasa de cancelación",
+	"analytics_kpi_vsPrevious": "vs periodo anterior",
+
+	"analytics_chart_revenue": "Ingresos",
+	"analytics_chart_bookings": "Reservas",
+	"analytics_chart_gmv": "GMV",
+	"analytics_chart_commission": "Comisión",
+	"analytics_chart_splitApFt": "Dividir AP / FT",
+	"analytics_chart_paidTour": "Paid Tour",
+	"analytics_chart_freeTour": "Free Tour",
+
+	"analytics_table_topSuppliers": "Top Proveedores",
+	"analytics_table_topActivities": "Top Actividades",
+
+	"analytics_supplier_name": "Proveedor",
+	"analytics_supplier_bookings": "Reservas",
+	"analytics_supplier_gmv": "GMV",
+	"analytics_supplier_commission": "Comisión",
+	"analytics_supplier_cancellationRate": "Cancelación",
+
+	"analytics_supplierSort_bookings": "Reservas",
+	"analytics_supplierSort_gmv": "GMV",
+	"analytics_supplierSort_commission": "Comisión",
+
+	"analytics_activity_title": "Actividad",
+	"analytics_activity_supplier": "Proveedor",
+	"analytics_activity_kind": "Tipo",
+	"analytics_activity_bookings": "Reservas",
+	"analytics_activity_gmv": "GMV",
+	"analytics_activity_avgBookingValue": "Ticket medio",
+	"analytics_activity_avgTravellers": "Viajeros/reserva",
+
+	"analytics_activitySort_bookings": "Reservas",
+	"analytics_activitySort_gmv": "GMV",
+	"analytics_activitySort_avgBookingValue": "Ticket medio",
+
+	"analytics_summary_totalSuppliers": "Total proveedores",
+	"analytics_summary_activationRate": "Tasa de activación",
+	"analytics_summary_avgBookingsPerActive": "Media reservas / activo",
+
+	"analytics_noData": "No hay datos para el periodo seleccionado"
+}

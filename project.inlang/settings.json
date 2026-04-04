@@ -23,7 +23,8 @@
 			"./messages/{locale}/bookings.json",
 			"./messages/{locale}/multimedia.json",
 			"./messages/{locale}/contentBlocks.json",
-			"./messages/{locale}/faqs.json"
+			"./messages/{locale}/faqs.json",
+			"./messages/{locale}/analytics.json"
 		]
 	}
 }
