@@ -40,10 +40,16 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
-		const kpis = await ANALYTICS_REQUEST.getKpis(fetch, apiFilters);
+		const [kpis, revenueTimeSeries, bookingsTimeSeries] = await Promise.all([
+			ANALYTICS_REQUEST.getKpis(fetch, apiFilters),
+			ANALYTICS_REQUEST.getRevenueTimeSeries(fetch, apiFilters),
+			ANALYTICS_REQUEST.getBookingsTimeSeries(fetch, apiFilters)
+		]);
 
 		return {
 			kpis,
+			revenueTimeSeries: revenueTimeSeries.data,
+			bookingsTimeSeries: bookingsTimeSeries.data,
 			filters: {
 				...filters,
 				dateFrom,

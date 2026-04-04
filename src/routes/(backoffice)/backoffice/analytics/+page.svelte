@@ -5,11 +5,15 @@
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import AnalyticsFilters from './components/AnalyticsFilters.svelte';
 	import KpiCard from './components/KpiCard.svelte';
+	import RevenueChart from './components/RevenueChart.svelte';
+	import BookingsChart from './components/BookingsChart.svelte';
 
 	let { data }: PageProps = $props();
 
 	const kpis = $derived(data.kpis);
 	const filters = $derived(data.filters);
+	const revenueTimeSeries = $derived(data.revenueTimeSeries);
+	const bookingsTimeSeries = $derived(data.bookingsTimeSeries);
 </script>
 
 <svelte:head>
@@ -68,4 +72,10 @@
 		format="percent"
 		invertColor
 	/>
+</div>
+
+<!-- Time Series Charts -->
+<div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+	<RevenueChart data={revenueTimeSeries} />
+	<BookingsChart data={bookingsTimeSeries} />
 </div>
