@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { Chart, Svg, Area, Axis, Highlight, Line, Tooltip } from 'layerchart';
-	import { scaleBand, scaleTime } from 'd3-scale';
+	import { LineChart, Tooltip, defaultChartPadding } from 'layerchart';
 	import type { RevenueTimeSeriesPoint } from '$core/analytics/types';
 
 	type Props = {
@@ -21,6 +20,18 @@
 			gmvAPEur: d.gmvAP / 100,
 			gmvFTEur: d.gmvFT / 100
 		}))
+	);
+
+	const series = $derived(
+		showSplit
+			? [
+					{ key: 'gmvAPEur', value: 'gmvAPEur', color: 'var(--color-primary)' },
+					{ key: 'gmvFTEur', value: 'gmvFTEur', color: 'var(--color-secondary)' }
+				]
+			: [
+					{ key: 'gmvEur', value: 'gmvEur', color: 'var(--color-primary)' },
+					{ key: 'commissionEur', value: 'commissionEur', color: 'var(--color-success)' }
+				]
 	);
 
 	function formatCurrency(val: number): string {
@@ -47,54 +58,34 @@
 
 	{#if parsedData.length > 0}
 		<div class="h-64">
-			<Chart
+			<LineChart
 				data={parsedData}
 				x="date"
-				xScale={scaleTime()}
-				y={showSplit ? ['gmvAPEur', 'gmvFTEur'] : 'gmvEur'}
-				yDomain={[0, null]}
-				yNice
-				padding={{ left: 60, bottom: 24, right: 8, top: 8 }}
-				tooltip={{ mode: 'bisect-x' }}
+				y={showSplit ? 'gmvAPEur' : 'gmvEur'}
+				{series}
+				padding={defaultChartPadding({ right: 10 })}
 			>
-				<Svg>
-					<Axis placement="left" format={(v) => formatCurrency(v)} />
-					<Axis placement="bottom" format={(v) => formatDate(v)} />
-					{#if showSplit}
-						<Area y="gmvAPEur" class="fill-primary/20" />
-						<Line y="gmvAPEur" class="stroke-primary stroke-2" />
-						<Area y="gmvFTEur" class="fill-secondary/20" />
-						<Line y="gmvFTEur" class="stroke-secondary stroke-2" />
-					{:else}
-						<Area y="gmvEur" class="fill-primary/20" />
-						<Line y="gmvEur" class="stroke-primary stroke-2" />
-						<Area y="commissionEur" class="fill-success/20" />
-						<Line y="commissionEur" class="stroke-success stroke-2" />
-					{/if}
-					<Highlight area />
-				</Svg>
-				<Tooltip.Root let:data>
-					<Tooltip.Header>
-						{formatDate(data.date)}
-					</Tooltip.Header>
-					{#if showSplit}
-						<Tooltip.Item
-							label={m.analytics_chart_paidTour()}
-							value={formatCurrency(data.gmvAPEur)}
-						/>
-						<Tooltip.Item
-							label={m.analytics_chart_freeTour()}
-							value={formatCurrency(data.gmvFTEur)}
-						/>
-					{:else}
-						<Tooltip.Item label={m.analytics_chart_gmv()} value={formatCurrency(data.gmvEur)} />
-						<Tooltip.Item
-							label={m.analytics_chart_commission()}
-							value={formatCurrency(data.commissionEur)}
-						/>
-					{/if}
-				</Tooltip.Root>
-			</Chart>
+				{#snippet tooltip({ context })}
+					<Tooltip.Root
+						x="data"
+						y={context.height}
+						anchor="top"
+						variant="none"
+						class="bg-base-100 border-base-content/10 rounded border px-2 py-1 text-xs shadow"
+					>
+						{#snippet children({ data: d })}
+							<div class="font-medium">{formatDate(d.date)}</div>
+							{#if showSplit}
+								<div>{m.analytics_chart_paidTour()}: {formatCurrency(d.gmvAPEur)}</div>
+								<div>{m.analytics_chart_freeTour()}: {formatCurrency(d.gmvFTEur)}</div>
+							{:else}
+								<div>{m.analytics_chart_gmv()}: {formatCurrency(d.gmvEur)}</div>
+								<div>{m.analytics_chart_commission()}: {formatCurrency(d.commissionEur)}</div>
+							{/if}
+						{/snippet}
+					</Tooltip.Root>
+				{/snippet}
+			</LineChart>
 		</div>
 	{:else}
 		<p class="text-base-content/40 py-8 text-center text-sm">{m.analytics_noData()}</p>

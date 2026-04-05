@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { Chart, Svg, Bars, Axis, Highlight, Tooltip } from 'layerchart';
-	import { scaleBand } from 'd3-scale';
+	import { BarChart, Tooltip, defaultChartPadding } from 'layerchart';
 	import type { BookingsTimeSeriesPoint } from '$core/analytics/types';
 
 	type Props = {
@@ -19,9 +18,14 @@
 		}))
 	);
 
-	function formatDate(date: string): string {
-		return new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
-	}
+	const series = $derived(
+		showSplit
+			? [
+					{ key: 'ap', value: 'ap', color: 'var(--color-primary)' },
+					{ key: 'ft', value: 'ft', color: 'var(--color-secondary)' }
+				]
+			: undefined
+	);
 </script>
 
 <div class="card bg-base-100 border-base-content/10 border p-4">
@@ -35,39 +39,33 @@
 
 	{#if parsedData.length > 0}
 		<div class="h-64">
-			<Chart
+			<BarChart
 				data={parsedData}
 				x="label"
-				xScale={scaleBand().padding(0.2)}
-				y={showSplit ? ['ap', 'ft'] : 'total'}
-				yDomain={[0, null]}
-				yNice
-				padding={{ left: 40, bottom: 24, right: 8, top: 8 }}
-				tooltip={{ mode: 'band' }}
+				y={showSplit ? 'ap' : 'total'}
+				{series}
+				padding={defaultChartPadding({ right: 10 })}
 			>
-				<Svg>
-					<Axis placement="left" />
-					<Axis placement="bottom" />
-					{#if showSplit}
-						<Bars y="ap" class="fill-primary" radius={2} />
-						<Bars y="ft" class="fill-secondary" offset={4} radius={2} />
-					{:else}
-						<Bars y="total" class="fill-primary" radius={2} />
-					{/if}
-					<Highlight area />
-				</Svg>
-				<Tooltip.Root let:data>
-					<Tooltip.Header>
-						{data.label}
-					</Tooltip.Header>
-					{#if showSplit}
-						<Tooltip.Item label={m.analytics_chart_paidTour()} value={String(data.ap)} />
-						<Tooltip.Item label={m.analytics_chart_freeTour()} value={String(data.ft)} />
-					{:else}
-						<Tooltip.Item label="Total" value={String(data.total)} />
-					{/if}
-				</Tooltip.Root>
-			</Chart>
+				{#snippet tooltip({ context })}
+					<Tooltip.Root
+						x="data"
+						y={context.height}
+						anchor="top"
+						variant="none"
+						class="bg-base-100 border-base-content/10 rounded border px-2 py-1 text-xs shadow"
+					>
+						{#snippet children({ data: d })}
+							<div class="font-medium">{d.label}</div>
+							{#if showSplit}
+								<div>{m.analytics_chart_paidTour()}: {d.ap}</div>
+								<div>{m.analytics_chart_freeTour()}: {d.ft}</div>
+							{:else}
+								<div>Total: {d.total}</div>
+							{/if}
+						{/snippet}
+					</Tooltip.Root>
+				{/snippet}
+			</BarChart>
 		</div>
 	{:else}
 		<p class="text-base-content/40 py-8 text-center text-sm">{m.analytics_noData()}</p>

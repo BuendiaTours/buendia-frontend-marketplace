@@ -9,7 +9,7 @@
  * happens in the presentation layer, not here.
  */
 
-import type { AnalyticsGranularity, ActivitySort, SortOrder, SupplierSort } from './enums';
+import type { AnalyticsGranularity, AnalyticsSortOption, SortOrder } from './enums';
 
 // ── KPI Cards ──────────────────────────────────
 
@@ -27,7 +27,7 @@ export type KpiCardsResponse = {
 	netRevenue: KpiCardMetric;
 	bookings: KpiCardMetric;
 	avgBookingValue: KpiCardMetric;
-	travellersPerBooking: KpiCardMetric;
+	avgTravellers: KpiCardMetric;
 	cancellationRate: KpiCardMetric;
 };
 
@@ -107,6 +107,41 @@ export type TopActivitiesResponse = {
 	data: TopActivityItem[];
 };
 
+// ── Top Attractions ───────────────────────────
+
+/** An attraction entry in the top-attractions ranking. */
+export type TopAttractionItem = {
+	attractionId: string;
+	attractionName: string;
+	bookings: number;
+	gmv: number;
+	commission: number;
+	avgBookingValue: number;
+};
+
+/** Response from GET /analytics/attractions. */
+export type TopAttractionsResponse = {
+	data: TopAttractionItem[];
+};
+
+// ── Top Destinations ──────────────────────────
+
+/** A destination entry in the top-destinations ranking. */
+export type TopDestinationItem = {
+	locationId: string;
+	locationName: string;
+	locationKind: string;
+	bookings: number;
+	gmv: number;
+	commission: number;
+	avgBookingValue: number;
+};
+
+/** Response from GET /analytics/destinations. */
+export type TopDestinationsResponse = {
+	data: TopDestinationItem[];
+};
+
 // ── Filters (query params) ─────────────────────
 
 /** Query parameters shared across all analytics endpoints. */
@@ -117,7 +152,7 @@ export type AnalyticsFilters = {
 	activityKind?: 'PAID_TOUR' | 'FREE_TOUR';
 	locationId?: string;
 	comparePrevious?: boolean;
-	sort?: SupplierSort | ActivitySort;
+	sort?: AnalyticsSortOption;
 	order?: SortOrder;
 	limit?: number;
 };
