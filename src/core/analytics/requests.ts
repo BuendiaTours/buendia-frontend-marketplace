@@ -12,6 +12,8 @@ import type {
 	KpiCardsResponse,
 	RevenueTimeSeriesResponse,
 	TopActivitiesResponse,
+	TopAttractionsResponse,
+	TopDestinationsResponse,
 	TopSuppliersResponse
 } from '$core/analytics/types';
 
@@ -74,5 +76,27 @@ export const ANALYTICS_REQUEST = {
 		fetchFn: typeof fetch,
 		filters: AnalyticsFilters
 	): Promise<TopActivitiesResponse> =>
-		getWithParams<TopActivitiesResponse>(fetchFn, `${BASE}/activities`, filters)
+		getWithParams<TopActivitiesResponse>(fetchFn, `${BASE}/activities`, filters),
+
+	/**
+	 * Retrieves top destinations ranking.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param filters - Date range, activity kind, sort, order, and limit.
+	 */
+	getTopDestinations: (
+		fetchFn: typeof fetch,
+		filters: AnalyticsFilters
+	): Promise<TopDestinationsResponse> =>
+		getWithParams<TopDestinationsResponse>(fetchFn, `${BASE}/destinations`, filters),
+
+	/**
+	 * Retrieves top attractions ranking.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param filters - Date range, activity kind, location, sort, order, and limit.
+	 */
+	getTopAttractions: (
+		fetchFn: typeof fetch,
+		filters: AnalyticsFilters
+	): Promise<TopAttractionsResponse> =>
+		getWithParams<TopAttractionsResponse>(fetchFn, `${BASE}/attractions`, filters)
 };

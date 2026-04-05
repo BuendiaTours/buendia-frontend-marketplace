@@ -12,18 +12,12 @@ export enum AnalyticsGranularity {
 	QUARTER = 'QUARTER'
 }
 
-/** Sortable attributes for the top-suppliers ranking. */
-export enum SupplierSort {
-	BOOKINGS = 'bookings',
-	GMV = 'gmv',
-	COMMISSION = 'commission'
-}
-
-/** Sortable attributes for the top-activities ranking. */
-export enum ActivitySort {
-	BOOKINGS = 'bookings',
-	GMV = 'gmv',
-	AVG_BOOKING_VALUE = 'avgBookingValue'
+/** Sortable attributes for analytics table endpoints (suppliers, activities). */
+export enum AnalyticsSortOption {
+	BOOKINGS = 'BOOKINGS',
+	GMV = 'GMV',
+	COMMISSION = 'COMMISSION',
+	AVG_BOOKING_VALUE = 'AVG_BOOKING_VALUE'
 }
 
 /** Sort direction for ranking endpoints. */

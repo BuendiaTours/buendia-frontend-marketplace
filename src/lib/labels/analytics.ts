@@ -3,7 +3,7 @@
  * Translations of domain enums for dropdowns, selects, etc.
  */
 
-import { AnalyticsGranularity, SupplierSort, ActivitySort } from '$core/analytics/enums';
+import { AnalyticsGranularity, AnalyticsSortOption } from '$core/analytics/enums';
 import * as m from '$paraglide/messages';
 
 export const GRANULARITY_OPTIONS = [
@@ -19,13 +19,13 @@ export const ACTIVITY_KIND_FILTER_OPTIONS = [
 ];
 
 export const SUPPLIER_SORT_OPTIONS = [
-	{ id: SupplierSort.BOOKINGS, name: m.analytics_supplierSort_bookings() },
-	{ id: SupplierSort.GMV, name: m.analytics_supplierSort_gmv() },
-	{ id: SupplierSort.COMMISSION, name: m.analytics_supplierSort_commission() }
+	{ id: AnalyticsSortOption.BOOKINGS, name: m.analytics_supplierSort_bookings() },
+	{ id: AnalyticsSortOption.GMV, name: m.analytics_supplierSort_gmv() },
+	{ id: AnalyticsSortOption.COMMISSION, name: m.analytics_supplierSort_commission() }
 ];
 
 export const ACTIVITY_SORT_OPTIONS = [
-	{ id: ActivitySort.BOOKINGS, name: m.analytics_activitySort_bookings() },
-	{ id: ActivitySort.GMV, name: m.analytics_activitySort_gmv() },
-	{ id: ActivitySort.AVG_BOOKING_VALUE, name: m.analytics_activitySort_avgBookingValue() }
+	{ id: AnalyticsSortOption.BOOKINGS, name: m.analytics_activitySort_bookings() },
+	{ id: AnalyticsSortOption.GMV, name: m.analytics_activitySort_gmv() },
+	{ id: AnalyticsSortOption.AVG_BOOKING_VALUE, name: m.analytics_activitySort_avgBookingValue() }
 ];

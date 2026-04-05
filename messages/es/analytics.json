@@ -30,7 +30,7 @@
 	"analytics_kpi_netRevenue": "Ingresos netos",
 	"analytics_kpi_bookings": "Reservas",
 	"analytics_kpi_avgBookingValue": "Ticket medio",
-	"analytics_kpi_travellersPerBooking": "Viajeros / reserva",
+	"analytics_kpi_avgTravellers": "Viajeros / reserva",
 	"analytics_kpi_cancellationRate": "Tasa de cancelación",
 	"analytics_kpi_vsPrevious": "vs periodo anterior",
 
@@ -44,6 +44,8 @@
 
 	"analytics_table_topSuppliers": "Top Proveedores",
 	"analytics_table_topActivities": "Top Actividades",
+	"analytics_table_topDestinations": "Top Destinos",
+	"analytics_table_topAttractions": "Top Atracciones",
 
 	"analytics_supplier_name": "Proveedor",
 	"analytics_supplier_bookings": "Reservas",
@@ -67,9 +69,21 @@
 	"analytics_activitySort_gmv": "GMV",
 	"analytics_activitySort_avgBookingValue": "Ticket medio",
 
-	"analytics_summary_totalSuppliers": "Total proveedores",
+	"analytics_summary_totalSuppliers": "Proveedores activos",
 	"analytics_summary_activationRate": "Tasa de activación",
 	"analytics_summary_avgBookingsPerActive": "Media reservas / activo",
+
+	"analytics_destination_name": "Destino",
+	"analytics_destination_kind": "Tipo",
+	"analytics_destination_bookings": "Reservas",
+	"analytics_destination_gmv": "GMV",
+	"analytics_destination_avgBookingValue": "Ticket medio",
+
+	"analytics_attraction_name": "Atracción",
+	"analytics_attraction_bookings": "Reservas",
+	"analytics_attraction_gmv": "GMV",
+	"analytics_attraction_commission": "Comisión",
+	"analytics_attraction_avgBookingValue": "Ticket medio",
 
 	"analytics_noData": "No hay datos para el periodo seleccionado"
 }

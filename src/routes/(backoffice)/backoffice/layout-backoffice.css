@@ -11,6 +11,7 @@
 
 /* Importar Tailwind completo con DaisyUI */
 @import 'tailwindcss';
+@import 'layerchart/daisyui-5.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 

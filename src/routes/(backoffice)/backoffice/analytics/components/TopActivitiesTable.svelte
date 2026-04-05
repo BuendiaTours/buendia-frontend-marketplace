@@ -45,9 +45,7 @@
 									class:badge-primary={activity.activityKind === 'PAID_TOUR'}
 									class:badge-secondary={activity.activityKind === 'FREE_TOUR'}
 								>
-									{activity.activityKind === 'PAID_TOUR'
-										? m.analytics_activityKind_paidTour()
-										: m.analytics_activityKind_freeTour()}
+									{activity.activityKind === 'PAID_TOUR' ? 'AP' : 'FT'}
 								</span>
 							</td>
 							<td class="text-right">{activity.bookings}</td>
