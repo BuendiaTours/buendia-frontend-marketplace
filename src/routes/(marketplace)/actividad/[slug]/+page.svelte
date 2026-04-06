@@ -11,14 +11,7 @@
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
-	import {
-		trackOpinionesTopScroll,
-		trackOpinionesDestacadasScroll,
-		trackOrdenOpiniones,
-		trackMostrarMasOpiniones,
-		trackSaberMasPlan,
-		trackVerMapa
-	} from '$lib/analytics';
+	import { trackClick } from '$lib/analytics';
 
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
@@ -98,12 +91,12 @@
 	async function handleReviewSortChange(value: string) {
 		sortValue = value as typeof sortValue;
 		currentPage = 1;
-		trackOrdenOpiniones(value);
+		trackClick('pdp_click', value, 'opiniones');
 		await loadActivityReviews({ ...(SORT_PARAMS[value] ?? {}), stars: activeStars });
 	}
 
 	async function handleShowMore() {
-		trackMostrarMasOpiniones();
+		trackClick('pdp_click', 'mostrar mas', 'opiniones');
 		await loadActivityReviews(
 			{ ...SORT_PARAMS[sortValue], page: currentPage + 1, stars: activeStars },
 			true
@@ -181,7 +174,7 @@
 					}
 				}}
 				wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
-				onlinkclick={trackSaberMasPlan}
+				onlinkclick={() => trackClick('pdp_click', 'saber mas', 'plan bybuendia')}
 			/>
 
 			<Spacer wrapperClass="mt-8 mb-6" />
@@ -195,7 +188,7 @@
 						onscroll={() => {
 							if (!hasTrackedOpinionesScroll) {
 								hasTrackedOpinionesScroll = true;
-								trackOpinionesDestacadasScroll();
+								trackClick('pdp_click', 'opiniones destacadas scroll', 'opiniones');
 							}
 						}}
 					>
@@ -218,7 +211,8 @@
 					<a
 						href="#reviews"
 						class="p-base mt-4 block cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-						onclick={trackOpinionesTopScroll}>Ver todas las opiniones</a
+						onclick={() => trackClick('pdp_click', 'opiniones top scroll', 'opiniones')}
+						>Ver todas las opiniones</a
 					>
 				</div>
 
@@ -232,7 +226,10 @@
 
 			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 
-			<MapView wrapperClass="mt-8" onclick={trackVerMapa} />
+			<MapView
+				wrapperClass="mt-8"
+				onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
+			/>
 
 			<Spacer />
 

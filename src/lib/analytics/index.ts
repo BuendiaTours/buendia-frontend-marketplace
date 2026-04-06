@@ -8,16 +8,6 @@ export {
 	trackCompleteGallery,
 	trackChangeGallery
 } from './events/gallery';
-export {
-	trackOpinionesTopScroll,
-	trackSaberMasPlan,
-	trackOpinionesDestacadasScroll,
-	trackVerTodoItinerario,
-	trackVerMapa,
-	trackToggleDesplegable,
-	trackVerMas,
-	trackMostrarMasOpiniones,
-	trackOrdenOpiniones
-} from './events/pdp';
+export { trackToggleDesplegable, trackVerMas } from './events/pdp';
 export { trackOpenChat, trackCallChat, trackCtaExit } from './events/chat';
 export { trackClick } from './events/common';

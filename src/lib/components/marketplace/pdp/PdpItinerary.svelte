@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StageItem from '../StageItem.svelte';
 	import { AltArrowDown } from '$lib/icons/Linear';
-	import { trackVerTodoItinerario } from '$lib/analytics';
+	import { trackClick } from '$lib/analytics';
 
 	type Props = {
 		title?: string;
@@ -51,7 +51,7 @@
 			class="mt-4 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
 			onclick={() => {
 				showAll = true;
-				trackVerTodoItinerario();
+				trackClick('pdp_click', 'ver todo el itinerario', 'itinerario');
 			}}
 		>
 			Ver todo el itinerario

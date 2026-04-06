@@ -51,7 +51,7 @@
 		--radius-pill: 999px;
 	}
 
-	* {
+	*:not(.rounded-full) {
 		corner-shape: squircle;
 	}
 }
