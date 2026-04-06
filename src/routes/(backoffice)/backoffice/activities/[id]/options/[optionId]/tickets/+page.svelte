@@ -18,6 +18,8 @@
 		GroupTicketStatus
 	} from '$core/activity-options/enums';
 	import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
+	import { CommissionKind } from '$core/suppliers/enums';
+	import { COMMISSION_KIND_OPTIONS } from '$lib/labels/suppliers';
 	import {
 		INDIVIDUAL_TICKET_STATUS_OPTIONS,
 		INDIVIDUAL_TICKET_GROUP_OPTIONS,
@@ -186,6 +188,7 @@
 		INDIVIDUAL_TICKET_GROUP_OPTIONS.filter((o) => !usedGroups.has(o.id))
 	);
 	let indPrice = $state(0);
+	let indCommissionKind = $state<CommissionKind>(CommissionKind.PERCENTAGE);
 	let indCommission = $state(0);
 	let indStatus = $state<IndividualTicketStatus>(IndividualTicketStatus.ACTIVE);
 	let indFree = $state<IndividualTicketFree>(IndividualTicketFree.NO);
@@ -200,6 +203,7 @@
 		indAgeMin = suggested.min;
 		indAgeMax = suggested.max;
 		indPrice = 0;
+		indCommissionKind = CommissionKind.PERCENTAGE;
 		indCommission = 0;
 		indStatus = IndividualTicketStatus.ACTIVE;
 		indFree = IndividualTicketFree.NO;
@@ -212,11 +216,14 @@
 		try {
 			const id = uuidv4();
 			const priceInCents = indIsFree ? 0 : Math.round(indPrice * 100);
+			const commissionCents = indCommission > 0 ? Math.round(indCommission * 100) : null;
+			const commKind = commissionCents ? indCommissionKind : null;
 			await ACTIVITY_OPTION_REQUEST.addIndividualTicket(fetch, data.option.id, {
 				id,
 				group: indGroup,
 				price: priceInCents,
-				commission: indCommission,
+				commissionKind: commKind ?? undefined,
+				commissionValue: commissionCents ?? undefined,
 				status: indStatus,
 				free: indFree,
 				ticketNeeded: indNeeded,
@@ -229,7 +236,8 @@
 					id,
 					group: indGroup,
 					price: priceInCents,
-					commission: indCommission,
+					commissionKind: commKind,
+					commissionValue: commissionCents,
 					status: indStatus,
 					free: indFree,
 					ticketNeeded: indNeeded,
@@ -275,6 +283,7 @@
 	let grpPersonsMin = $state(1);
 	let grpPersonsMax = $state<number | null>(null);
 	let grpPrice = $state(0);
+	let grpCommissionKind = $state<CommissionKind>(CommissionKind.PERCENTAGE);
 	let grpCommission = $state(0);
 	let grpStatus = $state<GroupTicketStatus>(GroupTicketStatus.ACTIVE);
 
@@ -283,6 +292,7 @@
 		grpPersonsMin = suggested.min;
 		grpPersonsMax = suggested.max;
 		grpPrice = 0;
+		grpCommissionKind = CommissionKind.PERCENTAGE;
 		grpCommission = 0;
 		grpStatus = GroupTicketStatus.ACTIVE;
 	}
@@ -292,10 +302,13 @@
 		try {
 			const id = uuidv4();
 			const priceInCents = Math.round(grpPrice * 100);
+			const grpCommissionCents = grpCommission > 0 ? Math.round(grpCommission * 100) : null;
+			const grpCommKind = grpCommissionCents ? grpCommissionKind : null;
 			await ACTIVITY_OPTION_REQUEST.addGroupTicket(fetch, data.option.id, {
 				id,
 				price: priceInCents,
-				commission: grpCommission,
+				commissionKind: grpCommKind ?? undefined,
+				commissionValue: grpCommissionCents ?? undefined,
 				status: grpStatus,
 				personsRange: { min: grpPersonsMin, max: grpPersonsMax }
 			});
@@ -304,7 +317,8 @@
 				{
 					id,
 					price: priceInCents,
-					commission: grpCommission,
+					commissionKind: grpCommKind,
+					commissionValue: grpCommissionCents,
 					status: grpStatus,
 					personsRange: { min: grpPersonsMin, max: grpPersonsMax }
 				}
@@ -417,9 +431,13 @@
 									· {ticket.free === 'YES'
 										? m.activities_optionTicketFreeLabel()
 										: formatPrice(ticket.price)}
-									· {ticket.commission}% · {INDIVIDUAL_TICKET_STATUS_OPTIONS.find(
-										(o) => o.id === ticket.status
-									)?.name ?? ticket.status}
+									{#if ticket.commissionValue}
+										· {(ticket.commissionValue / 100).toFixed(2)}{ticket.commissionKind === 'FIXED'
+											? ' €'
+											: ' %'}
+									{/if}
+									· {INDIVIDUAL_TICKET_STATUS_OPTIONS.find((o) => o.id === ticket.status)?.name ??
+										ticket.status}
 								</p>
 							</div>
 							<button
@@ -519,17 +537,30 @@
 							</div>
 						</div>
 
-						<div class="grid grid-cols-2 gap-4">
+						<div class="grid grid-cols-3 gap-4">
+							<div class="form-control">
+								<label class="label text-sm" for="indCommissionKind">
+									<span>{m.activities_optionTicketCommissionKindLabel()}</span>
+								</label>
+								<select id="indCommissionKind" class="select w-full" bind:value={indCommissionKind}>
+									{#each COMMISSION_KIND_OPTIONS as opt (opt.id)}
+										<option value={opt.id}>{opt.name}</option>
+									{/each}
+								</select>
+							</div>
 							<div class="form-control">
 								<label class="label text-sm" for="indCommission">
 									<span>{m.activities_optionTicketCommissionLabel()}</span>
+									<span class="text-xs opacity-70">
+										{indCommissionKind === CommissionKind.FIXED ? '€' : '%'}
+									</span>
 								</label>
 								<input
 									id="indCommission"
 									type="number"
 									class="input w-full"
+									step="0.01"
 									min="0"
-									max="100"
 									bind:value={indCommission}
 								/>
 							</div>
@@ -590,9 +621,13 @@
 								<p class="text-base-content/50 mt-0.5 text-xs">
 									{m.activities_optionTicketPersonsRangeLabel()}:
 									{ticket.personsRange.min} – {ticket.personsRange.max ?? '∞'}
-									· {ticket.commission}% · {GROUP_TICKET_STATUS_OPTIONS.find(
-										(o) => o.id === ticket.status
-									)?.name ?? ticket.status}
+									{#if ticket.commissionValue}
+										· {(ticket.commissionValue / 100).toFixed(2)}{ticket.commissionKind === 'FIXED'
+											? ' €'
+											: ' %'}
+									{/if}
+									· {GROUP_TICKET_STATUS_OPTIONS.find((o) => o.id === ticket.status)?.name ??
+										ticket.status}
 								</p>
 							</div>
 							<button
@@ -639,7 +674,7 @@
 							</div>
 						</div>
 
-						<div class="grid grid-cols-3 gap-4">
+						<div class="grid grid-cols-2 gap-4">
 							<div class="form-control">
 								<label class="label text-sm" for="grpPrice">
 									<span>{m.activities_optionTicketPriceLabel()}</span>
@@ -654,19 +689,6 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label text-sm" for="grpCommission">
-									<span>{m.activities_optionTicketCommissionLabel()}</span>
-								</label>
-								<input
-									id="grpCommission"
-									type="number"
-									class="input w-full"
-									min="0"
-									max="100"
-									bind:value={grpCommission}
-								/>
-							</div>
-							<div class="form-control">
 								<label class="label text-sm" for="grpStatus">
 									<span>{m.activities_optionTicketStatusLabel()}</span>
 								</label>
@@ -675,6 +697,35 @@
 										<option value={opt.id}>{opt.name}</option>
 									{/each}
 								</select>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-2 gap-4">
+							<div class="form-control">
+								<label class="label text-sm" for="grpCommissionKind">
+									<span>{m.activities_optionTicketCommissionKindLabel()}</span>
+								</label>
+								<select id="grpCommissionKind" class="select w-full" bind:value={grpCommissionKind}>
+									{#each COMMISSION_KIND_OPTIONS as opt (opt.id)}
+										<option value={opt.id}>{opt.name}</option>
+									{/each}
+								</select>
+							</div>
+							<div class="form-control">
+								<label class="label text-sm" for="grpCommission">
+									<span>{m.activities_optionTicketCommissionLabel()}</span>
+									<span class="text-xs opacity-70">
+										{grpCommissionKind === CommissionKind.FIXED ? '€' : '%'}
+									</span>
+								</label>
+								<input
+									id="grpCommission"
+									type="number"
+									class="input w-full"
+									step="0.01"
+									min="0"
+									bind:value={grpCommission}
+								/>
 							</div>
 						</div>
 					</div>

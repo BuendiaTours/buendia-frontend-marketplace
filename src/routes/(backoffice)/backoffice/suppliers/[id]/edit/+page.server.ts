@@ -3,7 +3,7 @@
  * Fetches the supplier by ID, populates the form, and wires up update/delete actions.
  */
 import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
-import { SupplierStatus } from '$core/suppliers/enums';
+import { CommissionKind, SupplierStatus } from '$core/suppliers/enums';
 import { ApiError } from '$core/_shared/errors';
 import { supplierFormSchema } from '../../schemas/supplier-form.schema';
 import { error, redirect } from '@sveltejs/kit';
@@ -24,8 +24,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				id: supplier.id,
 				name: supplier.name,
 				slug: supplier.slug,
-				commissionKind: supplier.commissionKind,
-				commissionValue: supplier.commissionValue / 100,
+				commissionKind: supplier.commissionKind ?? CommissionKind.PERCENTAGE,
+				commissionValue: supplier.commissionValue ? supplier.commissionValue / 100 : 0,
 				companyName: supplier.companyName,
 				vat: supplier.vat,
 				ownerFirstName: supplier.ownerFullName.firstName,
@@ -55,9 +55,10 @@ export const actions: Actions = {
 		updateFn: SUPPLIER_REQUEST.update,
 		redirectToList: true,
 		paramName: 'id',
-		transformData: ({ id, commissionValue, ...rest }) => ({
+		transformData: ({ id, commissionValue, commissionKind, ...rest }) => ({
 			...rest,
-			commissionValue: Math.round(commissionValue * 100)
+			commissionKind: commissionValue > 0 ? commissionKind : null,
+			commissionValue: commissionValue > 0 ? Math.round(commissionValue * 100) : null
 		})
 	}),
 	delete: createDeleteAction({

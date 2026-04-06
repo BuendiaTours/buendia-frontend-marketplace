@@ -36,10 +36,11 @@ export const actions: Actions = {
 		schema: zod(supplierFormSchema),
 		createFn: SUPPLIER_REQUEST.create,
 		redirectToList: true,
-		transformData: ({ commissionValue, ...rest }) => ({
+		transformData: ({ commissionValue, commissionKind, ...rest }) => ({
 			...rest,
 			status: SupplierStatus.DRAFT,
-			commissionValue: Math.round(commissionValue * 100)
+			commissionKind: commissionValue > 0 ? commissionKind : null,
+			commissionValue: commissionValue > 0 ? Math.round(commissionValue * 100) : null
 		})
 	})
 };

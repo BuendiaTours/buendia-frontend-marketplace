@@ -25,6 +25,7 @@ import type {
 	OptionWheelchair,
 	PickupPlaceKind
 } from '$core/activity-options/enums';
+import type { CommissionKind } from '$core/suppliers/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
 
@@ -55,7 +56,8 @@ export type IndividualTicket = {
 	id: string;
 	adultRequired: boolean;
 	ageRange: AgeRange;
-	commission: number;
+	commissionKind: CommissionKind | null;
+	commissionValue: number | null;
 	free: IndividualTicketFree;
 	group: IndividualTicketGroup;
 	price: number;
@@ -66,7 +68,8 @@ export type IndividualTicket = {
 /** Group ticket embedded in an activity option. */
 export type GroupTicket = {
 	id: string;
-	commission: number;
+	commissionKind: CommissionKind | null;
+	commissionValue: number | null;
 	personsRange: PersonsRange;
 	price: number;
 	status: GroupTicketStatus;
@@ -161,7 +164,8 @@ export type ActivityOptionUpdateDto = {
 export type IndividualTicketAddDto = {
 	id: string;
 	adultRequired: boolean;
-	commission: number;
+	commissionKind?: CommissionKind;
+	commissionValue?: number;
 	free: IndividualTicketFree;
 	group: IndividualTicketGroup;
 	price: number;
@@ -173,7 +177,8 @@ export type IndividualTicketAddDto = {
 /** Payload for adding a group ticket to an option. */
 export type GroupTicketAddDto = {
 	id: string;
-	commission: number;
+	commissionKind?: CommissionKind;
+	commissionValue?: number;
 	price: number;
 	status: GroupTicketStatus;
 	personsRange?: PersonsRange;
