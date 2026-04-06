@@ -507,14 +507,26 @@
 							</div>
 						</div>
 
-						<div class="form-control">
-							<span class="label text-sm">{m.activities_optionTicketAgeRangeLabel()}</span>
-							<div class="flex items-center gap-2">
-								<input type="number" class="input w-20" min="0" bind:value={indAgeMin} />
-								<span class="text-base-content/50 text-sm"
-									>{m.activities_optionTicketAgeRangeTo()}</span
-								>
-								<input type="number" class="input w-20" min="0" bind:value={indAgeMax} />
+						<div class="grid grid-cols-2 gap-4">
+							<div class="form-control">
+								<span class="label text-sm">{m.activities_optionTicketAgeRangeLabel()}</span>
+								<div class="flex items-center gap-2">
+									<input type="number" class="input w-20" min="0" bind:value={indAgeMin} />
+									<span class="text-base-content/50 text-sm"
+										>{m.activities_optionTicketAgeRangeTo()}</span
+									>
+									<input type="number" class="input w-20" min="0" bind:value={indAgeMax} />
+								</div>
+							</div>
+							<div class="form-control">
+								<label class="label text-sm" for="indNeeded">
+									<span>{m.activities_optionTicketNeededLabel()}</span>
+								</label>
+								<select id="indNeeded" class="select w-full" bind:value={indNeeded}>
+									{#each INDIVIDUAL_TICKET_NEEDED_OPTIONS as opt (opt.id)}
+										<option value={opt.id}>{opt.name}</option>
+									{/each}
+								</select>
 							</div>
 						</div>
 
@@ -581,19 +593,6 @@
 									/>
 								</div>
 							{/if}
-						</div>
-
-						<div class="grid grid-cols-2 gap-4">
-							<div class="form-control">
-								<label class="label text-sm" for="indNeeded">
-									<span>{m.activities_optionTicketNeededLabel()}</span>
-								</label>
-								<select id="indNeeded" class="select w-full" bind:value={indNeeded}>
-									{#each INDIVIDUAL_TICKET_NEEDED_OPTIONS as opt (opt.id)}
-										<option value={opt.id}>{opt.name}</option>
-									{/each}
-								</select>
-							</div>
 						</div>
 
 						<label class="label cursor-pointer justify-start gap-2 text-sm" for="indAdultRequired">
