@@ -62,6 +62,13 @@
 	padding-inline-start: 0;
 	padding-inline-end: 28px;
 	background-position: right 0 center;
+
+	&:focus {
+		border: 0;
+		outline: none;
+		box-shadow: none;
+		border-color: transparent;
+	}
 }
 
 /* ========================================
