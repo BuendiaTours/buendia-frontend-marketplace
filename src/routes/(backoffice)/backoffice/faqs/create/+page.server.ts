@@ -5,7 +5,6 @@
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { faqFormSchema, type FaqFormSchema } from '../schemas/faq-form.schema';
-import { FaqStatus } from '$core/faqs/enums';
 import { FAQ_REQUEST } from '$core/faqs/requests';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
@@ -15,8 +14,7 @@ export const load: PageServerLoad = createCreateLoad<FaqFormSchema>({
 	schema: zod(faqFormSchema),
 	initialValues: {
 		question: '',
-		answer: '',
-		status: FaqStatus.DRAFT
+		answer: ''
 	}
 });
 

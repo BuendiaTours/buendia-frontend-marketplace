@@ -1,29 +1,28 @@
 <script lang="ts">
 	/**
 	 * FaqForm — Reusable form for creating and editing FAQs.
-	 * Contains question, answer (markdown), and status fields.
+	 * Contains question and answer (markdown) fields.
 	 */
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { FaqFormSchema } from '../schemas/faq-form.schema';
-	import { FAQ_STATUS_OPTIONS } from '$lib/labels/faqs';
+	import type { FaqStatus } from '$core/faqs/enums';
 
 	import { Database } from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
-	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FaqFormActions from './FaqFormActions.svelte';
 
 	type Props = {
 		form: SuperValidated<FaqFormSchema>;
 		mode: 'create' | 'edit';
-		/** Required in edit mode — used to build the delete action URL. */
 		faqId?: string;
+		faqStatus?: FaqStatus;
 	};
 
-	let { form: formData, mode, faqId }: Props = $props();
+	let { form: formData, mode, faqId, faqStatus }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
@@ -37,7 +36,7 @@
 	const formId = 'faq-form';
 </script>
 
-<FaqFormActions {mode} {faqId} {formId} submitting={$submitting} />
+<FaqFormActions {mode} {faqId} {faqStatus} {formId} submitting={$submitting} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-faq-data" open>
@@ -67,18 +66,6 @@
 				error={$errors.answer}
 				wrapperClass="md:col-span-12"
 			/>
-
-			{#if isEditMode}
-				<FormSelect
-					id="status"
-					label={m.faqs_labelStatus()}
-					bind:value={$form.status}
-					error={$errors.status}
-					options={FAQ_STATUS_OPTIONS}
-					placeholder={m.faqs_placeholderStatus()}
-					wrapperClass="md:col-span-4"
-				/>
-			{/if}
 		{/snippet}
 	</FormAccordion>
 </form>

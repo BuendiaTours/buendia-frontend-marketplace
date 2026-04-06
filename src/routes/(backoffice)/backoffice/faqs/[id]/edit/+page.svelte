@@ -25,4 +25,4 @@
 
 <LocationBar title={m.faqs_editPageTitle()} {breadcrumbs} />
 
-<FaqForm form={data.form} mode="edit" faqId={data.faq.id} />
+<FaqForm form={data.form} mode="edit" faqId={data.faq.id} faqStatus={data.faq.status} />

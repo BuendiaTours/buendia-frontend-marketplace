@@ -28,6 +28,12 @@
 	"faqs_newResource": "Nueva FAQ",
 	"faqs_columnQuestion": "Pregunta",
 	"faqs_columnStatus": "Estado",
+	"faqs_publishButton": "Publicar",
+	"faqs_unpublishButton": "Despublicar",
+	"faqs_confirmPublishTitle": "Publicar FAQ",
+	"faqs_confirmPublishMessage": "¿Estas seguro de que quieres publicar esta FAQ? Sera visible publicamente.",
+	"faqs_confirmUnpublishTitle": "Despublicar FAQ",
+	"faqs_confirmUnpublishMessage": "¿Estas seguro de que quieres despublicar esta FAQ? Dejara de ser visible.",
 	"faqs_emptyState": "No se encontraron FAQs",
 	"enum_faqStatus_draft": "Borrador",
 	"enum_faqStatus_published": "Publicado"
