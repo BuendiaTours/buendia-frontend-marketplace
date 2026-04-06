@@ -25,4 +25,9 @@
 
 <LocationBar title={m.suppliers_editPageTitle()} {breadcrumbs} />
 
-<SupplierForm form={data.form} mode="edit" supplierId={data.supplier.id} />
+<SupplierForm
+	form={data.form}
+	mode="edit"
+	supplierId={data.supplier.id}
+	supplierStatus={data.supplier.status}
+/>
