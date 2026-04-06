@@ -25,6 +25,7 @@
 	} from '$lib/labels/activities';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import PureHtmlDialog from '$lib/components/backoffice/PureHtmlDialog.svelte';
 	import type { GeoJsonPoint } from '$lib/utils/googleMapsTypes';
 
@@ -72,7 +73,7 @@
 	}
 
 	async function handleAdd() {
-		if (selectedDuration <= 0) return;
+		if (!canSubmitStage) return;
 
 		isAdding = true;
 		try {
@@ -189,6 +190,12 @@
 		if (requirement && stage.requirement !== StageRequirement.NONE) tags.push(requirement.name);
 		return tags;
 	}
+
+	const isExperience = $derived(selectedKind === StageKind.EXPERIENCE);
+	const canSubmitStage = $derived(
+		selectedDuration > 0 &&
+			(!isExperience || (selectedName.trim() !== '' && selectedCoords !== null))
+	);
 
 	const sortedStages = $derived([...stages].sort((a, b) => a.order - b.order));
 </script>
@@ -351,18 +358,13 @@
 				</div>
 			</div>
 
-			<div class="form-control">
-				<label class="label text-sm" for="dialogStageDescription">
-					<span>{m.activities_stagesDescriptionLabel()}</span>
-				</label>
-				<textarea
-					id="dialogStageDescription"
-					class="textarea w-full"
-					rows={3}
-					placeholder={m.activities_stagesDescriptionPlaceholder()}
-					bind:value={selectedDescription}
-				></textarea>
-			</div>
+			<FormTextareaMarkdown
+				id="dialogStageDescription"
+				label={m.activities_stagesDescriptionLabel()}
+				bind:value={selectedDescription}
+				mode="tab"
+				wrapperClass=""
+			/>
 
 			{#if selectedKind === StageKind.EXPERIENCE}
 				<FormGeoJson
@@ -382,7 +384,7 @@
 		<button
 			type="button"
 			class="btn btn-primary"
-			disabled={isAdding || selectedDuration <= 0}
+			disabled={isAdding || !canSubmitStage}
 			onclick={handleAdd}
 		>
 			{#if isAdding}
