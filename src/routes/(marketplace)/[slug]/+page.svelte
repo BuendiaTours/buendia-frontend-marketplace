@@ -272,6 +272,76 @@
 		{/each}
 	</PlpSwiper>
 
+	<PlpSwiper
+		swiperOptions={{
+			slidesPerView: 1.2,
+			spaceBetween: 16,
+			navigation: true,
+			loop: false,
+			breakpoints: {
+				640: { slidesPerView: 2 },
+				1024: { slidesPerView: 4 }
+			}
+		}}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	>
+		{#snippet header()}
+			<div
+				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
+			>
+				<h2 class="h2-editorial text-neutral-800">Excuriones a Florencia desde Roma</h2>
+				<a href="#" class="p-base cursor-pointer underline underline-offset-8"
+					>Ver todas las excursiones</a
+				>
+			</div>
+		{/snippet}
+		{#each accumulatedActivities.slice(0, 5) as activity (activity.id)}
+			<swiper-slide>
+				<ActivityCard
+					item={activity}
+					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+				/>
+			</swiper-slide>
+		{/each}
+	</PlpSwiper>
+
+	<h2 class="h2-editorial text-neutral-800">Busca el sello de Plan by buendía</h2>
+
+	<p class="p-lg-editorial mt-2 text-neutral-800">
+		Indica que esa actividad es un plan propio de buendía, creado por nosotros y con las mejores
+		condiciones
+	</p>
+
+	<ByBuendiaBanner img={{ src: '/marketplace/CardPDP.jpg', alt: 'Plan ByBuendía' }}>
+		<ByBuendiaHighlights
+			data={{
+				title: 'Plan by buendía',
+				items: [
+					{
+						icon: 'CalendarCheck',
+						title: 'Cancelación gratuita',
+						description: 'Cancela sin coste hasta el incio de la actividad'
+					},
+					{
+						icon: 'MoneyBack',
+						title: 'Garantía de reembolso',
+						description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+					},
+					{
+						icon: 'ChatRoundLine',
+						title: 'Soporte humano antes, durante y después',
+						description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+					}
+				],
+				link: {
+					text: 'Saber más',
+					src: 'https://google.es'
+				}
+			}}
+			wrapperClass=""
+		/>
+	</ByBuendiaBanner>
+
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
 		<PlpSwiper
@@ -337,87 +407,17 @@
 		</PlpSwiper>
 	{/if}
 
-	<FaqsInline
-		title={data.destination.faqsTitle}
-		faqs={data.destination.faqs}
-		wrapperClass="mt-12 lg:my-23"
-	/>
-
 	<ContentBlockStack
 		title="Los mejores planes para descubrir {data.destination.name}"
 		items={data.destination.contentBlockStack}
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
 
-	<h2 class="h2-editorial text-neutral-800">Busca el sello de Plan by buendía</h2>
-
-	<p class="p-lg-editorial mt-2 text-neutral-800">
-		Indica que esa actividad es un plan propio de buendía, creado por nosotros y con las mejores
-		condiciones
-	</p>
-
-	<ByBuendiaBanner img={{ src: '/marketplace/CardPDP.jpg', alt: 'Plan ByBuendía' }}>
-		<ByBuendiaHighlights
-			data={{
-				title: 'Plan by buendía',
-				items: [
-					{
-						icon: 'CalendarCheck',
-						title: 'Cancelación gratuita',
-						description: 'Cancela sin coste hasta el incio de la actividad'
-					},
-					{
-						icon: 'MoneyBack',
-						title: 'Garantía de reembolso',
-						description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
-					},
-					{
-						icon: 'ChatRoundLine',
-						title: 'Soporte humano antes, durante y después',
-						description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
-					}
-				],
-				link: {
-					text: 'Saber más',
-					src: 'https://google.es'
-				}
-			}}
-			wrapperClass=""
-		/>
-	</ByBuendiaBanner>
-
-	<PlpSwiper
-		swiperOptions={{
-			slidesPerView: 1.2,
-			spaceBetween: 16,
-			navigation: true,
-			loop: false,
-			breakpoints: {
-				640: { slidesPerView: 2 },
-				1024: { slidesPerView: 4 }
-			}
-		}}
-		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
-	>
-		{#snippet header()}
-			<div
-				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
-			>
-				<h2 class="h2-editorial text-neutral-800">Excuriones a Florencia desde Roma</h2>
-				<a href="#" class="p-base cursor-pointer underline underline-offset-8"
-					>Ver todas las excursiones</a
-				>
-			</div>
-		{/snippet}
-		{#each accumulatedActivities.slice(0, 5) as activity (activity.id)}
-			<swiper-slide>
-				<ActivityCard
-					item={activity}
-					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
-				/>
-			</swiper-slide>
-		{/each}
-	</PlpSwiper>
+	<FaqsInline
+		title={data.destination.faqsTitle}
+		faqs={data.destination.faqs}
+		wrapperClass="mt-12 lg:my-23"
+	/>
 
 	<NewsletterRegistration />
 </div>
