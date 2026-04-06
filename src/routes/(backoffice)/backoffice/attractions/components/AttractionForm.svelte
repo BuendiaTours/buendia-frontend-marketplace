@@ -1,11 +1,10 @@
 <script lang="ts">
 	/**
 	 * AttractionForm — Reusable form for creating and editing attractions.
-	 * Handles name, status, descriptions, destinations, address, and map fields.
+	 * Handles name, descriptions, destinations, address, and map fields.
 	 */
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
-	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { AttractionFormSchema } from '../schemas/attraction-form.schema';
 
@@ -14,7 +13,6 @@
 	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormOrderedObjectList from '$lib/components/backoffice/forms/FormOrderedObjectList.svelte';
-	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import AttractionFormActions from './AttractionFormActions.svelte';
@@ -60,17 +58,7 @@
 				label={m.attractions_labelName()}
 				bind:value={$form.name}
 				error={$errors.name}
-				wrapperClass="md:col-span-8"
-			/>
-
-			<FormSelect
-				id="status"
-				label={m.attractions_labelStatus()}
-				bind:value={$form.status}
-				error={$errors.status}
-				options={ATTRACTION_STATUS_OPTIONS}
-				placeholder={m.attractions_placeholderStatus()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-12"
 			/>
 
 			<FormTextarea

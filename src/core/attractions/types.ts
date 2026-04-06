@@ -4,11 +4,7 @@
  * Organised into Projections (read), DTOs (write), and Criteria (query).
  */
 
-import type {
-	AttractionLocationKind,
-	AttractionSortAttribute,
-	AttractionStatus
-} from '$core/attractions/enums';
+import type { AttractionLocationKind, AttractionSortAttribute } from '$core/attractions/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
 
@@ -41,7 +37,6 @@ export type Attraction = {
 	locations: AttractionLocation[];
 	name: string;
 	postalAddress: string | null;
-	status: AttractionStatus;
 	updatedAt: string;
 };
 
@@ -51,7 +46,6 @@ export type Attraction = {
 export type AttractionCreateDto = {
 	id: string;
 	name: string;
-	status: AttractionStatus;
 	description?: string;
 	descriptionLong?: string;
 	latitude?: number;
@@ -69,7 +63,6 @@ export type AttractionUpdateDto = {
 	longitude?: number;
 	name?: string;
 	postalAddress?: string;
-	status?: AttractionStatus;
 };
 
 // ── Criteria (query params) ─────────────────────
@@ -84,7 +77,6 @@ export type AttractionCriteria = {
 	query?: string;
 	radius?: number;
 	search_text?: string;
-	status?: AttractionStatus;
 	sort?: AttractionSortAttribute;
 	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;

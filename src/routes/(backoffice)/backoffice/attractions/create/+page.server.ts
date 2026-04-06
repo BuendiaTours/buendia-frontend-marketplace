@@ -8,7 +8,6 @@ import { attractionFormSchema, type AttractionFormSchema } from '../schemas/attr
 import { ATTRACTION_REQUEST } from '$core/attractions/requests';
 import { LOCATION_REQUEST } from '$core/locations/requests';
 import { zod } from 'sveltekit-superforms/adapters';
-import { AttractionStatus } from '$core/attractions/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -18,7 +17,6 @@ export const load: PageServerLoad = createCreateLoad<AttractionFormSchema, Avail
 	schema: zod(attractionFormSchema),
 	initialValues: {
 		name: '',
-		status: AttractionStatus.DRAFT,
 		description: '',
 		descriptionLong: '',
 		postalAddress: '',

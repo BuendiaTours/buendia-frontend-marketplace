@@ -57,9 +57,9 @@
 	"enum_activityStatus_published": "Publicada",
 	"enum_activityStatus_rejected": "Rechazada",
 	"enum_activityStatus_unpublished": "No publicada",
-	"enum_attractionStatus_active": "Activo",
-	"enum_attractionStatus_draft": "Borrador",
-	"enum_attractionStatus_inactive": "Inactivo",
+
+	"enum_commissionKind_fixed": "Fijo (€)",
+	"enum_commissionKind_percentage": "Porcentaje (%)",
 	"enum_destinationKind_city": "Ciudad",
 	"enum_destinationKind_country": "País",
 	"enum_destinationKind_region": "Región",

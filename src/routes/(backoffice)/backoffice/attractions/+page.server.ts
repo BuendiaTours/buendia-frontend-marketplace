@@ -23,8 +23,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			search_text: filters.q,
-			status: filters.status
+			search_text: filters.q
 		} as AttractionCriteria);
 
 		return {

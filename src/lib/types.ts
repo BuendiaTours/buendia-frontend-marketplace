@@ -8,7 +8,6 @@ import type {
 	ActivityTransportKind,
 	ActivityTransportLocation
 } from '$core/activities/enums';
-import type { AttractionStatus } from '$core/attractions/enums';
 
 export type ByBuendiaBannerItem = {
 	id: string;
@@ -283,7 +282,7 @@ export type Attraction = {
 	id: string;
 	name: string;
 	slug: string;
-	status?: AttractionStatus;
+
 	description?: string;
 	descriptionLong?: string;
 	photoUrl?: string;

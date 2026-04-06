@@ -25,7 +25,6 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 			{
 				id: attraction.id,
 				name: attraction.name,
-				status: attraction.status,
 				description: attraction.description ?? '',
 				descriptionLong: attraction.descriptionLong ?? '',
 				postalAddress: attraction.postalAddress ?? '',

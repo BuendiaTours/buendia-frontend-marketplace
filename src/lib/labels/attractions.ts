@@ -1,8 +1,8 @@
-import { AttractionStatus } from '$core/attractions/enums';
 import * as m from '$paraglide/messages';
+import { AttractionLocationKind } from '$core/attractions/enums';
 
-export const ATTRACTION_STATUS_OPTIONS = [
-	{ id: AttractionStatus.ACTIVE, name: m.enum_attractionStatus_active() },
-	{ id: AttractionStatus.DRAFT, name: m.enum_attractionStatus_draft() },
-	{ id: AttractionStatus.INACTIVE, name: m.enum_attractionStatus_inactive() }
+export const ATTRACTION_LOCATION_KIND_OPTIONS = [
+	{ id: AttractionLocationKind.CITY, name: m.enum_destinationKind_city() },
+	{ id: AttractionLocationKind.COUNTRY, name: m.enum_destinationKind_country() },
+	{ id: AttractionLocationKind.REGION, name: m.enum_destinationKind_region() }
 ];

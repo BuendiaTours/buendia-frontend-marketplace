@@ -1,15 +1,13 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-import { AttractionStatus } from '$core/attractions/enums';
 
 export type AttractionsFilters = {
 	page?: number;
 	pageSize?: number;
-	sort?: 'id' | 'name' | 'status';
+	sort?: 'id' | 'name';
 	order?: CriteriaSortOption;
 	q?: string;
-	status?: AttractionStatus;
 };
 
 export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
@@ -44,7 +42,7 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 			},
 			resetPageOnChange: false
 		},
-		sort: createSortField(['id', 'name', 'status'] as const),
+		sort: createSortField(['id', 'name'] as const),
 		order: createOrderField(),
 		q: {
 			parse: (raw) => {
@@ -55,22 +53,6 @@ export const attractionsFiltersSchema: FiltersSchema<AttractionsFilters> = {
 					out.set('q', value);
 				} else {
 					out.delete('q');
-				}
-			},
-			resetPageOnChange: true
-		},
-		status: {
-			parse: (raw) => {
-				if (Object.values(AttractionStatus).includes(raw as AttractionStatus)) {
-					return raw as AttractionStatus;
-				}
-				return undefined;
-			},
-			serialize: (value, out) => {
-				if (value) {
-					out.set('status', value);
-				} else {
-					out.delete('status');
 				}
 			},
 			resetPageOnChange: true

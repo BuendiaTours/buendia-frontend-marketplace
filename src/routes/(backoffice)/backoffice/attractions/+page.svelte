@@ -14,11 +14,9 @@
 	import { patchFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { attractionsFiltersSchema } from './schemas/filters.schema';
-	import { ATTRACTION_STATUS_OPTIONS } from '$lib/labels/attractions';
 	import { ATTRACTION_ROUTES } from '$lib/config/routes/backoffice/attractions';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
-	import FilterSelect from '$lib/components/backoffice/filters/FilterSelect.svelte';
 	import TableSortableHeader from '$lib/components/backoffice/tables/TableSortableHeader.svelte';
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
@@ -48,12 +46,6 @@
 		applyFilterPatch({ q: searchQuery || null });
 	}
 
-	function handleStatusFilterChange(filterKey: string, value: string | null) {
-		applyFilterPatch({
-			[filterKey]: value
-		} as { [K in keyof AttractionsFilters]?: PatchValue<AttractionsFilters[K]> });
-	}
-
 	function handlePageChange(newPage: number) {
 		applyFilterPatch({ page: newPage });
 	}
@@ -79,15 +71,6 @@
 			<Magnifier class="size-5" />
 		</button>
 	</div>
-
-	<FilterSelect
-		options={ATTRACTION_STATUS_OPTIONS}
-		filterKey="status"
-		currentValue={filters.status}
-		placeholder={m.attractions_filterStatusPlaceholder()}
-		clearTooltip={m.attractions_filterStatusClear()}
-		onFilterChange={handleStatusFilterChange}
-	/>
 
 	<a href={ATTRACTION_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
 		<Add class="size-5" />
@@ -115,9 +98,6 @@
 				<th>
 					<span>{m.attractions_columnDestinations()}</span>
 				</th>
-				<th>
-					<span>{m.attractions_columnStatus()}</span>
-				</th>
 				<th class="w-0">
 					<TableResetSort currentSort={sort} />
 				</th>
@@ -126,7 +106,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="4" class="text-center">
+					<td colspan="3" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.attractions_emptyState()}</p>
 						</div>
@@ -154,18 +134,6 @@
 										<Tag class="badge-outline badge-sm">{loc.name}</Tag>
 									{/each}
 								</div>
-							{/if}
-						</td>
-						<td>
-							{#if item.status === 'ACTIVE'}
-								<div aria-label="success" class="status status-lg status-success mr-1"></div>
-								<span>{ATTRACTION_STATUS_OPTIONS.find((o) => o.id === 'ACTIVE')?.name}</span>
-							{:else if item.status === 'DRAFT'}
-								<div aria-label="status" class="status status-lg status-neutral mr-1"></div>
-								<span>{ATTRACTION_STATUS_OPTIONS.find((o) => o.id === 'DRAFT')?.name}</span>
-							{:else}
-								<div aria-label="error" class="status status-lg status-error mr-1"></div>
-								<span>{ATTRACTION_STATUS_OPTIONS.find((o) => o.id === 'INACTIVE')?.name}</span>
 							{/if}
 						</td>
 						<td class="w-0 text-right">
