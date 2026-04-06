@@ -548,7 +548,7 @@
 							</div>
 						</div>
 
-						<div class="grid grid-cols-3 gap-4">
+						<div class="grid grid-cols-2 gap-4">
 							<div class="form-control">
 								<label class="label text-sm" for="indCommissionKind">
 									<span>{m.activities_optionTicketCommissionKindLabel()}</span>
@@ -581,6 +581,9 @@
 									/>
 								</div>
 							{/if}
+						</div>
+
+						<div class="grid grid-cols-2 gap-4">
 							<div class="form-control">
 								<label class="label text-sm" for="indNeeded">
 									<span>{m.activities_optionTicketNeededLabel()}</span>
