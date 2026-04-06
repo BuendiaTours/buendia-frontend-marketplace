@@ -49,11 +49,11 @@
 		/** Enable up/down reordering buttons. */
 		reorderable?: boolean;
 		/** Called after an image is added (receives the new full list). */
-		onadd?: (images: MediaGalleryItem[]) => void;
+		onadd?: (images: MediaGalleryItem[]) => void | Promise<void>;
 		/** Called after an image is removed (receives the new full list). */
-		onremove?: (images: MediaGalleryItem[]) => void;
+		onremove?: (images: MediaGalleryItem[]) => void | Promise<void>;
 		/** Called after images are reordered (receives the new full list). */
-		onreorder?: (images: MediaGalleryItem[]) => void;
+		onreorder?: (images: MediaGalleryItem[]) => void | Promise<void>;
 	};
 
 	let {
@@ -134,15 +134,15 @@
 		}
 
 		images = [...images, { mediaId, order: images.length, originalUrl, variants, title, altText }];
-		onadd?.(images);
+		await onadd?.(images);
 	}
 
 	// ── Remove ──────────────────────────────────────
 
-	function handleRemove(image: MediaGalleryItem) {
+	async function handleRemove(image: MediaGalleryItem) {
 		isRemoving = image.mediaId;
 		images = images.filter((img) => img.mediaId !== image.mediaId);
-		onremove?.(images);
+		await onremove?.(images);
 		isRemoving = null;
 	}
 
@@ -158,7 +158,7 @@
 		const reordered = [...images];
 		[reordered[idx], reordered[swapIdx]] = [reordered[swapIdx], reordered[idx]];
 		images = reordered.map((img, i) => ({ ...img, order: i }));
-		onreorder?.(images);
+		await onreorder?.(images);
 
 		isMoving = null;
 	}
@@ -193,6 +193,7 @@
 	let createFile = $state<File | null>(null);
 	let createStatus = $state<'idle' | 'uploading' | 'error'>('idle');
 	let createError = $state('');
+	let fileInputEl: HTMLInputElement | undefined = $state();
 
 	function openCreateDialog() {
 		createTitle = '';
@@ -200,6 +201,8 @@
 		createFile = null;
 		createStatus = 'idle';
 		createError = '';
+		if (fileInputEl) fileInputEl.value = '';
+
 		createDialog.showModal();
 	}
 
@@ -251,6 +254,9 @@
 				originalWidth: dimensions.width
 			});
 
+			// CQRS: wait for the media projection to propagate before notifying the parent
+			await new Promise((resolve) => setTimeout(resolve, 500));
+
 			createDialog.close();
 
 			images = [
@@ -264,7 +270,7 @@
 					altText
 				}
 			];
-			onadd?.(images);
+			await onadd?.(images);
 		} catch (e) {
 			createError = e instanceof Error ? e.message : String(e);
 			createStatus = 'error';
@@ -410,6 +416,7 @@
 					<span class="label-text">{m.multimedia_labelFile()}</span>
 				</div>
 				<input
+					bind:this={fileInputEl}
 					type="file"
 					class="file-input file-input-bordered w-full"
 					accept="image/*"
