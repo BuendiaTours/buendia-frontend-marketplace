@@ -5,7 +5,7 @@
  */
 
 import type { UserKind, UserRole, UserStatus, UserSortAttribute } from '$core/users/enums';
-import type { CriteriaSortOption } from '$core/_shared/enums';
+import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
 // ── Projection (read model) ─────────────────────
 
@@ -32,14 +32,14 @@ export type UserUpdateDto = Partial<Omit<User, 'id'>>;
 
 /** Query parameters for filtering, sorting, and paginating user lists. */
 export type UserCriteria = {
-	page?: number;
-	pageSize?: number;
-	q?: string;
-	search_text?: string;
+	skip?: number;
+	limit?: number;
 	email?: string;
-	phone?: string;
 	kind?: UserKind;
-	status?: UserStatus;
-	sort?: UserSortAttribute;
+	operator?: CriteriaOperator;
 	order?: CriteriaSortOption;
+	phone?: string;
+	search_text?: string;
+	sort?: UserSortAttribute;
+	status?: UserStatus;
 };
