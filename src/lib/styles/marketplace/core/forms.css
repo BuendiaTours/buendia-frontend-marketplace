@@ -56,6 +56,14 @@
 	font-weight: 500;
 }
 
+.select.select-borderless {
+	border: 0;
+	background-color: transparent;
+	padding-inline-start: 0;
+	padding-inline-end: 28px;
+	background-position: right 0 center;
+}
+
 /* ========================================
    CHECKBOX & RADIO
    ======================================== */

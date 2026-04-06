@@ -185,7 +185,7 @@
 					);
 					goto(`?${newParams.toString()}`, { replaceState: true, noScroll: true, keepFocus: true });
 				}}
-				class="select"
+				class="select select-borderless"
 				name="sort"
 				id="sort"
 			>
@@ -229,12 +229,12 @@
 		<PlpSwiper
 			id="plp-reviews"
 			swiperOptions={{
-				slidesPerView: 1.1,
+				slidesPerView: 1.15,
 				spaceBetween: 16,
 				navigation: true,
 				loop: false,
 				breakpoints: {
-					640: { slidesPerView: 2 },
+					640: { slidesPerView: 1.8 },
 					1024: { slidesPerView: 3 }
 				}
 			}}
