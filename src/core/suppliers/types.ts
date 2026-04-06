@@ -4,7 +4,7 @@
  * Organised into Projections (read), DTOs (write), and Criteria (query).
  */
 
-import type { SupplierSortAttribute, SupplierStatus } from '$core/suppliers/enums';
+import type { CommissionKind, SupplierSortAttribute, SupplierStatus } from '$core/suppliers/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
 // -- Projection (read model) -----------------
@@ -13,6 +13,8 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 export type Supplier = {
 	id: string;
 	aboutUs: string;
+	commissionKind: CommissionKind;
+	commissionValue: number;
 	companyName: string;
 	email: string;
 	logoUrl: string;
@@ -33,6 +35,8 @@ export type Supplier = {
 export type SupplierCreateDto = {
 	id: string;
 	aboutUs: string;
+	commissionKind: CommissionKind;
+	commissionValue: number;
 	companyName: string;
 	email: string;
 	logoUrl: string;
@@ -49,6 +53,8 @@ export type SupplierCreateDto = {
 /** Payload for partially updating an existing supplier. */
 export type SupplierUpdateDto = {
 	aboutUs?: string;
+	commissionKind?: CommissionKind;
+	commissionValue?: number;
 	companyName?: string;
 	email?: string;
 	logoUrl?: string;

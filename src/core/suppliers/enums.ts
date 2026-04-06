@@ -4,6 +4,12 @@
  * These mirror the backend contract exactly and carry no UI or i18n dependencies.
  */
 
+/** Commission model kind for supplier agreements. */
+export enum CommissionKind {
+	FIXED = 'FIXED',
+	PERCENTAGE = 'PERCENTAGE'
+}
+
 /** Lifecycle status of a supplier. */
 export enum SupplierStatus {
 	ACTIVE = 'ACTIVE',

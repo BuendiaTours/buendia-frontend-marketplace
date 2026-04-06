@@ -1,11 +1,12 @@
 import { z } from 'zod/v3';
-import { SupplierStatus } from '$core/suppliers/enums';
+import { CommissionKind } from '$core/suppliers/enums';
 
 export const supplierFormSchema = z.object({
 	id: z.string(),
 	name: z.string().min(2).max(100),
 	slug: z.string().min(2).max(100),
-	status: z.nativeEnum(SupplierStatus),
+	commissionKind: z.nativeEnum(CommissionKind),
+	commissionValue: z.number().min(0),
 	companyName: z.string().min(2).max(200),
 	vat: z.string().min(2).max(50),
 	ownerFirstName: z.string().min(2).max(100),

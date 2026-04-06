@@ -5,9 +5,12 @@
 	 */
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
-	import { SUPPLIER_STATUS_OPTIONS } from '$lib/labels/suppliers';
+	import { COMMISSION_KIND_OPTIONS } from '$lib/labels/suppliers';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SupplierFormSchema } from '../schemas/supplier-form.schema';
+	import type { SupplierStatus } from '$core/suppliers/enums';
+	import { CommissionKind } from '$core/suppliers/enums';
+	import { checkSlugAvailability } from '../queries/slug-check.queries';
 
 	import { Database, MapPoint, Link } from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
@@ -23,9 +26,10 @@
 		mode: 'create' | 'edit';
 		/** Required in edit mode — used to build the delete action URL. */
 		supplierId?: string;
+		supplierStatus?: SupplierStatus;
 	};
 
-	let { form: formData, mode, supplierId }: Props = $props();
+	let { form: formData, mode, supplierId, supplierStatus }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
@@ -39,7 +43,7 @@
 	const formId = 'supplier-form';
 </script>
 
-<SupplierFormActions {mode} {supplierId} {formId} submitting={$submitting} />
+<SupplierFormActions {mode} {supplierId} {supplierStatus} {formId} submitting={$submitting} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-supplier-data" open>
@@ -58,17 +62,7 @@
 				label={m.suppliers_labelName()}
 				bind:value={$form.name}
 				error={$errors.name}
-				wrapperClass="md:col-span-8"
-			/>
-
-			<FormSelect
-				id="status"
-				label={m.suppliers_labelStatus()}
-				bind:value={$form.status}
-				error={$errors.status}
-				options={SUPPLIER_STATUS_OPTIONS}
-				placeholder={m.suppliers_placeholderStatus()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-12"
 			/>
 
 			<FormInputSlug
@@ -78,6 +72,8 @@
 				sourceValue={$form.name}
 				error={$errors.slug}
 				disabled={isEditMode}
+				checkSlugFn={checkSlugAvailability}
+				generateTooltip={m.suppliers_slugCheckTooltip()}
 				wrapperClass="md:col-span-6"
 			/>
 
@@ -95,6 +91,28 @@
 				bind:value={$form.vat}
 				error={$errors.vat}
 				wrapperClass="md:col-span-6"
+			/>
+
+			<FormSelect
+				id="commissionKind"
+				label={m.suppliers_labelCommissionKind()}
+				bind:value={$form.commissionKind}
+				error={$errors.commissionKind}
+				options={COMMISSION_KIND_OPTIONS}
+				placeholder={m.suppliers_placeholderCommissionKind()}
+				wrapperClass="md:col-span-3"
+			/>
+
+			<FormInputText
+				id="commissionValue"
+				label={m.suppliers_labelCommissionValue()}
+				type="number"
+				step="0.01"
+				min="0"
+				bind:value={$form.commissionValue}
+				error={$errors.commissionValue}
+				badge={$form.commissionKind === CommissionKind.FIXED ? '€' : '%'}
+				wrapperClass="md:col-span-3"
 			/>
 		{/snippet}
 	</FormAccordion>

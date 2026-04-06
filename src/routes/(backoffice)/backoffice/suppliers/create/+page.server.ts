@@ -7,7 +7,7 @@ import { createCreateAction } from '$lib/server/backoffice/createAction';
 import { supplierFormSchema, type SupplierFormSchema } from '../schemas/supplier-form.schema';
 import { SUPPLIER_REQUEST } from '$core/suppliers/requests';
 import { zod } from 'sveltekit-superforms/adapters';
-import { SupplierStatus } from '$core/suppliers/enums';
+import { CommissionKind, SupplierStatus } from '$core/suppliers/enums';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -16,7 +16,8 @@ export const load: PageServerLoad = createCreateLoad<SupplierFormSchema>({
 	initialValues: {
 		name: '',
 		slug: '',
-		status: SupplierStatus.DRAFT,
+		commissionKind: CommissionKind.PERCENTAGE,
+		commissionValue: 0,
 		companyName: '',
 		vat: '',
 		ownerFirstName: '',
@@ -35,6 +36,10 @@ export const actions: Actions = {
 		schema: zod(supplierFormSchema),
 		createFn: SUPPLIER_REQUEST.create,
 		redirectToList: true,
-		transformData: ({ id, ...rest }) => ({ id, ...rest })
+		transformData: ({ commissionValue, ...rest }) => ({
+			...rest,
+			status: SupplierStatus.DRAFT,
+			commissionValue: Math.round(commissionValue * 100)
+		})
 	})
 };

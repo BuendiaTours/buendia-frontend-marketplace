@@ -15,6 +15,7 @@
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { suppliersFiltersSchema } from './schemas/filters.schema';
 	import { SUPPLIER_STATUS_OPTIONS } from '$lib/labels/suppliers';
+	import { CommissionKind } from '$core/suppliers/enums';
 	import { SUPPLIER_ROUTES } from '$lib/config/routes/backoffice/suppliers';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -115,6 +116,9 @@
 					<span>{m.suppliers_columnEmail()}</span>
 				</th>
 				<th>
+					<span>{m.suppliers_columnCommission()}</span>
+				</th>
+				<th>
 					<span>{m.suppliers_columnStatus()}</span>
 				</th>
 				<th class="w-0">
@@ -125,7 +129,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="4" class="text-center">
+					<td colspan="5" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.suppliers_emptyState()}</p>
 						</div>
@@ -146,6 +150,14 @@
 						</td>
 						<td>
 							<span class="text-sm">{item.email}</span>
+						</td>
+						<td>
+							<span class="text-sm">
+								{(item.commissionValue / 100).toFixed(2)}{item.commissionKind ===
+								CommissionKind.FIXED
+									? ' €'
+									: ' %'}
+							</span>
 						</td>
 						<td>
 							{#if item.status === 'ACTIVE'}
