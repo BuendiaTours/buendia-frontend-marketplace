@@ -224,6 +224,54 @@
 
 	<Spacer wrapperClass="my-24" />
 
+	<WhyUsGrid
+		data={[
+			{
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				icon: 'Heart',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				icon: 'BuendiaCommentHollow',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			},
+			{
+				icon: 'SmileCircle',
+				title: '​Empresa mejor valorada del sector en Trustpilot',
+				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
+			}
+		]}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
+
+	<PlpSwiper
+		swiperOptions={{
+			slidesPerView: 'auto',
+			spaceBetween: 16,
+			navigation: true,
+			loop: false
+		}}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	>
+		{#snippet header()}
+			<h2 class="h2-editorial text-neutral-800">Atracciones en {data.destination.name}</h2>
+		{/snippet}
+
+		<!-- default slot -->
+		{#each data.destination.attractions as attraction (attraction.id)}
+			<swiper-slide
+				class="bg-overlay relative aspect-[34/19] w-[340px] overflow-hidden rounded-xl sm:aspect-[340/314] lg:aspect-[392/314] lg:w-[392px]"
+			>
+				<PlpAttractionItem item={attraction} />
+			</swiper-slide>
+		{/each}
+	</PlpSwiper>
+
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
 		<PlpSwiper
@@ -301,31 +349,6 @@
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
 
-	<WhyUsGrid
-		data={[
-			{
-				title: '​Empresa mejor valorada del sector en Trustpilot',
-				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-			},
-			{
-				icon: 'Heart',
-				title: '​Empresa mejor valorada del sector en Trustpilot',
-				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-			},
-			{
-				icon: 'BuendiaCommentHollow',
-				title: '​Empresa mejor valorada del sector en Trustpilot',
-				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-			},
-			{
-				icon: 'SmileCircle',
-				title: '​Empresa mejor valorada del sector en Trustpilot',
-				description: 'Nuestra media de satisfacción es de 4,7 sobre 5, con más 47,000 opiniones.'
-			}
-		]}
-		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
-	/>
-
 	<h2 class="h2-editorial text-neutral-800">Busca el sello de Plan by buendía</h2>
 
 	<p class="p-lg-editorial mt-2 text-neutral-800">
@@ -362,29 +385,6 @@
 			wrapperClass=""
 		/>
 	</ByBuendiaBanner>
-
-	<PlpSwiper
-		swiperOptions={{
-			slidesPerView: 'auto',
-			spaceBetween: 16,
-			navigation: true,
-			loop: false
-		}}
-		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
-	>
-		{#snippet header()}
-			<h2 class="h2-editorial text-neutral-800">Atracciones en {data.destination.name}</h2>
-		{/snippet}
-
-		<!-- default slot -->
-		{#each data.destination.attractions as attraction (attraction.id)}
-			<swiper-slide
-				class="relative aspect-[34/19] w-[340px] overflow-hidden rounded-xl sm:aspect-[340/314] lg:aspect-[392/314] lg:w-[392px]"
-			>
-				<PlpAttractionItem item={attraction} />
-			</swiper-slide>
-		{/each}
-	</PlpSwiper>
 
 	<PlpSwiper
 		swiperOptions={{

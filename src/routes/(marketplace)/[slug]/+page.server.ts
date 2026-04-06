@@ -11,7 +11,7 @@ import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
 export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const { slug } = params;
 	const filters = parseFilters(destinationActivitiesFiltersSchema, url.searchParams);
-	const reviewsPage = Number(url.searchParams.get('reviewsPage')) || 3;
+	const reviewsPage = Number(url.searchParams.get('reviewsPage')) || 4;
 
 	try {
 		const destination = await destinationsEndpoints.getBySlug(fetch, slug);

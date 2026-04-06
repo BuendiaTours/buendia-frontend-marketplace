@@ -8,7 +8,11 @@
 	let { item }: Props = $props();
 </script>
 
-<img src={item.image} alt={item.title} class="absolute inset-0 -z-1 h-full w-full object-cover" />
+<img
+	src={item.image}
+	alt={item.title}
+	class="absolute inset-0 -z-1 h-full w-full object-cover opacity-52"
+/>
 <div class="flex h-full w-full flex-col p-6">
 	<h3 class="h1-editorial text-white">
 		{item.title}
