@@ -17,10 +17,11 @@
 				src: string;
 			};
 		};
+		onlinkclick?: () => void;
 		wrapperClass?: string;
 	};
 
-	let { data, wrapperClass }: Props = $props();
+	let { data, onlinkclick, wrapperClass }: Props = $props();
 </script>
 
 <div
@@ -51,7 +52,8 @@
 	{#if data.link?.text && data.link?.src}
 		<a
 			class="p cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-			href={data.link.src}>{data.link.text}</a
+			href={data.link.src}
+			onclick={onlinkclick}>{data.link.text}</a
 		>
 	{/if}
 </div>

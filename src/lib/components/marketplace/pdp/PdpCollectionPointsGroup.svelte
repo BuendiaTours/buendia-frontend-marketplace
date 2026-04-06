@@ -2,6 +2,7 @@
 	import type { ActivityOptionPickupLocation } from '$lib/types';
 	import Spacer from '../Spacer.svelte';
 	import PdpCollectionPoint from './PdpCollectionPoint.svelte';
+	import { trackVerMas } from '$lib/analytics';
 
 	type Props = {
 		items: ActivityOptionPickupLocation[];
@@ -31,7 +32,10 @@
 	{#if items.length > visibleCount && !showAll}
 		<button
 			class="mt-4 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-			onclick={() => (showAll = true)}
+			onclick={() => {
+				showAll = true;
+				trackVerMas('puntos de encuentro');
+			}}
 		>
 			Ver más
 		</button>

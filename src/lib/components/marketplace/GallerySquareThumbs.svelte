@@ -3,11 +3,14 @@
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
 	import type { BndLightboxItem, BndLightboxItemContext } from '$lib/types';
+	import { trackOpenGallery, trackNavigateGallery, trackCompleteGallery } from '$lib/analytics';
+	import type { GalleryLocation } from '$lib/analytics';
 
 	type Props = {
 		categoryId?: string;
 		categoryLabel?: string;
 		containerClass?: string;
+		galleryLocation?: GalleryLocation;
 		items: BndLightboxItem[];
 		layout?: Snippet<[BndLightboxItemContext]>;
 		layoutComponent?: Component<{ ctx: BndLightboxItemContext }>;
@@ -22,6 +25,7 @@
 		categoryId,
 		categoryLabel,
 		containerClass = '',
+		galleryLocation,
 		items,
 		layout,
 		layoutComponent,
@@ -62,6 +66,7 @@
 				onclick={() => {
 					startIndex = i;
 					open = true;
+					if (galleryLocation) trackOpenGallery(galleryLocation);
 				}}
 			>
 				<img
@@ -77,4 +82,14 @@
 	</div>
 </div>
 
-<BndLightbox bind:open config={lbConfig} />
+<BndLightbox
+	bind:open
+	config={lbConfig}
+	onchange={galleryLocation
+		? ({ index, direction }) => {
+				trackNavigateGallery(galleryLocation);
+				if (direction === 'next' && index === items.length - 1)
+					trackCompleteGallery(galleryLocation);
+			}
+		: undefined}
+/>

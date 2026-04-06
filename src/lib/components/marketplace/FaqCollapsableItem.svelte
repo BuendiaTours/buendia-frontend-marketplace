@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Plus, Minus } from '$lib/icons/Linear';
 	import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	import { trackToggleDesplegable } from '$lib/analytics';
 
 	type Props = {
 		question?: string;
@@ -10,7 +11,14 @@
 	let { question, answer }: Props = $props();
 </script>
 
-<details class="c-faq-item py-4">
+<details
+	class="c-faq-item py-4"
+	ontoggle={(e) =>
+		trackToggleDesplegable(
+			(e.currentTarget as HTMLDetailsElement).open ? 'abrir' : 'cerrar',
+			question ?? ''
+		)}
+>
 	<summary class="flex w-full cursor-pointer justify-between gap-3">
 		<h3
 			class="faq-question color-neutral-800 p-lg flex flex-grow-0 basis-full justify-start gap-3 text-left font-bold"

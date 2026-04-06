@@ -1,6 +1,7 @@
 <script lang="ts">
 	import StageItem from '../StageItem.svelte';
 	import { AltArrowDown } from '$lib/icons/Linear';
+	import { trackVerTodoItinerario } from '$lib/analytics';
 
 	type Props = {
 		title?: string;
@@ -16,7 +17,7 @@
 		initialVisible?: number;
 	};
 
-	let { title, wrapperClass, items, initialVisible = 5 }: Props = $props();
+	let { title, wrapperClass: _wrapperClass, items, initialVisible = 5 }: Props = $props();
 
 	let showAll = $state(false);
 
@@ -48,7 +49,10 @@
 	{#if sorted.length > initialVisible && !showAll}
 		<button
 			class="mt-4 cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-			onclick={() => (showAll = true)}
+			onclick={() => {
+				showAll = true;
+				trackVerTodoItinerario();
+			}}
 		>
 			Ver todo el itinerario
 		</button>

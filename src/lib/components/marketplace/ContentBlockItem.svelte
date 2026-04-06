@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ContentBlockStack } from '$lib/types';
+	import { trackVerMas } from '$lib/analytics';
 
 	type Props = {
 		item: ContentBlockStack;
@@ -45,7 +46,10 @@
 		{#if overflows || expanded}
 			<button
 				class="p-base cursor-pointer self-start text-neutral-800 underline underline-offset-8"
-				onclick={() => (expanded = !expanded)}
+				onclick={() => {
+					if (!expanded) trackVerMas(item.title);
+					expanded = !expanded;
+				}}
 			>
 				{expanded ? 'Ver menos' : 'Ver más'}
 			</button>

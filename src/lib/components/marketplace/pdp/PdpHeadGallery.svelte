@@ -3,6 +3,7 @@
 	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
 	import { BndCssSlider } from '$lib/components/marketplace/BndCssSlider';
 	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
+	import { trackOpenGallery, trackNavigateGallery, trackCompleteGallery } from '$lib/analytics';
 
 	type Props = {
 		items: MultimediaItem[];
@@ -28,6 +29,7 @@
 		e.preventDefault();
 		lbStartIndex = index;
 		lbOpen = true;
+		trackOpenGallery('provider gallery');
 	}
 </script>
 
@@ -103,5 +105,9 @@
 		wrapAround: true,
 		categories: [{ id: 'fotos', label: 'Fotos', items: lbItems }],
 		startIndex: lbStartIndex
+	}}
+	onchange={({ index, direction }) => {
+		trackNavigateGallery('provider gallery');
+		if (direction === 'next' && index === totalImages - 1) trackCompleteGallery('provider gallery');
 	}}
 />

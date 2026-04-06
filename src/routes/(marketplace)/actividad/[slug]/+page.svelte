@@ -11,6 +11,14 @@
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
+	import {
+		trackOpinionesTopScroll,
+		trackOpinionesDestacadasScroll,
+		trackOrdenOpiniones,
+		trackMostrarMasOpiniones,
+		trackSaberMasPlan,
+		trackVerMapa
+	} from '$lib/analytics';
 
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
@@ -90,15 +98,19 @@
 	async function handleReviewSortChange(value: string) {
 		sortValue = value as typeof sortValue;
 		currentPage = 1;
+		trackOrdenOpiniones(value);
 		await loadActivityReviews({ ...(SORT_PARAMS[value] ?? {}), stars: activeStars });
 	}
 
 	async function handleShowMore() {
+		trackMostrarMasOpiniones();
 		await loadActivityReviews(
 			{ ...SORT_PARAMS[sortValue], page: currentPage + 1, stars: activeStars },
 			true
 		);
 	}
+
+	let hasTrackedOpinionesScroll = false;
 
 	const reviewItems = $derived<BndLightboxItem[]>(
 		reviews.flatMap((review, reviewIdx) =>
@@ -169,6 +181,7 @@
 					}
 				}}
 				wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
+				onlinkclick={trackSaberMasPlan}
 			/>
 
 			<Spacer wrapperClass="mt-8 mb-6" />
@@ -179,6 +192,12 @@
 					<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
 					<div
 						class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
+						onscroll={() => {
+							if (!hasTrackedOpinionesScroll) {
+								hasTrackedOpinionesScroll = true;
+								trackOpinionesDestacadasScroll();
+							}
+						}}
 					>
 						{#each data.reviews.slice(0, 2) as review (review.id)}
 							<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
@@ -199,7 +218,7 @@
 					<a
 						href="#reviews"
 						class="p-base mt-4 block cursor-pointer font-bold text-neutral-800 underline underline-offset-8"
-						>Ver todas las opiniones</a
+						onclick={trackOpinionesTopScroll}>Ver todas las opiniones</a
 					>
 				</div>
 
@@ -213,7 +232,7 @@
 
 			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 
-			<MapView wrapperClass="mt-8" />
+			<MapView wrapperClass="mt-8" onclick={trackVerMapa} />
 
 			<Spacer />
 
@@ -354,6 +373,7 @@
 						categoryId="reviews"
 						categoryLabel="Fotos de viajeros"
 						layoutComponent={ReviewsLayout}
+						galleryLocation="user gallery"
 					/>
 				{/if}
 			</div>
