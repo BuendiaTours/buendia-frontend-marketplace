@@ -1,14 +1,17 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
 	import ThemeSwitcher from '$lib/components/backoffice/ThemeSwitcher.svelte';
 	import { ROUTES } from '$lib/config/routes';
+	import type { UserKind, UserRole } from '$core/users/enums';
 
 	type Props = {
 		title?: string;
+		user?: { name: string; email: string; kind: UserKind; roles: UserRole[] } | null;
 	};
 
-	let { title = 'Mi Aplicación' }: Props = $props();
+	let { title = 'Mi Aplicación', user = null }: Props = $props();
 
 	const isActive = (path: string) => {
 		return page.url.pathname.startsWith(path);
@@ -377,8 +380,17 @@
 			</li>
 		</ul>
 	</div>
-	<div class="navbar-end">
+	<div class="navbar-end gap-2">
 		<ThemeSwitcher />
-		<a href={ROUTES.backoffice.login} class="btn btn-sm ml-2">Login</a>
+		{#if user}
+			<span class="text-base-content/70 hidden text-sm sm:inline">{user.name}</span>
+			<form method="POST" action={ROUTES.backoffice.logout} use:enhance>
+				<button type="submit" class="btn btn-ghost btn-sm">
+					{m.auth_logoutButton()}
+				</button>
+			</form>
+		{:else}
+			<a href={ROUTES.backoffice.login} class="btn btn-sm">Login</a>
+		{/if}
 	</div>
 </header>

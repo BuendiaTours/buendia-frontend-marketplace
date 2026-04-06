@@ -4,11 +4,11 @@
 
 	let { children } = $props();
 
-	// Añadir clase al <html> cuando estamos en auth
+	// Añadir clases al <html> cuando estamos en auth
 	$effect(() => {
-		document.documentElement.classList.add('route-auth');
+		document.documentElement.classList.add('route-auth', 'bnd-backoffice');
 		return () => {
-			document.documentElement.classList.remove('route-auth');
+			document.documentElement.classList.remove('route-auth', 'bnd-backoffice');
 		};
 	});
 </script>

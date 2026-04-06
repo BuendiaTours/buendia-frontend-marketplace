@@ -23,6 +23,7 @@ import { toolsRoutes } from './tools';
 export const backofficeRoutes = {
 	home: backoffice(''),
 	login: backoffice('login'),
+	logout: backoffice('logout'),
 
 	users: USER_ROUTES,
 	activities: ACTIVITY_ROUTES,
