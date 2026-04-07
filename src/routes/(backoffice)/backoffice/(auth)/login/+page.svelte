@@ -11,11 +11,9 @@
 	const { form, errors, enhance, submitting, message } = superForm(formData);
 </script>
 
-<div class="flex min-h-screen items-center justify-center">
+<div class="flex min-h-screen flex-col items-center justify-center gap-6">
+	<img src="/backoffice/wildcard_logo.png" alt="Wildcard" class="h-32" />
 	<fieldset class="fieldset rounded-box border-base-300 bg-base-200 w-full max-w-md border p-8">
-		<div class="mb-4 flex justify-center">
-			<img src="/backoffice/wildcard_logo.png" alt="Wildcard" class="h-32" />
-		</div>
 		<legend class="fieldset-legend px-4 text-xl font-semibold">{m.auth_loginTitle()}</legend>
 
 		{#if $message}
