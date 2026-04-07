@@ -39,6 +39,7 @@
 	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
+	import { ShoppingCart } from '$lib/components/marketplace/ShoppingCart';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -465,7 +466,7 @@
 		</div>
 
 		<div class="col-sidebar pt-6">
-			<div class="carrito sticky top-0 bg-neutral-500 p-4 text-center">carrito</div>
+			<ShoppingCart {activityId} />
 		</div>
 	</div>
 
@@ -499,149 +500,4 @@
 		imageAlt="Imagén de prueba"
 		wrapperClass="my-16"
 	/>
-
-	<!-- Basic Info -->
-	<!-- <div class="e-card mb-8">
-		<h2 class="mb-4 font-semibold text-gray-800">Información básica</h2>
-		<dl class="space-y-2">
-			<div>
-				<dt class="font-medium text-gray-700">ID:</dt>
-				<dd class="text-gray-600">{activity.id}</dd>
-			</div>
-			<div>
-				<dt class="font-medium text-gray-700">Código de referencia:</dt>
-				<dd class="text-gray-600">{activity.codeRef}</dd>
-			</div>
-			<div>
-				<dt class="font-medium text-gray-700">Slug:</dt>
-				<dd class="text-gray-600">{activity.slug}</dd>
-			</div>
-			<div>
-				<dt class="font-medium text-gray-700">Tipo de guía:</dt>
-				<dd class="text-gray-600">{activity.guideKind}</dd>
-			</div>
-			<div>
-				<dt class="font-medium text-gray-700">Tipo de transporte:</dt>
-				<dd class="text-gray-600">{activity.transportKind}</dd>
-			</div>
-			{#if activity.transportLocation}
-				<div>
-					<dt class="font-medium text-gray-700">Ubicación del transporte:</dt>
-					<dd class="text-gray-600">{activity.transportLocation}</dd>
-				</div>
-			{/if}
-		</dl>
-	</div> -->
-
-	<!-- Important Info OLD -->
-	<!-- {#if activity.infoImportant}
-		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-yellow-900">⚠️ Información importante</h2>
-			<p class="text-yellow-800">{activity.infoImportant}</p>
-		</div>
-	{/if} -->
-
-	<!-- Destinations -->
-	<!-- {#if activity.destinations && activity.destinations.length > 0}
-		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-gray-800">Destinos</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.destinations as destination (destination.name)}
-					<li>{destination.name}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Categories -->
-	<!-- {#if activity.categories && activity.categories.length > 0}
-		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-gray-800">Categorías</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.categories as category (category.name)}
-					<li>{category.name}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Attractions -->
-	<!-- {#if activity.attractions && activity.attractions.length > 0}
-		<div class="e-card mb-8">
-			<h2 class="mb-4 font-semibold text-gray-800">Atracciones</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.attractions as attraction (attraction.name)}
-					<li>{attraction.name}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Items to Bring -->
-	<!-- {#if activity.itemsToBring && activity.itemsToBring.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🎒 Qué llevar</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.itemsToBring as item, i (i)}
-					<li>{item}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Meals -->
-	<!-- {#if activity.meals && activity.meals.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🍽️ Comidas</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.meals as meal, i (i)}
-					<li>{meal}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Restrictions -->
-	<!-- {#if activity.restrictions && activity.restrictions.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🚫 Restricciones</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.restrictions as restriction, i (i)}
-					<li>{restriction}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Tags -->
-	<!-- {#if activity.tags && activity.tags.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🏷️ Etiquetas</h2>
-			<div class="flex flex-wrap gap-2">
-				{#each activity.tags as tag (tag.name)}
-					<span class="rounded-full bg-gray-200 px-3 py-1 text-gray-700">{tag.name}</span>
-				{/each}
-			</div>
-		</div>
-	{/if} -->
-
-	<!-- Distributives -->
-	<!-- {#if activity.distributives && activity.distributives.length > 0}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">📄 Páginas distributivas</h2>
-			<ul class="list-inside list-disc space-y-1 text-gray-600">
-				{#each activity.distributives as distributive (distributive.name)}
-					<li>{distributive.name}</li>
-				{/each}
-			</ul>
-		</div>
-	{/if} -->
-
-	<!-- Voucher Info -->
-	<!-- {#if activity.voucherInfo}
-		<div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-			<h2 class="mb-4 font-semibold text-gray-800">🎫 Información del voucher</h2>
-			<p class="text-gray-600">{activity.voucherInfo}</p>
-		</div>
-	{/if} -->
 </div>

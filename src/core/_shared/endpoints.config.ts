@@ -10,6 +10,7 @@
 export const BASE_PATHS = {
 	activities: '/activities',
 	activityOptions: '/activity-options',
+	availabilityOptions: '/availability-options',
 	activityKinds: '/activity-kind',
 	locations: '/locations',
 	categories: '/categories',
@@ -367,6 +368,21 @@ export const API_ENDPOINTS = {
 			path: (activityId: string) => `${BASE_PATHS.activityOptions}/${activityId}`,
 			method: 'GET',
 			description: 'Obtiene las opciones adicionales de una actividad por ID',
+			params: ['activityId']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Availability Options
+	// ──────────────────────────────────────────────
+	availabilityOptions: {
+		groupName: 'Availability Options',
+		groupDescription: 'Disponibilidad en tiempo real de actividades',
+		/** @description Retrieves real-time availability for a given activity ID. */
+		byActivity: {
+			path: (activityId: string) => `${BASE_PATHS.availabilityOptions}/${activityId}`,
+			method: 'GET',
+			description: 'Obtiene disponibilidad en tiempo real de una actividad por ID',
 			params: ['activityId']
 		} satisfies EndpointWithParam
 	},
