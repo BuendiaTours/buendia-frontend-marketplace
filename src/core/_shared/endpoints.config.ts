@@ -380,11 +380,15 @@ export const API_ENDPOINTS = {
 		groupDescription: 'Disponibilidad en tiempo real de actividades',
 		/** @description Retrieves real-time availability for a given activity ID. */
 		byActivity: {
-			path: (activityId: string) => `${BASE_PATHS.availabilityOptions}/${activityId}`,
+			path: (activityId: string, fromDate?: string) =>
+				fromDate
+					? `/activity/${activityId}/availability/${fromDate}`
+					: `/activity/${activityId}/availability`,
 			method: 'GET',
-			description: 'Obtiene disponibilidad en tiempo real de una actividad por ID',
-			params: ['activityId']
-		} satisfies EndpointWithParam
+			description:
+				'Obtiene disponibilidad en tiempo real de una actividad por ID. Acepta fecha de inicio opcional (YYYY-MM-DD); devuelve 2 meses desde esa fecha.',
+			params: ['activityId', 'fromDate?']
+		}
 	},
 
 	// ──────────────────────────────────────────────

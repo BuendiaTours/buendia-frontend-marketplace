@@ -231,24 +231,8 @@ export type ActivityOption = {
 	updatedAt: string;
 };
 
-export type AvailabilityTicket = {
-	individualTicketId: string;
-	name: string;
-	price: number;
-	originalPrice?: number;
-	available: number;
-};
-
-export type AvailabilitySlot = {
-	activityDatetime: string;
-	tickets: AvailabilityTicket[];
-};
-
-export type AvailabilityOption = {
-	optionId: string;
-	date: string;
-	slots: AvailabilitySlot[];
-};
+// Record<date, Record<ticketTypeCode, availableCount>>
+export type AvailabilityData = Record<string, Record<string, number>>;
 
 export type ActivityCardInfoList = {
 	id: string;
