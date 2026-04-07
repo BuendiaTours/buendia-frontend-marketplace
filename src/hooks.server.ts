@@ -24,7 +24,7 @@ const REFRESH_THRESHOLD_SECONDS = 60;
 export const handle: Handle = async ({ event, resolve }) => {
 	const { accessToken, refreshToken } = getAuthTokens(event.cookies);
 
-	if (!accessToken) {
+	if (!accessToken && !refreshToken) {
 		event.locals.accessToken = null;
 		event.locals.user = null;
 		return resolve(event);
@@ -32,11 +32,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	let currentToken = accessToken;
 
-	// Proactive token refresh if close to expiry
-	const exp = getTokenExpiry(accessToken);
-	const now = Math.floor(Date.now() / 1000);
+	// Refresh when: access token expired (cookie gone) OR close to expiry
+	const needsRefresh =
+		!accessToken ||
+		(() => {
+			const exp = getTokenExpiry(accessToken);
+			const now = Math.floor(Date.now() / 1000);
+			return exp && exp - now < REFRESH_THRESHOLD_SECONDS;
+		})();
 
-	if (exp && exp - now < REFRESH_THRESHOLD_SECONDS && refreshToken) {
+	if (needsRefresh && refreshToken) {
 		try {
 			const refreshed = await AUTH_REQUEST.refreshToken(fetch, { refreshToken });
 			setAuthCookies(event.cookies, refreshed);
