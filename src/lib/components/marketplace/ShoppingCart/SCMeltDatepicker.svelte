@@ -13,9 +13,15 @@
 		value?: DateValue;
 		onSelect?: (date: DateValue) => void;
 		disabled?: boolean;
+		isDateDisabled?: (date: DateValue) => boolean;
 	};
 
-	let { value = $bindable(), onSelect, disabled = false }: Props = $props();
+	let {
+		value = $bindable(),
+		onSelect,
+		disabled = false,
+		isDateDisabled: checkDisabled
+	}: Props = $props();
 
 	const {
 		elements: {
@@ -31,7 +37,8 @@
 			segment
 		},
 		states: { months, headingValue, weekdays, segmentContents, open, value: pickerValue },
-		helpers: { isDateDisabled, isDateUnavailable }
+		helpers: { isDateDisabled, isDateUnavailable },
+		options
 	} = createDatePicker({
 		forceVisible: true,
 		numberOfMonths: 2,
@@ -48,6 +55,10 @@
 		if (value && $pickerValue?.toString() !== value.toString()) {
 			pickerValue.set(value);
 		}
+	});
+
+	$effect(() => {
+		if (checkDisabled) options.isDateDisabled.set(checkDisabled);
 	});
 </script>
 
@@ -78,7 +89,8 @@
 	</div>
 
 	<!-- Popover Content -->
-	{#if $open}
+	{#if true}
+		<!-- $open -->
 		<div
 			transition:fade={{ duration: 150 }}
 			use:melt={$content}
@@ -131,25 +143,28 @@
 								{#each month.weeks as weekDates, wi (wi)}
 									<tr>
 										{#each weekDates as date, di (di)}
-											{@const isDisabled = $isDateDisabled(date)}
+											{@const isDisabled = checkDisabled
+												? checkDisabled(date)
+												: $isDateDisabled(date)}
 											{@const isUnavailable = $isDateUnavailable(date)}
 											<td
 												role="gridcell"
 												class="p-0.5 text-center"
 												aria-disabled={isDisabled || isUnavailable}
 											>
-												<div
+												<button
 													use:melt={$cell(date, month.value)}
+													disabled={isDisabled || isUnavailable}
 													class="p-sm flex h-9 w-9 cursor-pointer items-center justify-center rounded transition-colors
 														{isDisabled || isUnavailable
-														? 'cursor-not-allowed text-gray-300'
+														? '!cursor-not-allowed text-gray-300'
 														: 'hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:outline-none'}
 														[&[data-outside-visible-months]]:pointer-events-none [&[data-outside-visible-months]]:text-gray-300
 														[&[data-selected]]:bg-blue-500 [&[data-selected]]:text-white [&[data-selected]]:hover:bg-blue-600
 														[&[data-today]]:ring-1 [&[data-today]]:ring-blue-400"
 												>
 													{date.day}
-												</div>
+												</button>
 											</td>
 										{/each}
 									</tr>

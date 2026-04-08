@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { AvailabilityData } from '$lib/types';
+	import type { DateValue } from '@internationalized/date';
 	import SCStepCounter from './SCStepCounter.svelte';
+	import SCMeltDatepicker from './SCMeltDatepicker.svelte';
 
 	let { activityId }: { activityId: string } = $props();
 
@@ -23,6 +25,21 @@
 	});
 
 	const ticketEntries = $derived([...ticketMaxMap.entries()]);
+
+	const checkDateDisabled = $derived.by(() => {
+		const snapshot = [...counts.entries()];
+		const avail = availability;
+		return (date: DateValue): boolean => {
+			const dateStr = date.toString();
+			const dateAvail = avail[dateStr];
+			if (!dateAvail) return true;
+			for (const [code, count] of snapshot) {
+				if (count <= 0) continue;
+				if ((dateAvail[code] ?? 0) < count) return true;
+			}
+			return false;
+		};
+	});
 
 	$effect(() => {
 		isLoading = true;
@@ -69,5 +86,7 @@
 				/>
 			{/each}
 		</div>
+
+		<SCMeltDatepicker isDateDisabled={checkDateDisabled} />
 	{/if}
 </div>

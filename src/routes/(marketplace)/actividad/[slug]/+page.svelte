@@ -40,7 +40,6 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import { ShoppingCart } from '$lib/components/marketplace/ShoppingCart';
-	import SCMeltDatepicker from '$lib/components/marketplace/ShoppingCart/SCMeltDatepicker.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -468,8 +467,6 @@
 
 		<div class="col-sidebar pt-6">
 			<ShoppingCart {activityId} />
-
-			<SCMeltDatepicker />
 		</div>
 	</div>
 
