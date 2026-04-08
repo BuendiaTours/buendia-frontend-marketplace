@@ -15,19 +15,19 @@
 
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
-	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
-	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
-	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
-	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
 	import MapView from '$lib/components/marketplace/MapView.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
+	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
+	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
+	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
@@ -54,7 +54,7 @@
 
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
-	const pickupLocations = $derived(data.activityOptions.flatMap((opt) => opt.pickupLocations));
+	const pickupPlaces = $derived(data.activityOptions.flatMap((opt) => opt.pickupPlaces));
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -219,8 +219,8 @@
 				<Spacer />
 			{/if}
 
-			{#if pickupLocations.length > 0}
-				<PdpCollectionPointsGroup items={pickupLocations} />
+			{#if pickupPlaces.length > 0}
+				<PdpCollectionPointsGroup items={pickupPlaces} />
 				<Spacer />
 			{/if}
 
