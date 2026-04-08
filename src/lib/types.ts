@@ -226,7 +226,7 @@ export type ActivityOption = {
 	liveGuides: string[];
 	individualTickets: ActivityOptionTicket[];
 	groupTickets: ActivityOptionTicket[];
-	pickupLocations: ActivityOptionPickupLocation[];
+	pickupPlaces: ActivityOptionPickupLocation[];
 	createdAt: string;
 	updatedAt: string;
 };
