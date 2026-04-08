@@ -9,18 +9,18 @@
 /** Base path segments for each API resource. */
 export const BASE_PATHS = {
 	activities: '/activities',
-	activityOptions: '/activity-options',
-	availabilityOptions: '/availability-options',
 	activityKinds: '/activity-kind',
-	locations: '/locations',
-	categories: '/categories',
-	tags: '/tags',
+	activityOptions: '/activity-options/by-activity',
 	attractions: '/attractions',
+	auth: '/auth',
+	availabilityOptions: '/availability-options',
+	categories: '/categories',
 	destinations: '/destinations',
 	distributives: '/distributives',
+	locations: '/locations',
+	newsletter: '/newsletter',
 	reviews: '/reviews',
-	auth: '/auth',
-	newsletter: '/newsletter'
+	tags: '/tags'
 } as const;
 
 /** Supported HTTP methods. */
