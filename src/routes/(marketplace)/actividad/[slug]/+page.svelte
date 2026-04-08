@@ -31,6 +31,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
@@ -465,7 +466,9 @@
 		</div>
 
 		<div class="col-sidebar pt-6">
-			<div class="carrito sticky top-0 bg-neutral-500 p-4 text-center">carrito</div>
+			<div class="carrito sticky top-0 bg-neutral-500">
+				<HubspotChat />
+			</div>
 		</div>
 	</div>
 
