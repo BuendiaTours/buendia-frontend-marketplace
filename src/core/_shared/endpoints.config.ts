@@ -9,7 +9,7 @@
 /** Base path segments for each API resource. */
 export const BASE_PATHS = {
 	activities: '/activities',
-	activityOptions: '/activity-options',
+	activityOptions: '/activity-options/by-activity',
 	activityKinds: '/activity-kind',
 	locations: '/locations',
 	categories: '/categories',
