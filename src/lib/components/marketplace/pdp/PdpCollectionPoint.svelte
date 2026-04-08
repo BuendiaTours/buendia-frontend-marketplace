@@ -19,7 +19,7 @@
 	<MapPoint class="mt-0.5 size-5 shrink-0 text-black" />
 	<div class="flex flex-1 flex-col gap-2">
 		<div class="flex flex-col items-start justify-between gap-1.5 sm:flex-row">
-			<span class="p-base font-bold">{data.description}</span>
+			<span class="p-base font-bold">{data.name}</span>
 			{#if mapsUrl}
 				<a
 					href={mapsUrl}

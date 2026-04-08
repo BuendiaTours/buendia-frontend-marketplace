@@ -20,7 +20,7 @@
 	<div class="h2 mb-4">Puntos de encuentro</div>
 
 	<div class="space-y-4">
-		{#each visibleItems as item, i (item.id)}
+		{#each visibleItems as item, i (i)}
 			<PdpCollectionPoint data={item} />
 
 			{#if i < visibleItems.length - 1}

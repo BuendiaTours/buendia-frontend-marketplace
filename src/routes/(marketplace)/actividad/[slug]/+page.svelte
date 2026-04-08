@@ -7,7 +7,7 @@
 	import type { BndLightboxItem } from '$lib/types';
 
 	// Reactivity
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { SvelteURLSearchParams, SvelteMap } from 'svelte/reactivity';
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
@@ -57,7 +57,16 @@
 
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
-	const pickupPlaces = $derived(data.activityOptions.flatMap((opt) => opt.pickupPlaces));
+	const pickupPlaces = $derived(
+		Array.from(
+			new SvelteMap(
+				data.activityOptions
+					.flatMap((opt) => opt.pickupPlaces)
+					.filter((p) => p.kind === 'PICKUP')
+					.map((p) => [p.pickupPointId, p])
+			).values()
+		)
+	);
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
