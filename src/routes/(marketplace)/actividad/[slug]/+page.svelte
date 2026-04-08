@@ -40,6 +40,8 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import { ShoppingCart } from '$lib/components/marketplace/ShoppingCart';
+	import { untrack } from 'svelte';
+	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -56,6 +58,8 @@
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
 	const pickupLocations = $derived(data.activityOptions.flatMap((opt) => opt.pickupLocations));
+
+	const checkout = untrack(() => createCheckout(data.activity.id));
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
