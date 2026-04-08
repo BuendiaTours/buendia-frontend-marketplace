@@ -2,8 +2,8 @@
 	import type { Attraction } from '$lib/types';
 	import { page } from '$app/state';
 	import { buildUrlWithFilters } from '$lib/utils/url';
-	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
-	import DebugApiJson from '$lib/components/backoffice/debug/DebugApiJson.svelte';
+	import { confirmAction } from '$lib/actions/confirmAction';
+	import DebugApiJson from '$lib/components/debug/DebugApiJson.svelte';
 
 	export let data: { attraction: Attraction };
 	const { attraction } = data;
