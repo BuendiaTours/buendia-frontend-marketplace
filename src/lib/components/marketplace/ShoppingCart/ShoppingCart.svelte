@@ -17,6 +17,8 @@
 				.map((t) => [t.group, t])
 		).values()
 	]);
+
+	const adultCount = $derived(checkout.counts.get('ADULT') ?? 0);
 </script>
 
 <div class="carrito">
@@ -37,9 +39,12 @@
 				<SCStepCounter
 					key={ticket.group}
 					value={checkout.counts.get(ticket.group) ?? 0}
-					maxvalue={99}
+					maxvalue={ticket.adultRequired && adultCount === 0 ? 0 : 99}
 					onchange={(v) => checkout.counts.set(ticket.group, v)}
 				/>
+				{#if ticket.adultRequired && adultCount === 0 && (checkout.counts.get(ticket.group) ?? 0) > 0}
+					<p class="p-sm text-error-500">Se precisa al menos un ticket de adulto</p>
+				{/if}
 			{/each}
 		</div>
 

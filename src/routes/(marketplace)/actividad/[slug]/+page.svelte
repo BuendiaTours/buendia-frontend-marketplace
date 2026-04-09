@@ -8,6 +8,7 @@
 
 	// Reactivity
 	import { SvelteURLSearchParams, SvelteMap } from 'svelte/reactivity';
+	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
@@ -88,7 +89,9 @@
 			if (params.stars && params.stars.length > 0) {
 				params.stars.forEach((s) => qs.append('stars', String(s)));
 			}
-			const result = await fetch(`/api/reviews/${activityId}?${qs}`).then((r) => r.json());
+			const result = await fetch(proxyApiRoutes.reviews.byActivity(activityId, qs)).then((r) =>
+				r.json()
+			);
 			if (append) {
 				reviews = [...reviews, ...result.data];
 			} else {

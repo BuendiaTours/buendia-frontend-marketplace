@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { BuendiaLogoStar } from '$lib/icons/Linear';
+	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	type Props = {
 		title?: string;
@@ -36,7 +37,7 @@
 		if (!email || loading) return;
 		loading = true;
 		try {
-			const res = await fetch('/api/newsletter/subscribe', {
+			const res = await fetch(proxyApiRoutes.newsletter.subscribe, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ email })

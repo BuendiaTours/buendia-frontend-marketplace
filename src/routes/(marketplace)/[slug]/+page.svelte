@@ -15,6 +15,7 @@
 	import { format } from 'date-fns';
 	import { patchFilters } from '$lib/utils/filters';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Components
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
@@ -67,7 +68,7 @@
 		const order = $page.url.searchParams.get('order');
 		if (sort) params.set('sort', sort);
 		if (order) params.set('order', order);
-		const res = await fetch(`/api/destinations/${data.destination.id}/activities?${params}`);
+		const res = await fetch(proxyApiRoutes.destinations.activities(data.destination.id, params));
 		const result = await res.json();
 		for (const item of result.data) {
 			accumulatedActivities.push(item);

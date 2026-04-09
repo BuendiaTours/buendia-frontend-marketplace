@@ -2,6 +2,7 @@ import { SvelteMap } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
 import type { AvailabilityData } from '$lib/types';
 import type { DateValue } from '@internationalized/date';
+import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 const CHECKOUT_KEY = Symbol('checkout');
 
@@ -63,7 +64,7 @@ class CheckoutState {
 		this.isLoading = true;
 		this.error = null;
 		try {
-			const r = await fetch(`/api/availability-options/${this.activityId}`);
+			const r = await fetch(proxyApiRoutes.availabilityOptions.byActivity(this.activityId));
 			if (!r.ok) throw new Error(`Error ${r.status}`);
 			const data: AvailabilityData = await r.json();
 			this.availability = data;
