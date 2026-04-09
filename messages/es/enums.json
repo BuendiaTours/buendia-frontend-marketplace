@@ -87,6 +87,8 @@
 	"enum_stageRequirement_optional": "Opcional",
 	"enum_stageRequirement_required": "Requerido",
 	"enum_stageRequirement_suggested": "Sugerido",
+	"enum_passengerKind_ADULT_description": "A partir de 18 años",
+	"enum_passengerKind_ADULT_name": "Adulto",
 	"enum_passengerKind_ALL_description": "Sin restricción de edad o categoría",
 	"enum_passengerKind_ALL_name": "Todos",
 	"enum_passengerKind_CHILD_description": "Menores de 12 años",

@@ -6,6 +6,7 @@
 
 /** Passenger/participant category for pricing and capacity purposes. */
 export enum PassengerKind {
+	ADULT = 'ADULT',
 	ALL = 'ALL',
 	CHILD = 'CHILD',
 	CITIZEN_EU = 'CITIZEN_EU',

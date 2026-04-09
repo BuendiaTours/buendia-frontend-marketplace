@@ -191,7 +191,7 @@ type ActivityOptionTicket = {
 	ageRange: { min: number; max: number };
 	adultRequired: boolean;
 	free: boolean;
-	group: boolean;
+	group: string;
 	ticketNeeded: boolean;
 };
 

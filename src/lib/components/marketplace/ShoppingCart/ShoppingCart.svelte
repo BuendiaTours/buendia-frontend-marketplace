@@ -1,9 +1,22 @@
 <script lang="ts">
+	import type { ActivityOption } from '$lib/types';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import SCStepCounter from './SCStepCounter.svelte';
 	import SCMeltDatepicker from './SCMeltDatepicker.svelte';
 
+	type Props = { activityOptions: ActivityOption[] };
+	let { activityOptions }: Props = $props();
+
 	const checkout = getCheckout();
+
+	const activeTicketGroups = $derived([
+		...new Map(
+			activityOptions
+				.flatMap((opt) => opt.individualTickets)
+				.filter((t) => t.status === 'ACTIVE')
+				.map((t) => [t.group, t])
+		).values()
+	]);
 </script>
 
 <div class="carrito">
@@ -15,17 +28,17 @@
 		</div>
 	{:else if checkout.error}
 		<div class="carrito__error p-4 text-sm text-red-600">{checkout.error}</div>
-	{:else if checkout.ticketEntries.length === 0}
+	{:else if activeTicketGroups.length === 0}
 		<div class="carrito__empty p-4 text-sm text-neutral-500">Sin disponibilidad</div>
 	{:else}
 		<div class="carrito__tickets space-y-4 p-4">
 			<p class="p-base">Número total de tickets: {checkout.totalTickets}</p>
-			{#each checkout.ticketEntries as [code, maxAvailable] (code)}
+			{#each activeTicketGroups as ticket (ticket.id)}
 				<SCStepCounter
-					key={code}
-					value={checkout.counts.get(code) ?? 0}
-					maxvalue={maxAvailable}
-					onchange={(v) => checkout.counts.set(code, v)}
+					key={ticket.group}
+					value={checkout.counts.get(ticket.group) ?? 0}
+					maxvalue={99}
+					onchange={(v) => checkout.counts.set(ticket.group, v)}
 				/>
 			{/each}
 		</div>
