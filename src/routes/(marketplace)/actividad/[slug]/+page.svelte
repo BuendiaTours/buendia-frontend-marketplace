@@ -68,6 +68,14 @@
 		)
 	);
 
+	const availablePassengerKinds = $derived(
+		Array.from(
+			new SvelteMap(
+				data.activityOptions.flatMap((opt) => opt.passengerKinds).map((pk) => [pk.kindId, pk])
+			).values()
+		)
+	);
+
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
@@ -479,7 +487,7 @@
 		</div>
 
 		<div class="col-sidebar pt-6">
-			<ShoppingCart {activityId} />
+			<ShoppingCart activityOptions={data.activityOptions} {activityId} />
 		</div>
 	</div>
 

@@ -7,6 +7,7 @@ const CHECKOUT_KEY = Symbol('checkout');
 
 class CheckoutState {
 	activityId: string;
+	activityOptions = $state([]);
 
 	availability = $state<AvailabilityData>({});
 	selectedDate = $state<DateValue | null>(null);
@@ -25,6 +26,8 @@ class CheckoutState {
 	});
 
 	ticketEntries = $derived([...this.ticketMaxMap.entries()]);
+
+	totalTickets = $derived([...this.counts.values()].reduce((sum, v) => sum + v, 0));
 
 	selectedDateAvailability = $derived(
 		this.selectedDate ? (this.availability[this.selectedDate.toString()] ?? null) : null

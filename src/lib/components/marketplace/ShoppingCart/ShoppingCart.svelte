@@ -19,6 +19,7 @@
 		<div class="carrito__empty p-4 text-sm text-neutral-500">Sin disponibilidad</div>
 	{:else}
 		<div class="carrito__tickets space-y-4 p-4">
+			<p class="p-base">Número total de tickets: {checkout.totalTickets}</p>
 			{#each checkout.ticketEntries as [code, maxAvailable] (code)}
 				<SCStepCounter
 					key={code}
