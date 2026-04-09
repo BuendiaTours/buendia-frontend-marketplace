@@ -5,9 +5,17 @@
 
 <script lang="ts">
 	import { createDatePicker, melt } from '@melt-ui/svelte';
-	import { AltArrowLeft, AltArrowRight, Calendar } from '$lib/icons/Linear';
+	import {
+		AltArrowDown,
+		AltArrowLeft,
+		AltArrowRight,
+		AltArrowUp,
+		Calendar
+	} from '$lib/icons/Linear';
 	import type { DateValue } from '@internationalized/date';
 	import { fade } from 'svelte/transition';
+	import { format } from 'date-fns';
+	import { es } from 'date-fns/locale';
 
 	type Props = {
 		value?: DateValue;
@@ -24,19 +32,8 @@
 	}: Props = $props();
 
 	const {
-		elements: {
-			trigger,
-			content,
-			calendar,
-			cell,
-			grid,
-			heading,
-			prevButton,
-			nextButton,
-			field,
-			segment
-		},
-		states: { months, headingValue, weekdays, segmentContents, open, value: pickerValue },
+		elements: { trigger, content, calendar, cell, grid, heading, prevButton, nextButton },
+		states: { months, headingValue, weekdays, open, value: pickerValue },
 		helpers: { isDateDisabled, isDateUnavailable },
 		options
 	} = createDatePicker({
@@ -44,9 +41,13 @@
 		numberOfMonths: 2,
 		locale: 'es-ES',
 		defaultValue: value,
+		closeOnOutsideClick: false,
 		onValueChange: ({ next }) => {
 			value = next;
-			if (next) onSelect?.(next);
+			if (next) {
+				onSelect?.(next);
+				open.set(false);
+			}
 			return next;
 		}
 	});
@@ -64,32 +65,30 @@
 
 <div class="relative w-full">
 	<!-- Date Field Trigger -->
-	<div
-		use:melt={$field}
-		class="p-sm flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+	<button
+		use:melt={$trigger}
+		class="flex w-full items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+		{disabled}
 	>
-		<Calendar class="text-gray-400" size={18} />
-
-		<div class="flex items-center gap-0.5">
-			{#each $segmentContents as seg, i (i)}
-				<div use:melt={$segment(seg.part)} class="px-0.5 outline-none">
-					{seg.value}
-				</div>
-			{/each}
-		</div>
-
-		<button
-			use:melt={$trigger}
-			class="ml-auto rounded p-1 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-			aria-label="Abrir calendario"
-			{disabled}
-		>
-			<Calendar size={16} />
-		</button>
-	</div>
+		<Calendar class="size-6" />
+		<span class="p-base flex-1 text-left font-bold text-gray-700">
+			{#if $pickerValue}
+				{format($pickerValue.toDate('UTC'), 'd MMM yyyy', { locale: es })}
+			{:else if disabled}
+				Selecciona asistentes primero
+			{:else}
+				Seleccionar fecha
+			{/if}
+		</span>
+		{#if $open}
+			<AltArrowUp class="text-gray-400" size={16} />
+		{:else}
+			<AltArrowDown class="text-gray-400" size={16} />
+		{/if}
+	</button>
 
 	<!-- Popover Content -->
-	{#if true}
+	{#if $open}
 		<!-- $open -->
 		<div
 			transition:fade={{ duration: 150 }}

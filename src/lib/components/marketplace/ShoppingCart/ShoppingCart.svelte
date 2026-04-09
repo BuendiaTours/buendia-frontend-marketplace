@@ -49,6 +49,7 @@
 		</div>
 
 		<SCMeltDatepicker
+			disabled={checkout.totalTickets === 0}
 			isDateDisabled={checkout.checkDateDisabled}
 			onSelect={(date) => (checkout.selectedDate = date)}
 		/>
