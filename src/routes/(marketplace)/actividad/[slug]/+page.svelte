@@ -7,7 +7,7 @@
 	import type { BndLightboxItem } from '$lib/types';
 
 	// Reactivity
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { SvelteURLSearchParams, SvelteMap } from 'svelte/reactivity';
 
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
@@ -15,22 +15,23 @@
 
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
+	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
-	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
-	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
-	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
-	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
 	import MapView from '$lib/components/marketplace/MapView.svelte';
+	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
+	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
+	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
+	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
+	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
+	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
+	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
@@ -55,7 +56,16 @@
 
 	const hasMoreReviews = $derived(currentPage < totalPages);
 	const activityId = $derived(data.activity.id);
-	const pickupLocations = $derived(data.activityOptions.flatMap((opt) => opt.pickupLocations));
+	const pickupPlaces = $derived(
+		Array.from(
+			new SvelteMap(
+				data.activityOptions
+					.flatMap((opt) => opt.pickupPlaces)
+					.filter((p) => p.kind === 'PICKUP')
+					.map((p) => [p.pickupPointId, p])
+			).values()
+		)
+	);
 
 	let selectedOptionId = $state<string | null>(activity.activityTickets[0]?.id ?? null);
 
@@ -234,8 +244,8 @@
 				<Spacer />
 			{/if}
 
-			{#if pickupLocations.length > 0}
-				<PdpCollectionPointsGroup items={pickupLocations} />
+			{#if pickupPlaces.length > 0}
+				<PdpCollectionPointsGroup items={pickupPlaces} />
 				<Spacer />
 			{/if}
 
@@ -480,7 +490,9 @@
 		</div>
 
 		<div class="col-sidebar pt-6">
-			<div class="carrito sticky top-0 bg-neutral-500 p-4 text-center">carrito</div>
+			<div class="carrito sticky top-0 bg-neutral-500">
+				<HubspotChat />
+			</div>
 		</div>
 	</div>
 

@@ -200,12 +200,15 @@ type ActivityOptionTicket = {
 };
 
 export type ActivityOptionPickupLocation = {
-	id: string;
-	optionId: string;
+	pickupPointId: string;
+	kind: string;
+	minutesBefore: number;
+	name: string;
+	address: string;
+	city: string;
+	postCode: string;
+	countryCode: string;
 	location: { type: 'Point'; coordinates: [number, number] } | null;
-	description: string;
-	marginTime: number;
-	timeOfDay: string | null;
 };
 
 export type ActivityOption = {
@@ -231,7 +234,7 @@ export type ActivityOption = {
 	liveGuides: string[];
 	individualTickets: ActivityOptionTicket[];
 	groupTickets: ActivityOptionTicket[];
-	pickupLocations: ActivityOptionPickupLocation[];
+	pickupPlaces: ActivityOptionPickupLocation[];
 	createdAt: string;
 	updatedAt: string;
 };

@@ -133,6 +133,7 @@ Translation files in `messages/{locale}.json`. The `src/paraglide/` directory is
 - `$bindable()` for two-way binding props
 - No legacy `on:...` events, use Svelte 5 event standards
 - No writable stores unless global state is strictly required
+- Use `SvelteMap` / `SvelteSet` / `SvelteURL` / `SvelteURLSearchParams` from `svelte/reactivity` instead of their native equivalents (`Map`, `Set`, `URL`, `URLSearchParams`) — enforced by `svelte/prefer-svelte-reactivity`
 
 ### Styling
 
