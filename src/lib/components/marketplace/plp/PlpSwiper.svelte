@@ -31,10 +31,10 @@
 			{@render header()}
 		</div>
 		<div class="hidden gap-2 lg:flex">
-			<button bind:this={prevBtn} class="e-nav-button" aria-label="Anterior">
+			<button bind:this={prevBtn} class="e-nav-button rounded-full" aria-label="Anterior">
 				<AltArrowLeft class="size-4" />
 			</button>
-			<button bind:this={nextBtn} class="e-nav-button" aria-label="Siguiente">
+			<button bind:this={nextBtn} class="e-nav-button rounded-full" aria-label="Siguiente">
 				<AltArrowRight class="size-4" />
 			</button>
 		</div>

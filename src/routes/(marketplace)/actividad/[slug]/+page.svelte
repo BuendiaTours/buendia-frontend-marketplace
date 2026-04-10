@@ -20,6 +20,7 @@
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
 	import MapView from '$lib/components/marketplace/MapView.svelte';
 	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
 	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
@@ -483,6 +484,10 @@
 
 		<div class="col-sidebar pt-6">
 			<ShoppingCart activityOptions={data.activityOptions} {activityId} />
+
+			<div class="carrito sticky top-0 bg-neutral-500">
+				<HubspotChat />
+			</div>
 		</div>
 	</div>
 
