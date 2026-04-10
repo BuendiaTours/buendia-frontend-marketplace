@@ -153,7 +153,6 @@ export type ActivityOptionUpdateDto = {
 	maxTicketsPerIndividual?: number;
 	privacy?: OptionPrivacy;
 	skipTheLineType?: OptionSkipTheLineType;
-	status?: OptionStatus;
 	supplierOptionCode?: string | null;
 	ticketKind?: OptionTicketKind;
 	title?: string;

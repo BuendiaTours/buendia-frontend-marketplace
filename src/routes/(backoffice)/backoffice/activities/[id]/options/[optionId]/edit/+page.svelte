@@ -9,12 +9,14 @@
 	import { getContext } from 'svelte';
 	import { Database, Settings } from '$lib/icons/Linear';
 	import {
+		OPTION_BOOKING_SYSTEM_OPTIONS,
 		OPTION_DURATION_UNIT_OPTIONS,
 		OPTION_LANGUAGE_OPTIONS,
 		OPTION_PRIVACY_OPTIONS,
 		OPTION_SKIP_THE_LINE_OPTIONS,
 		OPTION_WHEELCHAIR_OPTIONS
 	} from '$lib/labels/activityOptions';
+	import { OptionIntegrationStatus } from '$core/activity-options/enums';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
@@ -47,6 +49,11 @@
 	});
 
 	const formId = 'activity-option-form';
+
+	const bookingSystemLocked = $derived(
+		data.option.integrationStatus === OptionIntegrationStatus.ACTIVITY_INDEXED ||
+			data.option.integrationStatus === OptionIntegrationStatus.COMPLETED
+	);
 </script>
 
 <div class="mb-4 flex justify-end">
@@ -86,8 +93,30 @@
 				error={$errors.language}
 				options={OPTION_LANGUAGE_OPTIONS}
 				placeholder={m.activities_optionPlaceholderLanguage()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-3"
 			/>
+
+			{#if bookingSystemLocked}
+				<FormInputText
+					id="bookingSystem"
+					label={m.activities_optionLabelBookingSystem()}
+					value={OPTION_BOOKING_SYSTEM_OPTIONS.find((o) => o.id === data.option.bookingSystem)
+						?.name ?? data.option.bookingSystem}
+					badge="read only"
+					readonly
+					wrapperClass="md:col-span-3"
+				/>
+			{:else}
+				<FormSelect
+					id="bookingSystem"
+					label={m.activities_optionLabelBookingSystem()}
+					bind:value={$form.bookingSystem}
+					error={$errors.bookingSystem}
+					options={OPTION_BOOKING_SYSTEM_OPTIONS}
+					placeholder={m.activities_optionPlaceholderBookingSystem()}
+					wrapperClass="md:col-span-3"
+				/>
+			{/if}
 
 			<FormInputText
 				id="durationQuantity"
@@ -95,7 +124,7 @@
 				type="number"
 				bind:value={$form.durationQuantity}
 				error={$errors.durationQuantity}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-3"
 			/>
 
 			<FormSelect
@@ -104,17 +133,7 @@
 				bind:value={$form.durationUnit}
 				error={$errors.durationUnit}
 				options={OPTION_DURATION_UNIT_OPTIONS}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormInputText
-				id="cutOff"
-				label={m.activities_optionLabelCutOff()}
-				placeholder={m.activities_optionPlaceholderCutOff()}
-				type="number"
-				bind:value={$form.cutOff}
-				error={$errors.cutOff}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-3"
 			/>
 
 			<FormTextarea

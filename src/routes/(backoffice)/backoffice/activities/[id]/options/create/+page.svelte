@@ -10,6 +10,7 @@
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import { Database, Settings } from '$lib/icons/Linear';
 	import {
+		OPTION_BOOKING_SYSTEM_OPTIONS,
 		OPTION_DURATION_UNIT_OPTIONS,
 		OPTION_LANGUAGE_OPTIONS,
 		OPTION_PRIVACY_OPTIONS,
@@ -50,7 +51,6 @@
 <form id={formId} method="POST" use:enhance class="space-y-4">
 	<input type="hidden" name="id" value={$form.id} />
 	<input type="hidden" name="activityId" value={$form.activityId} />
-	<input type="hidden" name="bookingSystem" value={$form.bookingSystem} />
 
 	<FormAccordion name="form-option-settings" open>
 		{#snippet title()}
@@ -77,6 +77,16 @@
 				error={$errors.language}
 				options={OPTION_LANGUAGE_OPTIONS}
 				placeholder={m.activities_optionPlaceholderLanguage()}
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormSelect
+				id="bookingSystem"
+				label={m.activities_optionLabelBookingSystem()}
+				bind:value={$form.bookingSystem}
+				error={$errors.bookingSystem}
+				options={OPTION_BOOKING_SYSTEM_OPTIONS}
+				placeholder={m.activities_optionPlaceholderBookingSystem()}
 				wrapperClass="md:col-span-4"
 			/>
 
