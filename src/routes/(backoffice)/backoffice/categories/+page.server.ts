@@ -18,9 +18,12 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	try {
 		const breadcrumbs = generateBreadcrumbs(url.pathname);
 
+		const currentPage = filters.page ?? 1;
+		const currentPageSize = filters.pageSize ?? 10;
+
 		const response = await CATEGORY_REQUEST.findByCriteria(fetch, {
-			page: filters.page,
-			pageSize: filters.pageSize,
+			page: currentPage,
+			pageSize: currentPageSize,
 			sort: filters.sort,
 			order: filters.order,
 			search_text: filters.q,
@@ -29,7 +32,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 		return {
 			items: response.data || [],
-			pagination: buildPagination(response.total, filters.page, filters.pageSize),
+			pagination: buildPagination(response.total, currentPage, currentPageSize),
 			filters,
 			sort: filters.sort && filters.order ? { field: filters.sort, order: filters.order } : null,
 			breadcrumbs
