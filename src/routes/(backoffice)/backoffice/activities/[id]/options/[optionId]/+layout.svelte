@@ -45,10 +45,11 @@
 		}
 	});
 	const canPublish = $derived(
-		optionStatus === OptionStatus.DRAFT || optionStatus === OptionStatus.UNPUBLISHED
+		optionStatus === OptionStatus.DRAFT ||
+			optionStatus === OptionStatus.UNPUBLISHED ||
+			optionStatus === OptionStatus.APPROVED
 	);
 	const canUnpublish = $derived(optionStatus === OptionStatus.PUBLISHED);
-	const nextStatus = $derived(canPublish ? OptionStatus.PUBLISHED : OptionStatus.UNPUBLISHED);
 	const changeStatusAction = $derived(
 		`${ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id)}?/changeStatus`
 	);
@@ -103,8 +104,8 @@
 	<span class="badge badge-lg {statusBadgeClass}">{statusLabel}</span>
 	{#if canPublish || canUnpublish}
 		<form method="POST" action={changeStatusAction} class="ml-auto" use:enhance>
-			<input type="hidden" name="status" value={nextStatus} />
 			{#if canPublish}
+				<input type="hidden" name="action" value="publish" />
 				<button
 					type="submit"
 					class="btn btn-soft btn-success"
@@ -119,6 +120,7 @@
 					{m.activities_optionPublishButton()}
 				</button>
 			{:else}
+				<input type="hidden" name="action" value="unpublish" />
 				<button
 					type="submit"
 					class="btn btn-soft btn-warning"

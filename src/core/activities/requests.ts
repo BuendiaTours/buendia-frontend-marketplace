@@ -61,6 +61,22 @@ export const ACTIVITY_REQUEST = {
 		patch(fetchFn, `${BASE}/${id}`, data),
 
 	/**
+	 * Publishes an activity, making it visible to the public.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 */
+	publish: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/publish`, {}),
+
+	/**
+	 * Unpublishes an activity, hiding it from the public.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 */
+	unpublish: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/unpublish`, {}),
+
+	/**
 	 * Deletes an activity by ID.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.

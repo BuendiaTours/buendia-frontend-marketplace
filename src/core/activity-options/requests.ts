@@ -46,6 +46,22 @@ export const ACTIVITY_OPTION_REQUEST = {
 		patch(fetchFn, `${BASE}/${id}`, data),
 
 	/**
+	 * Publishes an activity option, making it available for booking.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity option ID.
+	 */
+	publish: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/publish`, {}),
+
+	/**
+	 * Unpublishes an activity option, hiding it from booking.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity option ID.
+	 */
+	unpublish: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/unpublish`, {}),
+
+	/**
 	 * Retrieves a single activity option by its ID.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity option ID.

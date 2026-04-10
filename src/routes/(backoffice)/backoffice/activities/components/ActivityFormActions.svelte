@@ -44,10 +44,11 @@
 	});
 
 	const canPublish = $derived(
-		activityStatus === ActivityStatus.DRAFT || activityStatus === ActivityStatus.UNPUBLISHED
+		activityStatus === ActivityStatus.DRAFT ||
+			activityStatus === ActivityStatus.UNPUBLISHED ||
+			activityStatus === ActivityStatus.APPROVED
 	);
 	const canUnpublish = $derived(activityStatus === ActivityStatus.PUBLISHED);
-	const nextStatus = $derived(canPublish ? ActivityStatus.PUBLISHED : ActivityStatus.UNPUBLISHED);
 </script>
 
 <div
@@ -64,8 +65,8 @@
 	<div class="ml-auto flex items-center gap-2">
 		{#if isEditMode && activityId && (canPublish || canUnpublish)}
 			<form method="POST" action="?/changeStatus" use:enhance>
-				<input type="hidden" name="status" value={nextStatus} />
 				{#if canPublish}
+					<input type="hidden" name="action" value="publish" />
 					<button
 						type="submit"
 						class="btn btn-soft btn-success"
@@ -81,6 +82,7 @@
 						{m.activities_publishButton()}
 					</button>
 				{:else}
+					<input type="hidden" name="action" value="unpublish" />
 					<button
 						type="submit"
 						class="btn btn-soft btn-warning"

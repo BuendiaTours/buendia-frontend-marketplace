@@ -2,11 +2,11 @@
  * Server load and actions for the activity edit (General) tab.
  * Includes form data, classification (categories + tags), and update/delete actions.
  */
+import * as m from '$paraglide/messages';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import { CATEGORY_REQUEST } from '$core/categories/requests';
 import { TAG_REQUEST, TAG_RELATIONSHIP_REQUEST } from '$core/tags/requests';
 import { CategoryStatus } from '$core/categories/enums';
-import { ActivityStatus } from '$core/activities/enums';
 import { TagRelationshipKind } from '$core/tags/enums';
 import { ApiError } from '$core/_shared/errors';
 import { activityEditSchema } from '../../schemas/activity-edit.schema';
@@ -54,12 +54,11 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 			title: activity.title ?? '',
 			slug: activity.slug ?? '',
 			supplierId: activity.supplier?.id ?? '',
-			codeRef: activity.codeRef ?? '',
 			kind: activity.kind,
 			dateMode: activity.dateMode,
 			guideKind: activity.guideKind,
-			descriptionShort: activity.descriptionShort ?? '',
 			descriptionFull: activity.descriptionFull ?? '',
+			difficult: activity.difficult ?? 2,
 			infoImportant: activity.infoImportant ?? '',
 			phoneContact: activity.phoneContact ?? '',
 			transportKind: activity.transportKind,
@@ -86,12 +85,25 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 	return { form, availableCategories, availableTags, activityTags };
 };
 
+function getPublishErrorMessage(errorCode: string): string | undefined {
+	const messages: Record<string, () => string> = {
+		ACTIVITY_NOT_PUBLISHABLE: m.activities_publishErrorNotPublishable,
+		ACTIVITY_MISSING_DESTINATION: m.activities_publishErrorMissingDestination,
+		ACTIVITY_MISSING_PUBLISHED_OPTION: m.activities_publishErrorMissingOption,
+		ACTIVITY_MISSING_CATEGORY: m.activities_publishErrorMissingCategory,
+		ACTIVITY_MISSING_MEDIA: m.activities_publishErrorMissingMedia,
+		ACTIVITY_NOT_UNPUBLISHABLE: m.activities_publishErrorNotUnpublishable
+	};
+	return messages[errorCode]?.();
+}
+
 export const actions: Actions = {
 	update: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
 		schema: zod(activityEditSchema),
 		updateFn: ACTIVITY_REQUEST.update,
-		redirectToList: true,
+		redirectToEdit: true,
+		redirectDelayMs: 500,
 		paramName: 'id',
 		transformData: ({ id, supplierId, restrictions, notSuitableFor, ...rest }) => ({
 			...rest,
@@ -105,36 +117,42 @@ export const actions: Actions = {
 	}),
 	changeStatus: async ({ fetch, params, request, cookies }) => {
 		const formData = await request.formData();
-		const newStatus = formData.get('status') as string;
-
-		const allowed = [ActivityStatus.PUBLISHED, ActivityStatus.UNPUBLISHED];
-		if (!allowed.includes(newStatus as ActivityStatus)) {
-			setFlashMessage(cookies, {
-				type: 'error',
-				message: 'Transición de estado no permitida.',
-				code: 'status.error'
-			});
-			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
-		}
+		const action = formData.get('action') as string;
 
 		try {
-			await ACTIVITY_REQUEST.update(fetch, params.id, { status: newStatus as ActivityStatus });
-			setFlashMessage(cookies, {
-				type: 'success',
-				message:
-					newStatus === ActivityStatus.PUBLISHED
-						? 'Actividad publicada correctamente.'
-						: 'Actividad despublicada correctamente.',
-				code: 'status.success'
-			});
+			if (action === 'publish') {
+				await ACTIVITY_REQUEST.publish(fetch, params.id);
+				setFlashMessage(cookies, {
+					type: 'success',
+					message: m.activities_publishSuccess(),
+					code: 'status.success'
+				});
+			} else {
+				await ACTIVITY_REQUEST.unpublish(fetch, params.id);
+				setFlashMessage(cookies, {
+					type: 'success',
+					message: m.activities_unpublishSuccess(),
+					code: 'status.success'
+				});
+			}
+
 			await new Promise((resolve) => setTimeout(resolve, 500));
 			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
 		} catch (err) {
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) throw err;
-			const errorMessage =
-				err instanceof ApiError
-					? `Error al cambiar el estado (código ${err.status}).`
-					: 'Error al cambiar el estado de la actividad.';
+
+			let errorMessage: string = m.activities_publishErrorGeneric();
+
+			if (
+				err instanceof ApiError &&
+				err.data &&
+				typeof err.data === 'object' &&
+				'errorCode' in err.data
+			) {
+				const code = (err.data as { errorCode: string }).errorCode;
+				errorMessage = getPublishErrorMessage(code) ?? errorMessage;
+			}
+
 			setFlashMessage(cookies, { type: 'error', message: errorMessage, code: 'status.error' });
 			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);
 		}
