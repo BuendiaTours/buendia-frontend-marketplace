@@ -3,7 +3,7 @@
 	import { format } from 'date-fns';
 
 	// Types
-	import type { ActivityReviewParams } from '$lib/types';
+	import type { ActivityReviewParams, ActivityOption, AvailabilitySlot } from '$lib/types';
 	import type { BndLightboxItem } from '$lib/types';
 
 	// Reactivity
@@ -71,6 +71,20 @@
 	);
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
+
+	const availableOptions = $derived(
+		Object.values(
+			checkout.selectedDateSlots.reduce<
+				Record<string, { option: ActivityOption; slots: AvailabilitySlot[] }>
+			>((acc, slot) => {
+				const option = data.activityOptions.find((o) => o.id === slot.optionId);
+				if (!option) return acc;
+				if (!acc[slot.optionId]) acc[slot.optionId] = { option, slots: [] };
+				acc[slot.optionId].slots.push(slot);
+				return acc;
+			}, {})
+		)
+	);
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -153,6 +167,42 @@
 				reviewsCount={reviewItems.length}
 				wrapperClass="mt-5"
 			/>
+
+			<Spacer wrapperClass="mt-6 mb-8" />
+
+			{#if checkout.selectedDate && availableOptions.length > 0}
+				<div class="activity-options">
+					{#each availableOptions as { option, slots } (option.id)}
+						<div
+							class="activity-option mb-6 rounded-lg border border-[var(--color-border-default)] p-4"
+						>
+							<p><strong>{option.title}</strong></p>
+							<p>{option.description}</p>
+							<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
+							<div class="flex flex-row gap-4">
+								{#each slots as slot (slot.id)}
+									<div>
+										<button type="button" class="e-button cursor-pointer">
+											{format(new Date(slot.dateTime), "HH:mm'h'")}
+										</button>
+										<details class="p-xs mb-4">
+											<summary class="cursor-pointer"
+												>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
+											>
+											{#each slot.tickets as ticket (ticket.id)}
+												<p>
+													Ticket {ticket.id} — {ticket.price}€ (stock: {ticket.stock -
+														ticket.reservedStock})
+												</p>
+											{/each}
+										</details>
+									</div>
+								{/each}
+							</div>
+						</div>
+					{/each}
+				</div>
+			{/if}
 
 			<Spacer wrapperClass="mt-6 mb-8" />
 
