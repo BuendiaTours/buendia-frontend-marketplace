@@ -12,6 +12,7 @@
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
@@ -89,6 +90,21 @@
 			gutter: 4
 		}
 	});
+
+	const calloutStyles = [
+		'neutral',
+		'success',
+		'danger',
+		'warning',
+		'info',
+		'editorial',
+		'neutral-high',
+		'success-high',
+		'danger-high',
+		'warning-high',
+		'info-high',
+		'editorial-high'
+	] as const;
 
 	async function handleConfirm() {
 		confirmResult = null;
@@ -559,6 +575,92 @@
 			<MeltRangeCalendar bind:value={rangeValue} numberOfMonths={2} dayInfo={demoDayInfo} />
 		</div>
 	{/if}
+</div>
+
+<div class="grid grid-cols-6 gap-8">
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: style,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			size="small"
+			items={[
+				{
+					id: `${style}-sm`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: `${style}-b`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: `${style}-1`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				},
+				{
+					id: `${style}-2`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			size="small"
+			items={[
+				{
+					id: `${style}-1`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				},
+				{
+					id: `${style}-2`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
 </div>
 
 <div class="wrapper mt-6">
