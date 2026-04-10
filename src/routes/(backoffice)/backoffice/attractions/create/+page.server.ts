@@ -34,6 +34,7 @@ export const actions: Actions = {
 		schema: zod(attractionFormSchema),
 		createFn: ATTRACTION_REQUEST.create,
 		redirectToList: true,
+		returnToParam: 'addAttractionId',
 		transformData: ({ location, destinations, ...rest }) => ({
 			...rest,
 			latitude: location?.coordinates[1],

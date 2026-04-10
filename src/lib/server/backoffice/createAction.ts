@@ -33,6 +33,13 @@ export type CreateActionConfig<T extends Record<string, unknown> = Record<string
 	 * Defaults to 800ms when redirectToList is true, 0 otherwise.
 	 */
 	redirectDelayMs?: number;
+	/**
+	 * Query param name appended to the returnTo URL with the created resource ID.
+	 * When set, the action checks for a `returnTo` search param and redirects back
+	 * with `?{returnToParam}={id}` so the calling page can auto-add the resource.
+	 * Example: `returnToParam: 'addLocationId'`
+	 */
+	returnToParam?: string;
 };
 
 /**
@@ -48,7 +55,7 @@ export type CreateActionConfig<T extends Record<string, unknown> = Record<string
 export function createCreateAction<T extends Record<string, unknown>>(
 	config: CreateActionConfig<T>
 ) {
-	return async ({ request, fetch, cookies }: RequestEvent) => {
+	return async ({ request, fetch, cookies, url }: RequestEvent) => {
 		const {
 			basePath,
 			schema,
@@ -58,7 +65,8 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			redirectToEdit = true,
 			redirectToList = false,
 			redirectField = 'slug',
-			redirectDelayMs
+			redirectDelayMs,
+			returnToParam
 		} = config;
 
 		const delay = redirectDelayMs ?? 500;
@@ -111,7 +119,19 @@ export function createCreateAction<T extends Record<string, unknown>>(
 				code: 'create.success'
 			});
 
-			// 5. Redirigir según configuración
+			if (delay > 0) {
+				await new Promise((resolve) => setTimeout(resolve, delay));
+			}
+
+			// 5a. Return-to redirect (create-and-return pattern)
+			const returnTo = returnToParam ? url.searchParams.get('returnTo') : null;
+			if (returnTo && returnToParam) {
+				const returnUrl = new URL(returnTo, url.origin);
+				returnUrl.searchParams.set(returnToParam, String(form.data.id));
+				throw redirect(303, returnUrl.pathname + returnUrl.search);
+			}
+
+			// 5b. Redirigir según configuración
 			let redirectPath: string;
 			if (redirectToList) {
 				redirectPath = basePath;
@@ -123,9 +143,6 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			}
 
 			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
-			if (delay > 0) {
-				await new Promise((resolve) => setTimeout(resolve, delay));
-			}
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje (no es un error)

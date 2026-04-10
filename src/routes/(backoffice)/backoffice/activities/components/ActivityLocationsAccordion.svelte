@@ -25,9 +25,11 @@
 		activityId: string;
 		locations: ActivityLocation[];
 		addToast?: ToastFn;
+		/** URL to create a new location with returnTo. */
+		createLocationHref?: string;
 	};
 
-	let { activityId, locations = $bindable(), addToast }: Props = $props();
+	let { activityId, locations = $bindable(), addToast, createLocationHref }: Props = $props();
 
 	let selectedLocationId = $state<string | undefined>(undefined);
 	let selectedRole = $state<ActivityLocationRole>(ActivityLocationRole.DESTINATION);
@@ -143,6 +145,12 @@
 					{m.activities_locationsAddButton()}
 				{/if}
 			</button>
+
+			{#if createLocationHref}
+				<a href={createLocationHref} class="btn btn-outline btn-secondary btn-sm h-[42px]">
+					{m.locations_newLocation()}
+				</a>
+			{/if}
 		</div>
 
 		<div class="md:col-span-12">

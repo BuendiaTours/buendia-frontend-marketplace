@@ -21,9 +21,11 @@
 		activityId: string;
 		attractions: ActivityAttraction[];
 		addToast?: ToastFn;
+		/** URL to create a new attraction with returnTo. */
+		createAttractionHref?: string;
 	};
 
-	let { activityId, attractions = $bindable(), addToast }: Props = $props();
+	let { activityId, attractions = $bindable(), addToast, createAttractionHref }: Props = $props();
 
 	let selectedAttractionId = $state<string | undefined>(undefined);
 	let isAdding = $state(false);
@@ -125,6 +127,12 @@
 					{m.activities_attractionsAddButton()}
 				{/if}
 			</button>
+
+			{#if createAttractionHref}
+				<a href={createAttractionHref} class="btn btn-outline btn-secondary btn-sm h-[42px]">
+					{m.attractions_newAttraction()}
+				</a>
+			{/if}
 		</div>
 
 		<div class="md:col-span-12">

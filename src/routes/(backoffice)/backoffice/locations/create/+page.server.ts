@@ -26,6 +26,7 @@ export const actions: Actions = {
 		schema: zod(locationFormSchema),
 		createFn: LOCATION_REQUEST.create,
 		redirectToList: true,
+		returnToParam: 'addLocationId',
 		// Convert GeoJSON point to flat lat/lng for the API
 		transformData: ({ location, ...rest }) => ({
 			...rest,
