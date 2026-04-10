@@ -8,6 +8,7 @@ import { bookingSystemsApi } from '$core/_shared/helpers';
 import type {
 	TuritopProduct,
 	TuritopProductMappingDto,
+	TuritopResetMappingDto,
 	TuritopTicketMappingDto
 } from '$core/turitop/types';
 
@@ -73,7 +74,12 @@ export const TURITOP_REQUEST = {
 	 * Resets all mappings for a core activity.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param coreActivityId - Core activity ID.
+	 * @param data - Booking system identification (system, systemId, tenant).
 	 */
-	resetMapping: (fetchFn: typeof fetch, coreActivityId: string): Promise<void> =>
-		bookingSystemsApi.post(fetchFn, `/core-activities/${coreActivityId}/mapping/reset`, {})
+	resetMapping: (
+		fetchFn: typeof fetch,
+		coreActivityId: string,
+		data: TuritopResetMappingDto
+	): Promise<void> =>
+		bookingSystemsApi.post(fetchFn, `/core-activities/${coreActivityId}/mapping/reset`, data)
 };

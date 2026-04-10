@@ -36,6 +36,13 @@ export type TuritopTicketMappingDto = {
 	ticketScope: 'INDIVIDUAL' | 'GROUP';
 };
 
+/** Payload for resetting a TuriTop mapping. */
+export type TuritopResetMappingDto = {
+	bookingSystem: string;
+	bookingSystemId: string;
+	tenant: string;
+};
+
 // ── Product (aggregated response) ───────────────
 
 /** The aggregated TuriTop product data returned by the booking system API. */

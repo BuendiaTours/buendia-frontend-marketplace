@@ -29,9 +29,9 @@ export type BokunRawRate = {
 	pricingCategoryIds: number[];
 };
 
-/** Payload for mapping a Bokun rate to a core option. */
+/** Payload for mapping a Bokun rate to a core option (null to unlink). */
 export type BokunRateMappingDto = {
-	coreId: string;
+	coreId: string | null;
 };
 
 // ── Pricing Category ────────────────────────────

@@ -123,8 +123,8 @@
 
 	const canFinish = $derived(
 		currentRate !== undefined &&
-			ratePricingCategories.length > 0 &&
-			ratePricingCategories.every((pc) => mappedPricings.has(pc.id)) &&
+			tickets.length > 0 &&
+			tickets.every((t) => usedTicketIds.has(t.id)) &&
 			!finishing
 	);
 
@@ -209,9 +209,10 @@
 	}
 
 	async function handleUnlink() {
+		if (!currentRate) return;
 		unlinking = true;
 		try {
-			await BOKUN_REQUEST.resetMapping(fetch, activity.id);
+			await BOKUN_REQUEST.mapRate(fetch, currentRate.id, { coreId: null });
 			await delay(500);
 			await ACTIVITY_OPTION_REQUEST.update(fetch, option.id, { supplierOptionCode: null });
 			unlinkDialog?.close();

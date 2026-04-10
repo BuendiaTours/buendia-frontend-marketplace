@@ -171,9 +171,14 @@
 	}
 
 	async function handleUnlink() {
+		if (!turitopProduct) return;
 		unlinking = true;
 		try {
-			await TURITOP_REQUEST.resetMapping(fetch, activity.id);
+			await TURITOP_REQUEST.resetMapping(fetch, activity.id, {
+				bookingSystem: 'TURITOP',
+				bookingSystemId: turitopProduct.shortId,
+				tenant: turitopProduct.tenant
+			});
 			await delay(500);
 			await ACTIVITY_OPTION_REQUEST.update(fetch, option.id, { supplierOptionCode: null });
 			unlinkDialog?.close();
