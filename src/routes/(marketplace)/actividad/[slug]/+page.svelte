@@ -72,6 +72,18 @@
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
+	function isSlotDisabled(slot: AvailabilitySlot): boolean {
+		if (checkout.totalTickets === 0) return false;
+		if (slot.availability - slot.reservedAvailability < checkout.totalTickets) return true;
+		for (const [group, count] of checkout.counts) {
+			if (count === 0) continue;
+			const ticketItem = slot.tickets.find((t) => checkout.ticketIdToGroup.get(t.id) === group);
+			if (!ticketItem) continue;
+			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
+		}
+		return false;
+	}
+
 	const availableOptions = $derived(
 		Object.values(
 			checkout.selectedDateSlots.reduce<
@@ -175,14 +187,20 @@
 					{#each availableOptions as { option, slots } (option.id)}
 						<div
 							class="activity-option mb-6 rounded-lg border border-[var(--color-border-default)] p-4"
+							class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
 						>
 							<p><strong>{option.title}</strong></p>
 							<p>{option.description}</p>
 							<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
 							<div class="flex flex-row gap-4">
+								<p>Selecciona la hora de inicio</p>
 								{#each slots as slot (slot.id)}
 									<div>
-										<button type="button" class="e-button cursor-pointer">
+										<button
+											type="button"
+											class="e-button cursor-pointer"
+											disabled={isSlotDisabled(slot)}
+										>
 											{format(new Date(slot.dateTime), "HH:mm'h'")}
 										</button>
 										<details class="p-xs mb-4">
@@ -199,6 +217,11 @@
 									</div>
 								{/each}
 							</div>
+							{#if slots.every((s) => isSlotDisabled(s))}
+								<p class="p-base text-error-500 mt-2 rounded-md bg-neutral-100 p-2">
+									No hay sufientes plazas disponibles para esta fecha.
+								</p>
+							{/if}
 						</div>
 					{/each}
 				</div>
