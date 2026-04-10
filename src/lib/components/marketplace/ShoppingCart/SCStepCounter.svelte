@@ -2,6 +2,7 @@
 	import * as m from '$paraglide/messages';
 
 	type Props = {
+		id: string | number;
 		key: string;
 		desc?: string;
 		value: number;
@@ -9,7 +10,7 @@
 		onchange?: (value: number) => void;
 	};
 
-	let { key, desc, value = $bindable(), maxvalue, onchange }: Props = $props();
+	let { id, key, desc, value = $bindable(), maxvalue, onchange }: Props = $props();
 
 	const messages = m as unknown as Record<string, () => string>;
 
@@ -17,7 +18,7 @@
 	const description = $derived(messages[`enum_passengerKind_${key}_description`]?.() ?? desc);
 </script>
 
-<div class="flex items-center justify-between gap-4">
+<div data-id={id} class="flex items-center justify-between gap-4">
 	<div class="flex flex-col gap-0.5">
 		<span class="font-bold text-[var(--color-text-primary,#111)]">{label}</span>
 		{#if description}

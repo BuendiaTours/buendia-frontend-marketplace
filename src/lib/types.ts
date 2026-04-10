@@ -234,8 +234,27 @@ export type ActivityOption = {
 	updatedAt: string;
 };
 
-// Record<date, Record<ticketTypeCode, availableCount>>
-export type AvailabilityData = Record<string, Record<string, number>>;
+export type AvailabilityTicketItem = {
+	id: string;
+	price: number;
+	stock: number;
+	reservedStock: number;
+};
+
+export type AvailabilitySlot = {
+	id: string;
+	activityId: string;
+	optionId: string;
+	dateTime: string; // ISO-8601, e.g. "2026-04-09T10:00:00.000Z"
+	availability: number;
+	reservedAvailability: number;
+	addons: unknown[];
+	tickets: AvailabilityTicketItem[];
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type AvailabilityData = AvailabilitySlot[];
 
 export type ActivityCardInfoList = {
 	id: string;

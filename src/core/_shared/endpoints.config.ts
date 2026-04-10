@@ -382,8 +382,8 @@ export const API_ENDPOINTS = {
 		byActivity: {
 			path: (activityId: string, fromDate?: string) =>
 				fromDate
-					? `/activity/${activityId}/availability/${fromDate}`
-					: `/activity/${activityId}/availability`,
+					? `/availability-options/by-activity/${activityId}?fromDate=${fromDate}`
+					: `/availability-options/by-activity/${activityId}`,
 			method: 'GET',
 			description:
 				'Obtiene disponibilidad en tiempo real de una actividad por ID. Acepta fecha de inicio opcional (YYYY-MM-DD); devuelve 2 meses desde esa fecha.',

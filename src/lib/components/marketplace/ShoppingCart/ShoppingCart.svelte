@@ -9,6 +9,10 @@
 
 	const checkout = getCheckout();
 
+	$effect(() => {
+		checkout.activityOptions = activityOptions;
+	});
+
 	const activeTicketGroups = $derived([
 		...new Map(
 			activityOptions
@@ -38,6 +42,7 @@
 			{#each activeTicketGroups as ticket (ticket.id)}
 				<SCStepCounter
 					key={ticket.group}
+					id={ticket.id}
 					value={checkout.counts.get(ticket.group) ?? 0}
 					maxvalue={ticket.adultRequired && adultCount === 0 ? 0 : 99}
 					onchange={(v) => checkout.counts.set(ticket.group, v)}
