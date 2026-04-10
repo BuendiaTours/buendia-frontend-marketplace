@@ -87,7 +87,6 @@ export const ACTIVITY_PETS_ALLOWED_OPTIONS = [
 
 export const ACTIVITY_LOCATION_ROLE_OPTIONS = [
 	{ id: ActivityLocationRole.DESTINATION, name: m.enum_activityLocationRole_destination() },
-	{ id: ActivityLocationRole.ORIGIN, name: m.enum_activityLocationRole_origin() },
 	{ id: ActivityLocationRole.WAYPOINT, name: m.enum_activityLocationRole_waypoint() }
 ];
 

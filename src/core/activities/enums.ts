@@ -40,7 +40,6 @@ export enum ActivityGuideKind {
 /** Role of a location within an activity itinerary. */
 export enum ActivityLocationRole {
 	DESTINATION = 'DESTINATION',
-	ORIGIN = 'ORIGIN',
 	WAYPOINT = 'WAYPOINT'
 }
 
