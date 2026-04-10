@@ -9,7 +9,6 @@ export const activityCreateSchema = z.object({
 	supplierId: z.string().min(1),
 	kind: z.nativeEnum(ActivityKind),
 	guideKind: z.nativeEnum(ActivityGuideKind),
-	descriptionShort: z.string().min(3),
 	descriptionFull: z.string().min(3),
 	codeRef: z.string().max(100).default(''),
 	dateMode: z.nativeEnum(ActivityDateMode).default(ActivityDateMode.DATE_AND_TIME),

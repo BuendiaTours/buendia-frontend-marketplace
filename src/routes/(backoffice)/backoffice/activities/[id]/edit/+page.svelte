@@ -40,7 +40,10 @@
 
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance, submitting } = superForm(data.form, {
-		dataType: 'json'
+		dataType: 'json',
+		invalidateAll: 'force',
+		applyAction: true,
+		resetForm: false
 	});
 
 	const formId = 'activity-form';
@@ -88,28 +91,11 @@
 				wrapperClass="md:col-span-12"
 			/>
 
-			<FormTextarea
-				id="descriptionShort"
-				label={m.activities_labelDescriptionShort()}
-				bind:value={$form.descriptionShort}
-				error={$errors.descriptionShort}
-				rows={3}
-				wrapperClass="md:col-span-12"
-			/>
-
 			<FormTextareaMarkdown
 				id="descriptionFull"
 				label={m.activities_labelDescriptionFull()}
 				bind:value={$form.descriptionFull}
 				error={$errors.descriptionFull}
-			/>
-
-			<FormOrderedStringList
-				id="willDoing"
-				label={m.activities_labelWillDoing()}
-				bind:items={$form.willDoing}
-				error={$errors.willDoing?._errors}
-				placeholder={m.activities_placeholderWillDoing()}
 			/>
 		{/snippet}
 	</FormAccordion>
@@ -130,7 +116,7 @@
 				error={$errors.transportKind}
 				options={ACTIVITY_TRANSPORT_KIND_OPTIONS}
 				placeholder={m.activities_placeholderTransportKind()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormSelect
@@ -141,7 +127,7 @@
 				options={ACTIVITY_TRANSPORT_LOCATION_OPTIONS}
 				placeholder={m.activities_placeholderTransportLocation()}
 				disabled={$form.transportKind === 'NONE'}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 		{/snippet}
 	</FormAccordion>
@@ -221,30 +207,22 @@
 			/>
 
 			<FormInputText
-				id="supplierId"
-				label={m.activities_labelSupplierId()}
-				value={data.activity.supplier?.name ?? ''}
-				badge="read only"
-				readonly
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormInputText
-				id="codeRef"
-				label={m.activities_labelCodeRef()}
-				bind:value={$form.codeRef}
-				error={$errors.codeRef}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormInputText
 				id="slug"
 				label={m.activities_labelSlug()}
 				bind:value={$form.slug}
 				error={$errors.slug}
 				badge="read only"
 				readonly
-				wrapperClass="md:col-span-12"
+				wrapperClass="md:col-span-8"
+			/>
+
+			<FormInputText
+				id="supplierId"
+				label={m.activities_labelSupplierId()}
+				value={data.activity.supplier?.name ?? ''}
+				badge="read only"
+				readonly
+				wrapperClass="md:col-span-4"
 			/>
 		{/snippet}
 	</FormAccordion>
@@ -263,7 +241,16 @@
 				label={m.activities_labelPhoneContact()}
 				bind:value={$form.phoneContact}
 				error={$errors.phoneContact}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
+			/>
+
+			<FormInputText
+				id="difficult"
+				label={m.activities_labelDifficult()}
+				type="number"
+				bind:value={$form.difficult}
+				error={$errors.difficult}
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormTextarea
@@ -282,6 +269,14 @@
 				error={$errors.voucherInfo}
 				rows={3}
 				wrapperClass="md:col-span-12"
+			/>
+
+			<FormOrderedStringList
+				id="willDoing"
+				label={m.activities_labelWillDoing()}
+				bind:items={$form.willDoing}
+				error={$errors.willDoing?._errors}
+				placeholder={m.activities_placeholderWillDoing()}
 			/>
 		{/snippet}
 	</FormAccordion>
@@ -302,7 +297,7 @@
 				error={$errors.petsAllowed}
 				options={ACTIVITY_PETS_ALLOWED_OPTIONS}
 				placeholder={m.activities_placeholderPetsAllowed()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormTextarea
@@ -311,7 +306,7 @@
 				bind:value={$form.petsAllowedDescription}
 				error={$errors.petsAllowedDescription}
 				rows={2}
-				wrapperClass="md:col-span-8"
+				wrapperClass="md:col-span-6"
 			/>
 		{/snippet}
 	</FormAccordion>

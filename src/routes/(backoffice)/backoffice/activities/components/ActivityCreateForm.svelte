@@ -18,7 +18,6 @@
 	import FormInputSlug from '$lib/components/backoffice/forms/FormInputSlug.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
 	import FormAsyncSearch from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
-	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
 	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import ActivityFormActions from './ActivityFormActions.svelte';
 
@@ -55,15 +54,6 @@
 				label={m.activities_labelTitle()}
 				bind:value={$form.title}
 				error={$errors.title}
-				wrapperClass="md:col-span-12"
-			/>
-
-			<FormTextarea
-				id="descriptionShort"
-				label={m.activities_labelDescriptionShort()}
-				bind:value={$form.descriptionShort}
-				error={$errors.descriptionShort}
-				rows={3}
 				wrapperClass="md:col-span-12"
 			/>
 

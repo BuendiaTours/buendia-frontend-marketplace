@@ -123,7 +123,8 @@ export type Activity = {
 	contentBlocks: ActivityContentBlock[];
 	dateMode: ActivityDateMode;
 	descriptionFull: string;
-	descriptionShort: string;
+	descriptionShort: string | null;
+	difficult: number;
 	distributives: ActivityDistributive[];
 	excluded: string[];
 	guideKind: ActivityGuideKind;
@@ -158,7 +159,6 @@ export type ActivityCreateDto = {
 	codeRef?: string;
 	dateMode?: ActivityDateMode;
 	descriptionFull: string;
-	descriptionShort: string;
 	guideKind: ActivityGuideKind;
 	infoImportant?: string;
 	kind: ActivityKind;
@@ -172,7 +172,7 @@ export type ActivityUpdateDto = {
 	codeRef?: string;
 	dateMode?: ActivityDateMode;
 	descriptionFull?: string;
-	descriptionShort?: string;
+	difficult?: number;
 	excluded?: string[];
 	guideKind?: ActivityGuideKind;
 	included?: string[];
@@ -186,7 +186,6 @@ export type ActivityUpdateDto = {
 	phoneContact?: string;
 	restrictions?: ActivityRestriction[];
 	slug?: string;
-	status?: ActivityStatus;
 	title?: string;
 	transportKind?: ActivityTransportKind;
 	transportLocation?: ActivityTransportLocation;
