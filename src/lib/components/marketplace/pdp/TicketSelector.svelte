@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ClockCircle, ByBuendia, CalendarCheck, MoneyBack } from '$lib/icons/Linear';
+	import Badge from '../Badge.svelte';
 	import type { ActivityOption } from '$lib/types';
 
 	type Props = {
@@ -67,7 +68,7 @@
 			onkeydown={!option.disabled ? (e) => e.key === 'Enter' && select(option) : undefined}
 		>
 			<div class="flex w-full flex-col gap-5 lg:gap-6">
-				<div class="flex flex-col gap-2">
+				<div class="flex flex-col items-start gap-2">
 					<div class="flex justify-between gap-5">
 						<p class="h2">{option.title}</p>
 						<div
@@ -89,6 +90,18 @@
 							{/if}
 						</div>
 					</div>
+					{#if option.totalTickets < 9}
+						<Badge
+							data={{
+								title:
+									option.totalTickets === 1
+										? `Solo queda ${option.totalTickets} plaza`
+										: `Solo quedan ${option.totalTickets} plazas`,
+								color: 'bg-salmon-100 text-salmon-700'
+							}}
+							wrapperClass="p-sm"
+						/>
+					{/if}
 					{#if option.description}
 						<p class="p-base mb-1 text-neutral-600">{option.description}</p>
 					{/if}
@@ -122,7 +135,7 @@
 				</div>
 				{#if !option.disabled}
 					<div class="flex flex-col {selected ? 'gap-5 lg:gap-6' : 'gap-2'}">
-						{#if option.duration.quantity && option.duration.unit}
+						{#if option.duration.quantity && option.duration.unit && selected}
 							<p class="p-base flex gap-2 font-bold text-neutral-800">
 								<ClockCircle class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
 								Duración: {option.duration.quantity}
@@ -154,8 +167,8 @@
 						{/if}
 						<div class="flex flex-col gap-2">
 							<p class="p-base flex gap-2 font-bold text-neutral-800">
-								<ByBuendia class="h-6 shrink-0 grow-0 basis-6" />
 								{#if selected}
+									<ByBuendia class="h-6 shrink-0 grow-0 basis-6" />
 									Condiciones by buendía
 								{:else}
 									Incluye condiciones by buendía

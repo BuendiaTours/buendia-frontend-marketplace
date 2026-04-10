@@ -217,6 +217,7 @@ export type ActivityOption = {
 	activityId: string;
 	availabilityGroupId: string | null;
 	title: string;
+	totalTickets: number;
 	description: string | null;
 	supplierOptionCode: string;
 	status: string;
