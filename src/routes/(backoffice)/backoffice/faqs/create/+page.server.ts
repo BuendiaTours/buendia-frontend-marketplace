@@ -10,13 +10,20 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = createCreateLoad<FaqFormSchema>({
-	schema: zod(faqFormSchema),
-	initialValues: {
-		question: '',
-		answer: ''
-	}
-});
+export const load: PageServerLoad = async ({ url, ...rest }) => {
+	const activityId = url.searchParams.get('activityId') || undefined;
+
+	const loader = createCreateLoad<FaqFormSchema>({
+		schema: zod(faqFormSchema),
+		initialValues: {
+			question: '',
+			answer: '',
+			...(activityId ? { activityId } : {})
+		}
+	});
+
+	return loader({ url, ...rest } as Parameters<typeof loader>[0]);
+};
 
 export const actions: Actions = {
 	default: createCreateAction({
@@ -24,6 +31,12 @@ export const actions: Actions = {
 		schema: zod(faqFormSchema),
 		createFn: FAQ_REQUEST.create,
 		redirectToList: true,
-		transformData: ({ id, question, answer }) => ({ id, question, answer })
+		returnToParam: 'addFaqId',
+		transformData: ({ id, activityId, question, answer }) => ({
+			id,
+			question,
+			answer,
+			...(activityId ? { activityId } : {})
+		})
 	})
 };

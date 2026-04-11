@@ -12,6 +12,12 @@ export enum FaqStatus {
 	PUBLISHED = 'PUBLISHED'
 }
 
+/** Filter for querying FAQs by scope. */
+export enum FaqScopeFilter {
+	GLOBAL = 'GLOBAL',
+	ACTIVITY = 'ACTIVITY'
+}
+
 /** Attributes available for sorting FAQ lists. */
 export enum FaqSort {
 	CREATED_AT = 'CREATED_AT',

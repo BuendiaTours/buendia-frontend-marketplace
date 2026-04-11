@@ -10,6 +10,7 @@
 import type {
 	FaqRelationshipEntityType,
 	FaqRelationshipSort,
+	FaqScopeFilter,
 	FaqSort,
 	FaqStatus
 } from '$core/faqs/enums';
@@ -20,6 +21,7 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 /** Full FAQ projection as returned by the API. */
 export type Faq = {
 	id: string;
+	activityId: string | null;
 	answer: string;
 	question: string;
 	status: FaqStatus;
@@ -43,6 +45,7 @@ export type FaqRelationship = {
 /** Payload for creating a new FAQ. */
 export type FaqCreateDto = {
 	id: string;
+	activityId?: string;
 	answer: string;
 	question: string;
 };
@@ -80,6 +83,7 @@ export type FaqCriteria = {
 	skip?: number;
 	limit?: number;
 	id?: string;
+	scope?: FaqScopeFilter;
 	status?: FaqStatus;
 	sort?: FaqSort;
 	operator?: CriteriaOperator;

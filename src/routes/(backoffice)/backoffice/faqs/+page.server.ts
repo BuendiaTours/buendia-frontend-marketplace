@@ -23,7 +23,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			pageSize: filters.pageSize,
 			sort: filters.sort,
 			order: filters.order,
-			status: filters.status
+			status: filters.status,
+			scope: 'GLOBAL'
 		} as FaqCriteria);
 
 		return {

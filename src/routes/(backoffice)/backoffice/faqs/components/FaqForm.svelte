@@ -49,6 +49,9 @@
 		{/snippet}
 		{#snippet content()}
 			<input type="hidden" name="id" value={$form.id} />
+			{#if $form.activityId}
+				<input type="hidden" name="activityId" value={$form.activityId} />
+			{/if}
 
 			<FormInputText
 				id="question"

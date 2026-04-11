@@ -43,6 +43,18 @@ export const load: PageServerLoad = async ({ parent, fetch, url }) => {
 		})
 	);
 
+	const addFaqId = url.searchParams.get('addFaqId');
+	let pendingFaq: { id: string; question: string } | null = null;
+
+	if (addFaqId) {
+		try {
+			const faq = await FAQ_REQUEST.findById(fetch, addFaqId);
+			pendingFaq = { id: faq.id, question: faq.question };
+		} catch {
+			// Not found yet (CQRS) — silently ignore
+		}
+	}
+
 	let availableFaqs: { id: string; question: string }[] = [];
 	let activityFaqs: { relationshipId: string; faqId: string; question: string }[] = [];
 
@@ -72,6 +84,7 @@ export const load: PageServerLoad = async ({ parent, fetch, url }) => {
 		pendingContentBlock,
 		images,
 		availableFaqs,
-		activityFaqs
+		activityFaqs,
+		pendingFaq
 	};
 };

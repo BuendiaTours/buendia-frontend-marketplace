@@ -26,9 +26,10 @@
 		faqs: FaqWithRelation[];
 		availableFaqs: { id: string; question: string }[];
 		addToast?: ToastFn;
+		createFaqHref?: string;
 	};
 
-	let { activityId, faqs = $bindable(), availableFaqs, addToast }: Props = $props();
+	let { activityId, faqs = $bindable(), availableFaqs, addToast, createFaqHref }: Props = $props();
 
 	let selectedFaqId = $state('');
 	let isAdding = $state(false);
@@ -128,6 +129,12 @@
 					{m.activities_faqsAddButton()}
 				{/if}
 			</button>
+
+			{#if createFaqHref}
+				<a href={createFaqHref} class="btn btn-outline btn-secondary btn-sm h-[42px]">
+					{m.faqs_newResource()}
+				</a>
+			{/if}
 		</div>
 
 		<div class="md:col-span-12">
