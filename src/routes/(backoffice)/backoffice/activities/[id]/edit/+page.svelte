@@ -271,6 +271,15 @@
 				wrapperClass="md:col-span-12"
 			/>
 
+			<FormTextarea
+				id="supplierTip"
+				label={m.activities_labelSupplierTip()}
+				bind:value={$form.supplierTip}
+				error={$errors.supplierTip}
+				rows={3}
+				wrapperClass="md:col-span-12"
+			/>
+
 			<FormOrderedStringList
 				id="willDoing"
 				label={m.activities_labelWillDoing()}

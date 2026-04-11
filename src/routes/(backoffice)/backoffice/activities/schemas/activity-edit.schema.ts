@@ -27,6 +27,7 @@ export const activityEditSchema = z.object({
 		.default(ActivityTransportLocation.NOT_APPLY),
 	petsAllowed: z.nativeEnum(ActivityPetsAllowed).default(ActivityPetsAllowed.NOT_APPLY),
 	petsAllowedDescription: z.string().default(''),
+	supplierTip: z.string().default(''),
 	voucherInfo: z.string().default(''),
 	restrictions: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
 	notSuitableFor: z.array(z.object({ id: z.string(), name: z.string() })).default([]),

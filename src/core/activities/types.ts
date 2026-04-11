@@ -143,6 +143,7 @@ export type Activity = {
 	stages: ActivityStage[];
 	status: ActivityStatus;
 	supplier: ActivitySupplier;
+	supplierTip: string | null;
 	title: string;
 	transportKind: ActivityTransportKind;
 	transportLocation: ActivityTransportLocation;
@@ -186,6 +187,7 @@ export type ActivityUpdateDto = {
 	phoneContact?: string;
 	restrictions?: ActivityRestriction[];
 	slug?: string;
+	supplierTip?: string;
 	title?: string;
 	transportKind?: ActivityTransportKind;
 	transportLocation?: ActivityTransportLocation;

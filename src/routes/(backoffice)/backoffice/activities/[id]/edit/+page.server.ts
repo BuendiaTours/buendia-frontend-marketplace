@@ -65,6 +65,7 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 			transportLocation: activity.transportLocation,
 			petsAllowed: activity.petsAllowed?.allowed,
 			petsAllowedDescription: activity.petsAllowed?.description ?? '',
+			supplierTip: activity.supplierTip ?? '',
 			voucherInfo: activity.voucherInfo ?? '',
 			restrictions: (activity.restrictions ?? []).map((r) => {
 				const option = ACTIVITY_RESTRICTION_OPTIONS.find((o) => o.id === r);
