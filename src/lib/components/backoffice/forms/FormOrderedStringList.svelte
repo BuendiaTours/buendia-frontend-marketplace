@@ -52,7 +52,8 @@
 	}: Props = $props();
 
 	let draggedIndex = $state<number | null>(null);
-	let textareaRefs: HTMLTextAreaElement[] = [];
+	// eslint-disable-next-line svelte/no-top-level-browser-globals
+	let textareaRefs = $state<HTMLTextAreaElement[]>([]);
 
 	async function addItem() {
 		items = [...items, ''];
