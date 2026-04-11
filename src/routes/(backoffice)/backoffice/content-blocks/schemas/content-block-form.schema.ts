@@ -3,6 +3,7 @@ import { ContentBlockKind } from '$core/content-blocks/enums';
 
 export const contentBlockFormSchema = z.object({
 	id: z.string(),
+	activityId: z.string().optional(),
 	title: z.string().min(2).max(200),
 	description: z.string().min(2).max(500),
 	kind: z.nativeEnum(ContentBlockKind),

@@ -39,6 +39,11 @@
 	"contentBlocks_createMediaButton": "Crear nueva imagen",
 	"contentBlocks_noImages": "No hay imágenes asociadas",
 	"contentBlocks_removeImage": "Quitar",
+	"contentBlocks_filterScopePlaceholder": "Alcance",
+	"contentBlocks_filterScopeClear": "Limpiar alcance",
+	"contentBlocks_columnScope": "Alcance",
 	"enum_contentBlockKind_activity": "Actividad",
-	"enum_contentBlockKind_url": "URL"
+	"enum_contentBlockKind_url": "URL",
+	"enum_contentBlockScope_global": "Global",
+	"enum_contentBlockScope_activity": "Vinculado a actividad"
 }

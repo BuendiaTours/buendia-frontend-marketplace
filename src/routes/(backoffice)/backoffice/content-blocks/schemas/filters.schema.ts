@@ -1,7 +1,7 @@
 import type { FiltersSchema } from '$lib/utils/filters';
 import { createOrderField, createSortField } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-import { ContentBlockKind } from '$core/content-blocks/enums';
+import { ContentBlockKind, ContentBlockScopeFilter } from '$core/content-blocks/enums';
 
 export type ContentBlocksFilters = {
 	page?: number;
@@ -10,6 +10,7 @@ export type ContentBlocksFilters = {
 	order?: CriteriaSortOption;
 	q?: string;
 	kind?: ContentBlockKind;
+	scope?: ContentBlockScopeFilter;
 };
 
 export const contentBlocksFiltersSchema: FiltersSchema<ContentBlocksFilters> = {
@@ -69,6 +70,22 @@ export const contentBlocksFiltersSchema: FiltersSchema<ContentBlocksFilters> = {
 					out.set('kind', value);
 				} else {
 					out.delete('kind');
+				}
+			},
+			resetPageOnChange: true
+		},
+		scope: {
+			parse: (raw) => {
+				if (Object.values(ContentBlockScopeFilter).includes(raw as ContentBlockScopeFilter)) {
+					return raw as ContentBlockScopeFilter;
+				}
+				return undefined;
+			},
+			serialize: (value, out) => {
+				if (value) {
+					out.set('scope', value);
+				} else {
+					out.delete('scope');
 				}
 			},
 			resetPageOnChange: true

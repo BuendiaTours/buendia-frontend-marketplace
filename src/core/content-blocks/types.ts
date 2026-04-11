@@ -7,7 +7,11 @@
  * - **Criteria** (query parameters for filtering and pagination)
  */
 
-import type { ContentBlockKind, ContentBlockSortAttribute } from '$core/content-blocks/enums';
+import type {
+	ContentBlockKind,
+	ContentBlockScopeFilter,
+	ContentBlockSortAttribute
+} from '$core/content-blocks/enums';
 import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 
 // ── Shared nested types ─────────────────────────
@@ -25,6 +29,7 @@ export type EntityImage = {
 /** Full content block projection as returned by the API. */
 export type ContentBlock = {
 	id: string;
+	activityId: string | null;
 	description: string;
 	images: EntityImage[];
 	kind: ContentBlockKind;
@@ -37,6 +42,7 @@ export type ContentBlock = {
 /** Payload for creating a new content block. */
 export type ContentBlockCreateDto = {
 	id: string;
+	activityId?: string;
 	description: string;
 	kind: ContentBlockKind;
 	target: string;
@@ -61,6 +67,7 @@ export type ContentBlockCriteria = {
 	limit?: number;
 	id?: string;
 	kind?: ContentBlockKind;
+	scope?: ContentBlockScopeFilter;
 	searchText?: string;
 	target?: string;
 	title?: string;

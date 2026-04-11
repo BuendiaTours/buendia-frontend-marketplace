@@ -23,7 +23,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			sort: filters.sort,
 			order: filters.order,
 			searchText: filters.q,
-			kind: filters.kind
+			kind: filters.kind,
+			scope: 'GLOBAL'
 		} as ContentBlockCriteria);
 
 		return {

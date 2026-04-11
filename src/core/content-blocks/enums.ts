@@ -10,6 +10,12 @@ export enum ContentBlockKind {
 	URL = 'URL'
 }
 
+/** Filter for querying content blocks by scope. */
+export enum ContentBlockScopeFilter {
+	GLOBAL = 'GLOBAL',
+	ACTIVITY = 'ACTIVITY'
+}
+
 /** Attributes available for sorting content block lists. */
 export enum ContentBlockSortAttribute {
 	KIND = 'KIND',

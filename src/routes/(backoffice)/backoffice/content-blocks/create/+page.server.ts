@@ -14,16 +14,23 @@ import { ApiError } from '$core/_shared/errors';
 import { logger } from '$lib/utils/logger';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = createCreateLoad<ContentBlockFormSchema>({
-	schema: zod(contentBlockFormSchema),
-	initialValues: {
-		title: '',
-		description: '',
-		kind: ContentBlockKind.URL,
-		target: '',
-		mediaIds: []
-	}
-});
+export const load: PageServerLoad = async ({ url, ...rest }) => {
+	const activityId = url.searchParams.get('activityId') || undefined;
+
+	const loader = createCreateLoad<ContentBlockFormSchema>({
+		schema: zod(contentBlockFormSchema),
+		initialValues: {
+			title: '',
+			description: '',
+			kind: ContentBlockKind.URL,
+			target: '',
+			mediaIds: [],
+			...(activityId ? { activityId } : {})
+		}
+	});
+
+	return loader({ url, ...rest } as Parameters<typeof loader>[0]);
+};
 
 export const actions: Actions = {
 	default: async ({ request, fetch, cookies, url }) => {
