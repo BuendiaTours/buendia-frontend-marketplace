@@ -110,10 +110,12 @@
 	);
 
 	$effect(() => {
-		const firstAvailable = optionsWithSlots
-			.flatMap(({ slots }) => slots)
-			.find((s) => !isSlotDisabled(s));
-		selectedSlotId = firstAvailable?.id ?? null;
+		const allSlots = optionsWithSlots.flatMap(({ slots }) => slots);
+		const currentId = untrack(() => selectedSlotId);
+		const currentIsValid = allSlots.some((s) => s.id === currentId && !isSlotDisabled(s));
+		if (!currentIsValid) {
+			selectedSlotId = allSlots.find((s) => !isSlotDisabled(s))?.id ?? null;
+		}
 	});
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {

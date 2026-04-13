@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { ActivityOption, AvailabilitySlot } from '$lib/types';
+	import { SvelteMap } from 'svelte/reactivity';
 	import * as m from '$paraglide/messages';
 	import { format } from 'date-fns';
+	import { es } from 'date-fns/locale';
+	import { parseDate } from '@internationalized/date';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import { formatEuro } from '$lib/utils/currency';
 
@@ -49,6 +52,28 @@
 		return reasons;
 	}
 
+	const nextAvailableDates = $derived.by(() => {
+		if (!slots.every((s) => isSlotDisabled(s))) return [];
+		const selectedDateStr = checkout.selectedDate?.toString() ?? '';
+		const today = new Date().toISOString().slice(0, 10);
+
+		const byDate = new SvelteMap<string, AvailabilitySlot[]>();
+		for (const slot of checkout.availability) {
+			if (slot.optionId !== option.id) continue;
+			const dateStr = format(new Date(slot.dateTime), 'yyyy-MM-dd');
+			if (dateStr === selectedDateStr || dateStr < today) continue;
+			const arr = byDate.get(dateStr) ?? [];
+			arr.push(slot);
+			byDate.set(dateStr, arr);
+		}
+
+		return [...byDate.entries()]
+			.filter(([, dateSlots]) => dateSlots.some((s) => !isSlotDisabled(s)))
+			.sort(([a], [b]) => a.localeCompare(b))
+			.slice(0, 3)
+			.map(([dateStr]) => dateStr);
+	});
+
 	$effect(() => {
 		if (selectedSlotId === null) return;
 		const current = slots.find((s) => s.id === selectedSlotId);
@@ -79,35 +104,58 @@
 		<p>{option.description}</p>
 		<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
 
-		<p>Selecciona la hora de inicio</p>
-		<div class="flex flex-row gap-4"></div>
-		{#each slots as slot (slot.id)}
-			<div>
-				<label>
-					<input
-						type="radio"
-						class="radio"
-						name="slot"
-						value={slot.id}
-						checked={selectedSlotId === slot.id}
-						disabled={isSlotDisabled(slot)}
-						onchange={() => (selectedSlotId = slot.id)}
-					/>
-					{format(new Date(slot.dateTime), "HH:mm'h'")}
-				</label>
-				<details class="p-xs mb-4">
-					<summary class="cursor-pointer"
-						>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
+		{#if slots.some((s) => !isSlotDisabled(s))}
+			<p>Selecciona la hora de inicio</p>
+			<div class="flex flex-row gap-4"></div>
+			{#each slots as slot (slot.id)}
+				<div class="sc-activity-options__option__slot">
+					<label>
+						<input
+							type="radio"
+							class="radio"
+							name="slot"
+							value={slot.id}
+							checked={selectedSlotId === slot.id}
+							disabled={isSlotDisabled(slot)}
+							onchange={() => (selectedSlotId = slot.id)}
+						/>
+						{format(new Date(slot.dateTime), "HH:mm'h'")}
+					</label>
+					<details class="p-xs mb-4">
+						<summary class="cursor-pointer"
+							>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
+						>
+						{#each slot.tickets as ticket (ticket.id)}
+							<p>
+								{checkout.ticketIdToGroup.get(ticket.id) ?? '?'} ({ticket.id}) — {ticket.price}€
+								(stock: {ticket.stock - ticket.reservedStock})
+							</p>
+						{/each}
+					</details>
+				</div>
+			{/each}
+		{/if}
+
+		{#if nextAvailableDates.length > 0}
+			<p class="p-xs mt-2 font-semibold">Próximas fechas disponibles:</p>
+			<div class="p-xs mt-1 flex flex-wrap gap-2">
+				{#each nextAvailableDates as dateStr (dateStr)}
+					<button
+						class="e-button e-button-secondary"
+						onclick={() => {
+							checkout.selectedDate = parseDate(dateStr);
+							const firstSlot = checkout.availability
+								.filter((s) => s.optionId === option.id)
+								.filter((s) => format(new Date(s.dateTime), 'yyyy-MM-dd') === dateStr)
+								.find((s) => !isSlotDisabled(s));
+							if (firstSlot) selectedSlotId = firstSlot.id;
+						}}
 					>
-					{#each slot.tickets as ticket (ticket.id)}
-						<p>
-							{checkout.ticketIdToGroup.get(ticket.id) ?? '?'} ({ticket.id}) — {ticket.price}€
-							(stock: {ticket.stock - ticket.reservedStock})
-						</p>
-					{/each}
-				</details>
+						{format(new Date(dateStr), "d 'de' MMM", { locale: es })}
+					</button>
+				{/each}
 			</div>
-		{/each}
+		{/if}
 	</div>
 
 	<div
