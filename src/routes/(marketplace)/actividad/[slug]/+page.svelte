@@ -87,14 +87,7 @@
 		return false;
 	}
 
-	$effect(() => {
-		const firstAvailable = availableOptions
-			.flatMap(({ slots }) => slots)
-			.find((s) => !isSlotDisabled(s));
-		selectedSlotId = firstAvailable?.id ?? null;
-	});
-
-	const availableOptions = $derived(
+	const allOptions = $derived(
 		Object.values(
 			checkout.selectedDateSlots.reduce<
 				Record<string, { option: ActivityOption; slots: AvailabilitySlot[] }>
@@ -107,6 +100,21 @@
 			}, {})
 		)
 	);
+
+	const optionsWithSlots = $derived(
+		allOptions.filter(({ slots }) => slots.some((s) => !isSlotDisabled(s)))
+	);
+
+	const optionsWithoutSlots = $derived(
+		allOptions.filter(({ slots }) => slots.every((s) => isSlotDisabled(s)))
+	);
+
+	$effect(() => {
+		const firstAvailable = optionsWithSlots
+			.flatMap(({ slots }) => slots)
+			.find((s) => !isSlotDisabled(s));
+		selectedSlotId = firstAvailable?.id ?? null;
+	});
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -192,24 +200,34 @@
 
 			<Spacer wrapperClass="mt-6 mb-8" />
 
-			{#if checkout.selectedDate && availableOptions.length > 0}
-				<p class="h2">{availableOptions.length} opciones disponibles</p>
+			{#if checkout.selectedDate && optionsWithSlots.length > 0}
+				<p class="h2">{optionsWithSlots.length} opciones disponibles</p>
 				<p>Todas las opciones incluyen las mismas condiciones by buendía</p>
-				<div class="sc-activity-options">
-					{#each availableOptions as { option, slots } (option.id)}
+				<div class="sc-activity-options mt-6">
+					{#each optionsWithSlots as { option, slots } (option.id)}
 						<SCActivityOption {option} {slots} bind:selectedSlotId />
 					{/each}
 				</div>
 			{/if}
 
-			<Spacer wrapperClass="mt-6 mb-8" />
+			{#if checkout.selectedDate && optionsWithoutSlots.length > 0}
+				<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
+				<div class="sc-activity-options mt-6">
+					{#each optionsWithoutSlots as { option, slots } (option.id)}
+						<SCActivityOption {option} {slots} bind:selectedSlotId />
+					{/each}
+				</div>
+			{/if}
+
+			{#if checkout.selectedDate && (optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0)}
+				<Spacer wrapperClass="mt-6 mb-8" />
+			{/if}
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
 				<PdpHighlights items={activity.highlights} wrapperClass="" />
+				<Spacer wrapperClass="mt-8 mb-6" />
 			{/if}
-
-			<Spacer wrapperClass="mt-8 mb-6" />
 
 			<!-- pdp-by-buendia-banner -->
 
