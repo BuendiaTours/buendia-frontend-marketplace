@@ -64,13 +64,13 @@
 							Desde {#if item.discount}<span class="line-through">{item.price} €</span>{/if}
 						</p>
 						{#if item.discount}
-							<p class="text-price text-salmon-700">{item.discount} €</p>
+							<p class="h2 text-salmon-700 !font-black">{item.discount} €</p>
 						{:else}
-							<p class="text-price text-neutral-800">{item.price} €</p>
+							<p class="h2 !font-black text-neutral-800">{item.price} €</p>
 						{/if}
 					{/if}
 					{#if item.isFreeTour}
-						<p class="text-price text-neutral-800">Gratis</p>
+						<p class="h2 !font-black text-neutral-800">Gratis</p>
 					{/if}
 				</div>
 				{#if item.rating}
