@@ -46,7 +46,7 @@
 			if (!ticketItem) continue;
 			const ticketAvailable = ticketItem.stock - ticketItem.reservedStock;
 			if (ticketAvailable < count) {
-				reasons.push(`Solo quedan ${ticketAvailable} para «${group}», has seleccionado ${count}`);
+				reasons.push(`Solo quedan ${ticketAvailable} para ${group}, has seleccionado ${count}`);
 			}
 		}
 		return reasons;
@@ -74,6 +74,11 @@
 			.map(([dateStr]) => dateStr);
 	});
 
+	function htmlComment(node: Element, text: string) {
+		const comment = document.createComment(text);
+		node.replaceWith(comment);
+	}
+
 	$effect(() => {
 		if (selectedSlotId === null) return;
 		const current = slots.find((s) => s.id === selectedSlotId);
@@ -91,10 +96,10 @@
 		{#if slots.every((s) => isSlotDisabled(s))}
 			<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
 				No hay suficientes plazas disponibles para esta fecha.
+				{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
+					<template use:htmlComment={reason}></template>
+				{/each}
 			</p>
-			{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
-				<p class="p-sm mt-1 text-neutral-600">• {reason}</p>
-			{/each}
 		{:else if slots.some((s) => s.availability - s.reservedAvailability < 10)}
 			<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
 				Sólo quedan {Math.min(...slots.map((s) => s.availability - s.reservedAvailability))} plazas en
@@ -106,10 +111,9 @@
 
 		{#if slots.some((s) => !isSlotDisabled(s))}
 			<p>Selecciona la hora de inicio</p>
-			<div class="flex flex-row gap-4"></div>
-			{#each slots as slot (slot.id)}
-				<div class="sc-activity-options__option__slot">
-					<label>
+			<div class="flex flex-row gap-4">
+				{#each slots as slot (slot.id)}
+					<label class="sc-activity-options__option__slot">
 						<input
 							type="radio"
 							class="radio"
@@ -121,7 +125,7 @@
 						/>
 						{format(new Date(slot.dateTime), "HH:mm'h'")}
 					</label>
-					<details class="p-xs mb-4">
+					<details class="p-xs mb-4 !hidden">
 						<summary class="cursor-pointer"
 							>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
 						>
@@ -132,8 +136,15 @@
 							</p>
 						{/each}
 					</details>
-				</div>
-			{/each}
+				{/each}
+			</div>
+
+			<!-- Esto probablemente sea un booleano en el activity-option -->
+			<p class="neutral-800 mt-6 font-bold">
+				Incluye <a href="/conditions" target="_blank" class="underline underline-offset-8"
+					>condiciones by buendía</a
+				>
+			</p>
 		{/if}
 
 		{#if nextAvailableDates.length > 0}
@@ -171,7 +182,11 @@
 					return sum + (ticket ? ticket.price * count : 0);
 				}, 0)}
 				<div class="sc-activity-options__option__prices flex flex-col gap-2">
-					<p class="text-price text-right">
+					<p class="sc-activity-options__option__discount text-right">
+						<!-- Esto debería venir del back pero todaví no lo tenemos -->
+						<strike>108,00</strike> € <span class="text-salmon-strong">-15%</span>
+					</p>
+					<p class="sc-activity-options__option__total text-price text-right">
 						{formatEuro(total)}
 					</p>
 					<ul class="p-sm text-right">
