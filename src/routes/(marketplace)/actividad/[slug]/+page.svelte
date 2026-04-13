@@ -228,7 +228,7 @@
 				<div class="activity-options">
 					{#each availableOptions as { option, slots } (option.id)}
 						<div
-							class="activity-option mb-6 rounded-lg border-2 border-[var(--color-border-default)] p-4"
+							class="cs-activity-option mb-6 rounded-lg border-2 border-[var(--color-border-default)] p-4"
 							class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
 							class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 						>
@@ -282,7 +282,7 @@
 									{/each}
 								</div>
 								<div
-									class="flex w-[200px] shrink-0 flex-col gap-4 border-l border-[var(--color-border-default)] pl-4"
+									class="flex w-[200px] shrink-0 flex-col gap-3 border-l border-[var(--color-border-default)] pl-4"
 								>
 									{#if slots.some((s) => s.id === selectedSlotId)}
 										{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
@@ -293,36 +293,41 @@
 												);
 												return sum + (ticket ? ticket.price * count : 0);
 											}, 0)}
-											<p class="text-price flex justify-between gap-2 pt-2">
-												{formatEuro(total)}
-											</p>
-											<ul class="p-sm">
-												{#each checkout.counts as [group, count] (group)}
-													{#if count > 0}
-														{@const ticket = selectedSlot.tickets.find(
-															(t) => checkout.ticketIdToGroup.get(t.id) === group
-														)}
-														{#if ticket}
-															<li class="flex-end flex">
-																<span class="p-sm font-bold text-neutral-700"
-																	>{count}
-																	{messages[`enum_passengerKind_${group}_name`]?.() ?? group} ×
-																	{formatEuro(ticket.price)}
-																</span>
-															</li>
+											<div class="sc-option-prices flex flex-col gap-2">
+												<p class="text-price text-right">
+													{formatEuro(total)}
+												</p>
+												<ul class="p-sm text-right">
+													{#each checkout.counts as [group, count] (group)}
+														{#if count > 0}
+															{@const ticket = selectedSlot.tickets.find(
+																(t) => checkout.ticketIdToGroup.get(t.id) === group
+															)}
+															{#if ticket}
+																<li class="">
+																	<span class="p-sm font-bold text-neutral-700"
+																		>{count}
+																		{messages[`enum_passengerKind_${group}_name`]?.() ?? group} ×
+																		{formatEuro(ticket.price)}
+																	</span>
+																</li>
+															{/if}
 														{/if}
-													{/if}
-												{/each}
-											</ul>
-											<p class="p-xs text-neutral-600">Tasas e impuestos incluidos</p>
+													{/each}
+												</ul>
+												<p class="p-sm text-right text-neutral-600">Tasas e impuestos incluidos</p>
+											</div>
 										{/if}
 									{/if}
 
 									{#if slots.some((s) => s.id === selectedSlotId)}
-										<button type="button" class="e-button e-button-primary">Reservar ahora</button>
-										<button type="button" class="e-button e-button-secondary"
-											>Añadir al carrito</button
-										>
+										<div class="cs-activity-option__actions">
+											<button type="button" class="e-button e-button-primary">Reservar ahora</button
+											>
+											<button type="button" class="e-button e-button-secondary mt-3"
+												>Añadir al carrito</button
+											>
+										</div>
 									{/if}
 								</div>
 							</div>
