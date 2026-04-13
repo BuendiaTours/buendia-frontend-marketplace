@@ -10,6 +10,11 @@
 			HubSpotConversations?: { widget: { open: () => void; close: () => void } };
 		};
 
+	type Props = {
+		wrapperClass?: string;
+	};
+	let { wrapperClass = '' }: Props = $props();
+
 	let chatAvailable = $state(false);
 
 	$effect(() => {
@@ -42,7 +47,7 @@
 </script>
 
 {#if chatAvailable}
-	<div class="rounded-xl border border-solid border-neutral-300 bg-white p-5 lg:p-6">
+	<div class="rounded-xl border border-solid border-neutral-300 bg-white p-5 lg:p-6 {wrapperClass}">
 		<p class="p mb-2 flex items-center gap-1 font-bold text-neutral-800 lg:gap-2">
 			<ChatRoundLine class="size-6" />Hablamos contigo
 		</p>

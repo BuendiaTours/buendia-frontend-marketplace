@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { format } from 'date-fns';
+	import * as m from '$paraglide/messages';
 
 	// Types
 	import type { ActivityReviewParams, ActivityOption, AvailabilitySlot } from '$lib/types';
@@ -13,9 +14,12 @@
 	// Actions
 	import { clampText } from '$lib/actions/marketplace/clampText';
 	import { trackClick } from '$lib/analytics';
+	import { formatEuro } from '$lib/utils/currency';
 
 	// Components
-	// import Badge from '$lib/components/marketplace/Badge.svelte';
+	import { ShoppingCart } from '$lib/components/marketplace/ShoppingCart';
+	import { untrack } from 'svelte';
+	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
@@ -40,9 +44,8 @@
 	// Icons
 	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
-	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import { ShoppingCart } from '$lib/components/marketplace/ShoppingCart';
-	import { untrack } from 'svelte';
+
+	// Checkout store / cart state
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -140,6 +143,8 @@
 		recent: { sort: 'createdAt', order: 'DESC' }
 	};
 
+	const messages = m as unknown as Record<string, () => string>;
+
 	async function loadActivityReviews(params: ActivityReviewParams, append = false) {
 		isLoadingReviews = true;
 		try {
@@ -218,14 +223,30 @@
 			<Spacer wrapperClass="mt-6 mb-8" />
 
 			{#if checkout.selectedDate && availableOptions.length > 0}
+				<p class="h2">{availableOptions.length} opciones disponibles</p>
+				<p>Todas las opciones incluyen las mismas condiciones by buendía</p>
 				<div class="activity-options">
 					{#each availableOptions as { option, slots } (option.id)}
 						<div
-							class="activity-option mb-6 rounded-lg border border-[var(--color-border-default)] p-4"
+							class="activity-option mb-6 rounded-lg border-2 border-[var(--color-border-default)] p-4"
 							class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
 							class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 						>
-							<p><strong>{option.title}</strong></p>
+							<h2 class="h2">{option.title}</h2>
+							{#if slots.every((s) => isSlotDisabled(s))}
+								<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
+									No hay suficientes plazas disponibles para esta fecha.
+								</p>
+								{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
+									<p class="p-sm mt-1 text-neutral-600">• {reason}</p>
+								{/each}
+							{:else if slots.some((s) => s.availability - s.reservedAvailability < 10)}
+								<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
+									Sólo quedan {Math.min(
+										...slots.map((s) => s.availability - s.reservedAvailability)
+									)} plazas en alguna de las opciones
+								</p>
+							{/if}
 							<p>{option.description}</p>
 							<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
 							<div class="flex flex-row gap-4">
@@ -263,30 +284,48 @@
 								<div
 									class="flex w-[200px] shrink-0 flex-col gap-4 border-l border-[var(--color-border-default)] pl-4"
 								>
-									<p>Precio total: {option.price}€</p>
+									{#if slots.some((s) => s.id === selectedSlotId)}
+										{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
+										{#if selectedSlot}
+											{@const total = [...checkout.counts].reduce((sum, [group, count]) => {
+												const ticket = selectedSlot.tickets.find(
+													(t) => checkout.ticketIdToGroup.get(t.id) === group
+												);
+												return sum + (ticket ? ticket.price * count : 0);
+											}, 0)}
+											<p class="text-price flex justify-between gap-2 pt-2">
+												{formatEuro(total)}
+											</p>
+											<ul class="p-sm">
+												{#each checkout.counts as [group, count] (group)}
+													{#if count > 0}
+														{@const ticket = selectedSlot.tickets.find(
+															(t) => checkout.ticketIdToGroup.get(t.id) === group
+														)}
+														{#if ticket}
+															<li class="flex-end flex">
+																<span class="p-sm font-bold text-neutral-700"
+																	>{count}
+																	{messages[`enum_passengerKind_${group}_name`]?.() ?? group} ×
+																	{formatEuro(ticket.price)}
+																</span>
+															</li>
+														{/if}
+													{/if}
+												{/each}
+											</ul>
+											<p class="p-xs text-neutral-600">Tasas e impuestos incluidos</p>
+										{/if}
+									{/if}
 
-									<button
-										type="button"
-										class="e-button e-button-primary"
-										disabled={!slots.some((s) => s.id === selectedSlotId)}>Reservar ahora</button
-									>
-									<button
-										type="button"
-										class="e-button e-button-secondary"
-										disabled={!slots.some((s) => s.id === selectedSlotId)}>Añadir al carrito</button
-									>
+									{#if slots.some((s) => s.id === selectedSlotId)}
+										<button type="button" class="e-button e-button-primary">Reservar ahora</button>
+										<button type="button" class="e-button e-button-secondary"
+											>Añadir al carrito</button
+										>
+									{/if}
 								</div>
 							</div>
-							{#if slots.every((s) => isSlotDisabled(s))}
-								<div class="mt-2 rounded-md bg-neutral-100 p-2">
-									<p class="p-base text-error-500">
-										No hay suficientes plazas disponibles para esta fecha.
-									</p>
-									{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
-										<p class="p-sm mt-1 text-neutral-600">• {reason}</p>
-									{/each}
-								</div>
-							{/if}
 						</div>
 					{/each}
 				</div>
@@ -621,10 +660,10 @@
 		</div>
 
 		<div class="col-sidebar pt-6">
-			<ShoppingCart activityOptions={data.activityOptions} {activityId} />
+			<div class="carrito sticky top-0">
+				<ShoppingCart activityOptions={data.activityOptions} {activityId} />
 
-			<div class="carrito sticky top-0 bg-neutral-500">
-				<HubspotChat />
+				<HubspotChat wrapperClass="mt-4" />
 			</div>
 		</div>
 	</div>

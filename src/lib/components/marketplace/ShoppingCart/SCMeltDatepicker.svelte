@@ -67,7 +67,8 @@
 	<!-- Date Field Trigger -->
 	<button
 		use:melt={$trigger}
-		class="flex w-full items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+		class="flex w-full cursor-pointer items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+		class:!cursor-not-allowed={disabled}
 		{disabled}
 	>
 		<Calendar class="size-6" />
