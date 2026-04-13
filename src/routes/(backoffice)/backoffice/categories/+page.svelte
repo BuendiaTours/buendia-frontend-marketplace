@@ -112,6 +112,9 @@
 					/>
 				</th>
 				<th>
+					<span>{m.categories_columnActivityCount()}</span>
+				</th>
+				<th>
 					<span>{m.categories_columnStatus()}</span>
 				</th>
 				<th class="w-0">
@@ -122,7 +125,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="3" class="text-center">
+					<td colspan="4" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.categories_emptyState()}</p>
 						</div>
@@ -140,6 +143,9 @@
 							{#if item.description}
 								<p class="text-base-content/50 text-xs">{item.description}</p>
 							{/if}
+						</td>
+						<td>
+							<span class="badge badge-outline badge-sm">{item.activityCount}</span>
 						</td>
 						<td>
 							{#if item.status === 'ACTIVE'}

@@ -12,6 +12,7 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 /** Full category projection as returned by the API. */
 export type Category = {
 	id: string;
+	activityCount: number;
 	createdAt: string;
 	description: string | null;
 	name: string;

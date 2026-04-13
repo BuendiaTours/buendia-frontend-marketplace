@@ -119,6 +119,9 @@
 				<th>
 					<span>{m.contentBlocks_columnTarget()}</span>
 				</th>
+				<th>
+					<span>{m.contentBlocks_columnActivityCount()}</span>
+				</th>
 				<th class="w-0">
 					<TableResetSort currentSort={sort} />
 				</th>
@@ -127,7 +130,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="4" class="text-center">
+					<td colspan="5" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.contentBlocks_emptyState()}</p>
 						</div>
@@ -182,6 +185,9 @@
 						</td>
 						<td>
 							<span class="text-base-content/70 max-w-xs truncate text-sm">{item.target}</span>
+						</td>
+						<td>
+							<span class="badge badge-outline badge-sm">{item.activityCount}</span>
 						</td>
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">

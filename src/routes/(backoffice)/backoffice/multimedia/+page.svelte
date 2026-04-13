@@ -208,6 +208,9 @@
 					<span>{m.multimedia_columnKind()}</span>
 				</th>
 				<th>
+					<span>{m.multimedia_columnActivityCount()}</span>
+				</th>
+				<th>
 					<span>{m.multimedia_columnStatus()}</span>
 				</th>
 				<th class="w-0">
@@ -218,7 +221,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="4" class="text-center">
+					<td colspan="5" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.multimedia_emptyState()}</p>
 						</div>
@@ -270,6 +273,9 @@
 							<span class="badge badge-outline badge-sm">
 								{MEDIA_KIND_OPTIONS.find((o) => o.id === item.kind)?.name || item.kind}
 							</span>
+						</td>
+						<td>
+							<span class="badge badge-outline badge-sm">{item.activityCount}</span>
 						</td>
 						<td>
 							{#if item.status === MediaStatus.READY}

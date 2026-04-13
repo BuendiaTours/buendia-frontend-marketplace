@@ -98,6 +98,9 @@
 				<th>
 					<span>{m.attractions_columnDestinations()}</span>
 				</th>
+				<th>
+					<span>{m.attractions_columnActivityCount()}</span>
+				</th>
 				<th class="w-0">
 					<TableResetSort currentSort={sort} />
 				</th>
@@ -106,7 +109,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="3" class="text-center">
+					<td colspan="4" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.attractions_emptyState()}</p>
 						</div>
@@ -135,6 +138,9 @@
 									{/each}
 								</div>
 							{/if}
+						</td>
+						<td>
+							<span class="badge badge-outline badge-sm">{item.activityCount}</span>
 						</td>
 						<td class="w-0 text-right">
 							<div class="dropdown dropdown-end dropdown-bottom">

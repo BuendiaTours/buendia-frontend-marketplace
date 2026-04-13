@@ -26,6 +26,7 @@
 	"categories_newCategory": "Nueva categoria",
 	"categories_columnName": "Nombre",
 	"categories_columnStatus": "Estado",
+	"categories_columnActivityCount": "Actividades",
 	"categories_emptyState": "No se encontraron elementos",
 	"enum_categoryStatus_active": "Activo",
 	"enum_categoryStatus_draft": "Borrador",

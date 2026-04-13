@@ -32,6 +32,7 @@
 	"attractions_newAttraction": "Nueva atraccion",
 	"attractions_columnName": "Nombre",
 	"attractions_columnDestinations": "Destinos",
+	"attractions_columnActivityCount": "Actividades",
 	"attractions_emptyState": "No se encontraron elementos",
 	"attractions_detailPageTitle": "Detalle de Atraccion"
 }

@@ -32,6 +32,7 @@
 	"multimedia_columnTitle": "Título",
 	"multimedia_columnKind": "Tipo",
 	"multimedia_columnStatus": "Estado",
+	"multimedia_columnActivityCount": "Actividades",
 	"multimedia_emptyState": "No se encontraron imágenes",
 	"enum_mediaStatus_pending": "Pendiente",
 	"enum_mediaStatus_processing": "Procesando",

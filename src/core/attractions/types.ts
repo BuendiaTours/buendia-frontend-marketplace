@@ -29,6 +29,7 @@ export type AttractionImage = {
 /** Full attraction projection as returned by the API. */
 export type Attraction = {
 	id: string;
+	activityCount: number;
 	coordinates: Coords | null;
 	createdAt: string;
 	description: string | null;

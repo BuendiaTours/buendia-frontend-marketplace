@@ -40,6 +40,7 @@ export type MediaVariant = {
 /** Full media projection as returned by the API. */
 export type Media = {
 	id: string;
+	activityCount: number;
 	altText: string;
 	createdAt: string;
 	focalPoints: MediaPresetFocalPoint[];

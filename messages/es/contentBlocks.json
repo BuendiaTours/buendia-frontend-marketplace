@@ -31,6 +31,7 @@
 	"contentBlocks_columnTitle": "Título",
 	"contentBlocks_columnKind": "Tipo",
 	"contentBlocks_columnTarget": "Destino",
+	"contentBlocks_columnActivityCount": "Actividades",
 	"contentBlocks_emptyState": "No se encontraron bloques de contenido",
 	"contentBlocks_sectionImages": "Imágenes",
 	"contentBlocks_sectionImagesDescription": "Imágenes asociadas al bloque de contenido.",
