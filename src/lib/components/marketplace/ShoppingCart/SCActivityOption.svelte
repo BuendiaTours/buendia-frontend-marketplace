@@ -150,8 +150,10 @@
 
 			{#if slots.some((s) => s.id === selectedSlotId)}
 				<div class="cs-activity-option__actions">
-					<button type="button" class="e-button e-button-primary">Reservar ahora</button>
-					<button type="button" class="e-button e-button-secondary mt-3">Añadir al carrito</button>
+					<button type="button" class="e-button e-button-primary w-full">Reservar ahora</button>
+					<button type="button" class="e-button e-button-secondary mt-3 w-full"
+						>Añadir al carrito</button
+					>
 				</div>
 			{/if}
 		</div>
