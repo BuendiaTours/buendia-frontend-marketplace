@@ -75,11 +75,14 @@
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
-	// eslint-disable-next-line svelte/prefer-writable-derived -- also written by user interaction
+	 
 	let selectedSlotId = $state<string | null>(null);
 
 	$effect(() => {
-		selectedSlotId = availableOptions[0]?.slots[0]?.id ?? null;
+		const firstAvailable = availableOptions
+			.flatMap(({ slots }) => slots)
+			.find((s) => !isSlotDisabled(s));
+		selectedSlotId = firstAvailable?.id ?? null;
 	});
 
 	$effect(() => {
