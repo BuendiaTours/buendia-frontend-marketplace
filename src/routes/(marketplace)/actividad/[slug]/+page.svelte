@@ -75,7 +75,6 @@
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
-	 
 	let selectedSlotId = $state<string | null>(null);
 
 	$effect(() => {
@@ -228,10 +227,10 @@
 			{#if checkout.selectedDate && availableOptions.length > 0}
 				<p class="h2">{availableOptions.length} opciones disponibles</p>
 				<p>Todas las opciones incluyen las mismas condiciones by buendía</p>
-				<div class="activity-options">
+				<div class="sc-activity-options">
 					{#each availableOptions as { option, slots } (option.id)}
 						<div
-							class="cs-activity-option mb-6 rounded-lg border-2 border-[var(--color-border-default)] p-4"
+							class="sc-activity-options__option mb-6 rounded-lg border-2 border-[var(--color-border-default)] p-4"
 							class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
 							class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 						>
@@ -296,7 +295,7 @@
 												);
 												return sum + (ticket ? ticket.price * count : 0);
 											}, 0)}
-											<div class="sc-option-prices flex flex-col gap-2">
+											<div class="sc-activity-options__option__prices flex flex-col gap-2">
 												<p class="text-price text-right">
 													{formatEuro(total)}
 												</p>
