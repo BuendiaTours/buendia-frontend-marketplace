@@ -30,6 +30,7 @@
 	}: Props = $props();
 
 	let searchValue = $state<string | undefined>(undefined);
+	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
 	let isMoving = $state<string | null>(null);
 
