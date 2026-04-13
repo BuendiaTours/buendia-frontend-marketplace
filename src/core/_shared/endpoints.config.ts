@@ -382,7 +382,7 @@ export const API_ENDPOINTS = {
 		byActivity: {
 			path: (activityId: string, fromDate?: string) =>
 				fromDate
-					? `/availability-options/by-activity/${activityId}?fromDate=${fromDate}`
+					? `/availability-options/by-activity/${activityId}/from/${fromDate}`
 					: `/availability-options/by-activity/${activityId}`,
 			method: 'GET',
 			description:

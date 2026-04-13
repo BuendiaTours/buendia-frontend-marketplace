@@ -20,6 +20,7 @@
 	type Props = {
 		value?: DateValue;
 		onSelect?: (date: DateValue) => void;
+		onMonthChange?: (fromDate: string) => void;
 		disabled?: boolean;
 		isDateDisabled?: (date: DateValue) => boolean;
 	};
@@ -27,6 +28,7 @@
 	let {
 		value = $bindable(),
 		onSelect,
+		onMonthChange,
 		disabled = false,
 		isDateDisabled: checkDisabled
 	}: Props = $props();
@@ -60,6 +62,17 @@
 
 	$effect(() => {
 		if (checkDisabled) options.isDateDisabled.set(checkDisabled);
+	});
+
+	let prevMonthStr = '';
+	$effect(() => {
+		const last = $months[$months.length - 1];
+		if (!last) return;
+		const monthStr = `${last.value.year}-${String(last.value.month).padStart(2, '0')}-01`;
+		if (monthStr === prevMonthStr) return;
+		const wasEmpty = prevMonthStr === '';
+		prevMonthStr = monthStr;
+		if (!wasEmpty) onMonthChange?.(monthStr);
 	});
 </script>
 

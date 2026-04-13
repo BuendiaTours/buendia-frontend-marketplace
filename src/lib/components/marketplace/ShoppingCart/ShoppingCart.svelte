@@ -57,6 +57,7 @@
 			disabled={checkout.totalTickets === 0}
 			isDateDisabled={checkout.checkDateDisabled}
 			onSelect={(date) => (checkout.selectedDate = date)}
+			onMonthChange={(fromDate) => checkout.loadAvailabilityFrom(fromDate)}
 		/>
 	{/if}
 </div>

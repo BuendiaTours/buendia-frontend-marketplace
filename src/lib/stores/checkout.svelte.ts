@@ -139,6 +139,25 @@ class CheckoutState {
 			this.isLoading = false;
 		}
 	}
+
+	private loadedFromDates = new Set<string>();
+
+	async loadAvailabilityFrom(fromDate: string) {
+		if (this.loadedFromDates.has(fromDate)) return;
+		this.loadedFromDates.add(fromDate);
+		try {
+			const r = await fetch(
+				proxyApiRoutes.availabilityOptions.byActivity(this.activityId, fromDate)
+			);
+			if (!r.ok) throw new Error(`Error ${r.status}`);
+			const data: AvailabilityData = await r.json();
+			const existingIds = new Set(this.availability.map((s) => s.id));
+			this.availability = [...this.availability, ...data.filter((s) => !existingIds.has(s.id))];
+		} catch (e) {
+			console.error('Failed to load additional availability:', e);
+			this.loadedFromDates.delete(fromDate);
+		}
+	}
 }
 
 export function createCheckout(activityId: string): CheckoutState {
