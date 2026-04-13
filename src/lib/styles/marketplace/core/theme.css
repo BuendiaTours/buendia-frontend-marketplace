@@ -51,7 +51,7 @@
 		--radius-pill: 999px;
 	}
 
-	*:not(.rounded-full) {
+	*:not(.rounded-full):not(input[type='radio'].radio) {
 		corner-shape: squircle;
 	}
 }

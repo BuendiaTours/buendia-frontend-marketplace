@@ -72,6 +72,20 @@
 
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
+	// eslint-disable-next-line svelte/prefer-writable-derived -- also written by user interaction
+	let selectedSlotId = $state<string | null>(null);
+
+	$effect(() => {
+		selectedSlotId = availableOptions[0]?.slots[0]?.id ?? null;
+	});
+
+	$effect(() => {
+		if (selectedSlotId === null) return;
+		const allSlots = availableOptions.flatMap(({ slots }) => slots);
+		const current = allSlots.find((s) => s.id === selectedSlotId);
+		if (current && isSlotDisabled(current)) selectedSlotId = null;
+	});
+
 	function isSlotDisabled(slot: AvailabilitySlot): boolean {
 		if (checkout.totalTickets === 0) return false;
 		if (slot.availability - slot.reservedAvailability < checkout.totalTickets) return true;
@@ -82,6 +96,27 @@
 			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
 		}
 		return false;
+	}
+
+	function getSlotDisabledReasons(slot: AvailabilitySlot): string[] {
+		if (checkout.totalTickets === 0) return [];
+		const reasons: string[] = [];
+		const available = slot.availability - slot.reservedAvailability;
+		if (available < checkout.totalTickets) {
+			reasons.push(
+				`Solo quedan ${available} plaza${available !== 1 ? 's' : ''} disponibles y has seleccionado ${checkout.totalTickets}`
+			);
+		}
+		for (const [group, count] of checkout.counts) {
+			if (count === 0) continue;
+			const ticketItem = slot.tickets.find((t) => checkout.ticketIdToGroup.get(t.id) === group);
+			if (!ticketItem) continue;
+			const ticketAvailable = ticketItem.stock - ticketItem.reservedStock;
+			if (ticketAvailable < count) {
+				reasons.push(`Solo quedan ${ticketAvailable} para «${group}», has seleccionado ${count}`);
+			}
+		}
+		return reasons;
 	}
 
 	const availableOptions = $derived(
@@ -188,39 +223,69 @@
 						<div
 							class="activity-option mb-6 rounded-lg border border-[var(--color-border-default)] p-4"
 							class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
+							class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 						>
 							<p><strong>{option.title}</strong></p>
 							<p>{option.description}</p>
 							<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
 							<div class="flex flex-row gap-4">
-								<p>Selecciona la hora de inicio</p>
-								{#each slots as slot (slot.id)}
-									<div>
-										<button
-											type="button"
-											class="e-button cursor-pointer"
-											disabled={isSlotDisabled(slot)}
-										>
-											{format(new Date(slot.dateTime), "HH:mm'h'")}
-										</button>
-										<details class="p-xs mb-4">
-											<summary class="cursor-pointer"
-												>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
-											>
-											{#each slot.tickets as ticket (ticket.id)}
-												<p>
-													Ticket {ticket.id} — {ticket.price}€ (stock: {ticket.stock -
-														ticket.reservedStock})
-												</p>
-											{/each}
-										</details>
-									</div>
-								{/each}
+								<div class="flex-1">
+									<p>Selecciona la hora de inicio</p>
+									<div class="flex flex-row gap-4"></div>
+									{#each slots as slot (slot.id)}
+										<div>
+											<label>
+												<input
+													type="radio"
+													class="radio"
+													name="slot"
+													value={slot.id}
+													checked={selectedSlotId === slot.id}
+													disabled={isSlotDisabled(slot)}
+													onchange={() => (selectedSlotId = slot.id)}
+												/>
+												{format(new Date(slot.dateTime), "HH:mm'h'")}
+											</label>
+											<details class="p-xs mb-4">
+												<summary class="cursor-pointer"
+													>Disponibilidad: {slot.availability - slot.reservedAvailability}</summary
+												>
+												{#each slot.tickets as ticket (ticket.id)}
+													<p>
+														{checkout.ticketIdToGroup.get(ticket.id) ?? '?'} ({ticket.id}) — {ticket.price}€
+														(stock: {ticket.stock - ticket.reservedStock})
+													</p>
+												{/each}
+											</details>
+										</div>
+									{/each}
+								</div>
+								<div
+									class="flex w-[200px] shrink-0 flex-col gap-4 border-l border-[var(--color-border-default)] pl-4"
+								>
+									<p>Precio total: {option.price}€</p>
+
+									<button
+										type="button"
+										class="e-button e-button-primary"
+										disabled={!slots.some((s) => s.id === selectedSlotId)}>Reservar ahora</button
+									>
+									<button
+										type="button"
+										class="e-button e-button-secondary"
+										disabled={!slots.some((s) => s.id === selectedSlotId)}>Añadir al carrito</button
+									>
+								</div>
 							</div>
 							{#if slots.every((s) => isSlotDisabled(s))}
-								<p class="p-base text-error-500 mt-2 rounded-md bg-neutral-100 p-2">
-									No hay sufientes plazas disponibles para esta fecha.
-								</p>
+								<div class="mt-2 rounded-md bg-neutral-100 p-2">
+									<p class="p-base text-error-500">
+										No hay suficientes plazas disponibles para esta fecha.
+									</p>
+									{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
+										<p class="p-sm mt-1 text-neutral-600">• {reason}</p>
+									{/each}
+								</div>
 							{/if}
 						</div>
 					{/each}
