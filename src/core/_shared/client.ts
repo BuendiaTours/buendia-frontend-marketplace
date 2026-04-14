@@ -9,7 +9,7 @@
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { logger } from '$lib/utils/logger';
-import { apiConfig } from '$core/_shared/config';
+import { apiConfig, bookingsApiConfig } from '$core/_shared/config';
 import type { ApiRequestOptions, ApiResponse, AuthProvider } from '$core/_shared/types';
 import {
 	ApiError,
@@ -260,7 +260,6 @@ export class ApiClient {
 		};
 
 		const method = options?.method || 'GET';
-		const pathForLog = url.replace(this.config.baseURL, '') || '/';
 
 		if (!options?.silent) {
 			this.log('info', `${method} ${url}`);
@@ -271,12 +270,12 @@ export class ApiClient {
 			const entry: QueryLogEntry = {
 				n: this.queryCount,
 				method,
-				path: pathForLog,
+				path: url.replace(this.config.baseURL, '') || '/',
 				ts: new Date().toISOString()
 			};
 			queryLog.push(entry);
 			if (queryLog.length > QUERY_LOG_MAX) queryLog.shift();
-			logger.log(`[API] Query #${this.queryCount} ${method} ${pathForLog}`);
+			logger.log(`[API] ${method} ${url} (#${this.queryCount})`);
 		}
 
 		try {
@@ -303,14 +302,11 @@ export class ApiClient {
 			}
 
 			if (!options?.silent) {
-				this.log('info', `Success: ${url}`, { status: response.status });
+				this.log('info', `${method} ${url} → ${response.status}`);
 			}
 
 			if (dev && env.LOG_API_BACKEND_RESPONSE === 'true') {
-				logger.log(
-					`[API] Backend response ${method} ${pathForLog}:`,
-					JSON.stringify(data, null, 2)
-				);
+				logger.log(`[API] ${method} ${url} response:`, JSON.stringify(data, null, 2));
 			}
 
 			return {
@@ -338,6 +334,9 @@ export class ApiClient {
 
 /** Pre-configured singleton client instance used across the application. */
 export const apiClient = new ApiClient(apiConfig);
+
+/** Client for the bookings/orders API (separate base URL). */
+export const bookingsApiClient = new ApiClient(bookingsApiConfig);
 
 /**
  * Returns the total number of API requests issued during this process.
