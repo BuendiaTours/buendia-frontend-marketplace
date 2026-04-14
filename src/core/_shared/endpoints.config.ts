@@ -491,6 +491,11 @@ export const API_ENDPOINTS = {
 	bookings: {
 		groupName: 'Bookings',
 		groupDescription: 'Gestión de reservas individuales',
+		search: {
+			path: () => '/bookings',
+			method: 'GET',
+			description: 'Busca bookings por filtros (orderId, status, etc.)'
+		} satisfies Endpoint,
 		delete: {
 			path: (id: string) => `/bookings/${id}`,
 			method: 'DELETE',

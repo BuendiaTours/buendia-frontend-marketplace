@@ -4,8 +4,11 @@ import { ordersEndpoints } from '$lib/api/marketplace/endpoints/orders';
 import type { CartOrder } from '$lib/types';
 
 export const GET: RequestHandler = async ({ params, fetch }) => {
-	const order = await ordersEndpoints.getOrderById(fetch, params.orderId);
-	return json(order);
+	const [order, bookings] = await Promise.all([
+		ordersEndpoints.getOrderById(fetch, params.orderId),
+		ordersEndpoints.getBookingsByOrder(fetch, params.orderId)
+	]);
+	return json({ ...order, bookings });
 };
 
 export const PATCH: RequestHandler = async ({ params, request, fetch }) => {

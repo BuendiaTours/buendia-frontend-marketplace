@@ -1,6 +1,6 @@
 import { bookingsApiClient as apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
-import type { AddBookingPayload, CartOrder, CreateOrderPayload } from '$lib/types';
+import type { AddBookingPayload, CartBooking, CartOrder, CreateOrderPayload } from '$lib/types';
 
 export const ordersEndpoints = {
 	async createOrder(fetchFn: typeof fetch, payload: CreateOrderPayload): Promise<void> {
@@ -34,6 +34,18 @@ export const ordersEndpoints = {
 	async deleteBooking(fetchFn: typeof fetch, bookingId: string): Promise<void> {
 		const path = API_ENDPOINTS.bookings.delete.path(bookingId);
 		await apiClient.request<void>(fetchFn, path, { method: 'DELETE' });
+	},
+
+	async getBookingsByOrder(fetchFn: typeof fetch, orderId: string): Promise<CartBooking[]> {
+		const path = `${API_ENDPOINTS.bookings.search.path()}?orderId=${orderId}`;
+		const response = await apiClient.request<{ data: CartBooking[]; total: number }>(
+			fetchFn,
+			path,
+			{
+				method: 'GET'
+			}
+		);
+		return response.data.data;
 	},
 
 	async updateOrder(
