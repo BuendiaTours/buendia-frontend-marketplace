@@ -58,6 +58,19 @@ export type ContentBlockStack = {
 	description: string;
 };
 
+export type RelatedPlansItem = {
+	id: string;
+	image: string;
+	title: string;
+	description: string;
+	slug: string;
+};
+
+export type RelatedPlans = {
+	title: string;
+	items: RelatedPlansItem[];
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -331,6 +344,7 @@ export type Destination = {
 	faqsTitle?: string;
 	faqs: Faqs[];
 	contentBlockStack: ContentBlockStack[];
+	relatedPlans: RelatedPlans;
 	byBuendiaBanner: ByBuendiaBanner | null;
 };
 
