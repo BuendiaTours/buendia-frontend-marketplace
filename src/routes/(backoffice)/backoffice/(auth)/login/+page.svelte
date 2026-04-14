@@ -6,9 +6,9 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { form: formData } = data;
 
-	const { form, errors, enhance, submitting, message } = superForm(formData);
+	// svelte-ignore state_referenced_locally
+	const { form, errors, enhance, submitting, message } = superForm(data.form);
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center gap-6">
