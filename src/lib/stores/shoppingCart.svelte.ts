@@ -1,0 +1,151 @@
+import type { SvelteMap } from 'svelte/reactivity';
+import { proxyApiRoutes } from '$lib/api/proxy-routes';
+import type {
+	ActivityOption,
+	AvailabilitySlot,
+	CartOrder,
+	CreateOrderPayload,
+	AddBookingPayload
+} from '$lib/types';
+
+const CART_ORDER_ID_KEY = 'cart_order_id';
+
+class CartState {
+	orderId = $state<string | null>(null);
+	order = $state<CartOrder | null>(null);
+	isLoading = $state(false);
+	error = $state<string | null>(null);
+
+	bookingCount = $derived(this.order?.bookings?.length ?? 0);
+	totalAmount = $derived(this.order?.totalAmount ?? 0);
+
+	constructor() {
+		if (typeof window !== 'undefined') {
+			this.orderId = localStorage.getItem(CART_ORDER_ID_KEY);
+		}
+	}
+
+	private setOrderId(id: string | null) {
+		this.orderId = id;
+		if (typeof window !== 'undefined') {
+			if (id) {
+				localStorage.setItem(CART_ORDER_ID_KEY, id);
+			} else {
+				localStorage.removeItem(CART_ORDER_ID_KEY);
+			}
+		}
+	}
+
+	private buildPassengers(
+		option: ActivityOption,
+		counts: SvelteMap<string, number>
+	): Array<{ id: string; individualTicketId: string }> {
+		const passengers: Array<{ id: string; individualTicketId: string }> = [];
+		for (const [group, qty] of counts) {
+			if (qty <= 0) continue;
+			const ticket = option.individualTickets.find((t) => t.group === group);
+			if (!ticket) continue;
+			for (let i = 0; i < qty; i++) {
+				passengers.push({ id: crypto.randomUUID(), individualTicketId: ticket.id });
+			}
+		}
+		return passengers;
+	}
+
+	async addActivity(
+		option: ActivityOption,
+		slot: AvailabilitySlot,
+		counts: SvelteMap<string, number>,
+		userId?: string
+	): Promise<void> {
+		this.isLoading = true;
+		this.error = null;
+		try {
+			const passengers = this.buildPassengers(option, counts);
+			if (passengers.length === 0) {
+				throw new Error('Selecciona al menos un ticket antes de añadir al carrito');
+			}
+
+			if (this.orderId === null) {
+				const newOrderId = crypto.randomUUID();
+				const payload: CreateOrderPayload = {
+					id: newOrderId,
+					...(userId ? { userId } : {}),
+					booking: {
+						id: crypto.randomUUID(),
+						optionId: option.id,
+						activityDatetime: slot.dateTime,
+						passengers
+					}
+				};
+				const res = await fetch(proxyApiRoutes.orders.create, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload)
+				});
+				if (!res.ok) throw new Error(`Error ${res.status} al crear el pedido`);
+				this.setOrderId(newOrderId);
+			} else {
+				const payload: AddBookingPayload = {
+					id: crypto.randomUUID(),
+					optionId: option.id,
+					activityDatetime: slot.dateTime,
+					passengers
+				};
+				const res = await fetch(proxyApiRoutes.orders.addBooking(this.orderId), {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload)
+				});
+				if (!res.ok) throw new Error(`Error ${res.status} al añadir la actividad`);
+			}
+			await this.loadOrder();
+		} catch (e) {
+			this.error = e instanceof Error ? e.message : 'Error desconocido';
+		} finally {
+			this.isLoading = false;
+		}
+	}
+
+	async removeBooking(bookingId: string): Promise<void> {
+		this.isLoading = true;
+		this.error = null;
+		try {
+			const res = await fetch(proxyApiRoutes.bookings.delete(bookingId), { method: 'DELETE' });
+			if (!res.ok) throw new Error(`Error ${res.status} al eliminar la reserva`);
+			await this.loadOrder();
+			if (this.order?.bookings?.length === 0) {
+				this.setOrderId(null);
+				this.order = null;
+			}
+		} catch (e) {
+			this.error = e instanceof Error ? e.message : 'Error desconocido';
+		} finally {
+			this.isLoading = false;
+		}
+	}
+
+	async loadOrder(): Promise<void> {
+		if (!this.orderId) return;
+		try {
+			const res = await fetch(proxyApiRoutes.orders.getById(this.orderId));
+			if (res.status === 404) {
+				this.setOrderId(null);
+				this.order = null;
+				return;
+			}
+			if (!res.ok) throw new Error(`Error ${res.status} al cargar el pedido`);
+			this.order = await res.json();
+		} catch (e) {
+			this.error = e instanceof Error ? e.message : 'Error desconocido';
+		}
+	}
+
+	async clearCart(): Promise<void> {
+		this.setOrderId(null);
+		this.order = null;
+		this.error = null;
+	}
+}
+
+export const cartStore = new CartState();

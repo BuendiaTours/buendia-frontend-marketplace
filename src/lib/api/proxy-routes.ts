@@ -19,5 +19,13 @@ export const proxyApiRoutes = {
 	},
 	newsletter: {
 		subscribe: '/api/newsletter/subscribe'
+	},
+	orders: {
+		create: '/api/orders',
+		getById: (orderId: string) => `/api/orders/${orderId}`,
+		addBooking: (orderId: string) => `/api/orders/${orderId}/bookings`
+	},
+	bookings: {
+		delete: (bookingId: string) => `/api/bookings/${bookingId}`
 	}
 };

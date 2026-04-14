@@ -449,3 +449,97 @@ export type BndLightboxConfig = {
 	startCategory?: string;
 	startIndex?: number;
 };
+
+// --- Cart / Orders / Bookings ---
+
+export type OrderStatus =
+	| 'CART'
+	| 'CHECKING_OUT'
+	| 'PENDING_PAYMENT'
+	| 'CONFIRMED'
+	| 'COMPLETED'
+	| 'PARTIALLY_COMPLETED'
+	| 'FAILED'
+	| 'EXPIRED';
+
+export type BookingStatus =
+	| 'PENDING'
+	| 'CONFIRMED'
+	| 'RETRYING'
+	| 'FAILED'
+	| 'CANCELLED'
+	| 'CANCELLATION_FAILED'
+	| 'EXPIRED';
+
+export type PassengerAnswer = {
+	questionId: string;
+	description?: string;
+	values: string[];
+};
+
+export type CartPassenger = {
+	id: string;
+	individualTicketId: string;
+	group?: string;
+	priceAtBooking?: number;
+	unitCommission?: number;
+	isMainPax: boolean;
+	answers: PassengerAnswer[];
+};
+
+export type CartBooking = {
+	id: string;
+	orderId: string;
+	activityId?: string;
+	optionId: string;
+	legibleId?: string;
+	startTime?: string;
+	date?: string;
+	status: BookingStatus;
+	subtotalPrice?: number;
+	subtotalCommission?: number;
+	passengers: CartPassenger[];
+	addons: unknown[];
+	bookingAnswers: PassengerAnswer[];
+	pickupPoint?: unknown;
+	dropoffPoint?: unknown;
+	hotel?: unknown;
+	createdAt?: string;
+	updatedAt?: string;
+};
+
+export type CartOrder = {
+	id: string;
+	userId?: string;
+	legibleId?: string;
+	status: OrderStatus;
+	currency?: string;
+	totalAmount?: number;
+	totalCommission?: number;
+	contactEmail?: string;
+	contactFirstName?: string;
+	contactLastName?: string;
+	contactPhone?: string;
+	contactNationalityCountryCode?: string;
+	bookings: CartBooking[];
+	createdAt?: string;
+	updatedAt?: string;
+};
+
+export type CreateOrderPayload = {
+	id: string;
+	userId?: string;
+	booking: {
+		id: string;
+		optionId: string;
+		activityDatetime: string;
+		passengers: Array<{ id: string; individualTicketId: string }>;
+	};
+};
+
+export type AddBookingPayload = {
+	id: string;
+	optionId: string;
+	activityDatetime: string;
+	passengers: Array<{ id: string; individualTicketId: string }>;
+};

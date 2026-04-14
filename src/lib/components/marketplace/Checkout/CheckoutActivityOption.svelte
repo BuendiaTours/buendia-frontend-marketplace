@@ -7,6 +7,7 @@
 	import { parseDate } from '@internationalized/date';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import { formatEuro } from '$lib/utils/currency';
+	import { cartStore } from '$lib/stores/shoppingCart.svelte';
 
 	type Props = {
 		option: ActivityOption;
@@ -196,11 +197,33 @@
 		{/if}
 
 		{#if slots.some((s) => s.id === selectedSlotId)}
+			{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
 			<div class="checkout-activity-options__option__actions">
-				<button type="button" class="e-button e-button-primary w-full">Reservar ahora</button>
-				<button type="button" class="e-button e-button-secondary mt-3 w-full"
-					>Añadir al carrito</button
+				{#if cartStore.error}
+					<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
+				{/if}
+				<button
+					type="button"
+					class="e-button e-button-primary w-full"
+					disabled={cartStore.isLoading || !selectedSlot}
+					onclick={async () => {
+						if (!selectedSlot) return;
+						await cartStore.addActivity(option, selectedSlot, checkout.counts);
+					}}
 				>
+					{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
+				</button>
+				<button
+					type="button"
+					class="e-button e-button-secondary mt-3 w-full"
+					disabled={cartStore.isLoading || !selectedSlot}
+					onclick={async () => {
+						if (!selectedSlot) return;
+						await cartStore.addActivity(option, selectedSlot, checkout.counts);
+					}}
+				>
+					{cartStore.isLoading ? 'Añadiendo…' : 'Añadir al carrito'}
+				</button>
 			</div>
 		{/if}
 	</div>

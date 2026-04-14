@@ -454,6 +454,51 @@ export const API_ENDPOINTS = {
 		} satisfies Endpoint
 	},
 
+	// ──────────────────────────────────────────────
+	// Orders
+	// ──────────────────────────────────────────────
+	orders: {
+		groupName: 'Orders',
+		groupDescription: 'Gestión de pedidos del carrito',
+		create: {
+			path: () => '/orders',
+			method: 'POST',
+			description: 'Crea un nuevo pedido con el primer booking'
+		} satisfies Endpoint,
+		getById: {
+			path: (id: string) => `/orders/${id}`,
+			method: 'GET',
+			description: 'Obtiene un pedido por ID',
+			params: ['id']
+		} satisfies EndpointWithParam,
+		update: {
+			path: (id: string) => `/orders/${id}`,
+			method: 'PATCH',
+			description: 'Actualiza datos de contacto del pedido',
+			params: ['id']
+		} satisfies EndpointWithParam,
+		addBooking: {
+			path: (id: string) => `/orders/${id}/bookings`,
+			method: 'POST',
+			description: 'Añade un booking a un pedido existente',
+			params: ['id']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Bookings
+	// ──────────────────────────────────────────────
+	bookings: {
+		groupName: 'Bookings',
+		groupDescription: 'Gestión de reservas individuales',
+		delete: {
+			path: (id: string) => `/bookings/${id}`,
+			method: 'DELETE',
+			description: 'Elimina un booking',
+			params: ['id']
+		} satisfies EndpointWithParam
+	},
+
 	// Newsletter
 	// ──────────────────────────────────────────────
 	newsletter: {
