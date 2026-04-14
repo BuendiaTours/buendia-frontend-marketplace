@@ -103,6 +103,18 @@ class CheckoutState {
 		};
 	});
 
+	isSlotDisabled(slot: AvailabilitySlot): boolean {
+		if (this.totalTickets === 0) return false;
+		if (slot.availability - slot.reservedAvailability < this.totalTickets) return true;
+		for (const [group, count] of this.counts) {
+			if (count === 0) continue;
+			const ticketItem = slot.tickets.find((t) => this.ticketIdToGroup.get(t.id) === group);
+			if (!ticketItem) continue;
+			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
+		}
+		return false;
+	}
+
 	constructor(activityId: string) {
 		this.activityId = activityId;
 

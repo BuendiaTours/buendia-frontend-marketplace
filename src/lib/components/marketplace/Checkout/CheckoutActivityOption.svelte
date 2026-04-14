@@ -19,18 +19,6 @@
 	const checkout = getCheckout();
 	const messages = m as unknown as Record<string, () => string>;
 
-	function isSlotDisabled(slot: AvailabilitySlot): boolean {
-		if (checkout.totalTickets === 0) return false;
-		if (slot.availability - slot.reservedAvailability < checkout.totalTickets) return true;
-		for (const [group, count] of checkout.counts) {
-			if (count === 0) continue;
-			const ticketItem = slot.tickets.find((t) => checkout.ticketIdToGroup.get(t.id) === group);
-			if (!ticketItem) continue;
-			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
-		}
-		return false;
-	}
-
 	function getSlotDisabledReasons(slot: AvailabilitySlot): string[] {
 		if (checkout.totalTickets === 0) return [];
 		const reasons: string[] = [];
@@ -53,7 +41,7 @@
 	}
 
 	const nextAvailableDates = $derived.by(() => {
-		if (!slots.every((s) => isSlotDisabled(s))) return [];
+		if (!slots.every((s) => checkout.isSlotDisabled(s))) return [];
 		const selectedDateStr = checkout.selectedDate?.toString() ?? '';
 		const today = new Date().toISOString().slice(0, 10);
 
@@ -68,37 +56,32 @@
 		}
 
 		return [...byDate.entries()]
-			.filter(([, dateSlots]) => dateSlots.some((s) => !isSlotDisabled(s)))
+			.filter(([, dateSlots]) => dateSlots.some((s) => !checkout.isSlotDisabled(s)))
 			.sort(([a], [b]) => a.localeCompare(b))
 			.slice(0, 3)
 			.map(([dateStr]) => dateStr);
 	});
 
-	function htmlComment(node: Element, text: string) {
-		const comment = document.createComment(text);
-		node.replaceWith(comment);
-	}
-
 	$effect(() => {
 		if (selectedSlotId === null) return;
 		const current = slots.find((s) => s.id === selectedSlotId);
-		if (current && isSlotDisabled(current)) selectedSlotId = null;
+		if (current && checkout.isSlotDisabled(current)) selectedSlotId = null;
 	});
 </script>
 
 <div
 	class="checkout-activity-options__option mb-6 flex flex-row gap-4 rounded-lg border-2 border-[var(--color-border-default)] p-4"
-	class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
+	class:bg-neutral-100={slots.every((s) => checkout.isSlotDisabled(s))}
 	class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 >
 	<div class="flex-1">
 		<h2 class="h2">{option.title}</h2>
-		{#if slots.every((s) => isSlotDisabled(s))}
+		{#if slots.every((s) => checkout.isSlotDisabled(s))}
 			<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
 				No hay suficientes plazas disponibles para esta fecha.
-				{#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
-					<template use:htmlComment={reason}></template>
-				{/each}
+				<!-- {#each getSlotDisabledReasons(slots[0]) as reason, i (i)}
+					<span class="block">{reason}</span>
+				{/each} -->
 			</p>
 		{:else if slots.some((s) => s.availability - s.reservedAvailability < 10)}
 			<p class="text-salmon-strong bg-salmon-softer rounded-md p-2">
@@ -109,7 +92,7 @@
 		<p>{option.description}</p>
 		<p>Duración: {option.duration.quantity} {option.duration.unit}</p>
 
-		{#if slots.some((s) => !isSlotDisabled(s))}
+		{#if slots.some((s) => !checkout.isSlotDisabled(s))}
 			<p>Selecciona la hora de inicio</p>
 			<div class="flex flex-row gap-4">
 				{#each slots as slot (slot.id)}
@@ -120,7 +103,7 @@
 							name="slot"
 							value={slot.id}
 							checked={selectedSlotId === slot.id}
-							disabled={isSlotDisabled(slot)}
+							disabled={checkout.isSlotDisabled(slot)}
 							onchange={() => (selectedSlotId = slot.id)}
 						/>
 						{format(new Date(slot.dateTime), "HH:mm'h'")}
@@ -158,7 +141,7 @@
 							const firstSlot = checkout.availability
 								.filter((s) => s.optionId === option.id)
 								.filter((s) => format(new Date(s.dateTime), 'yyyy-MM-dd') === dateStr)
-								.find((s) => !isSlotDisabled(s));
+								.find((s) => !checkout.isSlotDisabled(s));
 							if (firstSlot) selectedSlotId = firstSlot.id;
 						}}
 					>
@@ -213,7 +196,7 @@
 		{/if}
 
 		{#if slots.some((s) => s.id === selectedSlotId)}
-			<div class="cs-activity-option__actions">
+			<div class="checkout-activity-options__option__actions">
 				<button type="button" class="e-button e-button-primary w-full">Reservar ahora</button>
 				<button type="button" class="e-button e-button-secondary mt-3 w-full"
 					>Añadir al carrito</button

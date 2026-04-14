@@ -10,7 +10,7 @@
 		onchange?: (value: number) => void;
 	};
 
-	let { id, key, desc, value = $bindable(), maxvalue, onchange }: Props = $props();
+	let { id, key, desc, value, maxvalue, onchange }: Props = $props();
 
 	const messages = m as unknown as Record<string, () => string>;
 
@@ -32,10 +32,7 @@
 			aria-label="Reducir"
 			disabled={value <= 0}
 			onclick={() => {
-				if (value > 0) {
-					value--;
-					onchange?.(value);
-				}
+				if (value > 0) onchange?.(value - 1);
 			}}
 		>
 			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -49,10 +46,7 @@
 			aria-label="Aumentar"
 			disabled={value >= maxvalue}
 			onclick={() => {
-				if (value < maxvalue) {
-					value++;
-					onchange?.(value);
-				}
+				if (value < maxvalue) onchange?.(value + 1);
 			}}
 		>
 			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

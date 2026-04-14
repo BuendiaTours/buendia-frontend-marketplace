@@ -75,18 +75,6 @@
 
 	let selectedSlotId = $state<string | null>(null);
 
-	function isSlotDisabled(slot: AvailabilitySlot): boolean {
-		if (checkout.totalTickets === 0) return false;
-		if (slot.availability - slot.reservedAvailability < checkout.totalTickets) return true;
-		for (const [group, count] of checkout.counts) {
-			if (count === 0) continue;
-			const ticketItem = slot.tickets.find((t) => checkout.ticketIdToGroup.get(t.id) === group);
-			if (!ticketItem) continue;
-			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
-		}
-		return false;
-	}
-
 	const allOptions = $derived(
 		Object.values(
 			checkout.selectedDateSlots.reduce<
@@ -102,19 +90,19 @@
 	);
 
 	const optionsWithSlots = $derived(
-		allOptions.filter(({ slots }) => slots.some((s) => !isSlotDisabled(s)))
+		allOptions.filter(({ slots }) => slots.some((s) => !checkout.isSlotDisabled(s)))
 	);
 
 	const optionsWithoutSlots = $derived(
-		allOptions.filter(({ slots }) => slots.every((s) => isSlotDisabled(s)))
+		allOptions.filter(({ slots }) => slots.every((s) => checkout.isSlotDisabled(s)))
 	);
 
 	$effect(() => {
 		const allSlots = optionsWithSlots.flatMap(({ slots }) => slots);
 		const currentId = untrack(() => selectedSlotId);
-		const currentIsValid = allSlots.some((s) => s.id === currentId && !isSlotDisabled(s));
+		const currentIsValid = allSlots.some((s) => s.id === currentId && !checkout.isSlotDisabled(s));
 		if (!currentIsValid) {
-			selectedSlotId = allSlots.find((s) => !isSlotDisabled(s))?.id ?? null;
+			selectedSlotId = allSlots.find((s) => !checkout.isSlotDisabled(s))?.id ?? null;
 		}
 	});
 
@@ -552,7 +540,7 @@
 
 		<div class="col-sidebar pt-6">
 			<div class="carrito sticky top-0">
-				<Checkout activityOptions={data.activityOptions} {activityId} />
+				<Checkout activityOptions={data.activityOptions} />
 
 				<HubspotChat wrapperClass="mt-4" />
 			</div>
