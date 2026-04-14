@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { CartLarge4 } from '$lib/icons/Linear';
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+	import { formatEuro } from '$lib/utils/currency';
 
 	const {
 		elements: { trigger, content },
@@ -43,7 +44,7 @@
 						<p class="p-sm">Estado: {booking.status}</p>
 						<p class="p-sm">Pasajeros: {booking.passengers?.length ?? 0}</p>
 						{#if booking.subtotalPrice != null}
-							<p class="p-sm font-semibold">{(booking.subtotalPrice / 100).toFixed(2)} €</p>
+							<p class="p-sm font-semibold">{formatEuro(booking.subtotalPrice)}</p>
 						{/if}
 					</li>
 				{/each}

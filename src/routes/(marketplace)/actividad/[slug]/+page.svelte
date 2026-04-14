@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { format } from 'date-fns';
+	import { untrack } from 'svelte';
 
 	// Types
 	import type { ActivityReviewParams, ActivityOption, AvailabilitySlot } from '$lib/types';
@@ -15,8 +16,6 @@
 	import { trackClick } from '$lib/analytics';
 
 	// Components
-	import { Checkout, CheckoutActivityOption } from '$lib/components/marketplace/Checkout';
-	import { untrack } from 'svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
 	import Conditions from '$lib/components/marketplace/Conditions.svelte';
@@ -44,6 +43,7 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
+	import { Checkout, CheckoutActivityOption } from '$lib/components/marketplace/Checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();
