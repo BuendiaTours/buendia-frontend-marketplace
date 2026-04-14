@@ -2,7 +2,6 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
-import { logger } from '$lib/utils/logger';
 
 /**
  * Configuración para crear un action handler de eliminación
@@ -36,9 +35,7 @@ export function createDeleteAction(config: DeleteActionConfig) {
 		const fromPath = refererUrl.pathname;
 
 		try {
-			logger.log('🗑️ [deleteAction] Intentando eliminar:', identifier);
-			const result = await config.deleteFn(fetch, identifier);
-			logger.log('✅ [deleteAction] Eliminación exitosa:', result);
+			await config.deleteFn(fetch, identifier);
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -55,15 +52,12 @@ export function createDeleteAction(config: DeleteActionConfig) {
 			}
 			throw redirect(303, redirectUrl);
 		} catch (err) {
-			console.error(' [deleteAction] Error capturado:', err);
-			console.error(' [deleteAction] Tipo de error:', err?.constructor?.name);
-			console.error(' [deleteAction] Es ApiError?:', err instanceof ApiError);
-
 			// Si es un redirect, dejarlo pasar (es el comportamiento esperado)
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) {
-				logger.log(' [deleteAction] Es un redirect, dejándolo pasar');
 				throw err;
 			}
+
+			console.error('[deleteAction] Error deleting:', err);
 
 			let errorMessage = 'Error al eliminar el elemento.';
 			let errorCode = 'error.unknown';

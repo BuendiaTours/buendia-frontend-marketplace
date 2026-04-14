@@ -868,34 +868,23 @@
 		}
 	}
 
-	/* eslint-disable no-console */
 	function handleGenerateCrops(): GeneratedCrop[] {
-		console.log('🔍 handleGenerateCrops called');
-		console.log('editorContainerComponent:', editorContainerComponent);
-		console.log('activeCropBoxes:', activeCropBoxes);
-
 		if (!editorContainerComponent) {
-			console.error('❌ EditorContainer not available');
 			onerror?.({ message: 'EditorContainer not available' });
 			return [];
 		}
 
 		if (activeCropBoxes.length === 0) {
-			console.error('❌ No crop boxes to generate');
 			onerror?.({ message: 'No crops to generate. Add at least one crop first.' });
 			return [];
 		}
 
-		console.log('📸 Getting image data...');
 		const imageData = editorContainerComponent.getImageData();
 		if (!imageData) {
-			console.error('❌ Could not get image data');
 			onerror?.({ message: 'Could not get image data' });
 			return [];
 		}
-		console.log('✅ Image data obtained:', imageData);
 
-		console.log('🔄 Getting transform state...');
 		const transformState = editorContainerComponent.getTransformState();
 		const transform: ImageTransform = {
 			rotation: transformState.rotation,
@@ -905,10 +894,8 @@
 			x: transformState.imageX,
 			y: transformState.imageY
 		};
-		console.log('✅ Transform state:', transform);
 
 		try {
-			console.log('🎨 Generating crops...');
 			const result = generateAllCrops(
 				imageData.element,
 				transform,
@@ -919,26 +906,19 @@
 				outputDefaults.quality ?? 0.94
 			);
 
-			console.log('✅ Crops generated:', result.crops.length, 'crops');
 			generatedCrops = result.crops;
 
-			console.log('💾 Creating image data...');
 			const imageDataState = getState();
-			console.log('✅ Image data created');
 
-			console.log('📡 Emitting cropsGenerated event...');
 			oncropsGenerated?.({
 				crops: result.crops,
 				imageData: imageDataState,
 				timestamp: result.timestamp
 			});
-			console.log('✅ Event emitted successfully');
 
-			console.log('🎉 handleGenerateCrops completed successfully!');
-			console.log('📋 ImageData completo:', JSON.stringify(imageDataState, null, 2));
 			return result.crops;
 		} catch (error) {
-			console.error('❌ Error in handleGenerateCrops:', error);
+			console.error('Error in handleGenerateCrops:', error);
 			onerror?.({
 				message: 'Error generating crops',
 				error: error instanceof Error ? error : undefined
@@ -946,7 +926,7 @@
 			return [];
 		}
 	}
-	/* eslint-enable no-console */
+	 
 
 	// ===== LIFECYCLE =====
 

@@ -4,7 +4,6 @@ import { superValidate } from 'sveltekit-superforms';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 import { ApiError } from '$core/_shared/errors';
-import { logger } from '$lib/utils/logger';
 import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 
 /**
@@ -61,27 +60,20 @@ export function createCreateLoad<
 		} = config;
 
 		try {
-			logger.log(`📦 [createLoad] Iniciando load para crear [${entityName}]`);
-
 			// 1. Generar UUID único (server-side por seguridad)
 			const dataWithUuid = {
 				id: uuidv4(),
 				...initialValues
 			};
 
-			logger.log(`📦 [createLoad] UUID generado:`, dataWithUuid.id);
-
 			// 2. Cargar listas disponibles (si se proporciona la función)
 			let availableData = {} as A;
 			if (loadAvailableData) {
-				logger.log(`📦 [createLoad] Cargando datos disponibles para [${entityName}]...`);
 				availableData = await loadAvailableData(fetch);
-				logger.log(`✅ [createLoad] Datos cargados:`, Object.keys(availableData));
 			}
 
 			// 3. Inicializar formulario con valores por defecto + UUID (sin errores iniciales)
 			const form = await superValidate(dataWithUuid, schema, { errors: false });
-			logger.log(`📦 [createLoad] Formulario inicializado`);
 
 			// 4. Generar breadcrumbs (vacíos si no se proporcionó label — la page los construye)
 			const breadcrumbs = breadcrumbLabel
@@ -94,7 +86,7 @@ export function createCreateLoad<
 				...availableData
 			};
 		} catch (err) {
-			console.error(`❌ [createLoad] Error al cargar página de creación de [${entityName}]:`, err);
+			console.error(`[createLoad] Error loading create page for [${entityName}]:`, err);
 
 			if (err instanceof ApiError) {
 				throw error(

@@ -2,7 +2,6 @@ import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
-import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
@@ -45,13 +44,9 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			throw new Error(`Route parameter '${config.paramName ?? 'slug'}' is required`);
 		}
 
-		logger.log('💾 [updateAction] Procesando guardado para:', identifier);
-
 		const form = await superValidate(request, config.schema);
-		logger.log('💾 [updateAction] Validación:', form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
-			console.error('💾 [updateAction] Errores de validación:', form.errors);
 			const errorMessage = 'Por favor, corrige los errores del formulario.';
 			setFlashMessage(cookies, {
 				type: 'error',
@@ -69,13 +64,10 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 		}
 
 		try {
-			logger.log('💾 [updateAction] Llamando a API para actualizar...');
-
 			// Transformar datos si se proporciona función de transformación
 			const dataToSend = config.transformData ? config.transformData(form.data) : form.data;
 
 			await config.updateFn(fetch, identifier, dataToSend);
-			logger.log('✅ [updateAction] API respondió exitosamente');
 
 			setFlashMessage(cookies, {
 				type: 'success',
@@ -92,7 +84,6 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 					? `${config.basePath}/${identifier}/edit${suffix}`
 					: `${config.basePath}/${identifier}${suffix}`;
 
-			logger.log('💾 [updateAction] Redirigiendo a:', redirectPath);
 			const delay = config.redirectDelayMs ?? (config.redirectToList ? 500 : 0);
 			if (delay > 0) {
 				await new Promise((resolve) => setTimeout(resolve, delay));
@@ -104,13 +95,12 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 				throw err;
 			}
 
-			console.error('❌ [updateAction] Error capturado:', err);
+			console.error('[updateAction] Error saving:', err);
 
 			let errorMessage = 'Error al guardar los cambios.';
 			let errorCode = 'error.unknown';
 
 			if (err instanceof ApiError && err.status) {
-				console.error('❌ [updateAction] ApiError con status:', err.status);
 				switch (err.status) {
 					case 400:
 						errorMessage = 'Los datos enviados no son válidos.';
@@ -166,7 +156,6 @@ export function createUpdateAction<T extends Record<string, unknown>>(
 			}
 
 			// Error desconocido
-			console.error('❌ [updateAction] Error desconocido');
 			const unknownErrorMessage = 'Error inesperado al guardar. Por favor, inténtalo de nuevo.';
 			setFlashMessage(cookies, {
 				type: 'error',

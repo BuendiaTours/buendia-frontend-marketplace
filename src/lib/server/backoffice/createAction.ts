@@ -2,7 +2,6 @@ import { redirect, fail, isRedirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 import { ApiError } from '$core/_shared/errors';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
-import { logger } from '$lib/utils/logger';
 import { superValidate } from 'sveltekit-superforms';
 import type { ValidationAdapter } from 'sveltekit-superforms/adapters';
 
@@ -71,14 +70,10 @@ export function createCreateAction<T extends Record<string, unknown>>(
 
 		const delay = redirectDelayMs ?? 500;
 
-		logger.log(`🆕 [createAction] Iniciando creación de ${entityName}`);
-
 		// 1. Validar formulario
 		const form = await superValidate(request, schema);
-		logger.log(`🆕 [createAction] Validación:`, form.valid ? '✅ Válido' : '❌ Inválido');
 
 		if (!form.valid) {
-			console.error(`🆕 [createAction] Errores de validación:`, form.errors);
 			const errorMessage = 'Por favor, corrige los errores del formulario.';
 			setFlashMessage(cookies, {
 				type: 'error',
@@ -96,20 +91,11 @@ export function createCreateAction<T extends Record<string, unknown>>(
 		}
 
 		try {
-			logger.log(`🆕 [createAction] Llamando a API para crear ${entityName}...`);
-			logger.log(`🆕 [createAction] Datos a enviar:`, {
-				id: form.data.id,
-				...(form.data.title ? { title: form.data.title } : {}),
-				...(form.data.name ? { name: form.data.name } : {}),
-				slug: form.data.slug
-			});
-
 			// 2. Transformar datos si es necesario
 			const dataToSend = transformData ? transformData(form.data) : form.data;
 
 			// 3. Llamar a la API para crear el recurso
 			await createFn(fetch, dataToSend);
-			logger.log(`✅ [createAction] ${entityName} creado exitosamente`);
 
 			// 4. Flash message de éxito
 			const successMessage = `${entityName.charAt(0).toUpperCase() + entityName.slice(1)} ${entityName.endsWith('ión') ? 'creada' : 'creado'} correctamente.`;
@@ -142,7 +128,6 @@ export function createCreateAction<T extends Record<string, unknown>>(
 					: `${basePath}/${identifier}`;
 			}
 
-			logger.log(`🆕 [createAction] Redirigiendo a:`, redirectPath);
 			throw redirect(303, redirectPath);
 		} catch (err) {
 			// Si es un redirect, re-lanzarlo para que SvelteKit lo maneje (no es un error)
@@ -150,16 +135,13 @@ export function createCreateAction<T extends Record<string, unknown>>(
 				throw err;
 			}
 
-			console.error(`❌ [createAction] Error capturado:`, err);
-			console.error(`❌ [createAction] Tipo de error:`, err?.constructor?.name);
+			console.error(`[createAction] Error creating ${entityName}:`, err);
 
 			// 6. Manejar ApiError con mensajes personalizados
 			let errorMessage = `Error al crear ${entityName}.`;
 			let errorCode = 'error.unknown';
 
 			if (err instanceof ApiError && err.status) {
-				console.error(`❌ [createAction] ApiError con status:`, err.status);
-
 				// Determinar artículo (el/la) según terminación
 				const article = entityName.endsWith('ión') ? 'la' : 'el';
 
@@ -218,7 +200,6 @@ export function createCreateAction<T extends Record<string, unknown>>(
 			}
 
 			// 7. Error desconocido
-			console.error(`❌ [createAction] Error desconocido`);
 			errorMessage = `Error inesperado al crear [${entityName}]. Por favor, inténtalo de nuevo.`;
 			setFlashMessage(cookies, {
 				type: 'error',
