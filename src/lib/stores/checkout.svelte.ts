@@ -78,12 +78,15 @@ class CheckoutState {
 	// Un día está habilitado si existe AL MENOS un slot que pueda satisfacer todos los grupos seleccionados simultáneamente
 	checkDateDisabled = $derived.by(() => {
 		const snapshot = [...this.counts.entries()];
+		const totalTickets = snapshot.reduce((sum, [, v]) => sum + v, 0);
 		const slotsByDate = this.slotsByDate;
 		const groupToTicketIds = this.groupToTicketIds;
 		return (date: DateValue): boolean => {
 			const slots = slotsByDate.get(date.toString());
 			if (!slots?.length) return true;
 			for (const slot of slots) {
+				if (totalTickets > 0 && slot.availability - slot.reservedAvailability < totalTickets)
+					continue;
 				let ok = true;
 				for (const [group, count] of snapshot) {
 					if (count <= 0) continue;
