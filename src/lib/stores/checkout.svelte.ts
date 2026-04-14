@@ -49,7 +49,7 @@ class CheckoutState {
 		return map;
 	});
 
-	// Máximo disponible por grupo en cualquier slot/fecha — upper bound para los SCStepCounter
+	// Máximo disponible por grupo en cualquier slot/fecha — upper bound para los CheckoutStepCounter
 	ticketMaxMap = $derived.by(() => {
 		const map = new SvelteMap<string, number>();
 		for (const slot of this.availability)

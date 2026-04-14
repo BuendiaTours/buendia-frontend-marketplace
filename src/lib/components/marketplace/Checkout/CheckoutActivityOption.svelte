@@ -87,7 +87,7 @@
 </script>
 
 <div
-	class="sc-activity-options__option mb-6 flex flex-row gap-4 rounded-lg border-2 border-[var(--color-border-default)] p-4"
+	class="checkout-activity-options__option mb-6 flex flex-row gap-4 rounded-lg border-2 border-[var(--color-border-default)] p-4"
 	class:bg-neutral-100={slots.every((s) => isSlotDisabled(s))}
 	class:border-accent={slots.some((s) => s.id === selectedSlotId)}
 >
@@ -113,7 +113,7 @@
 			<p>Selecciona la hora de inicio</p>
 			<div class="flex flex-row gap-4">
 				{#each slots as slot (slot.id)}
-					<label class="sc-activity-options__option__slot">
+					<label class="checkout-activity-options__option__slot">
 						<input
 							type="radio"
 							class="radio"
@@ -181,12 +181,12 @@
 					);
 					return sum + (ticket ? ticket.price * count : 0);
 				}, 0)}
-				<div class="sc-activity-options__option__prices flex flex-col gap-2">
-					<p class="sc-activity-options__option__discount text-right">
+				<div class="checkout-activity-options__option__prices flex flex-col gap-2">
+					<p class="checkout-activity-options__option__discount text-right">
 						<!-- Esto debería venir del back pero todaví no lo tenemos -->
 						<strike>108,00</strike> € <span class="text-salmon-strong">-15%</span>
 					</p>
-					<p class="sc-activity-options__option__total text-price text-right">
+					<p class="checkout-activity-options__option__total text-price text-right">
 						{formatEuro(total)}
 					</p>
 					<ul class="p-sm text-right">

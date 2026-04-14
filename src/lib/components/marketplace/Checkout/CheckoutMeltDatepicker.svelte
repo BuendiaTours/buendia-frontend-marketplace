@@ -1,5 +1,5 @@
 <!--
-  SCMeltDatepicker - DatePicker para Shopping Cart
+  CheckoutMeltDatepicker - DatePicker para el flujo de Checkout
   Usa Melt UI createDatePicker con dos meses en un popover
 -->
 

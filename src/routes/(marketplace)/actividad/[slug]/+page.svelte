@@ -15,7 +15,7 @@
 	import { trackClick } from '$lib/analytics';
 
 	// Components
-	import { ShoppingCart, SCActivityOption } from '$lib/components/marketplace/ShoppingCart';
+	import { Checkout, CheckoutActivityOption } from '$lib/components/marketplace/Checkout';
 	import { untrack } from 'svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
@@ -205,18 +205,18 @@
 			{#if checkout.selectedDate && optionsWithSlots.length > 0}
 				<p class="h2">{optionsWithSlots.length} opciones disponibles</p>
 				<p>Todas las opciones incluyen las mismas condiciones by buendía</p>
-				<div class="sc-activity-options mt-6">
+				<div class="checkout-activity-options mt-6">
 					{#each optionsWithSlots as { option, slots } (option.id)}
-						<SCActivityOption {option} {slots} bind:selectedSlotId />
+						<CheckoutActivityOption {option} {slots} bind:selectedSlotId />
 					{/each}
 				</div>
 			{/if}
 
 			{#if checkout.selectedDate && optionsWithoutSlots.length > 0}
 				<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
-				<div class="sc-activity-options mt-6">
+				<div class="checkout-activity-options mt-6">
 					{#each optionsWithoutSlots as { option, slots } (option.id)}
-						<SCActivityOption {option} {slots} bind:selectedSlotId />
+						<CheckoutActivityOption {option} {slots} bind:selectedSlotId />
 					{/each}
 				</div>
 			{/if}
@@ -552,7 +552,7 @@
 
 		<div class="col-sidebar pt-6">
 			<div class="carrito sticky top-0">
-				<ShoppingCart activityOptions={data.activityOptions} {activityId} />
+				<Checkout activityOptions={data.activityOptions} {activityId} />
 
 				<HubspotChat wrapperClass="mt-4" />
 			</div>

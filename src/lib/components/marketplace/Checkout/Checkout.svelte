@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { ActivityOption } from '$lib/types';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
-	import SCStepCounter from './SCStepCounter.svelte';
-	import SCMeltDatepicker from './SCMeltDatepicker.svelte';
+	import CheckoutStepCounter from './CheckoutStepCounter.svelte';
+	import CheckoutMeltDatepicker from './CheckoutMeltDatepicker.svelte';
 
 	type Props = { activityOptions: ActivityOption[] };
 	let { activityOptions }: Props = $props();
@@ -40,7 +40,7 @@
 		<div class="carrito__tickets space-y-4 p-4">
 			<p class="p-base">Número total de tickets: {checkout.totalTickets}</p>
 			{#each activeTicketGroups as ticket (ticket.id)}
-				<SCStepCounter
+				<CheckoutStepCounter
 					key={ticket.group}
 					id={ticket.id}
 					value={checkout.counts.get(ticket.group) ?? 0}
@@ -53,7 +53,7 @@
 			{/each}
 		</div>
 
-		<SCMeltDatepicker
+		<CheckoutMeltDatepicker
 			disabled={checkout.totalTickets === 0}
 			isDateDisabled={checkout.checkDateDisabled}
 			onSelect={(date) => (checkout.selectedDate = date)}
