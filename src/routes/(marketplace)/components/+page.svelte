@@ -12,6 +12,7 @@
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
+	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
@@ -101,6 +102,90 @@
 			danger: true
 		});
 	}
+
+	type HighlightData = {
+		icon?: string;
+		title?: string;
+		description?: string;
+		boldTitle?: boolean;
+		indent?: boolean;
+		baseIcon?: boolean;
+		size?: 'normal' | 'small';
+	};
+
+	const highlightVariants: HighlightData[] = [
+		{ icon: 'RecordAudioCircle', title: 'Line 1' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', indent: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', baseIcon: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true, size: 'small' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true, size: 'small' },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		}
+	];
 </script>
 
 <div class="wrapper mt-6">
@@ -345,6 +430,14 @@
 		<Tooltip tip="">
 			<button class="e-button e-button-secondary">Sin tip (no aparece)</button>
 		</Tooltip>
+	</div>
+</div>
+
+<div class="wrapper">
+	<div class="grid grid-cols-6 gap-10">
+		{#each highlightVariants as variant, i (i)}
+			<Hightlight data={variant} />
+		{/each}
 	</div>
 </div>
 
