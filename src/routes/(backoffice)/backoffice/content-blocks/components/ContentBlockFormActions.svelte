@@ -10,9 +10,11 @@
 		contentBlockId?: string;
 		formId: string;
 		submitting?: boolean;
+		/** Number of activities using this content block (edit mode only). */
+		activityCount?: number;
 	};
 
-	let { mode, contentBlockId, formId, submitting = false }: Props = $props();
+	let { mode, contentBlockId, formId, submitting = false, activityCount = 0 }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -27,6 +29,15 @@
 	>
 		← {m.contentBlocks_backToList()}
 	</a>
+
+	{#if isEditMode}
+		<span class="text-base-content/50 text-sm">
+			{activityCount}
+			{activityCount === 1
+				? m.contentBlocks_activityCountSingular()
+				: m.contentBlocks_activityCountPlural()}
+		</span>
+	{/if}
 
 	{#if isEditMode && contentBlockId}
 		<form

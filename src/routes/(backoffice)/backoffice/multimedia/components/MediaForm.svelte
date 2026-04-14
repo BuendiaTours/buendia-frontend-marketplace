@@ -19,9 +19,11 @@
 		form: SuperValidated<MediaFormSchema>;
 		mediaId: string;
 		media: Media;
+		/** Number of activities using this media asset. */
+		activityCount?: number;
 	};
 
-	let { form: formData, mediaId, media }: Props = $props();
+	let { form: formData, mediaId, media, activityCount = 0 }: Props = $props();
 
 	let editor: SicImageEditorInstance | undefined = $state();
 	const getEditor = () => editor;
@@ -44,7 +46,7 @@
 			: undefined;
 </script>
 
-<MediaEditForm form={formData} {mediaId} onAfterSave={handleAfterSave} />
+<MediaEditForm form={formData} {mediaId} {activityCount} onAfterSave={handleAfterSave} />
 
 <div class="sic-hide-metadata mt-4 rounded-lg border border-zinc-700 p-6">
 	<SicImageEditor

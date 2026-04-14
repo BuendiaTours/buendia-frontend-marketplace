@@ -21,9 +21,11 @@
 		mode: 'create' | 'edit';
 		/** Required in edit mode — used to build the delete action URL. */
 		categoryId?: string;
+		/** Number of activities assigned to this category (edit mode only). */
+		activityCount?: number;
 	};
 
-	let { form: formData, mode, categoryId }: Props = $props();
+	let { form: formData, mode, categoryId, activityCount = 0 }: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
@@ -37,7 +39,7 @@
 	const formId = 'category-form';
 </script>
 
-<CategoryFormActions {mode} {categoryId} {formId} submitting={$submitting} />
+<CategoryFormActions {mode} {categoryId} {formId} {activityCount} submitting={$submitting} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-category-data" open>

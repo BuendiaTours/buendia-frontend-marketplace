@@ -20,5 +20,6 @@
 	form={data.form}
 	mode="edit"
 	contentBlockId={data.contentBlock.id}
+	activityCount={data.contentBlock.activityCount}
 	images={data.contentBlock.images}
 />

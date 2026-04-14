@@ -16,9 +16,11 @@
 		/** Binds the submit button to the external form element via the `form` attribute. */
 		formId: string;
 		submitting?: boolean;
+		/** Number of activities assigned to this attraction (edit mode only). */
+		activityCount?: number;
 	};
 
-	let { mode, attractionId, formId, submitting = false }: Props = $props();
+	let { mode, attractionId, formId, submitting = false, activityCount = 0 }: Props = $props();
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -30,6 +32,15 @@
 	<a href={`${ATTRACTION_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← {m.attractions_backToList()}
 	</a>
+
+	{#if isEditMode}
+		<span class="text-base-content/50 text-sm">
+			{activityCount}
+			{activityCount === 1
+				? m.attractions_activityCountSingular()
+				: m.attractions_activityCountPlural()}
+		</span>
+	{/if}
 
 	{#if isEditMode && attractionId}
 		<form

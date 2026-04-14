@@ -17,11 +17,13 @@
 	type Props = {
 		form: SuperValidated<MediaFormSchema>;
 		mediaId: string;
+		/** Number of activities using this media asset. */
+		activityCount?: number;
 		/** Called after a successful metadata save — use this to trigger crop saving. */
 		onAfterSave?: () => void;
 	};
 
-	let { form: formData, mediaId, onAfterSave }: Props = $props();
+	let { form: formData, mediaId, activityCount = 0, onAfterSave }: Props = $props();
 
 	let saving = $state(false);
 
@@ -50,7 +52,7 @@
 	const formId = 'media-form';
 </script>
 
-<MediaFormActions {mediaId} {formId} submitting={saving} />
+<MediaFormActions {mediaId} {formId} {activityCount} submitting={saving} />
 
 <form id={formId} method="POST" action="?/update" use:enhance class="space-y-4">
 	<FormAccordion name="form-media-data" open>

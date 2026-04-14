@@ -24,11 +24,19 @@
 		form: SuperValidated<ContentBlockFormSchema>;
 		mode: 'create' | 'edit';
 		contentBlockId?: string;
+		/** Number of activities using this content block (edit mode only). */
+		activityCount?: number;
 		/** Images from the projection (edit mode). */
 		images?: EntityImage[];
 	};
 
-	let { form: formData, mode, contentBlockId, images: initialImages = [] }: Props = $props();
+	let {
+		form: formData,
+		mode,
+		contentBlockId,
+		activityCount = 0,
+		images: initialImages = []
+	}: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
@@ -63,7 +71,7 @@
 	}
 </script>
 
-<ContentBlockFormActions {mode} {contentBlockId} {formId} submitting={isBusy} />
+<ContentBlockFormActions {mode} {contentBlockId} {formId} {activityCount} submitting={isBusy} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-content-block-data" open>

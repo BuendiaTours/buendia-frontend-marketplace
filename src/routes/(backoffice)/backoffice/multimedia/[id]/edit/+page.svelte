@@ -25,4 +25,9 @@
 
 <LocationBar title={m.multimedia_editPageTitle()} {breadcrumbs} />
 
-<MediaForm form={data.form} mediaId={data.media.id} media={data.media} />
+<MediaForm
+	form={data.form}
+	mediaId={data.media.id}
+	media={data.media}
+	activityCount={data.media.activityCount}
+/>

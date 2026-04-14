@@ -22,10 +22,18 @@
 		mode: 'create' | 'edit';
 		/** Required in edit mode — used to build the delete action URL. */
 		attractionId?: string;
+		/** Number of activities assigned to this attraction (edit mode only). */
+		activityCount?: number;
 		availableLocations: Array<{ id: string; name: string }>;
 	};
 
-	let { form: formData, mode, attractionId, availableLocations }: Props = $props();
+	let {
+		form: formData,
+		mode,
+		attractionId,
+		activityCount = 0,
+		availableLocations
+	}: Props = $props();
 
 	const isEditMode = $derived(mode === 'edit');
 	const formAction = $derived(isEditMode ? '?/update' : undefined);
@@ -39,7 +47,7 @@
 	const formId = 'attraction-form';
 </script>
 
-<AttractionFormActions {mode} {attractionId} {formId} submitting={$submitting} />
+<AttractionFormActions {mode} {attractionId} {formId} {activityCount} submitting={$submitting} />
 
 <form id={formId} method="POST" action={formAction} use:enhance class="space-y-4">
 	<FormAccordion name="form-attraction-data" open>

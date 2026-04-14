@@ -13,9 +13,11 @@
 		mediaId: string;
 		formId: string;
 		submitting?: boolean;
+		/** Number of activities using this media asset. */
+		activityCount?: number;
 	};
 
-	let { mediaId, formId, submitting = false }: Props = $props();
+	let { mediaId, formId, submitting = false, activityCount = 0 }: Props = $props();
 </script>
 
 <div
@@ -24,6 +26,13 @@
 	<a href={`${MULTIMEDIA_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← {m.multimedia_backToList()}
 	</a>
+
+	<span class="text-base-content/50 text-sm">
+		{activityCount}
+		{activityCount === 1
+			? m.multimedia_activityCountSingular()
+			: m.multimedia_activityCountPlural()}
+	</span>
 
 	<form
 		method="POST"

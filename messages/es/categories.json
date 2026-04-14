@@ -27,6 +27,8 @@
 	"categories_columnName": "Nombre",
 	"categories_columnStatus": "Estado",
 	"categories_columnActivityCount": "Actividades",
+	"categories_activityCountSingular": "actividad asignada",
+	"categories_activityCountPlural": "actividades asignadas",
 	"categories_emptyState": "No se encontraron elementos",
 	"enum_categoryStatus_active": "Activo",
 	"enum_categoryStatus_draft": "Borrador",

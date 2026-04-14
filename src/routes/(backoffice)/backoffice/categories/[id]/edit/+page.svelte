@@ -25,4 +25,9 @@
 
 <LocationBar title={m.categories_editPageTitle()} {breadcrumbs} />
 
-<CategoryForm form={data.form} mode="edit" categoryId={data.category.id} />
+<CategoryForm
+	form={data.form}
+	mode="edit"
+	categoryId={data.category.id}
+	activityCount={data.category.activityCount}
+/>

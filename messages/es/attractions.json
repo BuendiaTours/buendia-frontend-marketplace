@@ -33,6 +33,8 @@
 	"attractions_columnName": "Nombre",
 	"attractions_columnDestinations": "Destinos",
 	"attractions_columnActivityCount": "Actividades",
+	"attractions_activityCountSingular": "actividad asignada",
+	"attractions_activityCountPlural": "actividades asignadas",
 	"attractions_emptyState": "No se encontraron elementos",
 	"attractions_detailPageTitle": "Detalle de Atraccion"
 }

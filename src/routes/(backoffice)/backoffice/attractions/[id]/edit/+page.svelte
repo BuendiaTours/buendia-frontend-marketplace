@@ -29,5 +29,6 @@
 	form={data.form}
 	mode="edit"
 	attractionId={data.attraction.id}
+	activityCount={data.attraction.activityCount}
 	availableLocations={data.availableLocations}
 />
