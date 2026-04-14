@@ -9,9 +9,11 @@ import type {
 } from '$lib/types';
 
 const CART_ORDER_ID_KEY = 'cart_order_id';
+const CART_USER_ID_KEY = 'cart_user_id';
 
 class CartState {
 	orderId = $state<string | null>(null);
+	userId = $state<string | null>(null);
 	order = $state<CartOrder | null>(null);
 	isLoading = $state(false);
 	error = $state<string | null>(null);
@@ -22,6 +24,24 @@ class CartState {
 	constructor() {
 		if (typeof window !== 'undefined') {
 			this.orderId = localStorage.getItem(CART_ORDER_ID_KEY);
+			const storedUserId = localStorage.getItem(CART_USER_ID_KEY);
+			if (storedUserId) {
+				this.userId = storedUserId;
+			} else {
+				const newUserId = crypto.randomUUID();
+				localStorage.setItem(CART_USER_ID_KEY, newUserId);
+				this.userId = newUserId;
+			}
+			if (this.orderId) {
+				this.loadOrder();
+			}
+		}
+	}
+
+	setUserId(id: string) {
+		this.userId = id;
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(CART_USER_ID_KEY, id);
 		}
 	}
 
@@ -55,8 +75,7 @@ class CartState {
 	async addActivity(
 		option: ActivityOption,
 		slot: AvailabilitySlot,
-		counts: SvelteMap<string, number>,
-		userId?: string
+		counts: SvelteMap<string, number>
 	): Promise<void> {
 		this.isLoading = true;
 		this.error = null;
@@ -70,7 +89,7 @@ class CartState {
 				const newOrderId = crypto.randomUUID();
 				const payload: CreateOrderPayload = {
 					id: newOrderId,
-					...(userId ? { userId } : {}),
+					userId: this.userId ?? undefined,
 					booking: {
 						id: crypto.randomUUID(),
 						optionId: option.id,
