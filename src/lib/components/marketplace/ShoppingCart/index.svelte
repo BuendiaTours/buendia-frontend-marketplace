@@ -2,8 +2,10 @@
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 	import { CartLarge4 } from '$lib/icons/Linear';
+	import type { PassengerLineItem } from '$lib/types';
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
 	import { formatEuro } from '$lib/utils/currency';
+	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 
 	const {
 		elements: { trigger, content },
@@ -35,6 +37,18 @@
 			<p class="p-xs mb-2 font-bold text-gray-700">Bookings ({cartStore.bookingCount})</p>
 			<ul class="p-xs mb-4 flex flex-col gap-2">
 				{#each cartStore.order.bookings as booking (booking.id)}
+					{@const passengerItems = Object.values(
+						(booking.passengers ?? []).reduce(
+							(acc, p) => {
+								if (!p.group) return acc;
+								if (!acc[p.group])
+									acc[p.group] = { group: p.group, count: 0, unitPrice: p.priceAtBooking ?? 0 };
+								acc[p.group].count++;
+								return acc;
+							},
+							{} as Record<string, PassengerLineItem>
+						)
+					)}
 					<li class="rounded border border-gray-200 p-2">
 						<p class="p-xs font-mono text-gray-500">{booking.id}</p>
 						<p class="p-sm">Opción: <span class="p-xs font-mono">{booking.optionId}</span></p>
@@ -42,10 +56,19 @@
 							<p class="p-sm">Fecha: {booking.date} {booking.startTime ?? ''}</p>
 						{/if}
 						<p class="p-sm">Estado: {booking.status}</p>
-						<p class="p-sm">Pasajeros: {booking.passengers?.length ?? 0}</p>
+						<PassengerBreakdown items={passengerItems} itemClass="p-sm" />
 						{#if booking.subtotalPrice != null}
 							<p class="p-sm font-semibold">{formatEuro(booking.subtotalPrice)}</p>
 						{/if}
+
+						<button
+							type="button"
+							class="e-button e-button-secondary e-button-sm mt-2 w-full"
+							disabled={cartStore.isLoading}
+							onclick={() => cartStore.removeBooking(booking.id)}
+						>
+							Eliminar
+						</button>
 					</li>
 				{/each}
 			</ul>

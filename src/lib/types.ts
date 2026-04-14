@@ -543,3 +543,9 @@ export type AddBookingPayload = {
 	activityDatetime: string;
 	passengers: Array<{ id: string; individualTicketId: string }>;
 };
+
+export type PassengerLineItem = {
+	group: string;
+	count: number;
+	unitPrice: number;
+};
