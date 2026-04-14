@@ -172,8 +172,8 @@
 														{isDisabled || isUnavailable
 														? '!cursor-not-allowed text-gray-300'
 														: 'hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:outline-none'}
-														[&[data-outside-visible-months]]:pointer-events-none [&[data-outside-visible-months]]:text-gray-300
-														[&[data-selected]]:bg-blue-500 [&[data-selected]]:text-white [&[data-selected]]:hover:bg-blue-600
+														[&[data-outside-month]]:pointer-events-none [&[data-outside-month]]:text-gray-300
+														[&[data-selected]:not([data-outside-month])]:bg-blue-500 [&[data-selected]:not([data-outside-month])]:text-white [&[data-selected]:not([data-outside-month])]:hover:bg-blue-600
 														[&[data-today]]:ring-1 [&[data-today]]:ring-blue-400"
 												>
 													{date.day}
