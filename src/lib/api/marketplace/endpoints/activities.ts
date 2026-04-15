@@ -66,6 +66,16 @@ export const activitiesEndpoints = {
 	 * Obtener detalle público de una actividad
 	 * Solo devuelve si está PUBLISHED
 	 */
+	async getById(fetchFn: typeof fetch, id: string): Promise<ActivityListItem> {
+		const path = API_ENDPOINTS.activities.detail.path(id);
+
+		const response = await apiClient.request<ActivityListItem>(fetchFn, path, {
+			method: 'GET'
+		});
+
+		return response.data;
+	},
+
 	async getBySlug(fetchFn: typeof fetch, slug: string): Promise<ActivityListItem> {
 		const path = API_ENDPOINTS.activities.detailBySlug.path(slug);
 

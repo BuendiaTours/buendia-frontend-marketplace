@@ -53,6 +53,13 @@
 						)
 					)}
 					<li class="relative rounded border border-gray-200 p-2">
+						{#if booking.activityTitle || booking.optionTitle}
+							<p class="p-sm font-semibold text-gray-800">
+								{booking.activityTitle ?? ''}{booking.activityTitle && booking.optionTitle
+									? ' · '
+									: ''}{booking.optionTitle ?? ''}
+							</p>
+						{/if}
 						<p class="p-xs font-mono text-gray-500">{booking.id}</p>
 						<p class="p-sm">Opción: <span class="p-xs font-mono">{booking.optionId}</span></p>
 						{#if booking.date}

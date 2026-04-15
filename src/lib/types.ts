@@ -497,7 +497,9 @@ export type CartBooking = {
 	id: string;
 	orderId: string;
 	activityId?: string;
+	activityTitle?: string;
 	optionId: string;
+	optionTitle?: string;
 	legibleId?: string;
 	startTime?: string;
 	date?: string;

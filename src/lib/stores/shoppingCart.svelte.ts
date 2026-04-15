@@ -10,6 +10,7 @@ import type {
 
 const CART_ORDER_ID_KEY = 'cart_order_id';
 const CART_USER_ID_KEY = 'cart_user_id';
+const CART_CREATED_AT_KEY = 'cart_created_at';
 
 class CartState {
 	orderId = $state<string | null>(null);
@@ -33,7 +34,16 @@ class CartState {
 				this.userId = newUserId;
 			}
 			if (this.orderId) {
-				this.loadOrder();
+				const createdAt = localStorage.getItem(CART_CREATED_AT_KEY);
+				if (createdAt) {
+					const elapsed = Date.now() - new Date(createdAt).getTime();
+					if (elapsed > 20 * 60 * 1000) {
+						localStorage.removeItem(CART_ORDER_ID_KEY);
+						localStorage.removeItem(CART_CREATED_AT_KEY);
+						this.orderId = null;
+					}
+				}
+				if (this.orderId) this.loadOrder();
 			}
 		}
 	}
@@ -50,8 +60,10 @@ class CartState {
 		if (typeof window !== 'undefined') {
 			if (id) {
 				localStorage.setItem(CART_ORDER_ID_KEY, id);
+				localStorage.setItem(CART_CREATED_AT_KEY, new Date().toISOString());
 			} else {
 				localStorage.removeItem(CART_ORDER_ID_KEY);
+				localStorage.removeItem(CART_CREATED_AT_KEY);
 			}
 		}
 	}
