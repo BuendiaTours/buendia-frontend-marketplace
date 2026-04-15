@@ -2,7 +2,7 @@
 --color-surface-canvas
   → aliased to: --color-white
   → replace with: var(--color-white)
-  src/lib/styles/marketplace/components/c-conditions.css:16
+  src/lib/styles/marketplace/components/c-callout.css:16
     background: var(--color-surface-canvas);
 
 --color-surface-default
@@ -22,7 +22,7 @@
 --color-text-primary
   → aliased to: --color-neutral-800
   → replace with: var(--color-neutral-800)
-  src/lib/styles/marketplace/components/c-conditions.css:23
+  src/lib/styles/marketplace/components/c-callout.css:23
     color: var(--color-text-primary);
 
 --color-text-secondary
@@ -54,7 +54,7 @@
   → replace with: var(--color-neutral-300)
   src/lib/styles/marketplace/core/forms.css:70
     border: 1px solid var(--color-border-default);
-  src/lib/styles/marketplace/components/c-conditions.css:15
+  src/lib/styles/marketplace/components/c-callout.css:15
     border: 1px solid var(--color-border-default);
   src/lib/components/marketplace/Spacer.svelte:11
     lineColor = 'border-[var(--color-border-default)]'

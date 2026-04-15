@@ -70,7 +70,7 @@
 	--color-warning-700: #b27c0a;
 	--color-warning-900: #5a3d05;
 
-	--color-error-100: #ffe7ea;
+	--color-error-100: #fff5f6;
 	--color-error-300: #ffc0c8;
 	--color-error-500: #e23b4f;
 	--color-error-700: #b01e32;
@@ -153,7 +153,7 @@
 	*/
 
 	/* UNUSED
-	
+
 	Estos son para light / dark UI
 
 	--color-text-fixed-on-dark-primary: var(--color-white);

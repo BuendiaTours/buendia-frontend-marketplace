@@ -16,7 +16,7 @@
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import Conditions from '$lib/components/marketplace/Conditions.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import MapView from '$lib/components/marketplace/MapView.svelte';
@@ -272,15 +272,15 @@
 				<p class="h2 pb-4">Condiciones</p>
 				<div class="pdp-conditions flex flex-col gap-4">
 					{#each activity.conditions as condition (condition.id)}
-						<Conditions style={condition.style} items={condition.items} />
+						<Callout style={condition.style} items={condition.items} />
 					{/each}
 				</div>
 			{/if}
 
 			<!-- conditions -->
 			{#if activity.infoImportant}
-				<Conditions
-					style="important"
+				<Callout
+					style="warning"
 					items={[
 						{
 							id: 'important-info',
