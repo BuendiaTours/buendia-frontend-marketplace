@@ -1,15 +1,22 @@
 <script lang="ts">
-	import { createPopover, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import { CartLarge4 } from '$lib/icons/Linear';
+
+	// Icons
+	import { CartLarge4, CustomMiniCancel } from '$lib/icons/Linear';
+
+	// Types
 	import type { PassengerLineItem } from '$lib/types';
-	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+
+	// Utils
 	import { formatEuro } from '$lib/utils/currency';
-	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
-	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
-	import CustomMiniCancel from '$lib/icons/dist/Linear/CustomMiniCancel.svelte';
+
+	// Components
+	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+	import { createPopover, melt } from '@melt-ui/svelte';
+	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 
 	const CART_EXPIRY_MS = 20 * 60 * 1000;
 
