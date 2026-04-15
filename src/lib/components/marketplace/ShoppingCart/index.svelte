@@ -6,6 +6,8 @@
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
 	import { formatEuro } from '$lib/utils/currency';
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
+	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+	import CustomMiniCancel from '$lib/icons/dist/Linear/CustomMiniCancel.svelte';
 
 	const {
 		elements: { trigger, content },
@@ -49,7 +51,7 @@
 							{} as Record<string, PassengerLineItem>
 						)
 					)}
-					<li class="rounded border border-gray-200 p-2">
+					<li class="relative rounded border border-gray-200 p-2">
 						<p class="p-xs font-mono text-gray-500">{booking.id}</p>
 						<p class="p-sm">Opción: <span class="p-xs font-mono">{booking.optionId}</span></p>
 						{#if booking.date}
@@ -63,11 +65,19 @@
 
 						<button
 							type="button"
-							class="e-button e-button-secondary e-button-sm mt-2 w-full"
+							class="e-button e-button-danger e-button-square e-button-xs absolute top-1 right-1"
 							disabled={cartStore.isLoading}
-							onclick={() => cartStore.removeBooking(booking.id)}
+							onclick={async () => {
+								const ok = await showConfirmDialog({
+									title: 'Eliminar reserva',
+									message: '¿Seguro que quieres eliminar esta reserva?',
+									danger: true,
+									confirmText: 'Eliminar'
+								});
+								if (ok) cartStore.removeBooking(booking.id);
+							}}
 						>
-							Eliminar
+							<CustomMiniCancel class="size-4" />
 						</button>
 					</li>
 				{/each}

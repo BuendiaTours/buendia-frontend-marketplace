@@ -96,4 +96,41 @@
 			cursor: not-allowed;
 		}
 	}
+
+	&.e-button-danger {
+		border: 1px solid var(--color-error-500);
+		background-color: var(--color-white);
+		color: var(--color-error-500);
+
+		&:hover {
+			border-color: var(--color-error-500);
+			background-color: var(--color-error-500);
+			color: var(--color-white);
+		}
+	}
+
+	&.e-button-square,
+	&.e-button-circle {
+		display: flex;
+		width: 3rem; /* 48 */
+		height: 3rem;
+		padding: 0;
+		min-height: unset;
+		&.e-button-lg {
+			width: 3.5rem; /* 56 */
+			height: 3.5rem;
+		}
+		&.e-button-sm {
+			width: 2.5rem; /* 48 */
+			height: 2.5rem;
+		}
+		&.e-button-xs {
+			width: 2rem; /* 48 */
+			height: 2rem;
+		}
+	}
+
+	&.e-button-circle {
+		border-radius: 50%;
+	}
 }
