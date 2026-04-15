@@ -132,10 +132,12 @@ class CartState {
 		try {
 			const res = await fetch(proxyApiRoutes.bookings.delete(bookingId), { method: 'DELETE' });
 			if (!res.ok) throw new Error(`Error ${res.status} al eliminar la reserva`);
-			await this.loadOrder();
-			if (this.order?.bookings?.length === 0) {
+			const wasLastBooking = (this.order?.bookings?.length ?? 0) <= 1;
+			if (wasLastBooking) {
 				this.setOrderId(null);
 				this.order = null;
+			} else {
+				await this.loadOrder();
 			}
 		} catch (e) {
 			this.error = e instanceof Error ? e.message : 'Error desconocido';

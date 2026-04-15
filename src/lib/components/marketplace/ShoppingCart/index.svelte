@@ -18,7 +18,7 @@
 	});
 </script>
 
-<button use:melt={$trigger} class="relative p-2">
+<button use:melt={$trigger} class="relative cursor-pointer p-2">
 	<CartLarge4 class="size-6" />
 	{#if cartStore.bookingCount > 0}
 		<span
