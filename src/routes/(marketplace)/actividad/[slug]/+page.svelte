@@ -214,6 +214,7 @@
 			{#if checkout.selectedDate && (optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0)}
 				<Spacer wrapperClass="mt-6 mb-8" />
 			{/if}
+
 			<TicketSelector
 				options={activity.activityTickets}
 				bind:value={selectedOptionId}

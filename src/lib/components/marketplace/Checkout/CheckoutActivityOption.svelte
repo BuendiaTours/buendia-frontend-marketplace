@@ -8,6 +8,7 @@
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import { formatEuro } from '$lib/utils/currency';
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 
 	type Props = {
 		option: ActivityOption;
@@ -68,6 +69,16 @@
 		const current = slots.find((s) => s.id === selectedSlotId);
 		if (current && checkout.isSlotDisabled(current)) selectedSlotId = null;
 	});
+
+	const isInCart = $derived.by(() => {
+		const slot = slots.find((s) => s.id === selectedSlotId);
+		if (!slot) return false;
+		const slotDate = new Date(slot.dateTime).toISOString().slice(0, 10);
+		const slotTime = new Date(slot.dateTime).toISOString().slice(11, 16);
+		return (cartStore.order?.bookings ?? []).some(
+			(b) => b.optionId === option.id && b.date === slotDate && b.startTime === slotTime
+		);
+	});
 </script>
 
 <div
@@ -107,7 +118,7 @@
 							disabled={checkout.isSlotDisabled(slot)}
 							onchange={() => (selectedSlotId = slot.id)}
 						/>
-						{format(new Date(slot.dateTime), "HH:mm'h'")}
+						{new Date(slot.dateTime).toISOString().slice(11, 16)}h
 					</label>
 					<details class="p-xs mb-4 !hidden">
 						<summary class="cursor-pointer"
@@ -199,31 +210,46 @@
 		{#if slots.some((s) => s.id === selectedSlotId)}
 			{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
 			<div class="checkout-activity-options__option__actions">
-				{#if cartStore.error}
-					<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
+				{#if isInCart}
+					<Callout
+						style="info"
+						size="small"
+						items={[
+							{
+								id: 'in-cart',
+								icon: 'CartLarge4',
+								title: 'Esta opción está en tu carrito',
+								description: ''
+							}
+						]}
+					/>
+				{:else}
+					{#if cartStore.error}
+						<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
+					{/if}
+					<button
+						type="button"
+						class="e-button e-button-primary w-full"
+						disabled={cartStore.isLoading || !selectedSlot}
+						onclick={async () => {
+							if (!selectedSlot) return;
+							await cartStore.addActivity(option, selectedSlot, checkout.counts);
+						}}
+					>
+						{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
+					</button>
+					<button
+						type="button"
+						class="e-button e-button-secondary mt-3 w-full"
+						disabled={cartStore.isLoading || !selectedSlot}
+						onclick={async () => {
+							if (!selectedSlot) return;
+							await cartStore.addActivity(option, selectedSlot, checkout.counts);
+						}}
+					>
+						{cartStore.isLoading ? 'Añadiendo…' : 'Añadir al carrito'}
+					</button>
 				{/if}
-				<button
-					type="button"
-					class="e-button e-button-primary w-full"
-					disabled={cartStore.isLoading || !selectedSlot}
-					onclick={async () => {
-						if (!selectedSlot) return;
-						await cartStore.addActivity(option, selectedSlot, checkout.counts);
-					}}
-				>
-					{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
-				</button>
-				<button
-					type="button"
-					class="e-button e-button-secondary mt-3 w-full"
-					disabled={cartStore.isLoading || !selectedSlot}
-					onclick={async () => {
-						if (!selectedSlot) return;
-						await cartStore.addActivity(option, selectedSlot, checkout.counts);
-					}}
-				>
-					{cartStore.isLoading ? 'Añadiendo…' : 'Añadir al carrito'}
-				</button>
 			</div>
 		{/if}
 	</div>
