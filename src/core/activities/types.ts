@@ -92,6 +92,16 @@ export type ActivityPetsAllowedInfo = {
 	description: string | null;
 };
 
+/** Meeting point location for an activity. */
+export type ActivityMeetingPoint = {
+	address: string;
+	city: string;
+	coords: Coords;
+	countryCode: string;
+	name: string;
+	postCode: string;
+};
+
 /** Meal included in an activity, with dietary and allergen metadata. */
 export type ActivityMeal = {
 	id: string;
@@ -135,6 +145,7 @@ export type Activity = {
 	kind: ActivityKind;
 	locations: ActivityLocation[];
 	meals: ActivityMeal[];
+	meetingPoint: ActivityMeetingPoint | null;
 	notSuitableFor: ActivityNotSuitableFor[];
 	petsAllowed: ActivityPetsAllowedInfo;
 	phoneContact: string | null;
@@ -181,6 +192,7 @@ export type ActivityUpdateDto = {
 	itemsToBring?: string[];
 	kind?: ActivityKind;
 	mediaIds?: string[];
+	meetingPoint?: ActivityMeetingPoint;
 	notSuitableFor?: string[];
 	petsAllowed?: ActivityPetsAllowed;
 	petsAllowedDescription?: string;

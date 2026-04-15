@@ -15,6 +15,7 @@
 	import ActivityLocationsAccordion from '../../components/ActivityLocationsAccordion.svelte';
 	import ActivityAttractionsAccordion from '../../components/ActivityAttractionsAccordion.svelte';
 	import ActivityStagesAccordion from '../../components/ActivityStagesAccordion.svelte';
+	import ActivityMeetingPointAccordion from '../../components/ActivityMeetingPointAccordion.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -171,4 +172,10 @@
 	/>
 
 	<ActivityStagesAccordion activityId={data.activity.id} bind:stages {addToast} />
+
+	<ActivityMeetingPointAccordion
+		activityId={data.activity.id}
+		meetingPoint={data.activity.meetingPoint}
+		{addToast}
+	/>
 </div>
