@@ -104,6 +104,8 @@ export type ActivityListItem = {
 	transportLocation: ActivityTransportLocation;
 	voucherInfo: string | null;
 	willDoing: string[];
+	activityTickets: ActivityOption[];
+	activityTicketsDisabled: ActivityOption[];
 };
 
 // Re-export from API shared types (canonical location)
@@ -186,6 +188,8 @@ export type ActivityReviewsResponse = {
 type ActivityOptionTicket = {
 	id: string;
 	price: number;
+	discount: string;
+	newPrice: number;
 	commission: number;
 	status: string;
 	ageRange: { min: number; max: number };
@@ -209,9 +213,11 @@ export type ActivityOptionPickupLocation = {
 
 export type ActivityOption = {
 	id: string;
+	disabled: boolean;
 	activityId: string;
 	availabilityGroupId: string | null;
 	title: string;
+	totalTickets: number;
 	description: string | null;
 	supplierOptionCode: string;
 	status: string;

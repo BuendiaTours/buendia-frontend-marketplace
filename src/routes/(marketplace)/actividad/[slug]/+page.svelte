@@ -18,7 +18,7 @@
 	// Components
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import Conditions from '$lib/components/marketplace/Conditions.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
@@ -34,6 +34,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+	import TicketSelector from '$lib/components/marketplace/pdp/TicketSelector.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
@@ -105,6 +106,7 @@
 			selectedSlotId = allSlots.find((s) => !checkout.isSlotDisabled(s))?.id ?? null;
 		}
 	});
+	let selectedOptionId = $state<string | null>(activity.activityTickets[0]?.id ?? null);
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -212,6 +214,17 @@
 			{#if checkout.selectedDate && (optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0)}
 				<Spacer wrapperClass="mt-6 mb-8" />
 			{/if}
+			<TicketSelector
+				options={activity.activityTickets}
+				bind:value={selectedOptionId}
+				wrapperClass=""
+			/>
+
+			<TicketSelector
+				title="Sin disponibilidad en tus fechas"
+				options={activity.activityTicketsDisabled}
+				wrapperClass=""
+			/>
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
@@ -336,15 +349,15 @@
 				<p class="h2 pb-4">Condiciones</p>
 				<div class="pdp-conditions flex flex-col gap-4">
 					{#each activity.conditions as condition (condition.id)}
-						<Conditions style={condition.style} items={condition.items} />
+						<Callout style={condition.style} items={condition.items} />
 					{/each}
 				</div>
 			{/if}
 
 			<!-- conditions -->
 			{#if activity.infoImportant}
-				<Conditions
-					style="important"
+				<Callout
+					style="warning"
 					items={[
 						{
 							id: 'important-info',

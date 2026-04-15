@@ -37,6 +37,7 @@
 				title: 'Top ventas',
 				color: 'bg-ochre-soft text-neutral-800'
 			}}
+			wrapperClass="uppercase p-xs"
 		/>
 	</div>
 </div>
