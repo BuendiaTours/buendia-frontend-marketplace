@@ -7,6 +7,7 @@
 	import { formatEuro } from '$lib/utils/currency';
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 	import CustomMiniCancel from '$lib/icons/dist/Linear/CustomMiniCancel.svelte';
 
 	const {
@@ -55,7 +56,12 @@
 						<p class="p-xs font-mono text-gray-500">{booking.id}</p>
 						<p class="p-sm">Opción: <span class="p-xs font-mono">{booking.optionId}</span></p>
 						{#if booking.date}
-							<p class="p-sm">Fecha: {booking.date} {booking.startTime ?? ''}</p>
+							<p class="p-sm">
+								Fecha: {booking.date}
+								{#if booking.startTime}{formatSlotTime(
+										bookingToISODateTime(booking.date, booking.startTime)
+									)}{/if}
+							</p>
 						{/if}
 						<p class="p-sm">Estado: {booking.status}</p>
 						<PassengerBreakdown items={passengerItems} itemClass="p-sm" />

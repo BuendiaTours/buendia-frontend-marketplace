@@ -9,6 +9,7 @@
 	import { formatEuro } from '$lib/utils/currency';
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 
 	type Props = {
 		option: ActivityOption;
@@ -50,7 +51,7 @@
 		const byDate = new SvelteMap<string, AvailabilitySlot[]>();
 		for (const slot of checkout.availability) {
 			if (slot.optionId !== option.id) continue;
-			const dateStr = format(new Date(slot.dateTime), 'yyyy-MM-dd');
+			const dateStr = new Date(slot.dateTime).toISOString().slice(0, 10);
 			if (dateStr === selectedDateStr || dateStr < today) continue;
 			const arr = byDate.get(dateStr) ?? [];
 			arr.push(slot);
@@ -73,10 +74,13 @@
 	const isInCart = $derived.by(() => {
 		const slot = slots.find((s) => s.id === selectedSlotId);
 		if (!slot) return false;
-		const slotDate = new Date(slot.dateTime).toISOString().slice(0, 10);
-		const slotTime = new Date(slot.dateTime).toISOString().slice(11, 16);
+		const slotPrefix = slot.dateTime.slice(0, 16);
 		return (cartStore.order?.bookings ?? []).some(
-			(b) => b.optionId === option.id && b.date === slotDate && b.startTime === slotTime
+			(b) =>
+				b.optionId === option.id &&
+				b.date != null &&
+				b.startTime != null &&
+				bookingToISODateTime(b.date, b.startTime).startsWith(slotPrefix)
 		);
 	});
 </script>
@@ -118,7 +122,7 @@
 							disabled={checkout.isSlotDisabled(slot)}
 							onchange={() => (selectedSlotId = slot.id)}
 						/>
-						{new Date(slot.dateTime).toISOString().slice(11, 16)}h
+						{formatSlotTime(slot.dateTime)}h
 					</label>
 					<details class="p-xs mb-4 !hidden">
 						<summary class="cursor-pointer"
