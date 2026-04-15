@@ -40,6 +40,7 @@
 	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
+	import TicketSelector from '$lib/components/marketplace/pdp/TicketSelector.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -65,6 +66,8 @@
 			).values()
 		)
 	);
+
+	let selectedOptionId = $state<string | null>(activity.activityTickets[0]?.id ?? null);
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -147,6 +150,18 @@
 			/>
 
 			<Spacer wrapperClass="mt-6 mb-8" />
+
+			<TicketSelector
+				options={activity.activityTickets}
+				bind:value={selectedOptionId}
+				wrapperClass=""
+			/>
+
+			<TicketSelector
+				title="Sin disponibilidad en tus fechas"
+				options={activity.activityTicketsDisabled}
+				wrapperClass=""
+			/>
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
