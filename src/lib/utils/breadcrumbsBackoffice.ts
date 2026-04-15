@@ -10,7 +10,8 @@ const routeLabels: Record<string, string> = {
 	categories: 'Categorias',
 	locations: 'Ubicaciones',
 	'pickup-points': 'Puntos de recogida',
-	distributives: 'Distributivos',
+	distributives: 'Distributivas',
+	'free-tours': 'Free Tours',
 	suppliers: 'Proveedores',
 	tags: 'Tags',
 	faqs: 'FAQs',
@@ -99,6 +100,8 @@ export function buildBreadcrumbs(
 		bookings: ROUTES.backoffice.bookings.list,
 		multimedia: ROUTES.backoffice.multimedia.list,
 		'content-blocks': ROUTES.backoffice.contentBlocks.list,
+		distributives: ROUTES.backoffice.distributives.list,
+		'free-tours': ROUTES.backoffice.freeTours.list,
 		analytics: ROUTES.backoffice.analytics.dashboard,
 		'api-catalog': ROUTES.backoffice.apiCatalog,
 		components: ROUTES.backoffice.components

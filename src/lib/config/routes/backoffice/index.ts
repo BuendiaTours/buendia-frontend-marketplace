@@ -17,6 +17,8 @@ import { FAQ_ROUTES } from './faqs';
 import { BOOKING_ROUTES } from './bookings';
 import { MULTIMEDIA_ROUTES } from './multimedia';
 import { CONTENT_BLOCK_ROUTES } from './contentBlocks';
+import { DISTRIBUTIVE_ROUTES } from './distributives';
+import { FREE_TOUR_ROUTES } from './freeTours';
 import { ANALYTICS_ROUTES } from './analytics';
 import { toolsRoutes } from './tools';
 
@@ -37,6 +39,8 @@ export const backofficeRoutes = {
 	bookings: BOOKING_ROUTES,
 	multimedia: MULTIMEDIA_ROUTES,
 	contentBlocks: CONTENT_BLOCK_ROUTES,
+	distributives: DISTRIBUTIVE_ROUTES,
+	freeTours: FREE_TOUR_ROUTES,
 	analytics: ANALYTICS_ROUTES,
 	...toolsRoutes
 } as const;

@@ -24,6 +24,8 @@
 			"./messages/{locale}/multimedia.json",
 			"./messages/{locale}/contentBlocks.json",
 			"./messages/{locale}/faqs.json",
+			"./messages/{locale}/distributives.json",
+			"./messages/{locale}/freeTours.json",
 			"./messages/{locale}/analytics.json",
 			"./messages/{locale}/auth.json"
 		]

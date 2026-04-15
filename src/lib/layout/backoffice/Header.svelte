@@ -82,6 +82,22 @@
 				</li>
 				<li>
 					<a
+						href={ROUTES.backoffice.distributives.list}
+						class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
+					>
+						{m.distributives_navLabel()}
+					</a>
+				</li>
+				<li>
+					<a
+						href={ROUTES.backoffice.freeTours.list}
+						class:menu-active={isActive(ROUTES.backoffice.freeTours.list)}
+					>
+						{m.freeTours_navLabel()}
+					</a>
+				</li>
+				<li>
+					<a
 						href={ROUTES.backoffice.bookings.list}
 						class:menu-active={isActive(ROUTES.backoffice.bookings.list)}
 					>
@@ -212,6 +228,14 @@
 					class:menu-active={isActive(ROUTES.backoffice.activities.list)}
 				>
 					{m.activities_navLabel()}
+				</a>
+			</li>
+			<li>
+				<a
+					href={ROUTES.backoffice.distributives.list}
+					class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
+				>
+					{m.distributives_navLabel()}
 				</a>
 			</li>
 			<li>
