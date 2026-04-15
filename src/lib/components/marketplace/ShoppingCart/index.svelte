@@ -9,6 +9,19 @@
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 	import CustomMiniCancel from '$lib/icons/dist/Linear/CustomMiniCancel.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
+
+	const CART_EXPIRY_MS = 20 * 60 * 1000;
+
+	const cartRemainingMinutes = $derived.by(() => {
+		if (!cartStore.orderId || typeof window === 'undefined') return null;
+		const createdAt = localStorage.getItem('cart_created_at');
+		if (!createdAt) return null;
+		const remaining = Math.ceil(
+			(CART_EXPIRY_MS - (Date.now() - new Date(createdAt).getTime())) / 60000
+		);
+		return remaining > 0 ? remaining : null;
+	});
 
 	const {
 		elements: { trigger, content },
@@ -37,7 +50,24 @@
 		class="z-50 max-h-[80vh] w-[480px] overflow-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 	>
 		{#if cartStore.order?.bookings?.length}
-			<p class="p-xs mb-2 font-bold text-gray-700">Bookings ({cartStore.bookingCount})</p>
+			{#if cartRemainingMinutes}
+				<Callout
+					style="warning-high"
+					size="small"
+					items={[
+						{
+							id: 'cart-expiry',
+							icon: 'History2',
+							title: `Plazas reservadas durante ${cartRemainingMinutes} minuto${cartRemainingMinutes !== 1 ? 's' : ''}`,
+							description: ''
+						}
+					]}
+					wrapperClass="mb-4"
+				/>
+			{/if}
+			<p class="p-xs mb-2 font-bold text-gray-700">
+				Tienes ({cartStore.bookingCount}) planes en tu carrito
+			</p>
 			<ul class="p-xs mb-4 flex flex-col gap-2">
 				{#each cartStore.order.bookings as booking (booking.id)}
 					{@const passengerItems = Object.values(
@@ -60,8 +90,8 @@
 									: ''}{booking.optionTitle ?? ''}
 							</p>
 						{/if}
-						<p class="p-xs font-mono text-gray-500">{booking.id}</p>
-						<p class="p-sm">Opción: <span class="p-xs font-mono">{booking.optionId}</span></p>
+						<p class="p-xs">booking_id:{booking.id}</p>
+						<p class="p-xs">option_id: <span class="p-xs font-mono">{booking.optionId}</span></p>
 						{#if booking.date}
 							<p class="p-sm">
 								Fecha: {booking.date}

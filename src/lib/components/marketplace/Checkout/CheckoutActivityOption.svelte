@@ -214,6 +214,20 @@
 		{#if slots.some((s) => s.id === selectedSlotId)}
 			{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
 			<div class="checkout-activity-options__option__actions">
+				{#if cartStore.error}
+					<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
+				{/if}
+				<button
+					type="button"
+					class="e-button e-button-primary w-full"
+					disabled={cartStore.isLoading || !selectedSlot}
+					onclick={async () => {
+						if (!selectedSlot) return;
+						await cartStore.addActivity(option, selectedSlot, checkout.counts);
+					}}
+				>
+					{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
+				</button>
 				{#if isInCart}
 					<Callout
 						style="info"
@@ -222,26 +236,13 @@
 							{
 								id: 'in-cart',
 								icon: 'CartLarge4',
-								title: 'Esta opción está en tu carrito',
+								title: 'En tu carrito',
 								description: ''
 							}
 						]}
+						wrapperClass="mt-2 items-center"
 					/>
 				{:else}
-					{#if cartStore.error}
-						<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
-					{/if}
-					<button
-						type="button"
-						class="e-button e-button-primary w-full"
-						disabled={cartStore.isLoading || !selectedSlot}
-						onclick={async () => {
-							if (!selectedSlot) return;
-							await cartStore.addActivity(option, selectedSlot, checkout.counts);
-						}}
-					>
-						{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
-					</button>
 					<button
 						type="button"
 						class="e-button e-button-secondary mt-3 w-full"
