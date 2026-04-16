@@ -1,0 +1,109 @@
+/**
+ * MARKETPLACE STYLES
+ *
+ * Solo Tailwind CSS - Sin DaisyUI, sin themes, sin personalizaciones del backoffice.
+ * Todos los componentes del marketplace serán custom y totalmente independientes.
+ */
+
+/* Allow to use utilities in every component */
+@reference 'tailwindcss';
+
+/* Layout marketplace */
+@import '$lib/styles/marketplace/core/colors.css';
+@import '$lib/styles/marketplace/core/theme.css';
+@import '$lib/styles/marketplace/core/fonts.css';
+@import '$lib/styles/marketplace/core/typography.css';
+@import '$lib/styles/marketplace/core/base.css';
+@import '$lib/styles/marketplace/core/layout.css';
+@import '$lib/styles/marketplace/core/forms.css';
+
+/* Utilities */
+@import '$lib/styles/marketplace/utilities/icons.css';
+@import '$lib/styles/marketplace/utilities/typography.css';
+
+/* Componentes de terceros */
+/* @import '$lib/styles/marketplace/components/photoswipe.css'; */
+
+/* Componentes propios */
+/* Atoms */
+@import '$lib/styles/marketplace/elements/e-button.css';
+@import '$lib/styles/marketplace/elements/e-card.css';
+@import '$lib/styles/marketplace/elements/e-nav-button.css';
+
+/* Molecules */
+
+/* Organisms */
+
+/* Components */
+@import '$lib/styles/marketplace/components/c-accordion-on-mobile.css';
+@import '$lib/styles/marketplace/components/c-bnd-css-slider.css';
+@import '$lib/styles/marketplace/components/c-clamp-text.css';
+@import '$lib/styles/marketplace/components/c-callout.css';
+@import '$lib/styles/marketplace/components/c-faq-item.css';
+@import '$lib/styles/marketplace/components/c-melt-calendar.css';
+@import '$lib/styles/marketplace/components/c-melt-range-calendar.css';
+@import '$lib/styles/marketplace/components/c-review-card.css';
+@import '$lib/styles/marketplace/components/c-scrollable-tab-bar.css';
+@import '$lib/styles/marketplace/components/c-star-rating.css';
+@import '$lib/styles/marketplace/components/c-tooltip.css';
+
+/* PDP */
+@import '$lib/styles/marketplace/components/pdp-itinerary.css';
+@import '$lib/styles/marketplace/components/pdp-reviews-featured.css';
+
+/* ============================================
+   DISABLE TAILWIND DEFAULT TEXT CLASSES
+   ============================================
+   Deshabilitamos las clases de texto por defecto de Tailwind
+   para forzar el uso de nuestras clases personalizadas
+   ============================================ */
+
+/* Deshabilitamos estas clases en el marketplace (pero NO en Storybook ni en Backoffice) */
+html:not(.storybook):not(.bnd-backoffice) {
+	.text-xs,
+	.text-sm,
+	.text-base,
+	.text-lg,
+	.text-xl,
+	.text-2xl,
+	.text-3xl,
+	.text-4xl,
+	.text-5xl,
+	.text-6xl,
+	.text-7xl,
+	.text-8xl,
+	.text-9xl {
+		font-size: unset !important;
+		line-height: unset !important;
+	}
+}
+
+/* Mensaje de advertencia en consola para desarrollo (pero NO en Storybook ni en Backoffice) */
+html:not(.storybook):not(.bnd-backoffice) {
+	.text-xs::before,
+	.text-sm::before,
+	.text-base::before,
+	.text-lg::before,
+	.text-xl::before,
+	.text-2xl::before,
+	.text-3xl::before,
+	.text-4xl::before,
+	.text-5xl::before,
+	.text-6xl::before,
+	.text-7xl::before,
+	.text-8xl::before,
+	.text-9xl::before {
+		content: '⚠️ Usa clases de tipografía custom (text-h1, text-p-base, etc.)';
+		display: block;
+		color: red;
+		font-size: 12px;
+		font-weight: bold;
+		background: yellow;
+		padding: 4px;
+		margin-bottom: 4px;
+	}
+}
+
+.pswp__button.pswp__button--zoom {
+	display: none !important;
+}
