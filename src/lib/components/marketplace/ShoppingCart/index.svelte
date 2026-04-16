@@ -15,20 +15,8 @@
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
-
-	const CART_EXPIRY_MS = 20 * 60 * 1000;
-
-	const cartRemainingMinutes = $derived.by(() => {
-		if (!shoppingCartStore.orderId || typeof window === 'undefined') return null;
-		const createdAt = localStorage.getItem('cart_created_at');
-		if (!createdAt) return null;
-		const remaining = Math.ceil(
-			(CART_EXPIRY_MS - (Date.now() - new Date(createdAt).getTime())) / 60000
-		);
-		return remaining > 0 ? remaining : null;
-	});
+	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 
 	const {
 		elements: { trigger, content },
@@ -57,21 +45,7 @@
 		class="z-50 max-h-[80vh] w-[480px] overflow-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 	>
 		{#if shoppingCartStore.order?.bookings?.length}
-			{#if cartRemainingMinutes}
-				<Callout
-					style="warning-high"
-					size="small"
-					items={[
-						{
-							id: 'cart-expiry',
-							icon: 'History2',
-							title: `Plazas reservadas durante ${cartRemainingMinutes} minuto${cartRemainingMinutes !== 1 ? 's' : ''}`,
-							description: ''
-						}
-					]}
-					wrapperClass="mb-4"
-				/>
-			{/if}
+			<CartExpiryCallout wrapperClass="mb-4" />
 			<p class="p-xs mb-2 font-bold text-gray-700">
 				Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito
 			</p>
@@ -139,6 +113,8 @@
 					</li>
 				{/each}
 			</ul>
+
+			<a href="/checkout-order" class="e-button e-button-primary w-full" type="button">Checkout</a>
 		{:else}
 			<p class="p-xs mb-4 text-gray-400">No hay bookings</p>
 		{/if}
