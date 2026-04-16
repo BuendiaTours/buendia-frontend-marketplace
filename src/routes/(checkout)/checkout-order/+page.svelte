@@ -1,8 +1,15 @@
 <script lang="ts">
+	// Types
 	import type { PassengerLineItem } from '$lib/types';
-	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
+
+	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
+
+	// Stores
+	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
+
+	// Components
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 </script>
@@ -77,6 +84,8 @@
 					)}</pre>
 			</details>
 		</div>
-		<div class="col-sidebar pt-6"></div>
+		<div class="col-sidebar pt-6">
+			<a href="/checkout-personal-data" class="e-button">Tramitar pedido</a>
+		</div>
 	</div>
 </div>
