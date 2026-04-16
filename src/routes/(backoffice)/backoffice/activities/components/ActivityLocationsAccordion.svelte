@@ -124,14 +124,19 @@
 				bind:value={selectedLocationId}
 				searchFn={handleSearch}
 				placeholder={m.activities_locationsSearchPlaceholder()}
-				wrapperClass="flex-1"
+				wrapperClass="min-w-0 flex-[2]"
 			/>
 
-			<select class="select select-sm h-[42px]" bind:value={selectedRole}>
-				{#each ACTIVITY_LOCATION_ROLE_OPTIONS as option (option.id)}
-					<option value={option.id}>{option.name}</option>
-				{/each}
-			</select>
+			<div class="w-40 shrink-0">
+				<label class="label text-sm" for="locationRole">
+					<span>{m.activities_labelLocationRole()}</span>
+				</label>
+				<select id="locationRole" class="select w-full" bind:value={selectedRole}>
+					{#each ACTIVITY_LOCATION_ROLE_OPTIONS as option (option.id)}
+						<option value={option.id}>{option.name}</option>
+					{/each}
+				</select>
+			</div>
 
 			<button
 				type="button"
