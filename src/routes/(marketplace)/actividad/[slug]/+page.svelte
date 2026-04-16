@@ -44,7 +44,7 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
-	import { Checkout, CheckoutActivityOption } from '$lib/components/marketplace/Checkout';
+	import { Checkout } from '$lib/components/marketplace/Checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -106,8 +106,6 @@
 			selectedSlotId = allSlots.find((s) => !checkout.isSlotDisabled(s))?.id ?? null;
 		}
 	});
-	let selectedOptionId = $state<string | null>(activity.activityTickets[0]?.id ?? null);
-
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
 		best: { sort: 'averageRating', order: 'DESC' },
@@ -192,40 +190,25 @@
 
 			<Spacer wrapperClass="mt-6 mb-8" />
 
-			{#if checkout.selectedDate && optionsWithSlots.length > 0}
-				<p class="h2">{optionsWithSlots.length} opciones disponibles</p>
-				<p>Todas las opciones incluyen las mismas condiciones by buendía</p>
-				<div class="checkout-activity-options mt-6">
-					{#each optionsWithSlots as { option, slots } (option.id)}
-						<CheckoutActivityOption {option} {slots} bind:selectedSlotId />
-					{/each}
-				</div>
+			{#if checkout.selectedDate}
+				{#if optionsWithSlots.length > 0}
+					<p class="h2">
+						{optionsWithSlots.length}
+						{optionsWithSlots.length === 1 ? 'opción disponible' : 'opciones disponibles'}
+					</p>
+					<p class="p-lg mt-2 text-neutral-700">
+						Todas las opciones incluyen las mismas condiciones by buendía.
+					</p>
+					<TicketSelector options={optionsWithSlots} bind:selectedSlotId wrapperClass="mt-6" />
+				{/if}
+				{#if optionsWithoutSlots.length > 0}
+					<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
+					<TicketSelector options={optionsWithoutSlots} bind:selectedSlotId wrapperClass="mt-6" />
+				{/if}
+				{#if optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0}
+					<Spacer wrapperClass="mt-6 mb-8" />
+				{/if}
 			{/if}
-
-			{#if checkout.selectedDate && optionsWithoutSlots.length > 0}
-				<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
-				<div class="checkout-activity-options mt-6">
-					{#each optionsWithoutSlots as { option, slots } (option.id)}
-						<CheckoutActivityOption {option} {slots} bind:selectedSlotId />
-					{/each}
-				</div>
-			{/if}
-
-			{#if checkout.selectedDate && (optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0)}
-				<Spacer wrapperClass="mt-6 mb-8" />
-			{/if}
-
-			<TicketSelector
-				options={activity.activityTickets}
-				bind:value={selectedOptionId}
-				wrapperClass=""
-			/>
-
-			<TicketSelector
-				title="Sin disponibilidad en tus fechas"
-				options={activity.activityTicketsDisabled}
-				wrapperClass=""
-			/>
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}

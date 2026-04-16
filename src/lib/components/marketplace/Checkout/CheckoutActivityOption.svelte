@@ -235,7 +235,7 @@
 								description: ''
 							}
 						]}
-						wrapperClass="mt-2 items-center"
+						wrapperClass="items-center"
 					/>
 				{:else}
 					<button
