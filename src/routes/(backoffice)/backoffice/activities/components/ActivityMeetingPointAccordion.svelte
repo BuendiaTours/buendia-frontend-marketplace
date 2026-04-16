@@ -29,6 +29,7 @@
 
 	let { activityId, meetingPoint, addToast }: Props = $props();
 
+	let enabled = $state(meetingPoint !== null);
 	let name = $state(meetingPoint?.name ?? '');
 	let address = $state(meetingPoint?.address ?? '');
 	let city = $state(meetingPoint?.city ?? '');
@@ -52,7 +53,7 @@
 	async function handleSave() {
 		isSaving = true;
 		try {
-			const mp = name
+			const mp = enabled
 				? {
 						name,
 						address: address || '',
@@ -63,7 +64,7 @@
 							? { latitude: location.coordinates[1], longitude: location.coordinates[0] }
 							: { latitude: 0, longitude: 0 }
 					}
-				: undefined;
+				: null;
 
 			await ACTIVITY_REQUEST.update(fetch, activityId, { meetingPoint: mp });
 			await new Promise((resolve) => setTimeout(resolve, 500));
@@ -87,47 +88,56 @@
 		<p class="text-xs">{m.activities_sectionMeetingPointDescription()}</p>
 	{/snippet}
 	{#snippet content()}
-		<FormInputText
-			id="meetingPointName"
-			label={m.activities_labelMeetingPointName()}
-			bind:value={name}
-			wrapperClass="md:col-span-6"
-		/>
+		<div class="md:col-span-12">
+			<label class="label cursor-pointer justify-start gap-3">
+				<input type="checkbox" class="toggle toggle-primary" bind:checked={enabled} />
+				<span class="text-sm">{m.activities_meetingPointEnabled()}</span>
+			</label>
+		</div>
 
-		<FormInputText
-			id="meetingPointAddress"
-			label={m.activities_labelMeetingPointAddress()}
-			bind:value={address}
-			wrapperClass="md:col-span-6"
-		/>
+		{#if enabled}
+			<FormInputText
+				id="meetingPointName"
+				label={m.activities_labelMeetingPointName()}
+				bind:value={name}
+				wrapperClass="md:col-span-6"
+			/>
 
-		<FormInputText
-			id="meetingPointCity"
-			label={m.activities_labelMeetingPointCity()}
-			bind:value={city}
-			wrapperClass="md:col-span-4"
-		/>
+			<FormInputText
+				id="meetingPointAddress"
+				label={m.activities_labelMeetingPointAddress()}
+				bind:value={address}
+				wrapperClass="md:col-span-6"
+			/>
 
-		<FormInputText
-			id="meetingPointPostCode"
-			label={m.activities_labelMeetingPointPostCode()}
-			bind:value={postCode}
-			wrapperClass="md:col-span-4"
-		/>
+			<FormInputText
+				id="meetingPointCity"
+				label={m.activities_labelMeetingPointCity()}
+				bind:value={city}
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormInputText
-			id="meetingPointCountryCode"
-			label={m.activities_labelMeetingPointCountryCode()}
-			bind:value={countryCode}
-			wrapperClass="md:col-span-4"
-		/>
+			<FormInputText
+				id="meetingPointPostCode"
+				label={m.activities_labelMeetingPointPostCode()}
+				bind:value={postCode}
+				wrapperClass="md:col-span-4"
+			/>
 
-		<FormGeoJson
-			id="meetingPointLocation"
-			label={m.activities_labelMeetingPointLocation()}
-			bind:value={location}
-			config={{ showSearchBox: true }}
-		/>
+			<FormInputText
+				id="meetingPointCountryCode"
+				label={m.activities_labelMeetingPointCountryCode()}
+				bind:value={countryCode}
+				wrapperClass="md:col-span-4"
+			/>
+
+			<FormGeoJson
+				id="meetingPointLocation"
+				label={m.activities_labelMeetingPointLocation()}
+				bind:value={location}
+				config={{ showSearchBox: true }}
+			/>
+		{/if}
 
 		<div class="flex justify-end md:col-span-12">
 			<button
