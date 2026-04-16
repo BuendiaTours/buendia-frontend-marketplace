@@ -10,6 +10,7 @@
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
+	import { slugify } from '$lib/utils/strings';
 
 	// Components
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
@@ -92,9 +93,11 @@
 					<li class="relative rounded border border-gray-200 p-2">
 						{#if booking.activityTitle || booking.optionTitle}
 							<p class="p-sm font-semibold text-gray-800">
-								{booking.activityTitle ?? ''}{booking.activityTitle && booking.optionTitle
-									? ' · '
-									: ''}{booking.optionTitle ?? ''}
+								{#if booking.activityTitle}
+									<a href="/actividad/{slugify(booking.activityTitle)}" class="hover:underline">
+										{booking.activityTitle}
+									</a>{booking.optionTitle ? ' · ' : ''}
+								{/if}{booking.optionTitle ?? ''}
 							</p>
 						{/if}
 						<p class="p-xs">booking_id:{booking.id}</p>

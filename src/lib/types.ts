@@ -501,6 +501,7 @@ export type CartBooking = {
 	optionId: string;
 	optionTitle?: string;
 	legibleId?: string;
+	activityDatetime?: string;
 	startTime?: string;
 	date?: string;
 	status: BookingStatus;

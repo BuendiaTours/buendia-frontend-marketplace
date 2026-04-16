@@ -9,7 +9,7 @@
 	import { formatEuro } from '$lib/utils/currency';
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
+	import { formatSlotTime } from '$lib/utils/datetime';
 
 	type Props = {
 		option: ActivityOption;
@@ -74,13 +74,8 @@
 	const isInCart = $derived.by(() => {
 		const slot = slots.find((s) => s.id === selectedSlotId);
 		if (!slot) return false;
-		const slotPrefix = slot.dateTime.slice(0, 16);
 		return (cartStore.order?.bookings ?? []).some(
-			(b) =>
-				b.optionId === option.id &&
-				b.date != null &&
-				b.startTime != null &&
-				bookingToISODateTime(b.date, b.startTime).startsWith(slotPrefix)
+			(b) => b.optionId === option.id && b.activityDatetime === slot.dateTime
 		);
 	});
 </script>
