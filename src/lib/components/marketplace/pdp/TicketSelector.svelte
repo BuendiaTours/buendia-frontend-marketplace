@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ClockCircle, ByBuendia, CalendarCheck, MoneyBack } from '$lib/icons/Linear';
+	import { ClockCircle, ByBuendia, CalendarCheck, MoneyBack, Calendar } from '$lib/icons/Linear';
 	import Badge from '../Badge.svelte';
 	import Callout from '../Callout.svelte';
 	import type { ActivityOption, AvailabilitySlot } from '$lib/types';
@@ -81,24 +81,43 @@
 		return slots.find((s) => s.id === selectedSlotId);
 	}
 
-	function getMinPrice(slots: AvailabilitySlot[]): number | null {
+	type MinPriceData = {
+		total: number;
+		breakdown: { group: string; count: number; price: number }[];
+	};
+
+	function getMinPriceData(slots: AvailabilitySlot[]): MinPriceData | null {
 		const available = slots.filter((s) => !checkout.isSlotDisabled(s));
 		if (available.length === 0) return null;
-		const selectedGroups = [...checkout.counts]
-			.filter(([, count]) => count > 0)
-			.map(([group]) => group);
-		const prices = available.flatMap((slot) =>
-			slot.tickets
-				.filter((t) => {
-					const group = checkout.ticketIdToGroup.get(t.id);
-					return (
-						selectedGroups.length === 0 || (group !== undefined && selectedGroups.includes(group))
-					);
-				})
-				.map((t) => t.price)
-		);
-		const min = Math.min(...prices);
-		return Number.isFinite(min) ? min : null;
+		const activeCounts = [...checkout.counts].filter(([, count]) => count > 0);
+		if (activeCounts.length === 0) {
+			const prices = available.flatMap((slot) => slot.tickets.map((t) => t.price));
+			const min = Math.min(...prices);
+			return Number.isFinite(min) ? { total: min, breakdown: [] } : null;
+		}
+		let bestSlot: AvailabilitySlot | null = null;
+		let bestTotal = Infinity;
+		for (const slot of available) {
+			const total = activeCounts.reduce((sum, [group, count]) => {
+				const ticket = slot.tickets.find((t) => checkout.ticketIdToGroup.get(t.id) === group);
+				return sum + (ticket ? ticket.price * count : 0);
+			}, 0);
+			if (total < bestTotal) {
+				bestTotal = total;
+				bestSlot = slot;
+			}
+		}
+		if (!bestSlot || !Number.isFinite(bestTotal)) return null;
+		const resolvedSlot = bestSlot;
+		const breakdown = activeCounts
+			.map(([group, count]) => {
+				const ticket = resolvedSlot.tickets.find(
+					(t) => checkout.ticketIdToGroup.get(t.id) === group
+				);
+				return ticket ? { group, count, price: ticket.price } : null;
+			})
+			.filter((x) => x !== null);
+		return { total: bestTotal, breakdown };
 	}
 
 	function isInCart(option: ActivityOption, slots: AvailabilitySlot[]): boolean {
@@ -207,13 +226,23 @@
 				</div>
 				{#if !disabled}
 					<div class="flex flex-col {selected ? 'gap-5 lg:gap-6' : 'gap-2'}">
-						{#if option.duration.quantity && option.duration.unit && selected}
-							<p class="p-base flex gap-2 font-bold text-neutral-800">
-								<ClockCircle class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
-								Duración: {option.duration.quantity}
-								{option.duration.unit}
-							</p>
-						{/if}
+						<div class="flex flex-col gap-1">
+							{#if option.duration.quantity && option.duration.unit && selected}
+								<p class="p-base flex gap-2 font-bold text-neutral-800">
+									<ClockCircle class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
+									Duración: {option.duration.quantity}
+									{option.duration.unit}
+								</p>
+							{/if}
+							{#if checkout.selectedDate && selected}
+								<p class="p-base flex gap-2 font-bold text-neutral-800">
+									<Calendar class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
+									{format(checkout.selectedDate.toDate('UTC'), "d 'de' MMMM 'de' yyyy", {
+										locale: es
+									})}
+								</p>
+							{/if}
+						</div>
 						{#if selected && !isStaticMode && slots.some((s) => !checkout.isSlotDisabled(s))}
 							<div class="flex flex-col gap-2">
 								<p class="p font-bold text-neutral-800">Selecciona la hora de inicio</p>
@@ -294,10 +323,24 @@
 							<p class="p-sm text-neutral-600">Tasas e impuestos incluidos</p>
 						</div>
 					{:else if !isStaticMode}
-						{@const minPrice = getMinPrice(slots)}
-						{#if minPrice !== null}
-							<p class="text-price">{formatEuro(minPrice)}</p>
-							<p class="p-sm font-bold text-neutral-700">por persona</p>
+						{@const priceData = getMinPriceData(slots)}
+						{#if priceData !== null}
+							<p class="text-price">{formatEuro(priceData.total)}</p>
+							{#if priceData.breakdown.length > 0}
+								<ul class="p-sm text-right">
+									{#each priceData.breakdown as { group, count, price } (group)}
+										<li>
+											<span class="p-sm font-bold text-neutral-700">
+												{count}
+												{messages[`enum_passengerKind_${group}_name`]?.() ?? group} ×
+												{formatEuro(price)}
+											</span>
+										</li>
+									{/each}
+								</ul>
+							{:else}
+								<p class="p-sm font-bold text-neutral-700">por persona</p>
+							{/if}
 							<p class="p-sm text-neutral-600">Tasas e impuestos incluidos</p>
 						{/if}
 					{:else}
@@ -323,7 +366,7 @@
 					{/if}
 
 					{#if !isStaticMode && selected}
-						<div class="mt-3 flex flex-col gap-1">
+						<div class="mt-3 flex flex-col gap-2">
 							{#if shoppingCartStore.error}
 								<p class="p-xs text-salmon-strong">{shoppingCartStore.error}</p>
 							{/if}
