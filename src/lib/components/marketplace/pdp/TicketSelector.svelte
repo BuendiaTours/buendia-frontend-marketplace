@@ -129,7 +129,7 @@
 	}
 </script>
 
-<div class="ticket-selector flex flex-col gap-5 {wrapperClass}">
+<div class="ticket-selector flex flex-col gap-5 {wrapperClass} ">
 	{#each options as optionWithSlots (optionWithSlots.option.id)}
 		{@const { option, slots } = optionWithSlots}
 		{@const selected = isSelected(optionWithSlots)}
@@ -138,12 +138,12 @@
 		{@const nextDates = disabled ? getNextAvailableDates(option.id) : []}
 		<div
 			class="
-        flex flex-col gap-5 border-[2px] border-solid lg:relative
+        ticket-selector__item flex flex-col gap-5 border-[2px] border-solid lg:relative
         lg:flex-row lg:gap-6
         {selected
-				? 'border-violet-500'
+				? 'ticket-selector__item__selected border-violet-500'
 				: disabled
-					? 'border-neutral-200'
+					? 'ticket-selector__item__disabled border-neutral-200'
 					: 'cursor-pointer border-neutral-200'}
         rounded-lg p-4 lg:p-6
       "
@@ -225,24 +225,26 @@
 					{/if}
 				</div>
 				{#if !disabled}
-					<div class="flex flex-col {selected ? 'gap-5 lg:gap-6' : 'gap-2'}">
-						<div class="flex flex-col gap-1">
-							{#if option.duration.quantity && option.duration.unit && selected}
-								<p class="p-base flex gap-2 font-bold text-neutral-800">
-									<ClockCircle class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
-									Duración: {option.duration.quantity}
-									{option.duration.unit}
-								</p>
-							{/if}
-							{#if checkout.selectedDate && selected}
-								<p class="p-base flex gap-2 font-bold text-neutral-800">
-									<Calendar class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
-									{format(checkout.selectedDate.toDate('UTC'), "d 'de' MMMM 'de' yyyy", {
-										locale: es
-									})}
-								</p>
-							{/if}
-						</div>
+					<div class="mt-auto flex flex-col gap-5 lg:gap-6">
+						{#if selected && ((option.duration.quantity && option.duration.unit) || checkout.selectedDate)}
+							<div class="flex flex-col gap-1">
+								{#if option.duration.quantity && option.duration.unit}
+									<p class="p-base flex gap-2 font-bold text-neutral-800">
+										<ClockCircle class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
+										Duración: {option.duration.quantity}
+										{option.duration.unit}
+									</p>
+								{/if}
+								{#if checkout.selectedDate}
+									<p class="p-base flex gap-2 font-bold text-neutral-800">
+										<Calendar class="size-6 flex-shrink-0 flex-grow-0 basis-6" />
+										{format(checkout.selectedDate.toDate('UTC'), "d 'de' MMMM 'de' yyyy", {
+											locale: es
+										})}
+									</p>
+								{/if}
+							</div>
+						{/if}
 						{#if selected && !isStaticMode && slots.some((s) => !checkout.isSlotDisabled(s))}
 							<div class="flex flex-col gap-2">
 								<p class="p font-bold text-neutral-800">Selecciona la hora de inicio</p>
@@ -295,7 +297,7 @@
 			</div>
 			{#if !disabled}
 				<div
-					class="flex flex-col text-nowrap lg:justify-end lg:border-l lg:border-solid lg:border-neutral-200 lg:pl-6 lg:text-right
+					class="mt-10 flex flex-col text-nowrap lg:justify-end lg:border-l lg:border-solid lg:border-neutral-200 lg:pl-6 lg:text-right
 "
 				>
 					{#if selectedSlot}
