@@ -10,7 +10,6 @@
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
-	import { slugify } from '$lib/utils/strings';
 
 	// Components
 	import { cartStore } from '$lib/stores/shoppingCart.svelte';
@@ -94,9 +93,14 @@
 						{#if booking.activityTitle || booking.optionTitle}
 							<p class="p-sm font-semibold text-gray-800">
 								{#if booking.activityTitle}
-									<a href="/actividad/{slugify(booking.activityTitle)}" class="hover:underline">
+									{@const slug = booking.activityId
+										? cartStore.activitySlugs.get(booking.activityId)
+										: undefined}
+									{#if slug}
+										<a href="/actividad/{slug}" class="hover:underline">{booking.activityTitle}</a>
+									{:else}
 										{booking.activityTitle}
-									</a>{booking.optionTitle ? ' · ' : ''}
+									{/if}{booking.optionTitle ? ' · ' : ''}
 								{/if}{booking.optionTitle ?? ''}
 							</p>
 						{/if}

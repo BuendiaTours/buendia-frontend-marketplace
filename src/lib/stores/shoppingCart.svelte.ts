@@ -1,4 +1,4 @@
-import type { SvelteMap } from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 import { proxyApiRoutes } from '$lib/api/proxy-routes';
 import type {
 	ActivityOption,
@@ -18,6 +18,7 @@ class CartState {
 	order = $state<CartOrder | null>(null);
 	isLoading = $state(false);
 	error = $state<string | null>(null);
+	activitySlugs = new SvelteMap<string, string>();
 
 	bookingCount = $derived(this.order?.bookings?.length ?? 0);
 	totalAmount = $derived(this.order?.totalAmount ?? 0);
@@ -169,9 +170,32 @@ class CartState {
 			}
 			if (!res.ok) throw new Error(`Error ${res.status} al cargar el pedido`);
 			this.order = await res.json();
+			await this.resolveActivitySlugs();
 		} catch (e) {
 			this.error = e instanceof Error ? e.message : 'Error desconocido';
 		}
+	}
+
+	private async resolveActivitySlugs(): Promise<void> {
+		const ids = [
+			...new Set(
+				(this.order?.bookings ?? [])
+					.map((b) => b.activityId)
+					.filter((id): id is string => !!id && !this.activitySlugs.has(id))
+			)
+		];
+		await Promise.all(
+			ids.map(async (id) => {
+				try {
+					const res = await fetch(proxyApiRoutes.activities.getById(id));
+					if (!res.ok) return;
+					const activity = await res.json();
+					if (activity?.slug) this.activitySlugs.set(id, activity.slug);
+				} catch {
+					// slug no disponible, el enlace no se mostrará
+				}
+			})
+		);
 	}
 
 	async clearCart(): Promise<void> {

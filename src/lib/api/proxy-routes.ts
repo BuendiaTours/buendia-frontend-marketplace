@@ -1,4 +1,7 @@
 export const proxyApiRoutes = {
+	activities: {
+		getById: (activityId: string) => `/api/activities/${activityId}`
+	},
 	availabilityOptions: {
 		byActivity: (activityId: string, fromDate?: string) => {
 			const base = `/api/availability-options/by-activity/${activityId}`;
