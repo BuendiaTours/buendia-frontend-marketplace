@@ -136,6 +136,10 @@
 		{@const disabled = isDisabled(optionWithSlots)}
 		{@const selectedSlot = getSelectedSlot(slots)}
 		{@const nextDates = disabled ? getNextAvailableDates(option.id) : []}
+		{@const minAvailable =
+			slots.length > 0
+				? Math.min(...slots.map((s) => s.availability - s.reservedAvailability))
+				: Infinity}
 		<div
 			class="
         ticket-selector__item flex flex-col gap-5 border-[2px] border-solid lg:relative
@@ -158,31 +162,22 @@
 					<div class="flex justify-between gap-5">
 						<p class="h2">{option.title}</p>
 						<div
-							class="
-                {disabled ? '' : 'lg:absolute lg:top-7 lg:right-6'}
-                flex h-5 w-5 shrink-0 grow-0
-                basis-5 items-center justify-center
-                border border-solid
-                {selected
+							class="flex h-5 w-5 shrink-0 grow-0 basis-5 items-center justify-center rounded-full border border-solid lg:absolute lg:top-7 lg:right-6
+							{selected
 								? 'border-violet-500'
 								: disabled
 									? 'border-neutral-300 bg-neutral-200'
-									: 'border-neutral-300'}
-                rounded-full
-              "
+									: 'border-neutral-300'}"
 						>
 							{#if selected}
 								<div class="h-2 w-2 rounded-full bg-violet-500"></div>
 							{/if}
 						</div>
 					</div>
-					{#if option.totalTickets < 9}
+					{#if minAvailable < 9 && !disabled}
 						<Badge
 							data={{
-								title:
-									option.totalTickets === 1
-										? `Solo queda ${option.totalTickets} plaza`
-										: `Solo quedan ${option.totalTickets} plazas`,
+								title: m.activities_pdp_remainingSpots({ count: minAvailable }),
 								color: 'bg-salmon-100 text-salmon-700'
 							}}
 							wrapperClass="p-sm"
@@ -379,7 +374,9 @@
 								onclick={async (e) => {
 									e.stopPropagation();
 									if (!selectedSlot) return;
-									await shoppingCartStore.addActivity(option, selectedSlot, checkout.counts);
+									if (!isInCart(option, slots)) {
+										await shoppingCartStore.addActivity(option, selectedSlot, checkout.counts);
+									}
 									if (!shoppingCartStore.error) goto('/checkout-order');
 								}}
 								>Reservar ahora

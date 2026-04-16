@@ -25,5 +25,15 @@
 	"activities_table_location": "Ubicación",
 	"activities_table_rating": "Valoración",
 	"activities_table_title": "Título",
-	"activities_title": "Actividades"
+	"activities_title": "Actividades",
+	"activities_pdp_remainingSpots": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Solo queda {count} plaza",
+				"countPlural=*": "Solo quedan {count} plazas"
+			}
+		}
+	]
 }
