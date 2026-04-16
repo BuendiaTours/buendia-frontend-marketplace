@@ -43,6 +43,7 @@ export type ApiRequestOptions = RequestInit & {
 	timeout?: number;
 	retry?: boolean | number;
 	silent?: boolean;
+	tag?: string;
 };
 
 /**

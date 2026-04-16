@@ -7,7 +7,7 @@
 	import { parseDate } from '@internationalized/date';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import { formatEuro } from '$lib/utils/currency';
-	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import { formatSlotTime } from '$lib/utils/datetime';
 
@@ -74,7 +74,7 @@
 	const isInCart = $derived.by(() => {
 		const slot = slots.find((s) => s.id === selectedSlotId);
 		if (!slot) return false;
-		return (cartStore.order?.bookings ?? []).some(
+		return (shoppingCartStore.order?.bookings ?? []).some(
 			(b) => b.optionId === option.id && b.activityDatetime === slot.dateTime
 		);
 	});
@@ -209,19 +209,19 @@
 		{#if slots.some((s) => s.id === selectedSlotId)}
 			{@const selectedSlot = slots.find((s) => s.id === selectedSlotId)}
 			<div class="checkout-activity-options__option__actions">
-				{#if cartStore.error}
-					<p class="p-xs text-salmon-strong mb-2">{cartStore.error}</p>
+				{#if shoppingCartStore.error}
+					<p class="p-xs text-salmon-strong mb-2">{shoppingCartStore.error}</p>
 				{/if}
 				<button
 					type="button"
 					class="e-button e-button-primary w-full"
-					disabled={cartStore.isLoading || !selectedSlot}
+					disabled={shoppingCartStore.isLoading || !selectedSlot}
 					onclick={async () => {
 						if (!selectedSlot) return;
-						await cartStore.addActivity(option, selectedSlot, checkout.counts);
+						await shoppingCartStore.addActivity(option, selectedSlot, checkout.counts);
 					}}
 				>
-					{cartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
+					{shoppingCartStore.isLoading ? 'Añadiendo…' : 'Reservar ahora'}
 				</button>
 				{#if isInCart}
 					<Callout
@@ -241,13 +241,13 @@
 					<button
 						type="button"
 						class="e-button e-button-secondary mt-3 w-full"
-						disabled={cartStore.isLoading || !selectedSlot}
+						disabled={shoppingCartStore.isLoading || !selectedSlot}
 						onclick={async () => {
 							if (!selectedSlot) return;
-							await cartStore.addActivity(option, selectedSlot, checkout.counts);
+							await shoppingCartStore.addActivity(option, selectedSlot, checkout.counts);
 						}}
 					>
-						{cartStore.isLoading ? 'Añadiendo…' : 'Añadir al carrito'}
+						{shoppingCartStore.isLoading ? 'Añadiendo…' : 'Añadir al carrito'}
 					</button>
 				{/if}
 			</div>

@@ -12,7 +12,7 @@
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 
 	// Components
-	import { cartStore } from '$lib/stores/shoppingCart.svelte';
+	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
@@ -21,7 +21,7 @@
 	const CART_EXPIRY_MS = 20 * 60 * 1000;
 
 	const cartRemainingMinutes = $derived.by(() => {
-		if (!cartStore.orderId || typeof window === 'undefined') return null;
+		if (!shoppingCartStore.orderId || typeof window === 'undefined') return null;
 		const createdAt = localStorage.getItem('cart_created_at');
 		if (!createdAt) return null;
 		const remaining = Math.ceil(
@@ -41,11 +41,11 @@
 
 <button use:melt={$trigger} class="relative cursor-pointer p-2">
 	<CartLarge4 class="size-6" />
-	{#if cartStore.bookingCount > 0}
+	{#if shoppingCartStore.bookingCount > 0}
 		<span
 			class="p-xs absolute top-0 right-0 flex size-5 items-center justify-center rounded-full bg-red-500 font-bold text-white"
 		>
-			{cartStore.bookingCount}
+			{shoppingCartStore.bookingCount}
 		</span>
 	{/if}
 </button>
@@ -56,7 +56,7 @@
 		transition:fade={{ duration: 100 }}
 		class="z-50 max-h-[80vh] w-[480px] overflow-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 	>
-		{#if cartStore.order?.bookings?.length}
+		{#if shoppingCartStore.order?.bookings?.length}
 			{#if cartRemainingMinutes}
 				<Callout
 					style="warning-high"
@@ -73,10 +73,10 @@
 				/>
 			{/if}
 			<p class="p-xs mb-2 font-bold text-gray-700">
-				Tienes ({cartStore.bookingCount}) planes en tu carrito
+				Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito
 			</p>
 			<ul class="p-xs mb-4 flex flex-col gap-2">
-				{#each cartStore.order.bookings as booking (booking.id)}
+				{#each shoppingCartStore.order.bookings as booking (booking.id)}
 					{@const passengerItems = Object.values(
 						(booking.passengers ?? []).reduce(
 							(acc, p) => {
@@ -94,7 +94,7 @@
 							<p class="p-sm font-semibold text-gray-800">
 								{#if booking.activityTitle}
 									{@const slug = booking.activityId
-										? cartStore.activitySlugs.get(booking.activityId)
+										? shoppingCartStore.activitySlugs.get(booking.activityId)
 										: undefined}
 									{#if slug}
 										<a href="/actividad/{slug}" class="hover:underline">{booking.activityTitle}</a>
@@ -123,7 +123,7 @@
 						<button
 							type="button"
 							class="e-button e-button-danger e-button-square e-button-xs absolute top-1 right-1"
-							disabled={cartStore.isLoading}
+							disabled={shoppingCartStore.isLoading}
 							onclick={async () => {
 								const ok = await showConfirmDialog({
 									title: 'Eliminar reserva',
@@ -131,7 +131,7 @@
 									danger: true,
 									confirmText: 'Eliminar'
 								});
-								if (ok) cartStore.removeBooking(booking.id);
+								if (ok) shoppingCartStore.removeBooking(booking.id);
 							}}
 						>
 							<CustomMiniCancel class="size-4" />
@@ -147,13 +147,13 @@
 			<summary class="p-xs">shoppingCart debug</summary>
 			<pre class="p-xs font-mono break-all whitespace-pre-wrap text-gray-700">{JSON.stringify(
 					{
-						orderId: cartStore.orderId,
-						userId: cartStore.userId,
-						isLoading: cartStore.isLoading,
-						error: cartStore.error,
-						bookingCount: cartStore.bookingCount,
-						totalAmount: cartStore.totalAmount,
-						order: $state.snapshot(cartStore.order)
+						orderId: shoppingCartStore.orderId,
+						userId: shoppingCartStore.userId,
+						isLoading: shoppingCartStore.isLoading,
+						error: shoppingCartStore.error,
+						bookingCount: shoppingCartStore.bookingCount,
+						totalAmount: shoppingCartStore.totalAmount,
+						order: $state.snapshot(shoppingCartStore.order)
 					},
 					null,
 					2

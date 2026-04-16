@@ -8,13 +8,17 @@ export const ordersEndpoints = {
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(payload)
+			body: JSON.stringify(payload),
+			tag: 'ORDERS'
 		});
 	},
 
 	async getOrderById(fetchFn: typeof fetch, orderId: string): Promise<CartOrder> {
 		const path = API_ENDPOINTS.orders.getById.path(orderId);
-		const response = await apiClient.request<CartOrder>(fetchFn, path, { method: 'GET' });
+		const response = await apiClient.request<CartOrder>(fetchFn, path, {
+			method: 'GET',
+			tag: 'ORDERS'
+		});
 		return response.data;
 	},
 
@@ -27,13 +31,14 @@ export const ordersEndpoints = {
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(payload)
+			body: JSON.stringify(payload),
+			tag: 'ORDERS'
 		});
 	},
 
 	async deleteBooking(fetchFn: typeof fetch, bookingId: string): Promise<void> {
 		const path = API_ENDPOINTS.bookings.delete.path(bookingId);
-		await apiClient.request<void>(fetchFn, path, { method: 'DELETE' });
+		await apiClient.request<void>(fetchFn, path, { method: 'DELETE', tag: 'ORDERS' });
 	},
 
 	async getBookingsByOrder(fetchFn: typeof fetch, orderId: string): Promise<CartBooking[]> {
@@ -42,7 +47,8 @@ export const ordersEndpoints = {
 			fetchFn,
 			path,
 			{
-				method: 'GET'
+				method: 'GET',
+				tag: 'ORDERS'
 			}
 		);
 		return response.data.data;
@@ -57,7 +63,8 @@ export const ordersEndpoints = {
 		await apiClient.request<void>(fetchFn, path, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data)
+			body: JSON.stringify(data),
+			tag: 'ORDERS'
 		});
 	}
 };

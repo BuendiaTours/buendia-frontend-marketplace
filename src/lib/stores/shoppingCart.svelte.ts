@@ -12,7 +12,7 @@ const CART_ORDER_ID_KEY = 'cart_order_id';
 const CART_USER_ID_KEY = 'cart_user_id';
 const CART_CREATED_AT_KEY = 'cart_created_at';
 
-class CartState {
+class ShoppingCartState {
 	orderId = $state<string | null>(null);
 	userId = $state<string | null>(null);
 	order = $state<CartOrder | null>(null);
@@ -198,11 +198,11 @@ class CartState {
 		);
 	}
 
-	async clearCart(): Promise<void> {
+	async clearShoppingCart(): Promise<void> {
 		this.setOrderId(null);
 		this.order = null;
 		this.error = null;
 	}
 }
 
-export const cartStore = new CartState();
+export const shoppingCartStore = new ShoppingCartState();

@@ -75,9 +75,10 @@ export class ApiClient {
 	 * @param message - Human-readable message.
 	 * @param data - Optional payload to log alongside the message.
 	 */
-	private log(level: 'info' | 'error', message: string, data?: unknown) {
+	private log(level: 'info' | 'error', message: string, data?: unknown, tag?: string) {
 		if (this.config.debug) {
-			logger[level === 'info' ? 'log' : 'error'](`[API] ${message}`, data || '');
+			const prefix = tag ? `[API][${tag}]` : '[API]';
+			logger[level === 'info' ? 'log' : 'error'](`${prefix} ${message}`, data || '');
 		}
 	}
 
@@ -262,7 +263,7 @@ export class ApiClient {
 		const method = options?.method || 'GET';
 
 		if (!options?.silent) {
-			this.log('info', `${method} ${url}`);
+			this.log('info', `${method} ${url}`, undefined, options?.tag);
 		}
 
 		this.queryCount++;
@@ -302,11 +303,12 @@ export class ApiClient {
 			}
 
 			if (!options?.silent) {
-				this.log('info', `${method} ${url} → ${response.status}`);
+				this.log('info', `${method} ${url} → ${response.status}`, undefined, options?.tag);
 			}
 
 			if (dev && env.LOG_API_BACKEND_RESPONSE === 'true') {
-				logger.log(`[API] ${method} ${url} response:`, JSON.stringify(data, null, 2));
+				const prefix = options?.tag ? `[API][${options.tag}]` : '[API]';
+				logger.log(`${prefix} ${method} ${url} response:`, JSON.stringify(data, null, 2));
 			}
 
 			return {
@@ -316,7 +318,7 @@ export class ApiClient {
 			};
 		} catch (err) {
 			if (!options?.silent) {
-				this.log('error', `Failed: ${url}`, err);
+				this.log('error', `Failed: ${url}`, err, options?.tag);
 			}
 
 			if (err instanceof Error && err.name === 'TypeError') {
