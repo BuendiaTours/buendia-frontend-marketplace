@@ -4,11 +4,26 @@
  * These mirror the backend contract exactly and carry no UI or i18n dependencies.
  */
 
-/** Publication lifecycle status of an activity. */
+/** Publication lifecycle status of an activity.
+ *
+ * State machine for FREE_TOUR activities around the grouping flow:
+ * - `DRAFT` → `PENDING_GROUP` via `POST /activities/:id/promote-to-pending-group`.
+ *   Signals the activity is ready to be linked to a free tour aggregation.
+ * - `PENDING_GROUP` → `GROUPED` when an entry linking this activity is added to a
+ *   free tour (either via `addEntry` or `from-activity` create flow).
+ * - `GROUPED` → `PENDING_GROUP` when the entry is removed from the free tour
+ *   (e.g. FreeTour deleted or admin unlinks the activity). The activity stays
+ *   in the grouping funnel so it can be re-linked without a full demote cycle.
+ * - `GROUPED` activities cannot be re-promoted directly: release the grouping first.
+ *
+ * `GROUPED` is the steady state for a FREE_TOUR activity currently linked to a FreeTour.
+ */
 export enum ActivityStatus {
 	APPROVED = 'APPROVED',
 	DELETED = 'DELETED',
 	DRAFT = 'DRAFT',
+	GROUPED = 'GROUPED',
+	PENDING_GROUP = 'PENDING_GROUP',
 	PENDING_REVIEW = 'PENDING_REVIEW',
 	PUBLISHED = 'PUBLISHED',
 	REJECTED = 'REJECTED',
@@ -102,6 +117,52 @@ export enum ActivityPetsAllowed {
 	YES = 'YES',
 	NO = 'NO',
 	NOT_APPLY = 'NOT_APPLY'
+}
+
+// ── Included / Excluded ────────────────────────
+
+/** Standardized catalog of items or services included in the activity price. */
+export enum ActivityIncluded {
+	// Tickets & access
+	TICKETS_INCLUDED = 'TICKETS_INCLUDED',
+	TICKETS_INCLUDED_BY_MODALITY = 'TICKETS_INCLUDED_BY_MODALITY',
+	SKIP_THE_LINE = 'SKIP_THE_LINE',
+	// Guides
+	GUIDED_TOUR = 'GUIDED_TOUR',
+	EXPERT_GUIDE = 'EXPERT_GUIDE',
+	EXPERT_GUIDE_SPANISH = 'EXPERT_GUIDE_SPANISH',
+	LOCAL_GUIDE_SPANISH = 'LOCAL_GUIDE_SPANISH',
+	BUENDIA_TOUR_MANAGER = 'BUENDIA_TOUR_MANAGER',
+	// Audio & equipment
+	AUDIO_GUIDE_SPANISH = 'AUDIO_GUIDE_SPANISH',
+	AUDIO_GUIDE_ENGLISH = 'AUDIO_GUIDE_ENGLISH',
+	AUDIO_GUIDE_CHINESE = 'AUDIO_GUIDE_CHINESE',
+	WIRELESS_RADIO_GUIDE = 'WIRELESS_RADIO_GUIDE',
+	HEADPHONES = 'HEADPHONES',
+	// Transport
+	PRIVATE_BUS = 'PRIVATE_BUS',
+	PRIVATE_BOAT = 'PRIVATE_BOAT',
+	PRIVATE_TRAIN = 'PRIVATE_TRAIN',
+	PRIVATE_VEHICLE = 'PRIVATE_VEHICLE',
+	PUBLIC_TRANSPORT_TRAIN = 'PUBLIC_TRANSPORT_TRAIN',
+	PUBLIC_TRANSPORT_BUS = 'PUBLIC_TRANSPORT_BUS',
+	PUBLIC_TRANSPORT_FERRY = 'PUBLIC_TRANSPORT_FERRY',
+	// Services
+	HOTEL_PICKUP = 'HOTEL_PICKUP'
+}
+
+/** Standardized catalog of items or services NOT included in the activity price. */
+export enum ActivityExcluded {
+	TRANSPORT_TO_MEETING_POINT = 'TRANSPORT_TO_MEETING_POINT',
+	TICKETS = 'TICKETS',
+	TRANSPORT_TICKET = 'TRANSPORT_TICKET',
+	GUIDED_TOUR = 'GUIDED_TOUR',
+	INTERIOR_VISITS = 'INTERIOR_VISITS',
+	FOOD_AND_DRINKS = 'FOOD_AND_DRINKS',
+	TIPS = 'TIPS',
+	HEADPHONES = 'HEADPHONES',
+	SPORTS_EQUIPMENT = 'SPORTS_EQUIPMENT',
+	OTHER = 'OTHER'
 }
 
 // ── Stages ──────────────────────────────────────

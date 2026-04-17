@@ -5,9 +5,10 @@
 
 import {
 	ActivityStatus,
-	ActivityKind,
 	ActivityGuideKind,
 	ActivityDateMode,
+	ActivityIncluded,
+	ActivityExcluded,
 	ActivityLocationRole,
 	ActivityNotSuitableFor,
 	ActivityRestriction,
@@ -28,16 +29,12 @@ export const ACTIVITY_STATUS_OPTIONS = [
 	{ id: ActivityStatus.APPROVED, name: m.enum_activityStatus_approved() },
 	{ id: ActivityStatus.DELETED, name: m.enum_activityStatus_deleted() },
 	{ id: ActivityStatus.DRAFT, name: m.enum_activityStatus_draft() },
+	{ id: ActivityStatus.GROUPED, name: m.enum_activityStatus_grouped() },
+	{ id: ActivityStatus.PENDING_GROUP, name: m.enum_activityStatus_pendingGroup() },
 	{ id: ActivityStatus.PENDING_REVIEW, name: m.enum_activityStatus_pendingReview() },
 	{ id: ActivityStatus.PUBLISHED, name: m.enum_activityStatus_published() },
 	{ id: ActivityStatus.REJECTED, name: m.enum_activityStatus_rejected() },
 	{ id: ActivityStatus.UNPUBLISHED, name: m.enum_activityStatus_unpublished() }
-];
-
-export const ACTIVITY_KIND_OPTIONS = [
-	{ id: ActivityKind.PAID_TOUR, name: m.enum_activityKind_paidTour() },
-	{ id: ActivityKind.FREE_TOUR, name: m.enum_activityKind_freeTour() },
-	{ id: ActivityKind.OTHER, name: m.enum_activityKind_other() }
 ];
 
 export const ACTIVITY_GUIDE_KIND_OPTIONS = [
@@ -96,6 +93,79 @@ export const ACTIVITY_NOT_SUITABLE_FOR_OPTIONS = [
 	{ id: ActivityNotSuitableFor.FAMILIES, name: m.enum_activityNotSuitableFor_families() },
 	{ id: ActivityNotSuitableFor.GROUPS, name: m.enum_activityNotSuitableFor_groups() },
 	{ id: ActivityNotSuitableFor.INDIVIDUALS, name: m.enum_activityNotSuitableFor_individuals() }
+];
+
+export const ACTIVITY_INCLUDED_OPTIONS = [
+	{ id: ActivityIncluded.TICKETS_INCLUDED, name: m.enum_activityIncluded_ticketsIncluded() },
+	{
+		id: ActivityIncluded.TICKETS_INCLUDED_BY_MODALITY,
+		name: m.enum_activityIncluded_ticketsIncludedByModality()
+	},
+	{ id: ActivityIncluded.SKIP_THE_LINE, name: m.enum_activityIncluded_skipTheLine() },
+	{ id: ActivityIncluded.GUIDED_TOUR, name: m.enum_activityIncluded_guidedTour() },
+	{ id: ActivityIncluded.EXPERT_GUIDE, name: m.enum_activityIncluded_expertGuide() },
+	{
+		id: ActivityIncluded.EXPERT_GUIDE_SPANISH,
+		name: m.enum_activityIncluded_expertGuideSpanish()
+	},
+	{
+		id: ActivityIncluded.LOCAL_GUIDE_SPANISH,
+		name: m.enum_activityIncluded_localGuideSpanish()
+	},
+	{
+		id: ActivityIncluded.BUENDIA_TOUR_MANAGER,
+		name: m.enum_activityIncluded_buendiaTourManager()
+	},
+	{
+		id: ActivityIncluded.AUDIO_GUIDE_SPANISH,
+		name: m.enum_activityIncluded_audioGuideSpanish()
+	},
+	{
+		id: ActivityIncluded.AUDIO_GUIDE_ENGLISH,
+		name: m.enum_activityIncluded_audioGuideEnglish()
+	},
+	{
+		id: ActivityIncluded.AUDIO_GUIDE_CHINESE,
+		name: m.enum_activityIncluded_audioGuideChinese()
+	},
+	{
+		id: ActivityIncluded.WIRELESS_RADIO_GUIDE,
+		name: m.enum_activityIncluded_wirelessRadioGuide()
+	},
+	{ id: ActivityIncluded.HEADPHONES, name: m.enum_activityIncluded_headphones() },
+	{ id: ActivityIncluded.PRIVATE_BUS, name: m.enum_activityIncluded_privateBus() },
+	{ id: ActivityIncluded.PRIVATE_BOAT, name: m.enum_activityIncluded_privateBoat() },
+	{ id: ActivityIncluded.PRIVATE_TRAIN, name: m.enum_activityIncluded_privateTrain() },
+	{ id: ActivityIncluded.PRIVATE_VEHICLE, name: m.enum_activityIncluded_privateVehicle() },
+	{
+		id: ActivityIncluded.PUBLIC_TRANSPORT_TRAIN,
+		name: m.enum_activityIncluded_publicTransportTrain()
+	},
+	{
+		id: ActivityIncluded.PUBLIC_TRANSPORT_BUS,
+		name: m.enum_activityIncluded_publicTransportBus()
+	},
+	{
+		id: ActivityIncluded.PUBLIC_TRANSPORT_FERRY,
+		name: m.enum_activityIncluded_publicTransportFerry()
+	},
+	{ id: ActivityIncluded.HOTEL_PICKUP, name: m.enum_activityIncluded_hotelPickup() }
+];
+
+export const ACTIVITY_EXCLUDED_OPTIONS = [
+	{
+		id: ActivityExcluded.TRANSPORT_TO_MEETING_POINT,
+		name: m.enum_activityExcluded_transportToMeetingPoint()
+	},
+	{ id: ActivityExcluded.TICKETS, name: m.enum_activityExcluded_tickets() },
+	{ id: ActivityExcluded.TRANSPORT_TICKET, name: m.enum_activityExcluded_transportTicket() },
+	{ id: ActivityExcluded.GUIDED_TOUR, name: m.enum_activityExcluded_guidedTour() },
+	{ id: ActivityExcluded.INTERIOR_VISITS, name: m.enum_activityExcluded_interiorVisits() },
+	{ id: ActivityExcluded.FOOD_AND_DRINKS, name: m.enum_activityExcluded_foodAndDrinks() },
+	{ id: ActivityExcluded.TIPS, name: m.enum_activityExcluded_tips() },
+	{ id: ActivityExcluded.HEADPHONES, name: m.enum_activityExcluded_headphones() },
+	{ id: ActivityExcluded.SPORTS_EQUIPMENT, name: m.enum_activityExcluded_sportsEquipment() },
+	{ id: ActivityExcluded.OTHER, name: m.enum_activityExcluded_other() }
 ];
 
 export const ACTIVITY_RESTRICTION_OPTIONS = [

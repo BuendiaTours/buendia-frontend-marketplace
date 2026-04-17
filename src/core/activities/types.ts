@@ -10,7 +10,9 @@
 import type {
 	ActivityAllergen,
 	ActivityDateMode,
+	ActivityExcluded,
 	ActivityGuideKind,
+	ActivityIncluded,
 	ActivityIndexationPriority,
 	ActivityKind,
 	ActivityLocationRole,
@@ -102,6 +104,21 @@ export type ActivityMeetingPoint = {
 	postCode: string;
 };
 
+/** FAQ entry embedded in an activity. */
+export type ActivityFaq = {
+	id: string;
+	answer: string;
+	position: number;
+	question: string;
+	status: string;
+};
+
+/** Tag reference embedded in an activity. */
+export type ActivityTag = {
+	id: string;
+	tagId: string;
+};
+
 /** Meal included in an activity, with dietary and allergen metadata. */
 export type ActivityMeal = {
 	id: string;
@@ -128,6 +145,7 @@ export type ActivityStage = {
 export type Activity = {
 	id: string;
 	attractions: ActivityAttraction[];
+	averageRating: number | null;
 	categories: ActivityCategory[];
 	codeRef: string | null;
 	contentBlocks: ActivityContentBlock[];
@@ -136,10 +154,11 @@ export type Activity = {
 	descriptionShort: string | null;
 	difficult: number;
 	distributives: ActivityDistributive[];
-	excluded: string[];
+	excluded: ActivityExcluded[];
+	faqs: ActivityFaq[];
 	guideKind: ActivityGuideKind;
 	images: ActivityImage[];
-	included: string[];
+	included: ActivityIncluded[];
 	infoImportant: string | null;
 	itemsToBring: string[];
 	kind: ActivityKind;
@@ -155,7 +174,9 @@ export type Activity = {
 	status: ActivityStatus;
 	supplier: ActivitySupplier;
 	supplierTip: string | null;
+	tags: ActivityTag[];
 	title: string;
+	totalReviews: number;
 	transportKind: ActivityTransportKind;
 	transportLocation: ActivityTransportLocation;
 	voucherInfo: string | null;
@@ -171,6 +192,8 @@ export type ActivityCreateDto = {
 	codeRef?: string;
 	dateMode?: ActivityDateMode;
 	descriptionFull: string;
+	descriptionShort?: string;
+	featuredScore?: number;
 	guideKind: ActivityGuideKind;
 	infoImportant?: string;
 	kind: ActivityKind;
@@ -184,10 +207,12 @@ export type ActivityUpdateDto = {
 	codeRef?: string;
 	dateMode?: ActivityDateMode;
 	descriptionFull?: string;
+	descriptionShort?: string;
 	difficult?: number;
-	excluded?: string[];
+	excluded?: ActivityExcluded[];
+	featuredScore?: number;
 	guideKind?: ActivityGuideKind;
-	included?: string[];
+	included?: ActivityIncluded[];
 	infoImportant?: string;
 	itemsToBring?: string[];
 	kind?: ActivityKind;
@@ -267,17 +292,22 @@ export type ActivityStageReorderDto = {
 export type ActivityCriteria = {
 	skip?: number;
 	limit?: number;
-	id?: string;
+	attractionIds?: string[];
+	categoryIds?: string[];
 	codeRef?: string;
+	id?: string;
 	kind?: ActivityKind;
-	status?: ActivityStatus;
-	supplierId?: string;
-	title?: string;
+	locationIds?: string[];
+	operator?: CriteriaOperator;
+	order?: CriteriaSortOption;
 	search_text?: string;
 	slug?: string;
 	sort?: ActivitySortAttribute;
-	operator?: CriteriaOperator;
-	order?: CriteriaSortOption;
+	status?: ActivityStatus;
+	statuses?: ActivityStatus[];
+	supplierId?: string;
+	tagIds?: string[];
+	title?: string;
 };
 
 // -- Activity Indexation

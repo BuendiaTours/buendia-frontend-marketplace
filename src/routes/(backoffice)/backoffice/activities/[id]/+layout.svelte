@@ -8,6 +8,8 @@
 	import type { LayoutProps } from './$types';
 	import { ROUTES } from '$lib/config/routes';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
+	import { FREE_TOUR_ROUTES } from '$lib/config/routes/backoffice/freeTours';
+	import { ActivityKind } from '$core/activities/enums';
 	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import ActivityTabNav from '../components/ActivityTabNav.svelte';
@@ -31,6 +33,24 @@
 					href: ACTIVITY_ROUTES.options(data.activity.id)
 				},
 				{ label: page.data.option.title || m.activities_optionEditPageTitle() }
+			];
+		}
+		if (data.fromFreeTour) {
+			return [
+				{ label: m.common_breadcrumbHome(), href: ROUTES.backoffice.home },
+				{ label: m.freeTours_navLabel(), href: FREE_TOUR_ROUTES.list },
+				{
+					label: data.fromFreeTour.title || m.freeTours_breadcrumbResource(),
+					href: FREE_TOUR_ROUTES.edit(data.fromFreeTour.id)
+				},
+				{ label: data.activity.title || m.activities_breadcrumbResource() }
+			];
+		}
+		if (data.activity.kind === ActivityKind.FREE_TOUR) {
+			return [
+				{ label: m.common_breadcrumbHome(), href: ROUTES.backoffice.home },
+				{ label: m.freeTours_navLabel(), href: FREE_TOUR_ROUTES.list },
+				{ label: data.activity.title || m.activities_breadcrumbResource() }
 			];
 		}
 		return buildBreadcrumbs(page.url.pathname, {
@@ -67,7 +87,7 @@
 <LocationBar title={m.activities_editPageTitle()} {breadcrumbs} />
 
 {#if !isOptionDetail}
-	<ActivityTabNav activityId={data.activity.id} {optionCount} />
+	<ActivityTabNav activityId={data.activity.id} activityKind={data.activity.kind} {optionCount} />
 
 	<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
 		{@render children()}

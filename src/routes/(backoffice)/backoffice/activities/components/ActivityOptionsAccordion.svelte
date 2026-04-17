@@ -10,6 +10,7 @@
 	import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 	import type { ActivityOption } from '$core/activity-options/types';
 	import { OptionStatus } from '$core/activity-options/enums';
+	import { ActivityKind } from '$core/activities/enums';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
 	import {
 		OPTION_BOOKING_SYSTEM_OPTIONS,
@@ -26,11 +27,18 @@
 
 	type Props = {
 		activityId: string;
+		activityKind: ActivityKind;
 		options: ActivityOption[];
 		addToast?: ToastFn;
 	};
 
-	let { activityId, options = $bindable(), addToast }: Props = $props();
+	let { activityId, activityKind, options = $bindable(), addToast }: Props = $props();
+
+	const activeOptionsCount = $derived(
+		options.filter((o) => o.status !== OptionStatus.DELETED).length
+	);
+	const isFreeTour = $derived(activityKind === ActivityKind.FREE_TOUR);
+	const canCreateMore = $derived(!isFreeTour || activeOptionsCount === 0);
 
 	let isRemoving = $state<string | null>(null);
 
@@ -118,11 +126,21 @@
 		<p class="text-xs">{m.activities_sectionOptionsDescription()}</p>
 	{/snippet}
 	{#snippet content()}
-		<div class="text-right md:col-span-12">
-			<a href={ACTIVITY_ROUTES.optionCreate(activityId)} class="btn btn-outline btn-primary btn-sm">
-				<Add class="size-4" />
-				{m.activities_optionsNewButton()}
-			</a>
+		<div class="flex items-center justify-between gap-3 md:col-span-12">
+			{#if isFreeTour}
+				<p class="text-base-content/60 text-xs">{m.activities_optionsFreeTourHint()}</p>
+			{:else}
+				<span></span>
+			{/if}
+			{#if canCreateMore}
+				<a
+					href={ACTIVITY_ROUTES.optionCreate(activityId)}
+					class="btn btn-outline btn-primary btn-sm"
+				>
+					<Add class="size-4" />
+					{m.activities_optionsNewButton()}
+				</a>
+			{/if}
 		</div>
 
 		<div class="md:col-span-12">

@@ -25,5 +25,10 @@
 </script>
 
 <div class="space-y-4">
-	<ActivityOptionsAccordion activityId={data.activity.id} bind:options {addToast} />
+	<ActivityOptionsAccordion
+		activityId={data.activity.id}
+		activityKind={data.activity.kind}
+		bind:options
+		{addToast}
+	/>
 </div>

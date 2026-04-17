@@ -6,47 +6,57 @@
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
+	import { ActivityKind } from '$core/activities/enums';
 	import { Database, FolderCheck, MapPoint, Plate, Tuning } from '$lib/icons/Linear';
 
 	type Props = {
 		activityId: string;
+		activityKind?: ActivityKind;
 		optionCount?: number;
 	};
 
-	let { activityId, optionCount = 0 }: Props = $props();
+	let { activityId, activityKind, optionCount = 0 }: Props = $props();
 
-	const tabs = $derived([
-		{
-			label: m.activities_tabGeneral(),
-			href: ACTIVITY_ROUTES.edit(activityId),
-			icon: Database,
-			badge: undefined as number | undefined
-		},
-		{
-			label: m.activities_tabLocations(),
-			href: ACTIVITY_ROUTES.locations(activityId),
-			icon: MapPoint,
-			badge: undefined as number | undefined
-		},
-		{
-			label: m.activities_tabContentBlocks(),
-			href: ACTIVITY_ROUTES.contentBlocks(activityId),
-			icon: FolderCheck,
-			badge: undefined as number | undefined
-		},
-		{
-			label: m.activities_tabServices(),
-			href: ACTIVITY_ROUTES.services(activityId),
-			icon: Plate,
-			badge: undefined as number | undefined
-		},
-		{
-			label: m.activities_tabOptions(),
-			href: ACTIVITY_ROUTES.options(activityId),
-			icon: Tuning,
-			badge: optionCount > 0 ? optionCount : undefined
-		}
-	]);
+	const tabs = $derived(
+		[
+			{
+				label: m.activities_tabGeneral(),
+				href: ACTIVITY_ROUTES.edit(activityId),
+				icon: Database,
+				badge: undefined as number | undefined,
+				visible: true
+			},
+			{
+				label: m.activities_tabLocations(),
+				href: ACTIVITY_ROUTES.locations(activityId),
+				icon: MapPoint,
+				badge: undefined as number | undefined,
+				visible: true
+			},
+			{
+				label: m.activities_tabContentBlocks(),
+				href: ACTIVITY_ROUTES.contentBlocks(activityId),
+				icon: FolderCheck,
+				badge: undefined as number | undefined,
+				visible: true
+			},
+			{
+				label: m.activities_tabServices(),
+				href: ACTIVITY_ROUTES.services(activityId),
+				icon: Plate,
+				badge: undefined as number | undefined,
+				// Services (meals + addons) don't apply to FREE_TOUR activities.
+				visible: activityKind !== ActivityKind.FREE_TOUR
+			},
+			{
+				label: m.activities_tabOptions(),
+				href: ACTIVITY_ROUTES.options(activityId),
+				icon: Tuning,
+				badge: optionCount > 0 ? optionCount : undefined,
+				visible: true
+			}
+		].filter((tab) => tab.visible)
+	);
 
 	function isActive(href: string): boolean {
 		return page.url.pathname === href;

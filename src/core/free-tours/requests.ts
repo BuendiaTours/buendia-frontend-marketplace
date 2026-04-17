@@ -10,6 +10,7 @@ import { get, getWithParams, post, patch, del } from '$core/_shared/helpers';
 import type {
 	FreeTour,
 	FreeTourCreateDto,
+	FreeTourCreateFromActivityDto,
 	FreeTourCriteria,
 	FreeTourEntryAddDto,
 	FreeTourStageAddDto,
@@ -33,6 +34,19 @@ export const FREE_TOUR_REQUEST = {
 	 */
 	create: (fetchFn: typeof fetch, data: FreeTourCreateDto): Promise<void> =>
 		post(fetchFn, BASE, data),
+
+	/**
+	 * Creates a new free tour seeded with the common attributes of an existing FREE_TOUR activity.
+	 * The activity is automatically linked as the first entry of the new free tour.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param activityId - Source activity ID.
+	 * @param data - Payload with the new free tour id and the entry id.
+	 */
+	createFromActivity: (
+		fetchFn: typeof fetch,
+		activityId: string,
+		data: FreeTourCreateFromActivityDto
+	): Promise<void> => post(fetchFn, `${BASE}/from-activity/${activityId}`, data),
 
 	/**
 	 * Partially updates an existing free tour.

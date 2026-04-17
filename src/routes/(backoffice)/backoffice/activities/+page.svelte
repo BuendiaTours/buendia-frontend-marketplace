@@ -14,7 +14,7 @@
 	import { patchFilters } from '$lib/utils/filters';
 	import { buildUrlWithFilters } from '$lib/utils/url';
 	import { activitiesFiltersSchema } from './schemas/filters.schema';
-	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_STATUS_OPTIONS } from '$lib/labels/activities';
+	import { ACTIVITY_STATUS_OPTIONS } from '$lib/labels/activities';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 
 	import Pagination from '$lib/components/backoffice/MeltPagination.svelte';
@@ -80,15 +80,6 @@
 	</div>
 
 	<FilterSelect
-		options={ACTIVITY_KIND_OPTIONS}
-		filterKey="kind"
-		currentValue={filters.kind}
-		placeholder={m.activities_filterKindPlaceholder()}
-		clearTooltip={m.activities_filterKindClear()}
-		onFilterChange={handleFilterChange}
-	/>
-
-	<FilterSelect
 		options={ACTIVITY_STATUS_OPTIONS}
 		filterKey="status"
 		currentValue={filters.status}
@@ -121,9 +112,6 @@
 					/>
 				</th>
 				<th>
-					<span>{m.activities_columnKind()}</span>
-				</th>
-				<th>
 					<span>{m.activities_columnStatus()}</span>
 				</th>
 				<th class="w-0">
@@ -134,7 +122,7 @@
 		<tbody>
 			{#if items.length === 0}
 				<tr>
-					<td colspan="4" class="text-center">
+					<td colspan="3" class="text-center">
 						<div class="py-8">
 							<p class="text-base-content/50">{m.activities_emptyState()}</p>
 						</div>
@@ -170,9 +158,6 @@
 									<p class="text-base-content/50 text-xs">{item.slug}</p>
 								</div>
 							</div>
-						</td>
-						<td>
-							{ACTIVITY_KIND_OPTIONS.find((k) => k.id === item.kind)?.name || item.kind}
 						</td>
 						<td>
 							{#if item.status === 'PUBLISHED' || item.status === 'APPROVED'}

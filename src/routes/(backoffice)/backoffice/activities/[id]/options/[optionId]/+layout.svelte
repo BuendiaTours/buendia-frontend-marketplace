@@ -11,6 +11,7 @@
 	import type { LayoutProps } from './$types';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import { OptionStatus } from '$core/activity-options/enums';
+	import { ActivityKind } from '$core/activities/enums';
 	import { OPTION_STATUS_OPTIONS } from '$lib/labels/activityOptions';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { Database, LinkRound, MapPoint, Ticket } from '$lib/icons/Linear';
@@ -61,32 +62,41 @@
 		ticketCount = count;
 	});
 
-	const tabs = $derived([
-		{
-			label: m.activities_optionTabGeneral(),
-			href: ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id),
-			icon: Database,
-			badge: undefined as number | undefined
-		},
-		{
-			label: m.activities_optionTabTickets(),
-			href: ACTIVITY_ROUTES.optionTickets(data.activity.id, data.option.id),
-			icon: Ticket,
-			badge: ticketCount > 0 ? ticketCount : undefined
-		},
-		{
-			label: m.activities_optionTabPickup(),
-			href: ACTIVITY_ROUTES.optionPickup(data.activity.id, data.option.id),
-			icon: MapPoint,
-			badge: pickupCount > 0 ? pickupCount : undefined
-		},
-		{
-			label: m.activities_optionTabBookingSystem(),
-			href: ACTIVITY_ROUTES.optionBookingSystem(data.activity.id, data.option.id),
-			icon: LinkRound,
-			badge: undefined as number | undefined
-		}
-	]);
+	const isFreeTourActivity = $derived(data.activity.kind === ActivityKind.FREE_TOUR);
+
+	const tabs = $derived(
+		[
+			{
+				label: m.activities_optionTabGeneral(),
+				href: ACTIVITY_ROUTES.optionEdit(data.activity.id, data.option.id),
+				icon: Database,
+				badge: undefined as number | undefined,
+				visible: true
+			},
+			{
+				label: m.activities_optionTabTickets(),
+				href: ACTIVITY_ROUTES.optionTickets(data.activity.id, data.option.id),
+				icon: Ticket,
+				badge: ticketCount > 0 ? ticketCount : undefined,
+				visible: true
+			},
+			{
+				label: m.activities_optionTabPickup(),
+				href: ACTIVITY_ROUTES.optionPickup(data.activity.id, data.option.id),
+				icon: MapPoint,
+				badge: pickupCount > 0 ? pickupCount : undefined,
+				// Pickup points don't apply to FREE_TOUR options.
+				visible: !isFreeTourActivity
+			},
+			{
+				label: m.activities_optionTabBookingSystem(),
+				href: ACTIVITY_ROUTES.optionBookingSystem(data.activity.id, data.option.id),
+				icon: LinkRound,
+				badge: undefined as number | undefined,
+				visible: true
+			}
+		].filter((tab) => tab.visible)
+	);
 
 	function isActive(href: string): boolean {
 		return page.url.pathname === href;

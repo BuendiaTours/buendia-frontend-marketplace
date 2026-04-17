@@ -21,7 +21,11 @@
 						{item.label}
 					</span>
 				{:else if item.href}
-					<a href={item.href}>
+					<!--
+						data-sveltekit-reload: navegación nativa para evitar fallos de hidratación
+						cuando el breadcrumb cruza entre dominios (p.ej. actividad ↔ free tours).
+					-->
+					<a href={item.href} data-sveltekit-reload>
 						{#if item.label === 'Inicio'}
 							<Home class="inline size-4" />
 						{/if}

@@ -8,7 +8,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { ActivityCreateSchema } from '../schemas/activity-create.schema';
-	import { ACTIVITY_KIND_OPTIONS, ACTIVITY_GUIDE_KIND_OPTIONS } from '$lib/labels/activities';
+	import { ACTIVITY_GUIDE_KIND_OPTIONS } from '$lib/labels/activities';
 	import { checkSlugAvailability } from '../queries/slug-check.queries';
 	import { searchSuppliers, loadSupplierById } from '../queries/supplier-search.queries';
 
@@ -23,9 +23,15 @@
 
 	type Props = {
 		form: SuperValidated<ActivityCreateSchema>;
+		/** Override the "back to list" route. Defaults to the activities list. */
+		listRoute?: string;
+		/** Override the "back to list" button label. */
+		backLabel?: string;
+		/** Override the submit button label. Defaults to "Crear actividad". */
+		createLabel?: string;
 	};
 
-	let { form: formData }: Props = $props();
+	let { form: formData, listRoute, backLabel, createLabel }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance, submitting } = superForm(formData, {
@@ -35,7 +41,14 @@
 	const formId = 'activity-create-form';
 </script>
 
-<ActivityFormActions mode="create" {formId} submitting={$submitting} />
+<ActivityFormActions
+	mode="create"
+	{formId}
+	submitting={$submitting}
+	{listRoute}
+	{backLabel}
+	{createLabel}
+/>
 
 <form id={formId} method="POST" use:enhance class="space-y-4">
 	<FormAccordion name="form-activity-data" open>
@@ -76,23 +89,13 @@
 		{/snippet}
 		{#snippet content()}
 			<FormSelect
-				id="kind"
-				label={m.activities_labelKind()}
-				bind:value={$form.kind}
-				error={$errors.kind}
-				options={ACTIVITY_KIND_OPTIONS}
-				placeholder={m.activities_placeholderKind()}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormSelect
 				id="guideKind"
 				label={m.activities_labelGuideKind()}
 				bind:value={$form.guideKind}
 				error={$errors.guideKind}
 				options={ACTIVITY_GUIDE_KIND_OPTIONS}
 				placeholder={m.activities_placeholderGuideKind()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormAsyncSearch
@@ -103,7 +106,7 @@
 				loadSelectedFn={loadSupplierById}
 				placeholder={m.activities_placeholderSupplierId()}
 				error={$errors.supplierId}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormInputSlug

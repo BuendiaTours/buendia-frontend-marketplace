@@ -12,6 +12,7 @@ const routeLabels: Record<string, string> = {
 	'pickup-points': 'Puntos de recogida',
 	distributives: 'Distributivas',
 	'free-tours': 'Free Tours',
+	drafts: 'Borradores',
 	suppliers: 'Proveedores',
 	tags: 'Tags',
 	faqs: 'FAQs',

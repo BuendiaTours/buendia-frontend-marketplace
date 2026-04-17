@@ -1,9 +1,15 @@
 <script lang="ts">
+	/**
+	 * Free tour creation page — reuses the activity create form with kind=FREE_TOUR.
+	 * The server action creates the underlying FREE_TOUR activity and then the
+	 * free tour aggregation in sequence before redirecting to the aggregation edit.
+	 */
 	import * as m from '$paraglide/messages';
 	import { page } from '$app/state';
 	import type { PageProps } from './$types';
 	import { buildBreadcrumbs } from '$lib/utils/breadcrumbsBackoffice';
-	import FreeTourForm from '../components/FreeTourForm.svelte';
+	import { FREE_TOUR_ROUTES } from '$lib/config/routes/backoffice/freeTours';
+	import ActivityCreateForm from '../../activities/components/ActivityCreateForm.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 
 	let { data }: PageProps = $props();
@@ -19,9 +25,9 @@
 
 <LocationBar title={m.freeTours_createPageTitle()} {breadcrumbs} />
 
-<FreeTourForm
+<ActivityCreateForm
 	form={data.form}
-	mode="create"
-	availableCategories={data.availableCategories}
-	availableDestinations={data.availableDestinations}
+	listRoute={FREE_TOUR_ROUTES.list}
+	backLabel={m.freeTours_backToList()}
+	createLabel={m.freeTours_createResource()}
 />

@@ -1,57 +1,67 @@
 /**
  * Server load and action for the free tour creation page.
+ * Creates an activity with kind=FREE_TOUR in DRAFT status and redirects to the
+ * activity edit page, where the admin can finish filling it in and then trigger
+ * the "Crear agrupación" action (status → PENDING_GROUP) to materialize the FreeTour.
  */
 import { createCreateLoad } from '$lib/server/backoffice/createLoad';
 import { createCreateAction } from '$lib/server/backoffice/createAction';
-import { freeTourFormSchema, type FreeTourFormSchema } from '../schemas/free-tour-form.schema';
-import { FREE_TOUR_REQUEST } from '$core/free-tours/requests';
-import { CATEGORY_REQUEST } from '$core/categories/requests';
-import { LOCATION_REQUEST } from '$core/locations/requests';
+import {
+	activityCreateSchema,
+	type ActivityCreateSchema
+} from '../../activities/schemas/activity-create.schema';
+import { ACTIVITY_REQUEST } from '$core/activities/requests';
+import { ActivityDateMode, ActivityGuideKind, ActivityKind } from '$core/activities/enums';
 import { zod } from 'sveltekit-superforms/adapters';
 import { BACKOFFICE_PREFIX } from '$lib/config/routes';
 import type { PageServerLoad, Actions } from './$types';
 
-type AvailableData = {
-	availableCategories: Array<{ id: string; name: string }>;
-	availableDestinations: Array<{ id: string; name: string }>;
-};
-
-export const load: PageServerLoad = createCreateLoad<FreeTourFormSchema, AvailableData>({
-	schema: zod(freeTourFormSchema),
+export const load: PageServerLoad = createCreateLoad<ActivityCreateSchema>({
+	schema: zod(activityCreateSchema),
 	initialValues: {
 		title: '',
 		slug: '',
-		descriptionShort: '',
+		supplierId: '',
+		kind: ActivityKind.FREE_TOUR,
+		guideKind: ActivityGuideKind.AUTO,
+		dateMode: ActivityDateMode.DATE_AND_TIME,
 		descriptionFull: '',
-		categories: [],
-		destinations: []
-	},
-	loadAvailableData: async (fetch) => {
-		const [categoriesRes, locationsRes] = await Promise.all([
-			CATEGORY_REQUEST.findByCriteria(fetch, { limit: 200 }),
-			LOCATION_REQUEST.findByCriteria(fetch, { limit: 200 })
-		]);
-		return {
-			availableCategories: categoriesRes.data.map((c) => ({ id: c.id, name: c.name })),
-			availableDestinations: locationsRes.data.map((l) => ({ id: l.id, name: l.name }))
-		};
+		codeRef: '',
+		infoImportant: '',
+		phoneContact: ''
 	}
 });
 
 export const actions: Actions = {
 	default: createCreateAction({
-		basePath: `${BACKOFFICE_PREFIX}/free-tours`,
-		schema: zod(freeTourFormSchema),
-		createFn: FREE_TOUR_REQUEST.create,
-		redirectToList: true,
-		transformData: (formData) => ({
-			id: formData.id,
-			title: formData.title,
-			slug: formData.slug,
-			descriptionShort: formData.descriptionShort,
-			descriptionFull: formData.descriptionFull,
-			categoryIds: (formData.categories ?? []).map((c) => c.id),
-			destinationIds: (formData.destinations ?? []).map((d) => d.id)
+		basePath: `${BACKOFFICE_PREFIX}/activities`,
+		schema: zod(activityCreateSchema),
+		createFn: ACTIVITY_REQUEST.create,
+		redirectToEdit: true,
+		redirectField: 'id',
+		transformData: ({
+			id,
+			title,
+			slug,
+			supplierId,
+			codeRef,
+			dateMode,
+			descriptionFull,
+			guideKind,
+			infoImportant,
+			phoneContact
+		}) => ({
+			id,
+			title,
+			slug,
+			supplierId,
+			descriptionFull,
+			guideKind,
+			kind: ActivityKind.FREE_TOUR,
+			...(codeRef ? { codeRef } : {}),
+			...(dateMode ? { dateMode } : {}),
+			...(infoImportant ? { infoImportant } : {}),
+			...(phoneContact ? { phoneContact } : {})
 		})
 	})
 };

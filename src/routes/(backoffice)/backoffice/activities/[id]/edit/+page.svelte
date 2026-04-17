@@ -7,9 +7,10 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageProps } from './$types';
 	import {
-		ACTIVITY_KIND_OPTIONS,
 		ACTIVITY_GUIDE_KIND_OPTIONS,
 		ACTIVITY_DATE_MODE_OPTIONS,
+		ACTIVITY_INCLUDED_OPTIONS,
+		ACTIVITY_EXCLUDED_OPTIONS,
 		ACTIVITY_TRANSPORT_KIND_OPTIONS,
 		ACTIVITY_TRANSPORT_LOCATION_OPTIONS,
 		ACTIVITY_PETS_ALLOWED_OPTIONS,
@@ -17,7 +18,8 @@
 		ACTIVITY_NOT_SUITABLE_FOR_OPTIONS
 	} from '$lib/labels/activities';
 
-	import { ActivityTransportLocation } from '$core/activities/enums';
+	import { ActivityKind, ActivityTransportLocation } from '$core/activities/enums';
+	import { FREE_TOUR_ROUTES } from '$lib/config/routes/backoffice/freeTours';
 	import { Database, FolderCheck, ChecklistMinimalistic, Link } from '$lib/icons/Linear';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
@@ -61,12 +63,29 @@
 			$form.transportLocation = ActivityTransportLocation.NOT_APPLY;
 		}
 	});
+
+	const isFreeTourActivity = $derived(data.activity.kind === ActivityKind.FREE_TOUR);
+
+	const contextualListRoute = $derived.by(() => {
+		if (data.fromFreeTour) return FREE_TOUR_ROUTES.edit(data.fromFreeTour.id);
+		if (isFreeTourActivity) return FREE_TOUR_ROUTES.list;
+		return undefined;
+	});
+
+	const contextualBackLabel = $derived.by(() => {
+		if (data.fromFreeTour) return m.activities_backToFreeTour();
+		if (isFreeTourActivity) return m.activities_backToFreeToursList();
+		return undefined;
+	});
 </script>
 
 <ActivityFormActions
 	mode="edit"
 	activityId={data.activity.id}
+	activityKind={data.activity.kind}
 	activityStatus={data.activity.status}
+	listRoute={contextualListRoute}
+	backLabel={contextualBackLabel}
 	{formId}
 	submitting={$submitting}
 />
@@ -141,20 +160,28 @@
 			<p class="text-xs">{m.activities_sectionContentDescription()}</p>
 		{/snippet}
 		{#snippet content()}
-			<FormOrderedStringList
+			<FormCheckboxGroup
+				main_label={m.activities_labelIncluded()}
 				id="included"
-				label={m.activities_labelIncluded()}
+				name="included[]"
+				key_title="name"
+				key_value="id"
 				bind:items={$form.included}
+				availableItems={ACTIVITY_INCLUDED_OPTIONS}
 				error={$errors.included?._errors}
-				placeholder={m.activities_placeholderIncluded()}
+				wrapperClass="md:col-span-12"
 			/>
 
-			<FormOrderedStringList
+			<FormCheckboxGroup
+				main_label={m.activities_labelExcluded()}
 				id="excluded"
-				label={m.activities_labelExcluded()}
+				name="excluded[]"
+				key_title="name"
+				key_value="id"
 				bind:items={$form.excluded}
+				availableItems={ACTIVITY_EXCLUDED_OPTIONS}
 				error={$errors.excluded?._errors}
-				placeholder={m.activities_placeholderExcluded()}
+				wrapperClass="md:col-span-12"
 			/>
 
 			<FormOrderedStringList
@@ -177,23 +204,13 @@
 		{/snippet}
 		{#snippet content()}
 			<FormSelect
-				id="kind"
-				label={m.activities_labelKind()}
-				bind:value={$form.kind}
-				error={$errors.kind}
-				options={ACTIVITY_KIND_OPTIONS}
-				placeholder={m.activities_placeholderKind()}
-				wrapperClass="md:col-span-4"
-			/>
-
-			<FormSelect
 				id="dateMode"
 				label={m.activities_labelDateMode()}
 				bind:value={$form.dateMode}
 				error={$errors.dateMode}
 				options={ACTIVITY_DATE_MODE_OPTIONS}
 				placeholder={m.activities_placeholderDateMode()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormSelect
@@ -203,7 +220,7 @@
 				error={$errors.guideKind}
 				options={ACTIVITY_GUIDE_KIND_OPTIONS}
 				placeholder={m.activities_placeholderGuideKind()}
-				wrapperClass="md:col-span-4"
+				wrapperClass="md:col-span-6"
 			/>
 
 			<FormInputText

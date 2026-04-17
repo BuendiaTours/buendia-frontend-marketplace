@@ -50,7 +50,16 @@
 <div
 	class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 py-4"
 >
-	<a href={`${FREE_TOUR_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
+	<!--
+		data-sveltekit-reload: navegación nativa para que el listado de free-tours se
+		sirva con SSR fresco, evitando fallos de hidratación silenciosos al volver
+		desde el edit de una agrupación.
+	-->
+	<a
+		href={`${FREE_TOUR_ROUTES.list}?${page.url.searchParams.toString()}`}
+		class="btn btn-ghost"
+		data-sveltekit-reload
+	>
 		← {m.freeTours_backToList()}
 	</a>
 

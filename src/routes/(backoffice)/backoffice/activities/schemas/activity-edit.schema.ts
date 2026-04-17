@@ -31,8 +31,8 @@ export const activityEditSchema = z.object({
 	voucherInfo: z.string().default(''),
 	restrictions: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
 	notSuitableFor: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
-	included: z.array(z.string()).default([]),
-	excluded: z.array(z.string()).default([]),
+	included: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
+	excluded: z.array(z.object({ id: z.string(), name: z.string() })).default([]),
 	itemsToBring: z.array(z.string()).default([]),
 	willDoing: z.array(z.string()).default([])
 });

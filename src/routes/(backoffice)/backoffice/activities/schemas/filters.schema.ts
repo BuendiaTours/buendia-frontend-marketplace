@@ -6,7 +6,7 @@ import {
 	createSortField
 } from '$lib/utils/filters';
 import type { CriteriaSortOption } from '$core/_shared/enums';
-import { ActivityKind, ActivityStatus } from '$core/activities/enums';
+import { ActivityStatus } from '$core/activities/enums';
 
 export type ActivitiesFilters = {
 	page: number;
@@ -14,7 +14,6 @@ export type ActivitiesFilters = {
 	sort?: 'title';
 	order?: CriteriaSortOption;
 	q?: string;
-	kind?: ActivityKind;
 	status?: ActivityStatus;
 };
 
@@ -31,22 +30,6 @@ export const activitiesFiltersSchema: FiltersSchema<ActivitiesFilters> = {
 					out.set('q', value);
 				} else {
 					out.delete('q');
-				}
-			},
-			resetPageOnChange: true
-		},
-		kind: {
-			parse: (raw) => {
-				if (Object.values(ActivityKind).includes(raw as ActivityKind)) {
-					return raw as ActivityKind;
-				}
-				return undefined;
-			},
-			serialize: (value, out) => {
-				if (value) {
-					out.set('kind', value);
-				} else {
-					out.delete('kind');
 				}
 			},
 			resetPageOnChange: true

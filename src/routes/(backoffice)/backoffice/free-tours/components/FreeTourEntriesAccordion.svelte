@@ -1,13 +1,15 @@
 <script lang="ts">
 	/**
 	 * FreeTourEntriesAccordion — Manages free tour ↔ activity relationships with priority.
-	 * Activities are searched via async search (filtered by kind FREE_TOUR).
-	 * Priority is managed via up/down arrows — position in the list = priority.
+	 * Entries can be multiple (N activities per aggregation). The 1:1 invariant is at the
+	 * activity↔aggregation level: each FREE_TOUR activity belongs to at most one aggregation.
+	 * The async search shows only FREE_TOUR activities that are not yet linked anywhere.
 	 */
 	import * as m from '$paraglide/messages';
-	import { ChecklistMinimalistic, Close } from '$lib/icons/Linear';
+	import { ChecklistMinimalistic, Close, Pen } from '$lib/icons/Linear';
 	import { FREE_TOUR_REQUEST } from '$core/free-tours/requests';
 	import type { FreeTourEntry } from '$core/free-tours/types';
+	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import FormAsyncSearch from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
 	import { searchFreeTourActivities } from '../queries/activity-search.queries';
@@ -28,7 +30,6 @@
 	let { freeTourId, entries = $bindable(), availableActivities, addToast }: Props = $props();
 
 	let searchValue = $state<string | undefined>(undefined);
-	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
 	let isMoving = $state<string | null>(null);
 
@@ -56,7 +57,6 @@
 		const alreadyLinked = entries.some((e) => e.activityId === activityId);
 		if (alreadyLinked) return;
 
-		isAdding = true;
 		try {
 			const entryId = crypto.randomUUID();
 			const nextPriority =
@@ -73,8 +73,6 @@
 		} catch (err) {
 			console.error('Error adding entry:', err);
 			showToast('error', m.freeTours_entriesError());
-		} finally {
-			isAdding = false;
 		}
 	}
 
@@ -110,7 +108,6 @@
 		isMoving = entry.id;
 		const previousEntries = entries;
 
-		// Optimistic: swap priorities
 		const reordered = [...sorted];
 		[reordered[idx], reordered[swapIdx]] = [reordered[swapIdx], reordered[idx]];
 		// Reassign priorities and generate new IDs (backend rejects re-add with same activityId due to CQRS)
@@ -122,7 +119,6 @@
 		entries = withNewPriorities;
 
 		try {
-			// Remove all, then re-add with new IDs in new order
 			for (const e of previousEntries) {
 				await FREE_TOUR_REQUEST.removeEntry(fetch, freeTourId, e.id);
 			}
@@ -194,6 +190,20 @@
 							>
 								&#8595;
 							</button>
+							<!--
+								data-sveltekit-reload: fuerza navegación nativa del navegador en
+								lugar de client-side goto. Evita fallos silenciosos de hidratación
+								al cambiar de free-tours/[id]/entries a activities/[id]/edit?from=.
+							-->
+							<a
+								href={`${ACTIVITY_ROUTES.edit(entry.activityId)}?from=${freeTourId}`}
+								class="btn btn-ghost btn-xs"
+								title={m.freeTours_entriesEditActivity()}
+								aria-label={m.freeTours_entriesEditActivity()}
+								data-sveltekit-reload
+							>
+								<Pen class="size-4" />
+							</a>
 							<button
 								type="button"
 								class="btn btn-ghost btn-xs text-error hover:bg-error/10"

@@ -5,6 +5,9 @@
  */
 
 import type {
+	FreeTourExcluded,
+	FreeTourIncluded,
+	FreeTourRestriction,
 	FreeTourSortAttribute,
 	FreeTourStatus,
 	StageKind,
@@ -15,6 +18,15 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 import type { Coords } from '$core/_shared/types';
 
 // ── Projections (read models) ───────────────────
+
+/** Content block reference embedded in a free tour. */
+export type FreeTourContentBlock = {
+	id: string;
+	description: string;
+	kind: string;
+	target: string;
+	title: string;
+};
 
 /** Activity entry linked to a free tour with priority ordering. */
 export type FreeTourEntry = {
@@ -42,6 +54,16 @@ export type FreeTourFaq = {
 	status: string;
 };
 
+/** Meeting point location for a free tour. */
+export type FreeTourMeetingPoint = {
+	address: string;
+	city: string;
+	coords: Coords;
+	countryCode: string;
+	name: string;
+	postCode: string;
+};
+
 /** Itinerary stage within a free tour. */
 export type FreeTourStage = {
 	id: string;
@@ -59,16 +81,25 @@ export type FreeTourStage = {
 export type FreeTour = {
 	id: string;
 	categoryIds: string[];
+	contentBlocks: FreeTourContentBlock[];
 	descriptionFull: string;
 	descriptionShort: string | null;
 	destinationIds: string[];
 	entries: FreeTourEntry[];
+	excluded: FreeTourExcluded[];
 	faqs: FreeTourFaq[];
+	included: FreeTourIncluded[];
+	meetingPoint: FreeTourMeetingPoint | null;
+	phoneContact: string | null;
+	restrictions: FreeTourRestriction[];
 	images: FreeTourImage[];
 	slug: string;
 	stages: FreeTourStage[];
 	status: FreeTourStatus;
+	supplierTip: string | null;
 	title: string;
+	voucherInfo: string | null;
+	willDoing: string[];
 };
 
 // ── DTOs (write models) ─────────────────────────
@@ -84,15 +115,35 @@ export type FreeTourCreateDto = {
 	title: string;
 };
 
+/**
+ * Payload for creating a new free tour seeded with the common attributes of an existing
+ * FREE_TOUR activity. The activity id is provided via the URL path; the body carries only
+ * the new free tour id and the id for the entry that links the activity to the new free tour.
+ */
+export type FreeTourCreateFromActivityDto = {
+	id: string;
+	entryId: string;
+};
+
 /** Payload for partially updating an existing free tour. */
 export type FreeTourUpdateDto = {
 	categoryIds?: string[];
+	contentBlockIds?: string[];
 	descriptionFull?: string;
 	descriptionShort?: string | null;
 	destinationIds?: string[];
+	excluded?: FreeTourExcluded[];
+	included?: FreeTourIncluded[];
+	mediaIds?: string[];
+	meetingPoint?: FreeTourMeetingPoint;
+	phoneContact?: string;
+	restrictions?: FreeTourRestriction[];
 	slug?: string;
 	status?: FreeTourStatus;
+	supplierTip?: string;
 	title?: string;
+	voucherInfo?: string;
+	willDoing?: string[];
 };
 
 /** Payload for adding an activity entry to a free tour. */
@@ -119,6 +170,12 @@ export type FreeTourStageAddDto = {
 
 /** Query parameters for filtering, sorting, and paginating free tour lists. */
 export type FreeTourCriteria = {
+	/**
+	 * Filter by the activity id of any of the free tour entries.
+	 * Used after PATCHing an activity to PENDING_GROUP to locate the newly
+	 * auto-created FreeTour aggregation.
+	 */
+	entryActivityId?: string;
 	id?: string;
 	limit?: number;
 	operator?: CriteriaOperator;

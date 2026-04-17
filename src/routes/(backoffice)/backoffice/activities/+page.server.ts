@@ -7,6 +7,7 @@ import type { PageServerLoad } from './$types';
 import { activitiesFiltersSchema } from './schemas/filters.schema';
 import { ACTIVITY_REQUEST } from '$core/activities/requests';
 import type { ActivityCriteria } from '$core/activities/types';
+import { ActivityKind } from '$core/activities/enums';
 import { ApiError } from '$core/_shared/errors';
 import { buildPagination } from '$core/_shared/params';
 import { parseFilters } from '$lib/utils/filters';
@@ -27,7 +28,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			sort: filters.sort,
 			order: filters.order,
 			search_text: filters.q,
-			kind: filters.kind,
+			kind: ActivityKind.PAID_TOUR,
 			status: filters.status
 		} as ActivityCriteria);
 

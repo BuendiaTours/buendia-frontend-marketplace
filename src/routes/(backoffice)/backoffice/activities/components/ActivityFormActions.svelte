@@ -10,18 +10,40 @@
 	import { enhance } from '$app/forms';
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
-	import { ActivityStatus } from '$core/activities/enums';
+	import { ActivityKind, ActivityStatus } from '$core/activities/enums';
 	import { ACTIVITY_STATUS_OPTIONS } from '$lib/labels/activities';
+	import ActivityJoinFreeTourDialog from './ActivityJoinFreeTourDialog.svelte';
 
 	type Props = {
 		mode: 'create' | 'edit';
 		activityId?: string;
+		activityKind?: ActivityKind;
 		activityStatus?: ActivityStatus;
 		formId?: string;
 		submitting?: boolean;
+		/** Override "back to list" target URL. Defaults to the activities list. */
+		listRoute?: string;
+		/** Override "back to list" button label. Defaults to "Volver al listado" (activities). */
+		backLabel?: string;
+		/** Override submit button label in create mode. Defaults to "Crear actividad". */
+		createLabel?: string;
 	};
 
-	let { mode, activityId, activityStatus, formId, submitting = false }: Props = $props();
+	let {
+		mode,
+		activityId,
+		activityKind,
+		activityStatus,
+		formId,
+		submitting = false,
+		listRoute,
+		backLabel,
+		createLabel
+	}: Props = $props();
+
+	const resolvedListRoute = $derived(listRoute ?? ACTIVITY_ROUTES.list);
+	const resolvedBackLabel = $derived(backLabel ?? m.activities_backToList());
+	const resolvedCreateLabel = $derived(createLabel ?? m.activities_createActivity());
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -43,19 +65,44 @@
 		}
 	});
 
+	const isFreeTourKind = $derived(activityKind === ActivityKind.FREE_TOUR);
+
+	// Publish/unpublish only apply to non-FREE_TOUR activities. FREE_TOUR activities
+	// are materialized into an aggregation (via "Crear agrupación") and the
+	// aggregation owns its own publication lifecycle.
 	const canPublish = $derived(
-		activityStatus === ActivityStatus.DRAFT ||
-			activityStatus === ActivityStatus.UNPUBLISHED ||
-			activityStatus === ActivityStatus.APPROVED
+		!isFreeTourKind &&
+			(activityStatus === ActivityStatus.DRAFT ||
+				activityStatus === ActivityStatus.UNPUBLISHED ||
+				activityStatus === ActivityStatus.APPROVED)
 	);
-	const canUnpublish = $derived(activityStatus === ActivityStatus.PUBLISHED);
+	const canUnpublish = $derived(!isFreeTourKind && activityStatus === ActivityStatus.PUBLISHED);
+
+	// DRAFT FREE_TOUR → user can mark it as ready (DRAFT → PENDING_GROUP).
+	const canMarkAsReady = $derived(isFreeTourKind && activityStatus === ActivityStatus.DRAFT);
+	// PENDING_GROUP FREE_TOUR → user can either wrap in a new free tour or join an existing one.
+	const canCreateGrouping = $derived(
+		isFreeTourKind && activityStatus === ActivityStatus.PENDING_GROUP
+	);
+	const canJoinFreeTour = $derived(
+		isFreeTourKind && activityStatus === ActivityStatus.PENDING_GROUP
+	);
 </script>
 
 <div
 	class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 py-4"
 >
-	<a href={`${ACTIVITY_ROUTES.list}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
-		← {m.activities_backToList()}
+	<!--
+		data-sveltekit-reload: fuerza navegación nativa para cruzar entre los dominios
+		activities ↔ free-tours sin que el cliente reuse proyecciones potencialmente
+		incompletas y deje la página en blanco por hidratación fallida.
+	-->
+	<a
+		href={`${resolvedListRoute}?${page.url.searchParams.toString()}`}
+		class="btn btn-ghost"
+		data-sveltekit-reload
+	>
+		← {resolvedBackLabel}
 	</a>
 
 	{#if isEditMode && activityStatus}
@@ -101,6 +148,55 @@
 			</form>
 		{/if}
 
+		{#if isEditMode && activityId && canMarkAsReady}
+			<form method="POST" action={`${ACTIVITY_ROUTES.edit(activityId)}?/markAsReady`} use:enhance>
+				<button
+					type="submit"
+					class="btn btn-soft btn-success"
+					disabled={submitting}
+					use:confirmAction={{
+						title: m.activities_confirmMarkAsReadyTitle(),
+						message: m.activities_confirmMarkAsReadyMessage(),
+						confirmText: m.activities_markAsReadyButton(),
+						cancelText: m.common_cancel(),
+						danger: false
+					}}
+				>
+					{m.activities_markAsReadyButton()}
+				</button>
+			</form>
+		{/if}
+
+		{#if isEditMode && activityId && canCreateGrouping}
+			<!--
+				No `use:enhance` on purpose: a client-side goto after the action-returned 303
+				fetches the aggregation data before the backend projection has finished
+				copying from the activity, which causes a blank hydration on the target page.
+				Native form submission does a full browser navigation → full SSR on the edit
+				page (same as a manual F5) and renders reliably.
+			-->
+			<form method="POST" action={`${ACTIVITY_ROUTES.edit(activityId)}?/createGrouping`}>
+				<button
+					type="submit"
+					class="btn btn-soft btn-info"
+					disabled={submitting}
+					use:confirmAction={{
+						title: m.activities_confirmCreateGroupingTitle(),
+						message: m.activities_confirmCreateGroupingMessage(),
+						confirmText: m.activities_createGroupingButton(),
+						cancelText: m.common_cancel(),
+						danger: false
+					}}
+				>
+					{m.activities_createGroupingButton()}
+				</button>
+			</form>
+		{/if}
+
+		{#if isEditMode && activityId && canJoinFreeTour}
+			<ActivityJoinFreeTourDialog {activityId} disabled={submitting} />
+		{/if}
+
 		{#if isEditMode && activityId}
 			<form method="POST" action={`${ACTIVITY_ROUTES.edit(activityId)}?/delete`} use:enhance>
 				<button
@@ -131,7 +227,7 @@
 				{#if submitting}
 					<span class="loading loading-spinner loading-sm"></span>
 				{/if}
-				{isCreateMode ? m.activities_createActivity() : m.activities_saveChanges()}
+				{isCreateMode ? resolvedCreateLabel : m.activities_saveChanges()}
 			</button>
 		{/if}
 	</div>

@@ -77,6 +77,30 @@ export const ACTIVITY_REQUEST = {
 		post(fetchFn, `${BASE}/${id}/unpublish`, {}),
 
 	/**
+	 * Promotes a FREE_TOUR activity to `PENDING_GROUP`, signalling that it is
+	 * ready to be linked to a free tour aggregation. The caller must then
+	 * explicitly create a new aggregation (`POST /free-tours/from-activity/:id`)
+	 * or attach the activity to an existing one (`POST /free-tours/:id/entries`).
+	 * No aggregation is created automatically.
+	 *
+	 * Idempotent: PENDING_GROUP → PENDING_GROUP is a no-op success. Allowed
+	 * source states are `DRAFT` (initial promotion) and, by the cross-context
+	 * entry-removed handler, `GROUPED`. Invocations by users apply only to
+	 * DRAFT activities.
+	 *
+	 * Errors:
+	 * - `409 ACTIVITY_ALREADY_GROUPED` if the activity is currently GROUPED —
+	 *   release its entry from the free tour first.
+	 * - `400 ACTIVITY_NOT_PROMOTABLE` for non-FREE_TOUR activities or other
+	 *   source statuses (PUBLISHED, REJECTED, etc.).
+	 *
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Activity ID.
+	 */
+	promoteToPendingGroup: (fetchFn: typeof fetch, id: string): Promise<void> =>
+		post(fetchFn, `${BASE}/${id}/promote-to-pending-group`, {}),
+
+	/**
 	 * Deletes an activity by ID.
 	 * @param fetchFn - SvelteKit `fetch`.
 	 * @param id - Activity ID.
