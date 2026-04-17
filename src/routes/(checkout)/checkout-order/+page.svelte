@@ -7,7 +7,13 @@
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 
 	// Stores
+	import { goto } from '$app/navigation';
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
+	import { removedBookingsStore } from '$lib/stores/removedBookings.svelte';
+
+	const activeBookings = $derived(
+		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))
+	);
 
 	// Components
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
@@ -21,10 +27,10 @@
 
 			<CartExpiryCallout />
 
-			{#if shoppingCartStore.order?.bookings?.length}
-				<p>Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito</p>
-				<ul>
-					{#each shoppingCartStore.order.bookings as booking (booking.id)}
+			{#if activeBookings.length}
+				<p>Tienes ({activeBookings.length}) planes en tu carrito</p>
+				<ul class="space-y-8">
+					{#each activeBookings as booking (booking.id)}
 						{@const passengerItems = Object.values(
 							(booking.passengers ?? []).reduce(
 								(acc, p) => {
@@ -60,6 +66,20 @@
 							{#if booking.subtotalPrice != null}
 								<p>{formatEuro(booking.subtotalPrice)}</p>
 							{/if}
+							<div>
+								<span class="cursor-pointer underline underline-offset-8" role="button" tabindex="0"
+									>Modificar</span
+								>
+								<span
+									class="cursor-pointer underline underline-offset-8"
+									role="button"
+									tabindex="0"
+									onclick={() => removedBookingsStore.add(booking)}
+									onkeydown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
+									}}>Eliminar</span
+								>
+							</div>
 						</li>
 					{/each}
 				</ul>
@@ -67,7 +87,36 @@
 				<p>No hay bookings</p>
 			{/if}
 
-			<details>
+			{#if removedBookingsStore.bookings.length}
+				<p class="mt-12 mb-4">Anteriormente en tu carrito</p>
+				<ul class="space-y-8">
+					{#each removedBookingsStore.bookings as booking (booking.id)}
+						<li>
+							{#if booking.activityTitle || booking.optionTitle}
+								<p>
+									{#if booking.activityTitle}{booking.activityTitle}{booking.optionTitle
+											? ' · '
+											: ''}{/if}{booking.optionTitle ?? ''}
+								</p>
+							{/if}
+							{#if booking.subtotalPrice != null}
+								<p>{formatEuro(booking.subtotalPrice)}</p>
+							{/if}
+							<span
+								class="cursor-pointer underline underline-offset-8"
+								role="button"
+								tabindex="0"
+								onclick={() => removedBookingsStore.restore(booking.id)}
+								onkeydown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.restore(booking.id);
+								}}>Volver a añadir al carrito</span
+							>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+
+			<details class="mt-12">
 				<summary>shoppingCart debug</summary>
 				<pre>{JSON.stringify(
 						{
@@ -85,7 +134,11 @@
 			</details>
 		</div>
 		<div class="col-sidebar pt-6">
-			<a href="/checkout-personal-data" class="e-button">Tramitar pedido</a>
+			<button
+				class="e-button"
+				disabled={!activeBookings.length}
+				onclick={() => goto('/checkout-personal-data')}>Tramitar pedido</button
+			>
 		</div>
 	</div>
 </div>

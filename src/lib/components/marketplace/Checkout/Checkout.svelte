@@ -8,7 +8,10 @@
 	import CheckoutStepCounterSelector from './CheckoutStepCounterSelector.svelte';
 
 	// Icons
-	import { CalendarCheck, MoneyBack } from '$lib/icons/Linear';
+	import { CheckCircle } from '$lib/icons/Linear';
+
+	// Utils
+	import { formatEuro } from '$lib/utils/currency';
 
 	type Props = { activityOptions: ActivityOption[] };
 	let { activityOptions }: Props = $props();
@@ -17,6 +20,19 @@
 
 	$effect(() => {
 		checkout.activityOptions = activityOptions;
+	});
+
+	const minAdultPrice = $derived.by(() => {
+		const adultIds = new Set(
+			activityOptions
+				.flatMap((o) => o.individualTickets)
+				.filter((t) => t.group === 'ADULT')
+				.map((t) => t.id)
+		);
+		let min = Infinity;
+		for (const slot of checkout.availability)
+			for (const t of slot.tickets) if (adultIds.has(t.id) && t.price < min) min = t.price;
+		return min === Infinity ? null : min;
 	});
 
 	const activeTicketGroups = $derived([
@@ -47,7 +63,10 @@
 					Desde <strike>99,00 €</strike> <span class="p-base text-salmon-strong">-15%</span>
 				</p>
 				<p class="text-price text-salmon-strong">
-					30,60 €<span class="p-base ml-4 font-bold text-neutral-800">por persona</span>
+					{#if minAdultPrice !== null}
+						{formatEuro(minAdultPrice)}
+					{/if}
+					<span class="p-base ml-2 font-bold text-neutral-800">por persona</span>
 				</p>
 			</div>
 
@@ -64,12 +83,12 @@
 
 			<div class="mt-4 flex flex-col gap-1">
 				<p class="p-base flex gap-2 text-neutral-800">
-					<CalendarCheck class="h-6 shrink-0 grow-0 basis-6" />
-					Cancela sin coste hasta 1 minuto antes del inicio
+					<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
+					Cancelación gratuita hasta el inicio de la actividad
 				</p>
 				<p class="p-base flex gap-2 text-neutral-800">
-					<MoneyBack class="h-6 shrink-0 grow-0 basis-6" />
-					Te devolvemos el dinero si no te gusta. Sin explicaciones
+					<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
+					Garantía de reembolso si no te gusta
 				</p>
 			</div>
 		</div>
