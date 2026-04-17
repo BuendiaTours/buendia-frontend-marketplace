@@ -5,14 +5,9 @@
 
 <script lang="ts">
 	import { createDatePicker, melt } from '@melt-ui/svelte';
-	import {
-		AltArrowDown,
-		AltArrowLeft,
-		AltArrowRight,
-		AltArrowUp,
-		Calendar
-	} from '$lib/icons/Linear';
+	import { AltArrowLeft, AltArrowRight, Calendar } from '$lib/icons/Linear';
 	import type { DateValue } from '@internationalized/date';
+	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
 	import { fade } from 'svelte/transition';
 	import { format } from 'date-fns';
 	import { es } from 'date-fns/locale';
@@ -78,28 +73,15 @@
 
 <div class="relative w-full">
 	<!-- Date Field Trigger -->
-	<button
-		use:melt={$trigger}
-		class="flex w-full cursor-pointer items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-		class:!cursor-not-allowed={disabled}
+	<FakeSelectButton
+		icon={Calendar}
 		{disabled}
-	>
-		<Calendar class="size-6" />
-		<span class="p-base flex-1 text-left font-bold text-gray-700">
-			{#if $pickerValue}
-				{format($pickerValue.toDate('UTC'), 'd MMM yyyy', { locale: es })}
-			{:else if disabled}
-				Selecciona asistentes primero
-			{:else}
-				Seleccionar fecha
-			{/if}
-		</span>
-		{#if $open}
-			<AltArrowUp class="text-gray-400" size={16} />
-		{:else}
-			<AltArrowDown class="text-gray-400" size={16} />
-		{/if}
-	</button>
+		placeholder="Seleccionar fecha"
+		disabledPlaceholder="Selecciona asistentes primero"
+		value={$pickerValue ? format($pickerValue.toDate('UTC'), 'd MMM yyyy', { locale: es }) : null}
+		open={$open}
+		{trigger}
+	/>
 
 	<!-- Popover Content -->
 	{#if $open}
