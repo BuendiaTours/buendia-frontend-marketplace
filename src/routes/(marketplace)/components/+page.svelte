@@ -19,6 +19,7 @@
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
+	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
 
 	import type { PageData } from './$types';
 
@@ -118,6 +119,71 @@
 		});
 	}
 </script>
+
+<div class="wrapper">
+	<CheckoutCard
+		isBuendia={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+
+	<CheckoutCard
+		isBuendia={true}
+		disabled={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+</div>
 
 <div class="wrapper mt-6">
 	<BuendiaComment class="size-5" />
