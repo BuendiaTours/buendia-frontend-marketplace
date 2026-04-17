@@ -1,16 +1,25 @@
 <script lang="ts">
-	import { ClockCircle, ByBuendia, CalendarCheck, MoneyBack, Calendar } from '$lib/icons/Linear';
-	import Badge from '../Badge.svelte';
-	import Callout from '../Callout.svelte';
+	// Types and state
 	import type { ActivityOption, AvailabilitySlot } from '$lib/types';
 	import { getCheckout } from '$lib/stores/checkout.svelte';
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
-	import { formatEuro } from '$lib/utils/currency';
-	import { formatSlotTime } from '$lib/utils/datetime';
+
+	// Libs
 	import { format } from 'date-fns';
 	import { es } from 'date-fns/locale';
+	import { formatEuro } from '$lib/utils/currency';
+	import { formatSlotTime } from '$lib/utils/datetime';
 	import { parseDate } from '@internationalized/date';
+
+	// Icons
+	import { ClockCircle, ByBuendia, CalendarCheck, MoneyBack, Calendar } from '$lib/icons/Linear';
+
+	// Componets
+	import Badge from '../Badge.svelte';
+	import Callout from '../Callout.svelte';
 	import { goto } from '$app/navigation';
+
+	// Translations
 	import * as m from '$paraglide/messages';
 
 	type OptionWithSlots = { option: ActivityOption; slots: AvailabilitySlot[] };

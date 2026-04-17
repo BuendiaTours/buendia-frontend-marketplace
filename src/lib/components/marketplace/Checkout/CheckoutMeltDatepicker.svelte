@@ -13,11 +13,12 @@
 	import { es } from 'date-fns/locale';
 
 	type Props = {
-		value?: DateValue;
-		onSelect?: (date: DateValue) => void;
-		onMonthChange?: (fromDate: string) => void;
 		disabled?: boolean;
 		isDateDisabled?: (date: DateValue) => boolean;
+		onMonthChange?: (fromDate: string) => void;
+		onSelect?: (date: DateValue) => void;
+		value?: DateValue;
+		wrapperClass?: string;
 	};
 
 	let {
@@ -25,7 +26,8 @@
 		onSelect,
 		onMonthChange,
 		disabled = false,
-		isDateDisabled: checkDisabled
+		isDateDisabled: checkDisabled,
+		wrapperClass = ''
 	}: Props = $props();
 
 	const {
@@ -71,7 +73,7 @@
 	});
 </script>
 
-<div class="relative w-full">
+<div class="relative w-full {wrapperClass}">
 	<!-- Date Field Trigger -->
 	<FakeSelectButton
 		icon={Calendar}

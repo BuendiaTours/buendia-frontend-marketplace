@@ -1,0 +1,84 @@
+<script lang="ts">
+	// Types
+	import type { ActivityOption } from '$lib/types';
+	import { createPopover, melt } from '@melt-ui/svelte';
+
+	// Libs
+	import { fade } from 'svelte/transition';
+	import { getCheckout } from '$lib/stores/checkout.svelte';
+
+	// Icons
+	import { User } from '$lib/icons/Linear';
+
+	// Components
+	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
+	import CheckoutStepCounter from './CheckoutStepCounter.svelte';
+
+	// TRanslations
+	import * as m from '$paraglide/messages';
+
+	type Ticket = ActivityOption['individualTickets'][number];
+
+	type Props = {
+		activeTicketGroups: Ticket[];
+	};
+
+	let { activeTicketGroups }: Props = $props();
+
+	const checkout = getCheckout();
+	const adultCount = $derived(checkout.counts.get('ADULT') ?? 0);
+
+	const messages = m as unknown as Record<string, () => string>;
+
+	const {
+		elements: { trigger, content },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		closeOnOutsideClick: true
+	});
+
+	const summaryLabel = $derived.by(() => {
+		const parts = activeTicketGroups
+			.map((t) => {
+				const count = checkout.counts.get(t.group) ?? 0;
+				if (count === 0) return null;
+				const label = messages[`enum_passengerKind_${t.group}_name`]?.() ?? t.group;
+				return `${count} ${label}`;
+			})
+			.filter((x): x is string => x !== null);
+		return parts.length > 0 ? parts.join(', ') : null;
+	});
+</script>
+
+<div class="relative w-full">
+	<FakeSelectButton
+		icon={User}
+		placeholder="Selecciona asistentes"
+		value={summaryLabel}
+		open={$open}
+		{trigger}
+	/>
+	{#if $open}
+		<div
+			transition:fade={{ duration: 150 }}
+			use:melt={$content}
+			class="absolute right-0 left-0 z-50 mt-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+		>
+			<div class="flex flex-col gap-4">
+				{#each activeTicketGroups as ticket (ticket.id)}
+					<CheckoutStepCounter
+						key={ticket.group}
+						id={ticket.id}
+						value={checkout.counts.get(ticket.group) ?? 0}
+						maxvalue={ticket.adultRequired && adultCount === 0 ? 0 : 99}
+						onchange={(v) => checkout.counts.set(ticket.group, v)}
+					/>
+					{#if ticket.adultRequired && adultCount === 0 && (checkout.counts.get(ticket.group) ?? 0) > 0}
+						<p class="p-sm text-error-500">Se precisa al menos un ticket de adulto</p>
+					{/if}
+				{/each}
+			</div>
+		</div>
+	{/if}
+</div>
