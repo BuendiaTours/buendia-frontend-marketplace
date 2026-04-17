@@ -186,6 +186,7 @@ export type DistributiveCriteria = {
 	skip?: number;
 	slug?: string;
 	sort?: DistributiveSortAttribute;
+	status?: DistributiveStatus;
 	tagId?: string;
 	tagIds?: string[];
 };

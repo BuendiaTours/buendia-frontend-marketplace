@@ -33,7 +33,7 @@
 	const pageSize = $derived(pagination?.pageSize ?? 10);
 	const total = $derived(pagination?.total ?? 0);
 
-	let searchQuery = $derived.writable(filters.q || '');
+	let searchQuery = $derived(filters.q || '');
 
 	function applyFilterPatch(patch: {
 		[K in keyof DistributivesFilters]?: PatchValue<DistributivesFilters[K]>;

@@ -26,7 +26,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			limit: currentPageSize,
 			sort: filters.sort ? 'NAME' : undefined,
 			order: filters.order,
-			searchText: filters.q
+			searchText: filters.q,
+			status: filters.status
 		} as DistributiveCriteria);
 
 		return {
