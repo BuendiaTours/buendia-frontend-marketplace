@@ -35,7 +35,8 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		closeOnOutsideClick: true
+		closeOnOutsideClick: true,
+		positioning: { sameWidth: true }
 	});
 
 	const summaryLabel = $derived.by(() => {
@@ -63,21 +64,27 @@
 		<div
 			transition:fade={{ duration: 150 }}
 			use:melt={$content}
-			class="absolute right-0 left-0 z-50 mt-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+			class="absolute z-50 rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 		>
 			<div class="flex flex-col gap-4">
-				{#each activeTicketGroups as ticket (ticket.id)}
-					<CheckoutStepCounter
-						key={ticket.group}
-						id={ticket.id}
-						value={checkout.counts.get(ticket.group) ?? 0}
-						maxvalue={ticket.adultRequired && adultCount === 0 ? 0 : 99}
-						onchange={(v) => checkout.counts.set(ticket.group, v)}
-					/>
-					{#if ticket.adultRequired && adultCount === 0 && (checkout.counts.get(ticket.group) ?? 0) > 0}
-						<p class="p-sm text-error-500">Se precisa al menos un ticket de adulto</p>
-					{/if}
-				{/each}
+				<div class="divide-y divide-gray-200">
+					{#each activeTicketGroups as ticket (ticket.id)}
+						<div class="py-2 first:pt-0">
+							<CheckoutStepCounter
+								key={ticket.group}
+								id={ticket.id}
+								value={checkout.counts.get(ticket.group) ?? 0}
+								maxvalue={ticket.adultRequired && adultCount === 0 ? 0 : 99}
+								onchange={(v) => checkout.counts.set(ticket.group, v)}
+							/>
+							{#if ticket.adultRequired && adultCount === 0 && (checkout.counts.get(ticket.group) ?? 0) > 0}
+								<p class="p-sm text-error-500">Se precisa al menos un ticket de adulto</p>
+							{/if}
+						</div>
+					{/each}
+				</div>
+
+				<button type="button" class="e-button e button-primary w-full">Aplicar</button>
 			</div>
 		</div>
 	{/if}
