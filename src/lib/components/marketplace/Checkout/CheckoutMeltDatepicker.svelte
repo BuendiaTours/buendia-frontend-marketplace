@@ -41,6 +41,7 @@
 		locale: 'es-ES',
 		defaultValue: value,
 		closeOnOutsideClick: false,
+		positioning: { placement: 'bottom-end' },
 		onValueChange: ({ next }) => {
 			value = next;
 			if (next) {
@@ -91,7 +92,7 @@
 		<div
 			transition:fade={{ duration: 150 }}
 			use:melt={$content}
-			class="absolute z-50 mt-2 w-auto min-w-[600px] rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+			class="absolute z-50 w-auto min-w-[600px] rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 		>
 			<!-- Calendar Header -->
 			<header class="mb-4 flex items-center justify-between">
@@ -173,7 +174,7 @@
 			</div>
 
 			<!-- Footer -->
-			<div class="mt-4 flex justify-end gap-2">
+			<!-- <div class="mt-4 flex justify-end gap-2">
 				<button
 					class="p-sm rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-700 hover:bg-gray-200"
 					onclick={() => open.set(false)}
@@ -186,7 +187,7 @@
 				>
 					Aceptar
 				</button>
-			</div>
+			</div> -->
 		</div>
 	{/if}
 </div>

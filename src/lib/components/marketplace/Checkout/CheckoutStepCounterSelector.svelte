@@ -84,7 +84,9 @@
 					{/each}
 				</div>
 
-				<button type="button" class="e-button e button-primary w-full">Aplicar</button>
+				<button type="button" class="e-button w-full" onclick={() => open.set(false)}
+					>Aplicar</button
+				>
 			</div>
 		</div>
 	{/if}

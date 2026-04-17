@@ -47,7 +47,7 @@
 					Desde <strike>99,00 €</strike> <span class="p-base text-salmon-strong">-15%</span>
 				</p>
 				<p class="text-price text-salmon-strong">
-					30,60 €<span class="p-base ml-4 font-bold">por persona</span>
+					30,60 €<span class="p-base ml-4 font-bold text-neutral-800">por persona</span>
 				</p>
 			</div>
 
