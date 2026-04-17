@@ -17,6 +17,12 @@
 		return page.url.pathname.startsWith(path);
 	};
 
+	const isCatalogActive = $derived(
+		isActive(ROUTES.backoffice.activities.list) ||
+			isActive(ROUTES.backoffice.freeTours.list) ||
+			isActive(ROUTES.backoffice.distributives.list)
+	);
+
 	const isResourcesActive = $derived(
 		isActive(ROUTES.backoffice.categories.list) ||
 			isActive(ROUTES.backoffice.tags.list) ||
@@ -73,28 +79,35 @@
 			</div>
 			<ul class="dropdown-content menu">
 				<li>
-					<a
-						href={ROUTES.backoffice.activities.list}
-						class:menu-active={isActive(ROUTES.backoffice.activities.list)}
-					>
-						{m.activities_navLabel()}
-					</a>
-				</li>
-				<li>
-					<a
-						href={ROUTES.backoffice.distributives.list}
-						class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
-					>
-						{m.distributives_navLabel()}
-					</a>
-				</li>
-				<li>
-					<a
-						href={ROUTES.backoffice.freeTours.list}
-						class:menu-active={isActive(ROUTES.backoffice.freeTours.list)}
-					>
-						{m.freeTours_navLabel()}
-					</a>
+					<details>
+						<summary class:menu-active={isCatalogActive}>{m.backoffice_navCatalog()}</summary>
+						<ul>
+							<li>
+								<a
+									href={ROUTES.backoffice.activities.list}
+									class:menu-active={isActive(ROUTES.backoffice.activities.list)}
+								>
+									{m.backoffice_navCatalogPaid()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.freeTours.list}
+									class:menu-active={isActive(ROUTES.backoffice.freeTours.list)}
+								>
+									{m.freeTours_navLabel()}
+								</a>
+							</li>
+							<li>
+								<a
+									href={ROUTES.backoffice.distributives.list}
+									class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
+								>
+									{m.distributives_navLabel()}
+								</a>
+							</li>
+						</ul>
+					</details>
 				</li>
 				<li>
 					<a
@@ -222,29 +235,59 @@
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
-			<li>
-				<a
-					href={ROUTES.backoffice.activities.list}
-					class:menu-active={isActive(ROUTES.backoffice.activities.list)}
+			<li class="relative">
+				<button
+					type="button"
+					class:menu-active={isCatalogActive}
+					onclick={(e) => {
+						e.stopPropagation();
+						toggleDropdown('catalog');
+					}}
 				>
-					{m.activities_navLabel()}
-				</a>
-			</li>
-			<li>
-				<a
-					href={ROUTES.backoffice.distributives.list}
-					class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
-				>
-					{m.distributives_navLabel()}
-				</a>
-			</li>
-			<li>
-				<a
-					href={ROUTES.backoffice.freeTours.list}
-					class:menu-active={isActive(ROUTES.backoffice.freeTours.list)}
-				>
-					{m.freeTours_navLabel()}
-				</a>
+					{m.backoffice_navCatalog()}
+					<svg
+						class="inline size-3 transition-transform"
+						class:rotate-180={openDropdown === 'catalog'}
+						viewBox="0 0 20 20"
+						fill="currentColor"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+				</button>
+				{#if openDropdown === 'catalog'}
+					<ul
+						class="menu bg-base-100 rounded-box absolute top-full left-0 z-50 mt-1 min-w-48 p-2 shadow-lg"
+					>
+						<li>
+							<a
+								href={ROUTES.backoffice.activities.list}
+								class:menu-active={isActive(ROUTES.backoffice.activities.list)}
+							>
+								{m.backoffice_navCatalogPaid()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.freeTours.list}
+								class:menu-active={isActive(ROUTES.backoffice.freeTours.list)}
+							>
+								{m.freeTours_navLabel()}
+							</a>
+						</li>
+						<li>
+							<a
+								href={ROUTES.backoffice.distributives.list}
+								class:menu-active={isActive(ROUTES.backoffice.distributives.list)}
+							>
+								{m.distributives_navLabel()}
+							</a>
+						</li>
+					</ul>
+				{/if}
 			</li>
 			<li>
 				<a

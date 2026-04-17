@@ -1,5 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"backoffice_navCatalog": "Catálogo",
+	"backoffice_navCatalogPaid": "Pago",
 	"backoffice_navResources": "Recursos",
 	"backoffice_navAdmin": "Administración",
 	"backoffice_navComponents": "Componentes",
