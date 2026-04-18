@@ -142,7 +142,6 @@
 												page.url.searchParams
 											)}
 											class="font-medium"
-											data-sveltekit-reload
 										>
 											{item.title}
 										</a>
@@ -171,7 +170,6 @@
 													ACTIVITY_ROUTES.edit(item.id),
 													page.url.searchParams
 												)}
-												data-sveltekit-reload
 											>
 												{m.freeTours_editButton()}
 											</a>

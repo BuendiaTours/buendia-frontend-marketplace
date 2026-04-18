@@ -92,16 +92,7 @@
 <div
 	class="bnd-main-actions bg-base-100 sticky top-0 z-10 flex items-center justify-between gap-4 py-4"
 >
-	<!--
-		data-sveltekit-reload: fuerza navegación nativa para cruzar entre los dominios
-		activities ↔ free-tours sin que el cliente reuse proyecciones potencialmente
-		incompletas y deje la página en blanco por hidratación fallida.
-	-->
-	<a
-		href={`${resolvedListRoute}?${page.url.searchParams.toString()}`}
-		class="btn btn-ghost"
-		data-sveltekit-reload
-	>
+	<a href={`${resolvedListRoute}?${page.url.searchParams.toString()}`} class="btn btn-ghost">
 		← {resolvedBackLabel}
 	</a>
 

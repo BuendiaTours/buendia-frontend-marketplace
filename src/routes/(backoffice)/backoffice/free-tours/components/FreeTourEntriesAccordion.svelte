@@ -190,17 +190,11 @@
 							>
 								&#8595;
 							</button>
-							<!--
-								data-sveltekit-reload: fuerza navegación nativa del navegador en
-								lugar de client-side goto. Evita fallos silenciosos de hidratación
-								al cambiar de free-tours/[id]/entries a activities/[id]/edit?from=.
-							-->
 							<a
 								href={`${ACTIVITY_ROUTES.edit(entry.activityId)}?from=${freeTourId}`}
 								class="btn btn-ghost btn-xs"
 								title={m.freeTours_entriesEditActivity()}
 								aria-label={m.freeTours_entriesEditActivity()}
-								data-sveltekit-reload
 							>
 								<Pen class="size-4" />
 							</a>
