@@ -29,7 +29,6 @@
 	<Header title="Marketplace App" wrapperClass="my-6" />
 
 	<main class="layout-content-area flex-1">
-		<!-- MsgAlertBox /-->
 		{@render children()}
 	</main>
 

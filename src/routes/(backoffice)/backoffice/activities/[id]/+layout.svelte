@@ -88,13 +88,15 @@
 
 {#if !isOptionDetail}
 	<ActivityTabNav activityId={data.activity.id} activityKind={data.activity.kind} {optionCount} />
-
-	<div class="border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6">
-		{@render children()}
-	</div>
-{:else}
-	{@render children()}
 {/if}
+
+<div
+	class={isOptionDetail
+		? 'contents'
+		: 'border-base-300 bg-base-100 rounded-b-lg border border-t-0 p-6'}
+>
+	{@render children()}
+</div>
 
 <div
 	class="fixed top-0 right-0 z-50 m-4 flex flex-col items-end gap-2 md:top-auto md:bottom-0"

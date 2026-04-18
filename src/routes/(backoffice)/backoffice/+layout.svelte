@@ -27,9 +27,16 @@
 	import Header from '$lib/layout/backoffice/Header.svelte';
 	import Footer from '$lib/layout/backoffice/Footer.svelte';
 
+	import { page } from '$app/state';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
+
+	// Key por el primer segmento después de /backoffice, para que la navegación entre
+	// árboles distintos (p.ej. activities ↔ free-tours) fuerce un remount limpio y
+	// evite bugs de diff en Svelte 5 con {@render children()}, pero cambiar de tab
+	// dentro del mismo árbol siga reutilizando el layout.
+	const routeKey = $derived(page.url.pathname.split('/')[2] ?? '');
 
 	// Register AuthProvider for client-side (browser) API calls
 	$effect(() => {
@@ -58,8 +65,9 @@
 	<Header title="Backoffice App" user={data.user} />
 
 	<main class="backoffice-container flex-1 px-4 pb-8">
-		<!-- MsgAlertBox /-->
-		{@render children()}
+		{#key routeKey}
+			{@render children()}
+		{/key}
 	</main>
 
 	<Footer />

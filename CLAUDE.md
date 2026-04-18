@@ -216,6 +216,65 @@ $effect(() => { searchQuery = filters.q || ''; });
 </Card>
 ```
 
+**`{@render children()}` pitfalls in layouts (Svelte 5.x + SvelteKit 2.x):**
+
+Two patterns trigger a silent client-side navigation bug where the page blanks, no error shows in console or network, and only F5 (SSR) recovers the page. The symptom in the DOM is `<main><!--[--><!----></main>` — an empty fragment. Scripts and `$effect` of the new layout run (the components "mount"), but the rendered DOM is never attached. Once blanked, the router is stuck until reload.
+
+1. **HTML comments adjacent to `{@render children()}`** — Svelte uses comment nodes as anchors for snippet rendering; an HTML comment right before/after `{@render children()}` collides with that anchor and breaks the diff on client-side nav.
+
+```svelte
+<!-- WRONG — silent blank on navigation -->
+<main>
+	<!-- TODO: mount toast here later -->
+	{@render children()}
+</main>
+
+<!-- CORRECT — no sibling comments -->
+<main>
+	{@render children()}
+</main>
+```
+
+2. **`{@render children()}` duplicated across `{#if}`/`{:else}` branches** — two render points for the same snippet confuse Svelte's diff. Consolidate to a single `{@render children()}` and conditionally wrap it:
+
+```svelte
+<!-- WRONG — duplicated render breaks diff -->
+{#if showTabs}
+	<TabNav />
+	<div class="with-border">
+		{@render children()}
+	</div>
+{:else}
+	{@render children()}
+{/if}
+
+<!-- CORRECT — single render point, wrapper class swaps -->
+{#if showTabs}
+	<TabNav />
+{/if}
+<div class={showTabs ? 'with-border' : 'contents'}>
+	{@render children()}
+</div>
+```
+
+3. **Cross-tree navigation blanks even with the above fixes** — when the user navigates between sibling route trees that share a parent layout (e.g. `/backoffice/activities/[id]/*` ↔ `/backoffice/free-tours/[id]/*`), key the `{@render children()}` in the shared parent layout by the top-level section so the subtree is remounted clean on cross-tree transitions while tab changes within a tree still reuse the layout:
+
+```svelte
+<script>
+	import { page } from '$app/state';
+	// First segment after the area prefix (e.g. "activities" vs "free-tours").
+	const routeKey = $derived(page.url.pathname.split('/')[2] ?? '');
+</script>
+
+<main>
+	{#key routeKey}
+		{@render children()}
+	{/key}
+</main>
+```
+
+Do NOT add `data-sveltekit-reload` to cross-tree links — it makes navigation slow because it forces a full browser reload. Use the three patterns above instead.
+
 ### Styling
 
 - Tailwind CSS v4 everywhere, no inline styles, no CSS modules, no CSS-in-JS
