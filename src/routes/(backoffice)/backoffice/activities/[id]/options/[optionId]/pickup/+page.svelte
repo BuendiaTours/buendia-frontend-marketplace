@@ -11,7 +11,6 @@
 	import type { SearchResult } from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
 	import { PickupPlaceKind } from '$core/activity-options/enums';
 	import { ACTIVITY_OPTION_REQUEST } from '$core/activity-options/requests';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
@@ -31,8 +30,7 @@
 
 	const updatePickupCount = getContext<(count: number) => void>('updatePickupCount');
 
-	// svelte-ignore state_referenced_locally
-	let pickupPlaces: PickupPlace[] = $state(data.option.pickupPlaces ?? []);
+	let pickupPlaces: PickupPlace[] = $derived(data.option.pickupPlaces ?? []);
 
 	$effect(() => {
 		updatePickupCount(pickupPlaces.length);

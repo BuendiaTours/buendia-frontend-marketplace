@@ -18,12 +18,9 @@
 
 	let { data }: PageProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let contentBlocks = $state(data.contentBlocks);
-	// svelte-ignore state_referenced_locally
-	let images = $state(data.images);
-	// svelte-ignore state_referenced_locally
-	let faqs = $state(data.activityFaqs);
+	let contentBlocks = $derived(data.contentBlocks);
+	let images = $derived(data.images);
+	let faqs = $derived(data.activityFaqs);
 
 	const addToast =
 		getContext<

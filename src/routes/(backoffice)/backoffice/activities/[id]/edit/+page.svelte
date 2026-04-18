@@ -50,10 +50,8 @@
 
 	const formId = 'activity-form';
 
-	// svelte-ignore state_referenced_locally
-	let categories = $state(data.activity.categories ?? []);
-	// svelte-ignore state_referenced_locally
-	let tags = $state(data.activityTags);
+	let categories = $derived(data.activity?.categories ?? []);
+	let tags = $derived(data.activityTags ?? []);
 
 	$effect(() => {
 		if (

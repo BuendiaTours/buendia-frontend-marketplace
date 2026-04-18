@@ -11,10 +11,8 @@
 
 	let { data }: PageProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let meals = $state(data.meals);
-	// svelte-ignore state_referenced_locally
-	let addons: ActivityAddon[] = $state(data.addons);
+	let meals = $derived(data.meals);
+	let addons: ActivityAddon[] = $derived(data.addons);
 
 	const addToast =
 		getContext<

@@ -19,12 +19,9 @@
 
 	let { data }: PageProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let locations = $state(data.locations);
-	// svelte-ignore state_referenced_locally
-	let attractions = $state(data.attractions);
-	// svelte-ignore state_referenced_locally
-	let stages = $state(data.stages);
+	let locations = $derived(data.locations);
+	let attractions = $derived(data.attractions);
+	let stages = $derived(data.stages);
 
 	const addToast =
 		getContext<

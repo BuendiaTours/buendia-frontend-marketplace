@@ -18,10 +18,8 @@
 
 	let { data, children }: LayoutProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let pickupCount = $state(data.option.pickupPlaces?.length ?? 0);
-	// svelte-ignore state_referenced_locally
-	let ticketCount = $state(
+	let pickupCount = $derived(data.option.pickupPlaces?.length ?? 0);
+	let ticketCount = $derived(
 		data.option.ticketKind === 'INDIVIDUAL'
 			? (data.option.individualTickets?.length ?? 0)
 			: data.option.ticketKind === 'GROUP'

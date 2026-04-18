@@ -9,8 +9,7 @@
 
 	let { data }: PageProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let entries = $state(data.entries);
+	let entries = $derived(data.entries);
 
 	const addToast =
 		getContext<

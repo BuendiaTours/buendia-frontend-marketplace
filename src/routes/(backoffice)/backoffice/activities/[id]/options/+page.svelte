@@ -9,8 +9,7 @@
 
 	let { data }: PageProps = $props();
 
-	// svelte-ignore state_referenced_locally
-	let options: ActivityOption[] = $state(data.options);
+	let options: ActivityOption[] = $derived(data.options);
 
 	const addToast =
 		getContext<

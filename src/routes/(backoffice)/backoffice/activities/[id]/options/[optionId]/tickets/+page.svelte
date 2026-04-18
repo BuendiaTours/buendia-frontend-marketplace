@@ -47,15 +47,12 @@
 		>('activityToast');
 	const updateTicketCount = getContext<(count: number) => void>('updateTicketCount');
 
-	// svelte-ignore state_referenced_locally
-	let ticketKind = $state<OptionTicketKind | null>(data.option.ticketKind);
+	let ticketKind: OptionTicketKind | null = $derived(data.option.ticketKind);
 	const isIndividual = $derived(ticketKind === OptionTicketKind.INDIVIDUAL);
 	const isGroup = $derived(ticketKind === OptionTicketKind.GROUP);
 
-	// svelte-ignore state_referenced_locally
-	let individualTickets: IndividualTicket[] = $state(data.option.individualTickets ?? []);
-	// svelte-ignore state_referenced_locally
-	let groupTickets: GroupTicket[] = $state(data.option.groupTickets ?? []);
+	let individualTickets: IndividualTicket[] = $derived(data.option.individualTickets ?? []);
+	let groupTickets: GroupTicket[] = $derived(data.option.groupTickets ?? []);
 
 	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
