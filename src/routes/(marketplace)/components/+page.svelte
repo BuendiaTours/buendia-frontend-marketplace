@@ -19,6 +19,7 @@
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
+	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 
 	import type { PageData } from './$types';
 
@@ -118,6 +119,12 @@
 		});
 	}
 </script>
+
+<div class="wrapper mt-6">
+	<div class="lg:max-w-[770px]">
+		<ConfirmationHeroImg />
+	</div>
+</div>
 
 <div class="wrapper mt-6">
 	<BuendiaComment class="size-5" />
