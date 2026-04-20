@@ -24,7 +24,7 @@
 	import TableResetSort from '$lib/components/backoffice/tables/TableResetSort.svelte';
 	import LocationBar from '$lib/layout/backoffice/partials/LocationBar.svelte';
 	import FreeToursListTabNav from './components/FreeToursListTabNav.svelte';
-	import { Add, Magnifier } from '$lib/icons/Linear';
+	import { Magnifier } from '$lib/icons/Linear';
 
 	let { data }: PageProps = $props();
 
@@ -90,11 +90,6 @@
 			clearTooltip={m.freeTours_filterStatusClear()}
 			onFilterChange={handleFilterChange}
 		/>
-
-		<a href={FREE_TOUR_ROUTES.create} class="btn btn-outline btn-primary ml-auto">
-			<Add class="size-5" />
-			{m.freeTours_newResource()}
-		</a>
 	</div>
 
 	<!-- Table -->
