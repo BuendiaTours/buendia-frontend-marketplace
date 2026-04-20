@@ -19,6 +19,9 @@
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
 
+	import * as m from '$paraglide/messages';
+	const messages = m as unknown as Record<string, () => string>;
+
 	let contactFirstName = $state(shoppingCartStore.order?.contactFirstName ?? '');
 	let contactLastName = $state(shoppingCartStore.order?.contactLastName ?? '');
 	let contactEmail = $state(shoppingCartStore.order?.contactEmail ?? '');
@@ -258,7 +261,7 @@
 								{/if}
 
 								{#if passengerLevelQs.length}
-									{#each booking.passengers ?? [] as passenger (passenger.id)}
+									{#each booking.passengers ?? [] as passenger, i (passenger.id ?? i)}
 										{@const applicableQs = passengerLevelQs.filter((q) =>
 											q.groupAge?.includes(passenger.group as PassengerGroup)
 										)}
@@ -267,7 +270,9 @@
 												class="flex flex-col gap-4 border-l-2 border-l-[oklch(var(--border,0.7_0_0))] pl-4"
 											>
 												<p class="text-[0.8125rem] font-medium text-[oklch(0.5_0_0)]">
-													Pasajero ({passenger.group})
+													Pasajero {i + 1} ({messages[
+														`enum_passengerKind_${passenger.group}_name`
+													]?.()})
 												</p>
 												{#each applicableQs as q (q.id)}
 													{@const pAnswers = passengerAnswers.get(passenger.id) ?? new SvelteMap()}
@@ -295,7 +300,7 @@
 				{/if}
 
 				<button
-					class="mt-6 w-full cursor-pointer rounded-lg px-6 py-3 text-base font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+					class="e-button e-button-secondary mt-6 transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
 					type="submit"
 					disabled={!isValid || isSubmitting}
 				>

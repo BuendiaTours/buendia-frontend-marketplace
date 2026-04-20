@@ -44,7 +44,7 @@
 			{
 				id: 'cart-expiry',
 				icon: 'History2',
-				title: `Plazas reservadas durante ${cartRemainingMinutes} minuto${cartRemainingMinutes !== 1 ? 's' : ''}`,
+				title: `Plazas reservadas durante <span class="font-bold">${cartRemainingMinutes}</span> minuto${cartRemainingMinutes !== 1 ? 's' : ''}`,
 				description: ''
 			}
 		]}

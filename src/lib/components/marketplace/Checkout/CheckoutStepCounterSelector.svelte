@@ -14,7 +14,7 @@
 	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
 	import CheckoutStepCounter from './CheckoutStepCounter.svelte';
 
-	// TRanslations
+	// Translations
 	import * as m from '$paraglide/messages';
 
 	type Ticket = ActivityOption['individualTickets'][number];

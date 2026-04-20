@@ -35,7 +35,8 @@
 				<IconComponent class="h-6 shrink-0 grow-0 basis-6" />
 			{/if}
 			<div class="flex flex-col">
-				<p class="{titleClass[size]} c-callout-title font-bold">{item.title}</p>
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				<p class="c-callout-title {titleClass[size]}">{@html item.title}</p>
 				<p class="{descriptionClass[size]} text-neutral-800">{item.description}</p>
 			</div>
 		</div>

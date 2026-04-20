@@ -11,14 +11,14 @@
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import { removedBookingsStore } from '$lib/stores/removedBookings.svelte';
 
-	const activeBookings = $derived(
-		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))
-	);
-
 	// Components
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
+
+	const activeBookings = $derived(
+		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))
+	);
 
 	let editingBookingId = $state<string | null>(null);
 </script>
