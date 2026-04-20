@@ -12,7 +12,6 @@ const routeLabels: Record<string, string> = {
 	'pickup-points': 'Puntos de recogida',
 	distributives: 'Distributivas',
 	'free-tours': 'Free Tours',
-	drafts: 'Borradores',
 	suppliers: 'Proveedores',
 	tags: 'Tags',
 	faqs: 'FAQs',
@@ -25,6 +24,11 @@ const routeLabels: Record<string, string> = {
 	create: 'Crear',
 	new: 'Nuevo'
 };
+
+// Segmentos que no deben aparecer en el breadcrumb (son tabs hermanos del listado
+// padre, no subcategorias). El usuario ve la pestaña activa en la UI, no hace falta
+// duplicarlo en el breadcrumb.
+const SKIP_SEGMENTS = new Set(['drafts']);
 
 /**
  * Genera breadcrumbs automáticamente desde la ruta actual
@@ -47,6 +51,8 @@ export function generateBreadcrumbs(
 	let currentPath = '';
 	segments.forEach((segment, index) => {
 		currentPath += `/${segment}`;
+
+		if (SKIP_SEGMENTS.has(segment)) return;
 
 		// Si es el último segmento, no incluir href (es la página actual)
 		const isLast = index === segments.length - 1;
