@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 				parentId: location.parent?.id,
 				name: location.name,
 				kind: location.kind,
-				descriptionShort: location.descriptionShort ?? '',
+				descriptionLong: location.descriptionLong ?? '',
 				location:
 					location.latitude != null && location.longitude != null
 						? { type: 'Point' as const, coordinates: [location.longitude, location.latitude] }

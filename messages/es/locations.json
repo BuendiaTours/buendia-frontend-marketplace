@@ -18,6 +18,7 @@
 	"locations_labelName": "Nombre",
 	"locations_labelKind": "Tipo",
 	"locations_labelDescriptionShort": "Descripción corta",
+	"locations_labelDescriptionLong": "Descripción larga",
 	"locations_placeholderKind": "Selecciona un tipo",
 	"locations_badgeReadOnly": "read only",
 	"locations_listPageTitle": "Ubicaciones",

@@ -15,7 +15,7 @@ export const load: PageServerLoad = createCreateLoad<LocationFormSchema>({
 	initialValues: {
 		name: '',
 		kind: undefined,
-		descriptionShort: '',
+		descriptionLong: '',
 		location: null
 	}
 });

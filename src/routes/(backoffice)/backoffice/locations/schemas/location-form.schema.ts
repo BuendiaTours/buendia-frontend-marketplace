@@ -12,7 +12,7 @@ export const locationFormSchema = z.object({
 	kind: z.nativeEnum(LocationKind, {
 		errorMap: () => ({ message: 'Debe seleccionar un tipo válido' })
 	}),
-	descriptionShort: z.string().min(10, 'La descripción debe tener al menos 10 caracteres').max(500),
+	descriptionLong: z.string().optional().default(''),
 	location: z
 		.object({
 			type: z.literal('Point'),
