@@ -5,7 +5,9 @@
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
-	import { countries } from '$lib/utils/countries';
+	import { TelInput } from 'svelte-tel-input';
+	import { countries, countryUnicodeFlags } from 'svelte-tel-input/assets';
+	import type { CountryCode } from 'svelte-tel-input/types';
 	import { goto } from '$app/navigation';
 
 	// Stores
@@ -18,10 +20,11 @@
 	let contactFirstName = $state(shoppingCartStore.order?.contactFirstName ?? '');
 	let contactLastName = $state(shoppingCartStore.order?.contactLastName ?? '');
 	let contactEmail = $state(shoppingCartStore.order?.contactEmail ?? '');
-	let contactPhone = $state(shoppingCartStore.order?.contactPhone ?? '');
-	let contactNationalityCountryCode = $state(
-		shoppingCartStore.order?.contactNationalityCountryCode ?? ''
+	let country = $state<CountryCode | null>(
+		(shoppingCartStore.order?.contactNationalityCountryCode as CountryCode) ?? 'ES'
 	);
+	let contactPhone = $state(shoppingCartStore.order?.contactPhone ?? '');
+	let phoneValid = $state(false);
 	let isSubmitting = $state(false);
 	let submitError = $state<string | null>(null);
 
@@ -31,8 +34,7 @@
 		contactFirstName.trim().length > 0 &&
 			contactLastName.trim().length > 0 &&
 			emailRegex.test(contactEmail.trim()) &&
-			contactPhone.trim().length > 0 &&
-			contactNationalityCountryCode.length > 0
+			phoneValid
 	);
 
 	async function handleSubmit() {
@@ -44,8 +46,8 @@
 				contactFirstName: contactFirstName.trim(),
 				contactLastName: contactLastName.trim(),
 				contactEmail: contactEmail.trim(),
-				contactPhone: contactPhone.trim(),
-				contactNationalityCountryCode
+				contactPhone,
+				contactNationalityCountryCode: country ?? ''
 			});
 			goto('/checkout-payment-data');
 		} catch (e) {
@@ -105,28 +107,22 @@
 						</div>
 
 						<div class="field-group">
-							<label for="contactPhone">Teléfono</label>
-							<input
-								id="contactPhone"
-								type="tel"
-								bind:value={contactPhone}
-								autocomplete="tel"
-								required
-							/>
-						</div>
-
-						<div class="field-group">
-							<label for="contactNationalityCountryCode">Nacionalidad</label>
-							<select
-								id="contactNationalityCountryCode"
-								bind:value={contactNationalityCountryCode}
-								required
-							>
-								<option value="" disabled>Selecciona un país</option>
-								{#each countries as country (country.code)}
-									<option value={country.code}>{country.label}</option>
-								{/each}
-							</select>
+							<label for="phone-country">Teléfono</label>
+							<div class="tel-input-wrapper">
+								<select id="phone-country" bind:value={country} aria-label="País">
+									<!-- eslint-disable svelte/no-at-html-tags -->
+									{#each countries as c (c.iso2)}
+										<option value={c.iso2}
+											>{@html countryUnicodeFlags[c.iso2]} {c.name} (+{c.dialCode})</option
+										>
+									{/each}
+									<!-- eslint-enable svelte/no-at-html-tags -->
+								</select>
+								<TelInput bind:country bind:value={contactPhone} bind:valid={phoneValid} required />
+							</div>
+							{#if !phoneValid && contactPhone.length > 0}
+								<p class="error-msg">Número de teléfono inválido</p>
+							{/if}
 						</div>
 					</div>
 
@@ -224,6 +220,20 @@
 				outline: 2px solid oklch(var(--primary, 0.5 0.2 250));
 				outline-offset: 2px;
 			}
+		}
+	}
+
+	.tel-input-wrapper {
+		display: flex;
+		gap: 0.5rem;
+
+		& select {
+			width: auto;
+			flex-shrink: 0;
+		}
+
+		& :global(.svelte-tel-input) {
+			flex: 1;
 		}
 	}
 
