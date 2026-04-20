@@ -266,11 +266,9 @@
 											q.groupAge?.includes(passenger.group as PassengerGroup)
 										)}
 										{#if applicableQs.length}
-											<div
-												class="flex flex-col gap-4 border-l-2 border-l-[oklch(var(--border,0.7_0_0))] pl-4"
-											>
-												<p class="text-[0.8125rem] font-medium text-[oklch(0.5_0_0)]">
-													Pasajero {i + 1} ({messages[
+											<div class="flex flex-col gap-4">
+												<p class="h3">
+													Asistente {i + 1} ({messages[
 														`enum_passengerKind_${passenger.group}_name`
 													]?.()})
 												</p>

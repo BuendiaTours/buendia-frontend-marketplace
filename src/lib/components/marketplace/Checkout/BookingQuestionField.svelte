@@ -42,30 +42,35 @@
 
 <div class="bq-field" class:bq-field--checkbox={isBoolean}>
 	{#if isBoolean}
-		<label class="checkbox-label">
+		<label class="checkbox-label label">
 			<input
 				id={inputId}
 				type="checkbox"
 				checked={isChecked}
+				class="checkbox"
 				onchange={(e) => onchange(String(e.currentTarget.checked))}
 				required={isRequired && !isChecked}
 			/>
 			{q.label}{isRequired ? ' *' : ''}
 		</label>
 	{:else}
-		<label for={inputId}>
-			{q.label}{isRequired ? ' *' : ''}
+		<label class="label w-full" for={inputId}>
+			{q.label}
+			{#if isRequired}
+				<span class="text-salmon-strong font-bold">*</span>
+			{/if}
 		</label>
 	{/if}
 
 	{#if q.helpText}
-		<p class="help-text">{q.helpText}</p>
+		<p class="p-base w-full text-neutral-600">{q.helpText}</p>
 	{/if}
 
 	{#if !isBoolean}
 		{#if q.dataType === 'TEXT_AREA'}
 			<textarea
 				id={inputId}
+				class="textarea"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				placeholder={q.placeholder ?? ''}
@@ -75,6 +80,7 @@
 			<input
 				id={inputId}
 				type="number"
+				class="input"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				placeholder={q.placeholder ?? ''}
@@ -86,6 +92,7 @@
 			<input
 				id={inputId}
 				type="email"
+				class="input input-email"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				placeholder={q.placeholder ?? ''}
@@ -95,6 +102,7 @@
 			<input
 				id={inputId}
 				type="tel"
+				class="input input-tel"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				placeholder={q.placeholder ?? ''}
@@ -112,6 +120,7 @@
 			<input
 				id={inputId}
 				type="datetime-local"
+				class="input input-datetime"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				required={isRequired}
@@ -122,6 +131,7 @@
 				{value}
 				onchange={(e) => onchange(e.currentTarget.value)}
 				required={isRequired}
+				class="select"
 			>
 				<option value="">—</option>
 				{#each q.options as opt (opt.id)}
@@ -134,6 +144,7 @@
 					<label class="radio-label">
 						<input
 							type="radio"
+							class="radio"
 							name={inputId}
 							value={opt.value}
 							checked={value === opt.value}
@@ -150,6 +161,7 @@
 					<label class="checkbox-label">
 						<input
 							type="checkbox"
+							class="checkbox"
 							value={opt.value}
 							checked={selectedValues.includes(opt.value)}
 							onchange={() => toggleMultiValue(opt.value)}
@@ -162,6 +174,7 @@
 			<input
 				id={inputId}
 				type="text"
+				class="input"
 				{value}
 				oninput={(e) => onchange(e.currentTarget.value)}
 				placeholder={q.placeholder ?? ''}
@@ -170,63 +183,3 @@
 		{/if}
 	{/if}
 </div>
-
-<style>
-	.bq-field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.375rem;
-
-		& label:not(.checkbox-label):not(.radio-label) {
-			font-size: 0.875rem;
-			font-weight: 500;
-		}
-
-		& input:not([type='checkbox']):not([type='radio']),
-		& select,
-		& textarea {
-			width: 100%;
-			padding: 0.5rem 0.75rem;
-			border: 1px solid oklch(var(--border, 0.7 0 0));
-			border-radius: 0.375rem;
-			font-size: 1rem;
-			background-color: transparent;
-
-			&:focus {
-				outline: 2px solid oklch(var(--primary, 0.5 0.2 250));
-				outline-offset: 2px;
-			}
-		}
-
-		& textarea {
-			resize: vertical;
-			min-height: 5rem;
-		}
-	}
-
-	.radio-group,
-	.checkbox-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.radio-label,
-	.checkbox-label {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.875rem;
-		cursor: pointer;
-	}
-
-	.bq-field--checkbox {
-		flex-direction: row;
-		align-items: flex-start;
-	}
-
-	.help-text {
-		font-size: 0.8rem;
-		color: oklch(0.55 0 0);
-	}
-</style>
