@@ -243,8 +243,8 @@ export type ActivityOption = {
 export type AvailabilityTicketItem = {
 	id: string;
 	price: number;
-	stock: number;
-	reservedStock: number;
+	stock: number | null;
+	reservedStock: number | null;
 };
 
 export type AvailabilitySlot = {

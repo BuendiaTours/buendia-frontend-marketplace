@@ -1,6 +1,6 @@
 import { bookingsApiClient as apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
-import type { AvailabilityData } from '$lib/types';
+import type { AvailabilityData, AvailabilitySlot } from '$lib/types';
 
 export const availabilityOptionsEndpoints = {
 	async getByActivityId(
@@ -10,10 +10,10 @@ export const availabilityOptionsEndpoints = {
 	): Promise<AvailabilityData> {
 		const path = API_ENDPOINTS.availabilityOptions.byActivity.path(activityId, fromDate);
 
-		const response = await apiClient.request<AvailabilityData>(fetchFn, path, {
+		const response = await apiClient.request<{ data: AvailabilitySlot[] }>(fetchFn, path, {
 			method: 'GET'
 		});
 
-		return response.data;
+		return response.data.data;
 	}
 };

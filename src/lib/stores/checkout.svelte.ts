@@ -52,13 +52,15 @@ class CheckoutState {
 	// Máximo disponible por grupo en cualquier slot/fecha — upper bound para los CheckoutStepCounter
 	ticketMaxMap = $derived.by(() => {
 		const map = new SvelteMap<string, number>();
-		for (const slot of this.availability)
+		for (const slot of this.availability) {
+			const slotAvail = slot.availability - slot.reservedAvailability;
 			for (const t of slot.tickets) {
 				const group = this.ticketIdToGroup.get(t.id);
 				if (!group) continue;
-				const avail = t.stock - t.reservedStock;
+				const avail = t.stock === null ? slotAvail : t.stock - (t.reservedStock ?? 0);
 				map.set(group, Math.max(map.get(group) ?? 0, avail));
 			}
+		}
 		return map;
 	});
 
@@ -91,9 +93,12 @@ class CheckoutState {
 				for (const [group, count] of snapshot) {
 					if (count <= 0) continue;
 					const ids = groupToTicketIds.get(group) ?? [];
+					const slotAvail = slot.availability - slot.reservedAvailability;
 					const maxAvail = Math.max(
 						0,
-						...slot.tickets.filter((t) => ids.includes(t.id)).map((t) => t.stock - t.reservedStock)
+						...slot.tickets
+							.filter((t) => ids.includes(t.id))
+							.map((t) => (t.stock === null ? slotAvail : t.stock - (t.reservedStock ?? 0)))
 					);
 					if (maxAvail < count) {
 						ok = false;
@@ -113,7 +118,11 @@ class CheckoutState {
 			if (count === 0) continue;
 			const ticketItem = slot.tickets.find((t) => this.ticketIdToGroup.get(t.id) === group);
 			if (!ticketItem) continue;
-			if (ticketItem.stock - ticketItem.reservedStock < count) return true;
+			const ticketAvail =
+				ticketItem.stock === null
+					? slot.availability - slot.reservedAvailability
+					: ticketItem.stock - (ticketItem.reservedStock ?? 0);
+			if (ticketAvail < count) return true;
 		}
 		return false;
 	}
