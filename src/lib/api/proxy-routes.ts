@@ -29,6 +29,7 @@ export const proxyApiRoutes = {
 	orders: {
 		create: '/api/orders',
 		getById: (orderId: string) => `/api/orders/${orderId}`,
+		update: (orderId: string) => `/api/orders/${orderId}`,
 		addBooking: (orderId: string) => `/api/orders/${orderId}/bookings`
 	},
 	bookings: {

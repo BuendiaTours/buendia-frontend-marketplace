@@ -198,6 +198,25 @@ class ShoppingCartState {
 		);
 	}
 
+	async updateContactData(data: {
+		contactEmail: string;
+		contactFirstName: string;
+		contactLastName: string;
+		contactPhone: string;
+		contactNationalityCountryCode: string;
+	}): Promise<void> {
+		if (!this.orderId) throw new Error('No hay pedido activo');
+		const res = await fetch(proxyApiRoutes.orders.update(this.orderId), {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		});
+		if (!res.ok) throw new Error(`Error ${res.status} al actualizar los datos de contacto`);
+		if (this.order) {
+			this.order = { ...this.order, ...data };
+		}
+	}
+
 	async clearShoppingCart(): Promise<void> {
 		this.setOrderId(null);
 		this.order = null;
