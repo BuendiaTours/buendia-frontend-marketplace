@@ -18,6 +18,9 @@
 	// Components
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
+	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
+
+	let editingBookingId = $state<string | null>(null);
 </script>
 
 <div class="wrapper">
@@ -66,20 +69,38 @@
 							{#if booking.subtotalPrice != null}
 								<p>{formatEuro(booking.subtotalPrice)}</p>
 							{/if}
-							<div>
-								<span class="cursor-pointer underline underline-offset-8" role="button" tabindex="0"
-									>Modificar</span
-								>
-								<span
-									class="cursor-pointer underline underline-offset-8"
-									role="button"
-									tabindex="0"
-									onclick={() => removedBookingsStore.add(booking)}
-									onkeydown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
-									}}>Eliminar</span
-								>
-							</div>
+							{#if editingBookingId !== booking.id}
+								<div>
+									<span
+										class="cursor-pointer underline underline-offset-8"
+										role="button"
+										tabindex="0"
+										onclick={() => (editingBookingId = booking.id)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') editingBookingId = booking.id;
+										}}>Modificar</span
+									>
+									<span
+										class="cursor-pointer underline underline-offset-8"
+										role="button"
+										tabindex="0"
+										onclick={() => removedBookingsStore.add(booking)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
+										}}>Eliminar</span
+									>
+								</div>
+							{/if}
+							{#if editingBookingId === booking.id}
+								<BookingModifyForm
+									{booking}
+									onSave={async () => {
+										await shoppingCartStore.loadOrder();
+										editingBookingId = null;
+									}}
+									onCancel={() => (editingBookingId = null)}
+								/>
+							{/if}
 						</li>
 					{/each}
 				</ul>

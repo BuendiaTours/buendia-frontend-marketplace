@@ -2,6 +2,9 @@ export const proxyApiRoutes = {
 	activities: {
 		getById: (activityId: string) => `/api/activities/${activityId}`
 	},
+	activityOptions: {
+		byActivity: (activityId: string) => `/api/activity-options/${activityId}`
+	},
 	availabilityOptions: {
 		byActivity: (activityId: string, fromDate?: string) => {
 			const base = `/api/availability-options/by-activity/${activityId}`;
@@ -29,6 +32,7 @@ export const proxyApiRoutes = {
 		addBooking: (orderId: string) => `/api/orders/${orderId}/bookings`
 	},
 	bookings: {
-		delete: (bookingId: string) => `/api/bookings/${bookingId}`
+		delete: (bookingId: string) => `/api/bookings/${bookingId}`,
+		patch: (bookingId: string) => `/api/bookings/${bookingId}`
 	}
 };

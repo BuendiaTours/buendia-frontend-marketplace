@@ -118,7 +118,10 @@ class CheckoutState {
 		return false;
 	}
 
-	constructor(activityId: string) {
+	constructor(
+		activityId: string,
+		private initialCounts?: Map<string, number>
+	) {
 		this.activityId = activityId;
 
 		// $effect(() => { console.warn('availability', $state.snapshot(this.availability)); });
@@ -136,7 +139,7 @@ class CheckoutState {
 				...new Set(this.activityOptions.flatMap((o) => o.individualTickets).map((t) => t.group))
 			];
 			this.counts.clear();
-			for (const g of groups) this.counts.set(g, 0);
+			for (const g of groups) this.counts.set(g, this.initialCounts?.get(g) ?? 0);
 		});
 	}
 
@@ -175,8 +178,11 @@ class CheckoutState {
 	}
 }
 
-export function createCheckout(activityId: string): CheckoutState {
-	return setContext(CHECKOUT_KEY, new CheckoutState(activityId));
+export function createCheckout(
+	activityId: string,
+	initialCounts?: Map<string, number>
+): CheckoutState {
+	return setContext(CHECKOUT_KEY, new CheckoutState(activityId, initialCounts));
 }
 
 export function getCheckout(): CheckoutState {

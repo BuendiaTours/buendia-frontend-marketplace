@@ -133,4 +133,34 @@
 	&.e-button-circle {
 		border-radius: 50%;
 	}
+
+	&.e-button-link {
+		background-color: transparent;
+		/* color: var(--color-accent-500); */
+		padding: 0;
+		height: auto;
+		min-height: unset;
+		text-decoration: underline;
+		text-underline-offset: 8px;
+		color: var(--color-neutral-800);
+
+		/* &:hover {
+			color: var(--color-accent-700);
+			text-decoration: underline;
+			text-underline-offset: 4px;
+		} */
+
+		&:active {
+			color: var(--color-accent-700);
+			text-decoration: underline;
+			text-underline-offset: 4px;
+		}
+
+		&.disabled,
+		&[disabled] {
+			color: var(--color-neutral-500);
+			cursor: not-allowed;
+			text-decoration: none;
+		}
+	}
 }

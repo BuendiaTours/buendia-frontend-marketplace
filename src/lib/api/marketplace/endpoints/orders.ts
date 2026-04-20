@@ -41,6 +41,20 @@ export const ordersEndpoints = {
 		await apiClient.request<void>(fetchFn, path, { method: 'DELETE', tag: 'ORDERS' });
 	},
 
+	async patchBooking(
+		fetchFn: typeof fetch,
+		bookingId: string,
+		data: Record<string, unknown>
+	): Promise<void> {
+		const path = API_ENDPOINTS.bookings.delete.path(bookingId); // same /bookings/:id path
+		await apiClient.request<void>(fetchFn, path, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+			tag: 'ORDERS'
+		});
+	},
+
 	async getBookingsByOrder(fetchFn: typeof fetch, orderId: string): Promise<CartBooking[]> {
 		const path = `${API_ENDPOINTS.bookings.search.path()}?orderId=${orderId}`;
 		const response = await apiClient.request<{ data: CartBooking[]; total: number }>(
