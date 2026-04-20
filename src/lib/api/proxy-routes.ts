@@ -7,8 +7,8 @@ export const proxyApiRoutes = {
 	},
 	availabilityOptions: {
 		byActivity: (activityId: string, fromDate?: string) => {
-			const base = `/api/availability-options/by-activity/${activityId}`;
-			return fromDate ? `${base}?fromDate=${fromDate}` : base;
+			const base = `/api/availability-options?activityId=${activityId}`;
+			return fromDate ? `${base}&fromDate=${fromDate}` : base;
 		}
 	},
 	destinations: {
