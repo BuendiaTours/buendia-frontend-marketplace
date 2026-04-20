@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types
-	import type { PassengerLineItem } from '$lib/types';
+	import type { PassengerLineItem, BookingQuestion, PassengerGroup } from '$lib/types';
 
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
@@ -9,6 +9,7 @@
 	import { countries, countryUnicodeFlags } from 'svelte-tel-input/assets';
 	import type { CountryCode } from 'svelte-tel-input/types';
 	import { goto } from '$app/navigation';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	// Stores
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
@@ -16,6 +17,7 @@
 	// Components
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
+	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
 
 	let contactFirstName = $state(shoppingCartStore.order?.contactFirstName ?? '');
 	let contactLastName = $state(shoppingCartStore.order?.contactLastName ?? '');
@@ -28,13 +30,65 @@
 	let isSubmitting = $state(false);
 	let submitError = $state<string | null>(null);
 
+	// Booking questions state
+	const questionsByOption = new SvelteMap<string, BookingQuestion[]>();
+	const bookingAnswers = new SvelteMap<string, SvelteMap<string, string>>();
+	const passengerAnswers = new SvelteMap<string, SvelteMap<string, string>>();
+	let questionsLoading = $state(false);
+
+	$effect(() => {
+		const bookings = shoppingCartStore.order?.bookings;
+		if (!bookings?.length) return;
+
+		const uniqueOptionIds = [...new Set(bookings.map((b) => b.optionId).filter(Boolean))];
+		questionsLoading = true;
+		Promise.all(
+			uniqueOptionIds.map((optionId) =>
+				fetch(`/api/booking-questions/${optionId}`)
+					.then((r) => r.json())
+					.then((qs: BookingQuestion[]) => {
+						questionsByOption.set(optionId, qs);
+						bookings
+							.filter((b) => b.optionId === optionId)
+							.forEach((b) => {
+								if (!bookingAnswers.has(b.id)) bookingAnswers.set(b.id, new SvelteMap());
+								b.passengers?.forEach((p) => {
+									if (!passengerAnswers.has(p.id)) passengerAnswers.set(p.id, new SvelteMap());
+								});
+							});
+					})
+			)
+		).finally(() => (questionsLoading = false));
+	});
+
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+	const allRequiredQuestionsAnswered = $derived.by(() => {
+		const bookings = shoppingCartStore.order?.bookings ?? [];
+		for (const booking of bookings) {
+			const questions = questionsByOption.get(booking.optionId) ?? [];
+			const bAnswers = bookingAnswers.get(booking.id);
+			for (const q of questions) {
+				if (q.required !== 'REQUIRED') continue;
+				if (q.target === 'BOOKING') {
+					if (!bAnswers?.get(q.id)?.trim()) return false;
+				} else {
+					for (const passenger of booking.passengers ?? []) {
+						if (!q.groupAge?.includes(passenger.group as PassengerGroup)) continue;
+						if (!passengerAnswers.get(passenger.id)?.get(q.id)?.trim()) return false;
+					}
+				}
+			}
+		}
+		return true;
+	});
 
 	const isValid = $derived(
 		contactFirstName.trim().length > 0 &&
 			contactLastName.trim().length > 0 &&
 			emailRegex.test(contactEmail.trim()) &&
-			phoneValid
+			phoneValid &&
+			allRequiredQuestionsAnswered
 	);
 
 	async function handleSubmit() {
@@ -42,6 +96,38 @@
 		isSubmitting = true;
 		submitError = null;
 		try {
+			for (const booking of shoppingCartStore.order?.bookings ?? []) {
+				const bAnswers = bookingAnswers.get(booking.id);
+				const passengerPatches = (booking.passengers ?? [])
+					.map((p) => {
+						const pAnswers = passengerAnswers.get(p.id);
+						if (!pAnswers?.size) return null;
+						return {
+							id: p.id,
+							answers: [...pAnswers].map(([questionId, value]) => ({ questionId, values: [value] }))
+						};
+					})
+					.filter(Boolean);
+
+				if (bAnswers?.size || passengerPatches.length) {
+					await fetch(`/api/bookings/${booking.id}`, {
+						method: 'PATCH',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							...(bAnswers?.size
+								? {
+										bookingAnswers: [...bAnswers].map(([questionId, value]) => ({
+											questionId,
+											values: [value]
+										}))
+									}
+								: {}),
+							...(passengerPatches.length ? { passengers: passengerPatches } : {})
+						})
+					});
+				}
+			}
+
 			await shoppingCartStore.updateContactData({
 				contactFirstName: contactFirstName.trim(),
 				contactLastName: contactLastName.trim(),
@@ -61,81 +147,163 @@
 <div class="wrapper">
 	<div class="page-grid">
 		<div class="col-content">
-			<h1>Checkout Personal Data</h1>
-
 			<CartExpiryCallout />
 
-			<div class="co-personal-data">
-				<form
-					onsubmit={(e) => {
-						e.preventDefault();
-						handleSubmit();
-					}}
-				>
-					<div class="form-fields">
-						<div class="field-group">
-							<label for="contactFirstName">Nombre</label>
-							<input
-								id="contactFirstName"
-								type="text"
-								bind:value={contactFirstName}
-								autocomplete="given-name"
-								required
-							/>
-						</div>
-
-						<div class="field-group">
-							<label for="contactLastName">Apellidos</label>
-							<input
-								id="contactLastName"
-								type="text"
-								bind:value={contactLastName}
-								autocomplete="family-name"
-								required
-							/>
-						</div>
-
-						<div class="field-group">
-							<label for="contactEmail">Email</label>
-							<input
-								id="contactEmail"
-								type="email"
-								bind:value={contactEmail}
-								autocomplete="email"
-								required
-							/>
-						</div>
-
-						<div class="field-group">
-							<label for="phone-country">Teléfono</label>
-							<div class="tel-input-wrapper">
-								<select id="phone-country" bind:value={country} aria-label="País">
-									<!-- eslint-disable svelte/no-at-html-tags -->
-									{#each countries as c (c.iso2)}
-										<option value={c.iso2}
-											>{@html countryUnicodeFlags[c.iso2]} {c.name} (+{c.dialCode})</option
-										>
-									{/each}
-									<!-- eslint-enable svelte/no-at-html-tags -->
-								</select>
-								<TelInput bind:country bind:value={contactPhone} bind:valid={phoneValid} required />
-							</div>
-							{#if !phoneValid && contactPhone.length > 0}
-								<p class="error-msg">Número de teléfono inválido</p>
-							{/if}
-						</div>
+			<h2 class="h2 mt-6">Datos personales</h2>
+			<form
+				onsubmit={(e) => {
+					e.preventDefault();
+					handleSubmit();
+				}}
+			>
+				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<div class="flex flex-col gap-1.5">
+						<label class="p-sm font-medium" for="contactFirstName">Nombre</label>
+						<input
+							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							id="contactFirstName"
+							type="text"
+							bind:value={contactFirstName}
+							autocomplete="given-name"
+							required
+						/>
 					</div>
 
-					{#if submitError}
-						<p class="error-msg">{submitError}</p>
-					{/if}
+					<div class="flex flex-col gap-1.5">
+						<label class="p-sm font-medium" for="contactLastName">Apellidos</label>
+						<input
+							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							id="contactLastName"
+							type="text"
+							bind:value={contactLastName}
+							autocomplete="family-name"
+							required
+						/>
+					</div>
 
-					<button type="submit" disabled={!isValid || isSubmitting}>
-						{isSubmitting ? 'Guardando...' : 'Continuar con el pago'}
-					</button>
-				</form>
-			</div>
+					<div class="flex flex-col gap-1.5">
+						<label class="p-sm font-medium" for="contactEmail">Email</label>
+						<input
+							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							id="contactEmail"
+							type="email"
+							bind:value={contactEmail}
+							autocomplete="email"
+							required
+						/>
+					</div>
+
+					<div class="flex flex-col gap-1.5">
+						<label class="p-sm font-medium" for="phone-country">Teléfono</label>
+						<div class="flex gap-2">
+							<select
+								class="w-auto shrink-0 rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+								id="phone-country"
+								bind:value={country}
+								aria-label="País"
+							>
+								<!-- eslint-disable svelte/no-at-html-tags -->
+								{#each countries as c (c.iso2)}
+									<option value={c.iso2}
+										>{@html countryUnicodeFlags[c.iso2]} {c.name} (+{c.dialCode})</option
+									>
+								{/each}
+								<!-- eslint-enable svelte/no-at-html-tags -->
+							</select>
+							<TelInput bind:country bind:value={contactPhone} bind:valid={phoneValid} required />
+						</div>
+						{#if !phoneValid && contactPhone.length > 0}
+							<p class="p-sm mt-3 text-[oklch(0.55_0.2_25)]">Número de teléfono inválido</p>
+						{/if}
+					</div>
+				</div>
+
+				{#if questionsLoading}
+					<p class="p-sm mt-4">Cargando preguntas...</p>
+				{/if}
+
+				{#if shoppingCartStore.order?.bookings?.length}
+					{#each shoppingCartStore.order.bookings as booking (booking.id)}
+						{@const questions = questionsByOption.get(booking.optionId) ?? []}
+						{@const bookingLevelQs = questions.filter((q) => q.target === 'BOOKING')}
+						{@const passengerLevelQs = questions.filter((q) => q.target === 'PASSENGER')}
+
+						{#if bookingLevelQs.length || passengerLevelQs.length}
+							<h2 class="h2 mt-6">Datos de la actividad</h2>
+							<p class="p-lg">El proveedor requiere estos datos adicionales</p>
+							<div class="mt-6 flex flex-col gap-4 rounded-xl border border-neutral-200 p-6">
+								{#if booking.activityTitle || booking.optionTitle}
+									<p class="h3">
+										{booking.activityTitle ?? ''}{booking.optionTitle
+											? ` · ${booking.optionTitle}`
+											: ''}
+									</p>
+								{/if}
+
+								{#if bookingLevelQs.length}
+									<div class="flex flex-col gap-4">
+										{#each bookingLevelQs as q (q.id)}
+											{@const answers = bookingAnswers.get(booking.id) ?? new SvelteMap()}
+											<BookingQuestionField
+												{q}
+												value={answers.get(q.id) ?? ''}
+												onchange={(v: string) => {
+													if (!bookingAnswers.has(booking.id))
+														bookingAnswers.set(booking.id, new SvelteMap());
+													bookingAnswers.get(booking.id)?.set(q.id, v);
+												}}
+											/>
+										{/each}
+									</div>
+								{/if}
+
+								{#if passengerLevelQs.length}
+									{#each booking.passengers ?? [] as passenger (passenger.id)}
+										{@const applicableQs = passengerLevelQs.filter((q) =>
+											q.groupAge?.includes(passenger.group as PassengerGroup)
+										)}
+										{#if applicableQs.length}
+											<div
+												class="flex flex-col gap-4 border-l-2 border-l-[oklch(var(--border,0.7_0_0))] pl-4"
+											>
+												<p class="text-[0.8125rem] font-medium text-[oklch(0.5_0_0)]">
+													Pasajero ({passenger.group})
+												</p>
+												{#each applicableQs as q (q.id)}
+													{@const pAnswers = passengerAnswers.get(passenger.id) ?? new SvelteMap()}
+													<BookingQuestionField
+														{q}
+														value={pAnswers.get(q.id) ?? ''}
+														onchange={(v: string) => {
+															if (!passengerAnswers.has(passenger.id))
+																passengerAnswers.set(passenger.id, new SvelteMap());
+															passengerAnswers.get(passenger.id)?.set(q.id, v);
+														}}
+													/>
+												{/each}
+											</div>
+										{/if}
+									{/each}
+								{/if}
+							</div>
+						{/if}
+					{/each}
+				{/if}
+
+				{#if submitError}
+					<p class="p-sm mt-3 text-[oklch(0.55_0.2_25)]">{submitError}</p>
+				{/if}
+
+				<button
+					class="mt-6 w-full cursor-pointer rounded-lg px-6 py-3 text-base font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+					type="submit"
+					disabled={!isValid || isSubmitting}
+				>
+					{isSubmitting ? 'Guardando...' : 'Continuar con el pago'}
+				</button>
+			</form>
 		</div>
+
 		<div class="col-sidebar pt-6">
 			{#if shoppingCartStore.order?.bookings?.length}
 				<p>Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito</p>
@@ -187,75 +355,7 @@
 </div>
 
 <style>
-	.co-personal-data {
-		margin-top: 1.5rem;
-	}
-
-	.form-fields {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.field-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.375rem;
-
-		& label {
-			font-size: 0.875rem;
-			font-weight: 500;
-		}
-
-		& input,
-		& select {
-			width: 100%;
-			padding: 0.5rem 0.75rem;
-			border: 1px solid oklch(var(--border, 0.7 0 0));
-			border-radius: 0.375rem;
-			font-size: 1rem;
-			background-color: transparent;
-
-			&:focus {
-				outline: 2px solid oklch(var(--primary, 0.5 0.2 250));
-				outline-offset: 2px;
-			}
-		}
-	}
-
-	.tel-input-wrapper {
-		display: flex;
-		gap: 0.5rem;
-
-		& select {
-			width: auto;
-			flex-shrink: 0;
-		}
-
-		& :global(.svelte-tel-input) {
-			flex: 1;
-		}
-	}
-
-	.error-msg {
-		margin-top: 0.75rem;
-		color: oklch(0.55 0.2 25);
-		font-size: 0.875rem;
-	}
-
-	button[type='submit'] {
-		margin-top: 1.5rem;
-		width: 100%;
-		padding: 0.75rem 1.5rem;
-		border-radius: 0.5rem;
-		font-weight: 600;
-		font-size: 1rem;
-		cursor: pointer;
-		transition: opacity 0.15s;
-
-		&:disabled {
-			opacity: 0.4;
-			cursor: not-allowed;
-		}
+	:global(.svelte-tel-input) {
+		flex: 1;
 	}
 </style>

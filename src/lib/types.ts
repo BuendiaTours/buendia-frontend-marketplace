@@ -558,3 +558,62 @@ export type PassengerLineItem = {
 	count: number;
 	unitPrice: number;
 };
+
+export type BookingQuestionDataType =
+	| 'CHECKBOX'
+	| 'BOOLEAN'
+	| 'INPUT_TEXT'
+	| 'TEXT_AREA'
+	| 'INPUT_NUMBER'
+	| 'DATE'
+	| 'DATE_AND_TIME'
+	| 'PHONE'
+	| 'EMAIL'
+	| 'BIRTHDAY'
+	| 'COUNTRY'
+	| 'LANGUAGE'
+	| 'AGE'
+	| 'GENDER'
+	| 'PASSPORT'
+	| 'PASSPORT_EXPIRED'
+	| 'OPTION'
+	| 'MULTI_OPTION'
+	| 'CHECK_TERMS'
+	| 'RADIO_BUTTON';
+export type BookingQuestionRequired = 'REQUIRED' | 'NOT_REQUIRED';
+export type BookingQuestionTarget = 'BOOKING' | 'PASSENGER' | 'EXTRA';
+export type PassengerGroup =
+	| 'ADULT'
+	| 'CHILD'
+	| 'CITIZEN_EU'
+	| 'INFANT'
+	| 'SENIOR'
+	| 'STUDENT'
+	| 'STUDENT_EU'
+	| 'YOUTH';
+
+export type BookingQuestionOption = {
+	id: string;
+	label: string;
+	value: string;
+};
+
+export type BookingQuestion = {
+	id: string;
+	activityId: string;
+	dataType: BookingQuestionDataType;
+	label: string;
+	required: BookingQuestionRequired;
+	status: 'ACTIVE';
+	target: BookingQuestionTarget;
+	groupAge: PassengerGroup[] | null;
+	helpText: string | null;
+	placeholder: string | null;
+	defaultValue: string | null;
+	minValue: number | null;
+	maxValue: number | null;
+	options: BookingQuestionOption[];
+	activityOptions: { id: string; name: string }[];
+	createdAt: string;
+	updatedAt: string;
+};

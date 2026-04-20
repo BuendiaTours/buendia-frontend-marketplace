@@ -14,6 +14,7 @@ export const BASE_PATHS = {
 	attractions: '/attractions',
 	auth: '/auth',
 	availabilityOptions: '/availability-options',
+	bookingQuestions: '/booking-questions',
 	categories: '/categories',
 	destinations: '/destinations',
 	distributives: '/distributives',
@@ -501,6 +502,19 @@ export const API_ENDPOINTS = {
 			method: 'DELETE',
 			description: 'Elimina un booking',
 			params: ['id']
+		} satisfies EndpointWithParam
+	},
+
+	// ──────────────────────────────────────────────
+	// Booking Questions
+	// ──────────────────────────────────────────────
+	bookingQuestions: {
+		groupName: 'Booking Questions',
+		groupDescription: 'Preguntas obligatorias por opción de actividad',
+		byActivityOption: {
+			path: (optionId: string) => `${BASE_PATHS.bookingQuestions}/by-activity-option/${optionId}`,
+			method: 'GET',
+			description: 'Obtiene preguntas de una opción de actividad'
 		} satisfies EndpointWithParam
 	},
 
