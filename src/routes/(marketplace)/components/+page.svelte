@@ -14,15 +14,14 @@
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
+	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
+	import ConfirmationHeroImg from '$lib/components/marketplace/Checkout/ConfirmationHeroImg.svelte';
 	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
-	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
 	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
