@@ -25,6 +25,7 @@
 	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import Steps from '$lib/components/marketplace/Steps.svelte';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 
@@ -211,6 +212,10 @@
 		}
 	];
 </script>
+
+<div class="wrapper mt-6">
+	<Steps />
+</div>
 
 <div class="wrapper mt-6">
 	<div class="lg:max-w-[770px]">
