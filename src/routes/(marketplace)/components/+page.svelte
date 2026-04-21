@@ -22,6 +22,7 @@
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
+	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
 	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
@@ -213,6 +214,71 @@
 		}
 	];
 </script>
+
+<div class="wrapper">
+	<CheckoutCard
+		isBuendia={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+
+	<CheckoutCard
+		isBuendia={true}
+		disabled={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+</div>
 
 <div class="wrapper mt-6">
 	<TotalResume wrapperClass="mb-6" />
