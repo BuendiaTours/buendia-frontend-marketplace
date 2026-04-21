@@ -8,7 +8,11 @@
 		title?: string;
 		description?: string;
 		descriptionColor?: string;
+		boldTitle?: boolean;
+		indent?: boolean;
 		itsLevel?: boolean;
+		baseIcon?: boolean;
+		size?: 'normal' | 'small';
 	};
 
 	let { data, wrapperClass }: { data: Condition; wrapperClass?: string } = $props();
@@ -18,34 +22,50 @@
 		data.icon ? (Icons[data.icon as keyof typeof Icons] as Component) : null
 	);
 	const descriptionColor = $derived(data.descriptionColor || 'text-neutral-700');
+	const size = $derived(data.size ?? 'normal');
 </script>
 
-<div class="e-highlight flex items-start gap-3 {wrapperClass}">
-	{#if IconComponent}
-		<div
-			class="flex items-center justify-center rounded-lg border border-solid border-neutral-300 bg-white p-3"
-		>
-			<IconComponent class="h-6 shrink-0 grow-0 basis-6 text-neutral-800" />
+{#snippet descriptionParagraph()}
+	<p class="{size === 'small' ? 'p-sm' : 'p-base'} {descriptionColor}">
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
+		{@html data.description}
+		{#if data.itsLevel}
+			<button class="relative top-[2px] cursor-pointer" onclick={() => (drawerOpen = true)}>
+				<Icons.InfoCircle class="h-4 w-4" />
+			</button>
+		{/if}
+	</p>
+{/snippet}
+
+<div class="e-highlight flex flex-col gap-1">
+	<div class="flex items-start gap-3 {wrapperClass}">
+		{#if IconComponent}
+			<div
+				class="flex items-center justify-center {data.baseIcon
+					? ''
+					: 'rounded-lg border border-solid border-neutral-300 bg-white p-3'}"
+			>
+				<IconComponent class="h-6 shrink-0 grow-0 basis-6 text-neutral-800" />
+			</div>
+		{/if}
+		<div class="flex flex-col self-center">
+			{#if data.title}
+				<p
+					class="{size === 'small' ? 'p-base' : 'p-lg'} text-neutral-800 {data.boldTitle
+						? 'font-bold'
+						: ''}"
+				>
+					{data.title}
+				</p>
+			{/if}
+			{#if data.description && !data.indent}
+				{@render descriptionParagraph()}
+			{/if}
 		</div>
-	{/if}
-	<div class="flex flex-col self-center">
-		{#if data.title}
-			<p class="p-lg font-bold text-neutral-800">
-				{data.title}
-			</p>
-		{/if}
-		{#if data.description}
-			<p class="p {descriptionColor}">
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
-				{@html data.description}
-				{#if data.itsLevel}
-					<button class="relative top-[2px] cursor-pointer" onclick={() => (drawerOpen = true)}>
-						<Icons.InfoCircle class="h-4 w-4" />
-					</button>
-				{/if}
-			</p>
-		{/if}
 	</div>
+	{#if data.description && data.indent}
+		{@render descriptionParagraph()}
+	{/if}
 </div>
 
 {#if data.itsLevel}
