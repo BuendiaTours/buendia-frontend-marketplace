@@ -22,6 +22,7 @@
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
+	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
 	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
 	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
@@ -326,6 +327,31 @@
 			{/snippet}
 		</ConfirmationHeroImg>
 	</div>
+</div>
+
+<div class="wrapper mt-6">
+	<ActivityTips
+		title="Consejos prácticos para el Free tour"
+		items={[
+			{
+				icon: 'HandHeart',
+				title: 'Tú pones el precio',
+				description:
+					'Tú decides cuánto pagar. Para orientarte: 10-15 € por persona es lo que suele darse.'
+			},
+			{
+				icon: 'WatchRound',
+				title: 'Llega con margen',
+				description: 'Con 10 minutos de antelación tendrás tiempo de localizar al guía sin agobios.'
+			},
+			{
+				icon: 'CalendarCheck',
+				title: 'Si algo cambia, avísanos',
+				description:
+					'Aunque los free tours no requieren pago por adelantado, si no puedes asistir, te pedimos que liberes tu plaza, así otras personas podrán disfrutar de la experiencia si tú no puedes ir.'
+			}
+		]}
+	/>
 </div>
 
 <div class="wrapper mt-6">
