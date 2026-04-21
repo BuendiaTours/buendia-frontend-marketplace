@@ -1,26 +1,38 @@
 <script lang="ts">
-	// Componets
+	// Types
+	import type { PageData } from './$types';
+
+	// Libs
+	import type { DateValue } from '@internationalized/date';
+	import { fade } from 'svelte/transition';
+
+	// Actions
+	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+
+	// Components
+	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
+	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
+	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
+	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
-	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import SwiperElement from '$lib/components/shared/Swiper.svelte';
-	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
-	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
-	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
-	import { fade } from 'svelte/transition';
-	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
-	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
-	import type { DateValue } from '@internationalized/date';
+	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
+	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import Steps from '$lib/components/marketplace/Steps.svelte';
+	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
+	import TotalResume from '$lib/components/marketplace/TotalResume.svelte';
 
-	import type { PageData } from './$types';
+	// Icons
+	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 
 	let { data }: { data: PageData } = $props();
 
@@ -117,7 +129,184 @@
 			danger: true
 		});
 	}
+
+	type HighlightData = {
+		icon?: string;
+		title?: string;
+		description?: string;
+		boldTitle?: boolean;
+		indent?: boolean;
+		baseIcon?: boolean;
+		size?: 'normal' | 'small';
+	};
+
+	const highlightVariants: HighlightData[] = [
+		{ icon: 'RecordAudioCircle', title: 'Line 1' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', indent: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', baseIcon: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true, size: 'small' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true, size: 'small' },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		}
+	];
 </script>
+
+<div class="wrapper">
+	<CheckoutCard
+		isBuendia={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+
+	<CheckoutCard
+		isBuendia={true}
+		disabled={true}
+		image="https://dummyimage.com/140x140/000/fff.jpg"
+		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+		rating={4.7}
+		opinions={432}
+		list={[
+			{
+				id: 'list1',
+				icon: 'Ticket',
+				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+			},
+			{
+				id: 'list2',
+				icon: 'User',
+				text: '3 adultos'
+			},
+			{
+				id: 'list3',
+				icon: 'Calendar',
+				text: 'Domingo, 20 de julio del 2026'
+			},
+			{
+				id: 'list4',
+				icon: 'ClockCircle',
+				text: '11:00'
+			}
+		]}
+		cancellation="Cancelación gratuita hasta el inicio de la actividad"
+	/>
+</div>
+
+<div class="wrapper mt-6">
+	<TotalResume wrapperClass="mb-6" />
+</div>
+
+<div class="wrapper mt-6">
+	<TotalResume inARow={true} />
+</div>
+
+<div class="wrapper mt-6">
+	<Steps />
+</div>
+
+<div class="wrapper mt-6">
+	<div class="lg:max-w-[770px]">
+		<ConfirmationHeroImg
+			title="¡Todo listo para Lisboa!"
+			subtitle="Reserva confirmada: BND-34059743"
+			imgSrc="https://picsum.photos/600/338"
+		>
+			{#snippet actions()}
+				<button type="button" class="e-button e-button-secondary relative">
+					Añadir al calendario
+				</button>
+			{/snippet}
+		</ConfirmationHeroImg>
+	</div>
+</div>
 
 <div class="wrapper mt-6">
 	<BuendiaComment class="size-5" />
@@ -361,6 +550,14 @@
 		<Tooltip tip="">
 			<button class="e-button e-button-secondary">Sin tip (no aparece)</button>
 		</Tooltip>
+	</div>
+</div>
+
+<div class="wrapper">
+	<div class="grid grid-cols-6 gap-10">
+		{#each highlightVariants as variant, i (i)}
+			<Hightlight data={variant} />
+		{/each}
 	</div>
 </div>
 
