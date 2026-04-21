@@ -34,7 +34,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
-	import TicketSelector from '$lib/components/marketplace/pdp/TicketSelector.svelte';
+	import CheckoutActivityOption from '$lib/components/marketplace/Checkout/CheckoutActivityOption.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
@@ -199,11 +199,19 @@
 					<p class="p-lg mt-2 text-neutral-700">
 						Todas las opciones incluyen las mismas condiciones by buendía.
 					</p>
-					<TicketSelector options={optionsWithSlots} bind:selectedSlotId wrapperClass="mt-6" />
+					<CheckoutActivityOption
+						options={optionsWithSlots}
+						bind:selectedSlotId
+						wrapperClass="mt-6"
+					/>
 				{/if}
 				{#if optionsWithoutSlots.length > 0}
 					<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
-					<TicketSelector options={optionsWithoutSlots} bind:selectedSlotId wrapperClass="mt-6" />
+					<CheckoutActivityOption
+						options={optionsWithoutSlots}
+						bind:selectedSlotId
+						wrapperClass="mt-6"
+					/>
 				{/if}
 				{#if optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0}
 					<Spacer wrapperClass="mt-6 mb-8" />
