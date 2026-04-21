@@ -102,6 +102,29 @@ export type FreeTour = {
 	willDoing: string[];
 };
 
+/**
+ * Precondition names reported by the publish-readiness endpoint when a
+ * free tour is not yet ready to be published.
+ * - `destinations` — at least one destination id is required.
+ * - `categories` — at least one category id is required.
+ * - `media` — at least one media id is required.
+ * - `entries` — at least one activity entry is required.
+ * - `groupedActivity` — at least one entry must point to an activity
+ *   currently in `GROUPED` status.
+ */
+export type FreeTourPublishPrecondition =
+	| 'destinations'
+	| 'categories'
+	| 'media'
+	| 'entries'
+	| 'groupedActivity';
+
+/** Response of the publish-readiness endpoint. `missing` lists every precondition not yet met. */
+export type FreeTourPublishReadiness = {
+	missing: FreeTourPublishPrecondition[];
+	ready: boolean;
+};
+
 // ── DTOs (write models) ─────────────────────────
 
 /** Payload for creating a new free tour. */

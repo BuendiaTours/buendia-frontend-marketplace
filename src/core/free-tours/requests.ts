@@ -13,6 +13,7 @@ import type {
 	FreeTourCreateFromActivityDto,
 	FreeTourCriteria,
 	FreeTourEntryAddDto,
+	FreeTourPublishReadiness,
 	FreeTourStageAddDto,
 	FreeTourUpdateDto
 } from '$core/free-tours/types';
@@ -84,6 +85,16 @@ export const FREE_TOUR_REQUEST = {
 		criteria?: FreeTourCriteria
 	): Promise<CriteriaResult<FreeTour>> =>
 		getWithParams<CriteriaResult<FreeTour>>(fetchFn, BASE, criteria),
+
+	/**
+	 * Checks whether a free tour meets all preconditions required to be published:
+	 * has destinations, categories, media and at least one entry whose activity is
+	 * in `GROUPED` status. Backoffice uses this to render the readiness checklist.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param id - Free tour ID.
+	 */
+	checkPublishReadiness: (fetchFn: typeof fetch, id: string): Promise<FreeTourPublishReadiness> =>
+		get<FreeTourPublishReadiness>(fetchFn, `${BASE}/${id}/publish-readiness`),
 
 	// ── Entries (linked activities) ──────────────
 
