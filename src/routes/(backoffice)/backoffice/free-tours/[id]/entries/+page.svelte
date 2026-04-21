@@ -19,6 +19,7 @@
 
 <FreeTourEntriesAccordion
 	freeTourId={data.freeTour.id}
+	freeTourStatus={data.freeTour.status}
 	bind:entries
 	availableActivities={data.availableActivities}
 	{addToast}

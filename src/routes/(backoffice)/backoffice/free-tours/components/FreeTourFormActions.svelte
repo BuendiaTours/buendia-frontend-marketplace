@@ -9,17 +9,48 @@
 	import { confirmAction } from '$lib/actions/backoffice/confirmAction';
 	import { FREE_TOUR_ROUTES } from '$lib/config/routes/backoffice/freeTours';
 	import { FreeTourStatus } from '$core/free-tours/enums';
+	import type {
+		FreeTourPublishPrecondition,
+		FreeTourPublishReadiness
+	} from '$core/free-tours/types';
 	import { FREE_TOUR_STATUS_OPTIONS } from '$lib/labels/freeTours';
 
 	type Props = {
 		mode: 'create' | 'edit';
 		freeTourId?: string;
 		freeTourStatus?: FreeTourStatus;
+		publishReadiness?: FreeTourPublishReadiness;
 		formId: string;
 		submitting?: boolean;
 	};
 
-	let { mode, freeTourId, freeTourStatus, formId, submitting = false }: Props = $props();
+	let {
+		mode,
+		freeTourId,
+		freeTourStatus,
+		publishReadiness,
+		formId,
+		submitting = false
+	}: Props = $props();
+
+	const preconditionLabels: Record<FreeTourPublishPrecondition, () => string> = {
+		destinations: m.freeTours_publishPreconditionDestinations,
+		categories: m.freeTours_publishPreconditionCategories,
+		media: m.freeTours_publishPreconditionMedia,
+		entries: m.freeTours_publishPreconditionEntries,
+		groupedActivity: m.freeTours_publishPreconditionGroupedActivity
+	};
+
+	const missingLabels = $derived(
+		(publishReadiness?.missing ?? []).map((key) => preconditionLabels[key]?.() ?? key)
+	);
+
+	const publishBlocked = $derived(publishReadiness ? !publishReadiness.ready : false);
+	const publishBlockedReason = $derived(
+		publishBlocked && missingLabels.length > 0
+			? m.freeTours_publishBlockedTooltip({ missing: missingLabels.join(', ') })
+			: ''
+	);
 
 	const isCreateMode = $derived(mode === 'create');
 	const isEditMode = $derived(mode === 'edit');
@@ -60,23 +91,28 @@
 
 	<div class="ml-auto flex items-center gap-2">
 		{#if isEditMode && freeTourId && (canPublish || canUnpublish)}
-			<form method="POST" action="?/changeStatus" use:enhance>
+			<form method="POST" action={`${FREE_TOUR_ROUTES.edit(freeTourId)}?/changeStatus`} use:enhance>
 				{#if canPublish}
 					<input type="hidden" name="action" value="publish" />
-					<button
-						type="submit"
-						class="btn btn-soft btn-success"
-						disabled={submitting}
-						use:confirmAction={{
-							title: m.freeTours_confirmPublishTitle(),
-							message: m.freeTours_confirmPublishMessage(),
-							confirmText: m.freeTours_publishButton(),
-							cancelText: m.common_cancel(),
-							danger: false
-						}}
+					<div
+						class={publishBlocked ? 'tooltip tooltip-bottom' : ''}
+						data-tip={publishBlockedReason}
 					>
-						{m.freeTours_publishButton()}
-					</button>
+						<button
+							type="submit"
+							class="btn btn-soft btn-success"
+							disabled={submitting || publishBlocked}
+							use:confirmAction={{
+								title: m.freeTours_confirmPublishTitle(),
+								message: m.freeTours_confirmPublishMessage(),
+								confirmText: m.freeTours_publishButton(),
+								cancelText: m.common_cancel(),
+								danger: false
+							}}
+						>
+							{m.freeTours_publishButton()}
+						</button>
+					</div>
 				{:else}
 					<input type="hidden" name="action" value="unpublish" />
 					<button

@@ -156,6 +156,7 @@
 <div class="space-y-4">
 	<ActivityLocationsAccordion
 		activityId={data.activity.id}
+		activityStatus={data.activity.status}
 		bind:locations
 		{addToast}
 		{createLocationHref}

@@ -6,8 +6,10 @@
 	 * The async search shows only FREE_TOUR activities that are not yet linked anywhere.
 	 */
 	import * as m from '$paraglide/messages';
+	import { invalidateAll } from '$app/navigation';
 	import { ChecklistMinimalistic, Close, Pen } from '$lib/icons/Linear';
 	import { FREE_TOUR_REQUEST } from '$core/free-tours/requests';
+	import { FreeTourStatus } from '$core/free-tours/enums';
 	import type { FreeTourEntry } from '$core/free-tours/types';
 	import { ACTIVITY_ROUTES } from '$lib/config/routes/backoffice/activities';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
@@ -21,17 +23,40 @@
 
 	type Props = {
 		freeTourId: string;
+		freeTourStatus: FreeTourStatus;
 		entries: FreeTourEntry[];
 		/** Pre-loaded activities to resolve activityId → title. */
 		availableActivities: { id: string; title: string }[];
 		addToast?: ToastFn;
 	};
 
-	let { freeTourId, entries = $bindable(), availableActivities, addToast }: Props = $props();
+	let {
+		freeTourId,
+		freeTourStatus,
+		entries = $bindable(),
+		availableActivities,
+		addToast
+	}: Props = $props();
 
 	let searchValue = $state<string | undefined>(undefined);
 	let isRemoving = $state<string | null>(null);
 	let isMoving = $state<string | null>(null);
+
+	// When the free tour is PUBLISHED, removing the last entry would break a
+	// publish precondition. Block the destructive action and tell the user to
+	// unpublish first — avoids silent invariant violations in the marketplace.
+	const isPublished = $derived(freeTourStatus === FreeTourStatus.PUBLISHED);
+	const blockLastRemoval = $derived(isPublished && entries.length === 1);
+
+	/**
+	 * Re-run the layout load so publishReadiness (and any other derived data in
+	 * parent layouts) reflects the entry mutation. Waits out the CQRS projection
+	 * lag before invalidating — invalidating sooner reads stale data.
+	 */
+	async function refreshReadiness() {
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		await invalidateAll();
+	}
 
 	const sortedEntries = $derived([...entries].sort((a, b) => a.priority - b.priority));
 
@@ -70,6 +95,8 @@
 
 			entries = [...entries, { id: entryId, activityId, priority: nextPriority }];
 			showToast('success', m.freeTours_entriesAdded());
+			// Re-run the layout load so publishReadiness reflects the new entry.
+			await refreshReadiness();
 		} catch (err) {
 			console.error('Error adding entry:', err);
 			showToast('error', m.freeTours_entriesError());
@@ -91,6 +118,7 @@
 			await FREE_TOUR_REQUEST.removeEntry(fetch, freeTourId, entry.id);
 			entries = entries.filter((e) => e.id !== entry.id);
 			showToast('success', m.freeTours_entriesRemoved());
+			await refreshReadiness();
 		} catch (err) {
 			console.error('Error removing entry:', err);
 			showToast('error', m.freeTours_entriesError());
@@ -129,6 +157,7 @@
 					priority: e.priority
 				});
 			}
+			await refreshReadiness();
 		} catch (err) {
 			console.error('Error reordering entries:', err);
 			entries = previousEntries;
@@ -198,18 +227,23 @@
 							>
 								<Pen class="size-4" />
 							</a>
-							<button
-								type="button"
-								class="btn btn-ghost btn-xs text-error hover:bg-error/10"
-								disabled={isRemoving === entry.id}
-								onclick={() => handleRemove(entry)}
+							<div
+								class={blockLastRemoval ? 'tooltip tooltip-left' : ''}
+								data-tip={blockLastRemoval ? m.freeTours_entriesRemoveBlockedTooltip() : ''}
 							>
-								{#if isRemoving === entry.id}
-									<span class="loading loading-spinner loading-xs"></span>
-								{:else}
-									<Close class="size-4" />
-								{/if}
-							</button>
+								<button
+									type="button"
+									class="btn btn-ghost btn-xs text-error hover:bg-error/10"
+									disabled={isRemoving === entry.id || blockLastRemoval}
+									onclick={() => handleRemove(entry)}
+								>
+									{#if isRemoving === entry.id}
+										<span class="loading loading-spinner loading-xs"></span>
+									{:else}
+										<Close class="size-4" />
+									{/if}
+								</button>
+							</div>
 						</div>
 					{/each}
 				</div>

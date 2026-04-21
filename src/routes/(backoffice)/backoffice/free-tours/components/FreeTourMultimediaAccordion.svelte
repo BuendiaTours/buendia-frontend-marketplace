@@ -6,19 +6,21 @@
 	import * as m from '$paraglide/messages';
 	import type { EnrichedFreeTourImage } from '../[id]/content/+page.server';
 	import { FREE_TOUR_REQUEST } from '$core/free-tours/requests';
+	import { FreeTourStatus } from '$core/free-tours/enums';
 	import FormMediaGallery, {
 		type MediaGalleryItem
 	} from '$lib/components/backoffice/forms/FormMediaGallery.svelte';
 
 	type Props = {
 		freeTourId: string;
+		freeTourStatus: FreeTourStatus;
 		images: EnrichedFreeTourImage[];
 		addToast: (toast: {
 			data: { title: string; description: string; type: 'success' | 'error' };
 		}) => void;
 	};
 
-	let { freeTourId, images = $bindable(), addToast }: Props = $props();
+	let { freeTourId, freeTourStatus, images = $bindable(), addToast }: Props = $props();
 
 	function showToast(type: 'success' | 'error', description: string) {
 		addToast({ data: { title: type === 'success' ? '✓' : '✗', description, type } });
@@ -29,6 +31,10 @@
 			mediaIds: newImages.map((img) => img.mediaId)
 		});
 	}
+
+	// When PUBLISHED, the gallery must keep at least one image; tell the gallery
+	// to disable per-image remove so the user is forced to unpublish first.
+	const minImages = $derived(freeTourStatus === FreeTourStatus.PUBLISHED ? 1 : 0);
 
 	async function handleChange(newImages: MediaGalleryItem[]) {
 		try {
@@ -51,6 +57,8 @@
 	emptyText={m.activities_multimediaEmpty()}
 	showMeta
 	reorderable
+	{minImages}
+	removeBlockedTooltip={m.freeTours_multimediaRemoveBlockedTooltip()}
 	onadd={handleChange}
 	onremove={handleChange}
 	onreorder={handleChange}

@@ -8,7 +8,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { MapPoint, Close, Map as MapIcon } from '$lib/icons/Linear';
 	import { ACTIVITY_LOCATION_ROLE_OPTIONS } from '$lib/labels/activities';
-	import { ActivityLocationRole } from '$core/activities/enums';
+	import { ActivityLocationRole, ActivityStatus } from '$core/activities/enums';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
 	import type { ActivityLocation } from '$core/activities/types';
 	import type { SearchResult } from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
@@ -23,18 +23,38 @@
 
 	type Props = {
 		activityId: string;
+		activityStatus?: ActivityStatus;
 		locations: ActivityLocation[];
 		addToast?: ToastFn;
 		/** URL to create a new location with returnTo. */
 		createLocationHref?: string;
 	};
 
-	let { activityId, locations = $bindable(), addToast, createLocationHref }: Props = $props();
+	let {
+		activityId,
+		activityStatus,
+		locations = $bindable(),
+		addToast,
+		createLocationHref
+	}: Props = $props();
 
 	let selectedLocationId = $state<string | undefined>(undefined);
 	let selectedRole = $state<ActivityLocationRole>(ActivityLocationRole.DESTINATION);
 	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
+
+	// Publish invariant: a PUBLISHED activity needs at least one DESTINATION
+	// location. Block removal of the last one so the user is forced to unpublish
+	// before breaking the invariant. Non-DESTINATION roles can be freely removed.
+	const isPublished = $derived(activityStatus === ActivityStatus.PUBLISHED);
+	const destinationCount = $derived(
+		locations.filter((l) => l.role === ActivityLocationRole.DESTINATION).length
+	);
+	function isRemovalBlocked(location: ActivityLocation): boolean {
+		return (
+			isPublished && location.role === ActivityLocationRole.DESTINATION && destinationCount === 1
+		);
+	}
 
 	/** Cache of id → name from search results to resolve the label on add. */
 	let resultCache = $state<Map<string, string>>(new Map());
@@ -178,18 +198,25 @@
 										location.role}
 								</p>
 							</div>
-							<button
-								type="button"
-								class="btn btn-ghost btn-xs text-error hover:bg-error/10"
-								disabled={isRemoving === location.id}
-								onclick={() => handleRemove(location)}
+							<div
+								class={isRemovalBlocked(location) ? 'tooltip tooltip-left' : ''}
+								data-tip={isRemovalBlocked(location)
+									? m.activities_locationsRemoveBlockedTooltip()
+									: ''}
 							>
-								{#if isRemoving === location.id}
-									<span class="loading loading-spinner loading-xs"></span>
-								{:else}
-									<Close class="size-4" />
-								{/if}
-							</button>
+								<button
+									type="button"
+									class="btn btn-ghost btn-xs text-error hover:bg-error/10"
+									disabled={isRemoving === location.id || isRemovalBlocked(location)}
+									onclick={() => handleRemove(location)}
+								>
+									{#if isRemoving === location.id}
+										<span class="loading loading-spinner loading-xs"></span>
+									{:else}
+										<Close class="size-4" />
+									{/if}
+								</button>
+							</div>
 						</div>
 					{/each}
 				</div>

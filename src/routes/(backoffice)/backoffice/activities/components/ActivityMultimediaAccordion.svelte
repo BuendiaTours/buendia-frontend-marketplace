@@ -7,19 +7,25 @@
 	import * as m from '$paraglide/messages';
 	import type { EnrichedActivityImage } from '../[id]/content-blocks/+page.server';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
+	import { ActivityStatus } from '$core/activities/enums';
 	import FormMediaGallery, {
 		type MediaGalleryItem
 	} from '$lib/components/backoffice/forms/FormMediaGallery.svelte';
 
 	type Props = {
 		activityId: string;
+		activityStatus?: ActivityStatus;
 		images: EnrichedActivityImage[];
 		addToast: (toast: {
 			data: { title: string; description: string; type: 'success' | 'error' };
 		}) => void;
 	};
 
-	let { activityId, images = $bindable(), addToast }: Props = $props();
+	let { activityId, activityStatus, images = $bindable(), addToast }: Props = $props();
+
+	// Published activities must keep at least one image; force unpublish before
+	// emptying the gallery.
+	const minImages = $derived(activityStatus === ActivityStatus.PUBLISHED ? 1 : 0);
 
 	function showToast(type: 'success' | 'error', description: string) {
 		addToast({ data: { title: type === 'success' ? '✓' : '✗', description, type } });
@@ -80,6 +86,8 @@
 	emptyText={m.activities_multimediaEmpty()}
 	showMeta
 	reorderable
+	{minImages}
+	removeBlockedTooltip={m.activities_multimediaRemoveBlockedTooltip()}
 	onadd={handleAdd}
 	onremove={handleRemove}
 	onreorder={handleReorder}

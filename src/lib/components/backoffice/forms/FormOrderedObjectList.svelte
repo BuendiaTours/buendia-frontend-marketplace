@@ -78,6 +78,14 @@
 		wrapperClass?: string;
 		emptyMessage?: string;
 		config?: Partial<FormOrderedObjectListConfig>;
+		/**
+		 * Minimum number of items the list must keep. When `items.length <= minItems`,
+		 * the per-row remove button is disabled so the caller can enforce invariants
+		 * (e.g., a published resource that requires at least one linked category).
+		 */
+		minItems?: number;
+		/** Tooltip shown on the remove button when it is blocked by `minItems`. */
+		removeBlockedTooltip?: string;
 	};
 
 	const DEFAULT_CONFIG: FormOrderedObjectListConfig = {
@@ -95,8 +103,12 @@
 		placeholder = 'Selecciona un elemento...',
 		wrapperClass = 'md:col-span-12',
 		emptyMessage = 'No hay elementos asociados',
-		config = {}
+		config = {},
+		minItems = 0,
+		removeBlockedTooltip = ''
 	}: Props = $props();
+
+	const removeBlocked = $derived(items.length <= minItems);
 
 	// Merge de configuración con defaults
 	const cfg = $derived({ ...DEFAULT_CONFIG, ...config });
@@ -315,10 +327,16 @@
 									<input type="hidden" name={`${id}[]`} value={item.id} />
 								</td>
 								<td class="w-0 pr-0 text-right">
-									<div class="tooltip" data-tip="Eliminar este elemento">
+									<div
+										class="tooltip"
+										data-tip={removeBlocked && removeBlockedTooltip
+											? removeBlockedTooltip
+											: 'Eliminar este elemento'}
+									>
 										<button
 											type="button"
 											class="btn btn-square btn-soft btn-xs btn-error"
+											disabled={removeBlocked}
 											onclick={() => removeItem(item.id)}
 										>
 											<Close class="size-5" />
@@ -331,7 +349,12 @@
 				</table>
 				{#if cfg.showRemoveAll}
 					<div class="mt-2 flex justify-end">
-						<button type="button" class="btn btn-soft btn-xs btn-error" onclick={handleRemoveAll}>
+						<button
+							type="button"
+							class="btn btn-soft btn-xs btn-error"
+							disabled={removeBlocked}
+							onclick={handleRemoveAll}
+						>
 							Eliminar todos
 						</button>
 					</div>

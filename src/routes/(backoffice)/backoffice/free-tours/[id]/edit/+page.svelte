@@ -8,6 +8,7 @@
 	import * as m from '$paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageProps } from './$types';
+	import { FreeTourStatus } from '$core/free-tours/enums';
 	import {
 		FREE_TOUR_INCLUDED_OPTIONS,
 		FREE_TOUR_EXCLUDED_OPTIONS,
@@ -34,6 +35,11 @@
 	});
 
 	const formId = 'free-tour-form';
+
+	// When PUBLISHED, removing the last category/destination would break a publish
+	// invariant. Force the user to unpublish first before clearing these lists.
+	const requiredMinItems = $derived(data.freeTour.status === FreeTourStatus.PUBLISHED ? 1 : 0);
+	const removeBlockedTooltip = m.freeTours_unpublishFirstTooltip();
 </script>
 
 <form id={formId} method="POST" action="?/update" use:enhance class="space-y-4">
@@ -101,6 +107,8 @@
 				error={$errors.categories?._errors}
 				placeholder={m.freeTours_placeholderCategories()}
 				emptyMessage={m.freeTours_emptyCategories()}
+				minItems={requiredMinItems}
+				{removeBlockedTooltip}
 			/>
 
 			<FormOrderedObjectList
@@ -111,6 +119,8 @@
 				error={$errors.destinations?._errors}
 				placeholder={m.freeTours_placeholderDestinations()}
 				emptyMessage={m.freeTours_emptyDestinations()}
+				minItems={requiredMinItems}
+				{removeBlockedTooltip}
 			/>
 		{/snippet}
 	</FormAccordion>

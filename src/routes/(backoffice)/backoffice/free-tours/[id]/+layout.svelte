@@ -50,6 +50,7 @@
 	mode="edit"
 	freeTourId={data.freeTour.id}
 	freeTourStatus={data.freeTour.status}
+	publishReadiness={data.publishReadiness}
 	formId="free-tour-form"
 />
 

@@ -106,7 +106,12 @@
 		{createContentBlockHref}
 	/>
 
-	<FreeTourMultimediaAccordion freeTourId={data.freeTour.id} bind:images {addToast} />
+	<FreeTourMultimediaAccordion
+		freeTourId={data.freeTour.id}
+		freeTourStatus={data.freeTour.status}
+		bind:images
+		{addToast}
+	/>
 
 	<FreeTourMeetingPointAccordion
 		freeTourId={data.freeTour.id}

@@ -48,6 +48,14 @@
 		showMeta?: boolean;
 		/** Enable up/down reordering buttons. */
 		reorderable?: boolean;
+		/**
+		 * Minimum number of images the gallery must keep. When `images.length <= minImages`,
+		 * the per-image remove button is disabled so the caller can enforce invariants
+		 * (e.g., a published resource that requires at least one photo).
+		 */
+		minImages?: number;
+		/** Tooltip shown on the remove button when it is blocked by `minImages`. */
+		removeBlockedTooltip?: string;
 		/** Called after an image is added (receives the new full list). */
 		onadd?: (images: MediaGalleryItem[]) => void | Promise<void>;
 		/** Called after an image is removed (receives the new full list). */
@@ -65,10 +73,14 @@
 		emptyText = m.activities_multimediaEmpty(),
 		showMeta = true,
 		reorderable = true,
+		minImages = 0,
+		removeBlockedTooltip = '',
 		onadd,
 		onremove,
 		onreorder
 	}: Props = $props();
+
+	const removeBlocked = $derived(images.length <= minImages);
 
 	let searchValue = $state<string | undefined>(undefined);
 	let isRemoving = $state<string | null>(null);
@@ -359,18 +371,23 @@
 										↓
 									</button>
 								{/if}
-								<button
-									type="button"
-									class="btn btn-ghost btn-error btn-xs"
-									disabled={isRemoving === img.mediaId}
-									onclick={() => handleRemove(img)}
+								<div
+									class={removeBlocked && removeBlockedTooltip ? 'tooltip tooltip-left' : ''}
+									data-tip={removeBlocked ? removeBlockedTooltip : ''}
 								>
-									{#if isRemoving === img.mediaId}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										✕
-									{/if}
-								</button>
+									<button
+										type="button"
+										class="btn btn-ghost btn-error btn-xs"
+										disabled={isRemoving === img.mediaId || removeBlocked}
+										onclick={() => handleRemove(img)}
+									>
+										{#if isRemoving === img.mediaId}
+											<span class="loading loading-spinner loading-xs"></span>
+										{:else}
+											✕
+										{/if}
+									</button>
+								</div>
 							</div>
 						</li>
 					{/each}

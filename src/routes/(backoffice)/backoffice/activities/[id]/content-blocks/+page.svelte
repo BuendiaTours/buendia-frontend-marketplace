@@ -188,7 +188,12 @@
 		{createContentBlockHref}
 	/>
 
-	<ActivityMultimediaAccordion activityId={data.activity.id} bind:images {addToast} />
+	<ActivityMultimediaAccordion
+		activityId={data.activity.id}
+		activityStatus={data.activity.status}
+		bind:images
+		{addToast}
+	/>
 
 	<ActivityFaqsAccordion
 		activityId={data.activity.id}

@@ -6,6 +6,7 @@
 	import * as m from '$paraglide/messages';
 	import { Widget, Close, Tag } from '$lib/icons/Linear';
 	import { ACTIVITY_REQUEST } from '$core/activities/requests';
+	import { ActivityStatus } from '$core/activities/enums';
 	import type { ActivityCategory } from '$core/activities/types';
 	import FormAccordion from '$lib/components/backoffice/forms/layout/FormAccordion.svelte';
 	import { showConfirmDialog } from '$lib/actions/backoffice/confirmAction';
@@ -16,16 +17,27 @@
 
 	type Props = {
 		activityId: string;
+		activityStatus?: ActivityStatus;
 		categories: ActivityCategory[];
 		availableCategories: { id: string; name: string }[];
 		addToast?: ToastFn;
 	};
 
-	let { activityId, categories = $bindable(), availableCategories, addToast }: Props = $props();
+	let {
+		activityId,
+		activityStatus,
+		categories = $bindable(),
+		availableCategories,
+		addToast
+	}: Props = $props();
 
 	let selectedCategoryId = $state('');
 	let isAdding = $state(false);
 	let isRemoving = $state<string | null>(null);
+
+	const blockLastRemoval = $derived(
+		activityStatus === ActivityStatus.PUBLISHED && categories.length === 1
+	);
 
 	const unassignedCategories = $derived(
 		availableCategories.filter((c) => !categories.some((ac) => ac.id === c.id))
@@ -138,18 +150,23 @@
 						>
 							<Tag class="text-base-content/40 size-5 shrink-0" />
 							<span class="min-w-0 flex-1 font-medium">{category.name}</span>
-							<button
-								type="button"
-								class="btn btn-ghost btn-xs text-error hover:bg-error/10"
-								disabled={isRemoving === category.id}
-								onclick={() => handleRemove(category)}
+							<div
+								class={blockLastRemoval ? 'tooltip tooltip-left' : ''}
+								data-tip={blockLastRemoval ? m.activities_categoriesRemoveBlockedTooltip() : ''}
 							>
-								{#if isRemoving === category.id}
-									<span class="loading loading-spinner loading-xs"></span>
-								{:else}
-									<Close class="size-4" />
-								{/if}
-							</button>
+								<button
+									type="button"
+									class="btn btn-ghost btn-xs text-error hover:bg-error/10"
+									disabled={isRemoving === category.id || blockLastRemoval}
+									onclick={() => handleRemove(category)}
+								>
+									{#if isRemoving === category.id}
+										<span class="loading loading-spinner loading-xs"></span>
+									{:else}
+										<Close class="size-4" />
+									{/if}
+								</button>
+							</div>
 						</div>
 					{/each}
 				</div>
