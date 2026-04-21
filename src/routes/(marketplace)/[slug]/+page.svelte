@@ -343,6 +343,57 @@
 		/>
 	</ByBuendiaBanner>
 
+	{#if data.destination.relatedPlans.items && data.destination.relatedPlans.items.length > 0}
+		<PlpSwiper
+			id="plp-related-plans"
+			swiperOptions={{
+				slidesPerView: 1.15,
+				spaceBetween: 16,
+				navigation: true,
+				loop: false,
+				breakpoints: {
+					640: { slidesPerView: 2.1 },
+					1024: { slidesPerView: 2 }
+				}
+			}}
+			wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+		>
+			{#snippet header()}
+				<div class="flex flex-col">
+					<h2 class="h2-editorial text-neutral-800">
+						{data.destination.relatedPlans.title}
+					</h2>
+				</div>
+			{/snippet}
+			{#each data.destination.relatedPlans.items as plan (plan.id)}
+				<swiper-slide>
+					<div class="flex flex-col">
+						<div
+							class="rounded-lg border border-solid border-neutral-300 bg-white p-6 lg:flex lg:items-center lg:gap-8 lg:p-8"
+						>
+							<div
+								class="mb-4 aspect-[11/7] overflow-hidden rounded-lg lg:mb-0 lg:aspect-square lg:h-[194px] lg:shrink-0 lg:grow-0 lg:basis-[194px]"
+							>
+								<img class="h-full w-full object-cover" src={plan.image} alt={plan.title} />
+							</div>
+							<div class="flex flex-col lg:items-start">
+								<h3 class="h3-editorial mb-3 text-neutral-800">
+									{plan.title}
+								</h3>
+								<p class="p-base mb-4 text-neutral-700">
+									{plan.description}
+								</p>
+								{#if plan.slug}
+									<a href={plan.slug} class="e-button e-button-tertiary"> Ver actividades </a>
+								{/if}
+							</div>
+						</div>
+					</div>
+				</swiper-slide>
+			{/each}
+		</PlpSwiper>
+	{/if}
+
 	<!-- Reviews List -->
 	{#if data.reviews && data.reviews.length > 0}
 		<PlpSwiper
@@ -353,7 +404,7 @@
 				navigation: true,
 				loop: false,
 				breakpoints: {
-					640: { slidesPerView: 1.8 },
+					640: { slidesPerView: 2.1 },
 					1024: { slidesPerView: 3 }
 				}
 			}}
