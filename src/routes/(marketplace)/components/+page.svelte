@@ -30,6 +30,7 @@
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 	import TotalResume from '$lib/components/marketplace/TotalResume.svelte';
+	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
 
 	// Icons
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
@@ -290,6 +291,25 @@
 
 <div class="wrapper mt-6">
 	<Steps />
+</div>
+
+<div class="wrapper mt-6">
+	<ThankYouAccountCreate
+		title="Crea tu cuenta en buendía"
+		description="Regístrate con un solo click. Tendrás acceso a la gestión de tu reserva desde tu Área personal y podrás disfrutar de ofertas exclusivas."
+		buttonText="Registrarse"
+		slug="/"
+	/>
+</div>
+
+<div class="wrapper mt-6">
+	<ThankYouAccountCreate
+		title="Tu reserva está en tu área personal"
+		description="Desde tu área personal podrás gestionar tu reserva siempre que quieras"
+		buttonText="Ir a Área personal"
+		buttonClass="e-button-secondary"
+		slug="/"
+	/>
 </div>
 
 <div class="wrapper mt-6">
