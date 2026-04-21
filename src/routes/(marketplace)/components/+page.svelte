@@ -125,20 +125,17 @@
 		title="Consejos prácticos para el Free tour"
 		items={[
 			{
-				id: 'tip1',
 				icon: 'HandHeart',
 				title: 'Tú pones el precio',
 				description:
 					'Tú decides cuánto pagar. Para orientarte: 10-15 € por persona es lo que suele darse.'
 			},
 			{
-				id: 'tip2',
 				icon: 'WatchRound',
 				title: 'Llega con margen',
 				description: 'Con 10 minutos de antelación tendrás tiempo de localizar al guía sin agobios.'
 			},
 			{
-				id: 'tip3',
 				icon: 'CalendarCheck',
 				title: 'Si algo cambia, avísanos',
 				description:

@@ -6,7 +6,6 @@
 		wrapperClass?: string;
 		title?: string;
 		items: Array<{
-			id: string;
 			icon: string;
 			title: string;
 			description: string;
@@ -28,7 +27,7 @@
 <div
 	class="flex flex-col divide-y divide-neutral-300 rounded-xl border border-solid border-neutral-300 px-5 lg:px-6 {wrapperClass}"
 >
-	{#each items as item (item.id)}
+	{#each items as item, i (i)}
 		{@const IconComponent = getIconComponent(item.icon)}
 		<div class="flex flex-col gap-1.5 py-5 lg:py-6">
 			<p class="p-lg flex gap-1.5 font-bold text-neutral-800">
