@@ -14,6 +14,7 @@
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
@@ -210,6 +211,22 @@
 		}
 	];
 </script>
+
+<div class="wrapper mt-6">
+	<div class="lg:max-w-[770px]">
+		<ConfirmationHeroImg
+			title="¡Todo listo para Lisboa!"
+			subtitle="Reserva confirmada: BND-34059743"
+			imgSrc="https://picsum.photos/600/338"
+		>
+			{#snippet actions()}
+				<button type="button" class="e-button e-button-secondary relative">
+					Añadir al calendario
+				</button>
+			{/snippet}
+		</ConfirmationHeroImg>
+	</div>
+</div>
 
 <div class="wrapper mt-6">
 	<BuendiaComment class="size-5" />
