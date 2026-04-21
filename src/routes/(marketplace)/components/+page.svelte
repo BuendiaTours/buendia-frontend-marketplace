@@ -19,6 +19,7 @@
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import type { DateValue } from '@internationalized/date';
+	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
 
 	import type { PageData } from './$types';
 
@@ -118,6 +119,34 @@
 		});
 	}
 </script>
+
+<div class="wrapper mt-6">
+	<ActivityTips
+		title="Consejos prácticos para el Free tour"
+		items={[
+			{
+				id: 'tip1',
+				icon: 'HandHeart',
+				title: 'Tú pones el precio',
+				description:
+					'Tú decides cuánto pagar. Para orientarte: 10-15 € por persona es lo que suele darse.'
+			},
+			{
+				id: 'tip2',
+				icon: 'WatchRound',
+				title: 'Llega con margen',
+				description: 'Con 10 minutos de antelación tendrás tiempo de localizar al guía sin agobios.'
+			},
+			{
+				id: 'tip3',
+				icon: 'CalendarCheck',
+				title: 'Si algo cambia, avísanos',
+				description:
+					'Aunque los free tours no requieren pago por adelantado, si no puedes asistir, te pedimos que liberes tu plaza, así otras personas podrán disfrutar de la experiencia si tú no puedes ir.'
+			}
+		]}
+	/>
+</div>
 
 <div class="wrapper mt-6">
 	<BuendiaComment class="size-5" />
