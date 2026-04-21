@@ -43,7 +43,8 @@
 					data={{
 						icon: item.icon,
 						title: item.title,
-						description: item.description
+						description: item.description,
+						boldTitle: true
 					}}
 				/>
 			{/each}
