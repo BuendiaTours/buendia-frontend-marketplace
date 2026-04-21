@@ -122,7 +122,17 @@
 
 <div class="wrapper mt-6">
 	<div class="lg:max-w-[770px]">
-		<ConfirmationHeroImg />
+		<ConfirmationHeroImg
+			title="¡Todo listo para Lisboa!"
+			subtitle="Reserva confirmada: BND-34059743"
+			imgSrc="https://picsum.photos/600/338"
+		>
+			{#snippet actions()}
+				<button type="button" class="e-button e-button-secondary relative">
+					Añadir al calendario
+				</button>
+			{/snippet}
+		</ConfirmationHeroImg>
 	</div>
 </div>
 
