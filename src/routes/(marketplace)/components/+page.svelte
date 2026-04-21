@@ -1,26 +1,34 @@
 <script lang="ts">
-	// Componets
+	// Types
+	import type { PageData } from './$types';
+
+	// Libs
+	import type { DateValue } from '@internationalized/date';
+	import { fade } from 'svelte/transition';
+
+	// Actions
+	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+
+	// Components
+	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
+	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
+	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
-	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import SwiperElement from '$lib/components/shared/Swiper.svelte';
-	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
-	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
-	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
-	import { fade } from 'svelte/transition';
-	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
-	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
-	import type { DateValue } from '@internationalized/date';
+	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 
-	import type { PageData } from './$types';
+	// Icons
+	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 
 	let { data }: { data: PageData } = $props();
 
@@ -117,6 +125,90 @@
 			danger: true
 		});
 	}
+
+	type HighlightData = {
+		icon?: string;
+		title?: string;
+		description?: string;
+		boldTitle?: boolean;
+		indent?: boolean;
+		baseIcon?: boolean;
+		size?: 'normal' | 'small';
+	};
+
+	const highlightVariants: HighlightData[] = [
+		{ icon: 'RecordAudioCircle', title: 'Line 1' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', boldTitle: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', indent: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', description: 'Line 2', baseIcon: true },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true
+		},
+		{ icon: 'RecordAudioCircle', title: 'Line 1', baseIcon: true, size: 'small' },
+		{ icon: 'RecordAudioCircle', title: 'Line 1', boldTitle: true, baseIcon: true, size: 'small' },
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			baseIcon: true,
+			size: 'small'
+		},
+		{
+			icon: 'RecordAudioCircle',
+			title: 'Line 1',
+			description: 'Line 2',
+			indent: true,
+			boldTitle: true,
+			baseIcon: true,
+			size: 'small'
+		}
+	];
 </script>
 
 <div class="wrapper mt-6">
@@ -361,6 +453,14 @@
 		<Tooltip tip="">
 			<button class="e-button e-button-secondary">Sin tip (no aparece)</button>
 		</Tooltip>
+	</div>
+</div>
+
+<div class="wrapper">
+	<div class="grid grid-cols-6 gap-10">
+		{#each highlightVariants as variant, i (i)}
+			<Hightlight data={variant} />
+		{/each}
 	</div>
 </div>
 
