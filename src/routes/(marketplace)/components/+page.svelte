@@ -1,26 +1,34 @@
 <script lang="ts">
-	// Componets
+	// Types
+	import type { PageData } from './$types';
+
+	// Libs
+	import type { DateValue } from '@internationalized/date';
+	import { fade } from 'svelte/transition';
+
+	// Actions
+	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+
+	// Components
+	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
+	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
+	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
 	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
 	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
-	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import SwiperElement from '$lib/components/shared/Swiper.svelte';
-	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltRangeCalendar from '$lib/components/marketplace/MeltRangeCalendar.svelte';
-	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
-	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
-	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
-	import { fade } from 'svelte/transition';
-	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
-	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
-	import type { DateValue } from '@internationalized/date';
+	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 
-	import type { PageData } from './$types';
+	// Icons
+	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
 
 	let { data }: { data: PageData } = $props();
 
@@ -90,6 +98,21 @@
 			gutter: 4
 		}
 	});
+
+	const calloutStyles = [
+		'neutral',
+		'success',
+		'danger',
+		'warning',
+		'info',
+		'editorial',
+		'neutral-high',
+		'success-high',
+		'danger-high',
+		'warning-high',
+		'info-high',
+		'editorial-high'
+	] as const;
 
 	async function handleConfirm() {
 		confirmResult = null;
@@ -652,6 +675,92 @@
 			<MeltRangeCalendar bind:value={rangeValue} numberOfMonths={2} dayInfo={demoDayInfo} />
 		</div>
 	{/if}
+</div>
+
+<div class="grid grid-cols-6 gap-8">
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: style,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			size="small"
+			items={[
+				{
+					id: `${style}-sm`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: `${style}-b`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			items={[
+				{
+					id: `${style}-1`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				},
+				{
+					id: `${style}-2`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
+
+	{#each calloutStyles as style (style)}
+		<Callout
+			{style}
+			size="small"
+			items={[
+				{
+					id: `${style}-1`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				},
+				{
+					id: `${style}-2`,
+					icon: 'InfoCircle',
+					title: 'Callout title',
+					description: 'Callout description text'
+				}
+			]}
+		/>
+	{/each}
 </div>
 
 <div class="wrapper mt-6">

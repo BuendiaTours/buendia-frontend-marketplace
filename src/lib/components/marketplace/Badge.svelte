@@ -26,7 +26,7 @@
 </script>
 
 <div
-	class="e-badge p-xs inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold uppercase {wrapperClass} {data.color ||
+	class="e-badge inline-flex items-center gap-2 rounded-sm px-2 py-1 font-bold {wrapperClass} {data.color ||
 		''}"
 >
 	{#if IconComponent}

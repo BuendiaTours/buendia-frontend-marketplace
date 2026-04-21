@@ -16,7 +16,7 @@
 	// Components
 	// import Badge from '$lib/components/marketplace/Badge.svelte';
 	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import Conditions from '$lib/components/marketplace/Conditions.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import MapView from '$lib/components/marketplace/MapView.svelte';
@@ -40,6 +40,7 @@
 	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
+	import TicketSelector from '$lib/components/marketplace/pdp/TicketSelector.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
@@ -65,6 +66,8 @@
 			).values()
 		)
 	);
+
+	let selectedOptionId = $state<string | null>(activity.activityTickets[0]?.id ?? null);
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -147,6 +150,18 @@
 			/>
 
 			<Spacer wrapperClass="mt-6 mb-8" />
+
+			<TicketSelector
+				options={activity.activityTickets}
+				bind:value={selectedOptionId}
+				wrapperClass=""
+			/>
+
+			<TicketSelector
+				title="Sin disponibilidad en tus fechas"
+				options={activity.activityTicketsDisabled}
+				wrapperClass=""
+			/>
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
@@ -272,15 +287,15 @@
 				<p class="h2 pb-4">Condiciones</p>
 				<div class="pdp-conditions flex flex-col gap-4">
 					{#each activity.conditions as condition (condition.id)}
-						<Conditions style={condition.style} items={condition.items} />
+						<Callout style={condition.style} items={condition.items} />
 					{/each}
 				</div>
 			{/if}
 
 			<!-- conditions -->
 			{#if activity.infoImportant}
-				<Conditions
-					style="important"
+				<Callout
+					style="warning"
 					items={[
 						{
 							id: 'important-info',

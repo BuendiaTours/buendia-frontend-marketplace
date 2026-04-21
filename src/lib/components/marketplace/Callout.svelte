@@ -4,6 +4,7 @@
 
 	type Props = {
 		style: string;
+		size?: 'normal' | 'small';
 		items: Array<{
 			id: string;
 			icon: string;
@@ -13,7 +14,11 @@
 		wrapperClass?: string;
 	};
 
-	let { style, items, wrapperClass }: Props = $props();
+	let { style, size = 'normal', items, wrapperClass }: Props = $props();
+
+	const paddingClass = { normal: 'p-6', small: 'p-3' } as const;
+	const titleClass = { normal: 'p-lg', small: 'p-base' } as const;
+	const descriptionClass = { normal: 'p-base', small: 'p-sm' } as const;
 
 	function getIconComponent(iconName: string): Component | null {
 		return Icons[iconName as keyof typeof Icons] as Component | null;
@@ -21,7 +26,7 @@
 </script>
 
 <div
-	class={`c-conditions c-conditions_${style} flex flex-col gap-4 rounded-xl p-5 ${wrapperClass || ''}`}
+	class={`c-callout c-callout__${style} flex flex-col gap-4 rounded-xl ${paddingClass[size]} ${wrapperClass || ''}`}
 >
 	{#each items as item (item.id)}
 		{@const IconComponent = getIconComponent(item.icon)}
@@ -30,8 +35,8 @@
 				<IconComponent class="h-6 shrink-0 grow-0 basis-6" />
 			{/if}
 			<div class="flex flex-col">
-				<p class="p-lg c-conditions-title font-bold">{item.title}</p>
-				<p class="p-base text-text-primary">{item.description}</p>
+				<p class="{titleClass[size]} c-callout-title font-bold">{item.title}</p>
+				<p class="{descriptionClass[size]} text-neutral-800">{item.description}</p>
 			</div>
 		</div>
 	{/each}

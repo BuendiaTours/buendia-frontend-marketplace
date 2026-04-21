@@ -39,6 +39,7 @@
 							title: 'Novedad',
 							color: 'bg-blue-300'
 						}}
+						wrapperClass="uppercase p-xs"
 					/>
 				</div>
 			{/if}
