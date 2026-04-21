@@ -28,6 +28,7 @@
 	import Steps from '$lib/components/marketplace/Steps.svelte';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
+	import TotalResume from '$lib/components/marketplace/TotalResume.svelte';
 
 	// Icons
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
@@ -212,6 +213,14 @@
 		}
 	];
 </script>
+
+<div class="wrapper mt-6">
+	<TotalResume wrapperClass="mb-6" />
+</div>
+
+<div class="wrapper mt-6">
+	<TotalResume inARow={true} />
+</div>
 
 <div class="wrapper mt-6">
 	<Steps />
