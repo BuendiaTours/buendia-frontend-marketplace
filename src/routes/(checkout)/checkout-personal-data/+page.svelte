@@ -163,7 +163,7 @@
 					<div class="flex flex-col gap-1.5">
 						<label class="p-sm font-medium" for="contactFirstName">Nombre</label>
 						<input
-							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							class="input w-full"
 							id="contactFirstName"
 							type="text"
 							bind:value={contactFirstName}
@@ -175,7 +175,7 @@
 					<div class="flex flex-col gap-1.5">
 						<label class="p-sm font-medium" for="contactLastName">Apellidos</label>
 						<input
-							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							class="input w-full"
 							id="contactLastName"
 							type="text"
 							bind:value={contactLastName}
@@ -187,7 +187,7 @@
 					<div class="flex flex-col gap-1.5">
 						<label class="p-sm font-medium" for="contactEmail">Email</label>
 						<input
-							class="w-full rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+							class="input w-full"
 							id="contactEmail"
 							type="email"
 							bind:value={contactEmail}
@@ -200,7 +200,7 @@
 						<label class="p-sm font-medium" for="phone-country">Teléfono</label>
 						<div class="flex gap-2">
 							<select
-								class="w-auto shrink-0 rounded-md border border-[oklch(var(--border,0.7_0_0))] bg-transparent px-3 py-2 text-base focus:outline-2 focus:outline-offset-2 focus:outline-[oklch(var(--primary,0.5_0.2_250))]"
+								class="input w-auto shrink-0"
 								id="phone-country"
 								bind:value={country}
 								aria-label="País"
@@ -226,14 +226,15 @@
 				{/if}
 
 				{#if shoppingCartStore.order?.bookings?.length}
+					<h2 class="h2 mt-6">Datos de la actividad</h2>
+					<p class="p-lg">El proveedor requiere estos datos adicionales</p>
+
 					{#each shoppingCartStore.order.bookings as booking (booking.id)}
 						{@const questions = questionsByOption.get(booking.optionId) ?? []}
 						{@const bookingLevelQs = questions.filter((q) => q.target === 'BOOKING')}
 						{@const passengerLevelQs = questions.filter((q) => q.target === 'PASSENGER')}
 
 						{#if bookingLevelQs.length || passengerLevelQs.length}
-							<h2 class="h2 mt-6">Datos de la actividad</h2>
-							<p class="p-lg">El proveedor requiere estos datos adicionales</p>
 							<div class="mt-6 flex flex-col gap-4 rounded-xl border border-neutral-200 p-6">
 								{#if booking.activityTitle || booking.optionTitle}
 									<p class="h3">
