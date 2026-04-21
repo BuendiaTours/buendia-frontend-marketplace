@@ -209,11 +209,26 @@
 	}
 
 	async function handleUnlink() {
-		if (!currentRate) return;
 		unlinking = true;
 		try {
-			await BOKUN_REQUEST.mapRate(fetch, currentRate.id, { coreId: null });
-			await delay(500);
+			// Happy path: there's a Bokun rate linked to this option.
+			// Detach the rate so the mapping is cleared in Bokun; the reset event
+			// back to core will transition the option out of ACTIVITY_INDEXED.
+			if (currentRate) {
+				await BOKUN_REQUEST.mapRate(fetch, currentRate.id, { coreId: null });
+				await delay(500);
+			} else {
+				// Out-of-sync path: core thinks the option is indexed but Bokun has
+				// no record. Ask integrations-app to reset the mapping anyway so it
+				// can emit the event that transitions core back to PENDING.
+				try {
+					await BOKUN_REQUEST.resetMapping(fetch, activity.id);
+					await delay(500);
+				} catch {
+					// integrations-app may 404 if the core-activity never reached it;
+					// proceed to clear the supplierOptionCode below regardless.
+				}
+			}
 			await ACTIVITY_OPTION_REQUEST.update(fetch, option.id, { supplierOptionCode: null });
 			unlinkDialog?.close();
 			supplierOptionCode = '';

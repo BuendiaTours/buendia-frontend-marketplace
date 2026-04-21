@@ -109,6 +109,16 @@ function getPublishErrorMessage(errorCode: string): string | undefined {
 	return messages[errorCode]?.();
 }
 
+function getMarkAsReadyErrorMessage(errorCode: string): string | undefined {
+	const messages: Record<string, () => string> = {
+		ACTIVITY_MISSING_PUBLISHED_OPTION: m.activities_markAsReadyErrorMissingOption,
+		ACTIVITY_MISSING_DESTINATION: m.activities_markAsReadyErrorMissingDestination,
+		ACTIVITY_MISSING_CATEGORY: m.activities_markAsReadyErrorMissingCategory,
+		ACTIVITY_MISSING_MEDIA: m.activities_markAsReadyErrorMissingMedia
+	};
+	return messages[errorCode]?.();
+}
+
 export const actions: Actions = {
 	update: createUpdateAction({
 		basePath: `${BACKOFFICE_PREFIX}/activities`,
@@ -193,9 +203,22 @@ export const actions: Actions = {
 			if (err && typeof err === 'object' && 'status' in err && err.status === 303) throw err;
 
 			console.error('[activities/markAsReady] error', err);
+
+			let errorMessage: string = m.activities_markAsReadyErrorGeneric();
+
+			if (
+				err instanceof ApiError &&
+				err.data &&
+				typeof err.data === 'object' &&
+				'errorCode' in err.data
+			) {
+				const code = (err.data as { errorCode: string }).errorCode;
+				errorMessage = getMarkAsReadyErrorMessage(code) ?? errorMessage;
+			}
+
 			setFlashMessage(cookies, {
 				type: 'error',
-				message: m.activities_markAsReadyErrorGeneric(),
+				message: errorMessage,
 				code: 'markAsReady.error'
 			});
 			throw redirect(303, `${BACKOFFICE_PREFIX}/activities/${params.id}/edit`);

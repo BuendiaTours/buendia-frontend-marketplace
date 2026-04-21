@@ -171,15 +171,24 @@
 	}
 
 	async function handleUnlink() {
-		if (!turitopProduct) return;
 		unlinking = true;
 		try {
-			await TURITOP_REQUEST.resetMapping(fetch, activity.id, {
-				bookingSystem: 'TURITOP',
-				bookingSystemId: turitopProduct.shortId,
-				tenant: turitopProduct.tenant
-			});
-			await delay(500);
+			// Happy path: there's a TuriTop product linked. Reset the mapping
+			// there; integrations-app will emit the event that transitions core
+			// out of ACTIVITY_INDEXED.
+			if (turitopProduct) {
+				await TURITOP_REQUEST.resetMapping(fetch, activity.id, {
+					bookingSystem: 'TURITOP',
+					bookingSystemId: turitopProduct.shortId,
+					tenant: turitopProduct.tenant
+				});
+				await delay(500);
+			}
+			// Out-of-sync path: no TuriTop product but core still says indexed.
+			// We skip the integrations-app reset (we have no product info to send)
+			// and just clear the core supplierOptionCode. The state machine will
+			// stay in ACTIVITY_INDEXED until the next successful indexation —
+			// backend needs a dedicated endpoint to force-reset this case.
 			await ACTIVITY_OPTION_REQUEST.update(fetch, option.id, { supplierOptionCode: null });
 			unlinkDialog?.close();
 			supplierOptionCode = '';
