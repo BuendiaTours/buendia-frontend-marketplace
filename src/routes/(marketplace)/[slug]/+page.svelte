@@ -35,6 +35,7 @@
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
+	import ContentBlockSingle from '$lib/components/marketplace/ContentBlockSingle.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -410,6 +411,13 @@
 	<ContentBlockStack
 		title="Los mejores planes para descubrir {data.destination.name}"
 		items={data.destination.contentBlockStack}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	/>
+
+	<ContentBlockSingle
+		title="Mi título"
+		description="<p>Bilbao es una ciudad que combina tradición vasca, arquitectura contemporánea y un entorno natural que se disfruta en cualquier época del año. En esta selección encontrarás propuestas para descubrir la ciudad a través de su arte, su gastronomía y sus barrios más representativos. Una guía clara y práctica para organizar tu viaje, ya sea una primera escapada o una visita más pausada.</p><p>Podrás inspirarte con actividades diversas: recorrer el Museo Guggenheim, pasear por el casco viejo, disfrutar de la rutas de pintxos o acercarte a miradores y playas de la costa vizcaína. Si te preguntas qué hacer en Bilbao, aquí encontrarás ideas actualizadas y adaptadas a lo que más valoran quienes visitan la ciudad.</p><p>Bilbao destaca por su equilibrio entre cultura, paisaje y vida local. Este punto de partida te ayudará a diseñar un itinerario variado, combinando arte, gastronomía y visitas a sus rincones más emblemáticos.</p>"
+		image="https://dummyimage.com/580x366/000/fff.jpg"
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	/>
 
