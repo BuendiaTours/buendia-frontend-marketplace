@@ -41,7 +41,6 @@
 					{#each activeBookings as booking (booking.id)}
 						<CheckoutCard
 							isBuendia={true}
-							disabled={true}
 							image="https://dummyimage.com/140x140/000/fff.jpg"
 							title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
 							rating={4.7}
@@ -69,7 +68,6 @@
 									text: 'Cancelación gratuita hasta el inicio de la actividad'
 								}
 							]}
-							cancellation="Cancelación gratuita hasta el inicio de la actividad"
 						/>
 
 						{@const passengerItems = Object.values(
@@ -148,31 +146,59 @@
 
 			{#if removedBookingsStore.bookings.length}
 				<p class="mt-12 mb-4">Anteriormente en tu carrito</p>
-				<ul class="space-y-8">
-					{#each removedBookingsStore.bookings as booking (booking.id)}
-						<li>
-							{#if booking.activityTitle || booking.optionTitle}
-								<p>
-									{#if booking.activityTitle}{booking.activityTitle}{booking.optionTitle
-											? ' · '
-											: ''}{/if}{booking.optionTitle ?? ''}
-								</p>
-							{/if}
-							{#if booking.subtotalPrice != null}
-								<p>{formatEuro(booking.subtotalPrice)}</p>
-							{/if}
-							<span
-								class="cursor-pointer underline underline-offset-8"
-								role="button"
-								tabindex="0"
-								onclick={() => removedBookingsStore.restore(booking.id)}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.restore(booking.id);
-								}}>Volver a añadir al carrito</span
-							>
-						</li>
-					{/each}
-				</ul>
+
+				{#each removedBookingsStore.bookings as booking (booking.id)}
+					{#if booking.activityTitle || booking.optionTitle}
+						<p>
+							{#if booking.activityTitle}{booking.activityTitle}{booking.optionTitle
+									? ' · '
+									: ''}{/if}{booking.optionTitle ?? ''}
+						</p>
+					{/if}
+					{#if booking.subtotalPrice != null}
+						<p>{formatEuro(booking.subtotalPrice)}</p>
+					{/if}
+					<span
+						class="cursor-pointer underline underline-offset-8"
+						role="button"
+						tabindex="0"
+						onclick={() => removedBookingsStore.restore(booking.id)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.restore(booking.id);
+						}}>Volver a añadir al carrito</span
+					>
+					<CheckoutCard
+						isBuendia={true}
+						disabled={true}
+						image="https://dummyimage.com/140x140/000/fff.jpg"
+						title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+						rating={4.7}
+						opinions={432}
+						list={[
+							{
+								icon: 'Ticket',
+								text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+							},
+							{
+								icon: 'User',
+								text: '3 adultos'
+							},
+							{
+								icon: 'Calendar',
+								text: 'Domingo, 20 de julio del 2026'
+							},
+							{
+								icon: 'ClockCircle',
+								text: '11:00'
+							},
+							{
+								icon: 'CheckCircle',
+								iconColor: 'text-green-500',
+								text: 'Cancelación gratuita hasta el inicio de la actividad'
+							}
+						]}
+					/>
+				{/each}
 			{/if}
 
 			<details class="mt-12">

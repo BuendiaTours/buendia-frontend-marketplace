@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as Icons from '$lib/icons/Linear';
-	import type { Component } from 'svelte';
+	import type { Component, Snippet } from 'svelte';
 	import StarRating from '../StarRating.svelte';
 
 	type Props = {
+		actions?: Snippet;
 		disabled?: boolean;
 		image: string;
 		isBuendia?: boolean;
@@ -14,18 +15,18 @@
 		wrapperClass?: string;
 	};
 
-	let { isBuendia, image, title, rating, opinions, list, disabled, wrapperClass }: Props = $props();
+	let { actions, isBuendia, image, title, rating, opinions, list, disabled, wrapperClass }: Props =
+		$props();
 
 	function getIcon(name: string): Component | null {
 		return (Icons[name as keyof typeof Icons] as Component) ?? null;
 	}
 
 	const ByBuendia = Icons.ByBuendia;
-	const CheckCircle = Icons.CheckCircle;
 </script>
 
 <div
-	class="mb-5 flex flex-col gap-4 rounded-xl border border-solid border-neutral-300 p-3 {wrapperClass}"
+	class="co-checkout-card mb-5 flex flex-col gap-4 rounded-xl border border-solid border-neutral-300 p-3 {wrapperClass}"
 >
 	<div class="flex items-start gap-3">
 		<div class="h-35 flex-[0_0_140px] overflow-hidden rounded-lg" class:opacity-50={disabled}>
@@ -64,19 +65,8 @@
 		{/each}
 	</div>
 	<div class="flex items-end justify-between">
-		<div class="flex gap-4">
-			{#if disabled}
-				<button type="button" class="p-base font-bold text-violet-500 underline underline-offset-4">
-					Volver a añadir al carrito
-				</button>
-			{:else}
-				<button type="button" class="p-base font-bold text-violet-500 underline underline-offset-4">
-					Modificar
-				</button>
-				<button type="button" class="p-base font-bold text-violet-500 underline underline-offset-4">
-					Eliminar
-				</button>
-			{/if}
+		<div class="co-checkout-card__actions flex gap-4">
+			{@render actions?.()}
 		</div>
 		<div class:opacity-50={disabled}>
 			<p class="p-xs text-neutral-800">
