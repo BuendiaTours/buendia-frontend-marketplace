@@ -25,14 +25,17 @@
 </script>
 
 <div class="wrapper">
-	<div class="page-grid">
+	<div class="page-grid gap-x-12">
 		<div class="col-content">
-			<h1>Checkout Order</h1>
+			{#if activeBookings.length}
+				<p class="h1">Tienes {activeBookings.length} planes en tu carrito</p>
+			{:else}
+				<p class="h1">Tu carrito está vacío</p>
+			{/if}
 
-			<CartExpiryCallout />
+			<CartExpiryCallout wrapperClass="mt-6" />
 
 			{#if activeBookings.length}
-				<p>Tienes ({activeBookings.length}) planes en tu carrito</p>
 				<ul class="space-y-8">
 					{#each activeBookings as booking (booking.id)}
 						{@const passengerItems = Object.values(
@@ -159,7 +162,7 @@
 			<TotalResume
 				bookingCount={shoppingCartStore.bookingCount}
 				totalAmount={shoppingCartStore.totalAmount}
-				wrapperClass="mb-6"
+				wrapperClass="mt-6 mb-6"
 			>
 				{#snippet actions()}
 					<button

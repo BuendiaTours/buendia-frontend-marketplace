@@ -55,56 +55,58 @@
 	El -1 es un shortcut para "la última línea" (sea cual sea el número de columnas), por eso .col-full usa 1 / -1.
 */
 
-.page-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	column-gap: 1rem;
+@layer components {
+	.page-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		column-gap: 1rem;
 
-	@media (width >= theme(--breakpoint-md)) {
-		grid-template-columns: repeat(8, 1fr);
+		@media (width >= theme(--breakpoint-md)) {
+			grid-template-columns: repeat(8, 1fr);
+		}
+
+		@media (width >= theme(--breakpoint-lg)) {
+			grid-template-columns: repeat(12, 1fr);
+		}
 	}
 
-	@media (width >= theme(--breakpoint-lg)) {
-		grid-template-columns: repeat(12, 1fr);
-	}
-}
-
-.col-full {
-	grid-column: 1 / -1;
-}
-
-.col-content {
-	grid-column: 1 / -1;
-
-	@media (width >= theme(--breakpoint-md)) {
-		grid-column: 1 / 6;
+	.col-full {
+		grid-column: 1 / -1;
 	}
 
-	@media (width >= theme(--breakpoint-lg)) {
-		grid-column: 1 / 9;
-	}
-}
+	.col-content {
+		grid-column: 1 / -1;
 
-.col-sidebar {
-	grid-column: 1 / -1;
+		@media (width >= theme(--breakpoint-md)) {
+			grid-column: 1 / 6;
+		}
 
-	@media (width >= theme(--breakpoint-md)) {
-		grid-column: 6 / -1;
-	}
-
-	@media (width >= theme(--breakpoint-lg)) {
-		grid-column: 9 / -1;
-	}
-}
-
-.col-narrow {
-	grid-column: 1 / -1;
-
-	@media (width >= theme(--breakpoint-md)) {
-		grid-column: 2 / 8;
+		@media (width >= theme(--breakpoint-lg)) {
+			grid-column: 1 / 9;
+		}
 	}
 
-	@media (width >= theme(--breakpoint-lg)) {
-		grid-column: 3 / 11;
+	.col-sidebar {
+		grid-column: 1 / -1;
+
+		@media (width >= theme(--breakpoint-md)) {
+			grid-column: 6 / -1;
+		}
+
+		@media (width >= theme(--breakpoint-lg)) {
+			grid-column: 9 / -1;
+		}
+	}
+
+	.col-narrow {
+		grid-column: 1 / -1;
+
+		@media (width >= theme(--breakpoint-md)) {
+			grid-column: 2 / 8;
+		}
+
+		@media (width >= theme(--breakpoint-lg)) {
+			grid-column: 3 / 11;
+		}
 	}
 }
