@@ -39,73 +39,73 @@
 			<CartExpiryCallout wrapperClass="mt-6" />
 
 			{#if activeBookings.length}
-				<ul class="mt-6 space-y-8">
-					{#each activeBookings as booking (booking.id)}
-						<CheckoutCard
-							variant="IS_BUENDIA"
-							image="https://dummyimage.com/140x140/000/fff.jpg"
-							title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
-							rating={4.7}
-							opinions={432}
-							currentPrice={booking.subtotalPrice ?? undefined}
-							previousPrice={booking.previousPrice ?? undefined}
-							list={[
-								{
-									icon: 'Ticket',
-									text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
-								},
-								...(booking.passengers?.length
-									? [{ icon: 'User', text: formatPassengersFromBooking(booking.passengers) ?? '' }]
-									: []),
-								...(booking.activityDatetime
-									? [{ icon: 'Calendar', text: formatActivityDate(booking.activityDatetime) }]
-									: []),
-								...(booking.startTime ? [{ icon: 'ClockCircle', text: booking.startTime }] : []),
-								{
-									icon: 'CheckCircle',
-									iconColor: 'text-green-500',
-									text: 'Cancelación gratuita hasta el inicio de la actividad'
-								}
-							]}
-						>
-							{#snippet actions()}
-								<!-- actions -->
-								{#if editingBookingId !== booking.id}
-									<div class="flex gap-4">
-										<span
-											class="text-accent cursor-pointer underline underline-offset-8"
-											role="button"
-											tabindex="0"
-											onclick={() => (editingBookingId = booking.id)}
-											onkeydown={(e) => {
-												if (e.key === 'Enter' || e.key === ' ') editingBookingId = booking.id;
-											}}>Modificar</span
-										>
-										<span
-											class="text-accent cursor-pointer underline underline-offset-8"
-											role="button"
-											tabindex="0"
-											onclick={() => removedBookingsStore.add(booking)}
-											onkeydown={(e) => {
-												if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
-											}}>Eliminar</span
-										>
-									</div>
-								{/if}
-								{#if editingBookingId === booking.id}
-									<BookingModifyForm
-										{booking}
-										onSave={async () => {
-											await shoppingCartStore.loadOrder();
-											editingBookingId = null;
-										}}
-										onCancel={() => (editingBookingId = null)}
-									/>
-								{/if}
-							{/snippet}
-						</CheckoutCard>
-					{/each}
-				</ul>
+				{#each activeBookings as booking (booking.id)}
+					<p class="h2 mt-6 mb-6">{formatActivityDate(booking.activityDatetime)}</p>
+
+					<CheckoutCard
+						variant="IS_BUENDIA"
+						image="https://dummyimage.com/140x140/000/fff.jpg"
+						title={[booking.activityTitle, booking.optionTitle].filter(Boolean).join(' · ')}
+						rating={4.7}
+						opinions={432}
+						currentPrice={booking.subtotalPrice ?? undefined}
+						previousPrice={booking.previousPrice ?? undefined}
+						list={[
+							{
+								icon: 'Ticket',
+								text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+							},
+							...(booking.passengers?.length
+								? [{ icon: 'User', text: formatPassengersFromBooking(booking.passengers) ?? '' }]
+								: []),
+							...(booking.activityDatetime
+								? [{ icon: 'Calendar', text: formatActivityDate(booking.activityDatetime) }]
+								: []),
+							...(booking.startTime ? [{ icon: 'ClockCircle', text: booking.startTime }] : []),
+							{
+								icon: 'CheckCircle',
+								iconColor: 'text-green-500',
+								text: 'Cancelación gratuita hasta el inicio de la actividad'
+							}
+						]}
+					>
+						{#snippet actions()}
+							<!-- actions -->
+							{#if editingBookingId !== booking.id}
+								<div class="flex gap-4">
+									<span
+										class="text-accent cursor-pointer underline underline-offset-8"
+										role="button"
+										tabindex="0"
+										onclick={() => (editingBookingId = booking.id)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') editingBookingId = booking.id;
+										}}>Modificar</span
+									>
+									<span
+										class="text-accent cursor-pointer underline underline-offset-8"
+										role="button"
+										tabindex="0"
+										onclick={() => removedBookingsStore.add(booking)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
+										}}>Eliminar</span
+									>
+								</div>
+							{/if}
+							{#if editingBookingId === booking.id}
+								<BookingModifyForm
+									{booking}
+									onSave={async () => {
+										await shoppingCartStore.loadOrder();
+										editingBookingId = null;
+									}}
+									onCancel={() => (editingBookingId = null)}
+								/>
+							{/if}
+						{/snippet}
+					</CheckoutCard>
+				{/each}
 			{:else}
 				<p class="mt-6">No hay bookings</p>
 			{/if}

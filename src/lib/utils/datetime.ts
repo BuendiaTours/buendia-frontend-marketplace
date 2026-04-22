@@ -2,7 +2,8 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export function formatActivityDate(isoDateTime: string): string {
-	return format(new Date(isoDateTime), "EEEE, d 'de' MMMM 'del' yyyy", { locale: es });
+	const result = format(new Date(isoDateTime), "EEEE, d 'de' MMMM 'del' yyyy", { locale: es });
+	return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
 export function formatSlotTime(isoDateTime: string): string {
