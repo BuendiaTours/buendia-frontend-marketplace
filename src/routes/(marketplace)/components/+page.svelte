@@ -15,7 +15,7 @@
 	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
+	import CheckoutCard from '$lib/components/marketplace/checkout/CheckoutCard.svelte';
 	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
@@ -225,27 +225,27 @@
 		opinions={432}
 		list={[
 			{
-				id: 'list1',
 				icon: 'Ticket',
 				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
 			},
 			{
-				id: 'list2',
 				icon: 'User',
 				text: '3 adultos'
 			},
 			{
-				id: 'list3',
 				icon: 'Calendar',
 				text: 'Domingo, 20 de julio del 2026'
 			},
 			{
-				id: 'list4',
 				icon: 'ClockCircle',
 				text: '11:00'
+			},
+			{
+				icon: 'CheckCircle',
+				iconColor: 'text-green-500',
+				text: 'Cancelación gratuita hasta el inicio de la actividad'
 			}
 		]}
-		cancellation="Cancelación gratuita hasta el inicio de la actividad"
 	/>
 
 	<CheckoutCard
@@ -257,27 +257,27 @@
 		opinions={432}
 		list={[
 			{
-				id: 'list1',
 				icon: 'Ticket',
 				text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
 			},
 			{
-				id: 'list2',
 				icon: 'User',
 				text: '3 adultos'
 			},
 			{
-				id: 'list3',
 				icon: 'Calendar',
 				text: 'Domingo, 20 de julio del 2026'
 			},
 			{
-				id: 'list4',
 				icon: 'ClockCircle',
 				text: '11:00'
+			},
+			{
+				icon: 'CheckCircle',
+				iconColor: 'text-green-500',
+				text: 'Cancelación gratuita hasta el inicio de la actividad'
 			}
 		]}
-		cancellation="Cancelación gratuita hasta el inicio de la actividad"
 	/>
 </div>
 

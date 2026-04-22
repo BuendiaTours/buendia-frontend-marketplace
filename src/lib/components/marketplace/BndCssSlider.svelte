@@ -98,7 +98,7 @@
 		class="bnd-css-slider-track flex snap-x snap-mandatory gap-3 overflow-x-auto"
 		style="scroll-timeline-name: {tlName}; scroll-timeline-axis: inline;"
 	>
-		{#each items as item, i (item.id)}
+		{#each items as item, i (i)}
 			<div
 				class={slideClass}
 				style="view-timeline-name: --bnd-slide-{uid}-{i}; view-timeline-axis: inline;"

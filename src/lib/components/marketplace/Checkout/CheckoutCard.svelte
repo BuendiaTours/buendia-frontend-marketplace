@@ -1,31 +1,20 @@
 <script lang="ts">
 	import * as Icons from '$lib/icons/Linear';
 	import type { Component } from 'svelte';
-	import StarRating from './StarRating.svelte';
+	import StarRating from '../StarRating.svelte';
 
 	type Props = {
-		isBuendia?: boolean;
 		disabled?: boolean;
 		image: string;
-		title: string;
-		rating?: number;
+		isBuendia?: boolean;
+		list: Array<{ icon: string; text: string; iconColor?: string }>;
 		opinions?: number;
-		list: Array<{ id: string; icon: string; text: string }>;
-		cancellation?: string;
+		rating?: number;
+		title: string;
 		wrapperClass?: string;
 	};
 
-	let {
-		isBuendia,
-		image,
-		title,
-		rating,
-		opinions,
-		list,
-		cancellation,
-		disabled,
-		wrapperClass
-	}: Props = $props();
+	let { isBuendia, image, title, rating, opinions, list, disabled, wrapperClass }: Props = $props();
 
 	function getIcon(name: string): Component | null {
 		return (Icons[name as keyof typeof Icons] as Component) ?? null;
@@ -64,21 +53,15 @@
 		</div>
 	</div>
 	<div class="flex flex-col gap-2" class:opacity-50={disabled}>
-		{#each list as item (item.id)}
+		{#each list as item, i (i)}
 			{@const IconComponent = getIcon(item.icon)}
 			<div class="p-sm flex gap-2 text-neutral-700">
 				{#if IconComponent}
-					<IconComponent size={20} class="flex-[0_0_20px]" />
+					<IconComponent size={20} class="flex-[0_0_20px] {item.iconColor}" />
 				{/if}
 				{item.text}
 			</div>
 		{/each}
-		{#if cancellation}
-			<div class="p-sm flex gap-2 text-neutral-700">
-				<CheckCircle size={20} class="text-success-700 flex-[0_0_20px]" />
-				{cancellation}
-			</div>
-		{/if}
 	</div>
 	<div class="flex items-end justify-between">
 		<div class="flex gap-4">

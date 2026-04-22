@@ -4,6 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/state';
 
+	// Icons
 	import { Close, InfoCircle, DangerTriangle, CheckCircle } from '$lib/icons/Linear';
 
 	/**

@@ -22,7 +22,7 @@
 </script>
 
 <div
-	class="
+	class="co-total-resume
   flex flex-col
   {variant === 'DEFAULT'
 		? 'gap-4 rounded-xl border border-solid border-neutral-300 px-6 pt-4 pb-6'

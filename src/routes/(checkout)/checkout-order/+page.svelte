@@ -12,9 +12,10 @@
 	import { removedBookingsStore } from '$lib/stores/removedBookings.svelte';
 
 	// Components
-	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
-	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
+	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
+	import CheckoutCard from '$lib/components/marketplace/checkout/CheckoutCard.svelte';
+	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
 
 	const activeBookings = $derived(
@@ -36,8 +37,41 @@
 			<CartExpiryCallout wrapperClass="mt-6" />
 
 			{#if activeBookings.length}
-				<ul class="space-y-8">
+				<ul class="mt-6 space-y-8">
 					{#each activeBookings as booking (booking.id)}
+						<CheckoutCard
+							isBuendia={true}
+							disabled={true}
+							image="https://dummyimage.com/140x140/000/fff.jpg"
+							title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
+							rating={4.7}
+							opinions={432}
+							list={[
+								{
+									icon: 'Ticket',
+									text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
+								},
+								{
+									icon: 'User',
+									text: '3 adultos'
+								},
+								{
+									icon: 'Calendar',
+									text: 'Domingo, 20 de julio del 2026'
+								},
+								{
+									icon: 'ClockCircle',
+									text: '11:00'
+								},
+								{
+									icon: 'CheckCircle',
+									iconColor: 'text-green-500',
+									text: 'Cancelación gratuita hasta el inicio de la actividad'
+								}
+							]}
+							cancellation="Cancelación gratuita hasta el inicio de la actividad"
+						/>
+
 						{@const passengerItems = Object.values(
 							(booking.passengers ?? []).reduce(
 								(acc, p) => {
