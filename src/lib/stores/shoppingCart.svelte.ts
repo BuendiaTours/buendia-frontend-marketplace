@@ -30,7 +30,7 @@ class ShoppingCartState {
 			if (storedUserId) {
 				this.userId = storedUserId;
 			} else {
-				const newUserId = crypto.randomUUID();
+				const newUserId = null; // crypto.randomUUID();
 				localStorage.setItem(CART_USER_ID_KEY, newUserId);
 				this.userId = newUserId;
 			}
