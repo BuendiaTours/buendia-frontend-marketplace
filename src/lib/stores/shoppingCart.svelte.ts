@@ -30,7 +30,7 @@ class ShoppingCartState {
 			if (storedUserId) {
 				this.userId = storedUserId;
 			} else {
-				const newUserId = null; // crypto.randomUUID();
+				const newUserId = crypto.randomUUID();
 				localStorage.setItem(CART_USER_ID_KEY, newUserId);
 				this.userId = newUserId;
 			}
@@ -102,7 +102,8 @@ class ShoppingCartState {
 				const newOrderId = crypto.randomUUID();
 				const payload: CreateOrderPayload = {
 					id: newOrderId,
-					userId: this.userId ?? undefined,
+					// de momento no lo. incluímos en el JSON
+					// userId: this.userId ?? undefined,
 					booking: {
 						id: crypto.randomUUID(),
 						optionId: option.id,
