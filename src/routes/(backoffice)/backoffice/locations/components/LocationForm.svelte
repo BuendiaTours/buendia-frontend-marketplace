@@ -14,7 +14,7 @@
 	import FormGeoJson from '$lib/components/backoffice/forms/FormGeoJson.svelte';
 	import FormInputText from '$lib/components/backoffice/forms/FormInputText.svelte';
 	import FormSelect from '$lib/components/backoffice/forms/FormSelect.svelte';
-	import FormTextarea from '$lib/components/backoffice/forms/FormTextarea.svelte';
+	import FormTextareaMarkdown from '$lib/components/backoffice/forms/FormTextareaMarkdown.svelte';
 	import LocationFormActions from './LocationFormActions.svelte';
 	import FormAsyncSearch from '$lib/components/backoffice/forms/FormAsyncSearch.svelte';
 	import { searchLocations, loadLocationById } from '../queries/location-search.queries';
@@ -88,12 +88,11 @@
 				wrapperClass="md:col-span-12"
 			/>
 
-			<FormTextarea
-				id="descriptionShort"
-				label={m.locations_labelDescriptionShort()}
-				bind:value={$form.descriptionShort}
-				error={$errors.descriptionShort}
-				rows={3}
+			<FormTextareaMarkdown
+				id="descriptionLong"
+				label={m.locations_labelDescriptionLong()}
+				bind:value={$form.descriptionLong}
+				error={$errors.descriptionLong}
 				wrapperClass="md:col-span-12"
 			/>
 
