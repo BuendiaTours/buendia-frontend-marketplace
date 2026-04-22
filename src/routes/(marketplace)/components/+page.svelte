@@ -218,7 +218,7 @@
 
 <div class="wrapper">
 	<CheckoutCard
-		isBuendia={true}
+		variant="IS_BUENDIA"
 		image="https://dummyimage.com/140x140/000/fff.jpg"
 		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"
 		rating={4.7}
@@ -249,7 +249,7 @@
 	/>
 
 	<CheckoutCard
-		isBuendia={true}
+		variant="IS_BUENDIA"
 		disabled={true}
 		image="https://dummyimage.com/140x140/000/fff.jpg"
 		title="Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa"

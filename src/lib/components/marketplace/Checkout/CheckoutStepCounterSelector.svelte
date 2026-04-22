@@ -14,8 +14,8 @@
 	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
 	import CheckoutStepCounter from './CheckoutStepCounter.svelte';
 
-	// Translations
-	import * as m from '$paraglide/messages';
+	// Utils
+	import { formatPassengerSummary } from '$lib/utils/passengers';
 
 	type Ticket = ActivityOption['individualTickets'][number];
 
@@ -28,8 +28,6 @@
 	const checkout = getCheckout();
 	const adultCount = $derived(checkout.counts.get('ADULT') ?? 0);
 
-	const messages = m as unknown as Record<string, () => string>;
-
 	const {
 		elements: { trigger, content },
 		states: { open }
@@ -39,17 +37,11 @@
 		positioning: { sameWidth: true }
 	});
 
-	const summaryLabel = $derived.by(() => {
-		const parts = activeTicketGroups
-			.map((t) => {
-				const count = checkout.counts.get(t.group) ?? 0;
-				if (count === 0) return null;
-				const label = messages[`enum_passengerKind_${t.group}_name`]?.() ?? t.group;
-				return `${count} ${label}`;
-			})
-			.filter((x): x is string => x !== null);
-		return parts.length > 0 ? parts.join(', ') : null;
-	});
+	const summaryLabel = $derived(
+		formatPassengerSummary(
+			activeTicketGroups.map((t) => [t.group, checkout.counts.get(t.group) ?? 0])
+		)
+	);
 </script>
 
 <div class="relative w-full">
