@@ -286,7 +286,7 @@
 </div>
 
 <div class="wrapper mt-6">
-	<TotalResume inARow={true} />
+	<TotalResume variant="IN_A_ROW" />
 </div>
 
 <div class="wrapper mt-6">

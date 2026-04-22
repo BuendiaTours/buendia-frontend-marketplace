@@ -161,7 +161,7 @@
 				totalAmount={shoppingCartStore.totalAmount}
 				wrapperClass="mb-6"
 			>
-				{#snippet button()}
+				{#snippet actions()}
 					<button
 						class="e-button w-full"
 						disabled={!activeBookings.length}
