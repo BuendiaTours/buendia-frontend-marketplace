@@ -136,4 +136,7 @@
 	--line-height-editorial-p-sm-tablet: 1.625rem; /* 26px */
 	--font-size-editorial-p-sm-mobile: 0.875rem; /* 14px */
 	--line-height-editorial-p-sm-mobile: 1.5rem; /* 24px */
+
+	--font-size-trustpilot: 1.25rem; /* 20px */
+	--line-height-trustpilot: 2.25rem; /* 36px */
 }
