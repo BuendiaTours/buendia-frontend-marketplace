@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 
 	// Icons
-	import { CartLarge4, CustomMiniCancel } from '$lib/icons/Linear';
+	import { Bag5, CustomMiniCancel } from '$lib/icons/Linear';
 
 	// Types
 	import type { PassengerLineItem } from '$lib/types';
@@ -27,15 +27,16 @@
 	});
 </script>
 
-<button use:melt={$trigger} class="relative cursor-pointer p-2">
-	<CartLarge4 class="size-6" />
+<button use:melt={$trigger} class="relative flex cursor-pointer flex-row gap-2 p-2">
+	<Bag5 class="size-6" />
 	{#if shoppingCartStore.bookingCount > 0}
 		<span
-			class="p-xs absolute top-0 right-0 flex size-5 items-center justify-center rounded-full bg-red-500 font-bold text-white"
+			class="p-xs absolute top-1 left-6 flex size-4 items-center justify-center rounded-full bg-red-500 font-bold text-white"
 		>
 			{shoppingCartStore.bookingCount}
 		</span>
 	{/if}
+	<p class="h3">Carrito</p>
 </button>
 
 {#if $open}
