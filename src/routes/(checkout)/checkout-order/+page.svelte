@@ -15,6 +15,7 @@
 	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
+	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
 
 	const activeBookings = $derived(
 		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))
@@ -155,11 +156,19 @@
 			</details>
 		</div>
 		<div class="col-sidebar pt-6">
-			<button
-				class="e-button"
-				disabled={!activeBookings.length}
-				onclick={() => goto('/checkout-personal-data')}>Tramitar pedido</button
+			<TotalResume
+				bookingCount={shoppingCartStore.bookingCount}
+				totalAmount={shoppingCartStore.totalAmount}
+				wrapperClass="mb-6"
 			>
+				{#snippet button()}
+					<button
+						class="e-button w-full"
+						disabled={!activeBookings.length}
+						onclick={() => goto('/checkout-personal-data')}>Tramitar pedido</button
+					>
+				{/snippet}
+			</TotalResume>
 		</div>
 	</div>
 </div>

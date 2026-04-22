@@ -12,10 +12,11 @@
 	// Components
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
+	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
 	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import CheckoutCard from '$lib/components/marketplace/CheckoutCard.svelte';
-	import ConfirmationHeroImg from '$lib/components/marketplace/Checkout/ConfirmationHeroImg.svelte';
+	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
 	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
 	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
@@ -27,8 +28,9 @@
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import Steps from '$lib/components/marketplace/Steps.svelte';
 	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import TotalResume from '$lib/components/marketplace/TotalResume.svelte';
+	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
 
 	// Icons
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';
@@ -292,6 +294,25 @@
 </div>
 
 <div class="wrapper mt-6">
+	<ThankYouAccountCreate
+		title="Crea tu cuenta en buendía"
+		description="Regístrate con un solo click. Tendrás acceso a la gestión de tu reserva desde tu Área personal y podrás disfrutar de ofertas exclusivas."
+		buttonText="Registrarse"
+		slug="/"
+	/>
+</div>
+
+<div class="wrapper mt-6">
+	<ThankYouAccountCreate
+		title="Tu reserva está en tu área personal"
+		description="Desde tu área personal podrás gestionar tu reserva siempre que quieras"
+		buttonText="Ir a Área personal"
+		buttonClass="e-button-secondary"
+		slug="/"
+	/>
+</div>
+
+<div class="wrapper mt-6">
 	<div class="lg:max-w-[770px]">
 		<ConfirmationHeroImg
 			title="¡Todo listo para Lisboa!"
@@ -305,6 +326,31 @@
 			{/snippet}
 		</ConfirmationHeroImg>
 	</div>
+</div>
+
+<div class="wrapper mt-6">
+	<ActivityTips
+		title="Consejos prácticos para el Free tour"
+		items={[
+			{
+				icon: 'HandHeart',
+				title: 'Tú pones el precio',
+				description:
+					'Tú decides cuánto pagar. Para orientarte: 10-15 € por persona es lo que suele darse.'
+			},
+			{
+				icon: 'WatchRound',
+				title: 'Llega con margen',
+				description: 'Con 10 minutos de antelación tendrás tiempo de localizar al guía sin agobios.'
+			},
+			{
+				icon: 'CalendarCheck',
+				title: 'Si algo cambia, avísanos',
+				description:
+					'Aunque los free tours no requieren pago por adelantado, si no puedes asistir, te pedimos que liberes tu plaza, así otras personas podrán disfrutar de la experiencia si tú no puedes ir.'
+			}
+		]}
+	/>
 </div>
 
 <div class="wrapper mt-6">

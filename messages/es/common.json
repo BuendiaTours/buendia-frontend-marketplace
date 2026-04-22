@@ -14,5 +14,15 @@
 	"common_save": "Guardar",
 	"common_search": "Buscar",
 	"common_success": "Éxito",
-	"common_view_more": "Ver más"
+	"common_view_more": "Ver más",
+	"common_plans": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{count} plan",
+				"countPlural=*": "{count} planes"
+			}
+		}
+	]
 }

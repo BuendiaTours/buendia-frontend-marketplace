@@ -34,7 +34,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
 	import Spacer from '$lib/components/marketplace/Spacer.svelte';
-	import CheckoutActivityOption from '$lib/components/marketplace/Checkout/CheckoutActivityOption.svelte';
+	import CheckoutActivityOption from '$lib/components/marketplace/checkout/CheckoutActivityOption.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
@@ -44,7 +44,7 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
-	import { Checkout } from '$lib/components/marketplace/Checkout';
+	import { Checkout } from '$lib/components/marketplace/checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();

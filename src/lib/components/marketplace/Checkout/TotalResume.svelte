@@ -1,12 +1,22 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	// Utils
+	import { formatEuro } from '$lib/utils/currency';
+	import * as m from '$paraglide/messages';
+
+	// Icons
 	import { CheckCircle } from '$lib/icons/Linear';
 
 	type Props = {
 		inARow?: boolean;
+		bookingCount?: number;
+		totalAmount?: number;
 		wrapperClass?: string;
+		actions?: Snippet;
 	};
 
-	let { inARow, wrapperClass }: Props = $props();
+	let { inARow, bookingCount, totalAmount, wrapperClass, actions }: Props = $props();
 </script>
 
 <div
@@ -17,11 +27,15 @@
 "
 >
 	<div class="flex justify-between text-neutral-800">
-		<div class="flex gap-2">
+		<div class="flex items-baseline gap-2">
 			<p class="text-price">Total</p>
-			<p class="p-lg font-bold">(2 planes)</p>
+			{#if bookingCount}
+				<p class="p-lg font-bold">({m.common_plans({ count: bookingCount })})</p>
+			{/if}
 		</div>
-		<div class="text-price">118,00 €</div>
+		{#if totalAmount}
+			<div class="text-price">{formatEuro(totalAmount)}</div>
+		{/if}
 	</div>
 	<div class="p-base text-neutral-600 {inARow ? 'mt-2 mb-2 sm:mt-0 sm:text-right' : ''}">
 		Todas las tasas e impuestos incluidos
@@ -31,9 +45,11 @@
 			? 'gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6'
 			: ''} gap-6"
 	>
-		<div class={inARow ? 'sm:order-last' : ''}>
-			<button type="button" class="e-button w-full"> Tramitar pedido </button>
-		</div>
+		{#if actions}
+			<div class={inARow ? 'sm:order-last' : ''}>
+				{@render actions()}
+			</div>
+		{/if}
 		<div class="flex flex-col gap-3 {inARow ? 'sm:order-first' : ''}">
 			<div class="flex gap-2">
 				<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6 " />
