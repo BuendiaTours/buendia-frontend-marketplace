@@ -8,7 +8,6 @@
 	import { parseDate } from '@internationalized/date';
 
 	// Utils
-	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 
 	// Store
@@ -23,9 +22,17 @@
 		booking: CartBooking;
 		onSave: () => void;
 		onCancel: () => void;
+		onSubtotalChange?: (price: number | null) => void;
+		onCanSaveChange?: (v: boolean) => void;
+		onIsSavingChange?: (v: boolean) => void;
 	};
 
-	let { booking, onSave, onCancel }: Props = $props();
+	let { booking, onSave, onCancel, onSubtotalChange, onCanSaveChange, onIsSavingChange }: Props =
+		$props();
+
+	export async function save() {
+		await handleSave();
+	}
 
 	let singleOption = $state<ActivityOption | null>(null);
 	let isLoading = $state(true);
@@ -106,13 +113,25 @@
 		return total;
 	});
 
+	$effect(() => {
+		onSubtotalChange?.(subtotal);
+	});
+
 	// Save guard
 	const selectedSlot = $derived(slotsForOption.find((s) => s.id === selectedSlotId));
 	const canSave = $derived(
 		!!selectedSlot && !checkout.isSlotDisabled(selectedSlot) && checkout.totalTickets > 0
 	);
 
+	$effect(() => {
+		onCanSaveChange?.(canSave);
+	});
+
 	let isSaving = $state(false);
+
+	$effect(() => {
+		onIsSavingChange?.(isSaving);
+	});
 	let saveError = $state<string | null>(null);
 
 	async function handleSave() {
@@ -203,26 +222,8 @@
 			</select>
 		{/if}
 
-		{#if subtotal !== null}
-			<p>{formatEuro(subtotal)}</p>
-		{/if}
-
 		{#if saveError}
 			<p class="text-red-600">{saveError}</p>
 		{/if}
-
-		<div class="flex gap-3">
-			<button
-				type="button"
-				class="e-button e-button-link"
-				disabled={!canSave || isSaving}
-				onclick={handleSave}
-			>
-				{isSaving ? '...' : 'Guardar'}
-			</button>
-			<button type="button" class="e-button e-button-link" disabled={isSaving} onclick={onCancel}
-				>Cancelar</button
-			>
-		</div>
 	</div>
 {/if}

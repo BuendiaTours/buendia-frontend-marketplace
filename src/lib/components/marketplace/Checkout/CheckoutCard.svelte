@@ -15,9 +15,11 @@
 		disabled?: boolean;
 		image: string;
 		list: Array<{ icon: string; text: string; iconColor?: string }>;
+		modifyForm?: Snippet;
 		opinions?: number;
 		passengerItems?: PassengerLineItem[];
 		previousPrice?: number;
+		provisionalPrice?: number;
 		rating?: number;
 		title: string;
 		variant?: Variant;
@@ -30,9 +32,11 @@
 		disabled,
 		image,
 		list,
+		modifyForm,
 		opinions,
 		passengerItems,
 		previousPrice,
+		provisionalPrice,
 		rating,
 		title,
 		variant = 'DEFAULT',
@@ -94,41 +98,52 @@
 		{/each}
 	</div>
 	<div class="co-checkout-card__actions-price flex flex-col gap-2">
-		<div class="co-checkout-card__actions-price__top flex items-end justify-between gap-12">
-			// Top
-		</div>
+		{#if modifyForm}
+			<div class="co-checkout-card__actions-price__top max-w-[480px]">
+				{@render modifyForm?.()}
+			</div>
+		{/if}
 		<div class="co-checkout-card__actions-price__bottom flex items-end justify-between gap-12">
 			<div class=" flex w-full gap-4 sm:w-3/5">
 				{@render actions?.()}
 			</div>
 			{#if previousPrice || currentPrice}
 				<div class="flex flex-col items-end" class:opacity-50={disabled}>
-					{#if previousPrice}
+					{#if provisionalPrice !== undefined && provisionalPrice !== currentPrice}
 						<p class="p-xs text-neutral-800">
-							<span class="line-through">{formatEuro(previousPrice)}</span>
+							<span class="line-through">{formatEuro(currentPrice ?? 0)}</span>
 						</p>
-					{/if}
-					{#if currentPrice}
-						{#if passengerItems?.length}
-							<button
-								use:melt={$trigger}
-								class="text-price cursor-pointer"
-								class:text-salmon-700={previousPrice}
-							>
-								{formatEuro(currentPrice)}
-							</button>
-							{#if $open}
-								<div
-									use:melt={$content}
-									class="z-50 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg"
-								>
-									<PassengerBreakdown items={passengerItems} />
-								</div>
-							{/if}
-						{:else}
-							<p class="text-price" class:text-salmon-700={previousPrice}>
-								{formatEuro(currentPrice)}
+						<p class="text-price text-salmon-700">{formatEuro(provisionalPrice)}</p>
+					{:else}
+						{#if previousPrice}
+							<p class="p-xs text-neutral-800">
+								<span class="line-through">{formatEuro(previousPrice)}</span>
 							</p>
+						{/if}
+						{#if currentPrice}
+							{#if passengerItems?.length}
+								<button
+									use:melt={$trigger}
+									class="text-price cursor-pointer"
+									class:text-salmon-700={previousPrice}
+									onmouseenter={() => open.set(true)}
+									onmouseleave={() => open.set(false)}
+								>
+									{formatEuro(currentPrice)}
+								</button>
+								{#if $open}
+									<div
+										use:melt={$content}
+										class="z-50 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg"
+									>
+										<PassengerBreakdown items={passengerItems} />
+									</div>
+								{/if}
+							{:else}
+								<p class="text-price" class:text-salmon-700={previousPrice}>
+									{formatEuro(currentPrice)}
+								</p>
+							{/if}
 						{/if}
 					{/if}
 				</div>

@@ -163,4 +163,9 @@
 			text-decoration: none;
 		}
 	}
+
+	&.e-button-link-accent {
+		color: var(--color-accent-700);
+		text-decoration-color: var(--color-accent-700);
+	}
 }

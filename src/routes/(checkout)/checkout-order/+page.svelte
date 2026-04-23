@@ -30,6 +30,10 @@
 	);
 
 	let editingBookingId = $state<string | null>(null);
+	let provisionalPrice = $state<number | null>(null);
+	let formCanSave = $state(false);
+	let formIsSaving = $state(false);
+	let formRef = $state<{ save: () => Promise<void> } | null>(null);
 </script>
 
 <div class="wrapper">
@@ -67,6 +71,9 @@
 						opinions={432}
 						currentPrice={booking.subtotalPrice ?? undefined}
 						previousPrice={booking.previousPrice ?? undefined}
+						provisionalPrice={editingBookingId === booking.id
+							? (provisionalPrice ?? undefined)
+							: undefined}
 						{passengerItems}
 						list={[
 							{
@@ -87,39 +94,62 @@
 							}
 						]}
 					>
-						{#snippet actions()}
-							<!-- actions -->
-							{#if editingBookingId !== booking.id}
-								<div class="flex gap-4">
-									<span
-										class="text-accent cursor-pointer underline underline-offset-8"
-										role="button"
-										tabindex="0"
-										onclick={() => (editingBookingId = booking.id)}
-										onkeydown={(e) => {
-											if (e.key === 'Enter' || e.key === ' ') editingBookingId = booking.id;
-										}}>Modificar</span
-									>
-									<span
-										class="text-accent cursor-pointer underline underline-offset-8"
-										role="button"
-										tabindex="0"
-										onclick={() => removedBookingsStore.add(booking)}
-										onkeydown={(e) => {
-											if (e.key === 'Enter' || e.key === ' ') removedBookingsStore.add(booking);
-										}}>Eliminar</span
-									>
-								</div>
-							{/if}
+						{#snippet modifyForm()}
 							{#if editingBookingId === booking.id}
 								<BookingModifyForm
+									bind:this={formRef}
 									{booking}
+									onSubtotalChange={(p) => (provisionalPrice = p)}
+									onCanSaveChange={(v) => (formCanSave = v)}
+									onIsSavingChange={(v) => (formIsSaving = v)}
 									onSave={async () => {
 										await shoppingCartStore.loadOrder();
+										provisionalPrice = null;
 										editingBookingId = null;
 									}}
-									onCancel={() => (editingBookingId = null)}
+									onCancel={() => {
+										provisionalPrice = null;
+										editingBookingId = null;
+									}}
 								/>
+							{/if}
+						{/snippet}
+						{#snippet actions()}
+							{#if editingBookingId !== booking.id}
+								<div class="flex gap-4">
+									<button
+										type="button"
+										class="e-button e-button-link e-button-link-accent"
+										onclick={() => (editingBookingId = booking.id)}>Modificar</button
+									>
+									<button
+										type="button"
+										class="e-button e-button-link e-button-link-accent"
+										onclick={() => removedBookingsStore.add(booking)}>Eliminar</button
+									>
+								</div>
+							{:else}
+								<div class="flex gap-3">
+									<button
+										type="button"
+										class="e-button e-button-link e-button-link-accent"
+										disabled={!formCanSave || formIsSaving}
+										onclick={() => formRef?.save()}
+									>
+										{formIsSaving ? '...' : 'Guardar'}
+									</button>
+									<button
+										type="button"
+										class="e-button e-button-link e-button-link-accent"
+										disabled={formIsSaving}
+										onclick={() => {
+											provisionalPrice = null;
+											editingBookingId = null;
+										}}
+									>
+										Cancelar
+									</button>
+								</div>
 							{/if}
 						{/snippet}
 					</CheckoutCard>
