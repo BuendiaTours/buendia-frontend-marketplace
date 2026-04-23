@@ -19,10 +19,11 @@ import { createDeleteAction } from '$lib/server/backoffice/deleteAction';
 import { setFlashMessage } from '$lib/server/backoffice/flashMessages';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, parent }) => {
+	const { distributive } = await parent();
+
 	try {
-		const [distributive, categoriesRes, attractionsRes, locationsRes] = await Promise.all([
-			DISTRIBUTIVE_REQUEST.findById(fetch, params.id),
+		const [categoriesRes, attractionsRes, locationsRes] = await Promise.all([
 			CATEGORY_REQUEST.findByCriteria(fetch, { limit: 200 }),
 			ATTRACTION_REQUEST.findByCriteria(fetch, { limit: 200 }),
 			LOCATION_REQUEST.findByCriteria(fetch, { limit: 200 })
@@ -39,7 +40,6 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		);
 
 		return {
-			distributive,
 			form,
 			availableCategories: categoriesRes.data.map((c) => ({ id: c.id, name: c.name })),
 			availableAttractions: attractionsRes.data.map((a) => ({ id: a.id, name: a.name })),

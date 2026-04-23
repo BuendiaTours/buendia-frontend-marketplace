@@ -12,8 +12,13 @@ export const DISTRIBUTIVE_ROUTES = {
 	/** Distributive creation page. */
 	create: backoffice('distributives/create'),
 	/**
-	 * Distributive edit page.
+	 * Distributive edit page (General tab).
 	 * @param id - Distributive identifier.
 	 */
-	edit: (id: string) => backoffice('distributives', id, 'edit')
+	edit: (id: string) => backoffice('distributives', id, 'edit'),
+	/**
+	 * Distributive content tab (content blocks, multimedia, FAQs).
+	 * @param id - Distributive identifier.
+	 */
+	contentBlocks: (id: string) => backoffice('distributives', id, 'content-blocks')
 } as const;
