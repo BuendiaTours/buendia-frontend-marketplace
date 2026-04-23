@@ -50,8 +50,14 @@
 
 .select option {
 	border-radius: 6px;
-	padding: 8px 16px;
+	padding: 8px;
 	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+}
+
+.select option::checkmark {
+	order: 1;
 }
 
 .select option:hover,
@@ -60,7 +66,7 @@
 }
 
 .select option:checked {
-	background-color: var(--color-neutral-50);
+	background-color: var(--color-neutral-100);
 	font-weight: 500;
 }
 
