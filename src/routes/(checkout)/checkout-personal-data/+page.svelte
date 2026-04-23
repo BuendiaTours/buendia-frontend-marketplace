@@ -24,6 +24,7 @@
 	import * as m from '$paraglide/messages';
 	import { formatPassengersFromBooking } from '$lib/utils/passengers';
 	import Steps from '$lib/components/marketplace/Steps.svelte';
+	import DebugBookingQuestionFields from '$lib/components/marketplace/checkout/DebugBookingQuestionFields.svelte';
 
 	const messages = m as unknown as Record<string, () => string>;
 
@@ -187,7 +188,7 @@
 					<div class="flex flex-col">
 						<label class="p-base" for="contactFirstName">Nombre</label>
 						<input
-							class="input w-full"
+							class="input input-lg w-full"
 							id="contactFirstName"
 							type="text"
 							bind:value={contactFirstName}
@@ -199,7 +200,7 @@
 					<div class="flex flex-col">
 						<label class="p-base" for="contactLastName">Apellidos</label>
 						<input
-							class="input w-full"
+							class="input input-lg w-full"
 							id="contactLastName"
 							type="text"
 							bind:value={contactLastName}
@@ -211,7 +212,7 @@
 					<div class="flex flex-col">
 						<label class="p-base" for="contactEmail">Email</label>
 						<input
-							class="input w-full"
+							class="input input-lg w-full"
 							id="contactEmail"
 							type="email"
 							bind:value={contactEmail}
@@ -224,7 +225,7 @@
 						<label class="p-base" for="phone-country">Teléfono</label>
 						<div class="flex items-center gap-0 overflow-hidden p-0">
 							<select
-								class="select !w-[140px] shrink-0 !rounded-r-none !border-r-0"
+								class="select select-lg !w-[140px] shrink-0 !rounded-r-none !border-r-0"
 								id="phone-country"
 								bind:value={country}
 								aria-label="País"
@@ -236,7 +237,7 @@
 								{/each}
 							</select>
 							<TelInput
-								class="input w-full !rounded-l-none"
+								class="input input-lg w-full !rounded-l-none"
 								bind:country
 								bind:value={contactPhone}
 								bind:valid={phoneValid}
@@ -255,7 +256,7 @@
 
 				{#if shoppingCartStore.order?.bookings?.length}
 					<h2 class="h2 mt-6">Datos de la actividad</h2>
-					<p class="p-lg">El proveedor requiere estos datos adicionales</p>
+					<p class="p-lg mt-2">El proveedor requiere estos datos adicionales</p>
 
 					{#each shoppingCartStore.order.bookings as booking (booking.id)}
 						{@const questions = questionsByOption.get(booking.optionId) ?? []}
@@ -296,7 +297,7 @@
 										)}
 										{#if applicableQs.length}
 											<div class="flex flex-col gap-4">
-												<p class="h3">
+												<p class="h3 mt-2">
 													Asistente {i + 1} ({messages[
 														`enum_passengerKind_${passenger.group}_name`
 													]?.()})
@@ -334,6 +335,8 @@
 					{isSubmitting ? 'Guardando...' : 'Continuar con el pago'}
 				</button>
 			</form>
+
+			<DebugBookingQuestionFields />
 		</div>
 
 		<div class="col-sidebar pt-4">
@@ -429,6 +432,15 @@
 </div>
 
 <details class="mt-12">
+	<summary>booking questions debug</summary>
+	<pre>{JSON.stringify(
+			Object.fromEntries([...questionsByOption.entries()].map(([optionId, qs]) => [optionId, qs])),
+			null,
+			2
+		)}</pre>
+</details>
+
+<details class="mt-4">
 	<summary>shoppingCart debug</summary>
 	<pre>{JSON.stringify(
 			{
