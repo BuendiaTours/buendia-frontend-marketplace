@@ -3,7 +3,7 @@
 	import type { PassengerLineItem, BookingQuestion, PassengerGroup } from '$lib/types';
 
 	// Utils
-	import { countries, countryUnicodeFlags } from 'svelte-tel-input/assets';
+	import { countries } from 'svelte-tel-input/assets';
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime, formatActivityDate } from '$lib/utils/datetime';
 	import { goto } from '$app/navigation';
@@ -26,6 +26,9 @@
 	import Steps from '$lib/components/marketplace/Steps.svelte';
 
 	const messages = m as unknown as Record<string, () => string>;
+
+	const isoToFlag = (iso2: string) =>
+		String.fromCodePoint(...[...iso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 
 	let contactFirstName = $state(shoppingCartStore.order?.contactFirstName ?? '');
 	let contactLastName = $state(shoppingCartStore.order?.contactLastName ?? '');
@@ -221,19 +224,16 @@
 						<label class="p-base" for="phone-country">Teléfono</label>
 						<div class="flex items-center gap-0 overflow-hidden p-0">
 							<select
-								class="select !w-[150px] shrink-0 !rounded-r-none !border-r-0"
+								class="select !w-[140px] shrink-0 !rounded-r-none !border-r-0"
 								id="phone-country"
 								bind:value={country}
 								aria-label="País"
 							>
-								<!-- eslint-disable svelte/no-at-html-tags -->
 								{#each countries as c (c.iso2)}
-									<option data-name={c.name} value={c.iso2}
-										>{@html countryUnicodeFlags[c.iso2]}
-										{c.name.slice(0, 3).toUpperCase()} (+{c.dialCode})</option
+									<option value={c.iso2} label="{isoToFlag(c.iso2)} {c.iso2} (+{c.dialCode})"
+										>{c.name}</option
 									>
 								{/each}
-								<!-- eslint-enable svelte/no-at-html-tags -->
 							</select>
 							<TelInput
 								class="input w-full !rounded-l-none"
