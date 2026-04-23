@@ -15,7 +15,8 @@ export enum FaqStatus {
 /** Filter for querying FAQs by scope. */
 export enum FaqScopeFilter {
 	GLOBAL = 'GLOBAL',
-	ACTIVITY = 'ACTIVITY'
+	ACTIVITY = 'ACTIVITY',
+	DISTRIBUTIVE = 'DISTRIBUTIVE'
 }
 
 /** Attributes available for sorting FAQ lists. */

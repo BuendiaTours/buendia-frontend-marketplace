@@ -36,6 +36,15 @@ export type DistributiveCategory = {
 	name: string;
 };
 
+/** Content block reference embedded within a distributive. */
+export type DistributiveContentBlock = {
+	id: string;
+	description: string;
+	kind: string;
+	target: string;
+	title: string;
+};
+
 /** Location entry within a distributive grouped by category. */
 export type DistributiveByCategoryLocation = {
 	id: string;
@@ -110,6 +119,7 @@ export type Distributive = {
 	attractions: DistributiveAttraction[];
 	breadcrumbs: DistributiveBreadcrumb[];
 	categories: DistributiveCategory[];
+	contentBlocks: DistributiveContentBlock[];
 	faqs: DistributiveFaq[];
 	images: DistributiveImage[];
 	locations: DistributiveLocation[];
@@ -133,6 +143,11 @@ export type DistributiveAttractionAddDto = {
 /** Payload for adding a category to a distributive. */
 export type DistributiveCategoryAddDto = {
 	categoryId: string;
+};
+
+/** Payload for adding a content block to a distributive. */
+export type DistributiveContentBlockAddDto = {
+	contentBlockId: string;
 };
 
 /** Payload for creating a new distributive. */

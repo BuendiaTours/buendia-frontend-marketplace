@@ -22,6 +22,7 @@ import type { CriteriaOperator, CriteriaSortOption } from '$core/_shared/enums';
 export type Faq = {
 	id: string;
 	activityId: string | null;
+	distributiveId: string | null;
 	answer: string;
 	question: string;
 	status: FaqStatus;
@@ -46,6 +47,7 @@ export type FaqRelationship = {
 export type FaqCreateDto = {
 	id: string;
 	activityId?: string;
+	distributiveId?: string;
 	answer: string;
 	question: string;
 };

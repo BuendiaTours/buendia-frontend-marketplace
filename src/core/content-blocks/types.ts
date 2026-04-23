@@ -29,8 +29,10 @@ export type EntityImage = {
 /** Full content block projection as returned by the API. */
 export type ContentBlock = {
 	id: string;
-	activityCount: number;
 	activityId: string | null;
+	distributiveId: string | null;
+	activityCount: number;
+	distributiveCount: number;
 	description: string;
 	images: EntityImage[];
 	kind: ContentBlockKind;
@@ -44,6 +46,7 @@ export type ContentBlock = {
 export type ContentBlockCreateDto = {
 	id: string;
 	activityId?: string;
+	distributiveId?: string;
 	description: string;
 	kind: ContentBlockKind;
 	target: string;

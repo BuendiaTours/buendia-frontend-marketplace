@@ -13,7 +13,8 @@ export enum ContentBlockKind {
 /** Filter for querying content blocks by scope. */
 export enum ContentBlockScopeFilter {
 	GLOBAL = 'GLOBAL',
-	ACTIVITY = 'ACTIVITY'
+	ACTIVITY = 'ACTIVITY',
+	DISTRIBUTIVE = 'DISTRIBUTIVE'
 }
 
 /** Attributes available for sorting content block lists. */

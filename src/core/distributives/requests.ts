@@ -10,6 +10,7 @@ import type {
 	Distributive,
 	DistributiveAttractionAddDto,
 	DistributiveCategoryAddDto,
+	DistributiveContentBlockAddDto,
 	DistributiveCreateDto,
 	DistributiveCriteria,
 	DistributiveGroupedByCategory,
@@ -179,5 +180,31 @@ export const DISTRIBUTIVE_REQUEST = {
 		fetchFn: typeof fetch,
 		distributiveId: string,
 		locationId: string
-	): Promise<void> => del(fetchFn, `${BASE}/${distributiveId}/locations/${locationId}`)
+	): Promise<void> => del(fetchFn, `${BASE}/${distributiveId}/locations/${locationId}`),
+
+	// ── Content Blocks ───────────────────────────
+
+	/**
+	 * Adds a content block to a distributive.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param distributiveId - Distributive ID.
+	 * @param data - Content block reference payload.
+	 */
+	addContentBlock: (
+		fetchFn: typeof fetch,
+		distributiveId: string,
+		data: DistributiveContentBlockAddDto
+	): Promise<void> => post(fetchFn, `${BASE}/${distributiveId}/content-blocks`, data),
+
+	/**
+	 * Removes a content block from a distributive.
+	 * @param fetchFn - SvelteKit `fetch`.
+	 * @param distributiveId - Distributive ID.
+	 * @param contentBlockId - Content block ID to remove.
+	 */
+	removeContentBlock: (
+		fetchFn: typeof fetch,
+		distributiveId: string,
+		contentBlockId: string
+	): Promise<void> => del(fetchFn, `${BASE}/${distributiveId}/content-blocks/${contentBlockId}`)
 };
