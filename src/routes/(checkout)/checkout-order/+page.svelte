@@ -24,6 +24,11 @@
 		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))
 	);
 
+	const activeBookingCount = $derived(activeBookings.length);
+	const activeTotalAmount = $derived(
+		activeBookings.reduce((sum, b) => sum + (b.subtotalPrice ?? 0), 0)
+	);
+
 	let editingBookingId = $state<string | null>(null);
 </script>
 
@@ -180,8 +185,8 @@
 		</div>
 		<div class="col-sidebar pt-6">
 			<TotalResume
-				bookingCount={shoppingCartStore.bookingCount}
-				totalAmount={shoppingCartStore.totalAmount}
+				bookingCount={activeBookingCount}
+				totalAmount={activeTotalAmount}
 				wrapperClass="mt-6 mb-6"
 			>
 				{#snippet actions()}

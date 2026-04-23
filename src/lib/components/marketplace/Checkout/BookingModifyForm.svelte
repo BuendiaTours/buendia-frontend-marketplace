@@ -182,7 +182,7 @@
 {:else if fetchError}
 	<p class="text-red-600">{fetchError}</p>
 {:else if singleOption}
-	<div class="space-y-2">
+	<div class="w-full space-y-2">
 		<CheckoutStepCounterSelector {activeTicketGroups} />
 
 		<CheckoutMeltDatepicker

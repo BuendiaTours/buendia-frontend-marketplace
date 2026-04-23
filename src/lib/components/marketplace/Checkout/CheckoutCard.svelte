@@ -3,6 +3,9 @@
 	import type { Component, Snippet } from 'svelte';
 	import StarRating from '../StarRating.svelte';
 	import { formatEuro } from '$lib/utils/currency';
+	import { createPopover, melt } from '@melt-ui/svelte';
+	import type { PassengerLineItem } from '$lib/types';
+	import PassengerBreakdown from '../ShoppingCart/PassengerBreakdown.svelte';
 
 	type Variant = 'DEFAULT' | 'IS_BUENDIA';
 
@@ -13,6 +16,7 @@
 		image: string;
 		list: Array<{ icon: string; text: string; iconColor?: string }>;
 		opinions?: number;
+		passengerItems?: PassengerLineItem[];
 		previousPrice?: number;
 		rating?: number;
 		title: string;
@@ -27,6 +31,7 @@
 		image,
 		list,
 		opinions,
+		passengerItems,
 		previousPrice,
 		rating,
 		title,
@@ -39,6 +44,14 @@
 	}
 
 	const ByBuendia = Icons.ByBuendia;
+
+	const {
+		elements: { trigger, content },
+		states: { open }
+	} = createPopover({
+		forceVisible: true,
+		positioning: { placement: 'top', gutter: 8 }
+	});
 </script>
 
 <div
@@ -80,8 +93,8 @@
 			</div>
 		{/each}
 	</div>
-	<div class="flex items-end justify-between">
-		<div class="co-checkout-card__actions flex gap-4">
+	<div class="flex items-end justify-between gap-12">
+		<div class="co-checkout-card__actions flex w-full gap-4 sm:w-3/5">
 			{@render actions?.()}
 		</div>
 		{#if previousPrice || currentPrice}
@@ -92,7 +105,27 @@
 					</p>
 				{/if}
 				{#if currentPrice}
-					<p class="text-price" class:text-salmon-700={previousPrice}>{formatEuro(currentPrice)}</p>
+					{#if passengerItems?.length}
+						<button
+							use:melt={$trigger}
+							class="text-price cursor-pointer"
+							class:text-salmon-700={previousPrice}
+						>
+							{formatEuro(currentPrice)}
+						</button>
+						{#if $open}
+							<div
+								use:melt={$content}
+								class="z-50 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg"
+							>
+								<PassengerBreakdown items={passengerItems} />
+							</div>
+						{/if}
+					{:else}
+						<p class="text-price" class:text-salmon-700={previousPrice}>
+							{formatEuro(currentPrice)}
+						</p>
+					{/if}
 				{/if}
 			</div>
 		{/if}
