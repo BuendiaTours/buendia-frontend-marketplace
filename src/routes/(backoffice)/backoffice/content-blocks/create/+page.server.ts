@@ -16,6 +16,7 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ url, ...rest }) => {
 	const activityId = url.searchParams.get('activityId') || undefined;
+	const distributiveId = url.searchParams.get('distributiveId') || undefined;
 
 	const loader = createCreateLoad<ContentBlockFormSchema>({
 		schema: zod(contentBlockFormSchema),
@@ -25,7 +26,8 @@ export const load: PageServerLoad = async ({ url, ...rest }) => {
 			kind: ContentBlockKind.URL,
 			target: '',
 			mediaIds: [],
-			...(activityId ? { activityId } : {})
+			...(activityId ? { activityId } : {}),
+			...(distributiveId ? { distributiveId } : {})
 		}
 	});
 

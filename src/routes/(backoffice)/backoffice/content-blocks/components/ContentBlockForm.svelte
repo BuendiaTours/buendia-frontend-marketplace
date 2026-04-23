@@ -87,6 +87,9 @@
 			{#if $form.activityId}
 				<input type="hidden" name="activityId" value={$form.activityId} />
 			{/if}
+			{#if $form.distributiveId}
+				<input type="hidden" name="distributiveId" value={$form.distributiveId} />
+			{/if}
 
 			<FormInputText
 				id="title"

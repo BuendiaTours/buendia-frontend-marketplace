@@ -12,13 +12,15 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ url, ...rest }) => {
 	const activityId = url.searchParams.get('activityId') || undefined;
+	const distributiveId = url.searchParams.get('distributiveId') || undefined;
 
 	const loader = createCreateLoad<FaqFormSchema>({
 		schema: zod(faqFormSchema),
 		initialValues: {
 			question: '',
 			answer: '',
-			...(activityId ? { activityId } : {})
+			...(activityId ? { activityId } : {}),
+			...(distributiveId ? { distributiveId } : {})
 		}
 	});
 
@@ -32,11 +34,12 @@ export const actions: Actions = {
 		createFn: FAQ_REQUEST.create,
 		redirectToList: true,
 		returnToParam: 'addFaqId',
-		transformData: ({ id, activityId, question, answer }) => ({
+		transformData: ({ id, activityId, distributiveId, question, answer }) => ({
 			id,
 			question,
 			answer,
-			...(activityId ? { activityId } : {})
+			...(activityId ? { activityId } : {}),
+			...(distributiveId ? { distributiveId } : {})
 		})
 	})
 };
