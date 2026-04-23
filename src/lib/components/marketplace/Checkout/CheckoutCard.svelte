@@ -93,41 +93,46 @@
 			</div>
 		{/each}
 	</div>
-	<div class="flex items-end justify-between gap-12">
-		<div class="co-checkout-card__actions flex w-full gap-4 sm:w-3/5">
-			{@render actions?.()}
+	<div class="co-checkout-card__actions-price flex flex-col gap-2">
+		<div class="co-checkout-card__actions-price__top flex items-end justify-between gap-12">
+			// Top
 		</div>
-		{#if previousPrice || currentPrice}
-			<div class="flex flex-col items-end" class:opacity-50={disabled}>
-				{#if previousPrice}
-					<p class="p-xs text-neutral-800">
-						<span class="line-through">{formatEuro(previousPrice)}</span>
-					</p>
-				{/if}
-				{#if currentPrice}
-					{#if passengerItems?.length}
-						<button
-							use:melt={$trigger}
-							class="text-price cursor-pointer"
-							class:text-salmon-700={previousPrice}
-						>
-							{formatEuro(currentPrice)}
-						</button>
-						{#if $open}
-							<div
-								use:melt={$content}
-								class="z-50 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg"
-							>
-								<PassengerBreakdown items={passengerItems} />
-							</div>
-						{/if}
-					{:else}
-						<p class="text-price" class:text-salmon-700={previousPrice}>
-							{formatEuro(currentPrice)}
+		<div class="co-checkout-card__actions-price__bottom flex items-end justify-between gap-12">
+			<div class=" flex w-full gap-4 sm:w-3/5">
+				{@render actions?.()}
+			</div>
+			{#if previousPrice || currentPrice}
+				<div class="flex flex-col items-end" class:opacity-50={disabled}>
+					{#if previousPrice}
+						<p class="p-xs text-neutral-800">
+							<span class="line-through">{formatEuro(previousPrice)}</span>
 						</p>
 					{/if}
-				{/if}
-			</div>
-		{/if}
+					{#if currentPrice}
+						{#if passengerItems?.length}
+							<button
+								use:melt={$trigger}
+								class="text-price cursor-pointer"
+								class:text-salmon-700={previousPrice}
+							>
+								{formatEuro(currentPrice)}
+							</button>
+							{#if $open}
+								<div
+									use:melt={$content}
+									class="z-50 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg"
+								>
+									<PassengerBreakdown items={passengerItems} />
+								</div>
+							{/if}
+						{:else}
+							<p class="text-price" class:text-salmon-700={previousPrice}>
+								{formatEuro(currentPrice)}
+							</p>
+						{/if}
+					{/if}
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
