@@ -23,6 +23,7 @@
 	// i18n
 	import * as m from '$paraglide/messages';
 	import { formatPassengersFromBooking } from '$lib/utils/passengers';
+	import Steps from '$lib/components/marketplace/Steps.svelte';
 
 	const messages = m as unknown as Record<string, () => string>;
 
@@ -155,6 +156,22 @@
 	<div class="page-grid gap-x-12">
 		<div class="col-content">
 			<CartExpiryCallout />
+
+			<Steps
+				wrapperClass="mt-6 mb-10"
+				items={[
+					{
+						text: 'Datos personales',
+						url: '/checkout-personal-data',
+						active: true
+					},
+					{
+						text: 'Datos de pago',
+						url: '/checkout-payment-data',
+						disabled: !isValid
+					}
+				]}
+			/>
 
 			<h2 class="h2 mt-6">Datos personales</h2>
 			<form
