@@ -45,6 +45,18 @@
 
 			{#if activeBookings.length}
 				{#each activeBookings as booking (booking.id)}
+					{@const passengerItems = Object.values(
+						(booking.passengers ?? []).reduce(
+							(acc, p) => {
+								if (!p.group) return acc;
+								if (!acc[p.group])
+									acc[p.group] = { group: p.group, count: 0, unitPrice: p.priceAtBooking ?? 0 };
+								acc[p.group].count++;
+								return acc;
+							},
+							{} as Record<string, PassengerLineItem>
+						)
+					)}
 					<p class="h2 mt-6 mb-6">{formatActivityDate(booking.activityDatetime)}</p>
 
 					<CheckoutCard
@@ -55,6 +67,7 @@
 						opinions={432}
 						currentPrice={booking.subtotalPrice ?? undefined}
 						previousPrice={booking.previousPrice ?? undefined}
+						{passengerItems}
 						list={[
 							{
 								icon: 'Ticket',
