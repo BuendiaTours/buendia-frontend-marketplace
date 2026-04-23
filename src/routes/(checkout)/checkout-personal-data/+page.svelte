@@ -158,7 +158,7 @@
 			<CartExpiryCallout />
 
 			<Steps
-				wrapperClass="mt-6 mb-10"
+				wrapperClass="mt-6"
 				items={[
 					{
 						text: 'Datos personales',
@@ -180,9 +180,9 @@
 					handleSubmit();
 				}}
 			>
-				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-					<div class="flex flex-col gap-1.5">
-						<label class="p-sm font-medium" for="contactFirstName">Nombre</label>
+				<div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<div class="flex flex-col">
+						<label class="p-base" for="contactFirstName">Nombre</label>
 						<input
 							class="input w-full"
 							id="contactFirstName"
@@ -193,8 +193,8 @@
 						/>
 					</div>
 
-					<div class="flex flex-col gap-1.5">
-						<label class="p-sm font-medium" for="contactLastName">Apellidos</label>
+					<div class="flex flex-col">
+						<label class="p-base" for="contactLastName">Apellidos</label>
 						<input
 							class="input w-full"
 							id="contactLastName"
@@ -205,8 +205,8 @@
 						/>
 					</div>
 
-					<div class="flex flex-col gap-1.5">
-						<label class="p-sm font-medium" for="contactEmail">Email</label>
+					<div class="flex flex-col">
+						<label class="p-base" for="contactEmail">Email</label>
 						<input
 							class="input w-full"
 							id="contactEmail"
@@ -217,24 +217,31 @@
 						/>
 					</div>
 
-					<div class="flex flex-col gap-1.5">
-						<label class="p-sm font-medium" for="phone-country">Teléfono</label>
-						<div class="flex gap-2">
+					<div class="flex flex-col">
+						<label class="p-base" for="phone-country">Teléfono</label>
+						<div class="flex items-center gap-0 overflow-hidden p-0">
 							<select
-								class="input w-auto shrink-0"
+								class="select !w-[150px] shrink-0 !rounded-r-none !border-r-0"
 								id="phone-country"
 								bind:value={country}
 								aria-label="País"
 							>
 								<!-- eslint-disable svelte/no-at-html-tags -->
 								{#each countries as c (c.iso2)}
-									<option value={c.iso2}
-										>{@html countryUnicodeFlags[c.iso2]} {c.name} (+{c.dialCode})</option
+									<option data-name={c.name} value={c.iso2}
+										>{@html countryUnicodeFlags[c.iso2]}
+										{c.name.slice(0, 3).toUpperCase()} (+{c.dialCode})</option
 									>
 								{/each}
 								<!-- eslint-enable svelte/no-at-html-tags -->
 							</select>
-							<TelInput bind:country bind:value={contactPhone} bind:valid={phoneValid} required />
+							<TelInput
+								class="input w-full !rounded-l-none"
+								bind:country
+								bind:value={contactPhone}
+								bind:valid={phoneValid}
+								required
+							/>
 						</div>
 						{#if !phoneValid && contactPhone.length > 0}
 							<p class="p-sm mt-3 text-[oklch(0.55_0.2_25)]">Número de teléfono inválido</p>
@@ -421,8 +428,30 @@
 	</div>
 </div>
 
+<details class="mt-12">
+	<summary>shoppingCart debug</summary>
+	<pre>{JSON.stringify(
+			{
+				orderId: shoppingCartStore.orderId,
+				userId: shoppingCartStore.userId,
+				isLoading: shoppingCartStore.isLoading,
+				error: shoppingCartStore.error,
+				bookingCount: shoppingCartStore.bookingCount,
+				totalAmount: shoppingCartStore.totalAmount,
+				order: $state.snapshot(shoppingCartStore.order)
+			},
+			null,
+			2
+		)}</pre>
+</details>
+
 <style>
 	:global(.svelte-tel-input) {
 		flex: 1;
+		border: none !important;
+		outline: none !important;
+		box-shadow: none !important;
+		background: transparent;
+		padding-left: 0.75rem;
 	}
 </style>

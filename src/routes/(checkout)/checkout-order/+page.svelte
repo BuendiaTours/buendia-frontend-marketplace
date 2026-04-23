@@ -226,6 +226,7 @@
 					)}</pre>
 			</details>
 		</div>
+
 		<div class="col-sidebar pt-6">
 			<TotalResume
 				bookingCount={activeBookingCount}
