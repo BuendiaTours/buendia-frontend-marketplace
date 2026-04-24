@@ -42,7 +42,10 @@
 
 <div class="checkout-field" class:checkout-field__checkbox={isBoolean}>
 	{#if isBoolean}
-		<label class="checkout-field__label__checkbox label">
+		<label
+			class="checkout-field__label__checkbox label flex cursor-pointer flex-row items-start gap-2"
+			for={inputId}
+		>
 			<input
 				id={inputId}
 				type="checkbox"
@@ -51,7 +54,12 @@
 				onchange={(e) => onchange(String(e.currentTarget.checked))}
 				required={isRequired && !isChecked}
 			/>
-			{q.label}{isRequired ? ' *' : ''}
+			<span class="pt-.5"
+				>{q.label}
+				{#if isRequired}
+					<span class="text-salmon-strong font-bold">*</span>
+				{/if}
+			</span>
 		</label>
 	{:else}
 		<label class="checkout-field__label label block" class:!mb-0={q.helpText} for={inputId}>
@@ -141,9 +149,9 @@
 					{/each}
 				</select>
 			{:else if q.dataType === 'RADIO_BUTTON'}
-				<div class="radio-group flex flex-row gap-6" role="radiogroup">
+				<div class="radio-group flex flex-row flex-wrap gap-6" role="radiogroup">
 					{#each q.options as opt (opt.id)}
-						<label class="radio-label inline-flex cursor-pointer flex-row items-center gap-2">
+						<label class="radio-label inline-flex cursor-pointer flex-row items-start gap-2">
 							<input
 								type="radio"
 								class="radio"
@@ -158,9 +166,9 @@
 					{/each}
 				</div>
 			{:else if q.dataType === 'MULTI_OPTION'}
-				<div class="checkbox-group flex flex-row gap-6" role="group">
+				<div class="checkbox-group flex flex-row flex-wrap gap-6" role="group">
 					{#each q.options as opt (opt.id)}
-						<label class="checkbox-label inline-flex cursor-pointer flex-row items-center gap-2">
+						<label class="checkbox-label inline-flex cursor-pointer flex-row items-start gap-2">
 							<input
 								type="checkbox"
 								class="checkbox"
@@ -168,7 +176,7 @@
 								checked={selectedValues.includes(opt.value)}
 								onchange={() => toggleMultiValue(opt.value)}
 							/>
-							{opt.label}
+							<span>{opt.label}</span>
 						</label>
 					{/each}
 				</div>
@@ -189,7 +197,8 @@
 <style>
 	.checkout-field__checkbox {
 		& .checkout-field__help {
-			padding-left: calc(1.25rem + 1rem);
+			padding-left: calc(1.25rem + 0.75rem);
+			margin-top: -8px;
 		}
 	}
 </style>
