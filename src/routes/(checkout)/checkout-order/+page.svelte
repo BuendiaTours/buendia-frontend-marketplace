@@ -155,7 +155,7 @@
 					</CheckoutCard>
 				{/each}
 			{:else}
-				<p class="mt-6">No hay bookings</p>
+				<p class="p-base mt-6">No hay reservas para mostrar</p>
 			{/if}
 
 			{#if removedBookingsStore.bookings.length}

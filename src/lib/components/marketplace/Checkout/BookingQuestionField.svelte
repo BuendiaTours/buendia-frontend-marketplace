@@ -6,9 +6,10 @@
 		q: BookingQuestion;
 		value: string;
 		onchange: (value: string) => void;
+		error?: string;
 	};
 
-	let { q, value = '', onchange }: Props = $props();
+	let { q, value = '', onchange, error }: Props = $props();
 
 	const isoToFlag = (iso2: string) =>
 		String.fromCodePoint(...[...iso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
@@ -209,6 +210,10 @@
 				/>
 			{/if}
 		</div>{/if}
+
+	{#if error}
+		<p class="p-sm mt-1 text-[oklch(0.55_0.2_25)]">{error}</p>
+	{/if}
 </div>
 
 <style>
