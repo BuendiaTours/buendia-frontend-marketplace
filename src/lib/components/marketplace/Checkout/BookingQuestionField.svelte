@@ -103,7 +103,7 @@
 				<input
 					id={inputId}
 					type="tel"
-					class="input input-tel input-lg"
+					class="input input-tel input-lg w-full sm:!w-1/2"
 					{value}
 					oninput={(e) => onchange(e.currentTarget.value)}
 					placeholder={q.placeholder ?? ''}
@@ -113,7 +113,7 @@
 				<input
 					id={inputId}
 					type="date"
-					class="input input-date input-lg"
+					class="input input-date input-lg w-full sm:!w-1/2"
 					{value}
 					oninput={(e) => onchange(e.currentTarget.value)}
 					required={isRequired}
@@ -122,7 +122,7 @@
 				<input
 					id={inputId}
 					type="datetime-local"
-					class="input input-datetime input-lg"
+					class="input input-datetime input-lg w-full sm:!w-1/2"
 					{value}
 					oninput={(e) => onchange(e.currentTarget.value)}
 					required={isRequired}

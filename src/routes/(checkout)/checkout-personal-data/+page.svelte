@@ -225,7 +225,7 @@
 						<label class="p-base" for="phone-country">Teléfono</label>
 						<div class="flex items-center gap-0 overflow-hidden p-0">
 							<select
-								class="select select-lg !w-[140px] shrink-0 !rounded-r-none !border-r-0"
+								class="select select-lg !w-[152px] shrink-0 !rounded-r-none !border-r-0"
 								id="phone-country"
 								bind:value={country}
 								aria-label="País"
