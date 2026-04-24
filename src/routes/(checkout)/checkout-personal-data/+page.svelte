@@ -186,7 +186,9 @@
 			>
 				<div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
 					<div class="flex flex-col">
-						<label class="p-base" for="contactFirstName">Nombre</label>
+						<label class="p-base" for="contactFirstName"
+							>Nombre <span class="text-salmon-strong font-bold">*</span></label
+						>
 						<input
 							class="input input-lg w-full"
 							id="contactFirstName"
@@ -198,7 +200,9 @@
 					</div>
 
 					<div class="flex flex-col">
-						<label class="p-base" for="contactLastName">Apellidos</label>
+						<label class="p-base" for="contactLastName"
+							>Apellidos <span class="text-salmon-strong font-bold">*</span></label
+						>
 						<input
 							class="input input-lg w-full"
 							id="contactLastName"
@@ -210,7 +214,9 @@
 					</div>
 
 					<div class="flex flex-col">
-						<label class="p-base" for="contactEmail">Email</label>
+						<label class="p-base" for="contactEmail"
+							>Email <span class="text-salmon-strong font-bold">*</span></label
+						>
 						<input
 							class="input input-lg w-full"
 							id="contactEmail"
@@ -222,7 +228,9 @@
 					</div>
 
 					<div class="flex flex-col">
-						<label class="p-base" for="phone-country">Teléfono</label>
+						<label class="p-base" for="phone-country"
+							>Teléfono <span class="text-salmon-strong font-bold">*</span></label
+						>
 						<div class="flex items-center gap-0 overflow-hidden p-0">
 							<select
 								class="select select-lg !w-[148px] shrink-0 !rounded-r-none !border-r-0"

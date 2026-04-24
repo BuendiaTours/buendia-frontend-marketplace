@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { BookingQuestion } from '$lib/types';
+	import { countries } from 'svelte-tel-input/assets';
 
 	type Props = {
 		q: BookingQuestion;
@@ -8,6 +9,9 @@
 	};
 
 	let { q, value = '', onchange }: Props = $props();
+
+	const isoToFlag = (iso2: string) =>
+		String.fromCodePoint(...[...iso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 
 	const inputId = $derived(`bq-${q.id}`);
 	const isRequired = $derived(q.required === 'REQUIRED');
@@ -180,6 +184,19 @@
 						</label>
 					{/each}
 				</div>
+			{:else if q.dataType === 'COUNTRY'}
+				<select
+					id={inputId}
+					{value}
+					onchange={(e) => onchange(e.currentTarget.value)}
+					required={isRequired}
+					class="select select-lg"
+				>
+					<option value="">—</option>
+					{#each countries as c (c.iso2)}
+						<option value={c.iso2}>{isoToFlag(c.iso2)} {c.name}</option>
+					{/each}
+				</select>
 			{:else}
 				<input
 					id={inputId}
