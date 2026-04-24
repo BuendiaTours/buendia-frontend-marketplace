@@ -141,9 +141,9 @@
 					{/each}
 				</select>
 			{:else if q.dataType === 'RADIO_BUTTON'}
-				<div class="radio-group" role="radiogroup">
+				<div class="radio-group flex flex-row gap-6" role="radiogroup">
 					{#each q.options as opt (opt.id)}
-						<label class="radio-label">
+						<label class="radio-label inline-flex cursor-pointer flex-row items-center gap-2">
 							<input
 								type="radio"
 								class="radio"
@@ -153,14 +153,14 @@
 								onchange={() => onchange(opt.value)}
 								required={isRequired}
 							/>
-							{opt.label}
+							<span>{opt.label}</span>
 						</label>
 					{/each}
 				</div>
 			{:else if q.dataType === 'MULTI_OPTION'}
-				<div class="checkbox-group">
+				<div class="checkbox-group flex flex-row gap-6" role="group">
 					{#each q.options as opt (opt.id)}
-						<label class="checkbox-label">
+						<label class="checkbox-label inline-flex cursor-pointer flex-row items-center gap-2">
 							<input
 								type="checkbox"
 								class="checkbox"
@@ -185,3 +185,11 @@
 			{/if}
 		</div>{/if}
 </div>
+
+<style>
+	.checkout-field__checkbox {
+		& .checkout-field__help {
+			padding-left: calc(1.25rem + 1rem);
+		}
+	}
+</style>
