@@ -31,13 +31,8 @@
 			</a>
 		{/if}
 	</div>
-	<div class="sm:grid sm:grid-cols-2 sm:gap-4 lg:shrink-0 lg:grow-0 lg:basis-[66.226%]">
+	<div class="grid grid-cols-2 gap-3 sm:gap-4 lg:shrink-0 lg:grow-0 lg:basis-[66.226%]">
 		<img loading="lazy" src={image_1} alt="tienda" class="h-full w-full rounded-2xl object-cover" />
-		<img
-			loading="lazy"
-			src={image_2}
-			alt="tienda"
-			class="hidden h-full w-full rounded-2xl object-cover sm:block"
-		/>
+		<img loading="lazy" src={image_2} alt="tienda" class="h-full w-full rounded-2xl object-cover" />
 	</div>
 </div>
