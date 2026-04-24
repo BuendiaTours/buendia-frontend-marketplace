@@ -1,9 +1,9 @@
 /**
  * MARKETPLACE TYPOGRAPHY UTILITIES
- * 
+ *
  * Clases utility para aplicar los estilos de tipografía definidos en theme
  * Incluye variantes responsive automáticas
- * 
+ *
  * Uso:
  * <h1 class="text-h1">Título</h1>
  * <p class="text-editorial-p-lg">Párrafo editorial</p>
@@ -149,6 +149,15 @@
 	/* font-weight: 500; */ /* medium */
 	font-size: var(--font-size-editorial-p-sm);
 	line-height: var(--line-height-editorial-p-sm);
+}
+
+/* ============================================
+   TRUSTPILOT
+   ============================================ */
+.p-trustpilot {
+	font-family: var(--font-roboto);
+	font-size: var(--font-size-trustpilot);
+	line-height: var(--line-height-trustpilot);
 }
 
 /* ============================================

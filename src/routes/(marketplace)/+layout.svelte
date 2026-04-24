@@ -12,7 +12,11 @@
 	import { browser } from '$app/environment';
 	import { PUBLIC_GTM_ID } from '$env/static/public';
 
-	let { children } = $props();
+	import type { PageData } from './$types';
+	import type { Snippet } from 'svelte';
+
+	type Props = { children: Snippet; data: PageData };
+	let { children, data }: Props = $props();
 
 	$effect(() => {
 		if (!browser || !PUBLIC_GTM_ID) return;
@@ -49,6 +53,6 @@
 		{@render children()}
 	</main>
 
-	<Footer />
+	<Footer trustpilot={data.trustpilot} />
 	<MeltAlertDialog />
 </div>
