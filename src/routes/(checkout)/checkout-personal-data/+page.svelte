@@ -1,11 +1,9 @@
 <script lang="ts">
 	// Types
-	import type { PassengerLineItem, BookingQuestion, PassengerGroup } from '$lib/types';
+	import type { BookingQuestion, PassengerGroup } from '$lib/types';
 
 	// Utils
 	import { countries } from 'svelte-tel-input/assets';
-	import { formatEuro } from '$lib/utils/currency';
-	import { formatSlotTime, bookingToISODateTime, formatActivityDate } from '$lib/utils/datetime';
 	import { goto } from '$app/navigation';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { TelInput } from 'svelte-tel-input';
@@ -25,14 +23,12 @@
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 
 	// Components
-	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
-	import CheckoutCard from '$lib/components/marketplace/checkout/CheckoutCard.svelte';
+	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
 
 	// i18n
 	import * as m from '$paraglide/messages';
-	import { formatPassengersFromBooking } from '$lib/utils/passengers';
 	import Steps from '$lib/components/marketplace/Steps.svelte';
 	import DebugBookingQuestionFields from '$lib/components/marketplace/checkout/DebugBookingQuestionFields.svelte';
 
@@ -384,94 +380,8 @@
 			{/if}
 		</div>
 
-		<div class="col-sidebar pt-4">
-			{#if shoppingCartStore.order?.bookings?.length}
-				<p class="h3">Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito</p>
-
-				{#each shoppingCartStore.order.bookings as booking (booking.id)}
-					{@const passengerItems = Object.values(
-						(booking.passengers ?? []).reduce(
-							(acc, p) => {
-								if (!p.group) return acc;
-								if (!acc[p.group])
-									acc[p.group] = { group: p.group, count: 0, unitPrice: p.priceAtBooking ?? 0 };
-								acc[p.group].count++;
-								return acc;
-							},
-							{} as Record<string, PassengerLineItem>
-						)
-					)}
-					<CheckoutCard
-						variant="IS_BUENDIA"
-						image="https://dummyimage.com/140x140/000/fff.jpg"
-						title={[booking.activityTitle, booking.optionTitle].filter(Boolean).join(' · ')}
-						rating={4.7}
-						opinions={432}
-						currentPrice={booking.subtotalPrice ?? undefined}
-						previousPrice={booking.previousPrice ?? undefined}
-						{passengerItems}
-						list={[
-							{
-								icon: 'Ticket',
-								text: 'Con entradas al Palacio da Pena y Quinta da Regaleira'
-							},
-							...(booking.passengers?.length
-								? [{ icon: 'User', text: formatPassengersFromBooking(booking.passengers) ?? '' }]
-								: []),
-							...(booking.activityDatetime
-								? [{ icon: 'Calendar', text: formatActivityDate(booking.activityDatetime) }]
-								: []),
-							...(booking.startTime ? [{ icon: 'ClockCircle', text: booking.startTime }] : []),
-							{
-								icon: 'CheckCircle',
-								iconColor: 'text-green-500',
-								text: 'Cancelación gratuita hasta el inicio de la actividad'
-							}
-						]}
-					></CheckoutCard>
-				{/each}
-
-				{#each shoppingCartStore.order.bookings as booking (booking.id)}
-					{@const passengerItems = Object.values(
-						(booking.passengers ?? []).reduce(
-							(acc, p) => {
-								if (!p.group) return acc;
-								if (!acc[p.group])
-									acc[p.group] = { group: p.group, count: 0, unitPrice: p.priceAtBooking ?? 0 };
-								acc[p.group].count++;
-								return acc;
-							},
-							{} as Record<string, PassengerLineItem>
-						)
-					)}
-					<li>
-						{#if booking.activityTitle || booking.optionTitle}
-							<p>
-								{#if booking.activityTitle}{booking.activityTitle}{booking.optionTitle
-										? ' · '
-										: ''}{/if}{booking.optionTitle ?? ''}
-							</p>
-						{/if}
-						<p>booking_id: {booking.id}</p>
-						<p>option_id: {booking.optionId}</p>
-						{#if booking.date}
-							<p>
-								Fecha: {booking.date}
-								{#if booking.startTime}{formatSlotTime(
-										bookingToISODateTime(booking.date, booking.startTime)
-									)}{/if}
-							</p>
-						{/if}
-						<p>Estado: {booking.status}</p>
-						<PassengerBreakdown items={passengerItems} />
-						{#if booking.subtotalPrice != null}
-							<p>{formatEuro(booking.subtotalPrice)}</p>
-						{/if}
-					</li>
-				{/each}
-			{:else}
-				<p class="p-base">No hay reservas para mostrar.</p>
-			{/if}
+		<div class="col-sidebar">
+			<CheckoutSidebarResume />
 		</div>
 	</div>
 </div>
