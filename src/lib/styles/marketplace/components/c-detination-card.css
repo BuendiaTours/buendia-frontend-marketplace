@@ -1,0 +1,13 @@
+.c-detination-card {
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			1deg,
+			var(--color-overlay-media-gradient-bottom-start, rgba(15, 17, 21, 0.99)) 1.08%,
+			var(--color-overlay-media-gradient-bottom-stop, rgba(15, 17, 21, 0)) 99.04%
+		);
+	}
+}

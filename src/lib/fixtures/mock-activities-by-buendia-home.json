@@ -1,0 +1,140 @@
+[
+	{
+		"id": "1786498e3bcb1f599fa6a85ea19105b5",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-sintra-palacio-da-pena-portugal.jpg.webp",
+		"name": "Excursión a Sintra, Palacio da Pena, Quinta da Regaleira y Cabo da Roca desde Lisboa",
+		"slug": "https://buendia.travel/actividad/excursion-sintra-palacio-da-pena-quinta-da-regaleira-cabo-da-roca-desde-lisboa",
+		"infoList": [
+			{ "id": "16ef01f0864f4adce8fd045e7e763050", "infoName": "11 horas" },
+			{ "id": "0833cd7981d8ab4e75d14cf864afc9d6", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "36",
+		"rating": 4.6,
+		"opinions": 347,
+		"byBuendia": true
+	},
+	{
+		"id": "2b34896e29484a45e41986ed6eb71973",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-castillo-condes-flandes-gante-belgica_1_.jpg.webp",
+		"name": "Excursión a Brujas y Gante desde Bruselas",
+		"slug": "https://buendia.travel/actividad/excursion-brujas-gante-desde-bruselas",
+		"infoList": [
+			{ "id": "b40771f15b4233da69c15f4382cc6547", "infoName": "10 horas" },
+			{ "id": "3320b5721759b2fd71f61856e23c7b30", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "52",
+		"rating": 4.7,
+		"opinions": 691,
+		"byBuendia": true
+	},
+	{
+		"id": "438c0cfc2901b685d1ae98ba9e5bd221",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-excursion-brujas-desde-amsterdam.jpg.webp",
+		"name": "Excursión a Brujas desde Ámsterdam",
+		"slug": "https://buendia.travel/actividad/excursion-brujas-desde-amsterdam",
+		"infoList": [
+			{ "id": "d396ea9f37af248b34579c1b6c99accd", "infoName": "12 horas" },
+			{ "id": "5929cd25ad68f2bea065e62de8b06a75", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "65",
+		"discount": "61",
+		"rating": 4.4,
+		"opinions": 141,
+		"byBuendia": true
+	},
+	{
+		"id": "3eaa21361d89a9bb28634a9dc3366bd2",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HEROSachsenhausen-detalle-placa-suelo.jpg.webp",
+		"name": "Excursión en tren al campo de concentración de Sachsenhausen desde Berlín",
+		"slug": "https://buendia.travel/actividad/excursion-tren-campo-de-concentracion-sachsenhusen-desde-berlin",
+		"infoList": [
+			{ "id": "2f5a27c895d357bb03e59858b56add0b", "infoName": "5 horas" },
+			{ "id": "b6071c1c57f8635131bb871742052eab", "infoName": "Entradas incluidas" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "25",
+		"discount": "21,25",
+		"rating": 4.5,
+		"opinions": 279,
+		"byBuendia": true
+	},
+	{
+		"id": "565e6b578012c5236bf768ea89f782e8",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-lagos-covadonga__1_.jpg.webp",
+		"name": "Excursión a Lagos de Covadonga, Cangas de Onís y Lastres desde Oviedo",
+		"slug": "https://buendia.travel/actividad/excursion-lagos-de-covadonga-cangas-de-onis-lastres-desde-oviedo",
+		"infoList": [
+			{ "id": "4dc3cf60c1961f4b6635779d5ce75964", "infoName": "11 horas" },
+			{ "id": "5929cd25ad68f2bea065e62de8b06a45", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "47",
+		"rating": 4.7,
+		"opinions": 664,
+		"byBuendia": true
+	},
+	{
+		"id": "608522a19e33a73820cc30f7f1ebf89",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-mujer-de-espaldas-frente-a-las-casas-de-colores-de-costa-nova-aveiro.jpg.webp",
+		"name": "Excursión a Aveiro con paseo en moliceiro, Costa Nova y capilla do Senhor da Pedra desde Oporto",
+		"slug": "https://buendia.travel/actividad/excursion-aveiro-moliceiro-costa-nova-capilla-do-senor-da-pedra-desde-oporto",
+		"infoList": [
+			{ "id": "57e94ca31e9e64eea1513acf9bd0a81d", "infoName": "8,5 horas" },
+			{ "id": "5929cd25ad68f2bea065e62de8b06a65", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "42",
+		"rating": 4.7,
+		"opinions": 36,
+		"byBuendia": true
+	},
+	{
+		"id": "7ac2bc9d4c3d4bd2027fe88e3850c76",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f71-guadalest.webp",
+		"name": "Excursión a Guadalest, Altea y Fuentes del Algar desde Alicante",
+		"slug": "https://buendia.travel/actividad/excursion-guadalest-altea-fuentes-de-algar-desde-alicante",
+		"infoList": [
+			{ "id": "59e4eb52d34113456d6446716cf38bf1", "infoName": "11 horas" },
+			{ "id": "a21123800b9fbc62e2c029ddbf9bf7bd", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "36",
+		"rating": 4.6,
+		"opinions": 347,
+		"byBuendia": true
+	},
+	{
+		"id": "88dac94aa6bad625db940f1e4a8fef",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f700-HERO-zona-comercial-amsterdam___.jpg.webp",
+		"name": "Excursión a Ámsterdam con paseo en barco por los canales desde Bruselas",
+		"slug": "https://buendia.travel/actividad/excursion-amsterdam-paseo-barco-desde-bruselas",
+		"infoList": [
+			{ "id": "cc8730e8c8e7f5ddbe7836d7bb118458", "infoName": "12 horas" },
+			{ "id": "b58b22c98d69cf96c63c095d87081347", "infoName": "Grupo reducido" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "69",
+		"rating": 4.6,
+		"opinions": 81,
+		"byBuendia": true
+	},
+	{
+		"id": "9cfe0c6be29c9c1b103860a0790b76e8",
+		"image": "marketplace/activities/1f4d1030-e704-4464-8fcc-cd09e4b2c3f7HERO-excursion-gaztelugatxe-bermeo-mundaka-gernika.jpg.webp",
+		"name": "Excursión a Gaztelugatxe, Bermeo, Mundaka y Gernika con txakoli",
+		"slug": "https://buendia.travel/actividad/excursion-gaztelugatxe-bermeo-mundaka-gernika-desde-bilbao",
+		"infoList": [
+			{ "id": "bd9b6d03898bb21e20c5ae76dcb633e7", "infoName": "10 horas" },
+			{ "id": "d6b252b7cfc0bbb5b3063376c4b01c02", "infoName": "Entradas incluidas" }
+		],
+		"cancellation": "Cancela gratis hasta el inicio",
+		"price": "69",
+		"discount": "58,65",
+		"rating": 4.5,
+		"opinions": 208,
+		"byBuendia": true
+	}
+]
