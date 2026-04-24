@@ -13,7 +13,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	type Destination = { title: string; slug: string; image: string };
+	type Destination = { title: string; slug: string; image: string; rating?: number };
 
 	const destinations: Destination[] = [
 		{ title: 'Bruselas', slug: 'bruselas', image: 'marketplace/destinations/brucelas.png' },
@@ -27,26 +27,54 @@
 	];
 
 	const atractions: Destination[] = [
-		{ title: 'Vaticano', slug: 'roma/vaticano', image: 'marketplace/destinations/vaticano.png' },
+		{
+			title: 'Vaticano',
+			slug: 'roma/vaticano',
+			image: 'marketplace/destinations/vaticano.png',
+			rating: 4.6
+		},
 		{
 			title: 'Torre Eiffel',
 			slug: 'paris/torre-eiffel',
-			image: 'marketplace/destinations/torreeiffel.png'
+			image: 'marketplace/destinations/torreeiffel.png',
+			rating: 4.7
 		},
 		{
 			title: 'Coliseo Romano',
 			slug: 'roma/coliseo-romano',
-			image: 'marketplace/destinations/coliseoromano.png'
+			image: 'marketplace/destinations/coliseoromano.png',
+			rating: 4.8
 		},
-		{ title: 'Atomium', slug: 'bruselas/atomium', image: 'marketplace/destinations/atomium.png' },
+		{
+			title: 'Atomium',
+			slug: 'bruselas/atomium',
+			image: 'marketplace/destinations/atomium.png',
+			rating: 4.9
+		},
 		{
 			title: 'La Giralda',
 			slug: 'sevilla/la-giralda',
-			image: 'marketplace/destinations/lagiralda.png'
+			image: 'marketplace/destinations/lagiralda.png',
+			rating: 4.5
 		},
-		{ title: 'Atraction', slug: '', image: 'https://dummyimage.com/228.8x306/000/fff.png' },
-		{ title: 'Atraction 2', slug: '', image: 'https://dummyimage.com/228.8x306/000/fff.png' },
-		{ title: 'Atraction 3', slug: '', image: 'https://dummyimage.com/228.8x306/000/fff.png' }
+		{
+			title: 'Atraction',
+			slug: '',
+			image: 'https://dummyimage.com/228.8x306/000/fff.png',
+			rating: 4.6
+		},
+		{
+			title: 'Atraction 2',
+			slug: '',
+			image: 'https://dummyimage.com/228.8x306/000/fff.png',
+			rating: 4.6
+		},
+		{
+			title: 'Atraction 3',
+			slug: '',
+			image: 'https://dummyimage.com/228.8x306/000/fff.png',
+			rating: 4.6
+		}
 	];
 </script>
 
@@ -129,7 +157,7 @@
 			<swiper-slide class="flex aspect-3/4 w-[228.8px]">
 				<a
 					href="/{destination.slug}"
-					class="c-detination-card relative flex w-full items-end justify-center rounded-lg bg-cover bg-center pb-6"
+					class="c-detination-card relative flex w-full items-end justify-start rounded-lg bg-cover bg-center p-6"
 					style="background-image: url({destination.image})"
 				>
 					<p class="h3-editorial relative z-10 text-white">
@@ -158,9 +186,15 @@
 			<swiper-slide class="flex aspect-3/4 w-[228.8px]">
 				<a
 					href="/{atraction.slug}"
-					class="c-detination-card relative flex w-full items-end justify-center rounded-lg bg-cover bg-center pb-6"
+					class="c-detination-card relative flex w-full flex-col items-start justify-between rounded-lg bg-cover bg-center p-6"
 					style="background-image: url({atraction.image})"
 				>
+					<span
+						class="p-lg relative z-10 flex items-center gap-1 rounded-lg border border-solid border-neutral-400 bg-white px-3 py-2 font-bold"
+					>
+						<StarRating single size="sm" />
+						{atraction.rating}
+					</span>
 					<p class="h3-editorial relative z-10 text-white">
 						{atraction.title}
 					</p>
