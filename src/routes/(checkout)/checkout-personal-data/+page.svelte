@@ -26,6 +26,7 @@
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
 	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
+	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
 
 	// i18n
 	import * as m from '$paraglide/messages';
@@ -365,13 +366,22 @@
 						<p class="p-sm mt-3 text-[oklch(0.55_0.2_25)]">{submitError}</p>
 					{/if}
 
-					<button
-						class="e-button e-button-secondary mt-6 transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
-						type="submit"
-						disabled={!isValid || isSubmitting}
+					<TotalResume
+						variant="IN_A_ROW"
+						bookingCount={shoppingCartStore.bookingCount}
+						totalAmount={shoppingCartStore.totalAmount}
+						wrapperClass="mt-6"
 					>
-						{isSubmitting ? 'Guardando...' : 'Continuar con el pago'}
-					</button>
+						{#snippet actions()}
+							<button
+								class="e-button e-button-secondary w-full transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+								type="submit"
+								disabled={!isValid || isSubmitting}
+							>
+								{isSubmitting ? 'Guardando...' : 'Continuar con el pago'}
+							</button>
+						{/snippet}
+					</TotalResume>
 				</form>
 
 				<!-- <DebugBookingQuestionFields /> -->
