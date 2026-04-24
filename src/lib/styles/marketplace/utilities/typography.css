@@ -152,15 +152,6 @@
 }
 
 /* ============================================
-   TRUSTPILOT
-   ============================================ */
-.p-trustpilot {
-	font-family: var(--font-roboto);
-	font-size: var(--font-size-trustpilot);
-	line-height: var(--line-height-trustpilot);
-}
-
-/* ============================================
    RESPONSIVE VARIANTS - Tablet
    ============================================ */
 
