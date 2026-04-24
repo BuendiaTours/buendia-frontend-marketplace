@@ -16,7 +16,7 @@
 	);
 </script>
 
-<div class="rounded-xl border border-solid border-neutral-400 px-6 py-7">
+<div class="rounded-xl border border-solid border-neutral-400 px-6 py-7 lg:py-12">
 	{#if item.icon}
 		<IconComponent class="mb-2 size-10" />
 	{:else}
