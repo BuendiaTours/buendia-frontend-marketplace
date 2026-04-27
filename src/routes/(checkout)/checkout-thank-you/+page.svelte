@@ -18,6 +18,9 @@
 	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
 	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
 	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
+	import CollectionPointMap from '$lib/components/marketplace/CollectionPointMap.svelte';
+	import type { ActivityOptionPickupLocation } from '$lib/types';
 
 	let { data }: { data: PageData } = $props();
 
@@ -26,6 +29,20 @@
 	let error = $state<string | null>(null);
 
 	const orderId = $derived(page.url.searchParams.get('orderId'));
+
+	const mockPickupLocations: ActivityOptionPickupLocation[] = [
+		{
+			pickupPointId: 'mock-1',
+			kind: 'meeting_point',
+			minutesBefore: 10,
+			name: 'Puerta del Sol',
+			address: 'Puerta del Sol, s/n',
+			city: 'Madrid',
+			postCode: '28013',
+			countryCode: 'ES',
+			location: { type: 'Point', coordinates: [-3.7037902, 40.4167754] }
+		}
+	];
 
 	$effect(() => {
 		shoppingCartStore.clearShoppingCart();
@@ -109,6 +126,17 @@
 				<p class="p-base mt-6">No se encontró el pedido</p>
 			{/if}
 
+			<div class="mt-6">
+				<PdpCollectionPointsGroup items={mockPickupLocations} />
+
+				{#if mockPickupLocations[0]?.location}
+					<CollectionPointMap
+						coordinates={mockPickupLocations[0].location.coordinates}
+						wrapperClass="mt-4"
+					/>
+				{/if}
+			</div>
+
 			<ThankYouAccountCreate
 				title="Crea tu cuenta en buendía"
 				description="Regístrate con un solo click. Tendrás acceso a la gestión de tu reserva desde tu Área personal y podrás disfrutar de ofertas exclusivas."
@@ -116,6 +144,7 @@
 				slug="/"
 				wrapperClass="mt-6"
 			/>
+
 			<ThankYouAccountCreate
 				title="Tu reserva está en tu área personal"
 				description="Desde tu área personal podrás gestionar tu reserva siempre que quieras"
