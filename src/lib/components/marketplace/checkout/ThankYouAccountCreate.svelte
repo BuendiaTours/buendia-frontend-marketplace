@@ -13,7 +13,9 @@
 	let { title, description, buttonText, buttonClass, slug, wrapperClass }: Props = $props();
 </script>
 
-<div class="bg-info-100 border-info-300 rounded-2xl border border-solid px-5 py-9 {wrapperClass}">
+<div
+	class="co-thank-you-account-create bg-info-100 border-info-300 rounded-2xl border border-solid px-5 py-9 {wrapperClass}"
+>
 	<div class="flex justify-between gap-4">
 		<p class="h2 mb-3 text-neutral-800 sm:mb-2.5">
 			{title}

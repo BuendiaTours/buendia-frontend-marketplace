@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types
-	import type { PassengerLineItem } from '$lib/types';
+	import type { CartOrder, PassengerLineItem } from '$lib/types';
 
 	// Libs
 	import { formatEuro } from '$lib/utils/currency';
@@ -12,17 +12,23 @@
 
 	// Components
 	import CheckoutCard from './CheckoutCard.svelte';
+
+	let { order: orderProp = null }: { order?: CartOrder | null } = $props();
+
+	const order = $derived(orderProp ?? shoppingCartStore.order);
+	const bookingCount = $derived(order?.bookings?.length ?? 0);
+	const totalAmount = $derived(order?.totalAmount ?? 0);
 </script>
 
-{#if shoppingCartStore.order?.bookings?.length}
+{#if order?.bookings?.length}
 	<div
 		class="col-sidebar__shopping-cart-resume__header mt-1 mb-3 flex items-center justify-between"
 	>
-		<span class="h3">Tu pedido ({shoppingCartStore.bookingCount} planes)</span>
-		<span class="text-price">{formatEuro(shoppingCartStore.totalAmount ?? 0)}</span>
+		<span class="h3">Tu pedido ({bookingCount} planes)</span>
+		<span class="text-price">{formatEuro(totalAmount)}</span>
 	</div>
 
-	{#each shoppingCartStore.order.bookings as booking (booking.id)}
+	{#each order.bookings as booking (booking.id)}
 		{@const passengerItems = Object.values(
 			(booking.passengers ?? []).reduce(
 				(acc, p) => {

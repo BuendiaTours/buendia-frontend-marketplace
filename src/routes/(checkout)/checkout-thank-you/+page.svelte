@@ -9,11 +9,12 @@
 	import { page } from '$app/state';
 
 	// Components
+	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
+	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
 	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
-	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
 
 	let order = $state<CartOrder | null>(null);
 	let isLoading = $state(false);
@@ -53,9 +54,13 @@
 					imgSrc="https://picsum.photos/600/338"
 				>
 					{#snippet actions()}
-						<button type="button" class="e-button e-button-secondary relative">
+						<a
+							href={`/api/orders/${orderId}/calendar.ics`}
+							class="e-button e-button-secondary relative"
+							download="reserva.ics"
+						>
 							Añadir al calendario
-						</button>
+						</a>
 					{/snippet}
 				</ConfirmationHeroImg>
 
@@ -98,10 +103,24 @@
 			{:else}
 				<p class="p-base mt-6">No se encontró el pedido</p>
 			{/if}
+
+			<ThankYouAccountCreate
+				title="Crea tu cuenta en buendía"
+				description="Regístrate con un solo click. Tendrás acceso a la gestión de tu reserva desde tu Área personal y podrás disfrutar de ofertas exclusivas."
+				buttonText="Registrarse"
+				slug="/"
+			/>
+			<ThankYouAccountCreate
+				title="Tu reserva está en tu área personal"
+				description="Desde tu área personal podrás gestionar tu reserva siempre que quieras"
+				buttonText="Ir a Área personal"
+				buttonClass="e-button-secondary"
+				slug="/"
+			/>
 		</div>
 
 		<div class="col-sidebar">
-			<CheckoutSidebarResume />
+			<CheckoutSidebarResume {order} />
 
 			<HubspotChat wrapperClass="mt-4" />
 		</div>
