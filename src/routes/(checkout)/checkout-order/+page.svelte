@@ -12,6 +12,10 @@
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import { removedBookingsStore } from '$lib/stores/removedBookings.svelte';
 
+	$effect(() => {
+		if (shoppingCartStore.orderId) shoppingCartStore.loadOrder();
+	});
+
 	// Components
 	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';

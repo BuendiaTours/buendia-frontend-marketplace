@@ -22,6 +22,10 @@
 	// Stores
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 
+	$effect(() => {
+		if (shoppingCartStore.orderId) shoppingCartStore.loadOrder();
+	});
+
 	// Components
 	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
 	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
@@ -49,6 +53,18 @@
 	let isSubmitting = $state(false);
 	let submitError = $state<string | null>(null);
 	let showErrors = $state(false);
+	let prefilled = $state(false);
+
+	$effect(() => {
+		if (!prefilled && shoppingCartStore.order) {
+			contactFirstName = shoppingCartStore.order.contactFirstName ?? '';
+			contactLastName = shoppingCartStore.order.contactLastName ?? '';
+			contactEmail = shoppingCartStore.order.contactEmail ?? '';
+			country = (shoppingCartStore.order.contactNationalityCountryCode as CountryCode) ?? 'ES';
+			contactPhone = shoppingCartStore.order.contactPhone ?? '';
+			prefilled = true;
+		}
+	});
 
 	// Booking questions state
 	const questionsByOption = new SvelteMap<string, BookingQuestion[]>();
