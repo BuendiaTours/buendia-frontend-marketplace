@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Types
 	import type { CartOrder } from '$lib/types';
+	import type { PageData } from './$types';
 
 	// Store
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
@@ -9,12 +10,16 @@
 	import { page } from '$app/state';
 
 	// Components
+	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
 	import Callout from '$lib/components/marketplace/Callout.svelte';
 	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
 	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
 	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
+	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
 	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
+
+	let { data }: { data: PageData } = $props();
 
 	let order = $state<CartOrder | null>(null);
 	let isLoading = $state(false);
@@ -109,6 +114,7 @@
 				description="Regístrate con un solo click. Tendrás acceso a la gestión de tu reserva desde tu Área personal y podrás disfrutar de ofertas exclusivas."
 				buttonText="Registrarse"
 				slug="/"
+				wrapperClass="mt-6"
 			/>
 			<ThankYouAccountCreate
 				title="Tu reserva está en tu área personal"
@@ -116,6 +122,7 @@
 				buttonText="Ir a Área personal"
 				buttonClass="e-button-secondary"
 				slug="/"
+				wrapperClass="mt-6"
 			/>
 		</div>
 
@@ -125,6 +132,38 @@
 			<HubspotChat wrapperClass="mt-4" />
 		</div>
 	</div>
+</div>
+
+<div class="wrapper mt-6">
+	<PlpSwiper
+		swiperOptions={{
+			slidesPerView: 1.2,
+			spaceBetween: 16,
+			navigation: true,
+			loop: false,
+			breakpoints: {
+				640: { slidesPerView: 2 },
+				1024: { slidesPerView: 4 }
+			}
+		}}
+		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
+	>
+		{#snippet header()}
+			<div
+				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
+			>
+				<h2 class="h2-editorial text-neutral-800">Otros también compraron</h2>
+			</div>
+		{/snippet}
+		{#each data.activities as activity (activity.id)}
+			<swiper-slide>
+				<ActivityCard
+					item={activity}
+					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+				/>
+			</swiper-slide>
+		{/each}
+	</PlpSwiper>
 </div>
 
 <details class="mt-4">

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { format } from 'date-fns';
-	// Componets
+
+	// Components
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
