@@ -825,10 +825,9 @@
 			{style}
 			items={[
 				{
-					id: style,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				}
 			]}
 		/>
@@ -840,10 +839,9 @@
 			size="small"
 			items={[
 				{
-					id: `${style}-sm`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				}
 			]}
 		/>
@@ -854,10 +852,9 @@
 			{style}
 			items={[
 				{
-					id: `${style}-b`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				}
 			]}
 		/>
@@ -868,16 +865,14 @@
 			{style}
 			items={[
 				{
-					id: `${style}-1`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				},
 				{
-					id: `${style}-2`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				}
 			]}
 		/>
@@ -889,16 +884,14 @@
 			size="small"
 			items={[
 				{
-					id: `${style}-1`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				},
 				{
-					id: `${style}-2`,
 					icon: 'InfoCircle',
 					title: 'Callout title',
-					description: 'Callout description text'
+					description: `Callout description text styled with ${style} style`
 				}
 			]}
 		/>

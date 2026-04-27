@@ -6,7 +6,6 @@
 		style: string;
 		size?: 'normal' | 'small';
 		items: Array<{
-			id: string;
 			icon: string;
 			title: string;
 			description: string;
@@ -28,7 +27,7 @@
 <div
 	class={`c-callout c-callout__${style} flex flex-col gap-4 rounded-xl ${paddingClass[size]} ${wrapperClass || ''}`}
 >
-	{#each items as item (item.id)}
+	{#each items as item, i (i)}
 		{@const IconComponent = getIconComponent(item.icon)}
 		<div class="flex gap-2">
 			{#if IconComponent}
@@ -37,7 +36,8 @@
 			<div class="flex flex-col">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				<p class="c-callout-title {titleClass[size]}">{@html item.title}</p>
-				<p class="{descriptionClass[size]} text-neutral-800">{item.description}</p>
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				<div class="{descriptionClass[size]} text-neutral-800">{@html item.description}</div>
 			</div>
 		</div>
 	{/each}

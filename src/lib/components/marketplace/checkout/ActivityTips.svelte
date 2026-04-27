@@ -4,7 +4,6 @@
 
 	type Props = {
 		wrapperClass?: string;
-		title?: string;
 		items: Array<{
 			icon: string;
 			title: string;
@@ -12,18 +11,13 @@
 		}>;
 	};
 
-	let { wrapperClass, title, items }: Props = $props();
+	let { wrapperClass, items }: Props = $props();
 
 	function getIconComponent(iconName: string): Component | null {
 		return Icons[iconName as keyof typeof Icons] as Component | null;
 	}
 </script>
 
-{#if title}
-	<h2 class="h2 mb-5 text-neutral-800 lg:mb-6">
-		{title}
-	</h2>
-{/if}
 <div
 	class="flex flex-col divide-y divide-neutral-300 rounded-xl border border-solid border-neutral-300 px-5 lg:px-6 {wrapperClass}"
 >
