@@ -11,26 +11,26 @@
 
 	// Components
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';
-	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
-	import AuthorMeta from '$lib/components/marketplace/AuthorMeta.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import CheckoutCard from '$lib/components/marketplace/checkout/CheckoutCard.svelte';
-	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
-	import Hightlight from '$lib/components/marketplace/Hightlight.svelte';
-	import MeltCalendar from '$lib/components/marketplace/MeltCalendar.svelte';
-	import MeltComboBox from '$lib/components/marketplace/MeltComboBox.svelte';
-	import MeltDrawer from '$lib/components/marketplace/MeltDrawer.svelte';
-	import MeltDrawerManager from '$lib/components/marketplace/MeltDrawerManager.svelte';
-	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import PureHtmlDialog from '$lib/components/marketplace/PureHtmlDialog.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import Steps from '$lib/components/marketplace/Steps.svelte';
+	import AccordionOnMobile from '$lib/components/AccordionOnMobile.svelte';
+	import ActivityTips from '$lib/components/checkout/ActivityTips.svelte';
+	import AuthorMeta from '$lib/components/AuthorMeta.svelte';
+	import Callout from '$lib/components/Callout.svelte';
+	import CheckoutCard from '$lib/components/checkout/CheckoutCard.svelte';
+	import ConfirmationHeroImg from '$lib/components/checkout/ConfirmationHeroImg.svelte';
+	import Hightlight from '$lib/components/Hightlight.svelte';
+	import MeltCalendar from '$lib/components/MeltCalendar.svelte';
+	import MeltComboBox from '$lib/components/MeltComboBox.svelte';
+	import MeltDrawer from '$lib/components/MeltDrawer.svelte';
+	import MeltDrawerManager from '$lib/components/MeltDrawerManager.svelte';
+	import Progressbar from '$lib/components/Progressbar.svelte';
+	import PureHtmlDialog from '$lib/components/PureHtmlDialog.svelte';
+	import ReviewCard from '$lib/components/ReviewCard.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
+	import Steps from '$lib/components/Steps.svelte';
 	import SwiperElement from '$lib/components/Swiper.svelte';
-	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
-	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
-	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
+	import ThankYouAccountCreate from '$lib/components/checkout/ThankYouAccountCreate.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
+	import TotalResume from '$lib/components/checkout/TotalResume.svelte';
 
 	// Icons
 	import { Calendar, MapPoint, BuendiaComment, BuendiaCommentHollow } from '$lib/icons/Linear';

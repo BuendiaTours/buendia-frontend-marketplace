@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ShoppingCart from '$lib/components/marketplace/ShoppingCart/index.svelte';
+	import ShoppingCart from '$lib/components/ShoppingCart/index.svelte';
 
 	type Props = {
 		title?: string;

@@ -15,8 +15,8 @@
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
 	import { createPopover, melt } from '@melt-ui/svelte';
 	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
-	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
-	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
+	import PassengerBreakdown from '$lib/components/ShoppingCart/PassengerBreakdown.svelte';
+	import CartExpiryCallout from '$lib/components/ShoppingCart/CartExpiryCallout.svelte';
 
 	const {
 		elements: { trigger, content },

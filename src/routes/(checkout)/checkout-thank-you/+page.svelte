@@ -10,16 +10,16 @@
 	import { page } from '$app/state';
 
 	// Components
-	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
-	import ActivityTips from '$lib/components/marketplace/checkout/ActivityTips.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
-	import ConfirmationHeroImg from '$lib/components/marketplace/checkout/ConfirmationHeroImg.svelte';
-	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
-	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
-	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
-	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
-	import CollectionPointMap from '$lib/components/marketplace/CollectionPointMap.svelte';
+	import ActivityCard from '$lib/components/ActivityCard.svelte';
+	import ActivityTips from '$lib/components/checkout/ActivityTips.svelte';
+	import Callout from '$lib/components/Callout.svelte';
+	import CheckoutSidebarResume from '$lib/components/checkout/CheckoutSidebarResume.svelte';
+	import ConfirmationHeroImg from '$lib/components/checkout/ConfirmationHeroImg.svelte';
+	import HubspotChat from '$lib/components/HubspotChat.svelte';
+	import PlpSwiper from '$lib/components/plp/PlpSwiper.svelte';
+	import ThankYouAccountCreate from '$lib/components/checkout/ThankYouAccountCreate.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/pdp/PdpCollectionPointsGroup.svelte';
+	import CollectionPointMap from '$lib/components/CollectionPointMap.svelte';
 	import type { ActivityOptionPickupLocation } from '$lib/types';
 
 	let { data }: { data: PageData } = $props();

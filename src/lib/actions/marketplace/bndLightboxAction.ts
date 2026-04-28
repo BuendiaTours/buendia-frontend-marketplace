@@ -1,5 +1,5 @@
 import { mount, unmount } from 'svelte';
-import BndLightbox from '$lib/components/marketplace/BndLightbox/BndLightbox.svelte';
+import BndLightbox from '$lib/components/BndLightbox/BndLightbox.svelte';
 import type { BndLightboxCategory, BndLightboxConfig, BndLightboxItem } from '$lib/types';
 
 export type BndLightboxActionOptions = {

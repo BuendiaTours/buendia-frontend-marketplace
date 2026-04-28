@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { shoppingCartStore } from '$lib/stores/shoppingCart.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
+	import Callout from '$lib/components/Callout.svelte';
 
 	type Props = { wrapperClass?: string };
 	let { wrapperClass }: Props = $props();

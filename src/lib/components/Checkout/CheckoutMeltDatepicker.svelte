@@ -7,7 +7,7 @@
 	import { createDatePicker, melt } from '@melt-ui/svelte';
 	import { AltArrowLeft, AltArrowRight, Calendar } from '$lib/icons/Linear';
 	import type { DateValue } from '@internationalized/date';
-	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
+	import FakeSelectButton from '$lib/components/FakeSelectButton.svelte';
 	import { fade } from 'svelte/transition';
 	import { format } from 'date-fns';
 	import { es } from 'date-fns/locale';

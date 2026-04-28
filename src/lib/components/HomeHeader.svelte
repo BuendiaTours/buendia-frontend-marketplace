@@ -1,6 +1,6 @@
 <script lang="ts">
-	import TrustpilotRating from '$lib/components/marketplace/TrustpilotRating.svelte';
-	import SearchBar from '$lib/components/marketplace/SearchBar.svelte';
+	import TrustpilotRating from '$lib/components/TrustpilotRating.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 
 	type Props = {
 		trustpilot?: { score: number; stars: number; total: number } | null;

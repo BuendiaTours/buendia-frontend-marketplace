@@ -18,25 +18,25 @@
 	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Components
-	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
-	import Breadcrumb from '$lib/components/marketplace/Breadcrumbs.svelte';
-	import ByBuendiaBanner from '$lib/components/marketplace/ByBuendiaBanner.svelte';
-	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import ContentBlockStack from '$lib/components/marketplace/ContentBlockStack.svelte';
-	import FaqsInline from '$lib/components/marketplace/FaqsInline.svelte';
-	import FiltersDialog from '$lib/components/marketplace/FiltersDialog.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import HeroImg from '$lib/components/marketplace/HeroImg.svelte';
-	import MeltPagination from '$lib/components/marketplace/MeltPagination.svelte';
-	import NewsletterRegistration from '$lib/components/marketplace/NewsletterRegistration.svelte';
-	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
-	import PlpAttractionItem from '$lib/components/marketplace/plp/PlpAttractionItem.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import ScrollableTabBar from '$lib/components/marketplace/ScrollableTabBar.svelte';
-	import Spacer from '$lib/components/marketplace/Spacer.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
-	import ContentBlockSingle from '$lib/components/marketplace/ContentBlockSingle.svelte';
+	import ActivityCard from '$lib/components/ActivityCard.svelte';
+	import Breadcrumb from '$lib/components/Breadcrumbs.svelte';
+	import ByBuendiaBanner from '$lib/components/ByBuendiaBanner.svelte';
+	import ByBuendiaHighlights from '$lib/components/ByBuendiaHighlights.svelte';
+	import ContentBlockStack from '$lib/components/ContentBlockStack.svelte';
+	import FaqsInline from '$lib/components/FaqsInline.svelte';
+	import FiltersDialog from '$lib/components/FiltersDialog.svelte';
+	import GallerySquareThumbs from '$lib/components/GallerySquareThumbs.svelte';
+	import HeroImg from '$lib/components/HeroImg.svelte';
+	import MeltPagination from '$lib/components/MeltPagination.svelte';
+	import NewsletterRegistration from '$lib/components/NewsletterRegistration.svelte';
+	import PlpSwiper from '$lib/components/plp/PlpSwiper.svelte';
+	import PlpAttractionItem from '$lib/components/plp/PlpAttractionItem.svelte';
+	import ReviewCard from '$lib/components/ReviewCard.svelte';
+	import ScrollableTabBar from '$lib/components/ScrollableTabBar.svelte';
+	import Spacer from '$lib/components/Spacer.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
+	import WhyUsGrid from '$lib/components/WhyUsGrid.svelte';
+	import ContentBlockSingle from '$lib/components/ContentBlockSingle.svelte';
 
 	let { data }: { data: PageData } = $props();
 

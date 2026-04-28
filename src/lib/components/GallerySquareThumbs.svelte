@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Component, Snippet } from 'svelte';
-	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
-	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
+	import { BndLightbox } from '$lib/components/BndLightbox';
+	import GalleryCount from '$lib/components/GalleryCount.svelte';
 	import type { BndLightboxItem, BndLightboxItemContext } from '$lib/types';
 	import { trackOpenGallery, trackNavigateGallery, trackCompleteGallery } from '$lib/analytics';
 	import type { GalleryLocation } from '$lib/analytics';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import MktErrorDisplay from '$lib/components/marketplace/MktErrorDisplay.svelte';
+	import MktErrorDisplay from '$lib/components/MktErrorDisplay.svelte';
 
 	const isApiError = $derived(page.status === 500 || page.status === 502 || page.status === 503);
 	const isNotFound = $derived(page.status === 404);

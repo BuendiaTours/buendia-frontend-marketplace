@@ -2,16 +2,16 @@
 	import { format } from 'date-fns';
 
 	// Components
-	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
-	import BybuendiaHome from '$lib/components/marketplace/BybuendiaHome.svelte';
-	import ContentWithTwoImage from '$lib/components/marketplace/ContentWithTwoImage.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import HomeHeader from '$lib/components/marketplace/HomeHeader.svelte';
-	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
+	import AccordionOnMobile from '$lib/components/AccordionOnMobile.svelte';
+	import ActivityCard from '$lib/components/ActivityCard.svelte';
+	import BybuendiaHome from '$lib/components/BybuendiaHome.svelte';
+	import ContentWithTwoImage from '$lib/components/ContentWithTwoImage.svelte';
+	import GallerySquareThumbs from '$lib/components/GallerySquareThumbs.svelte';
+	import HomeHeader from '$lib/components/HomeHeader.svelte';
+	import PlpSwiper from '$lib/components/plp/PlpSwiper.svelte';
+	import ReviewCard from '$lib/components/ReviewCard.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
+	import WhyUsGrid from '$lib/components/WhyUsGrid.svelte';
 
 	import type { PageData } from './$types';
 

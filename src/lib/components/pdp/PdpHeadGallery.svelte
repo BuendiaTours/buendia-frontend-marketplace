@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { MultimediaItem } from '$lib/types';
-	import { BndLightbox } from '$lib/components/marketplace/BndLightbox';
-	import { BndCssSlider } from '$lib/components/marketplace/BndCssSlider';
-	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
+	import { BndLightbox } from '$lib/components/BndLightbox';
+	import { BndCssSlider } from '$lib/components/BndCssSlider';
+	import GalleryCount from '$lib/components/GalleryCount.svelte';
 	import { trackOpenGallery, trackNavigateGallery, trackCompleteGallery } from '$lib/analytics';
 
 	type Props = {

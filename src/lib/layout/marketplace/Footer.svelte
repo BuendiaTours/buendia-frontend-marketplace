@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TrustpilotRating from '$lib/components/marketplace/TrustpilotRating.svelte';
+	import TrustpilotRating from '$lib/components/TrustpilotRating.svelte';
 
 	type Props = {
 		trustpilot: { score: number; total: number } | null;

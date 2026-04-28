@@ -27,15 +27,15 @@
 	});
 
 	// Components
-	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
-	import BookingQuestionField from '$lib/components/marketplace/checkout/BookingQuestionField.svelte';
-	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
-	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
+	import CartExpiryCallout from '$lib/components/ShoppingCart/CartExpiryCallout.svelte';
+	import BookingQuestionField from '$lib/components/checkout/BookingQuestionField.svelte';
+	import CheckoutSidebarResume from '$lib/components/checkout/CheckoutSidebarResume.svelte';
+	import TotalResume from '$lib/components/checkout/TotalResume.svelte';
 
 	// i18n
 	import * as m from '$paraglide/messages';
-	import Steps from '$lib/components/marketplace/Steps.svelte';
-	import DebugBookingQuestionFields from '$lib/components/marketplace/checkout/DebugBookingQuestionFields.svelte';
+	import Steps from '$lib/components/Steps.svelte';
+	import DebugBookingQuestionFields from '$lib/components/checkout/DebugBookingQuestionFields.svelte';
 
 	const messages = m as unknown as Record<string, () => string>;
 

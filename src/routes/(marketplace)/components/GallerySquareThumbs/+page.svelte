@@ -1,6 +1,6 @@
 <script lang="ts">
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+	import GallerySquareThumbs from '$lib/components/GallerySquareThumbs.svelte';
+	import { ReviewsLayout } from '$lib/components/BndLightbox';
 	import type { BndLightboxItem } from '$lib/types';
 
 	const photoItems: BndLightboxItem[] = [

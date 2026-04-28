@@ -22,7 +22,7 @@
 	import type { BndLightboxItemContext } from '$lib/types';
 
 	// Componentes
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import ReviewCard from '$lib/components/ReviewCard.svelte';
 
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 

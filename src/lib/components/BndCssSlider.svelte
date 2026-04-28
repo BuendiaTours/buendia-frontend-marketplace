@@ -60,7 +60,7 @@
 -->
 <script lang="ts" generics="T extends { id: string | number }">
 	import type { Snippet } from 'svelte';
-	import GalleryCount from '$lib/components/marketplace/GalleryCount.svelte';
+	import GalleryCount from '$lib/components/GalleryCount.svelte';
 
 	type Props = {
 		/** Array de items a mostrar. `T` se infiere del tipo pasado. */

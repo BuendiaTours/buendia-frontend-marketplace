@@ -11,7 +11,7 @@
 	import { User } from '$lib/icons/Linear';
 
 	// Components
-	import FakeSelectButton from '$lib/components/marketplace/FakeSelectButton.svelte';
+	import FakeSelectButton from '$lib/components/FakeSelectButton.svelte';
 	import CheckoutStepCounter from './CheckoutStepCounter.svelte';
 
 	// Utils

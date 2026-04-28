@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ActivityReviewStats } from '$lib/types';
-	import Progressbar from '$lib/components/marketplace/Progressbar.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import Progressbar from '$lib/components/Progressbar.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
 
 	type Props = {
 		stats: ActivityReviewStats;

@@ -8,7 +8,7 @@
  * 3. confirmAction(node, options) - Svelte action para usar con use:confirmAction
  */
 
-import { confirm } from '$lib/components/marketplace/MeltAlertDialog';
+import { confirm } from '$lib/components/MeltAlertDialog';
 
 export type ConfirmOptions = {
 	title?: string;

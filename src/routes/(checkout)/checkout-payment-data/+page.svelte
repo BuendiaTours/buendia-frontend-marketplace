@@ -10,10 +10,10 @@
 	});
 
 	// Components
-	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
-	import CheckoutSidebarResume from '$lib/components/marketplace/checkout/CheckoutSidebarResume.svelte';
-	import Steps from '$lib/components/marketplace/Steps.svelte';
-	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
+	import CartExpiryCallout from '$lib/components/ShoppingCart/CartExpiryCallout.svelte';
+	import CheckoutSidebarResume from '$lib/components/checkout/CheckoutSidebarResume.svelte';
+	import Steps from '$lib/components/Steps.svelte';
+	import TotalResume from '$lib/components/checkout/TotalResume.svelte';
 
 	const isValid = $derived(!!shoppingCartStore.order?.bookings?.length);
 
