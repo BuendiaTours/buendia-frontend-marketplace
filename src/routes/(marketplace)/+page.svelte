@@ -3,12 +3,14 @@
 
 	// Components
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
-	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
+	import BybuendiaHome from '$lib/components/marketplace/BybuendiaHome.svelte';
+	import ContentWithTwoImage from '$lib/components/marketplace/ContentWithTwoImage.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
 
 	import type { PageData } from './$types';
 
@@ -107,6 +109,39 @@
 </div>
 
 <div class="wrapper mt-6">
+	<BybuendiaHome
+		title="Busca nuestros planes by buendía"
+		description="Son actividades creadas y organizadas por nosotros, por eso podemos ofrecerte las mejores condiciones"
+		items={[
+			{
+				icon: 'CalendarCheck',
+				iconTitle: 'Cancelación gratuita',
+				iconDescription: 'hasta el inicio de la actividad',
+				image: 'marketplace/by_buendia_home/cancelacion_gratuita.png',
+				title: '¿Te surge un imprevisto?',
+				description: 'Puedes cancelar gratis hasta 1 minuto antes del inicio.'
+			},
+			{
+				icon: 'MoneyBack',
+				iconTitle: 'Garantía de reembolso',
+				iconDescription: 'si no te gusta',
+				image: 'marketplace/by_buendia_home/garantia_de_reenbolso.png',
+				title: '¿No te convence la experiencia? ',
+				description: 'Te devolvemos el dinero. Sin vueltas ni explicaciones por tu parte.'
+			},
+			{
+				icon: 'ShieldPlus',
+				iconTitle: 'Mejor precio garantizado',
+				iconDescription: 'o te devolvemos la diferencia',
+				image: 'marketplace/by_buendia_home/mejor_precio_garantizado.png',
+				title: '¿Lo ves más barato en otro sitio?',
+				description: 'Te devolvemos la diferencia en el momento. Sin complicaciones.'
+			}
+		]}
+	/>
+</div>
+
+<div class="wrapper mt-6">
 	<PlpSwiper
 		swiperOptions={{
 			slidesPerView: 1.2,
@@ -121,9 +156,7 @@
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	>
 		{#snippet header()}
-			<div
-				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
-			>
+			<div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-6">
 				<h2 class="h2-editorial text-neutral-800">Planes by buendía</h2>
 				<a href="/planes-by-buendia" class="p-base cursor-pointer underline underline-offset-8">
 					Ver todos los planes by buendía
@@ -131,10 +164,11 @@
 			</div>
 		{/snippet}
 		{#each data.activities as activity (activity.id)}
-			<swiper-slide>
+			<swiper-slide class="flex">
 				<ActivityCard
 					item={activity}
-					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+					isSwiperCard={true}
+					wrapperClass="border-b border-solid border-neutral-200 pb-4 p-3 border rounded-xl"
 				/>
 			</swiper-slide>
 		{/each}
@@ -168,6 +202,17 @@
 			</swiper-slide>
 		{/each}
 	</PlpSwiper>
+</div>
+
+<div class="wrapper mt-6">
+	<ContentWithTwoImage
+		title="Donde el viaje se habla en persona"
+		description="Nuestra tienda física es un punto de encuentro con viajeros todos los días. Estar ahí, escuchar de cerca y acompañar en persona forma parte de cómo entendemos buendía: con mimo y con trato humano."
+		buttonText="Saber más sobre nosotros"
+		slug="/"
+		image_1="marketplace/shop/tienda_1.png"
+		image_2="marketplace/shop/tienda_2.png"
+	/>
 </div>
 
 <div class="wrapper mt-6">

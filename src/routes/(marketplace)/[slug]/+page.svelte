@@ -288,9 +288,7 @@
 		wrapperClass="mt-12 mb-12 sm:mt-16 sm:mb-16 lg:mt-24 lg:mb-24"
 	>
 		{#snippet header()}
-			<div
-				class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center sm:gap-6"
-			>
+			<div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-6">
 				<h2 class="h2-editorial text-neutral-800">Excuriones a Florencia desde Roma</h2>
 				<a href="#" class="p-base cursor-pointer underline underline-offset-8"
 					>Ver todas las excursiones</a
@@ -298,10 +296,11 @@
 			</div>
 		{/snippet}
 		{#each accumulatedActivities.slice(0, 5) as activity (activity.id)}
-			<swiper-slide>
+			<swiper-slide class="flex">
 				<ActivityCard
 					item={activity}
-					wrapperClass="border-b border-solid border-neutral-200 pb-4 sm:p-3 sm:border sm:rounded-xl"
+					isSwiperCard={true}
+					wrapperClass="border-b border-solid border-neutral-200 p-3 border rounded-xl"
 				/>
 			</swiper-slide>
 		{/each}

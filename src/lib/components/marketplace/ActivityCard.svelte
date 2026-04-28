@@ -7,24 +7,33 @@
 	type Props = {
 		item: ActivityCard;
 		wrapperClass?: string;
+		isSwiperCard?: boolean;
 	};
 
-	let { item, wrapperClass }: Props = $props();
+	let { item, wrapperClass, isSwiperCard }: Props = $props();
 </script>
 
-<article class="c-activity-card sm:flex {wrapperClass}">
+<article class="c-activity-card {isSwiperCard ? 'flex' : 'sm:flex'} {wrapperClass}">
 	<a
 		href={item.slug}
-		class="flex min-h-[190px] gap-3 sm:relative sm:min-h-[372px] sm:basis-full sm:flex-col"
+		class="flex gap-3 {isSwiperCard
+			? 'relative basis-full flex-col'
+			: 'min-h-[190px] sm:relative sm:min-h-[372px] sm:basis-full sm:flex-col'}"
 	>
-		<div class="shrink-0 grow-0 basis-[140px] overflow-hidden rounded-lg sm:basis-[166px]">
+		<div
+			class="shrink-0 grow-0 overflow-hidden rounded-lg {isSwiperCard
+				? 'aspect-[266/166]'
+				: 'basis-[140px] sm:basis-[166px]'}"
+		>
 			<img src={item.image} alt={item.name} class="h-full w-full object-cover" />
 		</div>
 		<div class="flex shrink grow-0 basis-full flex-col gap-2">
 			{#if item.byBuendia}
-				<div class="sm:-mt-[41px] sm:-ml-[1px]">
+				<div class={isSwiperCard ? '-mt-[41px] -ml-[1px]' : 'sm:-mt-[41px] sm:-ml-[1px]'}>
 					<div
-						class="inline-flex items-center gap-[6px] sm:rounded-tr-lg sm:bg-white sm:pt-2 sm:pr-3 sm:pb-[2px]"
+						class="inline-flex items-center gap-[6px] {isSwiperCard
+							? 'rounded-tr-lg bg-white pt-2 pr-3 pb-[2px]'
+							: 'sm:rounded-tr-lg sm:bg-white sm:pt-2 sm:pr-3 sm:pb-[2px]'}"
 					>
 						<ByBuendia size={16} />
 						<span class="p-sm font-bold text-neutral-800">Plan by buendía</span>
@@ -32,7 +41,7 @@
 				</div>
 			{/if}
 			{#if item.isNew}
-				<div class="sm:absolute sm:top-2 sm:left-2">
+				<div class={isSwiperCard ? 'absolute top-2 left-2' : 'sm:absolute sm:top-2 sm:left-2'}>
 					<Badge
 						data={{
 							icon: 'Bookmark',
