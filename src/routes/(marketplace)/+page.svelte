@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { format } from 'date-fns';
-	// Componets
+
+	// Components
 	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
-	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
-	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
 	import BybuendiaHome from '$lib/components/marketplace/BybuendiaHome.svelte';
+	import ContentWithTwoImage from '$lib/components/marketplace/ContentWithTwoImage.svelte';
+	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
+	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
+	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import WhyUsGrid from '$lib/components/marketplace/WhyUsGrid.svelte';
 
 	import type { PageData } from './$types';
 
@@ -200,6 +202,17 @@
 			</swiper-slide>
 		{/each}
 	</PlpSwiper>
+</div>
+
+<div class="wrapper mt-6">
+	<ContentWithTwoImage
+		title="Donde el viaje se habla en persona"
+		description="Nuestra tienda física es un punto de encuentro con viajeros todos los días. Estar ahí, escuchar de cerca y acompañar en persona forma parte de cómo entendemos buendía: con mimo y con trato humano."
+		buttonText="Saber más sobre nosotros"
+		slug="/"
+		image_1="marketplace/shop/tienda_1.png"
+		image_2="marketplace/shop/tienda_2.png"
+	/>
 </div>
 
 <div class="wrapper mt-6">
