@@ -4,7 +4,7 @@ import { categoriesEndpoints } from '$lib/api/endpoints/categories';
 import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import { activityKindsEndpoints } from '$lib/api/endpoints/activityKinds';
 import { handleApiError } from '$core/_shared/errors';
-import { buildDestinationBreadcrumbs } from '$lib/utils/breadcrumbsMarketplace';
+import { buildDestinationBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { parseFilters } from '$lib/utils/filters';
 import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
 

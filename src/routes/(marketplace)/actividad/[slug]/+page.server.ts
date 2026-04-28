@@ -3,7 +3,7 @@ import { activitiesEndpoints } from '$lib/api/endpoints/activities';
 import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import { activityOptionsEndpoints } from '$lib/api/endpoints/activityOptions';
 import { handleApiError } from '$core/_shared/errors';
-import { buildActivityBreadcrumbs } from '$lib/utils/breadcrumbsMarketplace';
+import { buildActivityBreadcrumbs } from '$lib/utils/breadcrumbs';
 
 export const load: PageServerLoad = async ({ params, fetch }) => {
 	const { slug } = params;
