@@ -8,6 +8,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
 	import ActivityCard from '$lib/components/marketplace/ActivityCard.svelte';
+	import HomeHeader from '$lib/components/marketplace/HomeHeader.svelte';
 
 	import type { PageData } from './$types';
 
@@ -77,6 +78,8 @@
 		}
 	];
 </script>
+
+<HomeHeader trustpilot={data.trustpilot} />
 
 <div class="wrapper mt-6">
 	<WhyUsGrid
