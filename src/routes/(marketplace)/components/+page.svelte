@@ -27,7 +27,7 @@
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
 	import Steps from '$lib/components/marketplace/Steps.svelte';
-	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import SwiperElement from '$lib/components/Swiper.svelte';
 	import ThankYouAccountCreate from '$lib/components/marketplace/checkout/ThankYouAccountCreate.svelte';
 	import Tooltip from '$lib/components/marketplace/Tooltip.svelte';
 	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';

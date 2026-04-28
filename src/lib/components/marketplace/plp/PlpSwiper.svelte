@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { tick, type Snippet } from 'svelte';
-	import SwiperElement from '$lib/components/shared/Swiper.svelte';
+	import SwiperElement from '$lib/components/Swiper.svelte';
 	import { AltArrowLeft, AltArrowRight } from '$lib/icons/Linear';
 
 	type Props = {
