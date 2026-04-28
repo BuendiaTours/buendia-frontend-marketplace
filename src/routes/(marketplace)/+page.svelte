@@ -7,6 +7,7 @@
 	import BybuendiaHome from '$lib/components/marketplace/BybuendiaHome.svelte';
 	import ContentWithTwoImage from '$lib/components/marketplace/ContentWithTwoImage.svelte';
 	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
+	import HomeHeader from '$lib/components/marketplace/HomeHeader.svelte';
 	import PlpSwiper from '$lib/components/marketplace/plp/PlpSwiper.svelte';
 	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
 	import StarRating from '$lib/components/marketplace/StarRating.svelte';
@@ -80,6 +81,8 @@
 		}
 	];
 </script>
+
+<HomeHeader trustpilot={data.trustpilot} />
 
 <div class="wrapper mt-6">
 	<WhyUsGrid

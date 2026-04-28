@@ -3,13 +3,13 @@ import { env } from '$env/dynamic/private';
 const BUSINESS_UNIT_ID = '6875230edd0a4c4d3e408b7c';
 const CACHE_TTL = 60 * 60 * 1000;
 
-type TrustpilotCache = { score: number; total: number; timestamp: number };
+type TrustpilotCache = { score: number; stars: number; total: number; timestamp: number };
 
 let cache: TrustpilotCache | null = null;
 
 export const load = async () => {
 	if (cache && Date.now() - cache.timestamp < CACHE_TTL) {
-		return { trustpilot: { score: cache.score, total: cache.total } };
+		return { trustpilot: { score: cache.score, stars: cache.stars, total: cache.total } };
 	}
 
 	if (!env.TRUSTPILOT_API_KEY) return { trustpilot: null };
@@ -22,12 +22,13 @@ export const load = async () => {
 
 		const data = await res.json();
 		const score: number = data.score?.trustScore;
+		const stars: number = data.score?.stars;
 		const total: number = data.numberOfReviews?.total;
 
 		if (score == null) return { trustpilot: null };
 
-		cache = { score, total, timestamp: Date.now() };
-		return { trustpilot: { score, total } };
+		cache = { score, stars, total, timestamp: Date.now() };
+		return { trustpilot: { score, stars, total } };
 	} catch {
 		return { trustpilot: null };
 	}
