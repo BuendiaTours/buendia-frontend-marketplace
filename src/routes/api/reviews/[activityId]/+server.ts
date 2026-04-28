@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
+import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import type { ActivityReviewParams } from '$lib/types';
 
 export const GET: RequestHandler = async ({ params, url, fetch }) => {

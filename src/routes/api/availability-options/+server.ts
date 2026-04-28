@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { availabilityOptionsEndpoints } from '$lib/api/marketplace/endpoints/availabilityOptions';
+import { availabilityOptionsEndpoints } from '$lib/api/endpoints/availabilityOptions';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const activityId = url.searchParams.get('activityId');

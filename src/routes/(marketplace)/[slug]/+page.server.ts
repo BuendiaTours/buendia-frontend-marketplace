@@ -1,8 +1,8 @@
 import type { PageServerLoad } from './$types';
-import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
-import { categoriesEndpoints } from '$lib/api/marketplace/endpoints/categories';
-import { reviewsEndpoints } from '$lib/api/marketplace/endpoints/reviews';
-import { activityKindsEndpoints } from '$lib/api/marketplace/endpoints/activityKinds';
+import { destinationsEndpoints } from '$lib/api/endpoints/destinations';
+import { categoriesEndpoints } from '$lib/api/endpoints/categories';
+import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
+import { activityKindsEndpoints } from '$lib/api/endpoints/activityKinds';
 import { handleApiError } from '$core/_shared/errors';
 import { buildDestinationBreadcrumbs } from '$lib/utils/breadcrumbsMarketplace';
 import { parseFilters } from '$lib/utils/filters';

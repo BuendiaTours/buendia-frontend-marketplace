@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { ordersEndpoints } from '$lib/api/marketplace/endpoints/orders';
+import { ordersEndpoints } from '$lib/api/endpoints/orders';
 import type { CreateOrderPayload } from '$lib/types';
 
 export const POST: RequestHandler = async ({ request, fetch }) => {

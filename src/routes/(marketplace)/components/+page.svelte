@@ -7,7 +7,7 @@
 	import { fade } from 'svelte/transition';
 
 	// Actions
-	import { showConfirmDialog } from '$lib/actions/marketplace/confirmAction';
+	import { showConfirmDialog } from '$lib/actions/confirmAction';
 
 	// Components
 	import { createPopover, melt, type CreateRangeCalendarProps } from '@melt-ui/svelte';

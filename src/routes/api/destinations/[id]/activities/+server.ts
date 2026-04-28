@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { destinationsEndpoints } from '$lib/api/marketplace/endpoints/destinations';
+import { destinationsEndpoints } from '$lib/api/endpoints/destinations';
 import type { CriteriaSortOption } from '$core/_shared/enums';
 
 const BOOL_FILTER_KEYS = [

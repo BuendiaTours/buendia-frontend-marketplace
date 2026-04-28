@@ -5,7 +5,7 @@
 <script lang="ts">
 	import AuthorMeta from './AuthorMeta.svelte';
 	import StarRating from './StarRating.svelte';
-	import { clampText } from '$lib/actions/marketplace/clampText';
+	import { clampText } from '$lib/actions/clampText';
 
 	type Props = {
 		name: string;

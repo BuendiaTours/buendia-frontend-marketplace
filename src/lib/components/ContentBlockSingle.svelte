@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clampText } from '$lib/actions/marketplace/clampText';
+	import { clampText } from '$lib/actions/clampText';
 
 	type Props = {
 		title: string;

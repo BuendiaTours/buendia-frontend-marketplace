@@ -12,7 +12,7 @@
 	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Actions
-	import { clampText } from '$lib/actions/marketplace/clampText';
+	import { clampText } from '$lib/actions/clampText';
 	import { trackClick } from '$lib/analytics';
 
 	// Components
