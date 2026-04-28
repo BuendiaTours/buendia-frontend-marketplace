@@ -2,9 +2,6 @@
 	// CSS específico del marketplace (solo Tailwind, sin DaisyUI)
 	import './layout-marketplace.css';
 
-	// CSS de PhotoSwipe (librería externa)
-	import 'photoswipe/style.css';
-
 	// Layout marketplace
 	import Header from '$lib/layout/marketplace/Header.svelte';
 	import Footer from '$lib/layout/marketplace/Footer.svelte';

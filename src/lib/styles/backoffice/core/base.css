@@ -1,6 +1,0 @@
-/* Sobrescrituras base de Tailwind */
-@layer base {
-	* {
-		--tw-ring-color: none !important;
-	}
-}

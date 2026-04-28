@@ -4,21 +4,6 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<!-- ✨ Script anti-FART: Se ejecuta ANTES de renderizar -->
-		<script>
-			// Leer tema guardado en localStorage
-			const savedTheme = localStorage.getItem('theme');
-
-			if (savedTheme) {
-				// Usar tema guardado
-				document.documentElement.setAttribute('data-theme', savedTheme);
-			} else {
-				// Si no hay tema guardado, detectar preferencia del sistema
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-			}
-		</script>
-
 		<script
 			type="text/javascript"
 			src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
