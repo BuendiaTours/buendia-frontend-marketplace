@@ -39,12 +39,21 @@ USO BÁSICO:
 
 	type Props = {
 		title?: string;
+		titleClass?: string;
+		dialogClass?: string;
 		config?: PureHtmlDialogConfig;
 		content?: Snippet;
 		actions?: Snippet;
 	};
 
-	let { title = '', config = {}, content, actions }: Props = $props();
+	let {
+		title = '',
+		titleClass = 'pure-html-dialog-title font-semibold text-gray-900',
+		dialogClass = 'rounded-xl p-0 shadow-xl backdrop:bg-black/50',
+		config = {},
+		content,
+		actions
+	}: Props = $props();
 
 	const defaultConfig: PureHtmlDialogConfig = {
 		modal: true,
@@ -97,15 +106,15 @@ USO BÁSICO:
 
 <dialog
 	bind:this={dialogElement}
-	class="rounded-xl p-0 shadow-xl backdrop:bg-black/50"
+	class={dialogClass}
 	onclick={handleBackdropClick}
 	onkeydown={handleKeydown}
 >
 	<!-- Header con título y botón de cerrar -->
 	{#if title}
-		<div class="border-b border-gray-100 px-6 py-4">
+		<div class="border-b border-gray-100 p-5">
 			<div class="flex items-center justify-between">
-				<h3 class="pure-html-dialog-title font-semibold text-gray-900">{title}</h3>
+				<h3 class={titleClass}>{title}</h3>
 				<button
 					type="button"
 					class="pure-html-dialog-close -mr-2 cursor-pointer rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
@@ -120,14 +129,14 @@ USO BÁSICO:
 
 	<!-- Contenido -->
 	{#if content}
-		<div class="pure-html-dialog-content px-6 py-4">
+		<div class="pure-html-dialog-content p-5">
 			{@render content()}
 		</div>
 	{/if}
 
 	<!-- Acciones (footer) -->
 	{#if actions}
-		<div class="pure-html-dialog-actions border-t border-gray-100 px-6 py-4">
+		<div class="pure-html-dialog-actions border-t border-gray-100 p-5">
 			<div class="flex justify-end gap-2">
 				{@render actions()}
 			</div>

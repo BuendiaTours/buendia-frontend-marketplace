@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Icons from '$lib/icons/Linear';
 	import type { Component } from 'svelte';
-	import MeltDrawer from './MeltDrawer.svelte';
+	import PureHtmlDialog from './PureHtmlDialog.svelte';
 
 	type Condition = {
 		icon?: string;
@@ -15,8 +15,9 @@
 		size?: 'normal' | 'small';
 	};
 
+	let pureDialog: PureHtmlDialog = $state() as PureHtmlDialog;
+
 	let { data, wrapperClass }: { data: Condition; wrapperClass?: string } = $props();
-	let drawerOpen = $state(false);
 
 	const IconComponent = $derived(
 		data.icon ? (Icons[data.icon as keyof typeof Icons] as Component) : null
@@ -30,7 +31,7 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- API content, sanitized server-side -->
 		{@html data.description}
 		{#if data.itsLevel}
-			<button class="relative top-[2px] cursor-pointer" onclick={() => (drawerOpen = true)}>
+			<button class="relative top-[2px] cursor-pointer" onclick={() => pureDialog.showModal()}>
 				<Icons.InfoCircle class="h-4 w-4" />
 			</button>
 		{/if}
@@ -68,33 +69,45 @@
 	{/if}
 </div>
 
-{#if data.itsLevel}
-	<MeltDrawer
-		bind:open={drawerOpen}
-		title="Niveles de actividad"
-		config={{ side: 'right', width: 400 }}
-	>
-		<div class="flex flex-col gap-4">
-			<div>
-				<p class="h3">Nivel bajo <span>1/5</span></p>
-				<p class="p">Paseo por ciudad.</p>
-			</div>
-			<div>
-				<p class="h3">Nivel medio<span>2/5</span></p>
-				<p class="p">No requiere calzado deportivo.</p>
-			</div>
-			<div>
-				<p class="h3">Nivel medio-alto<span>3/5</span></p>
-				<p class="p">Excursión con cierta exigencia física. Recomendable calzado deportivo.</p>
-			</div>
-			<div>
-				<p class="h3">Nivel alto<span>4/5</span></p>
-				<p class="p">Actividad físico-deportiva que requiere material deportivo.</p>
-			</div>
-			<div>
-				<p class="h3">Nivel extremo<span>5/5</span></p>
-				<p class="p">Requiere ser experto en la actividad y saber utilizar material específico.</p>
-			</div>
+{#snippet levelRow(title: string, level: number, description: string)}
+	<div>
+		<p class="p-base flex justify-between gap-4 font-bold">{title} <span>{level}/5</span></p>
+		<p class="p-sm mb-3 text-neutral-700">{description}</p>
+		<div class="mt-1 grid grid-cols-5 gap-1">
+			{#each Array(5) as _, i (i)}
+				<div class="h-1 rounded-sm {i < level ? 'bg-violet-500' : 'bg-neutral-200'}"></div>
+			{/each}
 		</div>
-	</MeltDrawer>
+	</div>
+{/snippet}
+
+{#if data.itsLevel}
+	<PureHtmlDialog
+		bind:this={pureDialog}
+		title="Información de la actividad"
+		titleClass="h3 py-1"
+		dialogClass="w-full min-h-full sm:min-h-0 !max-h-full !max-w-160 sm:rounded-xl p-0 shadow-xl backdrop:bg-black/50"
+	>
+		{#snippet content()}
+			<div class="flex flex-col gap-6 pb-5">
+				{@render levelRow('Nivel bajo', 1, 'Paseo por ciudad.')}
+				{@render levelRow('Nivel medio', 2, 'No requiere calzado deportivo.')}
+				{@render levelRow(
+					'Nivel medio-alto',
+					3,
+					'Excursión con cierta exigencia física. Recomendable calzado deportivo.'
+				)}
+				{@render levelRow(
+					'Nivel alto',
+					4,
+					'Actividad físico-deportiva que requiere material deportivo.'
+				)}
+				{@render levelRow(
+					'Nivel extremo',
+					5,
+					'Requiere ser experto en la actividad y saber utilizar material específico.'
+				)}
+			</div>
+		{/snippet}
+	</PureHtmlDialog>
 {/if}
