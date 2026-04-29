@@ -21,9 +21,6 @@
 @import '$lib/styles/marketplace/utilities/icons.css';
 @import '$lib/styles/marketplace/utilities/typography.css';
 
-/* Componentes de terceros */
-/* @import '$lib/styles/marketplace/components/photoswipe.css'; */
-
 /* Componentes propios */
 /* Atoms */
 @import '$lib/styles/marketplace/elements/e-button.css';

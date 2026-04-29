@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { bookingQuestionsEndpoints } from '$lib/api/marketplace/endpoints/bookingQuestions';
+import { bookingQuestionsEndpoints } from '$lib/api/endpoints/bookingQuestions';
 
 export const GET: RequestHandler = async ({ params, fetch }) => {
 	const result = await bookingQuestionsEndpoints.byActivityOption(fetch, params.optionId);

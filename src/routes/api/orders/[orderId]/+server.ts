@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { ordersEndpoints } from '$lib/api/marketplace/endpoints/orders';
-import { activityOptionsEndpoints } from '$lib/api/marketplace/endpoints/activityOptions';
-import { activitiesEndpoints } from '$lib/api/marketplace/endpoints/activities';
+import { ordersEndpoints } from '$lib/api/endpoints/orders';
+import { activityOptionsEndpoints } from '$lib/api/endpoints/activityOptions';
+import { activitiesEndpoints } from '$lib/api/endpoints/activities';
 import type { CartOrder } from '$lib/types';
 
 export const GET: RequestHandler = async ({ params, fetch }) => {

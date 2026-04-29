@@ -3,9 +3,9 @@
 	import './layout-checkout.css';
 
 	// Layout marketplace
-	import Header from '$lib/layout/marketplace/Header.svelte';
-	import Footer from '$lib/layout/marketplace/Footer.svelte';
-	import MeltAlertDialog from '$lib/components/marketplace/MeltAlertDialog.svelte';
+	import Header from '$lib/layout/Header.svelte';
+	import Footer from '$lib/layout/Footer.svelte';
+	import MeltAlertDialog from '$lib/components/MeltAlertDialog.svelte';
 	import { browser } from '$app/environment';
 	import { PUBLIC_GTM_ID } from '$env/static/public';
 

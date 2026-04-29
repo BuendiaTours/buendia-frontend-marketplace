@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		BndLightbox,
-		ReviewsLayout,
-		bndLightboxAction
-	} from '$lib/components/marketplace/BndLightbox';
+	import { BndLightbox, ReviewsLayout, bndLightboxAction } from '$lib/components/BndLightbox';
 	import type { BndLightboxConfig, BndLightboxItemContext } from '$lib/types';
 	import { fade } from 'svelte/transition';
 

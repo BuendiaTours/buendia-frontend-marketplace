@@ -17,12 +17,12 @@
 	});
 
 	// Components
-	import BookingModifyForm from '$lib/components/marketplace/checkout/BookingModifyForm.svelte';
-	import CartExpiryCallout from '$lib/components/marketplace/ShoppingCart/CartExpiryCallout.svelte';
-	import CheckoutCard from '$lib/components/marketplace/checkout/CheckoutCard.svelte';
-	import PassengerBreakdown from '$lib/components/marketplace/ShoppingCart/PassengerBreakdown.svelte';
-	import TotalResume from '$lib/components/marketplace/checkout/TotalResume.svelte';
-	import Spacer from '$lib/components/marketplace/Spacer.svelte';
+	import BookingModifyForm from '$lib/components/checkout/BookingModifyForm.svelte';
+	import CartExpiryCallout from '$lib/components/ShoppingCart/CartExpiryCallout.svelte';
+	import CheckoutCard from '$lib/components/checkout/CheckoutCard.svelte';
+	import PassengerBreakdown from '$lib/components/ShoppingCart/PassengerBreakdown.svelte';
+	import TotalResume from '$lib/components/checkout/TotalResume.svelte';
+	import Spacer from '$lib/components/Spacer.svelte';
 
 	const activeBookings = $derived(
 		(shoppingCartStore.order?.bookings ?? []).filter((b) => !removedBookingsStore.has(b.id))

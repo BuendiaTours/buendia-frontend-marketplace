@@ -1,6 +1,6 @@
 <script context="module">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import StarRating from '$lib/components/marketplace/StarRating.svelte';
+	import StarRating from '$lib/components/StarRating.svelte';
 
 	const { Story } = defineMeta({
 		title: 'Marketplace/Components/StarRating',
@@ -254,7 +254,7 @@
 					<pre class="rounded-lg bg-neutral-900 p-4 text-white"><code
 							>{`<!-- Import the component -->
 <script>
-  import StarRating from '$lib/components/marketplace/StarRating.svelte';
+  import StarRating from '$lib/components/StarRating.svelte';
 <\/script>
 
 <!-- Use it -->

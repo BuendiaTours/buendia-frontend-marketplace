@@ -12,39 +12,39 @@
 	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Actions
-	import { clampText } from '$lib/actions/marketplace/clampText';
+	import { clampText } from '$lib/actions/clampText';
 	import { trackClick } from '$lib/analytics';
 
 	// Components
-	import AccordionOnMobile from '$lib/components/marketplace/AccordionOnMobile.svelte';
-	import ByBuendiaHighlights from '$lib/components/marketplace/ByBuendiaHighlights.svelte';
-	import Callout from '$lib/components/marketplace/Callout.svelte';
-	import FaqsCollapsable from '$lib/components/marketplace/FaqsCollapsable.svelte';
-	import GallerySquareThumbs from '$lib/components/marketplace/GallerySquareThumbs.svelte';
-	import HubspotChat from '$lib/components/marketplace/HubspotChat.svelte';
-	import MapView from '$lib/components/marketplace/MapView.svelte';
-	import PdpBrandBanner from '$lib/components/marketplace/pdp/PdpBrandBanner.svelte';
-	import PdpCollectionPointsGroup from '$lib/components/marketplace/pdp/PdpCollectionPointsGroup.svelte';
-	import PdpHeader from '$lib/components/marketplace/pdp/PdpHeader.svelte';
-	import PdpHeadGallery from '$lib/components/marketplace/pdp/PdpHeadGallery.svelte';
-	import PdpHighlights from '$lib/components/marketplace/pdp/PdpHighlights.svelte';
-	import PdpItinerary from '$lib/components/marketplace/pdp/PdpItinerary.svelte';
-	import PdpReviewsAverage from '$lib/components/marketplace/pdp/PdpReviewsAverage.svelte';
-	import PdpSingleConditions from '$lib/components/marketplace/pdp/PdpSingleConditions.svelte';
-	import ReviewCard from '$lib/components/marketplace/ReviewCard.svelte';
-	import ReviewComment from '$lib/components/marketplace/ReviewComment.svelte';
-	import Spacer from '$lib/components/marketplace/Spacer.svelte';
-	import CheckoutActivityOption from '$lib/components/marketplace/checkout/CheckoutActivityOption.svelte';
+	import AccordionOnMobile from '$lib/components/AccordionOnMobile.svelte';
+	import ByBuendiaHighlights from '$lib/components/ByBuendiaHighlights.svelte';
+	import Callout from '$lib/components/Callout.svelte';
+	import FaqsCollapsable from '$lib/components/FaqsCollapsable.svelte';
+	import GallerySquareThumbs from '$lib/components/GallerySquareThumbs.svelte';
+	import HubspotChat from '$lib/components/HubspotChat.svelte';
+	import MapView from '$lib/components/MapView.svelte';
+	import PdpBrandBanner from '$lib/components/pdp/PdpBrandBanner.svelte';
+	import PdpCollectionPointsGroup from '$lib/components/pdp/PdpCollectionPointsGroup.svelte';
+	import PdpHeader from '$lib/components/pdp/PdpHeader.svelte';
+	import PdpHeadGallery from '$lib/components/pdp/PdpHeadGallery.svelte';
+	import PdpHighlights from '$lib/components/pdp/PdpHighlights.svelte';
+	import PdpItinerary from '$lib/components/pdp/PdpItinerary.svelte';
+	import PdpReviewsAverage from '$lib/components/pdp/PdpReviewsAverage.svelte';
+	import PdpSingleConditions from '$lib/components/pdp/PdpSingleConditions.svelte';
+	import ReviewCard from '$lib/components/ReviewCard.svelte';
+	import ReviewComment from '$lib/components/ReviewComment.svelte';
+	import Spacer from '$lib/components/Spacer.svelte';
+	import CheckoutActivityOption from '$lib/components/checkout/CheckoutActivityOption.svelte';
 
 	// Lightbox
-	import { ReviewsLayout } from '$lib/components/marketplace/BndLightbox';
+	import { ReviewsLayout } from '$lib/components/BndLightbox';
 
 	// Icons
 	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
-	import { Checkout } from '$lib/components/marketplace/checkout';
+	import { Checkout } from '$lib/components/checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();

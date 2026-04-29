@@ -21,9 +21,6 @@
 @import '$lib/styles/marketplace/utilities/icons.css';
 @import '$lib/styles/marketplace/utilities/typography.css';
 
-/* Componentes de terceros */
-/* @import '$lib/styles/marketplace/components/photoswipe.css'; */
-
 /* Componentes propios */
 /* Atoms */
 @import '$lib/styles/marketplace/elements/e-button.css';
@@ -60,7 +57,7 @@
    ============================================ */
 
 /* Deshabilitamos estas clases en el marketplace (pero NO en Storybook ni en Backoffice) */
-html:not(.storybook):not(.bnd-backoffice) {
+html:not(.storybook) {
 	.text-xs,
 	.text-sm,
 	.text-base,
@@ -80,7 +77,7 @@ html:not(.storybook):not(.bnd-backoffice) {
 }
 
 /* Mensaje de advertencia en consola para desarrollo (pero NO en Storybook ni en Backoffice) */
-html:not(.storybook):not(.bnd-backoffice) {
+html:not(.storybook) {
 	.text-xs::before,
 	.text-sm::before,
 	.text-base::before,
@@ -103,8 +100,4 @@ html:not(.storybook):not(.bnd-backoffice) {
 		padding: 4px;
 		margin-bottom: 4px;
 	}
-}
-
-.pswp__button.pswp__button--zoom {
-	display: none !important;
 }
