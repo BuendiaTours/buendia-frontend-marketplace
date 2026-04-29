@@ -159,8 +159,8 @@ import { api, ApiError } from '$lib/api/index';
 // ❌ MAL - No importes directamente
 import { activitiesEndpoints } from '$lib/api/endpoints/activities';
 
-// ❌ MAL - No uses PUBLIC_API_BASE_URL directamente
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
+// ❌ MAL - No uses PUBLIC_JSONSERVER_API_BASE_URL directamente
+import { PUBLIC_JSONSERVER_API_BASE_URL } from '$env/static/public';
 ```
 
 ### Paso 2: Ejemplos Prácticos
@@ -988,7 +988,7 @@ catch (err) {
 
 ```typescript
 // ❌ MAL
-const res = await fetch(`${PUBLIC_API_BASE_URL}/activities`);
+const res = await fetch(`${PUBLIC_JSONSERVER_API_BASE_URL}/activities`);
 const data = await res.json();
 
 // ✅ BIEN

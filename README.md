@@ -327,7 +327,7 @@ Ajusta timeouts, retries y headers en `src/lib/api/config.ts`:
 
 ```typescript
 export const apiConfig = {
-	baseURL: PUBLIC_API_BASE_URL,
+	baseURL: PUBLIC_JSONSERVER_API_BASE_URL,
 	timeout: 30000, // 30 segundos
 	retry: {
 		attempts: 3, // 3 reintentos
@@ -712,7 +712,7 @@ export const destinationsFiltersSchema: FiltersSchema<DestinationsFilters> = {
 // src/routes/(app)/destinations/+page.server.ts
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
+import { PUBLIC_JSONSERVER_API_BASE_URL } from '$env/static/public';
 import { parseFilters } from '$lib/utils/filters';
 import { destinationsFiltersSchema } from '$lib/features/destinations/filters.schema';
 
@@ -721,7 +721,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const filters = parseFilters(destinationsFiltersSchema, url.searchParams);
 
 	// 2. Construir URL a API externa
-	const apiUrl = new URL(`${PUBLIC_API_BASE_URL}/destinations`);
+	const apiUrl = new URL(`${PUBLIC_JSONSERVER_API_BASE_URL}/destinations`);
 
 	// Siempre incluir page y pageSize
 	apiUrl.searchParams.set('page', String(filters.page));

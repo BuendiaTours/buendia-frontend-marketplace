@@ -4,7 +4,7 @@
  * All values are read-only at runtime (`as const`).
  */
 
-import { PUBLIC_API_BASE_URL, PUBLIC_BOOKINGS_API_BASE_URL } from '$env/static/public';
+import { PUBLIC_JSONSERVER_API_BASE_URL, PUBLIC_CORE_API_BASE_URL } from '$env/static/public';
 
 declare const __APP_VERSION__: string;
 
@@ -24,14 +24,14 @@ const sharedConfig = {
 	debug: import.meta.env.DEV
 };
 
-/** Config for the content/catalogue API (PUBLIC_API_BASE_URL). */
+/** Config for the content/catalogue API (PUBLIC_JSONSERVER_API_BASE_URL). */
 export const apiConfig = {
-	baseURL: PUBLIC_API_BASE_URL,
+	baseURL: PUBLIC_JSONSERVER_API_BASE_URL,
 	...sharedConfig
 } as const;
 
-/** Config for the bookings/orders API (PUBLIC_BOOKINGS_API_BASE_URL). */
+/** Config for the bookings/orders API (PUBLIC_CORE_API_BASE_URL). */
 export const bookingsApiConfig = {
-	baseURL: PUBLIC_BOOKINGS_API_BASE_URL,
+	baseURL: PUBLIC_CORE_API_BASE_URL,
 	...sharedConfig
 } as const;
