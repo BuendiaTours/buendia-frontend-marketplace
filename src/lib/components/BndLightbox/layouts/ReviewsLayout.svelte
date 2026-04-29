@@ -7,10 +7,7 @@
 	  src: string          // URL of the review image
 	  alt?: string         // Accessible description of the image
 	  meta: {
-	    user:    string    // Reviewer name
-	    date:    string    // Display date, e.g. "12 marzo 2026"
-	    rating:  number    // Score 1–5
-	    content: string    // Review body text
+	    reviewId: string   // Review ID — used to fetch review data asynchronously
 	  }
 	}
 -->
@@ -19,7 +16,7 @@
 	import { format } from 'date-fns';
 
 	// Types
-	import type { BndLightboxItemContext } from '$lib/types';
+	import type { ActivityReview, BndLightboxItemContext } from '$lib/types';
 
 	// Componentes
 	import ReviewCard from '$lib/components/ReviewCard.svelte';
@@ -27,42 +24,58 @@
 	let { ctx }: { ctx: BndLightboxItemContext } = $props();
 
 	// Copias locales que se muestran — se actualizan solo cuando el contenido está invisible
-	let displayedSrc = $state(ctx.item.src);
-	let displayedAlt = $state(ctx.item.alt);
-	let displayedMeta: typeof ctx.item.meta = $state(ctx.item.meta);
+	let displayedSrc = $state(untrack(() => ctx.item.src));
+	let displayedAlt = $state(untrack(() => ctx.item.alt));
+	let reviewData = $state<ActivityReview | null>(null);
 
 	// Un solo booleano controla opacity de imagen y review conjuntamente
 	let contentVisible = $state(true);
 
+	let initialized = false;
+
 	$effect(() => {
 		const newSrc = ctx.item.src; // dependencia reactiva
-		const newMeta = ctx.item.meta; // dependencia reactiva
 		const newAlt = ctx.item.alt;
+		const reviewId = typeof ctx.item.meta?.reviewId === 'string' ? ctx.item.meta.reviewId : null;
 
 		let aborted = false;
 
 		untrack(() => {
-			// Skip en el primer render (valores iguales a los iniciales)
-			if (newSrc === displayedSrc && newMeta === displayedMeta) return;
+			if (!initialized) {
+				// Primer render: mostrar imagen de inmediato y fetchear review en background
+				initialized = true;
+				if (reviewId) {
+					fetch(`/api/review/${reviewId}`)
+						.then((r) => r.json())
+						.then((data) => {
+							if (!aborted) reviewData = data;
+						})
+						.catch(() => {});
+				}
+				return;
+			}
 
-			// Fase 1: fade-out
+			// Navegación: fade-out, esperar imagen + review, fade-in
 			contentVisible = false;
 
-			// Fase 2: esperar fade-out Y preload de imagen (lo que tarde más)
-			const fadeOutDone = new Promise<void>((r) => setTimeout(r, 210)); // 200ms + buffer
+			const fadeOutDone = new Promise<void>((r) => setTimeout(r, 210));
 			const imageLoaded = new Promise<void>((r) => {
 				const img = new Image();
 				img.onload = () => r();
-				img.onerror = () => r(); // no bloqueamos si falla
+				img.onerror = () => r();
 				img.src = newSrc;
 			});
+			const reviewFetched: Promise<ActivityReview | null> = reviewId
+				? fetch(`/api/review/${reviewId}`)
+						.then((r) => r.json())
+						.catch(() => null)
+				: Promise.resolve(null);
 
-			Promise.all([fadeOutDone, imageLoaded]).then(() => {
+			Promise.all([fadeOutDone, imageLoaded, reviewFetched]).then(([, , review]) => {
 				if (aborted) return;
-				// Fase 3: swap de contenido + fade-in
 				displayedSrc = newSrc;
 				displayedAlt = newAlt;
-				displayedMeta = newMeta;
+				reviewData = review;
 				contentVisible = true;
 			});
 		});
@@ -96,15 +109,15 @@
 		<div
 			class="bnd-lightbox__review-review absolute right-0 bottom-0 left-0 bg-[rgba(255,255,255,0.8)] pt-4 pr-4 pb-4 pl-4 sm:static sm:w-full sm:bg-transparent sm:pt-0 sm:pr-0 sm:pb-0 sm:pl-0 lg:w-80"
 		>
-			{#if displayedMeta}
+			{#if reviewData}
 				<div class="pt-4 transition-opacity duration-200" class:opacity-0={!contentVisible}>
 					<ReviewCard
-						name={displayedMeta.user || 'Anónimo'}
-						desc={displayedMeta.date
-							? format(new Date(displayedMeta.date), 'dd/MM/yyyy')
+						name={reviewData.user || 'Anónimo'}
+						desc={reviewData.createdAt
+							? format(new Date(reviewData.createdAt), 'dd/MM/yyyy')
 							: undefined}
-						rating={Number(displayedMeta.rating)}
-						text={String(displayedMeta.content ?? '')}
+						rating={reviewData.averageRating}
+						text={reviewData.content ?? ''}
 						lines={6}
 					/>
 				</div>

@@ -10,10 +10,11 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 
 	try {
 		const activity = await activitiesEndpoints.getBySlug(fetch, slug);
-		const [reviewsResult, reviewsStats, activityOptions] = await Promise.all([
+		const [reviewsResult, reviewsStats, activityOptions, reviewAttachments] = await Promise.all([
 			reviewsEndpoints.getByActivityId(fetch, activity.id),
 			reviewsEndpoints.getStatsByActivityId(fetch, activity.id),
-			activityOptionsEndpoints.getByActivityId(fetch, activity.id)
+			activityOptionsEndpoints.getByActivityId(fetch, activity.id),
+			reviewsEndpoints.getAttachmentsByActivityId(fetch, activity.id)
 		]);
 
 		return {
@@ -23,6 +24,7 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			reviewsTotal: reviewsResult.pagination.total,
 			reviewsStats,
 			activityOptions,
+			reviewAttachments: reviewAttachments.data,
 			breadcrumbs: buildActivityBreadcrumbs(activity)
 		};
 	} catch (err) {

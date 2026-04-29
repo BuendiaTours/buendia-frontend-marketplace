@@ -34,7 +34,7 @@
 	import ReviewCard from '$lib/components/ReviewCard.svelte';
 	import ReviewComment from '$lib/components/ReviewComment.svelte';
 	import Spacer from '$lib/components/Spacer.svelte';
-	import CheckoutActivityOption from '$lib/components/checkout/CheckoutActivityOption.svelte';
+	import CheckoutActivityOption from '$lib/components/Checkout/CheckoutActivityOption.svelte';
 
 	// Lightbox
 	import { ReviewsLayout } from '$lib/components/BndLightbox';
@@ -44,7 +44,7 @@
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
-	import { Checkout } from '$lib/components/checkout';
+	import { Checkout } from '$lib/components/Checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
 	let { data }: { data: PageData } = $props();
@@ -158,19 +158,11 @@
 	let hasTrackedOpinionesScroll = false;
 
 	const reviewItems = $derived<BndLightboxItem[]>(
-		reviews.flatMap((review, reviewIdx) =>
-			(review.attachments ?? []).map((att) => ({
-				src: att.url.value,
-				alt: `Foto de ${review.user ?? 'Anónimo'}`,
-				meta: {
-					user: review.user ?? 'Anónimo',
-					rating: review.averageRating,
-					content: review.content,
-					date: review.createdAt?.split('T')[0] ?? '',
-					reviewIndex: reviewIdx
-				}
-			}))
-		)
+		(data.reviewAttachments ?? []).map((att) => ({
+			src: att.url,
+			alt: 'Foto de viajero',
+			meta: { reviewId: att.reviewId }
+		}))
 	);
 </script>
 

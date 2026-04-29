@@ -163,6 +163,12 @@ export type ActivityReview = {
 	replies: ReviewReply[];
 };
 
+export type ReviewGalleryAttachment = {
+	reviewId: string;
+	url: string;
+	mimeType: string;
+};
+
 export type ActivityReviewParams = {
 	sort?: 'averageRating' | 'createdAt';
 	order?: 'ASC' | 'DESC';

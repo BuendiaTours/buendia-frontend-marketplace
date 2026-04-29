@@ -400,16 +400,27 @@ export const API_ENDPOINTS = {
 		groupDescription: 'Reseñas de actividades',
 		/** @description Retrieves all reviews for a given activity ID. */
 		byActivity: {
-			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}`,
+			path: () => BASE_PATHS.reviews,
 			method: 'GET',
-			description: 'Obtiene reviews de una actividad por ID',
-			params: ['activityId']
-		} satisfies EndpointWithParam,
+			description: 'Obtiene reviews de una actividad por ID'
+		} satisfies Endpoint,
 		byActivityStats: {
 			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}/stats`,
 			method: 'GET',
 			description: 'Obtiene estadísticas de reviews de una actividad',
 			params: ['activityId']
+		} satisfies EndpointWithParam,
+		byActivityAttachments: {
+			path: (activityId: string) => `${BASE_PATHS.reviews}/${activityId}/attachments`,
+			method: 'GET',
+			description: 'Obtiene adjuntos de reviews de una actividad',
+			params: ['activityId']
+		} satisfies EndpointWithParam,
+		byId: {
+			path: (reviewId: string) => `${BASE_PATHS.reviews}/${reviewId}`,
+			method: 'GET',
+			description: 'Obtiene una review por su ID',
+			params: ['reviewId']
 		} satisfies EndpointWithParam,
 		byDestinationSlug: {
 			path: (slug: string, page: number) => `/destination/${slug}/reviews/${page}`,
