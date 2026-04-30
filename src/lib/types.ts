@@ -119,6 +119,13 @@ export type ActivityListItem = {
 	willDoing: string[];
 	activityTickets: ActivityOption[];
 	activityTicketsDisabled: ActivityOption[];
+	reviewsTotalByStars: {
+		fiveStar: number;
+		fourStar: number;
+		threeStar: number;
+		twoStar: number;
+		oneStar: number;
+	} | null;
 };
 
 // Re-export from API shared types (canonical location)
@@ -161,6 +168,9 @@ export type ActivityReview = {
 	createdAt: string;
 	user: string;
 	replies: ReviewReply[];
+	externalStatus?: string;
+	language?: string;
+	status?: string;
 };
 
 export type ReviewGalleryAttachment = {
@@ -172,8 +182,8 @@ export type ReviewGalleryAttachment = {
 export type ActivityReviewParams = {
 	sort?: 'averageRating' | 'createdAt';
 	order?: 'ASC' | 'DESC';
-	page?: number;
-	pageSize?: number;
+	skip?: number;
+	limit?: number;
 	stars?: number[];
 };
 
@@ -192,16 +202,7 @@ export type ActivityReviewStats = {
 
 export type ActivityReviewsResponse = {
 	data: ActivityReview[];
-	pagination: {
-		page: number;
-		pageSize: number;
-		total: number;
-		totalPages: number;
-	};
-	sort: {
-		field: string;
-		order: 'asc' | 'desc';
-	};
+	total: number;
 };
 
 type ActivityOptionTicket = {

@@ -11,7 +11,6 @@ import type {
 	ActivityReview,
 	ActivityReviewParams,
 	ActivityReviewsResponse,
-	ActivityReviewStats,
 	ReviewGalleryAttachment
 } from '$lib/types';
 
@@ -29,8 +28,8 @@ export const reviewsEndpoints = {
 		qs.set('activityId', activityId);
 		if (params?.sort) qs.set('sort', params.sort);
 		if (params?.order) qs.set('order', params.order);
-		if (params?.page) qs.set('page', String(params.page));
-		if (params?.pageSize) qs.set('pageSize', String(params.pageSize));
+		if (params?.skip !== undefined) qs.set('skip', String(params.skip));
+		if (params?.limit) qs.set('limit', String(params.limit));
 		if (params?.stars && params.stars.length > 0) qs.set('stars', params.stars.join(','));
 		const path = `${basePath}?${qs}`;
 
@@ -52,22 +51,6 @@ export const reviewsEndpoints = {
 		const path = API_ENDPOINTS.reviews.byDestinationSlug.path(slug, page);
 
 		const response = await apiClient.request<ActivityReviewsResponse>(fetchFn, path, {
-			method: 'GET'
-		});
-
-		return response.data;
-	},
-
-	/**
-	 * Obtener estadísticas de reviews de una actividad
-	 */
-	async getStatsByActivityId(
-		fetchFn: typeof fetch,
-		activityId: string
-	): Promise<ActivityReviewStats> {
-		const path = API_ENDPOINTS.reviews.byActivityStats.path(activityId);
-
-		const response = await apiClient.request<ActivityReviewStats>(fetchFn, path, {
 			method: 'GET'
 		});
 

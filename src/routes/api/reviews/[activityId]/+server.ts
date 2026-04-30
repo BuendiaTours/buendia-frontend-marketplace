@@ -14,11 +14,11 @@ export const GET: RequestHandler = async ({ params, url, fetch }) => {
 	const order = url.searchParams.get('order');
 	if (order === 'ASC' || order === 'DESC') reviewParams.order = order;
 
-	const page = url.searchParams.get('page');
-	if (page) reviewParams.page = Number(page);
+	const skip = url.searchParams.get('skip');
+	if (skip !== null) reviewParams.skip = Number(skip);
 
-	const pageSize = url.searchParams.get('pageSize');
-	if (pageSize) reviewParams.pageSize = Number(pageSize);
+	const limit = url.searchParams.get('limit');
+	if (limit) reviewParams.limit = Number(limit);
 
 	const stars = url.searchParams.getAll('stars').map(Number).filter(Boolean);
 	if (stars.length > 0) reviewParams.stars = stars;

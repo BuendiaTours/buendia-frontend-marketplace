@@ -50,16 +50,16 @@
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 
+	const LIMIT = 20;
+
 	// Estado cliente para reviews (sort + show more)
 	let reviews = $state(data.reviews);
 	let reviewsTotal = $state(data.reviewsTotal);
 	let sortValue = $state<'recommended' | 'best' | 'recent' | 'worst'>('recommended');
-	let currentPage = $state(1);
-	let totalPages = $state(data.reviewsTotalPages);
 	let isLoadingReviews = $state(false);
 	let activeStars = $state<number[]>([]);
 
-	const hasMoreReviews = $derived(currentPage < totalPages);
+	const hasMoreReviews = $derived(reviews.length < reviewsTotal);
 	const activityId = $derived(data.activity.id);
 	const pickupPlaces = $derived(
 		Array.from(
@@ -106,6 +106,7 @@
 			selectedSlotId = allSlots.find((s) => !checkout.isSlotDisabled(s))?.id ?? null;
 		}
 	});
+
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
 		best: { sort: 'averageRating', order: 'DESC' },
@@ -119,8 +120,8 @@
 			const qs = new SvelteURLSearchParams();
 			if (params.sort) qs.set('sort', params.sort);
 			if (params.order) qs.set('order', params.order);
-			if (params.page) qs.set('page', String(params.page));
-			if (params.pageSize) qs.set('pageSize', String(params.pageSize));
+			if (params.skip !== undefined) qs.set('skip', String(params.skip));
+			if (params.limit) qs.set('limit', String(params.limit));
 			if (params.stars && params.stars.length > 0) {
 				params.stars.forEach((s) => qs.append('stars', String(s)));
 			}
@@ -132,9 +133,7 @@
 			} else {
 				reviews = result.data;
 			}
-			currentPage = result.pagination.page;
-			totalPages = result.pagination.totalPages;
-			reviewsTotal = result.pagination.total;
+			reviewsTotal = result.total;
 		} finally {
 			isLoadingReviews = false;
 		}
@@ -142,15 +141,19 @@
 
 	async function handleReviewSortChange(value: string) {
 		sortValue = value as typeof sortValue;
-		currentPage = 1;
 		trackClick('pdp_click', value, 'opiniones');
-		await loadActivityReviews({ ...(SORT_PARAMS[value] ?? {}), stars: activeStars });
+		await loadActivityReviews({
+			...(SORT_PARAMS[value] ?? {}),
+			skip: 0,
+			limit: LIMIT,
+			stars: activeStars
+		});
 	}
 
 	async function handleShowMore() {
 		trackClick('pdp_click', 'mostrar mas', 'opiniones');
 		await loadActivityReviews(
-			{ ...SORT_PARAMS[sortValue], page: currentPage + 1, stars: activeStars },
+			{ ...SORT_PARAMS[sortValue], skip: reviews.length, limit: LIMIT, stars: activeStars },
 			true
 		);
 	}
@@ -355,8 +358,8 @@
 				<Spacer />
 			{/if}
 
-			<!-- pdp-included-excluded -->
 			{#if (activity.included && activity.included.length > 0) || (activity.excluded && activity.excluded.length > 0)}
+				<!-- pdp-included-excluded -->
 				<h2 class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</h2>
 				<ul class="pdp-list pdp-included-excluded space-y-1">
 					{#each activity.included ?? [] as item, i (i)}
@@ -375,8 +378,8 @@
 				<Spacer />
 			{/if}
 
-			<!-- Not Suitable For -->
 			{#if activity.notSuitableFor && activity.notSuitableFor.length > 0}
+				<!-- Not Suitable For -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">No apto para</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
 					{#each activity.notSuitableFor as item, i (i)}
@@ -386,8 +389,8 @@
 				<Spacer />
 			{/if}
 
-			<!-- Pets Allowed -->
 			{#if activity.petsAllowed}
+				<!-- Pets Allowed -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">Mascotas</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
 					<li>
@@ -426,10 +429,10 @@
 
 			<Spacer />
 
-			<div class="pdp-review-gallery mb-8">
-				<h2 class="h2">Opiniones de {activity.title}</h2>
+			{#if reviewItems?.length > 0}
+				<div class="pdp-review-gallery mb-8">
+					<h2 class="h2">Opiniones de {activity.title}</h2>
 
-				{#if reviewItems?.length > 0}
 					<p class="p-base text-bold mt-4">Fotos de nuestros viajeros</p>
 
 					<GallerySquareThumbs
@@ -443,18 +446,17 @@
 						layoutComponent={ReviewsLayout}
 						galleryLocation="user gallery"
 					/>
-				{/if}
-			</div>
+				</div>
+			{/if}
 
-			<p class="h4 mb-4">Valoración</p>
 			{#if data.reviewsStats}
+				<p class="h4 mb-4">Valoración</p>
 				<PdpReviewsAverage
 					stats={data.reviewsStats}
 					activityTitle={activity.title}
 					onStarsChange={async (stars) => {
 						activeStars = stars;
-						currentPage = 1;
-						await loadActivityReviews({ ...SORT_PARAMS[sortValue], stars });
+						await loadActivityReviews({ ...SORT_PARAMS[sortValue], skip: 0, limit: LIMIT, stars });
 					}}
 					wrapperClass="mb-8"
 				/>

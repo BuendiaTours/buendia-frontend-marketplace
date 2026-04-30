@@ -57,6 +57,7 @@
 					checked={selectedStars.includes(item.stars)}
 					onchange={(e) => handleCheckbox(item.stars, e.currentTarget.checked)}
 					aria-label={item.stars === 1 ? '1 estrella' : `${item.stars} estrellas`}
+					disabled={item.stars === 0}
 				/>
 			</div>
 		{/each}
