@@ -6,6 +6,9 @@ import { handleApiError } from '$core/_shared/errors';
 import { buildActivityBreadcrumbs } from '$lib/utils/breadcrumbs';
 import type { ActivityListItem, ActivityReviewStats } from '$lib/types';
 
+// Constants and config
+const REVIEWS_LIMIT = 5;
+
 function buildReviewsStats(
 	activityId: string,
 	totals: ActivityListItem['reviewsTotalByStars']
@@ -32,7 +35,7 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 	try {
 		const activity = await activitiesEndpoints.getBySlug(fetch, slug);
 		const [reviewsResult, activityOptions, reviewAttachments] = await Promise.all([
-			reviewsEndpoints.getByActivityId(fetch, activity.id, { skip: 0, limit: 20 }),
+			reviewsEndpoints.getByActivityId(fetch, activity.id, { skip: 0, limit: REVIEWS_LIMIT }),
 			activityOptionsEndpoints.getByActivityId(fetch, activity.id),
 			reviewsEndpoints.getAttachmentsByActivityId(fetch, activity.id)
 		]);
@@ -41,6 +44,7 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			activity,
 			reviews: reviewsResult.data,
 			reviewsTotal: reviewsResult.total,
+			reviewsLimit: REVIEWS_LIMIT,
 			reviewsStats: buildReviewsStats(activity.id, activity.reviewsTotalByStars),
 			activityOptions,
 			reviewAttachments: reviewAttachments.data,

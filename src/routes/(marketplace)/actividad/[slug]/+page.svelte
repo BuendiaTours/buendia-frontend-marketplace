@@ -50,8 +50,6 @@
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
 
-	const LIMIT = 20;
-
 	// Estado cliente para reviews (sort + show more)
 	let reviews = $state(data.reviews);
 	let reviewsTotal = $state(data.reviewsTotal);
@@ -145,7 +143,7 @@
 		await loadActivityReviews({
 			...(SORT_PARAMS[value] ?? {}),
 			skip: 0,
-			limit: LIMIT,
+			limit: data.reviewsLimit,
 			stars: activeStars
 		});
 	}
@@ -153,7 +151,12 @@
 	async function handleShowMore() {
 		trackClick('pdp_click', 'mostrar mas', 'opiniones');
 		await loadActivityReviews(
-			{ ...SORT_PARAMS[sortValue], skip: reviews.length, limit: LIMIT, stars: activeStars },
+			{
+				...SORT_PARAMS[sortValue],
+				skip: reviews.length,
+				limit: data.reviewsLimit,
+				stars: activeStars
+			},
 			true
 		);
 	}
@@ -456,7 +459,12 @@
 					activityTitle={activity.title}
 					onStarsChange={async (stars) => {
 						activeStars = stars;
-						await loadActivityReviews({ ...SORT_PARAMS[sortValue], skip: 0, limit: LIMIT, stars });
+						await loadActivityReviews({
+							...SORT_PARAMS[sortValue],
+							skip: 0,
+							limit: data.reviewsLimit,
+							stars
+						});
 					}}
 					wrapperClass="mb-8"
 				/>
