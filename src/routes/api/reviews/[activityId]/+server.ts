@@ -20,8 +20,8 @@ export const GET: RequestHandler = async ({ params, url, fetch }) => {
 	const limit = url.searchParams.get('limit');
 	if (limit) reviewParams.limit = Number(limit);
 
-	const stars = url.searchParams.getAll('stars').map(Number).filter(Boolean);
-	if (stars.length > 0) reviewParams.stars = stars;
+	const averageRatings = url.searchParams.getAll('averageRatings').map(Number).filter(Boolean);
+	if (averageRatings.length > 0) reviewParams.averageRatings = averageRatings;
 
 	const result = await reviewsEndpoints.getByActivityId(fetch, activityId, reviewParams);
 	return json(result);

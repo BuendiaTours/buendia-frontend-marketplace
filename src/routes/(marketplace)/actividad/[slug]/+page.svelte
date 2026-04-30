@@ -120,8 +120,8 @@
 			if (params.order) qs.set('order', params.order);
 			if (params.skip !== undefined) qs.set('skip', String(params.skip));
 			if (params.limit) qs.set('limit', String(params.limit));
-			if (params.stars && params.stars.length > 0) {
-				params.stars.forEach((s) => qs.append('averageRatings', String(s)));
+			if (params.averageRatings && params.averageRatings.length > 0) {
+				params.averageRatings.forEach((s) => qs.append('averageRatings', String(s)));
 			}
 			const result = await fetch(proxyApiRoutes.reviews.byActivity(activityId, qs)).then((r) =>
 				r.json()
@@ -144,7 +144,7 @@
 			...(SORT_PARAMS[value] ?? {}),
 			skip: 0,
 			limit: data.reviewsLimit,
-			stars: activeStars
+			averageRatings: activeStars
 		});
 	}
 
@@ -155,7 +155,7 @@
 				...SORT_PARAMS[sortValue],
 				skip: reviews.length,
 				limit: data.reviewsLimit,
-				stars: activeStars
+				averageRatings: activeStars
 			},
 			true
 		);
@@ -463,7 +463,7 @@
 							...SORT_PARAMS[sortValue],
 							skip: 0,
 							limit: data.reviewsLimit,
-							stars
+							averageRatings: stars
 						});
 					}}
 					wrapperClass="mb-8"

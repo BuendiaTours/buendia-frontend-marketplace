@@ -30,7 +30,8 @@ export const reviewsEndpoints = {
 		if (params?.order) qs.set('order', params.order);
 		if (params?.skip !== undefined) qs.set('skip', String(params.skip));
 		if (params?.limit) qs.set('limit', String(params.limit));
-		if (params?.stars && params.stars.length > 0) qs.set('stars', params.stars.join(','));
+		if (params?.averageRatings && params.averageRatings.length > 0)
+			params.averageRatings.forEach((r) => qs.append('averageRatings', String(r)));
 		const path = `${basePath}?${qs}`;
 
 		const response = await apiClient.request<ActivityReviewsResponse>(fetchFn, path, {

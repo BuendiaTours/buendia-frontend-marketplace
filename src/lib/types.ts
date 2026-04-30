@@ -184,7 +184,7 @@ export type ActivityReviewParams = {
 	order?: 'ASC' | 'DESC';
 	skip?: number;
 	limit?: number;
-	stars?: number[];
+	averageRatings?: number[];
 };
 
 export type ActivityReviewStatsDistribution = {
