@@ -43,7 +43,7 @@
 {/if}
 
 <div class="flex min-h-screen flex-col">
-	<Header title="Marketplace App" wrapperClass="my-6" />
+	<Header wrapperClass="my-4" />
 
 	<main class="layout-content-area flex-1">
 		<!-- MsgAlertBox /-->
