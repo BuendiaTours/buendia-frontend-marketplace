@@ -126,6 +126,15 @@ export type ActivityListItem = {
 		twoStar: number;
 		oneStar: number;
 	} | null;
+	reviewsFeatured?: ActivityReviewFeatured[];
+};
+
+type ActivityReviewFeatured = {
+	id: string;
+	content: string;
+	createdAt: string;
+	rating: number;
+	user: string;
 };
 
 // Re-export from API shared types (canonical location)

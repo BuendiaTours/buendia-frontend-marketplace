@@ -254,10 +254,10 @@
 				onlinkclick={() => trackClick('pdp_click', 'saber mas', 'plan bybuendia')}
 			/>
 
-			<Spacer wrapperClass="mt-8 mb-6" />
+			{#if activity.reviewsFeatured && activity.reviewsFeatured.length > 0}
+				<Spacer wrapperClass="mt-8 mb-6" />
 
-			<!-- pdp-reviews-featured -->
-			{#if data.reviews && data.reviews.length > 1}
+				<!-- pdp-reviews-featured -->
 				<div class="pdp-reviews-featured">
 					<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
 					<div
@@ -269,7 +269,7 @@
 							}
 						}}
 					>
-						{#each data.reviews.slice(0, 2) as review (review.id)}
+						{#each activity.reviewsFeatured as review (review.id)}
 							<div class="w-5/6 flex-none snap-start snap-always sm:w-auto sm:flex-1">
 								<ReviewCard
 									name={review.user || 'Anónimo'}
@@ -277,10 +277,9 @@
 										? format(new Date(review.createdAt), 'dd/MM/yyyy')
 										: undefined}
 									text={review.content}
-									rating={review.averageRating}
+									rating={review.rating}
 									lines={3}
 									wrapperClass="p-6 border border-[var(--color-border-default)] rounded-lg h-full"
-									{...review}
 								/>
 							</div>
 						{/each}
