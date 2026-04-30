@@ -3,7 +3,6 @@ import { activitiesEndpoints } from '$lib/api/endpoints/activities';
 import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import { activityOptionsEndpoints } from '$lib/api/endpoints/activityOptions';
 import { handleApiError } from '$core/_shared/errors';
-import { buildActivityBreadcrumbs } from '$lib/utils/breadcrumbs';
 import type { ActivityListItem, ActivityReviewStats } from '$lib/types';
 
 // Constants and config
@@ -48,7 +47,13 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			reviewsStats: buildReviewsStats(activity.id, activity.reviewsTotalByStars),
 			activityOptions,
 			reviewAttachments: reviewAttachments.data,
-			breadcrumbs: buildActivityBreadcrumbs(activity)
+			breadcrumbs: activity.breadcrumbs?.length
+				? [
+						{ label: 'Inicio', href: '/' },
+						...activity.breadcrumbs.map((b) => ({ label: b.name, href: `/${b.href}` })),
+						{ label: activity.title }
+					]
+				: []
 		};
 	} catch (err) {
 		throw handleApiError(err, 'la actividad');

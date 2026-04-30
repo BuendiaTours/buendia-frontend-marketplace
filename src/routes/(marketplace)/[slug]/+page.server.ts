@@ -4,7 +4,6 @@ import { categoriesEndpoints } from '$lib/api/endpoints/categories';
 import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import { activityKindsEndpoints } from '$lib/api/endpoints/activityKinds';
 import { handleApiError } from '$core/_shared/errors';
-import { buildDestinationBreadcrumbs } from '$lib/utils/breadcrumbs';
 import { parseFilters } from '$lib/utils/filters';
 import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
 
@@ -44,7 +43,7 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 			reviews: reviewsResult.data,
 			activityKinds,
 			filters,
-			breadcrumbs: buildDestinationBreadcrumbs(destination)
+			breadcrumbs: []
 		};
 	} catch (err) {
 		throw handleApiError(err, 'el destino');

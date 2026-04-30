@@ -127,6 +127,7 @@ export type ActivityListItem = {
 		oneStar: number;
 	} | null;
 	reviewsFeatured?: ActivityReviewFeatured[];
+	breadcrumbs?: ActivityApiBreadcrumb[];
 };
 
 type ActivityReviewFeatured = {
@@ -423,6 +424,13 @@ export type Pagination = {
 export type BreadcrumbItem = {
 	label: string;
 	href?: string;
+};
+
+export type ActivityApiBreadcrumb = {
+	locationId: string;
+	distributiveId: string;
+	href: string;
+	name: string;
 };
 
 export type MultimediaItem = {
