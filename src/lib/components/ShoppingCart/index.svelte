@@ -36,7 +36,7 @@
 			{shoppingCartStore.bookingCount}
 		</span>
 	{/if}
-	<p class="h3">Carrito</p>
+	<p class="p-lg hidden sm:block">Carrito</p>
 </button>
 
 {#if $open}
