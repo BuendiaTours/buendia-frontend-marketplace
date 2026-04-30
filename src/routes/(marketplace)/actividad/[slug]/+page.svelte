@@ -182,7 +182,8 @@
 			<PdpHeader
 				dataBreadcrumbs={data.breadcrumbs}
 				title={activity.title}
-				reviewsCount={reviewItems.length}
+				reviewsTotal={activity.reviewsTotal}
+				reviewsAvg={activity.reviewsAvg}
 				wrapperClass="mt-5"
 			/>
 
@@ -349,7 +350,6 @@
 					style="warning"
 					items={[
 						{
-							id: 'important-info',
 							icon: 'InfoCircle',
 							title: 'Información importante',
 							description: activity.infoImportant
@@ -546,7 +546,7 @@
 
 		<div class="col-sidebar pt-6">
 			<div class="carrito sticky top-0">
-				<Checkout activityOptions={data.activityOptions} />
+				<Checkout activityOptions={data.activityOptions} minPrice={data.activity.minPrice} />
 
 				<HubspotChat wrapperClass="mt-4" />
 			</div>

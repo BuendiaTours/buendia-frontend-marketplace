@@ -51,6 +51,19 @@ export type Faqs = {
 	status: string;
 };
 
+export type ActivityIncludedItem = {
+	id: string;
+	description: string;
+};
+
+export type ActivityMeal = {
+	id: string;
+	additionalOptions: string[];
+	allergens: string[];
+	format: string;
+	kind: string;
+};
+
 export type ContentBlockStack = {
 	id: string;
 	image: string;
@@ -84,16 +97,17 @@ export type ActivityListItem = {
 	descriptionShort: string;
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
-	excluded: string[];
+	excluded: ActivityIncludedItem[];
 	faqs: Faqs[];
+	faqsTitle?: string;
 	byBuendiaBanner: ByBuendiaBanner | null;
 	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
-	included: string[];
+	included: ActivityIncludedItem[];
 	infoImportant: string | null;
 	itemsToBring: string[];
 	kind: ActivityKind;
-	meals: string[];
+	meals: ActivityMeal[];
 	multimedias: MultimediaItem[];
 	notSuitableFor: Array<ActivityNotSuitableFor>;
 	petsAllowed: {
@@ -110,6 +124,7 @@ export type ActivityListItem = {
 		description?: string;
 		kind: string;
 		duration?: string;
+		location?: { type: string; coordinates: [number, number] };
 	}>;
 	status: ActivityStatus;
 	tags: Array<{ id: string; name: string }>;
@@ -128,6 +143,16 @@ export type ActivityListItem = {
 	} | null;
 	reviewsFeatured?: ActivityReviewFeatured[];
 	breadcrumbs?: ActivityApiBreadcrumb[];
+	reviewsAvg?: number;
+	reviewsTotal?: number;
+	minPrice?: number;
+	durationMin?: { unit: string; quantity: number };
+	durationMax?: { unit: string; quantity: number };
+	audios?: string[];
+	difficult?: number;
+	languages?: string[];
+	supplier?: { source: string };
+	bookingCutOff?: number;
 };
 
 type ActivityReviewFeatured = {

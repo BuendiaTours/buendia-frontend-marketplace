@@ -13,26 +13,13 @@
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 
-	type Props = { activityOptions: ActivityOption[] };
-	let { activityOptions }: Props = $props();
+	type Props = { activityOptions: ActivityOption[]; minPrice?: number };
+	let { activityOptions, minPrice }: Props = $props();
 
 	const checkout = getCheckout();
 
 	$effect(() => {
 		checkout.activityOptions = activityOptions;
-	});
-
-	const minAdultPrice = $derived.by(() => {
-		const adultIds = new Set(
-			activityOptions
-				.flatMap((o) => o.individualTickets)
-				.filter((t) => t.group === 'ADULT')
-				.map((t) => t.id)
-		);
-		let min = Infinity;
-		for (const slot of checkout.availability)
-			for (const t of slot.tickets) if (adultIds.has(t.id) && t.price < min) min = t.price;
-		return min === Infinity ? null : min;
 	});
 
 	const activeTicketGroups = $derived([
@@ -63,8 +50,8 @@
 					Desde <strike>99,00 €</strike> <span class="p-base text-salmon-strong">-15%</span>
 				</p>
 				<p class="text-price text-salmon-strong">
-					{#if minAdultPrice !== null}
-						{formatEuro(minAdultPrice)}
+					{#if minPrice !== undefined}
+						{formatEuro(minPrice)}
 					{/if}
 					<span class="p-base ml-2 font-bold text-neutral-800">por persona</span>
 				</p>
