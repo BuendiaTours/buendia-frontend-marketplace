@@ -5,7 +5,7 @@
  * Devuelve las reviews de una actividad por su ID.
  */
 
-import { apiClient } from '$core/_shared/client';
+import { bookingsApiClient as apiClient } from '$core/_shared/client';
 import { API_ENDPOINTS } from '$core/_shared/endpoints.config';
 import type {
 	ActivityReview,
