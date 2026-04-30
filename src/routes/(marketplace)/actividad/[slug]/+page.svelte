@@ -121,7 +121,7 @@
 			if (params.skip !== undefined) qs.set('skip', String(params.skip));
 			if (params.limit) qs.set('limit', String(params.limit));
 			if (params.stars && params.stars.length > 0) {
-				params.stars.forEach((s) => qs.append('stars', String(s)));
+				params.stars.forEach((s) => qs.append('averageRatings', String(s)));
 			}
 			const result = await fetch(proxyApiRoutes.reviews.byActivity(activityId, qs)).then((r) =>
 				r.json()
