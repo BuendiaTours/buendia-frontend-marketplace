@@ -12,7 +12,7 @@
 	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Actions
-	import { clampText } from '$lib/actions/clampText';
+	// import { clampText } from '$lib/actions/clampText';
 	import { trackClick } from '$lib/analytics';
 	import * as m from '$paraglide/messages';
 	import { formatDuration } from '$lib/utils/duration';
@@ -387,11 +387,13 @@
 			{#if activity.stages && activity.stages.length > 0}
 				<Spacer />
 				<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
-				<MapView
-					items={activity.stages}
-					wrapperClass="mt-8"
-					onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
-				/>
+				{#if activity.stages.some((s) => s.location)}
+					<MapView
+						items={activity.stages}
+						wrapperClass="mt-8"
+						onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
+					/>
+				{/if}
 			{/if}
 
 			{#if activity.willDoing && activity.willDoing.length > 0}
