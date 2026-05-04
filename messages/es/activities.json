@@ -9,5 +9,10 @@
 				"countPlural=*": "Solo quedan {count} plazas"
 			}
 		}
-	]
+	],
+	"activities_pdp_highlight_duration_range": "Duración {min} - {max} {unit}",
+	"activities_pdp_highlight_duration_single": "Duración {quantity} {unit}",
+	"activities_pdp_highlight_guide": "{kind} en {languages}",
+	"activities_pdp_highlight_audio": "Audioguía en {languages}",
+	"activities_pdp_highlight_difficulty": "Nivel de la actividad<br />{level}/5 Nivel {name}"
 }

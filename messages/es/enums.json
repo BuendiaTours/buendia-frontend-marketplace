@@ -51,5 +51,42 @@
 	"enum_passengerKind_STUDENT_EU_description": "Requiere carnet de estudiante de la UE",
 	"enum_passengerKind_STUDENT_EU_name": "Estudiante UE",
 	"enum_passengerKind_YOUTH_description": "Entre 12 y 25 años",
-	"enum_passengerKind_YOUTH_name": "Joven"
+	"enum_passengerKind_YOUTH_name": "Joven",
+	"enum_activityDifficult_1": "bajo",
+	"enum_activityDifficult_2": "medio",
+	"enum_activityDifficult_3": "medio-alto",
+	"enum_activityDifficult_4": "alto",
+	"enum_activityDifficult_5": "extremo",
+	"enum_activityGuideKind_NORMAL_GUIDE": "Guía",
+	"enum_activityGuideKind_INSTRUCTOR": "Instructor",
+	"enum_language_AR": "árabe",
+	"enum_language_CA": "catalán",
+	"enum_language_DE": "alemán",
+	"enum_language_EN": "inglés",
+	"enum_language_ES": "español",
+	"enum_language_EU": "euskera",
+	"enum_language_FR": "francés",
+	"enum_language_GL": "gallego",
+	"enum_language_IT": "italiano",
+	"enum_language_JA": "japonés",
+	"enum_language_KO": "coreano",
+	"enum_language_NL": "neerlandés",
+	"enum_language_PL": "polaco",
+	"enum_language_PT": "portugués",
+	"enum_language_RU": "ruso",
+	"enum_language_ZH": "chino",
+	"enum_durationUnit_HOURS": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": { "countPlural=one": "hora", "countPlural=*": "horas" }
+		}
+	],
+	"enum_durationUnit_MINUTES": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": { "countPlural=one": "minuto", "countPlural=*": "minutos" }
+		}
+	]
 }

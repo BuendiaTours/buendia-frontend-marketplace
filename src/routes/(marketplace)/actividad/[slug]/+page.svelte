@@ -14,6 +14,11 @@
 	// Actions
 	import { clampText } from '$lib/actions/clampText';
 	import { trackClick } from '$lib/analytics';
+	import * as m from '$paraglide/messages';
+	import { formatDuration } from '$lib/utils/duration';
+	import { formatGuideHighlight, formatAudioHighlight } from '$lib/utils/languages';
+
+	const msgs = m as unknown as Record<string, () => string>;
 
 	// Components
 	import AccordionOnMobile from '$lib/components/AccordionOnMobile.svelte';
@@ -219,7 +224,51 @@
 
 			<!-- highlights -->
 			{#if activity.highlights && activity.highlights.length > 0}
-				<PdpHighlights items={activity.highlights} wrapperClass="" />
+				<PdpHighlights
+					items={[
+						...(activity.durationMin || activity.durationMax
+							? [
+									{
+										icon: 'ClockCircle',
+										text: formatDuration(activity.durationMin, activity.durationMax)
+									}
+								]
+							: []),
+						...(activity.languages && activity.languages.length > 0
+							? [
+									{
+										icon: 'Guide',
+										text: formatGuideHighlight(activity.guideKind, activity.languages)
+									}
+								]
+							: []),
+						...(activity.audios && activity.audios.length > 0
+							? [
+									{
+										icon: 'HeadphonesRound',
+										text: formatAudioHighlight(activity.audios)
+									}
+								]
+							: []),
+						{
+							icon: 'BillCheck',
+							text: 'No se requiere pago de entradas o gastos adicionales'
+						},
+						...(activity.difficult && msgs[`enum_activityDifficult_${activity.difficult}`]
+							? [
+									{
+										icon: 'Activity1',
+										text: m.activities_pdp_highlight_difficulty({
+											level: activity.difficult,
+											name: msgs[`enum_activityDifficult_${activity.difficult}`]()
+										}),
+										itsLevel: true
+									}
+								]
+							: [])
+					]}
+					wrapperClass=""
+				/>
 				<Spacer wrapperClass="mt-8 mb-6" />
 			{/if}
 
