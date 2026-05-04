@@ -388,6 +388,7 @@
 				<Spacer />
 				<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 				<MapView
+					items={activity.stages}
 					wrapperClass="mt-8"
 					onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
 				/>

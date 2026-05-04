@@ -9,7 +9,9 @@ import type {
 	ActivityTransportKind,
 	ActivityTransportLocation,
 	ActivityIncluded,
-	ActivityExcluded
+	ActivityExcluded,
+	StageRelevance,
+	StageRequirement
 } from '$core/activities/enums';
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
@@ -132,6 +134,8 @@ export type ActivityListItem = {
 		kind: string;
 		duration?: string;
 		location?: { type: string; coordinates: [number, number] };
+		relevance: StageRelevance;
+		requirement: StageRequirement;
 	}>;
 	status: ActivityStatus;
 	tags: Array<{ id: string; name: string }>;

@@ -4,6 +4,14 @@
 	type Props = {
 		ctaLabel?: string;
 		disclaimer?: string;
+		items?: Array<{
+			id: string;
+			order: number;
+			name: string;
+			description?: string;
+			kind: string;
+			duration?: string;
+		}>;
 		wrapperClass?: string;
 		onclick?: () => void;
 	};
@@ -11,6 +19,7 @@
 	let {
 		ctaLabel = 'Ver mapa',
 		disclaimer = 'Los itinerarios pueden estar sujetos a cambios',
+		items,
 		wrapperClass = '',
 		onclick
 	}: Props = $props();
