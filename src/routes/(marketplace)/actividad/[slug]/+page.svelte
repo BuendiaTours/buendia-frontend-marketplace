@@ -43,7 +43,7 @@
 	import { ReviewsLayout } from '$lib/components/BndLightbox';
 
 	// Icons
-	// import SvelteMarkdown from '@humanspeak/svelte-markdown';
+	import SvelteMarkdown from '@humanspeak/svelte-markdown';
 	import { CustomMiniTick, CustomMiniCancel, VerifiedCheck } from '$lib/icons/Linear';
 
 	// Checkout store / cart state
@@ -411,8 +411,8 @@
 					{#snippet summary()}
 						<h2 class="h2">Descripción de la excursión</h2>
 					{/snippet}
-					<p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p>
-					<!-- <SvelteMarkdown source={activity.descriptionFull} /> -->
+					<!-- p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p -->
+					<SvelteMarkdown source={activity.descriptionFull} />
 				</AccordionOnMobile>
 			{/if}
 
@@ -456,10 +456,10 @@
 						</li>
 					{/each}
 				</ul>
-				<Spacer />
 			{/if}
 
 			{#if activity.notSuitableFor && activity.notSuitableFor.length > 0}
+				<Spacer />
 				<!-- Not Suitable For -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">No apto para</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
