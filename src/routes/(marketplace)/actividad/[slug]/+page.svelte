@@ -469,6 +469,16 @@
 				</ul>
 			{/if}
 
+			{#if activity.restrictions && activity.restrictions.length > 0}
+				<Spacer />
+				<p class="h2 mt-4 mb-2 lg:mt-6">Elementos no permitidos en esta actividad</p>
+				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+					{#each activity.restrictions as item, i (i)}
+						<li>{msgs[`enum_activityRestriction_${item}`]?.() ?? item}</li>
+					{/each}
+				</ul>
+			{/if}
+
 			{#if activity.petsAllowed}
 				<Spacer />
 				<!-- Pets Allowed -->

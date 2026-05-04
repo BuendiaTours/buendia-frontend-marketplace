@@ -2,6 +2,7 @@
 import type { Component, Snippet } from 'svelte';
 import type {
 	ActivityNotSuitableFor,
+	ActivityRestriction,
 	ActivityStatus,
 	ActivityKind,
 	ActivityGuideKind,
@@ -121,7 +122,7 @@ export type ActivityListItem = {
 		description: string | null;
 	};
 	phoneContact: string | null;
-	restrictions: string[];
+	restrictions: ActivityRestriction[];
 	stagesTitle: string;
 	stages: Array<{
 		id: string;
