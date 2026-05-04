@@ -60,17 +60,43 @@
 	const isOwned = $derived(data.activity.supplier?.source === 'OWNED');
 
 	const conditionsItems = $derived([
-		{
-			icon: 'CalendarCheck',
-			title: 'Cancelación gratuita hasta el inicio de la actividad',
-			description:
-				'Puedes cancelar en cualquier momento antes del inicio de la actividad. Si llegas tarde o no te presentas, no se obtiene ningún reembolso.'
-		},
-		{
-			icon: 'MoneyBack',
-			title: 'Garantía de reembolso',
-			description: 'Si no quedas satisfecho, te devolvemos tu dinero.'
-		}
+		...(activity.bookingCutOff === 0
+			? [
+					{
+						icon: 'CalendarCheck',
+						title: 'Cancelación gratuita hasta el inicio de la actividad',
+						description:
+							'Puedes cancelar en cualquier momento antes del inicio de la actividad. Si llegas tarde o no te presentas, no se obtiene ningún reembolso.'
+					}
+				]
+			: []),
+		...(activity.bookingCutOff != null && activity.bookingCutOff > 0
+			? [
+					{
+						icon: 'CalendarCheck',
+						title: `Cancelación gratuita hasta ${activity.bookingCutOff}h antes`,
+						description: `Puedes cancelar en cualquier momento hasta ${activity.bookingCutOff}hh antes del inicio de la actividad, después de ese periodo no se obtiene ningún reembolso.`
+					}
+				]
+			: []),
+		...(activity.bookingCutOff === null
+			? [
+					{
+						icon: 'CalendarCheck',
+						title: 'No reembolsable',
+						description: `Esta actividad es no reembolsable, si cancelas la reserva o no te presentas no se efectuará ningún reembolso.`
+					}
+				]
+			: []),
+		...(isOwned
+			? [
+					{
+						icon: 'MoneyBack',
+						title: 'Garantía de reembolso',
+						description: 'Si no quedas satisfecho, te devolvemos tu dinero.'
+					}
+				]
+			: [])
 	]);
 
 	// ── Checkout & opciones ───────────────────────────────────────────────────
