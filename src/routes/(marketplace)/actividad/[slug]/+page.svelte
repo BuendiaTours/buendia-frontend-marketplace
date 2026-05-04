@@ -595,7 +595,11 @@
 
 		<div class="col-sidebar pt-6">
 			<div class="carrito sticky top-0">
-				<Checkout activityOptions={data.activityOptions} minPrice={data.activity.minPrice} />
+				<Checkout
+					activityOptions={data.activityOptions}
+					minPrice={data.activity.minPrice}
+					isOwned={data.activity.supplier?.source === 'OWNED'}
+				/>
 
 				<HubspotChat wrapperClass="mt-4" />
 			</div>

@@ -13,8 +13,8 @@
 	// Utils
 	import { formatEuro } from '$lib/utils/currency';
 
-	type Props = { activityOptions: ActivityOption[]; minPrice?: number };
-	let { activityOptions, minPrice }: Props = $props();
+	type Props = { activityOptions: ActivityOption[]; minPrice?: number; isOwned?: boolean };
+	let { activityOptions, minPrice, isOwned = false }: Props = $props();
 
 	const checkout = getCheckout();
 
@@ -68,16 +68,18 @@
 				wrapperClass="mt-4"
 			/>
 
-			<div class="mt-4 flex flex-col gap-1">
-				<p class="p-base flex gap-2 text-neutral-800">
-					<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
-					Cancelación gratuita hasta el inicio de la actividad
-				</p>
-				<p class="p-base flex gap-2 text-neutral-800">
-					<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
-					Garantía de reembolso si no te gusta
-				</p>
-			</div>
+			{#if isOwned}
+				<div class="mt-4 flex flex-col gap-1">
+					<p class="p-base flex gap-2 text-neutral-800">
+						<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
+						Cancelación gratuita hasta el inicio de la actividad
+					</p>
+					<p class="p-base flex gap-2 text-neutral-800">
+						<CheckCircle class="text-success-700 h-6 shrink-0 grow-0 basis-6" />
+						Garantía de reembolso si no te gusta
+					</p>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
