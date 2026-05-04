@@ -17,7 +17,7 @@
 </script>
 
 <div class="c-collection-points-group">
-	<div class="h2 mb-4">Puntos de encuentro</div>
+	<div class="h2 mb-4">Punto de encuentro</div>
 
 	<div class="space-y-4">
 		{#each visibleItems as item, i (i)}
