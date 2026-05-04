@@ -84,6 +84,15 @@ export type RelatedPlans = {
 	items: RelatedPlansItem[];
 };
 
+export type ActivityMeetingPoint = {
+	name: string;
+	address: string;
+	city: string;
+	postCode: string;
+	countryCode: string;
+	location: { type: 'Point'; coordinates: [number, number] };
+};
+
 export type ActivityListItem = {
 	id: string;
 	title: string;
@@ -153,6 +162,7 @@ export type ActivityListItem = {
 	languages?: string[];
 	supplier?: { source: string };
 	bookingCutOff?: number;
+	meetingPoint?: ActivityMeetingPoint;
 };
 
 type ActivityReviewFeatured = {
@@ -173,7 +183,6 @@ export type ActivityDetail = ActivityListItem & {
 	highlights: string[];
 	includes: string[];
 	languages: string[];
-	meetingPoint: string;
 };
 
 type ReviewAttachment = {

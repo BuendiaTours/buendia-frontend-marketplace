@@ -8,7 +8,7 @@
 	import type { BndLightboxItem } from '$lib/types';
 
 	// Reactivity
-	import { SvelteURLSearchParams, SvelteMap } from 'svelte/reactivity';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { proxyApiRoutes } from '$lib/api/proxy-routes';
 
 	// Actions
@@ -61,17 +61,6 @@
 
 	// ── Checkout & opciones ───────────────────────────────────────────────────
 	const checkout = untrack(() => createCheckout(data.activity.id));
-
-	const pickupPlaces = $derived(
-		Array.from(
-			new SvelteMap(
-				data.activityOptions
-					.flatMap((opt) => opt.pickupPlaces)
-					.filter((p) => p.kind === 'PICKUP')
-					.map((p) => [p.pickupPointId, p])
-			).values()
-		)
-	);
 
 	let selectedSlotId = $state<string | null>(null);
 
@@ -348,14 +337,14 @@
 						>Ver todas las opiniones</a
 					>
 				</div>
-
-				<Spacer />
 			{/if}
 
-			{#if pickupPlaces.length > 0}
-				<PdpCollectionPointsGroup items={pickupPlaces} />
+			{#if activity.meetingPoint}
 				<Spacer />
+				<PdpCollectionPointsGroup items={[activity.meetingPoint]} />
 			{/if}
+
+			<Spacer />
 
 			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { ActivityOptionPickupLocation } from '$lib/types';
+	import type { ActivityMeetingPoint } from '$lib/types';
 	import Spacer from '../Spacer.svelte';
 	import PdpCollectionPoint from './PdpCollectionPoint.svelte';
 	import { trackVerMas } from '$lib/analytics';
 
 	type Props = {
-		items: ActivityOptionPickupLocation[];
+		items: ActivityMeetingPoint[];
 		visibleCount?: number;
 	};
 

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { MapPoint } from '$lib/icons/Linear';
-	import type { ActivityOptionPickupLocation } from '$lib/types';
+	import type { ActivityMeetingPoint } from '$lib/types';
 
 	type Props = {
-		data: ActivityOptionPickupLocation;
+		data: ActivityMeetingPoint;
 	};
 
 	let { data }: Props = $props();
@@ -31,8 +31,5 @@
 				</a>
 			{/if}
 		</div>
-		{#if data.timeOfDay}
-			<span class="p-sm text-neutral-700">{data.timeOfDay}</span>
-		{/if}
 	</div>
 </div>
