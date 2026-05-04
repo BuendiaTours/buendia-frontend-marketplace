@@ -6,7 +6,9 @@ import type {
 	ActivityKind,
 	ActivityGuideKind,
 	ActivityTransportKind,
-	ActivityTransportLocation
+	ActivityTransportLocation,
+	ActivityIncluded,
+	ActivityExcluded
 } from '$core/activities/enums';
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
@@ -49,11 +51,6 @@ export type Faqs = {
 	question: string;
 	answer: string;
 	status: string;
-};
-
-export type ActivityIncludedItem = {
-	id: string;
-	description: string;
 };
 
 export type ActivityMeal = {
@@ -106,13 +103,13 @@ export type ActivityListItem = {
 	descriptionShort: string;
 	destinations: Array<{ id: string; name: string }>;
 	distributives: Array<{ id: string; name: string }>;
-	excluded: ActivityIncludedItem[];
+	excluded: ActivityExcluded[];
 	faqs: Faqs[];
 	faqsTitle?: string;
 	byBuendiaBanner: ByBuendiaBanner | null;
 	highlights: Array<{ id: string; icon: string; text: string; itsLevel?: boolean }>;
 	guideKind: ActivityGuideKind;
-	included: ActivityIncludedItem[];
+	included: ActivityIncluded[];
 	infoImportant: string | null;
 	itemsToBring: string[];
 	kind: ActivityKind;

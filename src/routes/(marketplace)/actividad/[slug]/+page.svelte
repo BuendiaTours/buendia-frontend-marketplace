@@ -436,23 +436,23 @@
 					]}
 					wrapperClass="mt-4"
 				/>
-				<Spacer />
 			{/if}
 
 			{#if (activity.included && activity.included.length > 0) || (activity.excluded && activity.excluded.length > 0)}
+				<Spacer />
 				<!-- pdp-included-excluded -->
 				<h2 class="h2 mt-4 mb-4 lg:mt-6">Qué incluye esta excursión</h2>
 				<ul class="pdp-list pdp-included-excluded space-y-1">
 					{#each activity.included ?? [] as item, i (i)}
 						<li class="flex items-start gap-2">
 							<CustomMiniTick class="mt-0.5 size-5 shrink-0 text-green-600" />
-							<span>{item.description}</span>
+							<span>{msgs[`enum_activityIncluded_${item}`]?.() ?? item}</span>
 						</li>
 					{/each}
 					{#each activity.excluded ?? [] as item, i (i)}
 						<li class="flex items-start gap-2">
 							<CustomMiniCancel class="mt-0.5 size-5 shrink-0 text-red-500" />
-							<span>{item.description}</span>
+							<span>{msgs[`enum_activityExcluded_${item}`]?.() ?? item}</span>
 						</li>
 					{/each}
 				</ul>
@@ -467,10 +467,10 @@
 						<li>{item.description}</li>
 					{/each}
 				</ul>
-				<Spacer />
 			{/if}
 
 			{#if activity.petsAllowed}
+				<Spacer />
 				<!-- Pets Allowed -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">Mascotas</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
