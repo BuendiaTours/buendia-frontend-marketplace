@@ -18,8 +18,6 @@
 	import { formatDuration } from '$lib/utils/duration';
 	import { formatGuideHighlight, formatAudioHighlight } from '$lib/utils/languages';
 
-	const msgs = m as unknown as Record<string, () => string>;
-
 	// Components
 	import AccordionOnMobile from '$lib/components/AccordionOnMobile.svelte';
 	import ByBuendiaHighlights from '$lib/components/ByBuendiaHighlights.svelte';
@@ -52,18 +50,18 @@
 	import { Checkout } from '$lib/components/Checkout';
 	import { createCheckout } from '$lib/stores/checkout.svelte';
 
+	// Translations
+	const msgs = m as unknown as Record<string, () => string>;
+
+	// ── Data ─────────────────────────────────────────────────────────────────
 	let { data }: { data: PageData } = $props();
 	const activity = $derived(data.activity);
-
-	// Estado cliente para reviews (sort + show more)
-	let reviews = $state(data.reviews);
-	let reviewsTotal = $state(data.reviewsTotal);
-	let sortValue = $state<'recommended' | 'best' | 'recent' | 'worst'>('recommended');
-	let isLoadingReviews = $state(false);
-	let activeStars = $state<number[]>([]);
-
-	const hasMoreReviews = $derived(reviews.length < reviewsTotal);
 	const activityId = $derived(data.activity.id);
+	const isOwned = $derived(data.activity.supplier?.source === 'OWNED');
+
+	// ── Checkout & opciones ───────────────────────────────────────────────────
+	const checkout = untrack(() => createCheckout(data.activity.id));
+
 	const pickupPlaces = $derived(
 		Array.from(
 			new SvelteMap(
@@ -74,8 +72,6 @@
 			).values()
 		)
 	);
-
-	const checkout = untrack(() => createCheckout(data.activity.id));
 
 	let selectedSlotId = $state<string | null>(null);
 
@@ -109,6 +105,14 @@
 			selectedSlotId = allSlots.find((s) => !checkout.isSlotDisabled(s))?.id ?? null;
 		}
 	});
+
+	// ── Reviews ───────────────────────────────────────────────────────────────
+	let reviews = $state(data.reviews);
+	let reviewsTotal = $state(data.reviewsTotal);
+	let sortValue = $state<'recommended' | 'best' | 'recent' | 'worst'>('recommended');
+	let isLoadingReviews = $state(false);
+	let activeStars = $state<number[]>([]);
+	const hasMoreReviews = $derived(reviews.length < reviewsTotal);
 
 	const SORT_PARAMS: Record<string, ActivityReviewParams> = {
 		recommended: {},
@@ -166,6 +170,7 @@
 		);
 	}
 
+	// ── Galería ───────────────────────────────────────────────────────────────
 	let hasTrackedOpinionesScroll = false;
 
 	const reviewItems = $derived<BndLightboxItem[]>(
@@ -269,40 +274,42 @@
 					]}
 					wrapperClass=""
 				/>
-				<Spacer wrapperClass="mt-8 mb-6" />
 			{/if}
 
-			<!-- pdp-by-buendia-banner -->
+			{#if isOwned}
+				<!-- pdp-by-buendia-banner -->
+				<Spacer wrapperClass="mt-8 mb-6" />
 
-			<ByBuendiaHighlights
-				data={{
-					title: 'Plan by buendía',
-					description: 'Lo organizamos nosotros, por eso te damos las mejores condiciones',
-					items: [
-						{
-							icon: 'CalendarCheck',
-							title: 'Cancelación gratuita',
-							description: 'Cancela sin coste hasta el incio de la actividad'
-						},
-						{
-							icon: 'MoneyBack',
-							title: 'Garantía de reembolso',
-							description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
-						},
-						{
-							icon: 'ChatRoundLine',
-							title: 'Soporte humano antes, durante y después',
-							description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+				<ByBuendiaHighlights
+					data={{
+						title: 'Plan by buendía',
+						description: 'Lo organizamos nosotros, por eso te damos las mejores condiciones',
+						items: [
+							{
+								icon: 'CalendarCheck',
+								title: 'Cancelación gratuita',
+								description: 'Cancela sin coste hasta el incio de la actividad'
+							},
+							{
+								icon: 'MoneyBack',
+								title: 'Garantía de reembolso',
+								description: 'Si no te gusta, te devolvemos el dinero. Sin explicaciones'
+							},
+							{
+								icon: 'ChatRoundLine',
+								title: 'Soporte humano antes, durante y después',
+								description: 'Chat y teléfono para ayudarte en cualquier momento del proceso'
+							}
+						],
+						link: {
+							text: 'Saber más',
+							src: 'https://google.es'
 						}
-					],
-					link: {
-						text: 'Saber más',
-						src: 'https://google.es'
-					}
-				}}
-				wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
-				onlinkclick={() => trackClick('pdp_click', 'saber mas', 'plan bybuendia')}
-			/>
+					}}
+					wrapperClass="mt-6 mb-6 sm:bg-[url(/marketplace/BrandMark.svg)]"
+					onlinkclick={() => trackClick('pdp_click', 'saber mas', 'plan bybuendia')}
+				/>
+			{/if}
 
 			{#if activity.reviewsFeatured && activity.reviewsFeatured.length > 0}
 				<Spacer wrapperClass="mt-8 mb-6" />
@@ -598,7 +605,7 @@
 				<Checkout
 					activityOptions={data.activityOptions}
 					minPrice={data.activity.minPrice}
-					isOwned={data.activity.supplier?.source === 'OWNED'}
+					{isOwned}
 				/>
 
 				<HubspotChat wrapperClass="mt-4" />
