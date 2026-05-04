@@ -59,6 +59,20 @@
 	const activityId = $derived(data.activity.id);
 	const isOwned = $derived(data.activity.supplier?.source === 'OWNED');
 
+	const conditionsItems = $derived([
+		{
+			icon: 'CalendarCheck',
+			title: 'Cancelación gratuita hasta el inicio de la actividad',
+			description:
+				'Puedes cancelar en cualquier momento antes del inicio de la actividad. Si llegas tarde o no te presentas, no se obtiene ningún reembolso.'
+		},
+		{
+			icon: 'MoneyBack',
+			title: 'Garantía de reembolso',
+			description: 'Si no quedas satisfecho, te devolvemos tu dinero.'
+		}
+	]);
+
 	// ── Checkout & opciones ───────────────────────────────────────────────────
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
@@ -344,19 +358,18 @@
 				<PdpCollectionPointsGroup items={[activity.meetingPoint]} />
 			{/if}
 
-			<Spacer />
+			{#if activity.stages && activity.stages.length > 0}
+				<Spacer />
+				<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
+				<MapView
+					wrapperClass="mt-8"
+					onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
+				/>
+			{/if}
 
-			<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
-
-			<MapView
-				wrapperClass="mt-8"
-				onclick={() => trackClick('pdp_click', 'ver mapa', 'itinerario')}
-			/>
-
-			<Spacer />
-
-			<!-- conditions -->
 			{#if activity.willDoing && activity.willDoing.length > 0}
+				<Spacer />
+				<!-- willDoing -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">Qué harás</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
 					{#each activity.willDoing as item, i (i)}
@@ -365,10 +378,9 @@
 				</ul>
 			{/if}
 
-			<Spacer />
-
-			<!-- Description -->
 			{#if activity.descriptionFull}
+				<Spacer />
+				<!-- Description -->
 				<AccordionOnMobile open={true} contentClass="mt-6">
 					{#snippet summary()}
 						<h2 class="h2">Descripción de la excursión</h2>
@@ -376,17 +388,13 @@
 					<p use:clampText={{ lines: 3, mode: 'text' }}>{activity.descriptionFull}</p>
 					<!-- <SvelteMarkdown source={activity.descriptionFull} /> -->
 				</AccordionOnMobile>
-				<Spacer wrapperClass="mt-6 mb-8" />
 			{/if}
 
-			<!-- conditions -->
-			{#if activity.conditions && activity.conditions.length > 0}
+			{#if conditionsItems && conditionsItems.length > 0}
+				<Spacer wrapperClass="mt-6 mb-8" />
+				<!-- conditions -->
 				<p class="h2 pb-4">Condiciones</p>
-				<div class="pdp-conditions flex flex-col gap-4">
-					{#each activity.conditions as condition (condition.id)}
-						<Callout style={condition.style} items={condition.items} />
-					{/each}
-				</div>
+				<Callout style="success-high" items={conditionsItems} />
 			{/if}
 
 			<!-- conditions -->
