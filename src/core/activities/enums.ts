@@ -33,11 +33,12 @@ export enum ActivityGuideKind {
 
 /** Audience segments the activity is not suitable for. */
 export enum ActivityNotSuitableFor {
-	ADULTS = 'ADULTS',
 	CHILDREN = 'CHILDREN',
-	FAMILIES = 'FAMILIES',
 	GROUPS = 'GROUPS',
-	INDIVIDUALS = 'INDIVIDUALS'
+	MINIMUM_AGE_18 = 'MINIMUM_AGE_18',
+	PETS = 'PETS',
+	WHEELCHAIR = 'WHEELCHAIR',
+	BABY_STROLLERS = 'BABY_STROLLERS'
 }
 
 /** Known restrictions that apply during the activity. */

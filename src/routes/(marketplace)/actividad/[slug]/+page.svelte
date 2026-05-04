@@ -464,7 +464,7 @@
 				<p class="h2 mt-4 mb-2 lg:mt-6">No apto para</p>
 				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
 					{#each activity.notSuitableFor as item, i (i)}
-						<li>{item.description}</li>
+						<li>{msgs[`enum_activityNotSuitableFor_${item}`]?.() ?? item}</li>
 					{/each}
 				</ul>
 			{/if}
@@ -495,18 +495,19 @@
 				faqs={activity.faqs}
 			/>
 
-			<Spacer />
+			{#if activity.supplierTip}
+				<Spacer />
 
-			<!-- pdp-single-conditions -->
-			<PdpSingleConditions
-				data={{
-					icon: 'HandHeart',
-					title: 'Consejo by buendía',
-					description:
-						'Si quieres disfrutar al máximo de tu tiempo libre, en Brujas aprovecha para recorrer el Muelle del Rosario y el Beguinaje, dos lugares menos transitados, pero de una belleza única. Y si visitas en invierno, lleva ropa de abrigo.'
-				}}
-				wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
-			/>
+				<!-- pdp-single-conditions -->
+				<PdpSingleConditions
+					data={{
+						icon: 'HandHeart',
+						title: 'Consejo by buendía',
+						description: activity.supplierTip
+					}}
+					wrapperClass="mt-4 mb-4 lg:mt-8 lg:mb-8"
+				/>
+			{/if}
 
 			<Spacer />
 

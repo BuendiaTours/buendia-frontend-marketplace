@@ -160,6 +160,7 @@ export type ActivityListItem = {
 	supplier?: { source: string };
 	bookingCutOff?: number;
 	meetingPoint?: ActivityMeetingPoint;
+	supplierTip?: string | null;
 };
 
 type ActivityReviewFeatured = {
