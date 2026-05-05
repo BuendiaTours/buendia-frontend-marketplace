@@ -28,7 +28,8 @@ export enum ActivityGuideKind {
 	CUSTOM_LANGUAGE = 'CUSTOM_LANGUAGE',
 	DRIVER = 'DRIVER',
 	GUEST = 'GUEST',
-	INSTRUCTOR = 'INSTRUCTOR'
+	INSTRUCTOR = 'INSTRUCTOR',
+	NORMAL_GUIDE = 'NORMAL_GUIDE'
 }
 
 /** Audience segments the activity is not suitable for. */

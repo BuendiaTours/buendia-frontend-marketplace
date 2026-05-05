@@ -13,6 +13,7 @@ import type {
 	StageRelevance,
 	StageRequirement
 } from '$core/activities/enums';
+export { ActivityNotSuitableFor } from '$core/activities/enums';
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
 

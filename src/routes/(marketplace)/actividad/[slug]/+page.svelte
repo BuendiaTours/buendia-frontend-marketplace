@@ -5,6 +5,7 @@
 
 	// Types
 	import type { ActivityReviewParams, ActivityOption, AvailabilitySlot } from '$lib/types';
+	import { ActivityNotSuitableFor } from '$lib/types';
 	import type { BndLightboxItem } from '$lib/types';
 
 	// Reactivity
@@ -284,10 +285,6 @@
 									}
 								]
 							: []),
-						{
-							icon: 'BillCheck',
-							text: 'No se requiere pago de entradas o gastos adicionales'
-						},
 						...(activity.difficult && msgs[`enum_activityDifficult_${activity.difficult}`]
 							? [
 									{
@@ -297,6 +294,30 @@
 											name: msgs[`enum_activityDifficult_${activity.difficult}`]()
 										}),
 										itsLevel: true
+									}
+								]
+							: []),
+						...(!activity.notSuitableFor?.includes(ActivityNotSuitableFor.WHEELCHAIR)
+							? [
+									{
+										icon: 'Like',
+										text: 'Accesible para personas con movilidad reducida'
+									}
+								]
+							: []),
+						...(!activity.notSuitableFor?.includes(ActivityNotSuitableFor.BABY_STROLLERS)
+							? [
+									{
+										icon: 'Like',
+										text: 'Accesible para carritos y sillas de bebe '
+									}
+								]
+							: []),
+						...(activity.kind === 'FREE_TOUR'
+							? [
+									{
+										icon: 'HandMoney',
+										text: 'Paga lo que creas justo al finalizar el tour'
 									}
 								]
 							: [])

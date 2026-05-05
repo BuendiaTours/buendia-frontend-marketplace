@@ -169,7 +169,7 @@
 	"enum_activityDifficult_4": "alto",
 	"enum_activityDifficult_5": "extremo",
 	"enum_activityGuideKind_NORMAL_GUIDE": "Guía",
-	"enum_activityGuideKind_INSTRUCTOR": "Instructor",
+	"enum_activityGuideKind_INSTRUCTOR": "Instructor/Experto",
 	"enum_language_AR": "árabe",
 	"enum_language_CA": "catalán",
 	"enum_language_DE": "alemán",
