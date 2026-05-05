@@ -673,11 +673,13 @@
 	</div>
 
 	<!-- pdp-brand-banner -->
-	<PdpBrandBanner
-		title="¿Sabías qué?"
-		description="Brujas y Gante fueron dos de las ciudades más ricas de Europa durante la Edad Media gracias al comercio textil. Sus centros históricos han conservado casi intacto el trazado urbano medieval, lo que les ha valido el reconocimiento como Patrimonio de la Humanidad por la UNESCO."
-		image="https://dummyimage.com/666x666/ffffff/000000.jpg"
-		imageAlt="Imagén de prueba"
-		wrapperClass="my-16"
-	/>
+	{#if activity.contentBlocks && activity.contentBlocks.length > 0}
+		<PdpBrandBanner
+			title={activity.contentBlocks[0].title}
+			description={activity.contentBlocks[0].description}
+			image="https://dummyimage.com/666x666/ffffff/000000.jpg"
+			imageAlt={activity.contentBlocks[0].title}
+			wrapperClass="my-16"
+		/>
+	{/if}
 </div>

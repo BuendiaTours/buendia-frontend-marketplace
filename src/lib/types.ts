@@ -71,6 +71,14 @@ export type ContentBlockStack = {
 	description: string;
 };
 
+export type ContentBlock = {
+	id: string;
+	title: string;
+	description: string;
+	kind: string;
+	target: string;
+};
+
 export type RelatedPlansItem = {
 	id: string;
 	image: string;
@@ -166,6 +174,7 @@ export type ActivityListItem = {
 	bookingCutOff?: number;
 	meetingPoint?: ActivityMeetingPoint;
 	supplierTip?: string | null;
+	contentBlocks?: ContentBlock[];
 };
 
 type ActivityReviewFeatured = {
