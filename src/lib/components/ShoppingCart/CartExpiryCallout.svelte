@@ -10,19 +10,21 @@
 	let tick = $state(0);
 
 	$effect(() => {
-		const interval = setInterval(() => tick++, 60_000);
+		const interval = setInterval(() => tick++, 1_000);
 		return () => clearInterval(interval);
 	});
 
-	const cartRemainingMinutes = $derived.by(() => {
+	const cartRemainingTime = $derived.by(() => {
 		void tick;
 		if (!shoppingCartStore.orderId || typeof window === 'undefined') return null;
 		const createdAt = localStorage.getItem('cart_created_at');
 		if (!createdAt) return null;
-		const remaining = Math.ceil(
-			(CART_EXPIRY_MS - (Date.now() - new Date(createdAt).getTime())) / 60000
-		);
-		return remaining > 0 ? remaining : null;
+		const remainingMs = CART_EXPIRY_MS - (Date.now() - new Date(createdAt).getTime());
+		if (remainingMs <= 0) return null;
+		const totalSeconds = Math.ceil(remainingMs / 1000);
+		const minutes = Math.floor(totalSeconds / 60);
+		const seconds = totalSeconds % 60;
+		return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 	});
 
 	$effect(() => {
@@ -36,15 +38,14 @@
 	});
 </script>
 
-{#if cartRemainingMinutes}
+{#if cartRemainingTime}
 	<Callout
 		style="warning-high"
 		size="small"
 		items={[
 			{
-				id: 'cart-expiry',
 				icon: 'History2',
-				title: `Plazas reservadas durante <span class="font-bold">${cartRemainingMinutes}</span> minuto${cartRemainingMinutes !== 1 ? 's' : ''}`,
+				title: `Plazas reservadas durante <span class="font-bold">${cartRemainingTime}</span> minutos`,
 				description: ''
 			}
 		]}

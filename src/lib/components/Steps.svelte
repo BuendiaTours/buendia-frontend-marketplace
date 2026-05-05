@@ -14,6 +14,8 @@
 	};
 
 	let { items, wrapperClass }: Props = $props();
+
+	const lastActiveIndex = $derived(items.reduce((acc, item, i) => (item.active ? i : acc), -1));
 </script>
 
 <div class="flex flex-wrap gap-4 {wrapperClass}">
@@ -22,6 +24,7 @@
 			step={i + 1}
 			text={item.text}
 			active={item.active}
+			done={item.active && i < lastActiveIndex}
 			slug={item.url}
 			disabled={item.disabled}
 		/>

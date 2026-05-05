@@ -33,13 +33,13 @@
 	style="background-image: url(marketplace/home_header.png)"
 >
 	<div>
-		<h2 class="h1-editorial mb-3 text-white lg:text-center">Tu viaje merece un buendía</h2>
-		<h1 class="h2 text-white lg:text-center">
+		<h2 class="h1-editorial mb-3 text-white sm:text-center">Tu viaje merece un buendía</h2>
+		<h1 class="h2 text-white sm:text-center">
 			Experiencias seleccionadas en español por todo el mundo
 		</h1>
 		<SearchBar bind:ref={searchRef} wrapperClass="max-w-[596px] mx-auto my-7 lg:my-8" />
 		{#if trustpilot}
-			<div class="flex lg:justify-center">
+			<div class="flex sm:justify-center">
 				<TrustpilotRating score={trustpilot.score} stars={trustpilot.stars} full={true} />
 			</div>
 		{/if}
