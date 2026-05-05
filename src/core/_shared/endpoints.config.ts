@@ -342,7 +342,14 @@ export const API_ENDPOINTS = {
 			method: 'GET',
 			description: 'Obtiene detalles de un distributivo específico',
 			params: ['id']
-		} satisfies EndpointWithParam
+		} satisfies EndpointWithParam,
+		/** @description Full-text search over distributives in Elasticsearch. */
+		search: {
+			path: () => `${BASE_PATHS.distributives}/search`,
+			method: 'GET',
+			description: 'Busca distributivos por texto libre en Elasticsearch',
+			params: ['query', 'skip', 'limit']
+		} satisfies Endpoint
 	},
 
 	// ──────────────────────────────────────────────
