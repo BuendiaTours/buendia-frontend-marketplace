@@ -11,6 +11,7 @@ export type DistributiveSearchItem = {
 	thumbnailUrl: string | null;
 	cardImageUrl: string | null;
 	locations: Array<{ id: string; name: string; role: string }>;
+	activitiesTotal: number;
 };
 
 /** Wrapper returned by GET /distributives/search for each hit. */
