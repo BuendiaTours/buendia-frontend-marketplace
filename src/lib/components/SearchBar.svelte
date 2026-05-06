@@ -176,7 +176,10 @@
 						{/if}
 						<div class="flex flex-col gap-1">
 							<p class="h3-editorial text-neutral-800">{item.name}</p>
-							<p class="p-base text-neutral-600">32 actividades</p>
+							<p class="p-base text-neutral-600">
+								{item.activitiesTotal}
+								{item.activitiesTotal === 1 ? 'actividad' : 'actividades'}
+							</p>
 						</div>
 					</a>
 				</li>
