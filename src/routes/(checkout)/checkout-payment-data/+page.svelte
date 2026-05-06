@@ -77,8 +77,8 @@
 </script>
 
 <div class="wrapper">
-	<div class="page-grid gap-x-12">
-		<div class="col-content">
+	<div class="page-grid mb-12 gap-x-12">
+		<div class="col-content order-1 lg:order-0">
 			{#if shoppingCartStore.order?.bookings?.length}
 				<CartExpiryCallout />
 
@@ -131,7 +131,7 @@
 			{/if}
 		</div>
 
-		<div class="col-sidebar">
+		<div class="col-sidebar order-0 lg:order-1">
 			<CheckoutSidebarResume />
 		</div>
 	</div>
