@@ -1,7 +1,6 @@
 // src/lib/types.ts
 import type { Component, Snippet } from 'svelte';
 import type {
-	ActivityNotSuitableFor,
 	ActivityRestriction,
 	ActivityStatus,
 	ActivityKind,
@@ -13,7 +12,8 @@ import type {
 	StageRelevance,
 	StageRequirement
 } from '$core/activities/enums';
-export { ActivityNotSuitableFor } from '$core/activities/enums';
+import { ActivityNotSuitableFor } from '$core/activities/enums';
+export { ActivityNotSuitableFor };
 import type { DestinationKind } from '$core/destinations/enums';
 import type { AttractionStatus } from '$core/attractions/enums';
 
