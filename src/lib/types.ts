@@ -172,7 +172,7 @@ export type ActivityListItem = {
 	difficult?: number;
 	languages?: string[];
 	supplier?: { source: string };
-	bookingCutOff?: number;
+	bookingCutOff?: number | null;
 	meetingPoint?: ActivityMeetingPoint;
 	supplierTip?: string | null;
 	contentBlocks?: ContentBlock[];

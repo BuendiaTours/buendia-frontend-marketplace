@@ -523,11 +523,13 @@
 				<Spacer />
 			{/if}
 
-			<!-- faqs -->
-			<FaqsCollapsable
-				title={`Preguntas frecuentes sobre esta excursión desde ${activity.destinations?.[0]?.name || '<DESTINO?>'}`}
-				faqs={activity.faqs}
-			/>
+			{#if activity.faqs && activity.faqs.length > 0}
+				<!-- faqs -->
+				<FaqsCollapsable
+					title={`Preguntas frecuentes sobre esta excursión desde ${activity.destinations?.[0]?.name || '<DESTINO?>'}`}
+					faqs={activity.faqs}
+				/>
+			{/if}
 
 			{#if activity.supplierTip}
 				<Spacer />
@@ -543,9 +545,8 @@
 				/>
 			{/if}
 
-			<Spacer />
-
 			{#if reviewItems?.length > 0}
+				<Spacer />
 				<div class="pdp-review-gallery mb-8">
 					<h2 class="h2">Opiniones de {activity.title}</h2>
 
