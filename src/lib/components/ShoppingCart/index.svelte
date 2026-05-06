@@ -8,6 +8,8 @@
 	import type { PassengerLineItem } from '$lib/types';
 
 	// Utils
+	import { format } from 'date-fns';
+	import { es } from 'date-fns/locale';
 	import { formatEuro } from '$lib/utils/currency';
 	import { formatSlotTime, bookingToISODateTime } from '$lib/utils/datetime';
 
@@ -46,11 +48,11 @@
 		class="z-50 max-h-[80vh] w-[480px] overflow-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
 	>
 		{#if shoppingCartStore.order?.bookings?.length}
-			<CartExpiryCallout wrapperClass="mb-4" />
-			<p class="p-xs mb-2 font-bold text-gray-700">
+			<CartExpiryCallout wrapperClass="mb-2" />
+			<p class="p-base mb-2 font-bold text-gray-700">
 				Tienes ({shoppingCartStore.bookingCount}) planes en tu carrito
 			</p>
-			<ul class="p-xs mb-4 flex flex-col gap-2">
+			<ul class="mb-4 flex flex-col divide-y divide-gray-200">
 				{#each shoppingCartStore.order.bookings as booking (booking.id)}
 					{@const passengerItems = Object.values(
 						(booking.passengers ?? []).reduce(
@@ -64,9 +66,9 @@
 							{} as Record<string, PassengerLineItem>
 						)
 					)}
-					<li class="relative rounded border border-gray-200 p-2">
+					<li class="relative py-2">
 						{#if booking.activityTitle || booking.optionTitle}
-							<p class="p-sm font-semibold text-gray-800">
+							<p class="h3 pr-8">
 								{#if booking.activityTitle}
 									{@const slug = booking.activityId
 										? shoppingCartStore.activitySlugs.get(booking.activityId)
@@ -79,25 +81,29 @@
 								{/if}{booking.optionTitle ?? ''}
 							</p>
 						{/if}
-						<p class="p-xs">booking_id:{booking.id}</p>
-						<p class="p-xs">option_id: <span class="p-xs font-mono">{booking.optionId}</span></p>
+						<p class="p-xs !hidden">booking_id:{booking.id}</p>
+						<p class="p-xs !hidden">
+							option_id: <span class="p-xs font-mono">{booking.optionId}</span>
+						</p>
 						{#if booking.date}
 							<p class="p-sm">
-								Fecha: {booking.date}
-								{#if booking.startTime}{formatSlotTime(
+								Fecha: {format(new Date(booking.date + 'T12:00:00'), "d 'de' MMMM 'de' yyyy", {
+									locale: es
+								})}
+								<!-- {#if booking.startTime}{formatSlotTime(
 										bookingToISODateTime(booking.date, booking.startTime)
-									)}{/if}
+									)}{/if} -->
 							</p>
 						{/if}
-						<p class="p-sm">Estado: {booking.status}</p>
-						<PassengerBreakdown items={passengerItems} itemClass="p-sm" />
+						<p class="p-sm !hidden">Estado: {booking.status}</p>
+						<!-- <PassengerBreakdown items={passengerItems} itemClass="p-sm" /> -->
 						{#if booking.subtotalPrice != null}
-							<p class="p-sm font-semibold">{formatEuro(booking.subtotalPrice)}</p>
+							<p class="h3 text-salmon-strong !font-black">{formatEuro(booking.subtotalPrice)}</p>
 						{/if}
 
 						<button
 							type="button"
-							class="e-button e-button-danger e-button-square e-button-xs absolute top-1 right-1"
+							class="e-button e-button-danger e-button-square e-button-xxs absolute top-2.5 right-0"
 							disabled={shoppingCartStore.isLoading}
 							onclick={async () => {
 								const ok = await showConfirmDialog({

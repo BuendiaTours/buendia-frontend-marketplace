@@ -128,6 +128,10 @@
 			width: 2rem; /* 48 */
 			height: 2rem;
 		}
+		&.e-button-xxs {
+			width: 1.5rem; /* 48 */
+			height: 1.5rem;
+		}
 	}
 
 	&.e-button-circle {
