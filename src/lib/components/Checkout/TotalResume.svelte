@@ -25,7 +25,7 @@
 	class="co-total-resume
   flex flex-col
   {variant === 'DEFAULT'
-		? 'gap-4 rounded-xl border border-solid border-neutral-300 px-6 pt-4 pb-6'
+		? 'gap-2 pt-4 pb-6 sm:pb-7 lg:gap-4 lg:rounded-xl lg:border lg:border-solid lg:border-neutral-300 lg:px-6 lg:pb-6'
 		: ''}
   {wrapperClass}
 "
@@ -49,7 +49,7 @@
 		Todas las tasas e impuestos incluidos
 	</div>
 	<div
-		class="flex flex-col gap-6 {variant === 'IN_A_ROW'
+		class="flex flex-col gap-5 lg:gap-6 {variant === 'IN_A_ROW'
 			? 'gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6'
 			: ''}"
 	>

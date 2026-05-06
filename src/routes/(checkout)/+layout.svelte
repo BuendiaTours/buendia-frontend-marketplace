@@ -9,7 +9,11 @@
 	import { browser } from '$app/environment';
 	import { PUBLIC_GTM_ID } from '$env/static/public';
 
-	let { children } = $props();
+	import type { LayoutData } from './$types';
+	import type { Snippet } from 'svelte';
+
+	type Props = { children: Snippet; data: LayoutData };
+	let { children, data }: Props = $props();
 
 	$effect(() => {
 		if (!browser || !PUBLIC_GTM_ID) return;
@@ -39,13 +43,13 @@
 {/if}
 
 <div class="flex min-h-screen flex-col">
-	<Header title="Checkout section" wrapperClass="my-6" />
+	<Header wrapperClass="py-6" />
 
 	<main class="layout-content-area flex-1">
 		<!-- MsgAlertBox /-->
 		{@render children()}
 	</main>
 
-	<Footer />
+	<Footer trustpilot={data.trustpilot} />
 	<MeltAlertDialog />
 </div>

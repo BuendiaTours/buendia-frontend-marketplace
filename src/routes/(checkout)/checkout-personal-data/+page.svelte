@@ -192,7 +192,7 @@
 
 <div class="wrapper">
 	<div class="page-grid gap-x-12">
-		<div class="col-content">
+		<div class="col-content order-1 lg:order-0">
 			{#if shoppingCartStore.order?.bookings?.length}
 				<CartExpiryCallout />
 
@@ -219,7 +219,7 @@
 						handleSubmit();
 					}}
 				>
-					<div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-6 lg:gap-6">
 						<div class="flex flex-col">
 							<label class="p-base" for="contactFirstName"
 								>Nombre <span class="text-salmon-strong font-bold">*</span></label
@@ -307,8 +307,8 @@
 					{/if}
 
 					{#if shoppingCartStore.order?.bookings?.length}
-						<h2 class="h2 mt-6">Datos de la actividad</h2>
-						<p class="p-lg mt-2">El proveedor requiere estos datos adicionales</p>
+						<h2 class="h2 mt-5 lg:mt-6">Datos de la actividad</h2>
+						<p class="p-lg mt-2 text-neutral-700">El proveedor requiere estos datos adicionales</p>
 
 						{#each shoppingCartStore.order.bookings as booking (booking.id)}
 							{@const questions = questionsByOption.get(booking.optionId) ?? []}
@@ -316,13 +316,26 @@
 							{@const passengerLevelQs = questions.filter((q) => q.target === 'PASSENGER')}
 
 							{#if bookingLevelQs.length || passengerLevelQs.length}
-								<div class="mt-6 flex flex-col gap-4 rounded-xl border border-neutral-200 p-6">
+								<div
+									class="mt-5 flex flex-col gap-4 rounded-xl border border-neutral-200 p-4 lg:mt-6 lg:p-6"
+								>
 									{#if booking.activityTitle || booking.optionTitle}
-										<p class="h3">
-											{booking.activityTitle ?? ''}{booking.optionTitle
-												? ` · ${booking.optionTitle}`
-												: ''}
-										</p>
+										<div class="flex gap-3">
+											<div class="h-18 w-18 shrink-0 basis-18 overflow-hidden rounded-lg">
+												<img
+													class="h-full w-full object-cover object-center"
+													src="https://dummyimage.com/72x72/000/fff.jpg"
+													alt="{booking.activityTitle ?? ''}{booking.optionTitle
+														? ` · ${booking.optionTitle}`
+														: ''}"
+												/>
+											</div>
+											<p class="h3">
+												{booking.activityTitle ?? ''}{booking.optionTitle
+													? ` · ${booking.optionTitle}`
+													: ''}
+											</p>
+										</div>
 									{/if}
 
 									{#if bookingLevelQs.length}
@@ -390,7 +403,7 @@
 					>
 						{#snippet actions()}
 							<button
-								class="e-button e-button-secondary w-full transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+								class="e-button w-full transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
 								type="submit"
 								disabled={!isValid || isSubmitting}
 							>
@@ -406,7 +419,7 @@
 			{/if}
 		</div>
 
-		<div class="col-sidebar">
+		<div class="col-sidebar order-0 lg:order-1">
 			<CheckoutSidebarResume />
 		</div>
 	</div>

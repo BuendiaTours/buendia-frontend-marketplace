@@ -62,11 +62,17 @@
 		column-gap: 1rem;
 
 		@media (width >= theme(--breakpoint-md)) {
-			grid-template-columns: repeat(8, 1fr);
+			&:not(.checkout) {
+				grid-template-columns: repeat(8, 1fr);
+			}
 		}
 
 		@media (width >= theme(--breakpoint-lg)) {
 			grid-template-columns: repeat(12, 1fr);
+
+			&:not(.checkout) {
+				grid-template-columns: repeat(12, 1fr);
+			}
 		}
 	}
 

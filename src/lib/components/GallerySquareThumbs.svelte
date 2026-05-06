@@ -69,11 +69,13 @@
 					if (galleryLocation) trackOpenGallery(galleryLocation);
 				}}
 			>
-				<img
-					src={item.src.replace('w=1200', 'w=200')}
-					alt={item.alt ?? ''}
-					class="h-full w-full object-cover"
-				/>
+				{#if item.src}
+					<img
+						src={item.src.replace('w=1200', 'w=200')}
+						alt={item.alt ?? ''}
+						class="h-full w-full object-cover"
+					/>
+				{/if}
 				{#if showCount && i === visibleItems.length - 1}
 					<GalleryCount count="+{items.length}" />
 				{/if}

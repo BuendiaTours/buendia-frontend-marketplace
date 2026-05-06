@@ -41,10 +41,13 @@
 </script>
 
 <div class="wrapper">
-	<div class="page-grid gap-x-12">
+	<div class="page-grid checkout gap-x-12">
 		<div class="col-content">
 			{#if activeBookings.length}
-				<p class="h1">Tienes {activeBookings.length} planes en tu carrito</p>
+				<p class="h1">
+					Tienes {activeBookings.length}
+					{activeBookings.length === 1 ? 'plan' : 'planes'} en tu carrito
+				</p>
 			{:else}
 				<p class="h1">Tu carrito está vacío</p>
 			{/if}
@@ -65,7 +68,7 @@
 							{} as Record<string, PassengerLineItem>
 						)
 					)}
-					<p class="h2 mt-6 mb-6">{formatActivityDate(booking.activityDatetime)}</p>
+					<p class="h2 mt-6 mb-5 lg:mb-6">{formatActivityDate(booking.activityDatetime)}</p>
 
 					<CheckoutCard
 						variant="IS_BUENDIA"
@@ -213,7 +216,7 @@
 				{/each}
 			{/if}
 
-			<details class="mt-12">
+			<!-- <details class="mt-12">
 				<summary>shoppingCart debug</summary>
 				<pre>{JSON.stringify(
 						{
@@ -228,14 +231,14 @@
 						null,
 						2
 					)}</pre>
-			</details>
+			</details> -->
 		</div>
 
-		<div class="col-sidebar pt-6">
+		<div class="col-sidebar lg:pt-6">
 			<TotalResume
 				bookingCount={activeBookingCount}
 				totalAmount={activeTotalAmount}
-				wrapperClass="mt-6 mb-6"
+				wrapperClass="lg:mt-6 mb-12 sm:mb-16 lg:mb-6"
 			>
 				{#snippet actions()}
 					<button
