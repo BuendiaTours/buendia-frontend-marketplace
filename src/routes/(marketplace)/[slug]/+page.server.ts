@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { destinationsEndpoints } from '$lib/api/endpoints/destinations';
 import { categoriesEndpoints } from '$lib/api/endpoints/categories';
-import { reviewsEndpoints } from '$lib/api/endpoints/reviews';
 import { activityKindsEndpoints } from '$lib/api/endpoints/activityKinds';
 import { handleApiError } from '$core/_shared/errors';
 import { parseFilters } from '$lib/utils/filters';
@@ -10,12 +9,11 @@ import { destinationActivitiesFiltersSchema } from './schemas/filters.schema';
 export const load: PageServerLoad = async ({ params, url, fetch }) => {
 	const { slug } = params;
 	const filters = parseFilters(destinationActivitiesFiltersSchema, url.searchParams);
-	const reviewsPage = Number(url.searchParams.get('reviewsPage')) || 4;
 
 	try {
 		const destination = await destinationsEndpoints.getBySlug(fetch, slug);
 
-		const [activitiesResult, categoriesResult, reviewsResult, activityKinds] = await Promise.all([
+		const [activitiesResult, categoriesResult, activityKinds] = await Promise.all([
 			destinationsEndpoints.getActivitiesById(fetch, destination.id, {
 				page: filters.page,
 				pageSize: filters.pageSize,
@@ -31,7 +29,6 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 				smallGroup: filters.smallGroup
 			}),
 			categoriesEndpoints.getAll(fetch),
-			reviewsEndpoints.getByDestinationSlug(fetch, slug, reviewsPage),
 			activityKindsEndpoints.getAll(fetch)
 		]);
 
@@ -40,7 +37,6 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
 			destinationActivities: activitiesResult.data,
 			pagination: activitiesResult.pagination,
 			categories: categoriesResult,
-			reviews: reviewsResult.data,
 			activityKinds,
 			filters,
 			breadcrumbs: []

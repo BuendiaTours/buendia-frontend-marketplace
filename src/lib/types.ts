@@ -224,7 +224,7 @@ export type ActivityReview = {
 	content: string;
 	createdAt: string;
 	user: string;
-	replies: ReviewReply[];
+	replies?: ReviewReply[];
 	externalStatus?: string;
 	language?: string;
 	status?: string;
@@ -438,6 +438,7 @@ export type Destination = {
 	contentBlockStack: ContentBlockStack[];
 	relatedPlans: RelatedPlans;
 	byBuendiaBanner: ByBuendiaBanner | null;
+	featuredReviews?: ActivityReview[];
 };
 
 export type Attraction = {

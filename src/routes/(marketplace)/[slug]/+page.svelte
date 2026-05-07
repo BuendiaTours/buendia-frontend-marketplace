@@ -395,7 +395,7 @@
 	{/if}
 
 	<!-- Reviews List -->
-	{#if data.reviews && data.reviews.length > 0}
+	{#if data.destination.featuredReviews && data.destination.featuredReviews.length > 0}
 		<PlpSwiper
 			id="plp-reviews"
 			swiperOptions={{
@@ -422,7 +422,7 @@
 					</div>
 				</div>
 			{/snippet}
-			{#each data.reviews as review (review.id)}
+			{#each data.destination.featuredReviews as review (review.id)}
 				<swiper-slide>
 					<div
 						class="flex h-full flex-col justify-between rounded-xl border border-[var(--color-border-default)] p-6 pb-6"
