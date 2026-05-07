@@ -104,6 +104,18 @@
 	const checkout = untrack(() => createCheckout(data.activity.id));
 
 	let selectedSlotId = $state<string | null>(null);
+	let optionsRef = $state<{ getBoundingClientRect(): { top: number } } | undefined>(undefined);
+
+	$effect(() => {
+		if (!selectedSlotId || !optionsRef) return;
+		const el = optionsRef;
+		requestAnimationFrame(() => {
+			window.scrollTo({
+				top: el.getBoundingClientRect().top + window.scrollY - 16,
+				behavior: 'smooth'
+			});
+		});
+	});
 
 	const allOptions = $derived(
 		Object.values(
@@ -217,7 +229,7 @@
 	<PdpHeadGallery items={activity.multimedias} />
 
 	<div class="page-grid">
-		<div class="col-content">
+		<div class="col-content lg:pr-8">
 			<!-- pdp-header -->
 			<PdpHeader
 				dataBreadcrumbs={data.breadcrumbs}
@@ -226,35 +238,48 @@
 				reviewsAvg={activity.reviewsAvg}
 				wrapperClass="mt-5"
 			/>
+			<Spacer wrapperClass="mt-6 mb-2 lg:mb-8" />
+		</div>
+		<div class="col-sidebar pt-4 md:row-span-2 lg:pt-6">
+			<div class="carrito top-4 lg:sticky">
+				<Checkout
+					activityOptions={data.activityOptions}
+					minPrice={data.activity.minPrice}
+					{isOwned}
+				/>
 
-			<Spacer wrapperClass="mt-6 mb-8" />
-
+				<HubspotChat wrapperClass="hidden lg:block mt-4" />
+			</div>
+		</div>
+		<div class="col-content lg:pr-8">
 			{#if checkout.selectedDate}
-				{#if optionsWithSlots.length > 0}
-					<p class="h2">
-						{optionsWithSlots.length}
-						{optionsWithSlots.length === 1 ? 'opción disponible' : 'opciones disponibles'}
-					</p>
-					<p class="p-lg mt-2 text-neutral-700">
-						Todas las opciones incluyen las mismas condiciones by buendía.
-					</p>
-					<CheckoutActivityOption
-						options={optionsWithSlots}
-						bind:selectedSlotId
-						wrapperClass="mt-6"
-					/>
-				{/if}
-				{#if optionsWithoutSlots.length > 0}
-					<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
-					<CheckoutActivityOption
-						options={optionsWithoutSlots}
-						bind:selectedSlotId
-						wrapperClass="mt-6"
-					/>
-				{/if}
-				{#if optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0}
-					<Spacer wrapperClass="mt-6 mb-8" />
-				{/if}
+				<div bind:this={optionsRef}>
+					{#if optionsWithSlots.length > 0}
+						<p class="h2">
+							{optionsWithSlots.length}
+							{optionsWithSlots.length === 1 ? 'opción disponible' : 'opciones disponibles'}
+						</p>
+						<p class="p-lg mt-2 text-neutral-700">
+							Todas las opciones incluyen las mismas condiciones by buendía.
+						</p>
+						<CheckoutActivityOption
+							options={optionsWithSlots}
+							bind:selectedSlotId
+							wrapperClass="mt-6"
+						/>
+					{/if}
+					{#if optionsWithoutSlots.length > 0}
+						<p class="h2 mt-6">Sin disponibilidad en tus fechas</p>
+						<CheckoutActivityOption
+							options={optionsWithoutSlots}
+							bind:selectedSlotId
+							wrapperClass="mt-6"
+						/>
+					{/if}
+					{#if optionsWithSlots.length > 0 || optionsWithoutSlots.length > 0}
+						<Spacer wrapperClass="mt-6 mb-8" />
+					{/if}
+				</div>
 			{/if}
 
 			<!-- highlights -->
@@ -365,7 +390,7 @@
 				<Spacer wrapperClass="mt-8 mb-6" />
 
 				<!-- pdp-reviews-featured -->
-				<div class="pdp-reviews-featured">
+				<div class="pdp-reviews-featured -mr-4 sm:-mr-8 lg:mr-0">
 					<p class="pdp-reviews-featured__title h2 mb-4">Opiniones destacadas</p>
 					<div
 						class="pdp-reviews-featured__reviews flex snap-x snap-mandatory gap-4 overflow-x-auto sm:overflow-visible"
@@ -405,8 +430,10 @@
 				<PdpCollectionPointsGroup items={[activity.meetingPoint]} />
 			{/if}
 
+			<HubspotChat wrapperClass="lg:hidden mt-4" />
+
 			{#if activity.stages && activity.stages.length > 0}
-				<Spacer />
+				<Spacer wrapperClass="mb-2" />
 				<PdpItinerary title={activity.stagesTitle} items={activity.stages} wrapperClass="" />
 				{#if activity.stages.some((s) => s.location)}
 					<MapView
@@ -421,9 +448,12 @@
 				<Spacer />
 				<!-- willDoing -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">Qué harás</p>
-				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+				<ul class="pdp-willdoing space-y-0.5">
 					{#each activity.willDoing as item, i (i)}
-						<li>{item}</li>
+						<li class="flex gap-2">
+							<span class="m-2.5 h-1 w-1 shrink-0 grow-0 basis-1 rounded-full bg-neutral-800"
+							></span>{item}
+						</li>
 					{/each}
 				</ul>
 			{/if}
@@ -486,9 +516,12 @@
 				<Spacer />
 				<!-- Not Suitable For -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">No apto para</p>
-				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+				<ul class="pdp-willdoing space-y-0.5">
 					{#each activity.notSuitableFor as item, i (i)}
-						<li>{msgs[`enum_activityNotSuitableFor_${item}`]?.() ?? item}</li>
+						<li class="flex gap-2">
+							<span class="m-2.5 h-1 w-1 shrink-0 grow-0 basis-1 rounded-full bg-neutral-800"
+							></span>{msgs[`enum_activityNotSuitableFor_${item}`]?.() ?? item}
+						</li>
 					{/each}
 				</ul>
 			{/if}
@@ -496,9 +529,12 @@
 			{#if activity.restrictions && activity.restrictions.length > 0}
 				<Spacer />
 				<p class="h2 mt-4 mb-2 lg:mt-6">Elementos no permitidos en esta actividad</p>
-				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
+				<ul class="pdp-willdoing space-y-0.5">
 					{#each activity.restrictions as item, i (i)}
-						<li>{msgs[`enum_activityRestriction_${item}`]?.() ?? item}</li>
+						<li class="flex gap-2">
+							<span class="m-2.5 h-1 w-1 shrink-0 grow-0 basis-1 rounded-full bg-neutral-800"
+							></span>{msgs[`enum_activityRestriction_${item}`]?.() ?? item}
+						</li>
 					{/each}
 				</ul>
 			{/if}
@@ -507,16 +543,19 @@
 				<Spacer />
 				<!-- Pets Allowed -->
 				<p class="h2 mt-4 mb-2 lg:mt-6">Mascotas</p>
-				<ul class="pdp-willdoing list-inside list-disc space-y-0.5 pl-2">
-					<li>
-						<span
-							>{activity.petsAllowed.allowed === 'YES'
-								? 'Esta actividad permite mascotas.'
-								: 'Esta actividad no permite mascotas.'}
-						</span>
-						{#if activity.petsAllowed.description}
-							<p class="text-gray-600">{activity.petsAllowed.description}</p>
-						{/if}
+				<ul class="pdp-willdoing space-y-0.5">
+					<li class="flex gap-2">
+						<span class="m-2.5 h-1 w-1 shrink-0 grow-0 basis-1 rounded-full bg-neutral-800"></span>
+						<div>
+							<span
+								>{activity.petsAllowed.allowed === 'YES'
+									? 'Esta actividad permite mascotas.'
+									: 'Esta actividad no permite mascotas.'}
+							</span>
+							{#if activity.petsAllowed.description}
+								<p class="text-gray-600">{activity.petsAllowed.description}</p>
+							{/if}
+						</div>
 					</li>
 				</ul>
 
@@ -656,18 +695,6 @@
 						</button>
 					</div>
 				{/if}
-			</div>
-		</div>
-
-		<div class="col-sidebar pt-6">
-			<div class="carrito sticky top-0">
-				<Checkout
-					activityOptions={data.activityOptions}
-					minPrice={data.activity.minPrice}
-					{isOwned}
-				/>
-
-				<HubspotChat wrapperClass="mt-4" />
 			</div>
 		</div>
 	</div>

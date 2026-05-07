@@ -44,7 +44,9 @@
 	{:else if activeTicketGroups.length === 0}
 		<div class="carrito__empty p-sm p-4 text-neutral-500">Sin disponibilidad</div>
 	{:else}
-		<div class="cart rounded-xl border border-solid border-neutral-300 bg-white p-6">
+		<div
+			class="cart mb-6 border-b border-solid border-neutral-300 bg-white pb-6 lg:mb-0 lg:rounded-xl lg:border lg:p-6"
+		>
 			<div class="mb-4 flex flex-col">
 				<p class="p-base">
 					Desde <strike>99,00 €</strike> <span class="p-base text-salmon-strong">-15%</span>
