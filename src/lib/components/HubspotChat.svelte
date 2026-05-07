@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ChatRoundLine } from '$lib/icons/Linear';
+	import Spacer from './Spacer.svelte';
 	import { browser } from '$app/environment';
 	import { PUBLIC_HUBSPOT_ID } from '$env/static/public';
 
@@ -47,17 +48,22 @@
 </script>
 
 {#if chatAvailable}
-	<div class="rounded-xl border border-solid border-neutral-300 bg-white p-5 lg:p-6 {wrapperClass}">
-		<p class="p mb-2 flex items-center gap-1 font-bold text-neutral-800 lg:gap-2">
-			<ChatRoundLine class="size-6" />Hablamos contigo
-		</p>
-		<p class="p text-neutral-700 lg:pl-8">¿Dudas? Te ayudamos por chat o teléfono.</p>
-		<div class="mt-5 flex flex-col gap-3 lg:mt-6 lg:flex-row lg:items-center lg:justify-between">
-			<button class="e-button e-button-secondary" onclick={openChat}>Abrir chat</button>
-			<a href="tel:+34984708484" class="e-button e-button-tertiary lg:!hidden"
-				>Llamar al + 34 984 70 84 84</a
-			>
-			<span class="p hidden text-neutral-800 lg:block">Tel: + 34 984 70 84 84</span>
+	<div class={wrapperClass}>
+		<Spacer wrapperClass="lg:hidden" />
+		<div
+			class="rounded-xl border border-solid border-neutral-300 bg-white p-5 lg:p-6 {wrapperClass}"
+		>
+			<p class="p mb-2 flex items-center gap-1 font-bold text-neutral-800 lg:gap-2">
+				<ChatRoundLine class="size-6" />Hablamos contigo
+			</p>
+			<p class="p text-neutral-700 lg:pl-8">¿Dudas? Te ayudamos por chat o teléfono.</p>
+			<div class="mt-5 flex flex-col gap-3 lg:mt-6 lg:flex-row lg:items-center lg:justify-between">
+				<button class="e-button e-button-secondary" onclick={openChat}>Abrir chat</button>
+				<a href="tel:+34984708484" class="e-button e-button-tertiary lg:!hidden"
+					>Llamar al + 34 984 70 84 84</a
+				>
+				<span class="p hidden text-neutral-800 lg:block">Tel: + 34 984 70 84 84</span>
+			</div>
 		</div>
 	</div>
 {/if}
